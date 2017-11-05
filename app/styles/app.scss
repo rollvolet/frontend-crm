@@ -7,7 +7,7 @@ $color-blue-grey: map-merge($color-blue-grey, ('contrastDefaultColor':  $light-c
 
 @import 'ember-paper';
 @import 'ember-paper-link';
-
+@import 'ember-data-table';
 
 /* Top toolbar */
 .top-toolbar {
