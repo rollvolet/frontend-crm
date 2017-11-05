@@ -1,0 +1,8 @@
+<h1>Klanten</h1>
+
+<ul>
+{{#each model as |customer|}}
+  <li>[{{customer.id}}] {{customer.name}}</li>
+{{/each}}
+</ul>
+{{liquid-outlet}}
