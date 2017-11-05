@@ -1,0 +1,21 @@
+{{#paper-toolbar class="top-toolbar" as |toolbar|}}
+  {{#toolbar.tools}}
+    {{#paper-button iconButton=true onClick=(action (mut isMainMenuOpen))}}
+      {{paper-icon "menu"}}
+    {{/paper-button}}
+    <h1>Rollvolet Klantenbeheer</h1>
+    <span class="flex"></span>
+    {{#paper-button onClick=(action "openMail") iconButton=true}}
+      {{paper-icon "help"}}
+    {{/paper-button}}
+    {{#paper-button onClick=(action "goToProfile") iconButton=true}}
+      {{paper-icon "account circle"}}
+    {{/paper-button}}
+    {{#paper-button onClick=(action "logout") iconButton=true}}
+      {{paper-icon "exit to app"}}
+    {{/paper-button}}
+  {{/toolbar.tools}}
+{{/paper-toolbar}}
+
+<h1>Main</h1>
+{{outlet}}

@@ -1,1 +1,20 @@
+$primary: "red";
+$accent: "blue-grey";
+
+@import "color-palette";
+$color-red: map-merge($color-red, ('contrastDefaultColor':  $light-contrast-color));
+$color-blue-grey: map-merge($color-blue-grey, ('contrastDefaultColor':  $light-contrast-color));
+
 @import 'ember-paper';
+@import 'ember-paper-link';
+
+
+/* Top toolbar */
+.top-toolbar {
+  h1 {
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 1.75em;
+    letter-spacing: 1.5px;
+  }
+}
