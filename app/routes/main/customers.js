@@ -1,7 +1,11 @@
 import Route from '@ember/routing/route';
+import DataTableRouteMixin from 'ember-data-table/mixins/route';
 
-export default Route.extend({
-  model() {
-    return this.get('store').query('customer', {});
+export default Route.extend(DataTableRouteMixin, {
+  modelName: 'customer',
+  mergeQueryOptions(params) {
+    return {
+      include: 'postal-code,language,country,honorific-prefix'
+    }
   }
 });
