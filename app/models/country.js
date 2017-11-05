@@ -6,5 +6,5 @@ export default DS.Model.extend({
   telephones: DS.hasMany('telephone'),
   contacts: DS.hasMany('contact'),
   buildings: DS.hasMany('building'),
-  customer: DS.belongsTo('customer')
+  customer: DS.hasMany('customer')
 });
