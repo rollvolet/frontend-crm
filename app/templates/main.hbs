@@ -17,5 +17,64 @@
   {{/toolbar.tools}}
 {{/paper-toolbar}}
 
-<h1>Main</h1>
-{{outlet}}
+{{#paper-sidenav-container class="main-side-nav-container"}}
+  {{#paper-sidenav class="main-side-nav" open=isMainMenuOpen
+       lockedOpen=false onToggle=(action (mut isMainMenuOpen))}}
+    {{#paper-toolbar as |toolbar|}}
+      {{#toolbar.tools}}
+        Menu
+        <span class="flex"></span>
+        {{#paper-button iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
+      {{/toolbar.tools}}
+    {{/paper-toolbar}}
+
+    {{#paper-content}}
+
+      {{#paper-list}}
+        {{#paper-link-item 'main.index'}}Home{{/paper-link-item}}
+        {{paper-divider}}
+        {{#paper-item}}Klanten{{/paper-item}}
+        {{paper-divider}}
+        {{#paper-item}}Aanvragen{{/paper-item}}
+        {{paper-divider}}
+        {{#paper-item}}Offertes{{/paper-item}}
+        {{paper-divider}}
+        {{#paper-item}}Bestellingen{{/paper-item}}
+        {{paper-divider}}
+        {{#paper-item}}Facturen{{/paper-item}}
+      {{/paper-list}}
+
+      {{#paper-list}}
+        {{#paper-subheader}}Rapporten{{/paper-subheader}}
+        {{paper-divider}}
+        {{#paper-item}}Offertes{{/paper-item}}
+        {{paper-divider}}
+        {{#paper-item}}Bestellingen{{/paper-item}}
+      {{/paper-list}}
+
+      {{#paper-list}}
+        {{#paper-subheader}}Systeem{{/paper-subheader}}
+        {{paper-divider}}
+        {{#paper-item}}Gebruikers{{/paper-item}}
+        {{paper-divider}}
+        {{#paper-item}}Lijsten{{/paper-item}}
+      {{/paper-list}}
+
+      {{#paper-list}}
+        {{#paper-subheader}}Gebruiker{{/paper-subheader}}
+        {{paper-divider}}
+        {{#paper-item}}Profiel{{/paper-item}}
+        {{paper-divider}}
+        {{#paper-item}}Log out{{/paper-item}}
+      {{/paper-list}}
+
+    {{/paper-content}}
+  {{/paper-sidenav}}
+
+  <div class="layout-row flex">
+    <div class="main-outlet">
+      {{liquid-outlet}}
+    </div>
+  </div>
+
+{{/paper-sidenav-container}}
