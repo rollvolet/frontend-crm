@@ -5,6 +5,11 @@ $accent: "blue-grey";
 $color-red: map-merge($color-red, ('contrastDefaultColor':  $light-contrast-color));
 $color-blue-grey: map-merge($color-blue-grey, ('contrastDefaultColor':  $light-contrast-color));
 
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
+html, body {
+  font-family: 'Nunito', sans-serif;
+}
+
 @import 'ember-paper';
 @import 'ember-paper-link';
 @import 'ember-data-table';
@@ -30,6 +35,11 @@ table {
 
 [data-ember-action]:not(:disabled) {
   cursor: pointer;
+}
+
+/* General layout */
+.main-outlet {
+  padding: 25px;
 }
 
 /* Top toolbar */
