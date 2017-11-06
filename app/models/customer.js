@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import { computed } from '@ember/object';
 
 export default DS.Model.extend({
   dataId: DS.attr(),
@@ -30,5 +31,9 @@ export default DS.Model.extend({
   language: DS.belongsTo('language'),
   postalCode: DS.belongsTo('postal-code'),
   honorificPrefix: DS.belongsTo('honorific-prefix'),
-  telephones: DS.hasMany('telephone')
+  telephones: DS.hasMany('telephone'),
+
+  address: computed('address1', 'address2', 'address3', function() {
+    return `${this.get('address1')} ${this.get('address2')} ${this.get('address3')}`.trim();
+  })
 });
