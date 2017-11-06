@@ -37,18 +37,29 @@ table {
   cursor: pointer;
 }
 
+md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
+  background-color: color($primary);
+}
+
+
 /* General layout */
 .main-outlet {
   padding: 25px;
 }
 
+.subtitle {
+  font-weight: 400;
+}
+
 /* Top toolbar */
 .top-toolbar {
   h1 {
+    padding-left: 5px;
     text-transform: uppercase;
     font-weight: 900;
     font-size: 1.75em;
     letter-spacing: 1.5px;
+    word-spacing: 3px;
   }
 }
 
@@ -80,6 +91,35 @@ table {
 
       md-list-item {
         color: color($primary, 'contrastDefaultColor');
+      }
+    }
+  }
+}
+
+
+/* Customer pages */
+.customer-details {
+  .customer-details-section {
+    margin-bottom: 20px;
+
+    .category-icon {
+      margin-right: 10px;
+    }
+
+    &.customer-details-name {
+      md-icon {
+        position: relative;
+        top: -4px;
+      }
+    }
+
+    &.customer-details-audit {
+      color: color('grey');
+      font-style: italic;
+
+      span.divider {
+        margin-left: 10px;
+        margin-right: 10px;
       }
     }
   }

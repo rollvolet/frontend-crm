@@ -33,6 +33,13 @@ export default DS.Model.extend({
   honorificPrefix: DS.belongsTo('honorific-prefix'),
   telephones: DS.hasMany('telephone'),
 
+  printName: computed('printPrefix', 'prefix', 'printSuffix', 'suffix', 'name', function() {
+    var name = '';
+    if (this.get('printPrefix') && this.get('prefix')) { name += this.get('prefix') + ' '; }
+    name += this.get('name') + ' ';
+    if (this.get('printSuffix') && this.get('suffix')) { name += this.get('suffix'); }
+    return name.trim();
+  }),
   address: computed('address1', 'address2', 'address3', function() {
     return `${this.get('address1')} ${this.get('address2')} ${this.get('address3')}`.trim();
   })

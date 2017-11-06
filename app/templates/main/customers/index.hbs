@@ -1,3 +1,5 @@
+<h1>Klanten</h1>
+
 {{#data-table content=model isLoading=isLoadingModel
      sort=sort page=page size=size onClickRow=(action 'clickRow') as |t|}}
   {{#t.content as |c|}}
@@ -12,7 +14,7 @@
     {{/c.header}}
     {{#c.body as |row|}}
       <td>{{row.number}}</td>
-      <td>{{row.name}}</td>
+      <td>{{row.printName}}</td>
       <td>{{row.address1}}</td>
       <td>{{get (await row.postalCode) 'code'}}</td>
       <td>{{get (await row.postalCode) 'name'}}</td>
