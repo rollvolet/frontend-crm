@@ -24,8 +24,8 @@
   <div class="customer-details-section customer-details-telephone layout-row">
     <div class="category-icon">{{paper-icon "phone"}}</div>
     <div>
-      {{#each (sort-by "order" (await model.telephones)) as |tel|}}
-        <div>{{tel.fullNumber}} {{#if tel.memo}}({{tel.memo}}){{/if}}</div>
+      {{#each (await model.telephones) as |tel|}}
+        <div>{{get (await tel.country) 'telephonePrefix'}} {{tel.fullNumber}} {{#if tel.memo}}({{tel.memo}}){{/if}}</div>
       {{/each}}
     </div>
   </div>
