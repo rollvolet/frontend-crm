@@ -79,7 +79,7 @@
 
 {{#liquid-bind (hash tab=selectedTab) use="toRight" as |current|}}
   {{#if (eq current.tab 0)}}
-    <p>Contacten nog niet beschikbaar</p>
+    {{contacts-table customer=model}}
   {{/if}}
   {{#if (eq current.tab 1)}}
     <p>Gebouwen nog niet beschikbaar</p>
