@@ -41,6 +41,10 @@ export default DS.Model.extend({
     return name.trim();
   }),
   address: computed('address1', 'address2', 'address3', function() {
-    return `${this.get('address1')} ${this.get('address2')} ${this.get('address3')}`.trim();
+    var address = '';
+    if (this.get('address1')) { address += this.get('address1') + ' '; }
+    if (this.get('address2')) { address += this.get('address2') + ' '; }
+    if (this.get('address3')) { address += this.get('address3') + ' '; }
+    return address.trim();
   })
 });
