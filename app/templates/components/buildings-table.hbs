@@ -1,21 +1,23 @@
 {{#data-table content=(await buildings) isLoading=(is-pending buildings) noDataMessage="Geen gebouwen"
-     page=page size=size as |t|}}
+     page=page size=size sort=sort as |t|}}
   {{#t.content as |c|}}
     {{#c.header}}
-      {{th-sortable field='number' currentSorting=sort label='Nummer'}}
+      {{th-sortable field='number' currentSorting=sort label='Nr'}}
+      <th>Prefix</th>
       {{th-sortable field='name' currentSorting=sort label='Naam'}}
       <th>Adres</th>
-      <th>Postcode</th>
-      <th>Gemeente</th>
+      {{th-sortable field='postal-code' currentSorting=sort label='Postcode'}}
+      {{th-sortable field='city' currentSorting=sort label='Gemeente'}}
       {{th-sortable field='created' currentSorting=sort label='Aangemaakt'}}
       {{th-sortable field='updated' currentSorting=sort label='Bewerkt'}}
     {{/c.header}}
     {{#c.body as |row|}}
       <td>{{row.number}}</td>
+      <td>{{get (await row.honorificPrefix) 'name'}}</td>
       <td>{{row.printName}}</td>
       <td>{{row.address}}</td>
-      <td>{{get (await row.postalCode) 'code'}}</td>
-      <td>{{get (await row.postalCode) 'name'}}</td>
+      <td>{{row.postalCode}}</td>
+      <td>{{row.city}}</td>
       <td>{{moment-format row.created}}</td>
       <td>{{moment-format row.updated}}</td>
     {{/c.body}}

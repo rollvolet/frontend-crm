@@ -2,10 +2,13 @@ import DS from 'ember-data';
 import { computed } from '@ember/object';
 
 export default DS.Model.extend({
+  prefix: DS.attr(),
   name: DS.attr(),
   address1: DS.attr(),
   address2: DS.attr(),
   address3: DS.attr(),
+  postalCode: DS.attr(),
+  city: DS.attr(),
   number: DS.attr(),
   created: DS.attr('date', {
     defaultValue() { return new Date(); }
@@ -16,8 +19,14 @@ export default DS.Model.extend({
   customer: DS.belongsTo('customer'),
   country: DS.belongsTo('country'),
   language: DS.belongsTo('language'),
-  postalCode: DS.belongsTo('postal-code'),
+  honorificPrefix: DS.belongsTo('honorific-prefix'),
 
+  printName: computed('prefix', 'name', function() {
+    var name = '';
+    if (this.get('prefix')) { name += this.get('prefix') + ' '; }
+    name += this.get('name');
+    return name.trim();
+  }),
   address: computed('address1', 'address2', 'address3', function() {
     var address = '';
     if (this.get('address1')) { address += this.get('address1') + ' '; }

@@ -7,8 +7,8 @@
       {{th-sortable field='number' currentSorting=sort label='Nummer'}}
       {{th-sortable field='name' currentSorting=sort label='Naam'}}
       <th>Adres</th>
-      <th>Postcode</th>
-      <th>Gemeente</th>
+      {{th-sortable field='postal-code' currentSorting=sort label='Postcode'}}
+      {{th-sortable field='city' currentSorting=sort label='Gemeente'}}
       {{th-sortable field='created' currentSorting=sort label='Aangemaakt'}}
       {{th-sortable field='updated' currentSorting=sort label='Bewerkt'}}
     {{/c.header}}
@@ -16,8 +16,8 @@
       <td>{{row.number}}</td>
       <td>{{row.printName}}</td>
       <td>{{row.address1}}</td>
-      <td>{{get (await row.postalCode) 'code'}}</td>
-      <td>{{get (await row.postalCode) 'name'}}</td>
+      <td>{{row.postalCode}}</td>
+      <td>{{row.city}}</td>
       <td>{{moment-format row.created}}</td>
       <td>{{moment-format row.updated}}</td>
     {{/c.body}}

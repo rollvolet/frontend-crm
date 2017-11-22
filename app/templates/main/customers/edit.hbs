@@ -17,7 +17,7 @@
       <div>{{model.address1}}</div>
       <div>{{model.address2}}</div>
       <div>{{model.address3}}</div>
-      <div>{{get (await model.postalCode) 'code'}} {{get (await model.postalCode) 'name'}}</div>
+      <div>{{model.postalCode}} {{model.city}}</div>
       <div>{{get (await model.country) 'name'}}</div>
     </div>
   </div>

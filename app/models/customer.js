@@ -9,6 +9,8 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, {
   address1: DS.attr(),
   address2: DS.attr(),
   address3: DS.attr(),
+  postalCode: DS.attr(),
+  city: DS.attr(),
   isCompany: DS.attr(),
   vatNumber: DS.attr(),
   prefix: DS.attr(),
@@ -30,7 +32,6 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, {
   buildings: DS.hasMany('building'),
   country: DS.belongsTo('country'),
   language: DS.belongsTo('language'),
-  postalCode: DS.belongsTo('postal-code'),
   honorificPrefix: DS.belongsTo('honorific-prefix'),
   telephones: DS.hasMany('telephone'),
 
