@@ -6,6 +6,13 @@ export default Controller.extend(DefaultQueryParams, {
   actions: {
     clickRow(row) {
       this.transitionToRoute('main.customers.edit', row);
+    },
+    resetFilters() {
+      this.set('number', undefined);
+      this.set('name', undefined);
+      this.set('postalCode', undefined);
+      this.set('city', undefined);
+      this.set('street', undefined);
     }
   }
 });

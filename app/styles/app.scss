@@ -96,6 +96,30 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
   }
 }
 
+/* Table filters */
+.data-table-filters {
+  border: 1px solid $table-border-color;
+  padding: 15px 15px 0 15px;
+
+  md-input-container .md-errors-spacer {
+    display: none;
+  }
+
+  .data-table-filters--title {
+    display: inline-block;
+    position: relative;
+    top: -49px;
+    padding: 0 10px;
+    background-color: #FFF;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    color: color('grey');
+  }
+
+  md-icon.md-default-theme, md-icon {
+    color: color('grey');
+  }
+}
 
 /* Customer pages */
 .customer-details {

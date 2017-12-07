@@ -1,6 +1,16 @@
 <h1>Klanten</h1>
 
-{{#data-table content=model isLoading=isLoadingModel
+<div class="data-table-filters">
+  <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
+  {{paper-input label="Nummer" value=number onChange=(action (mut number))}}
+  {{paper-input label="Naam" value=name onChange=(action (mut name))}}
+  {{paper-input label="Postcode" value=postalCode onChange=(action (mut postalCode))}}
+  {{paper-input label="Gemeente" value=city onChange=(action (mut city))}}
+  {{paper-input label="Straat" value=street onChange=(action (mut street))}}
+  {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
+</div>
+
+{{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
      sort=sort page=page size=size onClickRow=(action 'clickRow') as |t|}}
   {{#t.content as |c|}}
     {{#c.header}}
