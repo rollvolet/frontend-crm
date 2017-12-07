@@ -2,11 +2,11 @@
 
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
-  {{paper-input label="Nummer" value=number onChange=(action (mut number))}}
-  {{paper-input label="Naam" value=name onChange=(action (mut name))}}
-  {{paper-input label="Postcode" value=postalCode onChange=(action (mut postalCode))}}
-  {{paper-input label="Gemeente" value=city onChange=(action (mut city))}}
-  {{paper-input label="Straat" value=street onChange=(action (mut street))}}
+  {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number")}}
+  {{paper-input label="Naam" value=nameFilter onChange=(action "setFilter" "name")}}
+  {{paper-input label="Postcode" value=postalCodeFilter onChange=(action "setFilter" "postalCode")}}
+  {{paper-input label="Gemeente" value=cityFilter onChange=(action "setFilter" "city")}}
+  {{paper-input label="Straat" value=streetFilter onChange=(action "setFilter" "street")}}
   {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
 </div>
 
