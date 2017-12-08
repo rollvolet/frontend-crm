@@ -3,14 +3,14 @@
   {{#t.content as |c|}}
     {{#c.header}}
       {{th-sortable field='number' currentSorting=sort label='Nr'}}
-      <th>Prefix</th>
+      <th>Aanspreking</th>
       {{th-sortable field='name' currentSorting=sort label='Naam'}}
       {{th-sortable field='address' currentSorting=sort label='Adres'}}
       {{th-sortable field='postal-code' currentSorting=sort label='Postcode'}}
       {{th-sortable field='city' currentSorting=sort label='Gemeente'}}
+      <th>Land</th>
       <th>Email</th>
-      {{th-sortable field='created' currentSorting=sort label='Aangemaakt'}}
-      {{th-sortable field='updated' currentSorting=sort label='Bewerkt'}}
+      <th>Taal</th>
     {{/c.header}}
     {{#c.body as |row|}}
       <td>{{row.number}}</td>
@@ -19,9 +19,9 @@
       <td>{{row.address}}</td>
       <td>{{row.postalCode}}</td>
       <td>{{row.city}}</td>
+      <td>{{get (await row.country) 'name'}}</td>
       <td>{{row.email}}</td>
-      <td>{{moment-format row.created}}</td>
-      <td>{{moment-format row.updated}}</td>
+      <td>{{get (await row.language) 'name'}}</td>
     {{/c.body}}
   {{/t.content}}
 {{/data-table}}
