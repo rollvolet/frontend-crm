@@ -121,6 +121,17 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
   }
 }
 
+.contacts-table {
+  .data-table-filters {
+    border: none;
+
+    .data-table-filters--title {
+      top: 0px;
+    }
+  }
+}
+
+
 /* Customer pages */
 .customer-details {
   .customer-details-section {

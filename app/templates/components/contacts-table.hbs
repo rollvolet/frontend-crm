@@ -1,3 +1,13 @@
+<div class="data-table-filters">
+  <div class="data-table-filters--title">{{paper-icon "search"}}</div>
+  {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number")}}
+  {{paper-input label="Naam" value=name onChange=(action "setFilter" "name")}}
+  {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode")}}
+  {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
+  {{paper-input label="Straat" value=street onChange=(action "setFilter" "street")}}
+  {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
+</div>
+
 {{#data-table content=(await contacts) isLoading=(is-pending contacts) noDataMessage="Geen contacten"
      page=page size=size sort=sort as |t|}}
   {{#t.content as |c|}}

@@ -22,7 +22,7 @@ export default Route.extend(DataTableRouteMixin, {
         name: params.name,
         'postal-code': params.postalCode,
         city: params.city,
-        street: params.street,
+        street: params.street
       }
     };
   }
