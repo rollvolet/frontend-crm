@@ -4,9 +4,9 @@
   <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
   {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number")}}
   {{paper-input label="Naam" value=nameFilter onChange=(action "setFilter" "name")}}
+  {{paper-input label="Adres" value=streetFilter onChange=(action "setFilter" "street")}}
   {{paper-input label="Postcode" value=postalCodeFilter onChange=(action "setFilter" "postalCode")}}
   {{paper-input label="Gemeente" value=cityFilter onChange=(action "setFilter" "city")}}
-  {{paper-input label="Straat" value=streetFilter onChange=(action "setFilter" "street")}}
   {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
 </div>
 

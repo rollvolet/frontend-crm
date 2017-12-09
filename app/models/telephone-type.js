@@ -2,5 +2,5 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   name: DS.attr(),
-  customer: DS.hasMany('customer')
+  telephone: DS.hasMany('telephone')
 });

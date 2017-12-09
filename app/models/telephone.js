@@ -7,6 +7,7 @@ export default DS.Model.extend({
   memo: DS.attr(),
   order: DS.attr(),
   country: DS.belongsTo('country'),
+  telephoneType: DS.belongsTo('telephone-type'),
   customer: DS.belongsTo('customer'),
 
   fullNumber: computed('area', 'number', function() {
