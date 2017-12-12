@@ -14,6 +14,7 @@
     {{#c.header}}
       {{th-sortable field='number' currentSorting=sort label='Nr'}}
       <th>Aanspreking</th>
+      <th>Prefix</th>
       {{th-sortable field='name' currentSorting=sort label='Naam'}}
       {{th-sortable field='address' currentSorting=sort label='Adres'}}
       {{th-sortable field='postal-code' currentSorting=sort label='Postcode'}}
@@ -24,7 +25,8 @@
     {{#c.body as |row|}}
       <td>{{row.number}}</td>
       <td>{{get (await row.honorificPrefix) 'name'}}</td>
-      <td>{{row.printName}}</td>
+      <td>{{row.prefix}}</td>
+      <td>{{row.name}}</td>
       <td>{{row.address}}</td>
       <td>{{row.postalCode}}</td>
       <td>{{row.city}}</td>

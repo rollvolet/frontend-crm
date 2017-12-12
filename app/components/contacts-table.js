@@ -49,6 +49,12 @@ export default Component.extend({
       this.set('city', undefined);
       this.set('street', undefined);
       this.get('search').perform();
+    },
+    selectContact(contact) {
+      this.set('selectedContact', contact);
+    },
+    deselectContact() {
+      this.set('selectedContact', null);
     }
   }
 });

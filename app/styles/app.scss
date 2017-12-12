@@ -134,22 +134,27 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
 
 
 /* Customer pages */
+.contact-card,
 .customer-details {
-  .customer-details-section {
+  .right-column {
+    margin-left: 50px;
+  }
+
+  .resource-details-section {
     margin-bottom: 20px;
 
     .category-icon {
       margin-right: 10px;
     }
 
-    &.customer-details-name {
+    &.resource-details-name {
       md-icon {
         position: relative;
         top: -4px;
       }
     }
 
-    &.customer-details-audit {
+    &.resource-details-audit {
       color: color('grey');
       font-style: italic;
 

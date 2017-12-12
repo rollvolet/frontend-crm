@@ -1,37 +1,98 @@
-<div class="data-table-filters">
-  <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number")}}
-  {{paper-input label="Naam" value=name onChange=(action "setFilter" "name")}}
-  {{paper-input label="Adres" value=street onChange=(action "setFilter" "street")}}
-  {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode")}}
-  {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
-  {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
-</div>
+{{#liquid-unless selectedContact class="data-table-selection"}}
+  <div class="data-table-filters">
+    <div class="data-table-filters--title">{{paper-icon "search"}}</div>
+    {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number")}}
+    {{paper-input label="Naam" value=name onChange=(action "setFilter" "name")}}
+    {{paper-input label="Adres" value=street onChange=(action "setFilter" "street")}}
+    {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode")}}
+    {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
+    {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
+  </div>
 
-{{#data-table content=(await contacts) isLoading=(is-pending contacts) noDataMessage="Geen contacten"
-     page=page size=size sort=sort as |t|}}
-  {{#t.content as |c|}}
-    {{#c.header}}
-      {{th-sortable field='number' currentSorting=sort label='Nr'}}
-      <th>Aanspreking</th>
-      {{th-sortable field='name' currentSorting=sort label='Naam'}}
-      {{th-sortable field='address' currentSorting=sort label='Adres'}}
-      {{th-sortable field='postal-code' currentSorting=sort label='Postcode'}}
-      {{th-sortable field='city' currentSorting=sort label='Gemeente'}}
-      <th>Land</th>
-      <th>Email</th>
-      <th>Taal</th>
-    {{/c.header}}
-    {{#c.body as |row|}}
-      <td>{{row.number}}</td>
-      <td>{{get (await row.honorificPrefix) 'name'}}</td>
-      <td>{{row.printName}}</td>
-      <td>{{row.address}}</td>
-      <td>{{row.postalCode}}</td>
-      <td>{{row.city}}</td>
-      <td>{{get (await row.country) 'name'}}</td>
-      <td>{{row.email}}</td>
-      <td>{{get (await row.language) 'name'}}</td>
-    {{/c.body}}
-  {{/t.content}}
-{{/data-table}}
+  {{#data-table content=(await contacts) isLoading=(is-pending contacts) noDataMessage="Geen contacten"
+       onClickRow=(action "selectContact") page=page size=size sort=sort as |t|}}
+    {{#t.content as |c|}}
+      {{#c.header}}
+        {{th-sortable field='number' currentSorting=sort label='Nr'}}
+        <th>Aanspreking</th>
+        <th>Prefix</th>
+        {{th-sortable field='name' currentSorting=sort label='Naam'}}
+        {{th-sortable field='address' currentSorting=sort label='Adres'}}
+        {{th-sortable field='postal-code' currentSorting=sort label='Postcode'}}
+        {{th-sortable field='city' currentSorting=sort label='Gemeente'}}
+        <th>Land</th>
+        <th>Taal</th>
+      {{/c.header}}
+      {{#c.body as |row|}}
+        <td>{{row.number}}</td>
+        <td>{{get (await row.honorificPrefix) 'name'}}</td>
+        <td>{{row.prefix}}</td>
+        <td>{{row.name}}</td>
+        <td>{{row.address}}</td>
+        <td>{{row.postalCode}}</td>
+        <td>{{row.city}}</td>
+        <td>{{get (await row.country) 'name'}}</td>
+        <td>{{get (await row.language) 'name'}}</td>
+      {{/c.body}}
+    {{/t.content}}
+  {{/data-table}}
+{{else}}
+  <div class="contact-card">
+    <div class="layout-row layout-align-space-between-center">
+      <h4>[{{selectedContact.number}}] {{selectedContact.printName}}</h4>
+      {{#paper-button onClick=(action "deselectContact") iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
+    </div>
+    <div class="layout-row">
+      <div class="left-column">
+        <div class="resource-details-section resource-details-name layout-row">
+          <div class="category-icon">{{#if selectedContact.isCompany}}{{paper-icon "business"}}{{else}}{{paper-icon "home"}}{{/if}}</div>
+          <div>
+            {{#if selectedContact.printInFront}}{{get (await selectedContact.honorificPrefix) 'name'}}{{/if}}
+            {{selectedContact.prefix}} {{selectedContact.name}} {{selectedContact.suffix}}
+            {{#if (not selectedContact.printInFront)}}{{get (await selectedContact.honorificPrefix) 'name'}}{{/if}}
+          </div>
+        </div>
+        <div class="resource-details-section resource-details-address layout-row">
+          <div class="category-icon">{{paper-icon "location on"}}</div>
+          <div>
+            <div>{{selectedContact.address1}}</div>
+            <div>{{selectedContact.address2}}</div>
+            <div>{{selectedContact.address3}}</div>
+            <div>{{selectedContact.postalCode}} {{selectedContact.city}}</div>
+            <div>{{get (await selectedContact.country) 'name'}}</div>
+          </div>
+        </div>
+        <div class="resource-details-section resource-details-language layout-row">
+          <div class="category-icon">{{paper-icon "language"}}</div>
+          <div>
+            <div>{{get (await selectedContact.language) 'name'}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="right-column">
+        <div class="resource-details-section resource-details-telephone layout-row">
+          <div class="category-icon">{{paper-icon "phone"}}</div>
+          <div>
+            {{#each (await selectedContact.telephones) as |tel|}}
+              <div>{{get (await tel.telephoneType) 'name'}}: {{get (await tel.country) 'telephonePrefix'}} {{tel.fullNumber}} {{#if tel.memo}}({{tel.memo}}){{/if}}</div>
+            {{/each}}
+          </div>
+        </div>
+        <div class="resource-details-section resource-details-contact layout-row">
+          <div class="category-icon">{{paper-icon "mail outline"}}</div>
+          <div>
+            <div>{{selectedContact.email}}</div>
+            <div>{{selectedContact.email2}}</div>
+            <div>{{selectedContact.url}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="resource-details-section resource-details-coment layout-row">
+      <div class="category-icon">{{paper-icon "comment"}}</div>
+      <div>
+        <div>{{#if selectedContact.comment}}{{selectedContact.comment}}{{else}}Geen opmerkingen{{/if}}</div>
+      </div>
+    </div>
+  </div>
+{{/liquid-unless}}
