@@ -49,6 +49,12 @@ export default Component.extend({
       this.set('city', undefined);
       this.set('street', undefined);
       this.get('search').perform();
+    },
+    selectBuilding(building) {
+      this.set('selectedBuilding', building);
+    },
+    deselectBuilding() {
+      this.set('selectedBuilding', null);
     }
   }
 });
