@@ -32,7 +32,8 @@ export default Component.extend({
         name: this.get('name'),
         'postal-code': this.get('postalCode'),
         city: this.get('city'),
-        street: this.get('street')
+        street: this.get('street'),
+        telephone: this.get('telephone')
       }
     });
     this.set('buildings', buildings);
@@ -48,6 +49,7 @@ export default Component.extend({
       this.set('postalCode', undefined);
       this.set('city', undefined);
       this.set('street', undefined);
+      this.set('telephone', undefined);
       this.get('search').perform();
     },
     selectBuilding(building) {

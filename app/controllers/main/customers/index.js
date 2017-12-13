@@ -10,6 +10,7 @@ export default Controller.extend(DefaultQueryParams, {
   postalCodeFilter: oneWay('postalCode'),
   cityFilter: oneWay('city'),
   streetFilter: oneWay('street'),
+  telephoneFilter: oneWay('telephone'),
   debounceQueryParam: task(function * (key, value) {
     yield timeout(500);
     yield this.set(key, value);
@@ -28,11 +29,13 @@ export default Controller.extend(DefaultQueryParams, {
       this.set('postalCodeFilter', undefined);
       this.set('cityFilter', undefined);
       this.set('streetFilter', undefined);
+      this.set('telephoneFilter', undefined);
       this.set('number', undefined);
       this.set('name', undefined);
       this.set('postalCode', undefined);
       this.set('city', undefined);
       this.set('street', undefined);
+      this.set('telephone', undefined);
     }
   }
 });

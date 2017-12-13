@@ -12,7 +12,8 @@ export default Route.extend(DataTableRouteMixin, {
     name: { refreshModel: true },
     postalCode: { refreshModel: true },
     city: { refreshModel: true },
-    street: { refreshModel: true }
+    street: { refreshModel: true },
+    telephone: { refreshModel: true }
   },
   mergeQueryOptions(params) {
     return {
@@ -22,7 +23,8 @@ export default Route.extend(DataTableRouteMixin, {
         name: params.name,
         'postal-code': params.postalCode,
         city: params.city,
-        street: params.street
+        street: params.street,
+        telephone: params.telephone
       }
     };
   }

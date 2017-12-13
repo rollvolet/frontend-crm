@@ -6,6 +6,7 @@
     {{paper-input label="Adres" value=street onChange=(action "setFilter" "street")}}
     {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode")}}
     {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
+    {{paper-input label="Telefoon" value=telephone onChange=(action "setFilter" "telephone")}}
     {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
   </div>
 
