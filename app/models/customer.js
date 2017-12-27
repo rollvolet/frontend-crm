@@ -34,6 +34,7 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, {
   language: DS.belongsTo('language'),
   honorificPrefix: DS.belongsTo('honorific-prefix'),
   telephones: DS.hasMany('telephone'),
+  requests: DS.hasMany('request'),
 
   printName: computed('printPrefix', 'prefix', 'printSuffix', 'suffix', 'name', function() {
     var name = '';

@@ -29,6 +29,7 @@ export default DS.Model.extend({
   language: DS.belongsTo('language'),
   honorificPrefix: DS.belongsTo('honorific-prefix'),
   telephones: DS.hasMany('telephone'),
+  requests: DS.hasMany('request'),
 
   printName: computed('prefix', 'name', function() {
     var name = '';
