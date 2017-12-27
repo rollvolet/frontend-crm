@@ -1,0 +1,25 @@
+<h1>Aanvragen</h1>
+
+{{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
+     sort=sort page=page size=size onClickRow=(action 'clickRow') as |t|}}
+  {{#t.content as |c|}}
+    {{#c.header}}
+      {{th-sortable field='number' currentSorting=sort label='Nr'}}
+      {{th-sortable field='request-date' currentSorting=sort label='Datum'}}
+      {{th-sortable field='customer.name' currentSorting=sort label='Naam'}}
+      {{th-sortable field='customer.address' currentSorting=sort label='Adres'}}
+      {{th-sortable field='customer.postal-code' currentSorting=sort label='Postcode'}}
+      {{th-sortable field='customer.city' currentSorting=sort label='Gemeente'}}
+    {{/c.header}}
+    {{#c.body as |row|}}
+      <td>{{row.id}}</td>
+      <td>{{moment-format row.requestDate 'L'}}</td>
+      <td>{{row.customer.printName}}</td>
+      <td>{{row.customer.address1}}</td>
+      <td>{{row.customer.postalCode}}</td>
+      <td>{{row.customer.city}}</td>
+    {{/c.body}}
+  {{/t.content}}
+{{/data-table}}
+
+{{liquid-outlet}}
