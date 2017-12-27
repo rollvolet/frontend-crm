@@ -2,13 +2,15 @@
 
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
-  {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number")}}
-  {{paper-input label="Naam" value=nameFilter onChange=(action "setFilter" "name")}}
-  {{paper-input label="Adres" value=streetFilter onChange=(action "setFilter" "street")}}
-  {{paper-input label="Postcode" value=postalCodeFilter onChange=(action "setFilter" "postalCode")}}
-  {{paper-input label="Gemeente" value=cityFilter onChange=(action "setFilter" "city")}}
-  {{paper-input label="Telefoon" value=telephoneFilter onChange=(action "setFilter" "telephone")}}
-  {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
+  <div class="layout-row flex layout-align-space-between-center">
+    {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number") class="small-input"}}
+    {{paper-input label="Naam" value=nameFilter onChange=(action "setFilter" "name")}}
+    {{paper-input label="Adres" value=streetFilter onChange=(action "setFilter" "street") class="large-input"}}
+    {{paper-input label="Postcode" value=postalCodeFilter onChange=(action "setFilter" "postalCode") class="small-input"}}
+    {{paper-input label="Gemeente" value=cityFilter onChange=(action "setFilter" "city")}}
+    {{paper-input label="Telefoon" value=telephoneFilter onChange=(action "setFilter" "telephone")}}
+    {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
+  </div>
 </div>
 
 {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"

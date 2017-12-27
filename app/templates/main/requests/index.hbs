@@ -1,25 +1,55 @@
 <h1>Aanvragen</h1>
 
-{{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
-     sort=sort page=page size=size onClickRow=(action 'clickRow') as |t|}}
-  {{#t.content as |c|}}
-    {{#c.header}}
-      {{th-sortable field='number' currentSorting=sort label='Nr'}}
-      {{th-sortable field='request-date' currentSorting=sort label='Datum'}}
-      {{th-sortable field='customer.name' currentSorting=sort label='Naam'}}
-      {{th-sortable field='customer.address' currentSorting=sort label='Adres'}}
-      {{th-sortable field='customer.postal-code' currentSorting=sort label='Postcode'}}
-      {{th-sortable field='customer.city' currentSorting=sort label='Gemeente'}}
-    {{/c.header}}
-    {{#c.body as |row|}}
-      <td>{{row.id}}</td>
-      <td>{{moment-format row.requestDate 'L'}}</td>
-      <td>{{row.customer.printName}}</td>
-      <td>{{row.customer.address1}}</td>
-      <td>{{row.customer.postalCode}}</td>
-      <td>{{row.customer.city}}</td>
-    {{/c.body}}
-  {{/t.content}}
-{{/data-table}}
+<div class="requests-table">
+  <div class="data-table-filters">
+    <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
+    <div class="layout-row flex layout-align-space-between-start">
+      <div class="data-table-filters--line-1">
+        {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number") class="small-input"}}
+      </div>
+      <div class="data-table-filters--line-2 layout-column">
+        <div class="data-table-filters--group-title">Klant</div>
+        <div>
+          {{paper-input label="Naam" value=cNameFilter onChange=(action "setFilter" "cName")}}
+          {{paper-input label="Adres" value=cStreetFilter onChange=(action "setFilter" "cStreet") class="large-input"}}
+          {{paper-input label="Postcode" value=cPostalCodeFilter onChange=(action "setFilter" "cPostalCode") class="small-input"}}
+          {{paper-input label="Gemeente" value=cCityFilter onChange=(action "setFilter" "cCity")}}
+          {{paper-input label="Telefoon" value=cTelephoneFilter onChange=(action "setFilter" "cTelephone")}}
+        </div>
+        <div class="data-table-filters--group-title">Gebouw</div>
+        <div>
+          {{paper-input label="Naam" value=bNameFilter onChange=(action "setFilter" "bName")}}
+          {{paper-input label="Adres" value=bStreetFilter onChange=(action "setFilter" "bStreet") class="large-input"}}
+          {{paper-input label="Postcode" value=bPostalCodeFilter onChange=(action "setFilter" "bPostalCode") class="small-input"}}
+          {{paper-input label="Gemeente" value=bCityFilter onChange=(action "setFilter" "bCity")}}      </div>
+      </div>
+      <div class="data-table-filters--reset">
+        {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
+      </div>
+    </div>
+  </div>
+
+  {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
+       sort=sort page=page size=size onClickRow=(action 'clickRow') as |t|}}
+    {{#t.content as |c|}}
+      {{#c.header}}
+        {{th-sortable field='number' currentSorting=sort label='Nr'}}
+        {{th-sortable field='request-date' currentSorting=sort label='Datum'}}
+        {{th-sortable field='customer.name' currentSorting=sort label='Naam'}}
+        {{th-sortable field='customer.address' currentSorting=sort label='Adres'}}
+        {{th-sortable field='customer.postal-code' currentSorting=sort label='Postcode'}}
+        {{th-sortable field='customer.city' currentSorting=sort label='Gemeente'}}
+      {{/c.header}}
+      {{#c.body as |row|}}
+        <td>{{row.id}}</td>
+        <td>{{moment-format row.requestDate 'L'}}</td>
+        <td>{{row.customer.printName}}</td>
+        <td>{{row.customer.address1}}</td>
+        <td>{{row.customer.postalCode}}</td>
+        <td>{{row.customer.city}}</td>
+      {{/c.body}}
+    {{/t.content}}
+  {{/data-table}}
+</div>
 
 {{liquid-outlet}}
