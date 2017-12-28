@@ -21,7 +21,8 @@
           {{paper-input label="Naam" value=bNameFilter onChange=(action "setFilter" "bName")}}
           {{paper-input label="Adres" value=bStreetFilter onChange=(action "setFilter" "bStreet") class="large-input"}}
           {{paper-input label="Postcode" value=bPostalCodeFilter onChange=(action "setFilter" "bPostalCode") class="small-input"}}
-          {{paper-input label="Gemeente" value=bCityFilter onChange=(action "setFilter" "bCity")}}      </div>
+          {{paper-input label="Gemeente" value=bCityFilter onChange=(action "setFilter" "bCity")}}
+        </div>
       </div>
       <div class="data-table-filters--reset">
         {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
@@ -43,10 +44,10 @@
       {{#c.body as |row|}}
         <td>{{row.id}}</td>
         <td>{{moment-format row.requestDate 'L'}}</td>
-        <td>{{row.customer.printName}}</td>
-        <td>{{row.customer.address1}}</td>
-        <td>{{row.customer.postalCode}}</td>
-        <td>{{row.customer.city}}</td>
+        <td>{{get (await row.customer) 'printName'}}</td>
+        <td>{{get (await row.customer) 'address1'}}</td>
+        <td>{{get (await row.customer) 'postalCode'}}</td>
+        <td>{{get (await row.customer) 'city'}}</td>
       {{/c.body}}
     {{/t.content}}
   {{/data-table}}
