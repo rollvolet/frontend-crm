@@ -1,0 +1,51 @@
+<div class="resource-details--section resource-details--section-name layout-row">
+  <div class="category-icon">{{#if model.isCompany}}{{paper-icon "business"}}{{else}}{{paper-icon "home"}}{{/if}}</div>
+  <div>
+    {{#if model.printInFront}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
+    {{model.prefix}} {{model.name}} {{model.suffix}}
+    {{#if (not model.printInFront)}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
+  </div>
+</div>
+<div class="resource-details--section resource-details--section-address layout-row">
+  <div class="category-icon">{{paper-icon "location on"}}</div>
+  <div>
+    <div>{{model.address1}}</div>
+    <div>{{model.address2}}</div>
+    <div>{{model.address3}}</div>
+    <div>{{model.postalCode}} {{model.city}}</div>
+    <div>{{get (await model.country) 'name'}}</div>
+  </div>
+</div>
+<div class="resource-details--section resource-details--section-telephone layout-row">
+  <div class="category-icon">{{paper-icon "phone"}}</div>
+  <div>
+    {{#each (await model.telephones) as |tel|}}
+      <div>{{get (await tel.country) 'telephonePrefix'}} {{tel.fullNumber}} {{#if tel.memo}}({{tel.memo}}){{/if}}</div>
+    {{/each}}
+  </div>
+</div>
+<div class="resource-details--section resource-details--section-contact layout-row">
+  <div class="category-icon">{{paper-icon "mail outline"}}</div>
+  <div>
+    <div>{{model.email}}</div>
+    <div>{{model.email2}}</div>
+    <div>{{model.url}}</div>
+  </div>
+</div>
+<div class="resource-details--section resource-details--section-language layout-row">
+  <div class="category-icon">{{paper-icon "language"}}</div>
+  <div>
+    <div>{{get (await model.language) 'name'}}</div>
+  </div>
+</div>
+<div class="resource-details--section resource-details--section-comment layout-row">
+  <div class="category-icon">{{paper-icon "comment"}}</div>
+  <div>
+    <div>{{#if model.comment}}{{model.comment}}{{else}}Geen opmerkingen{{/if}}</div>
+  </div>
+</div>
+
+<div class="resource-details--section resource-details--section-audit layout-row">
+  Aangemaakt: {{moment-format model.created}} <span class="divider">|</span>
+  Bewerkt: {{moment-format model.updated}}
+</div>

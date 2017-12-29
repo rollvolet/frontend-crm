@@ -38,14 +38,14 @@
     {{/t.content}}
   {{/data-table}}
 {{else}}
-  <div class="building-card">
+  <div class="resource-details">
     <div class="layout-row layout-align-space-between-center">
       <h4>[{{selectedBuilding.number}}] {{selectedBuilding.printName}}</h4>
       {{#paper-button onClick=(action "deselectBuilding") iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
     </div>
     <div class="layout-row">
       <div class="left-column">
-        <div class="resource-details-section resource-details-name layout-row">
+        <div class="resource-details--section resource-details--section-name layout-row">
           <div class="category-icon">{{#if selectedBuilding.isCompany}}{{paper-icon "business"}}{{else}}{{paper-icon "home"}}{{/if}}</div>
           <div>
             {{#if selectedBuilding.printInFront}}{{get (await selectedBuilding.honorificPrefix) 'name'}}{{/if}}
@@ -53,7 +53,7 @@
             {{#if (not selectedBuilding.printInFront)}}{{get (await selectedBuilding.honorificPrefix) 'name'}}{{/if}}
           </div>
         </div>
-        <div class="resource-details-section resource-details-address layout-row">
+        <div class="resource-details--section resource-details--section-address layout-row">
           <div class="category-icon">{{paper-icon "location on"}}</div>
           <div>
             <div>{{selectedBuilding.address1}}</div>
@@ -63,7 +63,7 @@
             <div>{{get (await selectedBuilding.country) 'name'}}</div>
           </div>
         </div>
-        <div class="resource-details-section resource-details-language layout-row">
+        <div class="resource-details--section resource-details--section-language layout-row">
           <div class="category-icon">{{paper-icon "language"}}</div>
           <div>
             <div>{{get (await selectedBuilding.language) 'name'}}</div>
@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="right-column">
-        <div class="resource-details-section resource-details-telephone layout-row">
+        <div class="resource-details--section resource-details--section-telephone layout-row">
           <div class="category-icon">{{paper-icon "phone"}}</div>
           <div>
             {{#each (await selectedBuilding.telephones) as |tel|}}
@@ -79,7 +79,7 @@
             {{/each}}
           </div>
         </div>
-        <div class="resource-details-section resource-details-contact layout-row">
+        <div class="resource-details--section resource-details--section-contact layout-row">
           <div class="category-icon">{{paper-icon "mail outline"}}</div>
           <div>
             <div>{{selectedBuilding.email}}</div>
@@ -89,7 +89,7 @@
         </div>
       </div>
     </div>
-    <div class="resource-details-section resource-details-coment layout-row">
+    <div class="resource-details--section resource-details--section-comment layout-row">
       <div class="category-icon">{{paper-icon "comment"}}</div>
       <div>
         <div>{{#if selectedBuilding.comment}}{{selectedBuilding.comment}}{{else}}Geen opmerkingen{{/if}}</div>

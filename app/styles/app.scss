@@ -170,30 +170,29 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
 
 
 /* Customer pages */
-.contact-card,
-.building-card,
-.customer-details {
+.resource-details {
   .right-column {
     margin-left: 50px;
   }
 
-  .resource-details-section {
+  .resource-details--section {
     margin-bottom: 20px;
 
     .category-icon {
       margin-right: 10px;
     }
 
-    &.resource-details-name {
+    &.resource-details--section-name {
       md-icon {
         position: relative;
         top: -4px;
       }
     }
 
-    &.resource-details-audit {
+    &.resource-details--section-audit {
       color: color('grey');
       font-style: italic;
+      font-size: 0.8em;
 
       span.divider {
         margin-left: 10px;

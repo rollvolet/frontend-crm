@@ -23,12 +23,12 @@
 </h2>
 
 <div class="layout-row">
-  Klant hier
+  {{customer-detail-card model=model}}
   <div class="layout-column">
     <div>
       <h3>Gebouw</h3>
       {{#if building}}
-        Gebouw hier
+        {{building-detail-card model=building}}
       {{else}}
         <p>n.v.t</p>
       {{/if}}
@@ -36,7 +36,7 @@
     <div>
       <h3>Contact</h3>
       {{#if contact}}
-        Contact hier
+        {{contact-detail-card model=contact}}
       {{else}}
         <p>n.v.t</p>
       {{/if}}
