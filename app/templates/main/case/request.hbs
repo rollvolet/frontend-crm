@@ -1,0 +1,79 @@
+<h2>Aanvraag {{model.id}}</h2>
+
+<div class="layout-row layout-align-space-between">
+  <div class="case--left-panel case--request--entry flex-100 layout-column">
+    <div class="layout-row">
+      <div class="flex-none detail-key">
+        Datum
+      </div>
+      <div class="flex detail-value">
+        {{moment-format model.requestDate 'L'}}
+      </div>
+    </div>
+    <div class="layout-row">
+      <div class="flex-none detail-key">
+        Bediende
+      </div>
+      <div class="flex detail-value">
+        {{model.employee}}
+      </div>
+    </div>
+    <div class="layout-row">
+      <div class="flex-none detail-key">
+        Bezoek nodig?
+      </div>
+      <div class="flex detail-value">
+        {{paper-checkbox value=model.requiresVisit onChange=null}}
+      </div>
+    </div>
+    <div class="layout-row">
+      <div class="flex-none detail-key">
+        Opmerking
+      </div>
+      <div class="flex detail-value">
+        {{model.comment}}
+      </div>
+    </div>
+  </div>
+  {{#if false}}
+    <div class="case--right-panel flex-noshrink layout-column">
+      <div class="case--request--visit">
+        <h3>{{paper-icon "event"}} Bezoek</h3>
+        <div class="layout-row">
+          <div class="flex-none detail-key">
+            Datum
+          </div>
+          <div class="detail-value">
+            {{moment-format model.visit.date 'L'}}
+          </div>
+        </div>
+        <div class="layout-row">
+          <div class="flex-none detail-key">
+            Bezoeker
+          </div>
+          <div class="detail-value">
+            {{model.visit.visitor}}
+          </div>
+        </div>
+        <div class="layout-row">
+          <div class="flex-none detail-key">
+            Outlook
+          </div>
+          <div class="detail-value">
+            {{model.visit.outlook}}
+          </div>
+        </div>
+      </div>
+    </div>
+  {{else}}
+    <div class="case--request--visit flex-noshrink layout-column">
+      <h3>{{paper-icon "event"}} Geen bezoek gepland</h3>
+    </div>
+  {{/if}}
+</div>
+
+<div class="case--button-bar layout-row layout-align-end">
+  {{#paper-button raised=true primary=true onClick=null disabled=true}}{{paper-icon 'edit'}}Bewerk aanvraag{{/paper-button}}
+</div>
+
+{{liquid-outlet}}

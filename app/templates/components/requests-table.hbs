@@ -9,7 +9,7 @@
 </div>
 
 {{#data-table content=(await requests) isLoading=(is-pending requests) noDataMessage="Geen aanvragen"
-     page=page size=size sort=sort as |t|}}
+     onClickRow=onClickRow page=page size=size sort=sort as |t|}}
   {{#t.content as |c|}}
     {{#c.header}}
       {{th-sortable field='number' currentSorting=sort label='Nr'}}

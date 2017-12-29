@@ -1,0 +1,45 @@
+{{#paper-tabs selected=currentRouteName borderBottom=true as |tabs|}}
+  {{#tabs.tab value="main.case.request" href=(href-to "main.case.request")}}
+    Aanvraag
+  {{/tabs.tab}}
+  {{#tabs.tab value="main.case.offer" href=(href-to "main.case.offer")}}
+    Offerte
+  {{/tabs.tab}}
+  {{#tabs.tab value="main.case.order" href=(href-to "main.case.order")}}
+    Bestelling
+  {{/tabs.tab}}
+  {{#tabs.tab value="main.case.invoice" href=(href-to "main.case.invoice")}}
+    Factuur
+  {{/tabs.tab}}
+{{/paper-tabs}}
+
+{{liquid-outlet}}
+
+<h2>
+  Klant: {{model.printName}} [{{model.number}}]
+  {{#paper-link 'main.customers.edit' model iconButton=true}}
+    {{paper-icon "open in new"}}
+  {{/paper-link}}
+</h2>
+
+<div class="layout-row">
+  Klant hier
+  <div class="layout-column">
+    <div>
+      <h3>Gebouw</h3>
+      {{#if building}}
+        Gebouw hier
+      {{else}}
+        <p>n.v.t</p>
+      {{/if}}
+    </div>
+    <div>
+      <h3>Contact</h3>
+      {{#if contact}}
+        Contact hier
+      {{else}}
+        <p>n.v.t</p>
+      {{/if}}
+    </div>
+  </div>
+</div>

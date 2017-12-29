@@ -25,7 +25,9 @@ export default Controller.extend(DefaultQueryParams, {
 
   actions: {
     clickRow(row) {
-      console.log('Click row not implemented yet');
+      const customerId = row.get('customer.id');
+      const requestId = row.get('id');
+      this.transitionToRoute('main.case.request', customerId, requestId);
     },
     setFilter(key, value) {
       this.set(`${key}Filter`, value);

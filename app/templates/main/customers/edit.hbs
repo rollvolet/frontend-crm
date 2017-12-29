@@ -79,7 +79,7 @@
     {{buildings-table customer=model}}
   {{/if}}
   {{#if (eq current.tab 2)}}
-    {{requests-table customer=model}}
+    {{requests-table customer=model onClickRow=(action "goToRequestDetail")}}
   {{/if}}
   {{#if (eq current.tab 3)}}
     <p>Offertes nog niet beschikbaar</p>
