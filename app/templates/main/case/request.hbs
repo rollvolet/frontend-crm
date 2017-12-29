@@ -2,67 +2,32 @@
 
 <div class="layout-row layout-align-space-between">
   <div class="case--left-panel case--request--entry flex-100 layout-column">
-    <div class="layout-row">
-      <div class="flex-none detail-key">
-        Datum
-      </div>
-      <div class="flex detail-value">
-        {{moment-format model.requestDate 'L'}}
-      </div>
-    </div>
-    <div class="layout-row">
-      <div class="flex-none detail-key">
-        Bediende
-      </div>
-      <div class="flex detail-value">
-        {{model.employee}}
-      </div>
-    </div>
-    <div class="layout-row">
-      <div class="flex-none detail-key">
-        Bezoek nodig?
-      </div>
-      <div class="flex detail-value">
-        {{paper-checkbox value=model.requiresVisit onChange=null}}
-      </div>
-    </div>
-    <div class="layout-row">
-      <div class="flex-none detail-key">
-        Opmerking
-      </div>
-      <div class="flex detail-value">
-        {{model.comment}}
-      </div>
-    </div>
+    {{#detail-list-item label="Datum"}}
+      {{moment-format model.requestDate 'L'}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Bediende"}}
+      {{model.employee}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Bezoek nodig"}}
+      {{paper-checkbox value=model.requiresVisit onChange=null}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Opmerking"}}
+      {{model.comment}}
+    {{/detail-list-item}}
   </div>
   {{#if false}}
     <div class="case--right-panel flex-noshrink layout-column">
       <div class="case--request--visit">
         <h3>{{paper-icon "event"}} Bezoek</h3>
-        <div class="layout-row">
-          <div class="flex-none detail-key">
-            Datum
-          </div>
-          <div class="detail-value">
-            {{moment-format model.visit.date 'L'}}
-          </div>
-        </div>
-        <div class="layout-row">
-          <div class="flex-none detail-key">
-            Bezoeker
-          </div>
-          <div class="detail-value">
-            {{model.visit.visitor}}
-          </div>
-        </div>
-        <div class="layout-row">
-          <div class="flex-none detail-key">
-            Outlook
-          </div>
-          <div class="detail-value">
-            {{model.visit.outlook}}
-          </div>
-        </div>
+        {{#detail-list-item label="Datum"}}
+          {{moment-format model.visit.date 'L'}}
+        {{/detail-list-item}}
+        {{#detail-list-item label="Bezoeker"}}
+          {{model.visit.visitor}}
+        {{/detail-list-item}}
+        {{#detail-list-item label="Outlook"}}
+          {{model.visit.outlook}}
+        {{/detail-list-item}}
       </div>
     </div>
   {{else}}

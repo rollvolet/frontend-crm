@@ -153,6 +153,22 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
 }
 
 
+/* Detail list */
+.detail-list--item {
+  .detail-key {
+    width: 120px;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+  }
+
+  .detail-subkey {
+    font-weight: bold;
+    font-style: italic;
+  }
+}
+
+
 /* Customer pages */
 .contact-card,
 .building-card,
@@ -207,18 +223,6 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
 
 
 /* Case pages */
-.detail-key {
-  width: 120px;
-  text-align: right;
-  padding-right: 10px;
-  font-weight: bold;
-}
-
-.detail-subkey {
-  font-weight: bold;
-  font-style: italic;
-}
-
 .case--request--entry {
   min-width: 400px;
 
