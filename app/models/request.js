@@ -11,5 +11,6 @@ export default DS.Model.extend({
   customer: DS.belongsTo('customer'),
   contact: DS.belongsTo('contact'),
   building: DS.belongsTo('building'),
-  wayOfEntry: DS.belongsTo('way-of-entry')
+  wayOfEntry: DS.belongsTo('way-of-entry'),
+  visit: DS.belongsTo('visit')
 });

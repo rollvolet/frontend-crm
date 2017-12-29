@@ -1,9 +1,12 @@
 <h2>Aanvraag {{model.id}}</h2>
 
-<div class="layout-row layout-align-space-between">
+<div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--request--entry flex-100 layout-column">
     {{#detail-list-item label="Datum"}}
       {{moment-format model.requestDate 'L'}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Aanmelding"}}
+      {{get (await model.wayOfEntry) 'name'}}
     {{/detail-list-item}}
     {{#detail-list-item label="Bediende"}}
       {{model.employee}}
@@ -12,21 +15,21 @@
       {{paper-checkbox value=model.requiresVisit onChange=null}}
     {{/detail-list-item}}
     {{#detail-list-item label="Opmerking"}}
-      {{model.comment}}
+      <span class="html-body">{{get (await model.visit) 'comment'}}</span>
     {{/detail-list-item}}
   </div>
-  {{#if false}}
+  {{#if model.visit}}
     <div class="case--right-panel flex-noshrink layout-column">
       <div class="case--request--visit">
         <h3>{{paper-icon "event"}} Bezoek</h3>
         {{#detail-list-item label="Datum"}}
-          {{moment-format model.visit.date 'L'}}
+          {{moment-format (get (await model.visit) 'visitDate') 'L'}}
         {{/detail-list-item}}
         {{#detail-list-item label="Bezoeker"}}
-          {{model.visit.visitor}}
+          {{get (await model.visit) 'visitor'}}
         {{/detail-list-item}}
         {{#detail-list-item label="Outlook"}}
-          {{model.visit.outlook}}
+          {{get (await model.visit) 'calendarSubject'}}
         {{/detail-list-item}}
       </div>
     </div>

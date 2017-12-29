@@ -3,7 +3,7 @@
 </h1>
 
 <div class="resource-details">
-  <div class="layout-row">
+  <div class="layout-row layout-xs-column">
     <div class="left-column">
       <div class="resource-details--section resource-details--section-name layout-row">
         <div class="category-icon">{{#if model.isCompany}}{{paper-icon "business"}}{{else}}{{paper-icon "home"}}{{/if}}</div>
@@ -52,7 +52,7 @@
   <div class="resource-details--section resource-details--section-comment layout-row">
     <div class="category-icon">{{paper-icon "comment"}}</div>
     <div>
-      <div>{{#if model.comment}}{{model.comment}}{{else}}Geen opmerkingen{{/if}}</div>
+      <div>{{#if model.comment}}<span class="html-body">{{model.comment}}</span>{{else}}Geen opmerkingen{{/if}}</div>
     </div>
   </div>
 

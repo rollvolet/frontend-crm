@@ -51,6 +51,10 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
   font-weight: 400;
 }
 
+.html-body {
+  white-space: pre-wrap;
+}
+
 /* Top toolbar */
 .top-toolbar {
   h1 {
@@ -171,8 +175,8 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
 
 /* Customer pages */
 .resource-details {
-  .right-column {
-    margin-left: 50px;
+  .left-column {
+    margin-right: 50px;
   }
 
   .resource-details--section {
@@ -198,6 +202,10 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
         margin-left: 10px;
         margin-right: 10px;
       }
+    }
+
+    &.resource-details--section-comment {
+
     }
   }
 }
