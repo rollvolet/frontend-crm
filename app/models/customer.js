@@ -22,6 +22,7 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, {
   printSuffix: DS.attr(),
   printInFront: DS.attr(),
   comment: DS.attr(),
+  memo: DS.attr(),
   created: DS.attr('date', {
     defaultValue() { return new Date(); }
   }),
