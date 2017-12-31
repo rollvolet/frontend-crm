@@ -49,6 +49,12 @@
       </div>
     </div>
   </div>
+  <div class="resource-details--section resource-details--section-tags layout-row">
+    <div class="category-icon">{{paper-icon "label"}}</div>
+    <div>
+      {{join ", " (map-by "name" (await model.tags))}}
+    </div>
+  </div>
   <div class="resource-details--section resource-details--section-comment layout-row">
     <div class="category-icon">{{paper-icon "comment"}}</div>
     <div>
