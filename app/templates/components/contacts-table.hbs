@@ -7,7 +7,10 @@
     {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small-input"}}
     {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
     {{paper-input label="Telefoon" value=telephone onChange=(action "setFilter" "telephone")}}
-    {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
+    {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+      {{paper-icon "close"}}
+      {{#paper-tooltip}}Verwijder filters{{/paper-tooltip}}
+    {{/paper-button}}
   </div>
 
   {{#data-table content=(await contacts) isLoading=(is-pending contacts) noDataMessage="Geen contacten"

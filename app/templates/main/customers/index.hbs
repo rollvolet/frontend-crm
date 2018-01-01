@@ -9,7 +9,10 @@
     {{paper-input label="Postcode" value=postalCodeFilter onChange=(action "setFilter" "postalCode") class="small-input"}}
     {{paper-input label="Gemeente" value=cityFilter onChange=(action "setFilter" "city")}}
     {{paper-input label="Telefoon" value=telephoneFilter onChange=(action "setFilter" "telephone")}}
-    {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
+    {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+      {{paper-icon "close"}}
+      {{#paper-tooltip}}Verwijder filters{{/paper-tooltip}}
+    {{/paper-button}}
   </div>
 </div>
 

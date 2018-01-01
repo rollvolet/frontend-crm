@@ -5,7 +5,10 @@
   {{paper-input label="Adres" value=street onChange=(action "setFilter" "street") class="large-input"}}
   {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small-input"}}
   {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
-  {{#paper-button iconButton=true onClick=(action "resetFilters")}}{{paper-icon "close"}}{{/paper-button}}
+  {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+    {{paper-icon "close"}}
+    {{#paper-tooltip}}Verwijder filters{{/paper-tooltip}}
+  {{/paper-button}}
 </div>
 
 {{#data-table content=(await requests) isLoading=(is-pending requests) noDataMessage="Geen aanvragen"
