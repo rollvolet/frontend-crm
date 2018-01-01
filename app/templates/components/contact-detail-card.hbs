@@ -1,21 +1,15 @@
-<div class="resource-details--section resource-details--section-name layout-row">
-  <div class="category-icon">{{paper-icon "person"}}</div>
-  <div>
-    {{model.printName}}
-  </div>
-</div>
-<div class="resource-details--section resource-details--section-address layout-row">
-  <div class="category-icon">{{paper-icon "location on"}}</div>
-  <div>
-    <div>{{model.address1}}</div>
-    <div>{{model.address2}}</div>
-    <div>{{model.address3}}</div>
-    <div>{{model.postalCode}} {{model.city}}</div>
-  </div>
-</div>
-<div class="resource-details--section resource-details--section-contact layout-row">
-  <div class="category-icon">{{paper-icon "mail outline"}}</div>
-  <div>
-    <div>{{model.email}}</div>
-  </div>
-</div>
+{{#detail-icon-list-item icon="person" label="Naam" class="resource-details--section-name"}}
+  {{model.printName}}
+{{/detail-icon-list-item}}
+
+{{#detail-icon-list-item icon="location on" label="Adres" class="resource-details--section-address"}}
+  <div>{{model.address1}}</div>
+  <div>{{model.address2}}</div>
+  <div>{{model.address3}}</div>
+  <div>{{model.postalCode}} {{model.city}}</div>
+{{/detail-icon-list-item}}
+
+{{#detail-icon-list-item icon="mail outline" label="E-mail" class="resource-details--section-contact"}}
+  <div>{{model.email}}</div>
+  <div>{{model.email2}}</div>
+{{/detail-icon-list-item}}

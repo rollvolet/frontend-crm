@@ -5,64 +5,49 @@
 <div class="resource-details">
   <div class="layout-row layout-xs-column">
     <div class="left-column">
-      <div class="resource-details--section resource-details--section-name layout-row">
-        <div class="category-icon">{{#if model.isCompany}}{{paper-icon "business"}}{{else}}{{paper-icon "home"}}{{/if}}</div>
-        <div>
-          {{#if model.printInFront}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
-          {{model.prefix}} {{model.name}} {{model.suffix}}
-          {{#if (not model.printInFront)}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
-        </div>
-      </div>
-      <div class="resource-details--section resource-details--section-address layout-row">
-        <div class="category-icon">{{paper-icon "location on"}}</div>
-        <div>
-          <div>{{model.address1}}</div>
-          <div>{{model.address2}}</div>
-          <div>{{model.address3}}</div>
-          <div>{{model.postalCode}} {{model.city}}</div>
-          <div>{{get (await model.country) 'name'}}</div>
-        </div>
-      </div>
-      <div class="resource-details--section resource-details--section-language layout-row">
-        <div class="category-icon">{{paper-icon "language"}}</div>
-        <div>
-          <div>{{get (await model.language) 'name'}}</div>
-        </div>
-      </div>
+      {{#detail-icon-list-item icon=(if model.isCompany "business" "home") label="Naam" class="resource-details--section-name"}}
+        {{#if model.printInFront}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
+        {{model.prefix}} {{model.name}} {{model.suffix}}
+        {{#if (not model.printInFront)}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
+      {{/detail-icon-list-item}}
+
+      {{#detail-icon-list-item icon="location on" label="Adres" class="resource-details--section-address"}}
+        <div>{{model.address1}}</div>
+        <div>{{model.address2}}</div>
+        <div>{{model.address3}}</div>
+        <div>{{model.postalCode}} {{model.city}}</div>
+        <div>{{get (await model.country) 'name'}}</div>
+      {{/detail-icon-list-item}}
+
+      {{#detail-icon-list-item icon="language" label="Taal" class="resource-details--section-language"}}
+        {{get (await model.language) 'name'}}
+      {{/detail-icon-list-item}}
     </div>
+
     <div class="right-column">
-      <div class="resource-details--section resource-details--section-telephone layout-row">
-        <div class="category-icon">{{paper-icon "phone"}}</div>
-        <div>
-          {{#each (await model.telephones) as |tel|}}
-            <div>{{get (await tel.telephoneType) 'name'}}: {{get (await tel.country) 'telephonePrefix'}} {{tel.fullNumber}} {{#if tel.memo}}({{tel.memo}}){{/if}}</div>
-          {{/each}}
-        </div>
-      </div>
-      <div class="resource-details--section resource-details--section-contact layout-row">
-        <div class="category-icon">{{paper-icon "mail outline"}}</div>
-        <div>
-          <div>{{model.email}}</div>
-          <div>{{model.email2}}</div>
-          <div>{{model.url}}</div>
-        </div>
-      </div>
+      {{#detail-icon-list-item icon="phone" label="Telefoon" class="resource-details--section-telephone"}}
+        {{#each (await model.telephones) as |tel|}}
+          <div>{{get (await tel.telephoneType) 'name'}}: {{get (await tel.country) 'telephonePrefix'}} {{tel.fullNumber}} {{#if tel.memo}}({{tel.memo}}){{/if}}</div>
+        {{/each}}
+      {{/detail-icon-list-item}}
+
+      {{#detail-icon-list-item icon="mail outline" label="E-mail" class="resource-details--section-contact"}}
+        <div>{{model.email}}</div>
+        <div>{{model.email2}}</div>
+        <div>{{model.url}}</div>
+      {{/detail-icon-list-item}}
     </div>
   </div>
-  <div class="resource-details--section resource-details--section-tags layout-row">
-    <div class="category-icon">{{paper-icon "label"}}</div>
-    <div>
-      {{join ", " (map-by "name" (await model.tags))}}
-    </div>
-  </div>
-  <div class="resource-details--section resource-details--section-comment layout-row">
-    <div class="category-icon">{{paper-icon "comment"}}</div>
-    <div>
-      {{#if model.comment}}<span class="html-body">{{model.comment}}</span>{{else}}Geen opmerkingen{{/if}}
-    </div>
-  </div>
-  <div class="resource-details--section resource-details--section-memo layout-row">
-    <div class="category-icon">{{paper-icon "assignment"}}</div>
+
+  {{#detail-icon-list-item icon="label" label="Tags" class="resource-details--section-tags"}}
+    {{join ", " (map-by "name" (await model.tags))}}
+  {{/detail-icon-list-item}}
+
+  {{#detail-icon-list-item icon="comment" label="Opmerking" class="resource-details--section-comment"}}
+    {{#if model.comment}}<span class="html-body">{{model.comment}}</span>{{else}}Geen opmerkingen{{/if}}
+  {{/detail-icon-list-item}}
+
+  {{#detail-icon-list-item icon="assignment" label="Memo" class="resource-details--section-memo"}}
     <div {{action (toggle "memoExpanded" this)}}>
       {{#if model.memo}}
         {{#if memoExpanded}}
@@ -77,7 +62,8 @@
         Geen memo
       {{/if}}
     </div>
-  </div>
+  {{/detail-icon-list-item}}
+
   <div class="resource-details--section resource-details--section-audit layout-row">
     Aangemaakt: {{moment-format model.created}} <span class="divider">|</span>
     Bewerkt: {{moment-format model.updated}}
