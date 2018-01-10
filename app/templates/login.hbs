@@ -1,0 +1,19 @@
+<div class="layout-row login-screen">
+  <div class="layout-column layout-align-center-center flex">
+    <img src="http://via.placeholder.com/350x350?text=Logo" alt="Rollvolet">
+    <h1>Rollvolet Klantenbeheer</h1>
+    {{#if session.isAuthenticated}}
+      <p>U bent reeds ingelogd. <a href="#" {{action "logout"}}>Log uit</a> of ga naar de {{link-to 'applicatie' 'main.index'}}.</p>
+    {{else}}
+      {{#if errorMessage}}
+        <div class="error--message">
+          Helaas, er is iets fout gelopen. <a href="#" {{action "resetError"}}>Probeer opnieuw</a>.
+        </div>
+        <div class="error--tech-description">{{errorMessage}}</div>
+      {{/if}}
+      {{#paper-button disabled=errorMessage raised=true primary=true onClick=(action "login")}}Login{{/paper-button}}
+    {{/if}}
+  </div>
+</div>
+
+{{liquid-outlet}}

@@ -11,6 +11,7 @@
     {{#paper-button onClick=(action "goToProfile") iconButton=true}}
       {{paper-icon "account circle"}}
     {{/paper-button}}
+    {{session.data.authenticated.user.account}}
     {{#paper-button onClick=(action "logout") iconButton=true}}
       {{paper-icon "exit to app"}}
     {{/paper-button}}
@@ -65,7 +66,7 @@
         {{paper-divider}}
         {{#paper-item}}Profiel{{/paper-item}}
         {{paper-divider}}
-        {{#paper-item}}Log out{{/paper-item}}
+        {{#paper-item onClick=(action "logout")}}Log out{{/paper-item}}
       {{/paper-list}}
 
     {{/paper-content}}

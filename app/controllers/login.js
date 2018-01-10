@@ -4,14 +4,16 @@ import Controller from '@ember/controller';
 export default Controller.extend({
   session: inject(),
   actions: {
-    openMail() {
-      window.location.href = 'mailto:support@moof-it.be';
+    login() {
+      this.get('session').authenticate('authenticator:torii', 'azure-oauth2').catch((reason) => {
+        this.set('errorMessage', reason.error || reason);
+      });
     },
     logout() {
       this.get('session').invalidate();
     },
-    goToProfile() {
-      window.alert("User profile not implemented yet");
+    resetError() {
+      this.set('errorMessage', null);
     }
   }
 });

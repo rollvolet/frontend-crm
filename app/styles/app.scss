@@ -55,6 +55,24 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
   white-space: pre-wrap;
 }
 
+
+/* Login screen */
+
+.login-screen {
+  min-height: 100vh;
+
+  .error--message {
+    color: color($warn);
+  }
+
+  .error--tech-description {
+    color: color('grey');
+    font-size: 0.8em;
+    font-style: italic;
+  }
+}
+
+
 /* Top toolbar */
 .top-toolbar {
   h1 {
