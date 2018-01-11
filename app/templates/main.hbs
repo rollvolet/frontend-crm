@@ -7,13 +7,16 @@
     <span class="flex"></span>
     {{#paper-button onClick=(action "openMail") iconButton=true}}
       {{paper-icon "help"}}
+      {{#paper-tooltip}}Help{{/paper-tooltip}}
     {{/paper-button}}
     {{#paper-button onClick=(action "goToProfile") iconButton=true}}
       {{paper-icon "account circle"}}
+      {{#paper-tooltip}}Profiel{{/paper-tooltip}}
     {{/paper-button}}
     {{session.data.authenticated.user.account}}
     {{#paper-button onClick=(action "logout") iconButton=true}}
       {{paper-icon "exit to app"}}
+      {{#paper-tooltip}}Log uit{{/paper-tooltip}}
     {{/paper-button}}
   {{/toolbar.tools}}
 {{/paper-toolbar}}
