@@ -20,6 +20,7 @@ export default ToriiAuthenticator.extend({
         })
       }).then( (response) => {
         return {
+          provider: data.provider, // required to make session restore work
           'access_token': response.accessToken,
           user: {
             account: response.userInfo.displayableId,
