@@ -78,7 +78,11 @@
           <div class="category-icon">{{paper-icon "phone"}}</div>
           <div>
             {{#each (await selectedBuilding.telephones) as |tel|}}
-              <div>{{get (await tel.telephoneType) 'name'}}: {{get (await tel.country) 'telephonePrefix'}} {{tel.fullNumber}} {{#if tel.memo}}({{tel.memo}}){{/if}}</div>
+              <div>
+                {{get (await tel.telephoneType) 'name'}}:
+                {{format-phone (concat (get (await tel.country) 'telephonePrefix') " " tel.fullNumber)}}
+                {{#if tel.memo}}({{tel.memo}}){{/if}}
+              </div>
             {{/each}}
           </div>
         </div>

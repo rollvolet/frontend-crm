@@ -32,7 +32,11 @@
     <div class="right-column">
       {{#detail-icon-list-item icon="phone" label="Telefoon" class="resource-details--section-telephone"}}
         {{#each (await model.telephones) as |tel|}}
-          <div>{{get (await tel.telephoneType) 'name'}}: {{get (await tel.country) 'telephonePrefix'}} {{tel.fullNumber}} {{#if tel.memo}}({{tel.memo}}){{/if}}</div>
+          <div>
+            {{get (await tel.telephoneType) 'name'}}:
+            {{format-phone (concat (get (await tel.country) 'telephonePrefix') " " tel.fullNumber)}}
+            {{#if tel.memo}}({{tel.memo}}){{/if}}
+          </div>
         {{/each}}
       {{/detail-icon-list-item}}
 
