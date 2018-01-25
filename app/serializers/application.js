@@ -5,7 +5,7 @@ export default DS.JSONAPISerializer.extend(DataTableSerializerMixin, {
   /**
       Parse the links in the JSONAPI response and convert to a meta-object
    */
-  normalizeArrayResponse(store, primaryModelClass, payload, id, requestType) {
+  normalizeArrayResponse(store, primaryModelClass, payload) {
     const result = this._super(...arguments);
     result.meta = result.meta || {};
 

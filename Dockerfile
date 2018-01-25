@@ -1,4 +1,4 @@
-FROM madnificent/ember:2.17.0 as builder
+FROM madnificent/ember:2.18.0 as builder
 
 MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
 
