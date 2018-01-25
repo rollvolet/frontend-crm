@@ -29,7 +29,7 @@ table {
   }
 
   tbody tr:nth-child(odd) {
-    background-color: lighten(color($primary, '50'), 2);
+    background-color: lighten(color($primary, '50'), 1);
   }
 }
 
@@ -55,6 +55,10 @@ md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
   white-space: pre-wrap;
 }
 
+.building-entry {
+  /* color: color('red', '700') */
+  /* color: red */
+}
 
 /* Login screen */
 

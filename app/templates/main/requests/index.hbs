@@ -39,6 +39,7 @@
       {{#c.header}}
         {{th-sortable field='number' currentSorting=sort label='Nr'}}
         {{th-sortable field='request-date' currentSorting=sort label='Datum'}}
+        <th><!-- customer / building --></th>
         {{th-sortable field='customer.name' currentSorting=sort label='Naam'}}
         {{th-sortable field='customer.address' currentSorting=sort label='Adres'}}
         {{th-sortable field='customer.postal-code' currentSorting=sort label='Postcode'}}
@@ -47,10 +48,19 @@
       {{#c.body as |row|}}
         <td>{{row.id}}</td>
         <td>{{moment-format row.requestDate 'L'}}</td>
-        <td>{{get (await row.customer) 'printName'}}</td>
-        <td>{{get (await row.customer) 'address1'}}</td>
-        <td>{{get (await row.customer) 'postalCode'}}</td>
-        <td>{{get (await row.customer) 'city'}}</td>
+        {{#if (await row.building)}}
+          <td>{{paper-icon "home"}}</td>
+          <td class="building-entry">{{get (await row.building) 'printName'}} ({{get (await row.customer) 'printName'}})</td>
+          <td class="building-entry">{{get (await row.building) 'address1'}}</td>
+          <td class="building-entry">{{get (await row.building) 'postalCode'}}</td>
+          <td class="building-entry">{{get (await row.building) 'city'}}</td>
+        {{else}}
+          <td>{{paper-icon "person"}}</td>
+          <td>{{get (await row.customer) 'printName'}}</td>
+          <td>{{get (await row.customer) 'address1'}}</td>
+          <td>{{get (await row.customer) 'postalCode'}}</td>
+          <td>{{get (await row.customer) 'city'}}</td>
+        {{/if}}
       {{/c.body}}
     {{/t.content}}
   {{/data-table}}
