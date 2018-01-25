@@ -5,10 +5,15 @@
 <div class="resource-details">
   <div class="layout-row layout-xs-column">
     <div class="left-column">
-      {{#detail-icon-list-item icon=(if model.isCompany "business" "home") label="Naam" class="resource-details--section-name"}}
-        {{#if model.printInFront}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
-        {{model.prefix}} {{model.name}} {{model.suffix}}
-        {{#if (not model.printInFront)}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
+      {{#detail-icon-list-item icon=(if model.isCompany "business" "home")
+           label=(if model.isCompany "Bedrijf" "Naam")
+           class="resource-details--section-name"}}
+        <div>
+          {{#if model.printInFront}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
+          {{model.prefix}} {{model.name}} {{model.suffix}}
+          {{#if (not model.printInFront)}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
+        </div>
+        <div>{{model.vatNumber}}</div>
       {{/detail-icon-list-item}}
 
       {{#detail-icon-list-item icon="location on" label="Adres" class="resource-details--section-address"}}
