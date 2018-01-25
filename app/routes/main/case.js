@@ -3,7 +3,9 @@ import Route from '@ember/routing/route';
 export default Route.extend({
   model(params) {
     return this.get('store').findRecord('customer', params.customer_id, {
-      include: 'language,country,honorific-prefix,telephones'
+      // telephones are not included but retrieved through a separate request
+      // because telephone types need to be included
+      include: 'language,country,honorific-prefix'
     });
   }
 });
