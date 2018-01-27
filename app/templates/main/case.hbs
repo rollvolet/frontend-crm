@@ -1,10 +1,14 @@
 {{#paper-tabs selected=currentRouteName borderBottom=true as |tabs|}}
-  {{#tabs.tab value="main.case.request" href=(href-to "main.case.request")}}
-    Aanvraag
-  {{/tabs.tab}}
-  {{#tabs.tab value="main.case.offer" href=(href-to "main.case.offer")}}
-    Offerte
-  {{/tabs.tab}}
+  {{#if requestId}}
+    {{#tabs.tab value="main.case.request" href=(href-to "main.case.request" requestId)}}
+      Aanvraag
+    {{/tabs.tab}}
+  {{/if}}
+  {{#if offerId}}
+    {{#tabs.tab value="main.case.offer" href=(href-to "main.case.offer" offerId)}}
+      Offerte
+    {{/tabs.tab}}
+  {{/if}}
   {{#tabs.tab value="main.case.order" href=(href-to "main.case.order")}}
     Bestelling
   {{/tabs.tab}}

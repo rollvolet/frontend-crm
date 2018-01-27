@@ -8,6 +8,11 @@ export default Controller.extend({
       const customer = this.get('model');
       const requestId = row.get('id');
       this.transitionToRoute('main.case.request', customer, requestId);
+    },
+    goToOfferDetail(row) {
+      const customer = this.get('model');
+      const offerId = row.get('id');
+      this.transitionToRoute('main.case.offer', customer, offerId);
     }
   }
 });

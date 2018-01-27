@@ -28,8 +28,7 @@ export default Controller.extend({
     clickRow(row) {
       const customerId = row.get('customer.id');
       const offerId = row.get('id');
-      console.log("Not implemented yet");
-      // this.transitionToRoute('main.case.offer', customerId, offerId);
+      this.transitionToRoute('main.case.offer', customerId, offerId);
     },
     setFilter(key, value) {
       this.set(`${key}Filter`, value);

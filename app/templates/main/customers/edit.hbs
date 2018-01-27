@@ -99,7 +99,7 @@
     {{requests-table customer=model onClickRow=(action "goToRequestDetail")}}
   {{/if}}
   {{#if (eq current.tab 3)}}
-    <p>Offertes nog niet beschikbaar</p>
+    {{offers-table customer=model onClickRow=(action "goToOfferDetail")}}
   {{/if}}
   {{#if (eq current.tab 4)}}
     <p>Bestellingen nog niet beschikbaar</p>
