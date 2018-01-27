@@ -13,6 +13,7 @@ Router.map(function() {
       this.route('edit', { path: '/:customer_id' });
     });
     this.route('requests', function() {});
+    this.route('offers', function() {});
     this.route('case', { path: '/case/:customer_id' }, function() {
       this.route('request', { path: '/request/:request_id' });
       this.route('offer');
