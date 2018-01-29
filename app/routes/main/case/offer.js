@@ -10,7 +10,5 @@ export default Route.extend({
     const controller = this.controllerFor('main.case');
     controller.set('building', model.get('building'));
     controller.set('contact', model.get('contact'));
-    controller.set('requestId', model.get('request.id'));
-    controller.set('offerId', model.get('id'));
   }
 });

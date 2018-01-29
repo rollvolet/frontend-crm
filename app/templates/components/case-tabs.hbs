@@ -1,0 +1,22 @@
+{{#paper-tabs selected=currentRouteName borderBottom=true as |tabs|}}
+  {{#if case.requestId}}
+    {{#tabs.tab value="main.case.request" href=(href-to "main.case.request" case.requestId)}}
+      Aanvraag
+    {{/tabs.tab}}
+  {{/if}}
+  {{#if case.offerId}}
+    {{#tabs.tab value="main.case.offer" href=(href-to "main.case.offer" case.offerId)}}
+      Offerte
+    {{/tabs.tab}}
+  {{/if}}
+  {{#if case.orderId}}
+    {{#tabs.tab value="main.case.order" href=(href-to "main.case.order" case.orderId)}}
+      Bestelling
+    {{/tabs.tab}}
+  {{/if}}
+  {{#if case.invoiceId}}
+    {{#tabs.tab value="main.case.invoice" href=(href-to "main.case.invoice" case.invoiceId)}}
+      Factuur
+    {{/tabs.tab}}
+  {{/if}}
+{{/paper-tabs}}
