@@ -1,2 +1,39 @@
 <h2>Offerte {{model.number}}</h2>
+
+<div class="layout-row layout-xs-column layout-align-space-between">
+  <div class="case--left-panel case--request--entry flex-100 layout-column">
+    {{#detail-list-item label="Datum"}}
+      {{moment-format model.offerDate 'L'}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Volgnummer"}}
+      {{model.sequenceNumber}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Product"}}
+      {{get (await model.product) 'name'}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Bedrag"}}
+      {{model.amount}} &euro; ({{get (await model.vatRate) 'name'}} BTW)
+    {{/detail-list-item}}
+    {{#detail-list-item label="Werkuren"}}
+      {{model.foreseenHours}} uur x {{model.foreseenNbOfPersons}} man = {{model.foreseenTotal}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Verzonden"}}
+      {{moment-format model.submissionDate 'L'}} {{get (await model.submissionType) 'name'}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Referentie"}}
+      {{model.reference}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Afgesloten"}}
+      {{paper-checkbox value=model.canceled onChange=null}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Opmerking"}}
+      <span class="html-body">{{model.comment}}</span>
+    {{/detail-list-item}}
+  </div>
+</div>
+
+<div class="case--button-bar layout-row layout-align-end">
+  {{#paper-button raised=true primary=true onClick=null disabled=true}}{{paper-icon 'edit'}}Bewerk offerte{{/paper-button}}
+</div>
+
 {{liquid-outlet}}

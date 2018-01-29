@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import { computed } from '@ember/object';
 
 export default DS.Model.extend({
   number: DS.attr(),
@@ -19,6 +20,10 @@ export default DS.Model.extend({
   contact: DS.belongsTo('contact'),
   building: DS.belongsTo('building'),
   vatRate: DS.belongsTo('vat-rate'),
-  submissiotType: DS.belongsTo('submission-type'),
-  product: DS.belongsTo('product')
+  submissionType: DS.belongsTo('submission-type'),
+  product: DS.belongsTo('product'),
+
+  foreseenTotal: computed('foreseenHours', 'foreseenNbOfPersons', function() {
+    return this.get('foreseenHours') * this.get('foreseenNbOfPersons');
+  })
 });
