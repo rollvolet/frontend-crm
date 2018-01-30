@@ -84,7 +84,7 @@
   {{#tabs.tab}}Gebouwen{{/tabs.tab}}
   {{#tabs.tab}}Aanvragen{{/tabs.tab}}
   {{#tabs.tab}}Offertes{{/tabs.tab}}
-  {{#tabs.tab}}Bestelling{{/tabs.tab}}
+  {{#tabs.tab}}Bestellingen{{/tabs.tab}}
   {{#tabs.tab}}Facturen{{/tabs.tab}}
 {{/paper-tabs}}
 
@@ -102,7 +102,7 @@
     {{offers-table customer=model onClickRow=(action "goToOfferDetail")}}
   {{/if}}
   {{#if (eq current.tab 4)}}
-    <p>Bestellingen nog niet beschikbaar</p>
+    {{orders-table customer=model onClickRow=(action "goToOrderDetail")}}
   {{/if}}
   {{#if (eq current.tab 5)}}
     <p>Facturen nog niet beschikbaar</p>

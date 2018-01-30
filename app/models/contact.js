@@ -31,6 +31,7 @@ export default DS.Model.extend({
   telephones: DS.hasMany('telephone'),
   requests: DS.hasMany('request'),
   offers: DS.hasMany('offer'),
+  orders: DS.hasMany('order'),
 
   printName: computed('printPrefix', 'prefix', 'printSuffix', 'suffix', 'name', function() {
     var name = '';

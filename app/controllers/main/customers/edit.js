@@ -13,6 +13,11 @@ export default Controller.extend({
       const customer = this.get('model');
       const offerId = row.get('id');
       this.transitionToRoute('main.case.offer', customer, offerId);
+    },
+    goToOrderDetail(row) {
+      const customer = this.get('model');
+      const orderId = row.get('id');
+      this.transitionToRoute('main.case.order', customer, orderId);
     }
   }
 });
