@@ -1,0 +1,74 @@
+<h1>Bestellingen</h1>
+
+<div class="orders-data-table">
+  <div class="data-table-filters">
+    <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
+    <div class="layout-row flex layout-align-space-between-start">
+      <div class="data-table-filters--line-1 layout-column">
+        <div>
+          {{paper-input label="Offerte" value=offerNumberFilter onChange=(action "setFilter" "offerNumber") class="small-input"}}
+        </div>
+        <div>
+          {{paper-input label="Referentie" value=referenceFilter onChange=(action "setFilter" "reference") class="small-input"}}
+        </div>
+      </div>
+      <div class="data-table-filters--line-2 layout-column">
+        <div class="data-table-filters--group-title">Klant</div>
+        <div>
+          {{paper-input label="Naam" value=cNameFilter onChange=(action "setFilter" "cName")}}
+          {{paper-input label="Adres" value=cStreetFilter onChange=(action "setFilter" "cStreet") class="large-input"}}
+          {{paper-input label="Postcode" value=cPostalCodeFilter onChange=(action "setFilter" "cPostalCode") class="small-input"}}
+          {{paper-input label="Gemeente" value=cCityFilter onChange=(action "setFilter" "cCity")}}
+          {{paper-input label="Telefoon" value=cTelephoneFilter onChange=(action "setFilter" "cTelephone")}}
+        </div>
+        <div class="data-table-filters--group-title">Gebouw</div>
+        <div>
+          {{paper-input label="Naam" value=bNameFilter onChange=(action "setFilter" "bName")}}
+          {{paper-input label="Adres" value=bStreetFilter onChange=(action "setFilter" "bStreet") class="large-input"}}
+          {{paper-input label="Postcode" value=bPostalCodeFilter onChange=(action "setFilter" "bPostalCode") class="small-input"}}
+          {{paper-input label="Gemeente" value=bCityFilter onChange=(action "setFilter" "bCity")}}
+        </div>
+      </div>
+      <div class="data-table-filters--reset">
+        {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+          {{paper-icon "close"}}
+          {{#paper-tooltip}}Verwijder filters{{/paper-tooltip}}
+        {{/paper-button}}
+      </div>
+    </div>
+  </div>
+
+  {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
+       sort=sort page=page size=size onClickRow=(action 'clickRow') as |t|}}
+    {{#t.content as |c|}}
+      {{#c.header}}
+        {{th-sortable field='offer-number' currentSorting=sort label='Offerte'}}
+        {{th-sortable field='order-date' currentSorting=sort label='Datum'}}
+        <th><!-- customer / building --></th>
+        <th>Naam</th>
+        <th>Adres</th>
+        <th>Postcode</th>
+        <th>Gemeente</th>
+      {{/c.header}}
+      {{#c.body as |row|}}
+        <td>{{row.offerNumber}}</td>
+        <td>{{moment-format row.orderDate 'L'}}</td>
+        {{#if (await row.building)}}
+          <td>{{paper-icon "home"}}</td>
+          <td class="building-entry">{{get (await row.building) 'printName'}} ({{get (await row.customer) 'printName'}})</td>
+          <td class="building-entry">{{get (await row.building) 'address1'}}</td>
+          <td class="building-entry">{{get (await row.building) 'postalCode'}}</td>
+          <td class="building-entry">{{get (await row.building) 'city'}}</td>
+        {{else}}
+          <td>{{paper-icon "person"}}</td>
+          <td>{{get (await row.customer) 'printName'}}</td>
+          <td>{{get (await row.customer) 'address1'}}</td>
+          <td>{{get (await row.customer) 'postalCode'}}</td>
+          <td>{{get (await row.customer) 'city'}}</td>
+        {{/if}}
+      {{/c.body}}
+    {{/t.content}}
+  {{/data-table}}
+</div>
+
+{{liquid-outlet}}

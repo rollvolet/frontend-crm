@@ -5,9 +5,9 @@ import { oneWay } from '@ember/object/computed';
 
 export default Controller.extend(DefaultQueryParams, {
   size: 25,
-  sort: '-offer-date',
+  sort: '-order-date',
 
-  numberFilter: oneWay('number'),
+  offerNumberFilter: oneWay('offerNumber'),
   referenceFilter: oneWay('reference'),
   cNameFilter: oneWay('cName'),
   cPostalCodeFilter: oneWay('cPostalCode'),
@@ -27,8 +27,8 @@ export default Controller.extend(DefaultQueryParams, {
   actions: {
     clickRow(row) {
       const customerId = row.get('customer.id');
-      const offerId = row.get('id');
-      this.transitionToRoute('main.case.offer', customerId, offerId);
+      const orderId = row.get('id');
+      this.transitionToRoute('main.case.order', customerId, orderId);
     },
     setFilter(key, value) {
       this.set(`${key}Filter`, value);
@@ -36,7 +36,7 @@ export default Controller.extend(DefaultQueryParams, {
     },
     resetFilters() {
       [
-        'numberFilter', 'number',
+        'offerNumberFilter', 'offerNumber',
         'referenceFilter', 'reference',
         'cNameFilter', 'cName',
         'cPostalCodeFilter', 'cPostalCode',
@@ -50,5 +50,4 @@ export default Controller.extend(DefaultQueryParams, {
       ].forEach(x => this.set(x, undefined));
     }
   }
-
 });

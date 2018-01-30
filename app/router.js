@@ -20,6 +20,7 @@ Router.map(function() {
       this.route('order', { path: '/order/:order_id' });
       this.route('invoice', { path: '/invoice/:invoice_id' });
     });
+    this.route('orders', function() {});
   });
 });
 
