@@ -1,2 +1,69 @@
-<p>Bestelling nog niet beschikbaar</p>
+<h2>Bestelling</h2>
+
+<div class="layout-row layout-xs-column layout-align-space-between">
+  <div class="case--left-panel case--order--entry flex-100 layout-column">
+    {{#detail-list-item label="Datum"}}
+      {{#detail-list-subitem label="Bestelling"}}
+        {{#if model.orderDate}}{{moment-format model.orderDate 'L'}}{{else}}-{{/if}}
+      {{/detail-list-subitem}}
+      {{#detail-list-subitem label="Verwacht"}}
+        {{#if model.expectedDate}}{{moment-format model.expectedDate 'L'}}{{else}}-{{/if}}
+      {{/detail-list-subitem}}
+      {{#detail-list-subitem label="Vereist"}}
+        {{#if model.requiredDate}}{{moment-format model.requiredDate 'L'}}{{else}}-{{/if}}
+      {{/detail-list-subitem}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Werkuren"}}
+      {{#detail-list-subitem label="Gepland"}}
+        {{model.scheduledHours}} uur x {{model.scheduledNbOfPersons}} man = {{model.scheduledTotal}}
+      {{/detail-list-subitem}}
+      {{#detail-list-subitem label="Gerekend"}}
+        {{model.invoicableHours}} uur x {{model.invoicableNbOfPersons}} man = {{model.invoicableTotal}}
+      {{/detail-list-subitem}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Bedrag"}}
+      {{#detail-list-subitem label="Totaal bestelling"}}
+        {{model.amount}} &euro; ({{get (await model.vatRate) 'name'}} BTW)
+      {{/detail-list-subitem}}
+      {{#detail-list-subitem label="Voorschot nodig"}}
+        {{paper-checkbox value=model.depositRequired onChange=null}}
+      {{/detail-list-subitem}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Afgesloten"}}
+      {{paper-checkbox value=model.canceled onChange=null}}
+      {{#if model.canceled}}
+        {{#detail-list-subitem label="Reden"}}
+          {{#if model.cancellationReason}}
+            <span class="html-body">{{model.cancellationReason}}</span>
+          {{else}}
+            -
+          {{/if}}
+        {{/detail-list-subitem}}
+      {{/if}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Opmerking"}}
+      <span class="html-body">{{model.comment}}</span>
+    {{/detail-list-item}}
+  </div>
+  <div class="case--right-panel flex-noshrink layout-column">
+    {{#detail-list-item label="Plaatsing"}}
+      {{paper-checkbox value=model.mustBeInstalled onChange=null}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Productiebon"}}
+      {{paper-checkbox value=model.hasProductionTicket onChange=null}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Te leveren"}}
+      {{paper-checkbox value=model.mustBeDelivered onChange=null}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Product klaar"}}
+      {{paper-checkbox value=model.isReady onChange=null}}
+    {{/detail-list-item}}
+
+  </div>
+</div>
+
+<div class="case--button-bar layout-row layout-align-end">
+  {{#paper-button raised=true primary=true onClick=null disabled=true}}{{paper-icon 'edit'}}Bewerk bestelling{{/paper-button}}
+</div>
+
 {{liquid-outlet}}
