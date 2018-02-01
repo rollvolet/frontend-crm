@@ -10,5 +10,6 @@ export default Route.extend({
     const controller = this.controllerFor('main.case');
     controller.set('building', model.get('building'));
     controller.set('contact', model.get('contact'));
+    controller.set('showDeposits', false);
   }
 });

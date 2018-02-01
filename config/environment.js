@@ -60,6 +60,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+    ENV.torii.providers['azure-oauth2'].apiKey = 'bd3082cc-72b4-4daf-bf00-fe35e5b8245a';
+    ENV.torii.providers['azure-oauth2'].redirectUri = 'http://localhost/torii/redirect.html';
     // here you can enable a production-specific feature
   }
 

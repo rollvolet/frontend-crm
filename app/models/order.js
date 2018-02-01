@@ -27,6 +27,7 @@ export default DS.Model.extend({
   contact: DS.belongsTo('contact'),
   building: DS.belongsTo('building'),
   vatRate: DS.belongsTo('vat-rate'),
+  deposits: DS.hasMany('deposit'),
 
   scheduledTotal: computed('scheduledHours', 'scheduledNbOfPersons', function() {
     return this.get('scheduledHours') * this.get('scheduledNbOfPersons');

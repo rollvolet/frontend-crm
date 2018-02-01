@@ -28,6 +28,36 @@
       {{#detail-list-subitem label="Voorschot nodig"}}
         {{paper-checkbox value=model.depositRequired onChange=null}}
       {{/detail-list-subitem}}
+      {{#detail-list-subitem label="Voorschotten"}}
+        <div>
+          {{reduce (action "sum") 0 (map-by "amount" (await model.deposits))}}
+          {{#if (await model.deposits)}}
+            {{#paper-button iconButton=true onClick=(action "toggleShowDeposits")}}
+              {{paper-icon (if showDeposits "expand less" "expand more")}}
+            {{/paper-button}}
+          {{/if}}
+        </div>
+        {{#liquid-if (and (await model.deposits) showDeposits) class="expand-more"}}
+          <table>
+            <thead>
+              <th>Datum</th>
+              <th>Bedrag</th>
+              <th>Bank</th>
+              <th>Voorschot</th>
+            </thead>
+            <tbody>
+              {{#each (await model.deposits) as |deposit|}}
+                <tr>
+                  <td>{{moment-format deposit.paymentDate 'L'}}</td>
+                  <td>{{deposit.amount}} &euro;</td>
+                  <td>{{get (await deposit.payment) "name"}}</td>
+                  <td>{{paper-checkbox value=model.isDeposit onChange=null}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{/liquid-if}}
+      {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Afgesloten"}}
       {{paper-checkbox value=model.canceled onChange=null}}
