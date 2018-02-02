@@ -30,7 +30,7 @@
       {{/detail-list-subitem}}
       {{#detail-list-subitem label="Voorschotten"}}
         <div>
-          {{reduce (action "sum") 0 (map-by "amount" (await model.deposits))}}
+          {{reduce (action "sum") 0 (map-by "amount" (await model.deposits))}} &euro;
           {{#if (await model.deposits)}}
             {{#paper-button iconButton=true onClick=(action "toggleShowDeposits")}}
               {{paper-icon (if showDeposits "expand less" "expand more")}}
