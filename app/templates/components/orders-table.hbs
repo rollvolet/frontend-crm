@@ -17,6 +17,7 @@
   {{#t.content as |c|}}
     {{#c.header}}
       {{th-sortable field='offer-number' currentSorting=sort label='Offerte'}}
+      {{th-sortable field='offer.reference' currentSorting=sort label='Referentie'}}
       {{th-sortable field='offer-date' currentSorting=sort label='Datum'}}
       <th>Gebouw</th>
       <th>Adres</th>
@@ -25,6 +26,7 @@
     {{/c.header}}
     {{#c.body as |row|}}
       <td>{{row.offerNumber}}</td>
+      <td>{{get (await row.offer) 'reference'}}</td>
       <td>{{moment-format row.orderDate 'L'}}</td>
       <td>{{get (await row.building) 'printName'}}</td>
       <td>{{get (await row.building) 'address1'}}</td>

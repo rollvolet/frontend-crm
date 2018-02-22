@@ -26,10 +26,12 @@ export default Component.extend({
         number: this.get('page')
       },
       sort: this.get('sort'),
-      include: 'building',
+      include: 'building,offer',
       filter: {
         offerNumber: this.get('offerNumber'),
-        reference: this.get('reference'),
+        offer: {
+          reference: this.get('reference')
+        },
         building: {
           name: this.get('name'),
           'postal-code': this.get('postalCode'),

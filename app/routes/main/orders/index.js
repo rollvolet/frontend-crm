@@ -27,7 +27,9 @@ export default Route.extend(DataTableRouteMixin, {
       include: 'customer,building,contact',
       filter: {
         'offer-number': params.offerNumber,
-        reference: params.reference,
+        offer: {
+          reference: params.reference
+        },
         customer: {
           name: params.cName,
           'postal-code': params.cPostalCode,
