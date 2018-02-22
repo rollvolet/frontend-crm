@@ -1,5 +1,4 @@
 import DS from 'ember-data';
-import { computed } from '@ember/object';
 import HasManyQuery from 'ember-data-has-many-query';
 
 export default DS.Model.extend(HasManyQuery.ModelMixin, {
@@ -38,20 +37,5 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, {
   requests: DS.hasMany('request'),
   offers: DS.hasMany('offer'),
   orders: DS.hasMany('order'),
-  tags: DS.hasMany('tag'),
-
-  printName: computed('printPrefix', 'prefix', 'printSuffix', 'suffix', 'name', function() {
-    var name = '';
-    if (this.get('printPrefix') && this.get('prefix')) { name += this.get('prefix') + ' '; }
-    name += this.get('name') + ' ';
-    if (this.get('printSuffix') && this.get('suffix')) { name += this.get('suffix'); }
-    return name.trim();
-  }),
-  address: computed('address1', 'address2', 'address3', function() {
-    var address = '';
-    if (this.get('address1')) { address += this.get('address1') + ' '; }
-    if (this.get('address2')) { address += this.get('address2') + ' '; }
-    if (this.get('address3')) { address += this.get('address3') + ' '; }
-    return address.trim();
-  })
+  tags: DS.hasMany('tag')
 });

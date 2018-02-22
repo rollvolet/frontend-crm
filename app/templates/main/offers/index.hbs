@@ -55,13 +55,13 @@
         <td>{{moment-format row.offerDate 'L'}}</td>
         {{#if (await row.building)}}
           <td>{{paper-icon "home"}}</td>
-          <td>{{get (await row.building) 'printName'}} ({{get (await row.customer) 'printName'}})</td>
+          <td>{{get (await row.building) 'printName'}} ({{print-name model=(await row.customer)}})</td>
           <td>{{get (await row.building) 'address1'}}</td>
           <td>{{get (await row.building) 'postalCode'}}</td>
           <td>{{get (await row.building) 'city'}}</td>
         {{else}}
           <td>{{paper-icon "person"}}</td>
-          <td>{{get (await row.customer) 'printName'}}</td>
+          <td>{{print-name model=(await row.customer)}}</td>
           <td>{{get (await row.customer) 'address1'}}</td>
           <td>{{get (await row.customer) 'postalCode'}}</td>
           <td>{{get (await row.customer) 'city'}}</td>

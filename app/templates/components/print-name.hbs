@@ -1,0 +1,5 @@
+{{#if model.printInFront}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
+{{model.prefix}}
+{{model.name}}
+{{model.suffix}}
+{{#if (not model.printInFront)}}{{get (await model.honorificPrefix) 'name'}}{{/if}}

@@ -1,5 +1,5 @@
 <h1>
-  {{model.printName}} <span class="small-text-fade">[{{model.number}}]</span>
+  {{print-name model=model}} <span class="small-text-fade">[{{model.number}}]</span>
 </h1>
 
 <div class="resource-details">
@@ -79,34 +79,36 @@
   </div>
 </div>
 
-{{#paper-tabs selected=selectedTab onChange=(action (mut selectedTab)) borderBottom=true as |tabs|}}
-  {{#tabs.tab}}Contacten{{/tabs.tab}}
-  {{#tabs.tab}}Gebouwen{{/tabs.tab}}
-  {{#tabs.tab}}Aanvragen{{/tabs.tab}}
-  {{#tabs.tab}}Offertes{{/tabs.tab}}
-  {{#tabs.tab}}Bestellingen{{/tabs.tab}}
-  {{#tabs.tab}}Facturen{{/tabs.tab}}
-{{/paper-tabs}}
+<div class="related-resources">
+  {{#paper-tabs selected=selectedTab onChange=(action (mut selectedTab)) borderBottom=true as |tabs|}}
+    {{#tabs.tab}}Contacten{{/tabs.tab}}
+    {{#tabs.tab}}Gebouwen{{/tabs.tab}}
+    {{#tabs.tab}}Aanvragen{{/tabs.tab}}
+    {{#tabs.tab}}Offertes{{/tabs.tab}}
+    {{#tabs.tab}}Bestellingen{{/tabs.tab}}
+    {{#tabs.tab}}Facturen{{/tabs.tab}}
+  {{/paper-tabs}}
 
-{{#liquid-bind (hash tab=selectedTab) use="toRight" as |current|}}
-  {{#if (eq current.tab 0)}}
-    {{contacts-table customer=model}}
-  {{/if}}
-  {{#if (eq current.tab 1)}}
-    {{buildings-table customer=model}}
-  {{/if}}
-  {{#if (eq current.tab 2)}}
-    {{requests-table customer=model onClickRow=(action "goToRequestDetail")}}
-  {{/if}}
-  {{#if (eq current.tab 3)}}
-    {{offers-table customer=model onClickRow=(action "goToOfferDetail")}}
-  {{/if}}
-  {{#if (eq current.tab 4)}}
-    {{orders-table customer=model onClickRow=(action "goToOrderDetail")}}
-  {{/if}}
-  {{#if (eq current.tab 5)}}
-    <p>Facturen nog niet beschikbaar</p>
-  {{/if}}
-{{/liquid-bind}}
+  {{#liquid-bind (hash tab=selectedTab) use="toRight" as |current|}}
+    {{#if (eq current.tab 0)}}
+      {{contacts-table customer=model}}
+    {{/if}}
+    {{#if (eq current.tab 1)}}
+      {{buildings-table customer=model}}
+    {{/if}}
+    {{#if (eq current.tab 2)}}
+      {{requests-table customer=model onClickRow=(action "goToRequestDetail")}}
+    {{/if}}
+    {{#if (eq current.tab 3)}}
+      {{offers-table customer=model onClickRow=(action "goToOfferDetail")}}
+    {{/if}}
+    {{#if (eq current.tab 4)}}
+      {{orders-table customer=model onClickRow=(action "goToOrderDetail")}}
+    {{/if}}
+    {{#if (eq current.tab 5)}}
+      <p>Facturen nog niet beschikbaar</p>
+    {{/if}}
+  {{/liquid-bind}}
+</div>
 
 {{liquid-outlet}}

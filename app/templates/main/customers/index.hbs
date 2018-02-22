@@ -30,7 +30,7 @@
     {{/c.header}}
     {{#c.body as |row|}}
       <td>{{row.number}}</td>
-      <td>{{row.printName}}</td>
+      <td>{{print-name model=row}}</td>
       <td>{{row.address1}}</td>
       <td>{{row.postalCode}}</td>
       <td>{{row.city}}</td>
