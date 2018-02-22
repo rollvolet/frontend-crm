@@ -8,9 +8,6 @@
     {{#detail-list-item label="Volgnummer"}}
       {{model.sequenceNumber}}
     {{/detail-list-item}}
-    {{#detail-list-item label="Product"}}
-      {{get (await model.product) 'name'}}
-    {{/detail-list-item}}
     {{#detail-list-item label="Bedrag"}}
       {{model.amount}} &euro; ({{get (await model.vatRate) 'name'}} BTW)
     {{/detail-list-item}}
@@ -22,9 +19,6 @@
     {{/detail-list-item}}
     {{#detail-list-item label="Referentie"}}
       {{model.reference}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Afgesloten"}}
-      {{paper-checkbox value=model.canceled onChange=null}}
     {{/detail-list-item}}
     {{#detail-list-item label="Opmerking"}}
       <span class="html-body">{{model.comment}}</span>

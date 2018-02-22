@@ -11,7 +11,6 @@ export default DS.Model.extend({
   foreseenNbOfPersons: DS.attr(),
   comment: DS.attr(),
   reference: DS.attr(),
-  canceled: DS.attr(),
   updated: DS.attr('date', {
     defaultValue() { return new Date(); }
   }),
@@ -22,7 +21,6 @@ export default DS.Model.extend({
   building: DS.belongsTo('building'),
   vatRate: DS.belongsTo('vat-rate'),
   submissionType: DS.belongsTo('submission-type'),
-  product: DS.belongsTo('product'),
 
   foreseenTotal: computed('foreseenHours', 'foreseenNbOfPersons', function() {
     return this.get('foreseenHours') * this.get('foreseenNbOfPersons');
