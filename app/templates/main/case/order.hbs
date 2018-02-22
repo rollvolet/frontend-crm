@@ -23,14 +23,14 @@
     {{/detail-list-item}}
     {{#detail-list-item label="Bedrag"}}
       {{#detail-list-subitem label="Totaal bestelling"}}
-        {{model.amount}} &euro; ({{get (await model.vatRate) 'name'}} BTW)
+        &euro; {{model.amount}} ({{get (await model.vatRate) 'name'}} BTW)
       {{/detail-list-subitem}}
       {{#detail-list-subitem label="Voorschot nodig"}}
         {{paper-checkbox value=model.depositRequired onChange=null}}
       {{/detail-list-subitem}}
       {{#detail-list-subitem label="Voorschotten"}}
         <div>
-          {{reduce (action "sum") 0 (map-by "amount" (await model.deposits))}} &euro;
+          &euro; {{reduce (action "sum") 0 (map-by "amount" (await model.deposits))}}
           {{#if (await model.deposits)}}
             {{#paper-button iconButton=true onClick=(action "toggleShowDeposits")}}
               {{paper-icon (if showDeposits "expand less" "expand more")}}
@@ -49,7 +49,7 @@
               {{#each (await model.deposits) as |deposit|}}
                 <tr>
                   <td>{{moment-format deposit.paymentDate 'L'}}</td>
-                  <td>{{deposit.amount}} &euro;</td>
+                  <td>&euro; {{deposit.amount}}</td>
                   <td>{{get (await deposit.payment) "name"}}</td>
                   <td>{{paper-checkbox value=model.isDeposit onChange=null}}</td>
                 </tr>

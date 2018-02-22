@@ -9,7 +9,7 @@
       {{model.sequenceNumber}}
     {{/detail-list-item}}
     {{#detail-list-item label="Bedrag"}}
-      {{model.amount}} &euro; ({{get (await model.vatRate) 'name'}} BTW)
+      &euro; {{model.amount}} ({{get (await model.vatRate) 'name'}} BTW)
     {{/detail-list-item}}
     {{#detail-list-item label="Werkuren"}}
       {{model.foreseenHours}} uur x {{model.foreseenNbOfPersons}} man = {{model.foreseenTotal}} uur
