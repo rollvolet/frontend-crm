@@ -43,7 +43,7 @@
 {{else}}
   <div class="resource-details">
     <div class="layout-row layout-align-space-between-center">
-      <h4>[{{selectedBuilding.number}}] {{selectedBuilding.printName}}</h4>
+      <h4><span class="small-text-fade">[{{selectedBuilding.number}}]</span> {{selectedBuilding.printName}}</h4>
       {{#paper-button onClick=(action "deselectBuilding") iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
     </div>
     <div class="layout-row">

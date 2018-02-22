@@ -3,7 +3,7 @@
 {{liquid-outlet}}
 
 <h2>
-  Klant: {{model.printName}} [{{model.number}}]
+  Klant: {{model.printName}} <span class="small-text-fade">[{{model.number}}]</span>
   {{#paper-link 'main.customers.edit' model iconButton=true}}
     {{paper-icon "open in new"}}
     {{#paper-tooltip}}Open klant{{/paper-tooltip}}
