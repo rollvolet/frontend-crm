@@ -10,6 +10,7 @@ export default Route.extend(DataTableRouteMixin, {
     // filter params
     number: { refreshModel: true },
     reference: { refreshModel: true },
+    reqNumber: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
     cCity: { refreshModel: true },
@@ -24,10 +25,13 @@ export default Route.extend(DataTableRouteMixin, {
     return {
       // Building and contact must already be included
       // such that correct values can be set in the case controller when opening the request detail
-      include: 'customer,customer.honorific-prefix,building,contact',
+      include: 'customer,customer.honorific-prefix,building,contact,request',
       filter: {
         number: params.number,
         reference: params.reference,
+        request: {
+          number: params.reqNumber
+        },
         customer: {
           name: params.cName,
           'postal-code': params.cPostalCode,

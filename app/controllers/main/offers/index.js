@@ -9,6 +9,7 @@ export default Controller.extend(DefaultQueryParams, {
 
   numberFilter: oneWay('number'),
   referenceFilter: oneWay('reference'),
+  reqNumberFilter: oneWay('reqNumber'),
   cNameFilter: oneWay('cName'),
   cPostalCodeFilter: oneWay('cPostalCode'),
   cCityFilter: oneWay('cCity'),
@@ -38,6 +39,7 @@ export default Controller.extend(DefaultQueryParams, {
       [
         'numberFilter', 'number',
         'referenceFilter', 'reference',
+        'reqNumberFilter', 'reqNumber',
         'cNameFilter', 'cName',
         'cPostalCodeFilter', 'cPostalCode',
         'cCityFilter', 'cCity',
