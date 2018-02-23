@@ -4,26 +4,38 @@
   <div class="data-table-filters">
     <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
     <div class="layout-row flex layout-align-space-between-start">
-      <div class="data-table-filters--line-1">
-        {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number") class="small-input"}}
-      </div>
-      <div class="data-table-filters--line-2 layout-column">
-        <div class="data-table-filters--group-title">Klant</div>
-        <div>
-          {{paper-input label="Naam" value=cNameFilter onChange=(action "setFilter" "cName")}}
-          {{paper-input label="Adres" value=cStreetFilter onChange=(action "setFilter" "cStreet") class="large-input"}}
-          {{paper-input label="Postcode" value=cPostalCodeFilter onChange=(action "setFilter" "cPostalCode") class="small-input"}}
-          {{paper-input label="Gemeente" value=cCityFilter onChange=(action "setFilter" "cCity")}}
-          {{paper-input label="Telefoon" value=cTelephoneFilter onChange=(action "setFilter" "cTelephone")}}
+      <div class="layout-column">
+        <div class="layout-row data-table-filter--line">
+          <div class="layout-column data-table-filter--group">
+            <div class="data-table-filters--group-title"></div>
+            <div class="layout-row data-table-filters--group-fields">
+              {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number") class="small-input"}}
+            </div>
+          </div>
+          <div class="layout-column data-table-filter--group">
+            <div class="data-table-filters--group-title">Klant</div>
+            <div class="layout-row data-table-filters--group-fields">
+              {{paper-input label="Naam" value=cNameFilter onChange=(action "setFilter" "cName")}}
+              {{paper-input label="Adres" value=cStreetFilter onChange=(action "setFilter" "cStreet") class="large-input"}}
+              {{paper-input label="Postcode" value=cPostalCodeFilter onChange=(action "setFilter" "cPostalCode") class="small-input"}}
+              {{paper-input label="Gemeente" value=cCityFilter onChange=(action "setFilter" "cCity")}}
+              {{paper-input label="Telefoon" value=cTelephoneFilter onChange=(action "setFilter" "cTelephone")}}
+            </div>
+          </div>
         </div>
-        <div class="data-table-filters--group-title">Gebouw</div>
-        <div>
-          {{paper-input label="Naam" value=bNameFilter onChange=(action "setFilter" "bName")}}
-          {{paper-input label="Adres" value=bStreetFilter onChange=(action "setFilter" "bStreet") class="large-input"}}
-          {{paper-input label="Postcode" value=bPostalCodeFilter onChange=(action "setFilter" "bPostalCode") class="small-input"}}
-          {{paper-input label="Gemeente" value=bCityFilter onChange=(action "setFilter" "bCity")}}
+        <div class="layout-row data-table-filter--line layout-align-end">
+          <div class="layout-column data-table-filter--group">
+            <div class="data-table-filters--group-title">Gebouw</div>
+            <div class="layout-row data-table-filters--group-fields">
+              {{paper-input label="Naam" value=bNameFilter onChange=(action "setFilter" "bName")}}
+              {{paper-input label="Adres" value=bStreetFilter onChange=(action "setFilter" "bStreet") class="large-input"}}
+              {{paper-input label="Postcode" value=bPostalCodeFilter onChange=(action "setFilter" "bPostalCode") class="small-input"}}
+              {{paper-input label="Gemeente" value=bCityFilter onChange=(action "setFilter" "bCity")}}
+            </div>
+          </div>
         </div>
       </div>
+
       <div class="data-table-filters--reset">
         {{#paper-button iconButton=true onClick=(action "resetFilters")}}
           {{paper-icon "close"}}

@@ -250,12 +250,6 @@ h6 .small-text-fade {
 .offers-data-table,
 .orders-data-table {
   .data-table-filters {
-    .data-table-filters--line-1 {
-      md-input-container {
-        margin-top: 36px; /* 2x height of the group-title div */
-      }
-    }
-
     .data-table-filters--reset {
       position: relative;
       top: -8px;
