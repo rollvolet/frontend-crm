@@ -24,12 +24,12 @@ export default Component.extend(DebouncedSearch, {
       sort: this.get('sort'),
       include: 'country,language,honorific-prefix',
       filter: {
-        number: this.get('number'),
-        name: this.get('name'),
-        'postal-code': this.get('postalCode'),
-        city: this.get('city'),
-        street: this.get('street'),
-        telephone: this.get('telephone')
+        number: this.getFilterValue('number'),
+        name: this.getFilterValue('name'),
+        'postal-code': this.getFilterValue('postalCode'),
+        city: this.getFilterValue('city'),
+        street: this.getFilterValue('street'),
+        telephone: this.getFilterValue('telephone')
       }
     });
     this.set('buildings', buildings);

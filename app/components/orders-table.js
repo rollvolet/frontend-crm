@@ -24,15 +24,15 @@ export default Component.extend(DebouncedSearch, {
       sort: this.get('sort'),
       include: 'building,offer',
       filter: {
-        offerNumber: this.get('offerNumber'),
+        offerNumber: this.getFilterValue('offerNumber'),
         offer: {
-          reference: this.get('reference')
+          reference: this.getFilterValue('reference')
         },
         building: {
-          name: this.get('name'),
-          'postal-code': this.get('postalCode'),
-          city: this.get('city'),
-          street: this.get('street')
+          name: this.getFilterValue('name'),
+          'postal-code': this.getFilterValue('postalCode'),
+          city: this.getFilterValue('city'),
+          street: this.getFilterValue('street')
         }
       }
     });

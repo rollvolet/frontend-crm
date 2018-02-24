@@ -24,12 +24,12 @@ export default Component.extend(DebouncedSearch, {
       sort: this.get('sort'),
       include: 'way-of-entry,building',
       filter: {
-        number: this.get('number'),
+        number: this.getFilterValue('number'),
         building: {
-          name: this.get('name'),
-          'postal-code': this.get('postalCode'),
-          city: this.get('city'),
-          street: this.get('street')
+          name: this.getFilterValue('name'),
+          'postal-code': this.getFilterValue('postalCode'),
+          city: this.getFilterValue('city'),
+          street: this.getFilterValue('street')
         }
       }
     });
