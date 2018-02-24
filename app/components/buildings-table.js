@@ -1,8 +1,9 @@
 import Component from '@ember/component';
+import DebouncedSearch from '../mixins/debounced-search-task';
 import { observer } from '@ember/object';
-import { task, timeout } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
 
-export default Component.extend({
+export default Component.extend(DebouncedSearch, {
   classNames: ['buildings-table'],
   init() {
     this._super(...arguments);
@@ -14,11 +15,6 @@ export default Component.extend({
   dataTableParamChanged: observer('page', 'size', 'sort', function() {
     this.get('search').perform();
   }),
-  debouncedSearch: task(function * () {
-    yield timeout(500);
-    this.set('page', 0);
-    yield this.get('search').perform();
-  }).restartable(),
   search: task(function * () {
     const buildings = yield this.get('customer').query('buildings', {
       page: {
@@ -41,7 +37,7 @@ export default Component.extend({
   actions: {
     setFilter(key, value) {
       this.set(key, value);
-      this.get('debouncedSearch').perform();
+      this.get('debounceSearch').perform(this.get('search'));
     },
     resetFilters() {
       this.set('number', undefined);

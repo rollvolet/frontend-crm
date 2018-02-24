@@ -1,9 +1,9 @@
 import Controller from '@ember/controller';
 import DefaultQueryParams from 'ember-data-table/mixins/default-query-params';
-import { task, timeout } from 'ember-concurrency';
+import DebouncedSearch from '../../../mixins/debounced-search-task';
 import { oneWay } from '@ember/object/computed';
 
-export default Controller.extend(DefaultQueryParams, {
+export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
   size: 25,
   sort: '-request-date',
 
@@ -18,11 +18,6 @@ export default Controller.extend(DefaultQueryParams, {
   bCityFilter: oneWay('bCity'),
   bStreetFilter: oneWay('bStreet'),
 
-  debounceQueryParam: task(function * (key, value) {
-    yield timeout(500);
-    yield this.set(key, value);
-  }).restartable(),
-
   actions: {
     clickRow(row) {
       const customerId = row.get('customer.id');
@@ -31,7 +26,7 @@ export default Controller.extend(DefaultQueryParams, {
     },
     setFilter(key, value) {
       this.set(`${key}Filter`, value);
-      this.get('debounceQueryParam').perform(key, value);
+      this.get('debounceFilter').perform(key, value);
     },
     resetFilters() {
       [
