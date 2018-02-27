@@ -74,6 +74,10 @@ h6 .small-text-fade {
 .login-screen {
   min-height: 100vh;
 
+  .header {
+    color: #D52319;
+  }
+
   .error--message {
     color: color($warn);
   }
