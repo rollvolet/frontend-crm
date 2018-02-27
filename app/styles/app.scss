@@ -179,7 +179,8 @@ h6 .small-text-fade {
 .buildings-table,
 .requests-table,
 .offers-table,
-.orders-table {
+.orders-table,
+.invoices-table {
   .data-table-filters {
     border: none;
     padding-top: 15px;
@@ -248,7 +249,8 @@ h6 .small-text-fade {
 /* Request/offers pages */
 .requests-data-table,
 .offers-data-table,
-.orders-data-table {
+.orders-data-table,
+.invoices-data-table {
   .data-table-filters {
     .data-table-filters--reset {
       position: relative;

@@ -18,6 +18,11 @@ export default Controller.extend({
       const customer = this.get('model');
       const orderId = row.get('id');
       this.transitionToRoute('main.case.order', customer, orderId);
+    },
+    goToInvoiceDetail(row) {
+      const customer = this.get('model');
+      const invoiceId = row.get('id');
+      this.transitionToRoute('main.case.invoice', customer, invoiceId);
     }
   }
 });

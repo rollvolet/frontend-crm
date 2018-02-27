@@ -106,7 +106,7 @@
       {{orders-table customer=model onClickRow=(action "goToOrderDetail")}}
     {{/if}}
     {{#if (eq current.tab 5)}}
-      <p>Facturen nog niet beschikbaar</p>
+      {{invoices-table customer=model onClickRow=(action "goToInvoiceDetail")}}
     {{/if}}
   {{/liquid-bind}}
 </div>

@@ -1,0 +1,39 @@
+<div class="data-table-filters">
+  <div class="data-table-filters--title">{{paper-icon "search"}}</div>
+  {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number") class="small-input"}}
+  {{paper-input label="Referentie" value=reference onChange=(action "setFilter" "reference") class="small-input"}}
+  {{paper-input label="Gebouw" value=name onChange=(action "setFilter" "name")}}
+  {{paper-input label="Adres" value=street onChange=(action "setFilter" "street") class="large-input"}}
+  {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small-input"}}
+  {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
+  {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+    {{paper-icon "close"}}
+    {{#paper-tooltip}}Verwijder filters{{/paper-tooltip}}
+  {{/paper-button}}
+</div>
+
+{{#data-table content=invoices isLoading=(not search.isIdle) noDataMessage="Geen facturen"
+     onClickRow=onClickRow page=page size=size sort=sort as |t|}}
+  {{#t.content as |c|}}
+    {{#c.header}}
+      {{th-sortable field='number' currentSorting=sort label='Nr'}}
+      {{th-sortable field='reference' currentSorting=sort label='Referentie'}}
+      {{th-sortable field='invoice-date' currentSorting=sort label='Datum'}}
+      <th>Gebouw</th>
+      <th>Adres</th>
+      <th>Postcode</th>
+      <th>Gemeente</th>
+    {{/c.header}}
+    {{#c.body as |row|}}
+      <td>{{row.number}}</td>
+      <td>{{row.reference}}</td>
+      <td>{{moment-format row.invoiceDate 'L'}}</td>
+      <td>{{get (await row.building) 'printName'}}</td>
+      <td>{{get (await row.building) 'address1'}}</td>
+      <td>{{get (await row.building) 'postalCode'}}</td>
+      <td>{{get (await row.building) 'city'}}</td>
+    {{/c.body}}
+  {{/t.content}}
+{{/data-table}}
+
+{{liquid-yield}}
