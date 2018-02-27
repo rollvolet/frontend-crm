@@ -12,7 +12,7 @@
   {{/paper-button}}
 </div>
 
-{{#data-table content=(await offers) isLoading=(is-pending offers) noDataMessage="Geen offertes"
+{{#data-table content=offers isLoading=(not search.isIdle) noDataMessage="Geen offertes"
      onClickRow=onClickRow page=page size=size sort=sort as |t|}}
   {{#t.content as |c|}}
     {{#c.header}}

@@ -13,7 +13,7 @@
     {{/paper-button}}
   </div>
 
-  {{#data-table content=(await contacts) isLoading=(is-pending contacts) noDataMessage="Geen contacten"
+  {{#data-table content=contacts isLoading=(not search.isIdle) noDataMessage="Geen contacten"
        onClickRow=(action "selectContact") page=page size=size sort=sort as |t|}}
     {{#t.content as |c|}}
       {{#c.header}}

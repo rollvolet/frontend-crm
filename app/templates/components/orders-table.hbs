@@ -12,7 +12,7 @@
   {{/paper-button}}
 </div>
 
-{{#data-table content=(await orders) isLoading=(is-pending orders) noDataMessage="Geen bestellingen"
+{{#data-table content=orders isLoading=(not search.isIdle) noDataMessage="Geen bestellingen"
      onClickRow=onClickRow page=page size=size sort=sort as |t|}}
   {{#t.content as |c|}}
     {{#c.header}}

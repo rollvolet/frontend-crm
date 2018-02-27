@@ -13,7 +13,7 @@
     {{/paper-button}}
   </div>
 
-  {{#data-table content=(await buildings) isLoading=(is-pending buildings) noDataMessage="Geen gebouwen"
+  {{#data-table content=buildings isLoading=(not search.isIdle) noDataMessage="Geen gebouwen"
        onClickRow=(action "selectBuilding") page=page size=size sort=sort as |t|}}
     {{#t.content as |c|}}
       {{#c.header}}
