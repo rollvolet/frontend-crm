@@ -23,6 +23,7 @@ export default DS.Model.extend({
     defaultValue() { return new Date(); }
   }),
   offer: DS.belongsTo('offer'),
+  invoice: DS.belongsTo('invoice'),
   customer: DS.belongsTo('customer'),
   contact: DS.belongsTo('contact'),
   building: DS.belongsTo('building'),

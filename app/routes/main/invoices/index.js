@@ -2,12 +2,13 @@ import Route from '@ember/routing/route';
 import DataTableRouteMixin from 'ember-data-table/mixins/route';
 
 export default Route.extend(DataTableRouteMixin, {
-  modelName: 'order',
+  modelName: 'invoice',
   queryParams: {
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
     // filter params
+    number: { refreshModel: true },
     offerNumber: { refreshModel: true },
     reference: { refreshModel: true },
     cName: { refreshModel: true },
@@ -24,11 +25,12 @@ export default Route.extend(DataTableRouteMixin, {
     return {
       // Building and contact must already be included
       // such that correct values can be set in the case controller when opening the detail
-      include: 'customer,customer.honorific-prefix,building,contact',
+      include: 'customer,customer.honorific-prefix,order,building,contact',
       filter: {
-        'offer-number': params.offerNumber,
+        number: params.number,
+        reference: params.reference,
         offer: {
-          reference: params.reference
+          number: params.offerNumber
         },
         customer: {
           name: params.cName,
@@ -46,5 +48,4 @@ export default Route.extend(DataTableRouteMixin, {
       }
     };
   }
-
 });

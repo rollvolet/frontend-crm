@@ -15,6 +15,7 @@ Router.map(function() {
     this.route('requests', function() {});
     this.route('offers', function() {});
     this.route('orders', function() {});
+    this.route('invoices', function() {});
     this.route('case', { path: '/case/:customer_id' }, function() {
       this.route('request', { path: '/request/:request_id' });
       this.route('offer', { path: '/offer/:offer_id' });
