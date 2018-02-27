@@ -11,6 +11,7 @@ export default Route.extend(DataTableRouteMixin, {
     number: { refreshModel: true },
     reference: { refreshModel: true },
     reqNumber: { refreshModel: true },
+    withoutOrder: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
     cCity: { refreshModel: true },
@@ -29,6 +30,7 @@ export default Route.extend(DataTableRouteMixin, {
       filter: {
         number: params.number,
         reference: params.reference,
+        order: !params.withoutOrder,
         request: {
           number: params.reqNumber
         },

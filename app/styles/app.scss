@@ -156,6 +156,10 @@ h6 .small-text-fade {
     width: 200px;
   }
 
+  md-switch .md-label {
+    color: color('grey');
+  }
+
   .data-table-filters--title {
     display: inline-block;
     position: relative;

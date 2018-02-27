@@ -18,6 +18,7 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
   bPostalCodeFilter: oneWay('bPostalCode'),
   bCityFilter: oneWay('bCity'),
   bStreetFilter: oneWay('bStreet'),
+  withoutInvoice: false,
 
   actions: {
     clickRow(row) {
@@ -30,6 +31,7 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
       this.get('debounceFilter').perform(key, value);
     },
     resetFilters() {
+      this.set('withoutInvoice', false);
       [
         'offerNumberFilter', 'offerNumber',
         'referenceFilter', 'reference',

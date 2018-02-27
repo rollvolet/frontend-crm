@@ -33,6 +33,14 @@
               {{paper-input label="Gemeente" value=bCityFilter onChange=(action "setFilter" "bCity")}}
             </div>
           </div>
+          <div class="layout-column data-table-filter--group">
+            <div class="data-table-filters--group-title"></div>
+            <div class="layout-row data-table-filters--group-fields">
+              {{#paper-switch value=withoutOffer primary=true onChange=(action (mut withoutOffer))}}
+                Zonder offerte
+              {{/paper-switch}}
+            </div>
+          </div>
         </div>
       </div>
 
