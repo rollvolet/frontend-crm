@@ -1,11 +1,9 @@
 import Controller from '@ember/controller';
+import ReduceFunctions from '../../../mixins/reduce-functions';
 
-export default Controller.extend({
+export default Controller.extend(ReduceFunctions, {
   showDeposits: false,
   actions: {
-    sum(a, b) {
-      return a + b;
-    },
     toggleShowDeposits() {
       this.toggleProperty('showDeposits');
     }
