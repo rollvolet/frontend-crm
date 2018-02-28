@@ -5,8 +5,7 @@ import { add, product, quotient, subtract, sum } from 'ember-awesome-macros';
 import raw from 'ember-macro-helpers/raw';
 
 export default Component.extend({
-  tagName: 'table',
-  classNames: ['invoice-calculation-table'],
+  showExtrasDialog: false,
   supplementsAmount: sum(mapBy('model.supplements', raw('amount'))),
   depositInvoicesAmount: sum(mapBy('model.depositInvoices', raw('amount'))),
   subtotalAmount: subtract(add('model.baseAmount', 'supplementsAmount'), 'depositInvoicesAmount'),
@@ -17,5 +16,13 @@ export default Component.extend({
   supplementsVat: product('supplementsAmount', 'vatRate'),
   depositInvoicesVat: product('depositInvoicesAmount', 'vatRate'),
   subtotalVat: product('subtotalAmount', 'vatRate'),
-  grossTotalAmount: subtract(sum('subtotalAmount', 'subtotalVat'), 'depositsAmount')
+  grossTotalAmount: subtract(sum('subtotalAmount', 'subtotalVat'), 'depositsAmount'),
+  actions: {
+    closeExtrasDialog() {
+      this.set('showExtrasDialog', false);
+    },
+    openExtrasDialog() {
+      this.set('showExtrasDialog', true);
+    }
+  }
 });

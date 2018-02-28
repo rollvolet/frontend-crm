@@ -1,7 +1,7 @@
 <h2>Factuur {{model.year}}/{{model.number}}</h2>
 
 <div class="layout-row layout-xs-column layout-align-space-between">
-  <div class="case--left-panel case--order--entry flex-100 layout-column">
+  <div class="case--left-panel case--invoice--entry flex-100 layout-column">
     {{#detail-list-item label="Datum"}}
       {{#detail-list-subitem label="Factuurdatum"}}
         {{#if model.invoiceDate}}{{moment-format model.invoiceDate 'L'}}{{else}}-{{/if}}

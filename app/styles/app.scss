@@ -271,7 +271,8 @@ h6 .small-text-fade {
 /* Case pages */
 .case--request--entry,
 .case--order--entry,
-.case--offer--entry {
+.case--offer--entry,
+.case--invoice--entry {
   min-width: 400px;
 
   md-checkbox {
