@@ -1,3 +1,4 @@
+import { computed } from '@ember/object';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -12,7 +13,7 @@ export default DS.Model.extend({
   amount: DS.attr(),
   vat: DS.attr(),
   totalAmount: DS.attr(),
-  IsPaidInCash: DS.attr(),
+  isPaidInCash: DS.attr(),
   certificateRequired: DS.attr(),
   certificateReceived: DS.attr(),
   certificateClosed: DS.attr(),
@@ -32,5 +33,11 @@ export default DS.Model.extend({
   contact: DS.belongsTo('contact'),
   building: DS.belongsTo('building'),
   vatRate: DS.belongsTo('vat-rate'),
-  supplements: DS.hasMany('invoice-supplement')
+  supplements: DS.hasMany('invoice-supplement'),
+  deposits: DS.hasMany('deposits'),
+  depositInvoices: DS.hasMany('deposit-invoices'),
+
+  performedTotal: computed('performedHours', 'performedNbOfPersons', function() {
+    return this.get('performedHours') * this.get('performedNbOfPersons');
+  })
 });

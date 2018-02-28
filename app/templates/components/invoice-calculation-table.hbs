@@ -1,0 +1,36 @@
+<thead>
+  <th></th>
+  <th>Netto</th>
+  <th>{{get model.vatRate 'name'}} BTW</th>
+</thead>
+<tbody>
+  <tr>
+    <td>Basis</td>
+    <td>&euro; {{model.baseAmount}}</td>
+    <td>&euro; {{model.vat}}</td>
+  </tr>
+  <tr>
+    <td>Extra's</td>
+    <td>&euro; {{supplementsAmount}}</td>
+    <td>&euro; {{supplementsVat}}</td>
+  </tr>
+  <tr>
+    <td>Voorschotfacturen</td>
+    <td>&euro; {{depositInvoicesAmount}}</td>
+    <td>&euro; {{depositInvoicesVat}}</td>
+  </tr>
+  <tr class="subtotal">
+    <td>Subtotaal</td>
+    <td>&euro; {{subtotalAmount}}</td>
+    <td>&euro; {{subtotalVat}}</td>
+  </tr>
+  <tr>
+    <td>Voorschot netto</td>
+    <td>&euro; {{depositsAmount}}</td>
+    <td></td>
+  </tr>
+  <tr class="total">
+    <td colspan="2">Totaal te betalen</td>
+    <td>&euro; {{grossTotalAmount}}</td>
+  </tr>
+</tbody>

@@ -43,7 +43,6 @@
               <th>Datum</th>
               <th>Bedrag</th>
               <th>Bank</th>
-              <th>Voorschot</th>
             </thead>
             <tbody>
               {{#each (await model.deposits) as |deposit|}}
@@ -51,7 +50,6 @@
                   <td>{{moment-format deposit.paymentDate 'L'}}</td>
                   <td>&euro; {{deposit.amount}}</td>
                   <td>{{get (await deposit.payment) "name"}}</td>
-                  <td>{{paper-checkbox value=model.isDeposit onChange=null}}</td>
                 </tr>
               {{/each}}
             </tbody>

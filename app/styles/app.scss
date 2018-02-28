@@ -297,3 +297,15 @@ h6 .small-text-fade {
 .case--button-bar {
   margin-top: 10px;
 }
+
+
+/* Calcualtion table */
+.invoice-calculation-table {
+  .subtotal {
+    font-style: italic;
+  }
+
+  .total {
+    font-weight: bold;
+  }
+}
