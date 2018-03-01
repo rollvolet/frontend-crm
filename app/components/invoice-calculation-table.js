@@ -1,4 +1,3 @@
-import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import { mapBy } from 'ember-awesome-macros/array';
 import { add, product, quotient, subtract, sum } from 'ember-awesome-macros';

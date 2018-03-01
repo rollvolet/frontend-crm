@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { mapBy } from 'ember-awesome-macros/array';
-import { add, product, quotient, subtract, sum } from 'ember-awesome-macros';
+import { sum } from 'ember-awesome-macros';
 import raw from 'ember-macro-helpers/raw';
 
 export default Controller.extend({
