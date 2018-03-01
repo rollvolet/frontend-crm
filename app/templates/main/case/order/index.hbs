@@ -22,39 +22,17 @@
       {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Bedrag"}}
-      {{#detail-list-subitem label="Totaal bestelling"}}
-        &euro; {{model.amount}} ({{get (await model.vatRate) 'name'}} BTW)
+      &euro; {{model.amount}} ({{model.vatRate.rate}}% BTW)
+    {{/detail-list-item}}
+    {{#detail-list-item label="Voorschotten"}}
+      {{paper-checkbox label="Nodig" value=model.depositRequired onChange=null}}
+      {{#detail-list-subitem label="Bedrag" click=(action "openDepositsDialog") class="clickable"}}
+        &euro; {{depositsAmount}} {{paper-icon "info" size=18}}
       {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Voorschot nodig"}}
-        {{paper-checkbox value=model.depositRequired onChange=null}}
-      {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Voorschotten"}}
-        <div>
-          &euro; {{reduce sum 0 (map-by "amount" (await model.deposits))}}
-          {{#if (await model.deposits)}}
-            {{#paper-button iconButton=true onClick=(action "toggleShowDeposits")}}
-              {{paper-icon (if showDeposits "expand less" "expand more")}}
-            {{/paper-button}}
-          {{/if}}
-        </div>
-        {{#liquid-if (and (await model.deposits) showDeposits) class="expand-more"}}
-          <table>
-            <thead>
-              <th>Datum</th>
-              <th>Bedrag</th>
-              <th>Bank</th>
-            </thead>
-            <tbody>
-              {{#each (await model.deposits) as |deposit|}}
-                <tr>
-                  <td>{{moment-format deposit.paymentDate 'L'}}</td>
-                  <td>&euro; {{deposit.amount}}</td>
-                  <td>{{get (await deposit.payment) "name"}}</td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        {{/liquid-if}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Voorschot facturen"}}
+      {{#detail-list-subitem label="Bedrag" click=(action "goToDepositInvoices") class="clickable"}}
+        &euro; {{depositInvoicesAmount}} {{paper-icon "info" size=18}}
       {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Afgesloten"}}
@@ -95,3 +73,43 @@
 </div>
 
 {{liquid-outlet}}
+
+
+{{#if showDepositsDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "closeDepositsDialog") parent=".main-outlet" origin=".main-outlet" clickOutsideToClose=true}}
+    <form>
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Voorschotten</h2><span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "closeDepositsDialog")}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <table>
+          <thead>
+            <th>Datum</th>
+            <th>Bedrag</th>
+            <th>Bank</th>
+          </thead>
+          <tbody>
+            {{#each model.deposits as |deposit|}}
+              <tr>
+                <td>{{moment-format deposit.paymentDate 'L'}}</td>
+                <td>&euro; {{deposit.amount}}</td>
+                <td>{{deposit.payment.name}}</td>
+              </tr>
+            {{else}}
+              <tr><td colspan="3">Geen voorschotten</td></tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "closeDepositsDialog")}}Sluit{{/paper-button}}
+      {{/paper-dialog-actions}}
+    </form>
+  {{/paper-dialog}}
+{{/if}}

@@ -34,7 +34,8 @@ table {
 }
 
 [data-ember-action]:not(:disabled),
-tr.clickable {
+tr.clickable,
+.clickable {
   cursor: pointer;
 }
 
