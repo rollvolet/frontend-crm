@@ -2,7 +2,7 @@
   <thead>
     <th></th>
     <th>Netto</th>
-    <th>{{get model.vatRate 'name'}} BTW</th>
+    <th>{{model.vatRate.rate}}% BTW</th>
   </thead>
   <tbody>
     <tr>
@@ -15,11 +15,11 @@
       <td>&euro; {{supplementsAmount}}</td>
       <td>&euro; {{supplementsVat}}</td>
     </tr>
-    <tr>
+    {{#link-to 'main.case.order.deposit-invoices' model.order tagName='tr' class="clickable"}}
       <td>Voorschotfacturen</td>
       <td>&euro; {{depositInvoicesAmount}}</td>
       <td>&euro; {{depositInvoicesVat}}</td>
-    </tr>
+    {{/link-to}}
     <tr class="subtotal">
       <td>Subtotaal</td>
       <td>&euro; {{subtotalAmount}}</td>

@@ -1,0 +1,41 @@
+<h2>Voorschotfacturen</h2>
+
+<div class="layout-row layout-xs-column layout-align-space-between">
+  <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
+    {{#detail-list-item label="Totaal" displayRow=true}}
+      {{#detail-list-subitem label="Netto"}}
+        &euro; {{totalAmount}}
+      {{/detail-list-subitem}}
+      {{#detail-list-subitem label="BTW"}}
+        &euro; {{totalVat}}
+      {{/detail-list-subitem}}
+    {{/detail-list-item}}
+  </div>
+</div>
+
+<table class="case--deposit-invoices-table">
+  <thead>
+    <th>Nummer</th>
+    <th>Factuurdatum</th>
+    <th>Vervaldatum</th>
+    <th>Nettobedrag</th>
+    <th>BTW</th>
+    <th>Creditnota</th>
+  </thead>
+  <tbody>
+    {{#each model as |invoice|}}
+      <tr>
+        <td>{{invoice.number}}</td>
+        <td>{{moment-format invoice.invoiceDate 'L'}}</td>
+        <td>{{moment-format invoice.dueDate 'L'}}</td>
+        <td>&euro; {{invoice.arithmeticAmount}}</td>
+        <td>&euro; {{invoice.vat}}</td>
+        <td>{{#if invoice.isCreditNote}}{{paper-icon "check"}}{{/if}}</td>
+      </tr>
+    {{else}}
+      <tr><td colspan="6">Geen voorschotfacturen</td></tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{liquid-outlet}}

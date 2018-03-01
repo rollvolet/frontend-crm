@@ -10,8 +10,11 @@
     {{/tabs.tab}}
   {{/if}}
   {{#if case.orderId}}
-    {{#tabs.tab value="main.case.order" href=(href-to "main.case.order" case.orderId)}}
+    {{#tabs.tab value="main.case.order.index" href=(href-to "main.case.order.index" case.orderId)}}
       Bestelling
+    {{/tabs.tab}}
+    {{#tabs.tab value="main.case.order.deposit-invoices" href=(href-to "main.case.order.deposit-invoices" case.orderId)}}
+      Voorschotfacturen
     {{/tabs.tab}}
   {{/if}}
   {{#if case.invoiceId}}

@@ -1,7 +1,8 @@
 import DS from 'ember-data';
 import { computed } from '@ember/object';
+import HasManyQuery from 'ember-data-has-many-query';
 
-export default DS.Model.extend({
+export default DS.Model.extend(HasManyQuery.ModelMixin, {
   orderDate: DS.attr('date'),
   offerNumber: DS.attr(),
   amount: DS.attr(),

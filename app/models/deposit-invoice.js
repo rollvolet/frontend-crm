@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import { conditional, product } from 'ember-awesome-macros';
 
 export default DS.Model.extend({
   year: DS.attr(),
@@ -13,6 +14,7 @@ export default DS.Model.extend({
   vat: DS.attr(),
   totalAmount: DS.attr(),
   isPaidInCash: DS.attr(),
+  isCreditNote: DS.attr(),
   updated: DS.attr('date', {
     defaultValue() { return new Date(); }
   }),
@@ -20,5 +22,9 @@ export default DS.Model.extend({
   invoice: DS.belongsTo('invoice'),
   customer: DS.belongsTo('customer'),
   contact: DS.belongsTo('contact'),
-  building: DS.belongsTo('building')
+  building: DS.belongsTo('building'),
+  vatRate: DS.belongsTo('vat-rate'),
+
+  arithmeticAmount: conditional('isCreditNote', product('amount', -1), 'amount'),
+  arithmeticVat: conditional('isCreditNote', product('vat', -1), 'vat')
 });

@@ -19,7 +19,9 @@ Router.map(function() {
     this.route('case', { path: '/case/:customer_id' }, function() {
       this.route('request', { path: '/request/:request_id' });
       this.route('offer', { path: '/offer/:offer_id' });
-      this.route('order', { path: '/order/:order_id' });
+      this.route('order', { path: '/order/:order_id' }, function() {
+        this.route('deposit-invoices');
+      });
       this.route('invoice', { path: '/invoice/:invoice_id' });
     });
   });
