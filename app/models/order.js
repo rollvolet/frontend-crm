@@ -37,5 +37,10 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, {
   }),
   invoicableTotal: computed('invoicableHours', 'invoicableNbOfPersons', function() {
     return this.get('invoicableHours') * this.get('invoicableNbOfPersons');
+  }),
+  execution: computed('mustBeInstalled', 'mustBeDelivered', function() {
+    if (this.get('mustBeInstalled')) return 'installation';
+    else if (this.get('mustBeDelivered')) return 'delivery';
+    else return 'pickup';
   })
 });

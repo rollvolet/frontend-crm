@@ -52,14 +52,15 @@
     {{/detail-list-item}}
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
-    {{#detail-list-item label="Plaatsing"}}
-      {{paper-checkbox value=model.mustBeInstalled onChange=null}}
+    {{#detail-list-item label="Uitvoering"}}
+      {{#paper-radio-group groupValue=(readonly model.execution) onChange=null as |group|}}
+        {{#group.radio value='installation'}}{{order-execution 'installation'}}{{/group.radio}}
+        {{#group.radio value='delivery'}}{{order-execution 'delivery'}}{{/group.radio}}
+        {{#group.radio value='pickup'}}{{order-execution 'pickup'}}{{/group.radio}}
+      {{/paper-radio-group}}
     {{/detail-list-item}}
     {{#detail-list-item label="Productiebon"}}
       {{paper-checkbox value=model.hasProductionTicket onChange=null}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Te leveren"}}
-      {{paper-checkbox value=model.mustBeDelivered onChange=null}}
     {{/detail-list-item}}
     {{#detail-list-item label="Product klaar"}}
       {{paper-checkbox value=model.isReady onChange=null}}
