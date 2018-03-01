@@ -76,7 +76,7 @@
       {{#c.body as |row|}}
         <td>{{row.request.id}}</td>
         <td>{{row.number}}</td>
-        <td>{{moment-format row.offerDate 'L'}}</td>
+        <td>{{fmt-date row.offerDate}}</td>
         {{#if (await row.building)}}
           <td>{{paper-icon "home"}}</td>
           <td>

@@ -26,8 +26,8 @@
     {{#each model as |invoice|}}
       <tr>
         <td>{{invoice.number}}</td>
-        <td>{{moment-format invoice.invoiceDate 'L'}}</td>
-        <td>{{moment-format invoice.dueDate 'L'}}</td>
+        <td>{{fmt-date invoice.invoiceDate}}</td>
+        <td>{{fmt-date invoice.dueDate}}</td>
         <td>{{fmt-currency invoice.arithmeticAmount}}</td>
         <td>{{fmt-currency invoice.vat}}</td>
         <td>{{#if invoice.isCreditNote}}{{paper-icon "check"}}{{/if}}</td>

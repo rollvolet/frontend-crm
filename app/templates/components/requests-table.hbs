@@ -24,7 +24,7 @@
     {{/c.header}}
     {{#c.body as |row|}}
       <td>{{row.id}}</td>
-      <td>{{moment-format row.requestDate 'L'}}</td>
+      <td>{{fmt-date row.requestDate}}</td>
       <td>{{get (await row.building) 'printName'}}</td>
       <td>{{get (await row.building) 'address1'}}</td>
       <td>{{get (await row.building) 'postalCode'}}</td>

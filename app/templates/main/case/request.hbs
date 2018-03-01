@@ -3,7 +3,7 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--request--entry flex-100 layout-column">
     {{#detail-list-item label="Datum"}}
-      {{moment-format model.requestDate 'L'}}
+      {{fmt-date model.requestDate}}
     {{/detail-list-item}}
     {{#detail-list-item label="Aanmelding"}}
       {{get (await model.wayOfEntry) 'name'}}
@@ -23,7 +23,7 @@
       <div class="case--request--visit">
         <h3>{{paper-icon "event"}} Bezoek</h3>
         {{#detail-list-item label="Datum"}}
-          {{moment-format (get (await model.visit) 'visitDate') 'L'}}
+          {{fmt-date model.visit.visitDate}}
         {{/detail-list-item}}
         {{#detail-list-item label="Bezoeker"}}
           {{get (await model.visit) 'visitor'}}

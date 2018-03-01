@@ -72,7 +72,7 @@
       {{/c.header}}
       {{#c.body as |row|}}
         <td>{{row.offerNumber}}</td>
-        <td>{{moment-format row.orderDate 'L'}}</td>
+        <td>{{fmt-date row.orderDate}}</td>
         {{#if (await row.building)}}
           <td>{{paper-icon "home"}}</td>
           <td>

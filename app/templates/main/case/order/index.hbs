@@ -4,13 +4,13 @@
   <div class="case--left-panel case--order--entry flex-100 layout-column">
     {{#detail-list-item label="Datum"}}
       {{#detail-list-subitem label="Bestelling"}}
-        {{#if model.orderDate}}{{moment-format model.orderDate 'L'}}{{else}}-{{/if}}
+        {{fmt-date model.orderDate}}
       {{/detail-list-subitem}}
       {{#detail-list-subitem label="Verwacht"}}
-        {{#if model.expectedDate}}{{moment-format model.expectedDate 'L'}}{{else}}-{{/if}}
+        {{fmt-date model.expectedDate}}
       {{/detail-list-subitem}}
       {{#detail-list-subitem label="Vereist"}}
-        {{#if model.requiredDate}}{{moment-format model.requiredDate 'L'}}{{else}}-{{/if}}
+        {{fmt-date model.requiredDate}}
       {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Werkuren"}}
@@ -96,7 +96,7 @@
           <tbody>
             {{#each model.deposits as |deposit|}}
               <tr>
-                <td>{{moment-format deposit.paymentDate 'L'}}</td>
+                <td>{{fmt-date deposit.paymentDate}}</td>
                 <td>{{fmt-currency deposit.amount}}</td>
                 <td>{{deposit.payment.name}}</td>
               </tr>

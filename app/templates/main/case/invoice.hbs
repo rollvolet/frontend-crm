@@ -4,16 +4,16 @@
   <div class="case--left-panel case--invoice--entry flex-100 layout-column">
     {{#detail-list-item label="Datum"}}
       {{#detail-list-subitem label="Factuurdatum"}}
-        {{#if model.invoiceDate}}{{moment-format model.invoiceDate 'L'}}{{else}}-{{/if}}
+        {{fmt-date model.invoiceDate}}
       {{/detail-list-subitem}}
       {{#detail-list-subitem label="Vervaldatum"}}
-        {{#if model.dueDate}}{{moment-format model.dueDate 'L'}}{{else}}-{{/if}}
+        {{fmt-date model.dueDate}}
       {{/detail-list-subitem}}
       {{#detail-list-subitem label="Geboekt"}}
-        {{#if model.bookingDate}}{{moment-format model.bookingDate 'L'}}{{else}}-{{/if}}
+        {{fmt-date model.bookingDate}}
       {{/detail-list-subitem}}
       {{#detail-list-subitem label="Betaald"}}
-        {{#if model.paymentDate}}{{moment-format model.paymentDate 'L'}}{{else}}-{{/if}}
+        {{fmt-date model.paymentDate}}
       {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Referentie"}}

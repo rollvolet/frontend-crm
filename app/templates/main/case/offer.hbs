@@ -3,7 +3,7 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--offer--entry flex-100 layout-column">
     {{#detail-list-item label="Datum"}}
-      {{moment-format model.offerDate 'L'}}
+      {{fmt-date model.offerDate}}
     {{/detail-list-item}}
     {{#detail-list-item label="Volgnummer"}}
       {{model.sequenceNumber}}
@@ -15,7 +15,7 @@
       {{model.foreseenHours}} uur x {{model.foreseenNbOfPersons}} man = {{model.foreseenTotal}} uur
     {{/detail-list-item}}
     {{#detail-list-item label="Verzonden"}}
-      {{moment-format model.submissionDate 'L'}} {{get (await model.submissionType) 'name'}}
+      {{fmt-date model.submissionDate}} {{get (await model.submissionType) 'name'}}
     {{/detail-list-item}}
     {{#detail-list-item label="Referentie"}}
       {{model.reference}}
