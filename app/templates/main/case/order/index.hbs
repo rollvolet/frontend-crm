@@ -22,17 +22,17 @@
       {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Bedrag"}}
-      &euro; {{model.amount}} ({{model.vatRate.rate}}% BTW)
+      {{fmt-currency model.amount}} ({{model.vatRate.rate}}% BTW)
     {{/detail-list-item}}
     {{#detail-list-item label="Voorschotten"}}
       {{paper-checkbox label="Nodig" value=model.depositRequired onChange=null}}
       {{#detail-list-subitem label="Bedrag" click=(action "openDepositsDialog") class="clickable"}}
-        &euro; {{depositsAmount}} {{paper-icon "info" size=18}}
+        {{fmt-currency depositsAmount}} {{paper-icon "info" size=18}}
       {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Voorschot facturen"}}
       {{#detail-list-subitem label="Bedrag" click=(action "goToDepositInvoices") class="clickable"}}
-        &euro; {{depositInvoicesAmount}} {{paper-icon "info" size=18}}
+        {{fmt-currency depositInvoicesAmount}} {{paper-icon "info" size=18}}
       {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Afgesloten"}}
@@ -97,7 +97,7 @@
             {{#each model.deposits as |deposit|}}
               <tr>
                 <td>{{moment-format deposit.paymentDate 'L'}}</td>
-                <td>&euro; {{deposit.amount}}</td>
+                <td>{{fmt-currency deposit.amount}}</td>
                 <td>{{deposit.payment.name}}</td>
               </tr>
             {{else}}

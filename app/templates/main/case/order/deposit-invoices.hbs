@@ -4,10 +4,10 @@
   <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
     {{#detail-list-item label="Totaal" displayRow=true}}
       {{#detail-list-subitem label="Netto"}}
-        &euro; {{totalAmount}}
+        {{fmt-currency totalAmount}}
       {{/detail-list-subitem}}
       {{#detail-list-subitem label="BTW"}}
-        &euro; {{totalVat}}
+        {{fmt-currency totalVat}}
       {{/detail-list-subitem}}
     {{/detail-list-item}}
   </div>
@@ -28,8 +28,8 @@
         <td>{{invoice.number}}</td>
         <td>{{moment-format invoice.invoiceDate 'L'}}</td>
         <td>{{moment-format invoice.dueDate 'L'}}</td>
-        <td>&euro; {{invoice.arithmeticAmount}}</td>
-        <td>&euro; {{invoice.vat}}</td>
+        <td>{{fmt-currency invoice.arithmeticAmount}}</td>
+        <td>{{fmt-currency invoice.vat}}</td>
         <td>{{#if invoice.isCreditNote}}{{paper-icon "check"}}{{/if}}</td>
       </tr>
     {{else}}

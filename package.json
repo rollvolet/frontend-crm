@@ -40,6 +40,7 @@
     "ember-data": "~2.18.0",
     "ember-data-has-many-query": "^0.2.0",
     "ember-data-table": "^1.0.0-alpha.3",
+    "ember-dynamic-format-currency": "git+ssh://git@github.com:erikap/ember-dynamic-format-currency.git",
     "ember-export-application-global": "^2.0.0",
     "ember-href-to": "^1.15.1",
     "ember-load-initializers": "^1.0.0",
