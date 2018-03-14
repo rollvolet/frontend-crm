@@ -32,8 +32,7 @@ module.exports = function(environment) {
         'azure-oauth2': {
           apiKey: 'de1c3029-8d4c-46ab-b3a7-717cac926280',
           redirectUri: 'http://localhost:4200/torii/redirect.html',
-          state: "STATE",
-          tokenExchangeUri: 'authentication/token'
+          state: "STATE"
         }
       }
     }
