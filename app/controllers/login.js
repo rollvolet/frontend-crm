@@ -5,7 +5,7 @@ export default Controller.extend({
   session: inject(),
   actions: {
     login() {
-      this.get('session').authenticate('authenticator:torii', 'azure-oauth2').catch((reason) => {
+      this.get('session').authenticate('authenticator:torii', 'azure-ad2-oauth2').catch((reason) => {
         this.set('errorMessage', reason.error || reason);
       });
     },

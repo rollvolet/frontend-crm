@@ -29,10 +29,11 @@ module.exports = function(environment) {
     torii: {
       disableRedirectInitializer: true,
       providers: {
-        'azure-oauth2': {
+        'azure-ad2-oauth2': {
+          tenantId: '3e9b8827-39f2-4fb4-9bc1-f8a200aaea79',
           apiKey: 'de1c3029-8d4c-46ab-b3a7-717cac926280',
-          redirectUri: 'http://localhost:4200/torii/redirect.html',
-          state: "STATE"
+          scope: 'offline_access Calendars.Read Calendars.Read.Shared Calendars.ReadWrite Calendars.ReadWrite.Shared User.Read',
+          redirectUri: 'http://localhost:4200/torii/redirect.html'
         }
       }
     }

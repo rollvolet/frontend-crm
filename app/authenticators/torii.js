@@ -3,10 +3,11 @@ import { Promise, resolve } from 'rsvp';
 import { run, later, cancel } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import { inject } from '@ember/service';
+import config from '../config/environment';
 import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
 
 /**
- * Azure AD OAuth2 authenticator that supports automatic token refresh.
+ * Azure AD 2.0 OAuth2 authenticator that supports automatic token refresh.
  *
  * Inspired by the JWT authenticator of ember-simple-auth-token
 */
@@ -19,7 +20,7 @@ export default ToriiAuthenticator.extend({
   refreshLeeway: 60, // in seconds
   refreshTokenTimeout: null,
 
-  toriiProvider: 'azure-oauth2',
+  toriiProvider: 'azure-ad2-oauth2',
 
   authenticate() {
     return this._super(...arguments) // get authorization code through Torii
@@ -43,9 +44,8 @@ export default ToriiAuthenticator.extend({
         this.scheduleAccessTokenRefresh(expiresAt, refreshToken);
 
         if (!this.get('refreshTokenTimeout')) {
-          // no refresh token task scheduled in the future
-          // attempt to refresh the token now
-          // if the server rejects the token the user session will be invalidated
+          // No refresh token task scheduled in the future. Attempt to refresh the token now.
+          // If the server rejects the token the user session will be invalidated
           return new resolve(this.refreshAccessToken(refreshToken));
         } else {
           return new resolve(data);
@@ -60,7 +60,8 @@ export default ToriiAuthenticator.extend({
       contentType: 'application/json',
       data: JSON.stringify({
         authorizationCode: data.authorizationCode,
-        redirectUri: data.redirectUri
+        redirectUri: data.redirectUri,
+        scope: config.torii.providers['azure-ad2-oauth2'].scope
       })
     }).then( (response) => {
       return this.handleAuthResponse(response);
@@ -68,7 +69,7 @@ export default ToriiAuthenticator.extend({
   },
 
   handleAuthResponse(response) {
-    const expiresAt = response.expires_on;
+    const expiresAt = (Date.now() + response.expires_in * 1000) / 1000;
     const refreshToken = response.refresh_token;
     this.scheduleAccessTokenRefresh(expiresAt, refreshToken);
 
@@ -107,7 +108,9 @@ export default ToriiAuthenticator.extend({
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify({
-          refreshtoken: refreshToken
+          refreshToken: refreshToken,
+          redirectUri: config.torii.providers['azure-ad2-oauth2'].redirectUri,
+          scope: config.torii.providers['azure-ad2-oauth2'].scope
         })
       }).then( (response) => {
         run(() => {
