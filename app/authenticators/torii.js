@@ -81,9 +81,8 @@ export default ToriiAuthenticator.extend({
       'refresh_token': refreshToken,
       expiresAt: expiresAt,
       user: {
-        account: tokenData.unique_name,
-        givenName: tokenData.given_name,
-        familyName: tokenData.family_name
+        account: tokenData.preferred_username,
+        name: tokenData.name
       }
     };
   },

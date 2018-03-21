@@ -31,8 +31,8 @@ module.exports = function(environment) {
       providers: {
         'azure-ad2-oauth2': {
           tenantId: '3e9b8827-39f2-4fb4-9bc1-f8a200aaea79',
-          apiKey: 'de1c3029-8d4c-46ab-b3a7-717cac926280',
-          scope: 'offline_access Calendars.Read Calendars.Read.Shared Calendars.ReadWrite Calendars.ReadWrite.Shared User.Read',
+          apiKey: '73f6618e-be24-4ab5-a1da-4f368448fd96',
+          scope: 'api://73f6618e-be24-4ab5-a1da-4f368448fd96/access_as_user offline_access',
           redirectUri: 'http://localhost:4200/torii/redirect.html'
         }
       }
@@ -60,7 +60,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.torii.providers['azure-oauth2'].apiKey = 'bd3082cc-72b4-4daf-bf00-fe35e5b8245a';
+    ENV.torii.providers['azure-oauth2'].apiKey = '552ea087-fcd9-4d53-911b-19b11ff6631a';
+    ENV.torii.providers['azure-oauth2'].scope = 'api://552ea087-fcd9-4d53-911b-19b11ff6631a/access_as_user offline_access',
     ENV.torii.providers['azure-oauth2'].redirectUri = 'https://rollvolet-crm.moof-it.be/torii/redirect.html';
     // here you can enable a production-specific feature
   }
