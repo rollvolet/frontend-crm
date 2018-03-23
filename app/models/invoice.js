@@ -2,7 +2,6 @@ import { computed } from '@ember/object';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  year: DS.attr(),
   number: DS.attr(),
   invoiceDate: DS.attr('date'),
   dueDate: DS.attr('date'),

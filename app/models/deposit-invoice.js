@@ -2,7 +2,6 @@ import DS from 'ember-data';
 import { conditional, product } from 'ember-awesome-macros';
 
 export default DS.Model.extend({
-  year: DS.attr(),
   number: DS.attr(),
   invoiceDate: DS.attr('date'),
   dueDate: DS.attr('date'),
