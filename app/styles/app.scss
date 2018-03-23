@@ -138,6 +138,20 @@ h6 .small-text-fade {
   }
 }
 
+/* Loading page */
+.loading-page {
+  min-height: 300px;
+
+  .loader {
+    min-width: 300px;
+    text-align: center;
+
+    p {
+      color: color('grey');
+    }
+  }
+}
+
 /* Table filters */
 .data-table-filters {
   border: 1px solid $table-border-color;
