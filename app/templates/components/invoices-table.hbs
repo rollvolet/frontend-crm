@@ -25,7 +25,7 @@
       <th>Gemeente</th>
     {{/c.header}}
     {{#c.body as |row|}}
-      <td>{{row.number}}</td>
+      <td>{{format-invoice-number row.number}}</td>
       <td>{{row.reference}}</td>
       <td>{{fmt-date row.invoiceDate}}</td>
       <td>{{get (await row.building) 'printName'}}</td>

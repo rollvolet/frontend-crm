@@ -25,7 +25,7 @@
   <tbody>
     {{#each model as |invoice|}}
       <tr>
-        <td>{{invoice.number}}</td>
+        <td>{{format-invoice-number invoice.number}}</td>
         <td>{{fmt-date invoice.invoiceDate}}</td>
         <td>{{fmt-date invoice.dueDate}}</td>
         <td>{{fmt-currency invoice.arithmeticAmount}}</td>
