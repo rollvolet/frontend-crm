@@ -1,0 +1,93 @@
+<h1>Voorschotfacturen</h1>
+
+<div class="deposit-invoices-data-table">
+  <div class="data-table-filters">
+    <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
+    <div class="layout-row flex layout-align-space-between-start">
+      <div class="layout-column">
+        <div class="layout-row data-table-filter--line">
+          <div class="layout-column data-table-filter--group">
+            <div class="data-table-filters--group-title"></div>
+            <div class="layout-row data-table-filters--group-fields">
+              {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number") class="small-input"}}
+            </div>
+          </div>
+          <div class="layout-column data-table-filter--group">
+            <div class="data-table-filters--group-title">Klant</div>
+            <div class="layout-row data-table-filters--group-fields">
+              {{paper-input label="Naam" value=cNameFilter onChange=(action "setFilter" "cName")}}
+              {{paper-input label="Adres" value=cStreetFilter onChange=(action "setFilter" "cStreet") class="large-input"}}
+              {{paper-input label="Postcode" value=cPostalCodeFilter onChange=(action "setFilter" "cPostalCode") class="small-input"}}
+              {{paper-input label="Gemeente" value=cCityFilter onChange=(action "setFilter" "cCity")}}
+              {{paper-input label="Telefoon" value=cTelephoneFilter onChange=(action "setFilter" "cTelephone")}}
+            </div>
+          </div>
+        </div>
+        <div class="layout-row data-table-filter--line">
+          <div class="layout-column data-table-filter--group">
+            <div class="data-table-filters--group-title"></div>
+            <div class="layout-row data-table-filters--group-fields">
+              {{paper-input label="Offerte" value=offerNumberFilter onChange=(action "setFilter" "offerNumber") class="small-input"}}
+              {{paper-input label="Referentie" value=referenceFilter onChange=(action "setFilter" "reference")}}
+            </div>
+          </div>
+          <div class="layout-column data-table-filter--group">
+            <div class="data-table-filters--group-title">Gebouw</div>
+            <div class="layout-row data-table-filters--group-fields">
+              {{paper-input label="Naam" value=bNameFilter onChange=(action "setFilter" "bName")}}
+              {{paper-input label="Adres" value=bStreetFilter onChange=(action "setFilter" "bStreet") class="large-input"}}
+              {{paper-input label="Postcode" value=bPostalCodeFilter onChange=(action "setFilter" "bPostalCode") class="small-input"}}
+              {{paper-input label="Gemeente" value=bCityFilter onChange=(action "setFilter" "bCity")}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-table-filters--reset">
+        {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+          {{paper-icon "close"}}
+          {{#paper-tooltip}}Verwijder filters{{/paper-tooltip}}
+        {{/paper-button}}
+      </div>
+    </div>
+  </div>
+
+  {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
+       sort=sort page=page size=size onClickRow=(action 'clickRow') as |t|}}
+    {{#t.content as |c|}}
+      {{#c.header}}
+        {{th-sortable field='number' currentSorting=sort label='Nr'}}
+        {{th-sortable field='offer.number' currentSorting=sort label='Offerte'}}
+        {{th-sortable field='invoice-date' currentSorting=sort label='Datum'}}
+        <th><!-- customer / building --></th>
+        <th>Naam</th>
+        <th>Adres</th>
+        <th>Postcode</th>
+        <th>Gemeente</th>
+      {{/c.header}}
+      {{#c.body as |row|}}
+        <td>{{format-invoice-number row.number}}</td>
+        <td>{{row.order.offerNumber}}</td>
+        <td>{{fmt-date row.invoiceDate}}</td>
+        {{#if (await row.building)}}
+          <td>{{paper-icon "home"}}</td>
+          <td>
+            {{get (await row.building) 'printName'}}
+            <span class="text-fade">({{print-name model=(await row.customer)}})</span>
+          </td>
+          <td>{{get (await row.building) 'address1'}}</td>
+          <td>{{get (await row.building) 'postalCode'}}</td>
+          <td>{{get (await row.building) 'city'}}</td>
+        {{else}}
+          <td>{{paper-icon "person"}}</td>
+          <td>{{print-name model=(await row.customer)}}</td>
+          <td>{{get (await row.customer) 'address1'}}</td>
+          <td>{{get (await row.customer) 'postalCode'}}</td>
+          <td>{{get (await row.customer) 'city'}}</td>
+        {{/if}}
+      {{/c.body}}
+    {{/t.content}}
+  {{/data-table}}
+</div>
+
+{{liquid-outlet}}
