@@ -37,6 +37,7 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, {
   requests: DS.hasMany('request'),
   offers: DS.hasMany('offer'),
   orders: DS.hasMany('order'),
-  invoices: DS.hasMany('invoices'),
+  depositInvoices: DS.hasMany('deposit-invoice'),
+  invoices: DS.hasMany('invoice'),
   tags: DS.hasMany('tag')
 });

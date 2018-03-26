@@ -17,7 +17,12 @@ export default Controller.extend({
     goToOrderDetail(row) {
       const customer = this.get('model');
       const orderId = row.get('id');
-      this.transitionToRoute('main.case.order', customer, orderId);
+      this.transitionToRoute('main.case.order.index', customer, orderId);
+    },
+    goToDepositInvoiceDetail(row) {
+      const customer = this.get('model');
+      const orderId = row.get('order.id');
+      this.transitionToRoute('main.case.order.deposit-invoices', customer, orderId);
     },
     goToInvoiceDetail(row) {
       const customer = this.get('model');
