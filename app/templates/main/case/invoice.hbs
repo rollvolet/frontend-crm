@@ -17,7 +17,7 @@
       {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Werkuren" click=(action "openWorkingHoursDialog") class="clickable"}}
-      {{workingHoursAmount}} {{paper-icon "info" size=18}}
+      {{fmt-decimal workingHoursAmount}} {{paper-icon "info" size=18}}
     {{/detail-list-item}}
     {{#detail-list-item label="Referentie"}}
       {{model.reference}}
@@ -74,7 +74,7 @@
             {{#each model.workingHours as |workingHour|}}
               <tr>
                 <td>{{fmt-date workingHour.date}}</td>
-                <td>{{workingHour.amount}}</td>
+                <td>{{fmt-decimal workingHour.amount}}</td>
                 <td>{{workingHour.employee.firstName}}</td>
               </tr>
             {{else}}
