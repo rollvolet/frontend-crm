@@ -1,4 +1,3 @@
-import { computed } from '@ember/object';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -18,8 +17,6 @@ export default DS.Model.extend({
   certificateClosed: DS.attr(),
   isCreditNote: DS.attr(),
   hasProductionTicket: DS.attr(),
-  performedHours: DS.attr(),
-  performedNbOfPersons: DS.attr(),
   certificateUrl: DS.attr(),
   comment: DS.attr(),
   qualification: DS.attr(),
@@ -33,10 +30,7 @@ export default DS.Model.extend({
   building: DS.belongsTo('building'),
   vatRate: DS.belongsTo('vat-rate'),
   supplements: DS.hasMany('invoice-supplement'),
-  deposits: DS.hasMany('deposits'),
-  depositInvoices: DS.hasMany('deposit-invoices'),
-
-  performedTotal: computed('performedHours', 'performedNbOfPersons', function() {
-    return this.get('performedHours') * this.get('performedNbOfPersons');
-  })
+  deposits: DS.hasMany('deposit'),
+  depositInvoices: DS.hasMany('deposit-invoice'),
+  workingHours: DS.hasMany('working-hour')
 });

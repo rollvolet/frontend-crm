@@ -16,11 +16,11 @@
         {{fmt-date model.paymentDate}}
       {{/detail-list-subitem}}
     {{/detail-list-item}}
+    {{#detail-list-item label="Werkuren" click=(action "openWorkingHoursDialog") class="clickable"}}
+      {{workingHoursAmount}} {{paper-icon "info" size=18}}
+    {{/detail-list-item}}
     {{#detail-list-item label="Referentie"}}
       {{model.reference}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Werkuren"}}
-      {{model.performedHours}} uur x {{model.performedNbOfPersons}} man = {{model.performedTotal}} uur
     {{/detail-list-item}}
     {{#detail-list-item label="BTW-attest"}}
       {{paper-checkbox label="Nodig" value=model.certificateRequired onChange=null}}
@@ -52,3 +52,42 @@
 </div>
 
 {{liquid-outlet}}
+
+{{#if showWorkingHoursDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "closeWorkingHoursDialog") parent=".main-outlet" origin=".main-outlet" clickOutsideToClose=true}}
+    <form>
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Werkuren</h2><span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "closeWorkingHoursDialog")}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <table>
+          <thead>
+            <th>Datum</th>
+            <th>Uren</th>
+            <th>Technieker</th>
+          </thead>
+          <tbody>
+            {{#each model.workingHours as |workingHour|}}
+              <tr>
+                <td>{{fmt-date workingHour.date}}</td>
+                <td>{{workingHour.amount}}</td>
+                <td>{{workingHour.employee.firstName}}</td>
+              </tr>
+            {{else}}
+              <tr><td colspan="3">Geen werkuren</td></tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "closeWorkingHoursDialog")}}Sluit{{/paper-button}}
+      {{/paper-dialog-actions}}
+    </form>
+  {{/paper-dialog}}
+{{/if}}
