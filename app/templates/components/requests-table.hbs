@@ -25,10 +25,10 @@
     {{#c.body as |row|}}
       <td>{{row.id}}</td>
       <td>{{fmt-date row.requestDate}}</td>
-      <td>{{get (await row.building) 'printName'}}</td>
-      <td>{{get (await row.building) 'address1'}}</td>
-      <td>{{get (await row.building) 'postalCode'}}</td>
-      <td>{{get (await row.building) 'city'}}</td>
+      <td>{{row.building.printName}}</td>
+      <td>{{row.building.address1}}</td>
+      <td>{{row.building.postalCode}}</td>
+      <td>{{row.building.city}}</td>
     {{/c.body}}
   {{/t.content}}
 {{/data-table}}

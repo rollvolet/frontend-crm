@@ -29,14 +29,14 @@
       {{/c.header}}
       {{#c.body as |row|}}
         <td>{{row.number}}</td>
-        <td>{{get (await row.honorificPrefix) 'name'}}</td>
+        <td>{{row.honorificPrefix.name}}</td>
         <td>{{row.prefix}}</td>
         <td>{{row.name}}</td>
         <td>{{row.address}}</td>
         <td>{{row.postalCode}}</td>
         <td>{{row.city}}</td>
-        <td>{{get (await row.country) 'name'}}</td>
-        <td>{{get (await row.language) 'name'}}</td>
+        <td>{{row.country.name}}</td>
+        <td>{{row.language.name}}</td>
       {{/c.body}}
     {{/t.content}}
   {{/data-table}}
@@ -51,9 +51,9 @@
         <div class="resource-details--section resource-details--section-name layout-row">
           <div class="category-icon">{{#if selectedContact.isCompany}}{{paper-icon "business"}}{{else}}{{paper-icon "home"}}{{/if}}</div>
           <div>
-            {{#if selectedContact.printInFront}}{{get (await selectedContact.honorificPrefix) 'name'}}{{/if}}
+            {{#if selectedContact.printInFront}}{{selectedContact.honorificPrefix.name}}{{/if}}
             {{selectedContact.prefix}} {{selectedContact.name}} {{selectedContact.suffix}}
-            {{#if (not selectedContact.printInFront)}}{{get (await selectedContact.honorificPrefix) 'name'}}{{/if}}
+            {{#if (not selectedContact.printInFront)}}{{selectedContact.honorificPrefix.name}}{{/if}}
           </div>
         </div>
         <div class="resource-details--section resource-details--section-address layout-row">
@@ -63,13 +63,13 @@
             <div>{{selectedContact.address2}}</div>
             <div>{{selectedContact.address3}}</div>
             <div>{{selectedContact.postalCode}} {{selectedContact.city}}</div>
-            <div>{{get (await selectedContact.country) 'name'}}</div>
+            <div>{{selectedContact.country.name}}</div>
           </div>
         </div>
         <div class="resource-details--section resource-details--section-language layout-row">
           <div class="category-icon">{{paper-icon "language"}}</div>
           <div>
-            <div>{{get (await selectedContact.language) 'name'}}</div>
+            <div>{{selectedContact.language.name}}</div>
           </div>
         </div>
       </div>
@@ -77,10 +77,10 @@
         <div class="resource-details--section resource-details--section-telephone layout-row">
           <div class="category-icon">{{paper-icon "phone"}}</div>
           <div>
-            {{#each (await selectedContact.telephones) as |tel|}}
+            {{#each selectedContact.telephones as |tel|}}
               <div>
-                {{get (await tel.telephoneType) 'name'}}:
-                {{format-phone (concat (get (await tel.country) 'telephonePrefix') " " tel.fullNumber)}}
+                {{tel.telephoneType.name}}:
+                {{format-phone (concat tel.country.telephonePrefix " " tel.fullNumber)}}
                 {{#if tel.memo}}({{tel.memo}}){{/if}}
               </div>
             {{/each}}

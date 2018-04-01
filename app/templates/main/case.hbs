@@ -17,9 +17,9 @@
            label=(if model.isCompany "Bedrijf" "Naam")
            class="resource-details--section-name"}}
         <div>
-          {{#if model.printInFront}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
+          {{#if model.printInFront}}{{model.honorificPrefix.name}}{{/if}}
           {{model.prefix}} {{model.name}} {{model.suffix}}
-          {{#if (not model.printInFront)}}{{get (await model.honorificPrefix) 'name'}}{{/if}}
+          {{#if (not model.printInFront)}}{{model.honorificPrefix.name}}{{/if}}
         </div>
         <div>{{model.vatNumber}}</div>
       {{/detail-icon-list-item}}
@@ -29,18 +29,18 @@
         <div>{{model.address2}}</div>
         <div>{{model.address3}}</div>
         <div>{{model.postalCode}} {{model.city}}</div>
-        <div>{{get (await model.country) 'name'}}</div>
+        <div>{{model.country.name}}</div>
       {{/detail-icon-list-item}}
 
       {{#detail-icon-list-item icon="language" label="Taal" class="resource-details--section-language"}}
-        {{get (await model.language) 'name'}}
+        {{model.language.name}}
       {{/detail-icon-list-item}}
 
       {{#detail-icon-list-item icon="phone" label="Telefoon" class="resource-details--section-telephone"}}
-        {{#each (await model.telephones) as |tel|}}
+        {{#each model.telephones as |tel|}}
           <div>
-            {{get (await tel.telephoneType) 'name'}}:
-            {{format-phone (concat (get (await tel.country) 'telephonePrefix') " " tel.fullNumber)}}
+            {{tel.telephoneType.name}}:
+            {{format-phone (concat tel.country.telephonePrefix " " tel.fullNumber)}}
             {{#if tel.memo}}({{tel.memo}}){{/if}}
           </div>
         {{/each}}

@@ -6,7 +6,7 @@
       {{fmt-date model.requestDate}}
     {{/detail-list-item}}
     {{#detail-list-item label="Aanmelding"}}
-      {{get (await model.wayOfEntry) 'name'}}
+      {{model.wayOfEntry.name}}
     {{/detail-list-item}}
     {{#detail-list-item label="Bediende"}}
       {{model.employee}}
@@ -15,7 +15,7 @@
       {{paper-checkbox value=model.requiresVisit onChange=null}}
     {{/detail-list-item}}
     {{#detail-list-item label="Opmerking"}}
-      <span class="html-body">{{get (await model.visit) 'comment'}}</span>
+      <span class="html-body">{{model.visit.comment}}</span>
     {{/detail-list-item}}
   </div>
   {{#if model.visit}}
@@ -26,10 +26,10 @@
           {{fmt-date model.visit.visitDate}}
         {{/detail-list-item}}
         {{#detail-list-item label="Bezoeker"}}
-          {{get (await model.visit) 'visitor'}}
+          {{model.visit.visitor}}
         {{/detail-list-item}}
-        {{#detail-list-item label="Outlook"}}
-          {{get (await model.visit) 'calendarSubject'}}
+        {{#detail-list-item label="Agenda"}}
+          {{model.visit.calendarSubject}}
         {{/detail-list-item}}
       </div>
     </div>
