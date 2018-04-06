@@ -43,7 +43,7 @@ export default Component.extend({
       const headers = {};
       headers[headerName] = headerValue;
 
-      this.get('ajax').request(`/cases?${queryParam}`, { headers: headers })
+      this.get('ajax').request(`/api/cases?${queryParam}`, { headers: headers })
         .then((response) => this.set('case', response));
     });
   }

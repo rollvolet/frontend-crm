@@ -3,5 +3,6 @@ import HasManyQuery from 'ember-data-has-many-query';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
 export default DS.JSONAPIAdapter.extend(HasManyQuery.RESTAdapterMixin, DataAdapterMixin, {
+  namespace: 'api',
   authorizer: 'authorizer:oauth2'
 });
