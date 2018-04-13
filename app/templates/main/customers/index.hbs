@@ -1,4 +1,7 @@
-<h1>Klanten</h1>
+<div class="layout-row layout-align-space-between-center">
+  <h1>Klanten</h1>
+  {{#paper-button primary=true fab=true raised=true onClick=(transition-to "main.customers.new")}}{{paper-icon "add"}}{{/paper-button}}
+</div>
 
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>

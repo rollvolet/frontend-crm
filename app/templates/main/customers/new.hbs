@@ -1,0 +1,102 @@
+<h1>Nieuw klant</h1>
+
+<div class="layout-column">
+  <div class="layout-row layout-xs-column layout-align-start-center">
+    {{#paper-radio-group groupValue=model.isCompany onChange=(action (mut model.isCompany)) class="layout-row" as |group|}}
+      {{#group.radio value=false}}Particulier{{/group.radio}}
+      {{#group.radio value=true}}Bedrijf{{/group.radio}}
+    {{/paper-radio-group}}
+    {{#if model.isCompany}}{{paper-input class="flex-50 spacer-left" label="BTW nummer" value=model.vatNumber onChange=(action (mut model.vatNumber))}}{{/if}}
+  </div>
+  <h4>
+    Geprinte naam: {{#if model.printInFront}}{{honorificPrefix.name}}{{/if}}
+    {{#if model.printPrefix}}{{model.prefix}}{{/if}} {{model.name}} {{#if model.printSuffix}}{{model.suffix}}{{/if}}
+    {{#if (not model.printInFront)}}{{honorificPrefix.name}}{{/if}}
+  </h4>
+  <div class="layout-row layout-align-start-center">
+    {{#paper-select label="Aanspreektitel" options=honorificPrefixesByLanguage selected=honorificPrefix onChange=(action (mut honorificPrefix)) class="flex-50" as |option|}}
+      {{option.name}}
+    {{/paper-select}}
+    <div>{{paper-checkbox label="Print vooraan" value=model.printInFront onChange=(action (mut model.printInFront))}}</div>
+  </div>
+  <div class="layout-row layout-xs-column">
+    <div class="layout-column layout-align-start-end flex-20">
+      {{paper-input class="no-spacer-bottom" label="Prefix" value=model.prefix onChange=(action (mut model.prefix))}}
+      {{paper-checkbox label="Print" value=model.printPrefix onChange=(action (mut model.printPrefix))}}
+    </div>
+    {{paper-input class="flex-60" label="Naam" value=model.name onChange=(action (mut model.name))}}
+    <div class="layout-column layout-align-start-end flex-20">
+      {{paper-input class="no-spacer-bottom" label="Suffix" value=model.suffix onChange=(action (mut model.suffix))}}
+      {{paper-checkbox label="Print" value=model.printSuffix onChange=(action (mut model.printSuffix))}}
+    </div>
+  </div>
+</div>
+
+<h2>Adres</h2>
+<div class="layout-column">
+  {{paper-input textarea=true class="flex-100" label="Adres (max. 3 lijnen)" value=address
+      passThru=(hash rows=3 maxRows=3) onChange=(action (mut address))}}
+  <div class="layout-row">
+    {{paper-input class="flex-20" label="Postcode" value=model.postalCode onChange=(action (mut model.postalCode))}}
+    {{paper-input class="flex-80" label="Gemeente" value=model.city onChange=(action (mut model.city))}}
+  </div>
+  <div class="layout-row">
+    {{#paper-select label="Land" options=countries selected=country onChange=(action (mut country)) class="flex-50" as |option|}}
+      {{option.name}}
+    {{/paper-select}}
+    {{#paper-select label="Taal" options=languages selected=language onChange=(action (mut language)) class="flex-50" as |option|}}
+      {{option.name}}
+    {{/paper-select}}
+  </div>
+</div>
+
+<h2>Contact</h2>
+<div class="layout-column">
+  <div class="layout-row">
+    <div class="layout-column flex-100">
+      {{#each telephones as |telephone|}}
+        <div class="layout-row layout-align-start-center">
+          {{#paper-select label="Type" options=telephoneTypes selected=telephone.type onChange=(action (mut telephone.type)) class="flex-10" as |option|}}
+            {{option.name}}
+          {{/paper-select}}
+          {{#paper-select label="Land" options=countries selected=telephone.country onChange=(action (mut telephone.country)) class="flex-10" as |option|}}
+            {{option.telephonePrefix}}
+          {{/paper-select}}
+          {{paper-input class="flex-10" label="Zone" value=telephone.zone onChange=(action (mut telephone.zone))}}
+          {{paper-input class="flex-30" label="Nummer" value=telephone.number onChange=(action (mut telephone.number))}}
+          {{paper-input class="flex-30" label="Memo" value=telephone.memo onChange=(action (mut telephone.memo))}}
+          {{#paper-button iconButton=true onClick=(action "removeTelephone" telephone)}}{{paper-icon "close"}}{{/paper-button}}
+        </div>
+      {{/each}}
+      <div class="layout-row layout-align-end-center">
+        {{#paper-button primary=true fab=true mini=true raised=true onClick=(action "addTelephone")}}{{paper-icon "add"}}{{/paper-button}}
+      </div>
+    </div>
+  </div>
+  <div class="layout-row">
+    {{paper-input class="flex-50" label="Email" value=model.email onChange=(action (mut model.email))}}
+    {{paper-input class="flex-50" label="Email 2" value=model.email2 onChange=(action (mut model.email2))}}
+  </div>
+  <div class="layout-row">
+    {{paper-input class="flex-50" label="Website" value=model.url onChange=(action (mut model.url))}}
+  </div>
+</div>
+
+<h2>Overige</h2>
+<div class="layout-column">
+  <div class="layout-row">
+    {{paper-input textarea=true class="flex-100" label="Opmerking" value=model.comment
+        passThru=(hash rows=3) onChange=(action (mut model.comment))}}
+  </div>
+  <div class="layout-row">
+    {{paper-input textarea=true class="flex-100" label="Memo" value=model.memo
+        passThru=(hash rows=3) onChange=(action (mut model.memo))}}
+  </div>
+</div>
+
+<div class="layout-row layout-align-end">
+  {{paper-button label="Annuleer" primary=true raised=true onClick=(action "cancel")}}
+  {{paper-button label="Opslaan" disabled="disabled" primary=true raised=true onClick=(action "save")}}
+</div>
+
+{{outlet}}
