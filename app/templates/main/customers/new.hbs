@@ -14,9 +14,11 @@
     {{#if (not model.printInFront)}}{{honorificPrefix.name}}{{/if}}
   </h4>
   <div class="layout-row layout-align-start-center">
-    {{#paper-select label="Aanspreektitel" options=honorificPrefixesByLanguage selected=honorificPrefix onChange=(action (mut honorificPrefix)) class="flex-50" as |option|}}
-      {{option.name}}
-    {{/paper-select}}
+    {{#paper-autocomplete label="Aanspreektitel" options=honorificPrefixesByLanguage selected=honorificPrefix
+         searchField="name" labelPath="name" onSelectionChange=(action (mut honorificPrefix))
+         noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-50" as |option select|}}
+      {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
+    {{/paper-autocomplete}}
     <div>{{paper-checkbox label="Print vooraan" value=model.printInFront onChange=(action (mut model.printInFront))}}</div>
   </div>
   <div class="layout-row layout-xs-column">
@@ -41,12 +43,16 @@
     {{paper-input class="flex-80" label="Gemeente" value=model.city onChange=(action (mut model.city))}}
   </div>
   <div class="layout-row">
-    {{#paper-select label="Land" options=countries selected=country onChange=(action (mut country)) class="flex-50" as |option|}}
-      {{option.name}}
-    {{/paper-select}}
-    {{#paper-select label="Taal" options=languages selected=language onChange=(action (mut language)) class="flex-50" as |option|}}
-      {{option.name}}
-    {{/paper-select}}
+    {{#paper-autocomplete label="Land" options=countries selected=country
+         searchField="name" labelPath="name" onSelectionChange=(action (mut country))
+         noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-50" as |option select|}}
+      {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
+    {{/paper-autocomplete}}
+    {{#paper-autocomplete label="Taal" options=languages selected=language
+         searchField="name" labelPath="name" onSelectionChange=(action (mut language))
+         noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-50" as |option select|}}
+      {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
+    {{/paper-autocomplete}}
   </div>
 </div>
 
@@ -56,12 +62,16 @@
     <div class="layout-column flex-100">
       {{#each telephones as |telephone|}}
         <div class="layout-row layout-align-start-center">
-          {{#paper-select label="Type" options=telephoneTypes selected=telephone.type onChange=(action (mut telephone.type)) class="flex-10" as |option|}}
-            {{option.name}}
-          {{/paper-select}}
-          {{#paper-select label="Land" options=countries selected=telephone.country onChange=(action (mut telephone.country)) class="flex-10" as |option|}}
-            {{option.telephonePrefix}}
-          {{/paper-select}}
+          {{#paper-autocomplete label="Type" options=telephoneTypes selected=telephone.type
+               searchField="name" labelPath="name" onSelectionChange=(action (mut telephone.type))
+               noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-5" as |option select|}}
+            {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
+          {{/paper-autocomplete}}
+          {{#paper-autocomplete label="Land" options=countries selected=telephone.country
+               searchField="telephonePrefix" labelPath="telephonePrefix" onSelectionChange=(action (mut telephone.country))
+               noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-5" as |option select|}}
+            {{paper-autocomplete-highlight label=option.telephonePrefix searchText=select.searchText flags="i"}}
+          {{/paper-autocomplete}}
           {{paper-input class="flex-10" label="Zone" value=telephone.zone onChange=(action (mut telephone.zone))}}
           {{paper-input class="flex-30" label="Nummer" value=telephone.number onChange=(action (mut telephone.number))}}
           {{paper-input class="flex-30" label="Memo" value=telephone.memo onChange=(action (mut telephone.memo))}}
