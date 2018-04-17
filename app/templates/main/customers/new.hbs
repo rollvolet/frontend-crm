@@ -17,7 +17,7 @@
   </div>
   <div class="layout-row layout-xs-column">
     <div class="layout-column">
-      <div class="md-input-wrapper no-spacer-bottom">
+      <div class="md-input-wrapper large no-spacer-bottom">
         {{#paper-autocomplete label="Aanspreektitel" options=honorificPrefixesByLanguage selected=honorificPrefix
              searchField="name" labelPath="name" onSelectionChange=(action (mut honorificPrefix))
              noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
@@ -53,14 +53,14 @@
     <div class="md-input-wrapper">
       {{#paper-autocomplete label="Land" options=countries selected=country
            searchField="name" labelPath="name" onSelectionChange=(action (mut country))
-           noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-50" as |option select|}}
+           noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
         {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
       {{/paper-autocomplete}}
     </div>
     <div class="md-input-wrapper">
       {{#paper-autocomplete label="Taal" options=languages selected=language
            searchField="name" labelPath="name" onSelectionChange=(action (mut language))
-           noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-50" as |option select|}}
+           noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
         {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
       {{/paper-autocomplete}}
     </div>
@@ -73,17 +73,17 @@
     <div class="layout-column">
       {{#each telephones as |telephone|}}
         <div class="layout-row layout-align-start-center">
-          <div class="md-input-wrapper">
+          <div class="md-input-wrapper small">
             {{#paper-autocomplete label="Type" options=telephoneTypes selected=telephone.type
                  searchField="name" labelPath="name" onSelectionChange=(action (mut telephone.type))
-                 noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-5" as |option select|}}
+                 noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
               {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
             {{/paper-autocomplete}}
           </div>
-          <div class="md-input-wrapper">
+          <div class="md-input-wrapper small">
             {{#paper-autocomplete label="Land" options=countries selected=telephone.country
                  searchField="telephonePrefix" labelPath="telephonePrefix" onSelectionChange=(action (mut telephone.country))
-                 noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-5" as |option select|}}
+                 noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
               {{paper-autocomplete-highlight label=option.telephonePrefix searchText=select.searchText flags="i"}}
             {{/paper-autocomplete}}
           </div>

@@ -1,0 +1,17 @@
+.login-screen {
+  min-height: 100vh;
+
+  .header {
+    color: #D52319;
+  }
+
+  .error--message {
+    color: color($warn);
+  }
+
+  .error--tech-description {
+    color: color('grey');
+    font-size: 0.8em;
+    font-style: italic;
+  }
+}

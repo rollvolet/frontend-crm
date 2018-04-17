@@ -1,0 +1,48 @@
+.main-outlet {
+  padding: 25px;
+  min-width: 800px;
+}
+
+/* Top toolbar */
+.top-toolbar {
+  h1 {
+    padding-left: 5px;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 1.75em;
+    letter-spacing: 1.5px;
+    word-spacing: 3px;
+  }
+}
+
+
+/* Main side menu */
+.main-side-nav-container {
+  min-height: 100vh;
+
+  .main-side-nav {
+    text-transform: uppercase;
+    background-color: color($primary);
+
+    md-content {
+      background-color: color($primary);
+    }
+
+    a.paper-link, md-list-item .md-button {
+      text-transform: uppercase;
+    }
+
+    .md-subheader {
+      text-align: right;
+      margin-top: 15px;
+    }
+
+    md-list {
+      background-color: color($primary);
+
+      md-list-item {
+        color: color($primary, 'contrastDefaultColor');
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+/* Loading page */
+.loading-page {
+  min-height: 300px;
+
+  .loader {
+    min-width: 300px;
+    text-align: center;
+
+    p {
+      color: color('grey');
+    }
+  }
+}

@@ -1,7 +1,7 @@
 $primary: "red";
 $accent: "blue-grey";
 
-@import "color-palette";
+@import 'color-palette';
 $color-red: map-merge($color-red, ('contrastDefaultColor':  $light-contrast-color));
 $color-blue-grey: map-merge($color-blue-grey, ('contrastDefaultColor':  $light-contrast-color));
 
@@ -14,6 +14,10 @@ html, body {
 @import 'ember-paper-link';
 @import 'ember-paper-data-table';
 
+@import 'input-fields';
+@import 'layout';
+@import 'loading';
+@import 'login';
 
 /* Default style overwrites */
 table {
@@ -49,11 +53,6 @@ md-input-container .md-errors-spacer {
 
 
 /* General layout */
-.main-outlet {
-  padding: 25px;
-  min-width: 800px;
-}
-
 .subtitle {
   font-weight: 400;
 }
@@ -76,152 +75,6 @@ h6 .small-text-fade {
   color: color('grey', '600');
 }
 
-md-input-container {
-  &.no-spacer-bottom {
-    margin-bottom: 0px;
-  }
-
-  &.spacer-left {
-    margin-left: 20px;
-  }
-}
-
-md-input-container {
-  &.xsmall {
-    .md-input { width: 50px; }
-  }
-
-  &.small {
-    .md-input { width: 100px; }
-  }
-
-  &.large {
-    .md-input { width: 200px; }
-  }
-
-  &.xlarge {
-    .md-input { width: 250px; }
-  }
-
-  &.xxlarge {
-    .md-input { width: 400px; }
-  }
-}
-
-.md-input-wrapper {
-  &.xsmall {
-    width: 50px;
-  }
-
-  &.small {
-    width: 100px;
-  }
-
-  &.large {
-    width: 200px;
-  }
-
-  &.xlarge {
-    width: 250px;
-  }
-
-  &.xxlarge {
-    width: 400px;
-  }
-
-  &.no-spacer-bottom {
-    md-input-container {
-      margin-bottom: 0px;
-    }
-  }
-
-  &.spacer-left {
-    md-input-container {
-      margin-left: 20px;
-    }
-  }
-
-}
-
-/* Login screen */
-
-.login-screen {
-  min-height: 100vh;
-
-  .header {
-    color: #D52319;
-  }
-
-  .error--message {
-    color: color($warn);
-  }
-
-  .error--tech-description {
-    color: color('grey');
-    font-size: 0.8em;
-    font-style: italic;
-  }
-}
-
-
-/* Top toolbar */
-.top-toolbar {
-  h1 {
-    padding-left: 5px;
-    text-transform: uppercase;
-    font-weight: 900;
-    font-size: 1.75em;
-    letter-spacing: 1.5px;
-    word-spacing: 3px;
-  }
-}
-
-
-/* Main side menu */
-
-.main-side-nav-container {
-  min-height: 100vh;
-
-  .main-side-nav {
-    text-transform: uppercase;
-    background-color: color($primary);
-
-    md-content {
-      background-color: color($primary);
-    }
-
-    a.paper-link, md-list-item .md-button {
-      text-transform: uppercase;
-    }
-
-    .md-subheader {
-      text-align: right;
-      margin-top: 15px;
-    }
-
-    md-list {
-      background-color: color($primary);
-
-      md-list-item {
-        color: color($primary, 'contrastDefaultColor');
-      }
-    }
-  }
-}
-
-/* Loading page */
-.loading-page {
-  min-height: 300px;
-
-  .loader {
-    min-width: 300px;
-    text-align: center;
-
-    p {
-      color: color('grey');
-    }
-  }
-}
 
 /* Table filters */
 .data-table-filters {
