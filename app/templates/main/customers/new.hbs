@@ -14,21 +14,25 @@
     {{#if (not model.printInFront)}}{{honorificPrefix.name}}{{/if}}
   </h4>
   <div class="layout-row layout-align-start-center">
-    {{#paper-autocomplete label="Aanspreektitel" options=honorificPrefixesByLanguage selected=honorificPrefix
-         searchField="name" labelPath="name" onSelectionChange=(action (mut honorificPrefix))
-         noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-50" as |option select|}}
-      {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
-    {{/paper-autocomplete}}
-    <div>{{paper-checkbox label="Print vooraan" value=model.printInFront onChange=(action (mut model.printInFront))}}</div>
   </div>
   <div class="layout-row layout-xs-column">
-    <div class="layout-column layout-align-start-end flex-20">
-      {{paper-input class="no-spacer-bottom" label="Prefix" value=model.prefix onChange=(action (mut model.prefix))}}
+    <div class="layout-column">
+      <div class="md-input-wrapper no-spacer-bottom">
+        {{#paper-autocomplete label="Aanspreektitel" options=honorificPrefixesByLanguage selected=honorificPrefix
+             searchField="name" labelPath="name" onSelectionChange=(action (mut honorificPrefix))
+             noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
+          {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
+        {{/paper-autocomplete}}
+      </div>
+      {{paper-checkbox label="Vooraan" value=model.printInFront onChange=(action (mut model.printInFront))}}
+    </div>
+    <div class="layout-column">
+      {{paper-input class="small no-spacer-bottom" label="Prefix" value=model.prefix onChange=(action (mut model.prefix))}}
       {{paper-checkbox label="Print" value=model.printPrefix onChange=(action (mut model.printPrefix))}}
     </div>
-    {{paper-input class="flex-60" label="Naam" value=model.name onChange=(action (mut model.name))}}
-    <div class="layout-column layout-align-start-end flex-20">
-      {{paper-input class="no-spacer-bottom" label="Suffix" value=model.suffix onChange=(action (mut model.suffix))}}
+    {{paper-input class="large" label="Naam" value=model.name onChange=(action (mut model.name))}}
+    <div class="layout-column">
+      {{paper-input class="small no-spacer-bottom" label="Suffix" value=model.suffix onChange=(action (mut model.suffix))}}
       {{paper-checkbox label="Print" value=model.printSuffix onChange=(action (mut model.printSuffix))}}
     </div>
   </div>
@@ -36,45 +40,53 @@
 
 <h2>Adres</h2>
 <div class="layout-column">
-  {{paper-input textarea=true class="flex-100" label="Adres (max. 3 lijnen)" value=address
+  {{paper-input textarea=true class="xxlarge" label="Adres (max. 3 lijnen)" value=address
       passThru=(hash rows=3 maxRows=3) onChange=(action (mut address))}}
   <div class="layout-row">
-    {{paper-input class="flex-20" label="Postcode" value=model.postalCode onChange=(action (mut model.postalCode))}}
-    {{paper-input class="flex-80" label="Gemeente" value=model.city onChange=(action (mut model.city))}}
+    {{paper-input label="Postcode" value=model.postalCode onChange=(action (mut model.postalCode))}}
+    {{paper-input label="Gemeente" value=model.city onChange=(action (mut model.city))}}
   </div>
   <div class="layout-row">
-    {{#paper-autocomplete label="Land" options=countries selected=country
-         searchField="name" labelPath="name" onSelectionChange=(action (mut country))
-         noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-50" as |option select|}}
-      {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
-    {{/paper-autocomplete}}
-    {{#paper-autocomplete label="Taal" options=languages selected=language
-         searchField="name" labelPath="name" onSelectionChange=(action (mut language))
-         noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-50" as |option select|}}
-      {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
-    {{/paper-autocomplete}}
+    <div class="md-input-wrapper">
+      {{#paper-autocomplete label="Land" options=countries selected=country
+           searchField="name" labelPath="name" onSelectionChange=(action (mut country))
+           noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-50" as |option select|}}
+        {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
+      {{/paper-autocomplete}}
+    </div>
+    <div class="md-input-wrapper">
+      {{#paper-autocomplete label="Taal" options=languages selected=language
+           searchField="name" labelPath="name" onSelectionChange=(action (mut language))
+           noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-50" as |option select|}}
+        {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
+      {{/paper-autocomplete}}
+    </div>
   </div>
 </div>
 
 <h2>Contact</h2>
 <div class="layout-column">
   <div class="layout-row">
-    <div class="layout-column flex-100">
+    <div class="layout-column">
       {{#each telephones as |telephone|}}
         <div class="layout-row layout-align-start-center">
-          {{#paper-autocomplete label="Type" options=telephoneTypes selected=telephone.type
-               searchField="name" labelPath="name" onSelectionChange=(action (mut telephone.type))
-               noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-5" as |option select|}}
-            {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
-          {{/paper-autocomplete}}
-          {{#paper-autocomplete label="Land" options=countries selected=telephone.country
-               searchField="telephonePrefix" labelPath="telephonePrefix" onSelectionChange=(action (mut telephone.country))
-               noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-5" as |option select|}}
-            {{paper-autocomplete-highlight label=option.telephonePrefix searchText=select.searchText flags="i"}}
-          {{/paper-autocomplete}}
-          {{paper-input class="flex-10" label="Zone" value=telephone.zone onChange=(action (mut telephone.zone))}}
-          {{paper-input class="flex-30" label="Nummer" value=telephone.number onChange=(action (mut telephone.number))}}
-          {{paper-input class="flex-30" label="Memo" value=telephone.memo onChange=(action (mut telephone.memo))}}
+          <div class="md-input-wrapper">
+            {{#paper-autocomplete label="Type" options=telephoneTypes selected=telephone.type
+                 searchField="name" labelPath="name" onSelectionChange=(action (mut telephone.type))
+                 noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-5" as |option select|}}
+              {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
+            {{/paper-autocomplete}}
+          </div>
+          <div class="md-input-wrapper">
+            {{#paper-autocomplete label="Land" options=countries selected=telephone.country
+                 searchField="telephonePrefix" labelPath="telephonePrefix" onSelectionChange=(action (mut telephone.country))
+                 noMatchesMessage="Geen resultaten" allowClear=true triggerClass="flex-5" as |option select|}}
+              {{paper-autocomplete-highlight label=option.telephonePrefix searchText=select.searchText flags="i"}}
+            {{/paper-autocomplete}}
+          </div>
+          {{paper-input class="xsmall" label="Zone" value=telephone.zone onChange=(action (mut telephone.zone))}}
+          {{paper-input class="small" label="Nummer" value=telephone.number onChange=(action (mut telephone.number))}}
+          {{paper-input class="large" label="Memo" value=telephone.memo onChange=(action (mut telephone.memo))}}
           {{#paper-button iconButton=true onClick=(action "removeTelephone" telephone)}}{{paper-icon "close"}}{{/paper-button}}
         </div>
       {{/each}}
@@ -83,23 +95,21 @@
       </div>
     </div>
   </div>
-  <div class="layout-row">
-    {{paper-input class="flex-50" label="Email" value=model.email onChange=(action (mut model.email))}}
-    {{paper-input class="flex-50" label="Email 2" value=model.email2 onChange=(action (mut model.email2))}}
+  <div class="layout-row layout-xs-column">
+    {{paper-input class="xlarge" label="Email" value=model.email onChange=(action (mut model.email))}}
+    {{paper-input class="xlarge" label="Email 2" value=model.email2 onChange=(action (mut model.email2))}}
+    {{paper-input class="xlarge" label="Website" value=model.url onChange=(action (mut model.url))}}
   </div>
   <div class="layout-row">
-    {{paper-input class="flex-50" label="Website" value=model.url onChange=(action (mut model.url))}}
   </div>
 </div>
 
 <h2>Overige</h2>
 <div class="layout-column">
-  <div class="layout-row">
-    {{paper-input textarea=true class="flex-100" label="Opmerking" value=model.comment
+  <div class="layout-row layout-xs-column">
+    {{paper-input textarea=true class="xxlarge" label="Opmerking" value=model.comment
         passThru=(hash rows=3) onChange=(action (mut model.comment))}}
-  </div>
-  <div class="layout-row">
-    {{paper-input textarea=true class="flex-100" label="Memo" value=model.memo
+    {{paper-input textarea=true class="xxlarge" label="Memo" value=model.memo
         passThru=(hash rows=3) onChange=(action (mut model.memo))}}
   </div>
 </div>

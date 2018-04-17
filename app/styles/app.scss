@@ -76,12 +76,67 @@ h6 .small-text-fade {
   color: color('grey', '600');
 }
 
-md-input-container.no-spacer-bottom {
-  margin-bottom: 0px;
+md-input-container {
+  &.no-spacer-bottom {
+    margin-bottom: 0px;
+  }
+
+  &.spacer-left {
+    margin-left: 20px;
+  }
 }
 
-md-input-container.spacer-left {
-  margin-left: 20px;
+md-input-container {
+  &.xsmall {
+    .md-input { width: 50px; }
+  }
+
+  &.small {
+    .md-input { width: 100px; }
+  }
+
+  &.large {
+    .md-input { width: 200px; }
+  }
+
+  &.xlarge {
+    .md-input { width: 250px; }
+  }
+
+  &.xxlarge {
+    .md-input { width: 400px; }
+  }
+}
+
+.md-input-wrapper {
+  &.xsmall {
+    width: 50px;
+  }
+
+  &.small {
+    width: 100px;
+  }
+
+  &.large {
+    width: 200px;
+  }
+
+  &.xlarge {
+    width: 250px;
+  }
+
+  &.no-spacer-bottom {
+    md-input-container {
+      margin-bottom: 0px;
+    }
+  }
+
+  &.spacer-left {
+    md-input-container {
+      margin-left: 20px;
+    }
+  }
+
 }
 
 /* Login screen */
