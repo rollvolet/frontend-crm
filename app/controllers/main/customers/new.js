@@ -1,7 +1,8 @@
-import { warn } from '@ember/debug';
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { computed, observer } from '@ember/object';
+import { A } from '@ember/array';
+import { warn } from '@ember/debug';
 
 export default Controller.extend({
   store: service(),
@@ -20,6 +21,7 @@ export default Controller.extend({
       this.set('countries', countries);
     });
     this.get('store').findAll('telephone-type').then(types => this.set('telephoneTypes', types));
+    this.get('store').findAll('postal-code').then(postalCodes => this.set('postalCodes', postalCodes));
   },
   honorificPrefixesByLanguage: computed('honorificPrefixes', 'language', function() {
     if (this.get('honorificPrefixes') && this.get('language')) {
@@ -41,7 +43,7 @@ export default Controller.extend({
     }
   }),
   addressChanged: observer('address', function() {
-    const lines = this.get('address').split('\n');
+    const lines = (this.get('address') || '').split('\n');
     if (lines.length > 3)
       warn('Only 3 lines are allowed in the address text area', { id: 'to-many-address-lines' });
     let i = 0;
@@ -49,6 +51,13 @@ export default Controller.extend({
       this.set(`model.address${i + 1}`, lines[i] || undefined);
       i++;
     }
+  }),
+  addressErrors: computed('address', function() {
+    const errors = A();
+    const lines = (this.get('address') || '').split('\n');
+    if (lines.length > 3)
+      errors.pushObject("Adres mag maximaal 3 lijnen bevatten");
+    return errors;
   }),
   actions: {
     addTelephone() {
@@ -63,6 +72,11 @@ export default Controller.extend({
         const telephone = this.get('store').createRecord('telephone', {});
         this.get('telephones').pushObject(telephone);
       }
+    },
+    selectPostalCode(postalCode) {
+      this.set('postalCode', postalCode);
+      this.set('model.postalCode', postalCode ? postalCode.get('code') : undefined);
+      this.set('model.city', postalCode ? postalCode.get('name') : undefined);
     },
     async save() {
       const customer = await this.get('model').save();

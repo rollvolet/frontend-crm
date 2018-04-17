@@ -41,12 +41,15 @@
 <h2>Adres</h2>
 <div class="layout-column">
   {{paper-input textarea=true class="xxlarge" label="Adres (max. 3 lijnen)" value=address
-      passThru=(hash rows=3 maxRows=3) onChange=(action (mut address))}}
+      passThru=(hash rows=3 maxRows=3) onChange=(action (mut address)) errors=addressErrors}}
   <div class="layout-row">
-    {{paper-input label="Postcode" value=model.postalCode onChange=(action (mut model.postalCode))}}
-    {{paper-input label="Gemeente" value=model.city onChange=(action (mut model.city))}}
-  </div>
-  <div class="layout-row">
+    <div class="md-input-wrapper xxlarge">
+      {{#paper-autocomplete label="Gemeente" options=postalCodes selected=postalCode
+           searchField="search" labelPath="search" onSelectionChange=(action "selectPostalCode")
+           noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
+        {{paper-autocomplete-highlight label=option.search searchText=select.searchText flags="i"}}
+      {{/paper-autocomplete}}
+    </div>
     <div class="md-input-wrapper">
       {{#paper-autocomplete label="Land" options=countries selected=country
            searchField="name" labelPath="name" onSelectionChange=(action (mut country))
@@ -64,7 +67,7 @@
   </div>
 </div>
 
-<h2>Contact</h2>
+<h2>Contactgegevens</h2>
 <div class="layout-column">
   <div class="layout-row">
     <div class="layout-column">
@@ -107,9 +110,9 @@
 <h2>Overige</h2>
 <div class="layout-column">
   <div class="layout-row layout-xs-column">
-    {{paper-input textarea=true class="xxlarge" label="Opmerking" value=model.comment
+    {{paper-input textarea=true class="xxlarge" label="Opmerking" icon="comment" value=model.comment
         passThru=(hash rows=3) onChange=(action (mut model.comment))}}
-    {{paper-input textarea=true class="xxlarge" label="Memo" value=model.memo
+    {{paper-input textarea=true class="xxlarge" label="Memo" icon="assignment" value=model.memo
         passThru=(hash rows=3) onChange=(action (mut model.memo))}}
   </div>
 </div>
