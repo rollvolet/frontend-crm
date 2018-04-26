@@ -1,6 +1,6 @@
 import { assert } from '@ember/debug';
 import Component from '@ember/component';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import { oneWay } from '@ember/object/computed';
 
 const regexMap = {
@@ -18,9 +18,9 @@ const calcQueryParam = function(routeUrl, key) {
 };
 
 export default Component.extend({
-  router: inject(),
-  session: inject(),
-  ajax: inject(),
+  router: service(),
+  session: service(),
+  ajax: service(),
   currentRouteName: oneWay('router.currentRouteName'),
   currentUrl: oneWay('router.currentURL'),
   init() {
@@ -39,12 +39,9 @@ export default Component.extend({
     else if (currentRoute.endsWith('case.invoice'))
       queryParam = calcQueryParam(currentUrl, 'invoiceId');
 
-    this.get('session').authorize('authorizer:oauth2', (headerName, headerValue) => {
-      const headers = {};
-      headers[headerName] = headerValue;
-
-      this.get('ajax').request(`/api/cases?${queryParam}`, { headers: headers })
-        .then((response) => this.set('case', response));
-    });
+    const { access_token } = this.get('session.data.authenticated');
+    const headers = { 'Authorization': `Bearer ${access_token}` };
+    this.get('ajax').request(`/api/cases?${queryParam}`, { headers })
+      .then((response) => this.set('case', response));
   }
 });
