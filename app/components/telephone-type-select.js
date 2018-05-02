@@ -10,6 +10,6 @@ export default Component.extend({
       this.set('options', supportedTypes);
     });
   },
-  label: "Type",
+  label: 'Type',
   value: null
 });

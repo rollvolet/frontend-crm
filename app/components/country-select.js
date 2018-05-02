@@ -15,7 +15,6 @@ export default Component.extend({
       this.set('options', countries);
     });
   },
-  label: "Land",
-  required: true,
+  label: 'Land',
   value: null
 });

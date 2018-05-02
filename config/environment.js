@@ -39,7 +39,7 @@ module.exports = function(environment) {
     },
     'ember-paper': {
       'paper-toaster': {
-        position: 'bottom right',
+        position: 'bottom left',
         duration: 5000
       }
     }

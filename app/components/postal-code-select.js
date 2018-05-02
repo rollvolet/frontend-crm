@@ -7,7 +7,7 @@ export default Component.extend({
     this._super(...arguments);
     this.get('store').findAll('postal-code').then(postalCodes => this.set('options', postalCodes) );
   },
-  label: "Gemeente",
+  label: 'Gemeente',
   value: null,
   postalCode: null,
   city: null,

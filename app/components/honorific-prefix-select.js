@@ -9,7 +9,7 @@ export default Component.extend({
     this._super(...arguments);
     this.get('store').findAll('honorific-prefix').then(prefixes => this.set('honorificPrefixes', prefixes));
   },
-  label: "Aanspreektitel",
+  label: 'Aanspreektitel',
   value: null,
   language: null,
   options: computed('honorificPrefixes', 'honorificPrefixes.[]', 'language', function() {

@@ -46,9 +46,9 @@
     <div class="layout-column">
       {{#each telephones as |telephone|}}
         <div class="layout-row layout-align-start-center">
-          {{telephone-type-select value=telephone.type class="md-input-wrapper small"}}
+          {{telephone-type-select value=telephone.telephoneType class="md-input-wrapper small"}}
           {{telephone-prefix-select value=telephone.country class="md-input-wrapper small"}}
-          {{paper-input class="xsmall" label="Zone" value=telephone.zone onChange=(action (mut telephone.zone))}}
+          {{paper-input class="xsmall" label="Zone" value=telephone.area onChange=(action (mut telephone.area))}}
           {{paper-input class="small" label="Nummer" value=telephone.number onChange=(action (mut telephone.number))}}
           {{paper-input class="large" label="Memo" value=telephone.memo onChange=(action (mut telephone.memo))}}
           {{#paper-button iconButton=true onClick=(action "removeTelephone" telephone)}}{{paper-icon "close"}}{{/paper-button}}
@@ -79,8 +79,15 @@
 </div>
 
 <div class="layout-row layout-align-end">
-  {{paper-button label="Annuleer" primary=true raised=true onClick=(action "cancel")}}
-  {{paper-button label="Opslaan" primary=true raised=true onClick=(action "save")}}
+  {{#if (or save.isRunning rollback.isRunning)}}
+    <div class="loader-buttons">
+      {{paper-progress-linear}}
+      <p>Aan het opslaan...</p>
+    </div>
+  {{else}}
+    {{paper-button label="Annuleer" primary=true raised=true onClick=(perform rollback)}}
+    {{paper-button label="Opslaan" primary=true raised=true onClick=(perform save)}}
+  {{/if}}
 </div>
 
 {{outlet}}

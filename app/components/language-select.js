@@ -15,7 +15,6 @@ export default Component.extend({
       this.set('options', languages);
     });
   },
-  label: "Taal",
-  required: true,
+  label: 'Taal',
   value: null
 });
