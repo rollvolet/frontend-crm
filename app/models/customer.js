@@ -25,9 +25,6 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, {
   created: DS.attr('date', {
     defaultValue() { return new Date(); }
   }),
-  updated: DS.attr('date', {
-    defaultValue() { return new Date(); }
-  }),
   contacts: DS.hasMany('contact'),
   buildings: DS.hasMany('building'),
   country: DS.belongsTo('country'),
