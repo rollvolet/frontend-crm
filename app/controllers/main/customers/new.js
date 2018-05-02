@@ -6,42 +6,6 @@ import { warn } from '@ember/debug';
 
 export default Controller.extend({
   store: service(),
-  init() {
-    this._super(...arguments);
-
-    this.get('store').findAll('language').then(languages => {
-      const defaultLanguage = languages.find(l => l.get('code') == 'NED');
-      this.set('language', defaultLanguage);
-      this.set('languages', languages);
-    });
-    this.get('store').findAll('honorific-prefix').then(prefixes => this.set('honorificPrefixes', prefixes));
-    this.get('store').findAll('country').then(countries => {
-      const defaultCountry = countries.find(c => c.get('code') == 'BE');
-      this.set('country', defaultCountry);
-      this.set('countries', countries);
-    });
-    this.get('store').findAll('telephone-type').then(types => this.set('telephoneTypes', types));
-    this.get('store').findAll('postal-code').then(postalCodes => this.set('postalCodes', postalCodes));
-  },
-  honorificPrefixesByLanguage: computed('honorificPrefixes', 'honorificPrefixes.[]', 'language', function() {
-    if (this.get('honorificPrefixes') && this.get('language')) {
-      return this.get('honorificPrefixes').filter(p => {
-        return p.get('id').endsWith(`-${this.get('language.id')}`) && p.get('name');
-      });
-    } else {
-      return this.get('honorificPrefixes');
-    }
-  }),
-  languageChanged: observer('language', function() {
-    if (this.get('honorificPrefix')) {
-      const composedId = this.get('honorificPrefix.id');
-      const prefixId = composedId.substring(0, composedId.indexOf('-'));
-      const honorificPrefix = this.get('honorificPrefixes').find(p => {
-        return p.get('id') == `${prefixId}-${this.get('language.id')}`;
-      });
-      this.set('honorificPrefix', honorificPrefix);
-    }
-  }),
   addressChanged: observer('address', function() {
     const lines = (this.get('address') || '').split('\n');
     if (lines.length > 3)
@@ -72,11 +36,6 @@ export default Controller.extend({
         const telephone = this.get('store').createRecord('telephone', {});
         this.get('telephones').pushObject(telephone);
       }
-    },
-    selectPostalCode(postalCode) {
-      this.set('postalCode', postalCode);
-      this.set('model.postalCode', postalCode ? postalCode.get('code') : undefined);
-      this.set('model.city', postalCode ? postalCode.get('name') : undefined);
     },
     async save() {
       // TODO country / language are required

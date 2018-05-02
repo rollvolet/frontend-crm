@@ -15,13 +15,7 @@
   </h4>
   <div class="layout-row layout-xs-column">
     <div class="layout-column">
-      <div class="md-input-wrapper large no-spacer-bottom">
-        {{#paper-autocomplete label="Aanspreektitel" options=honorificPrefixesByLanguage selected=honorificPrefix
-             searchField="name" labelPath="name" onSelectionChange=(action (mut honorificPrefix))
-             noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
-          {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
-        {{/paper-autocomplete}}
-      </div>
+      {{honorific-prefix-select value=honorificPrefix language=language class="md-input-wrapper large no-spacer-bottom"}}
       {{paper-checkbox label="Vooraan" value=model.printInFront onChange=(action (mut model.printInFront))}}
     </div>
     <div class="layout-column">
@@ -41,27 +35,9 @@
   {{paper-input textarea=true class="xxlarge" label="Adres (max. 3 lijnen)" value=address
       passThru=(hash rows=3 maxRows=3) onChange=(action (mut address)) errors=addressErrors}}
   <div class="layout-row">
-    <div class="md-input-wrapper xxlarge">
-      {{#paper-autocomplete label="Gemeente" options=postalCodes selected=postalCode
-           searchField="search" labelPath="search" onSelectionChange=(action "selectPostalCode")
-           noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
-        {{paper-autocomplete-highlight label=option.search searchText=select.searchText flags="i"}}
-      {{/paper-autocomplete}}
-    </div>
-    <div class="md-input-wrapper">
-      {{#paper-autocomplete label="Land" options=countries selected=country
-           searchField="name" labelPath="name" onSelectionChange=(action (mut country))
-           noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
-        {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
-      {{/paper-autocomplete}}
-    </div>
-    <div class="md-input-wrapper">
-      {{#paper-autocomplete label="Taal" options=languages selected=language
-           searchField="name" labelPath="name" onSelectionChange=(action (mut language))
-           noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
-        {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
-      {{/paper-autocomplete}}
-    </div>
+    {{postal-code-select postalCode=model.postalCode city=model.city class="md-input-wrapper xxlarge"}}
+    {{country-select value=country class="md-input-wrapper"}}
+    {{language-select value=language class="md-input-wrapper"}}
   </div>
 </div>
 
@@ -71,20 +47,8 @@
     <div class="layout-column">
       {{#each telephones as |telephone|}}
         <div class="layout-row layout-align-start-center">
-          <div class="md-input-wrapper small">
-            {{#paper-autocomplete label="Type" options=telephoneTypes selected=telephone.type
-                 searchField="name" labelPath="name" onSelectionChange=(action (mut telephone.type))
-                 noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
-              {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
-            {{/paper-autocomplete}}
-          </div>
-          <div class="md-input-wrapper small">
-            {{#paper-autocomplete label="Land" options=countries selected=telephone.country
-                 searchField="telephonePrefix" labelPath="telephonePrefix" onSelectionChange=(action (mut telephone.country))
-                 noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
-              {{paper-autocomplete-highlight label=option.telephonePrefix searchText=select.searchText flags="i"}}
-            {{/paper-autocomplete}}
-          </div>
+          {{telephone-type-select value=telephone.type class="md-input-wrapper small"}}
+          {{telephone-prefix-select value=telephone.country class="md-input-wrapper small"}}
           {{paper-input class="xsmall" label="Zone" value=telephone.zone onChange=(action (mut telephone.zone))}}
           {{paper-input class="small" label="Nummer" value=telephone.number onChange=(action (mut telephone.number))}}
           {{paper-input class="large" label="Memo" value=telephone.memo onChange=(action (mut telephone.memo))}}
