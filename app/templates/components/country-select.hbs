@@ -1,5 +1,5 @@
 {{#paper-autocomplete label=label options=options selected=value
      searchField="name" labelPath="name" onSelectionChange=(action (mut value))
-     noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
+     noMatchesMessage="Geen resultaten" allowClear=true required=required as |option select|}}
   {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
 {{/paper-autocomplete}}

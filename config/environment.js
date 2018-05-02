@@ -36,6 +36,12 @@ module.exports = function(environment) {
           redirectUri: 'http://localhost:4200/torii/redirect.html'
         }
       }
+    },
+    'ember-paper': {
+      'paper-toaster': {
+        position: 'bottom right',
+        duration: 5000
+      }
     }
   };
 

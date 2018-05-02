@@ -16,5 +16,6 @@ export default Component.extend({
     });
   },
   label: "Taal",
+  required: true,
   value: null
 });

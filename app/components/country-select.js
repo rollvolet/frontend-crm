@@ -16,5 +16,6 @@ export default Component.extend({
     });
   },
   label: "Land",
+  required: true,
   value: null
 });
