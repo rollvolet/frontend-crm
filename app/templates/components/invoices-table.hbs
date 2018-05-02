@@ -1,10 +1,10 @@
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number") class="small-input"}}
-  {{paper-input label="Referentie" value=reference onChange=(action "setFilter" "reference") class="small-input"}}
+  {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number") class="small"}}
+  {{paper-input label="Referentie" value=reference onChange=(action "setFilter" "reference") class="small"}}
   {{paper-input label="Gebouw" value=name onChange=(action "setFilter" "name")}}
-  {{paper-input label="Adres" value=street onChange=(action "setFilter" "street") class="large-input"}}
-  {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small-input"}}
+  {{paper-input label="Adres" value=street onChange=(action "setFilter" "street") class="large"}}
+  {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small"}}
   {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
   {{#paper-button iconButton=true onClick=(action "resetFilters")}}
     {{paper-icon "close"}}

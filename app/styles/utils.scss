@@ -1,0 +1,21 @@
+.subtitle {
+  font-weight: 400;
+}
+
+.html-body {
+  white-space: pre-wrap;
+}
+
+h1 .small-text-fade,
+h2 .small-text-fade,
+h3 .small-text-fade,
+h4 .small-text-fade,
+h5 .small-text-fade,
+h6 .small-text-fade {
+  color: color('grey', '600');
+  font-size: 75%;
+}
+
+.text-fade {
+  color: color('grey', '600');
+}

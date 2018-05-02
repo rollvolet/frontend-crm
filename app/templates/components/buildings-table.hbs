@@ -1,10 +1,10 @@
 {{#liquid-unless selectedBuilding class="data-table-selection"}}
   <div class="data-table-filters">
     <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-    {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number") class="small-input"}}
+    {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number") class="small"}}
     {{paper-input label="Naam" value=name onChange=(action "setFilter" "name")}}
-    {{paper-input label="Adres" value=street onChange=(action "setFilter" "street") class="large-input"}}
-    {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small-input"}}
+    {{paper-input label="Adres" value=street onChange=(action "setFilter" "street") class="large"}}
+    {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small"}}
     {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
     {{paper-input label="Telefoon" value=telephone onChange=(action "setFilter" "telephone")}}
     {{#paper-button iconButton=true onClick=(action "resetFilters")}}

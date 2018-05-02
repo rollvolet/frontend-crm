@@ -1,0 +1,56 @@
+/* Detail list */
+.detail-list--item {
+  .detail-key {
+    width: 120px;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+  }
+
+  .detail-subkey {
+    font-weight: bold;
+    font-style: italic;
+  }
+
+  .detail-value.layout-row .detail-list--subitem {
+    margin-right: 20px;
+  }
+}
+
+
+/* Customer pages */
+.resource-details {
+  .left-column {
+    margin-right: 50px;
+  }
+
+  .resource-details--section {
+    margin-bottom: 20px;
+
+    .category-icon {
+      margin-right: 10px;
+    }
+
+    &.resource-details--section-name {
+      md-icon {
+        position: relative;
+        top: -4px;
+      }
+    }
+
+    &.resource-details--section-audit {
+      color: color('grey');
+      font-style: italic;
+      font-size: 0.8em;
+
+      span.divider {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    }
+
+    &.resource-details--section-comment {
+
+    }
+  }
+}
