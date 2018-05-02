@@ -1,28 +1,9 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { computed, observer } from '@ember/object';
-import { A } from '@ember/array';
-import { warn } from '@ember/debug';
 
 export default Controller.extend({
   store: service(),
-  addressChanged: observer('address', function() {
-    const lines = (this.get('address') || '').split('\n');
-    if (lines.length > 3)
-      warn('Only 3 lines are allowed in the address text area', { id: 'to-many-address-lines' });
-    let i = 0;
-    while(i < 3) {
-      this.set(`model.address${i + 1}`, lines[i] || undefined);
-      i++;
-    }
-  }),
-  addressErrors: computed('address', function() {
-    const errors = A();
-    const lines = (this.get('address') || '').split('\n');
-    if (lines.length > 3)
-      errors.pushObject("Adres mag maximaal 3 lijnen bevatten");
-    return errors;
-  }),
   actions: {
     addTelephone() {
       const telephone = this.get('store').createRecord('telephone', {});

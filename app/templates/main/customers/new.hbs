@@ -32,8 +32,7 @@
 
 <h2>Adres</h2>
 <div class="layout-column">
-  {{paper-input textarea=true class="xxlarge" label="Adres (max. 3 lijnen)" value=address
-      passThru=(hash rows=3 maxRows=3) onChange=(action (mut address)) errors=addressErrors}}
+  {{address-input address1=model.address1 address2=model.address2 address3=model.address3}}
   <div class="layout-row">
     {{postal-code-select postalCode=model.postalCode city=model.city class="md-input-wrapper xxlarge"}}
     {{country-select value=country class="md-input-wrapper"}}
