@@ -23,7 +23,7 @@ export default Controller.extend({
     this.get('store').findAll('telephone-type').then(types => this.set('telephoneTypes', types));
     this.get('store').findAll('postal-code').then(postalCodes => this.set('postalCodes', postalCodes));
   },
-  honorificPrefixesByLanguage: computed('honorificPrefixes', 'language', function() {
+  honorificPrefixesByLanguage: computed('honorificPrefixes', 'honorificPrefixes.[]', 'language', function() {
     if (this.get('honorificPrefixes') && this.get('language')) {
       return this.get('honorificPrefixes').filter(p => {
         return p.get('id').endsWith(`-${this.get('language.id')}`) && p.get('name');
@@ -79,9 +79,13 @@ export default Controller.extend({
       this.set('model.city', postalCode ? postalCode.get('name') : undefined);
     },
     async save() {
+      // TODO country / language are required
+      this.set('model.country', this.get('country'));
+      this.set('model.language', this.get('language'));
+      this.set('model.honorificPrefix', this.get('honorificPrefix'));
       const customer = await this.get('model').save();
       // save phones and add to model
-      this.transitionTo('main.customers.edit', customer.get('id'));
+      this.transitionToRoute('main.customers.edit', customer.get('id'));
     },
     cancel() {
       this.get('telephones').forEach(t => t.destroyRecord());

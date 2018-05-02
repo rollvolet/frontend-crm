@@ -13,8 +13,6 @@
     {{#if model.printPrefix}}{{model.prefix}}{{/if}} {{model.name}} {{#if model.printSuffix}}{{model.suffix}}{{/if}}
     {{#if (not model.printInFront)}}{{honorificPrefix.name}}{{/if}}
   </h4>
-  <div class="layout-row layout-align-start-center">
-  </div>
   <div class="layout-row layout-xs-column">
     <div class="layout-column">
       <div class="md-input-wrapper large no-spacer-bottom">
@@ -119,7 +117,7 @@
 
 <div class="layout-row layout-align-end">
   {{paper-button label="Annuleer" primary=true raised=true onClick=(action "cancel")}}
-  {{paper-button label="Opslaan" disabled="disabled" primary=true raised=true onClick=(action "save")}}
+  {{paper-button label="Opslaan" primary=true raised=true onClick=(action "save")}}
 </div>
 
 {{outlet}}
