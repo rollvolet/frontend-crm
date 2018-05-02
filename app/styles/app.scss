@@ -51,6 +51,10 @@ md-input-container .md-errors-spacer {
   display: none;
 }
 
+.data-table-pagination md-input-container {
+  top: -1px;
+}
+
 
 /* General layout */
 .subtitle {
@@ -80,10 +84,6 @@ h6 .small-text-fade {
 .data-table-filters {
   border: 1px solid $table-border-color;
   padding: 0 15px 0 15px;
-
-  md-input-container .md-errors-spacer {
-    display: none;
-  }
 
   input {
     width: 150px;
