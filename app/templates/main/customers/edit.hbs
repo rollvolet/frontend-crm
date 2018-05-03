@@ -93,7 +93,7 @@
     {{#if (eq current.tab 0)}}
       {{contacts-panel customer=model}}
     {{else if (eq current.tab 1)}}
-      {{buildings-table customer=model}}
+      {{buildings-panel customer=model}}
     {{else if (eq current.tab 2)}}
       {{requests-table customer=model onClickRow=(action "goToRequestDetail")}}
     {{else if (eq current.tab 3)}}

@@ -37,6 +37,8 @@ export default Component.extend({
       && this.validation.all(tels, t => this.validation.onlyNumbers(t.area, 'Telefoonzone'))
       && this.validation.all(tels, t => this.validation.required(t.number, 'Telefoonnummer'))
       && this.validation.all(tels, t => this.validation.onlyNumbers(t.number, 'Telefoonnummer'));
+
+    // TODO add validation on phone number length
   },
   rollback: task(function * () {
     yield all(this.telephones.map(t => t.destroyRecord()));

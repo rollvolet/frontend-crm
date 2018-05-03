@@ -5,13 +5,18 @@ import { task } from 'ember-concurrency';
 
 export default Component.extend(DebouncedSearch, {
   classNames: ['buildings-table'],
+
   init() {
     this._super(...arguments);
     this.get('search').perform();
   },
+
   page: 0,
   size: 10,
   sort: 'name',
+
+  onClickRow: null,
+
   dataTableParamChanged: observer('page', 'size', 'sort', function() {
     this.get('search').perform();
   }),
@@ -34,6 +39,7 @@ export default Component.extend(DebouncedSearch, {
     });
     this.set('buildings', buildings);
   }),
+
   actions: {
     setFilter(key, value) {
       this.set(key, value);
@@ -47,12 +53,6 @@ export default Component.extend(DebouncedSearch, {
       this.set('street', undefined);
       this.set('telephone', undefined);
       this.get('search').perform();
-    },
-    selectBuilding(building) {
-      this.set('selectedBuilding', building);
-    },
-    deselectBuilding() {
-      this.set('selectedBuilding', null);
     }
   }
 });
