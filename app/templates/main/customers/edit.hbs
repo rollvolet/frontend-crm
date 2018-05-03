@@ -91,7 +91,7 @@
 
   {{#liquid-bind (hash tab=selectedTab) use="toRight" as |current|}}
     {{#if (eq current.tab 0)}}
-      {{contacts-table customer=model}}
+      {{contacts-panel customer=model}}
     {{else if (eq current.tab 1)}}
       {{buildings-table customer=model}}
     {{else if (eq current.tab 2)}}

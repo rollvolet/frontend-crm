@@ -1,0 +1,10 @@
+{{#liquid-if displayList class="data-table-selection"}}
+  {{contacts-table customer=customer onClickRow=(action "openDetail")}}
+  <div class="layout-row layout-align-end">
+    {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "openCreate")}}{{paper-icon "add"}}{{/paper-button}}
+  </div>
+{{else if displayDetail}}
+  {{contact-detail-panel model=selectedContact onClose=(action "closeDetail")}}
+{{else if displayCreate}}
+  {{contact-create-form customer=customer onClose=(action "closeCreate")}}
+{{/liquid-if}}
