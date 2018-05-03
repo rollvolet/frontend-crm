@@ -5,7 +5,8 @@ export default Component.extend({
   store: service(),
   init() {
     this._super(...arguments);
-    this.get('store').findAll('postal-code').then(postalCodes => this.set('options', postalCodes) );
+    const postalCodes = this.store.peekAll('postal-code');
+    this.set('options', postalCodes);
   },
   label: 'Gemeente',
   value: null,

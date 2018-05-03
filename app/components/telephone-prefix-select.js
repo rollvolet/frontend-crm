@@ -5,7 +5,8 @@ export default Component.extend({
   store: service(),
   init() {
     this._super(...arguments);
-    this.get('store').findAll('country').then(countries => this.set('options', countries));
+    const countries = this.store.peekAll('country');
+    this.set('options', countries);
   },
   label: 'Land',
   value: null

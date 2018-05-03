@@ -5,10 +5,9 @@ export default Component.extend({
   store: service(),
   init() {
     this._super(...arguments);
-    this.get('store').findAll('telephone-type').then(types => {
-      const supportedTypes = types.filter(t => ['TEL', 'FAX'].includes(t.name));
-      this.set('options', supportedTypes);
-    });
+    const types = this.store.peekAll('telephone-type');
+    const supportedTypes = types.filter(t => ['TEL', 'FAX'].includes(t.name));
+    this.set('options', supportedTypes);
   },
   label: 'Type',
   value: null
