@@ -15,7 +15,7 @@
   </h4>
   <div class="layout-row layout-xs-column">
     <div class="layout-column">
-      {{honorific-prefix-select value=honorificPrefix language=language class="md-input-wrapper large no-spacer-bottom"}}
+      {{honorific-prefix-select value=model.honorificPrefix language=model.language onSelectionChange=(action (mut model.honorificPrefix)) class="md-input-wrapper large no-spacer-bottom"}}
       {{paper-checkbox label="Vooraan" value=model.printInFront onChange=(action (mut model.printInFront))}}
     </div>
     <div class="layout-column">
@@ -33,9 +33,9 @@
 <div class="layout-column">
   {{address-input address1=model.address1 address2=model.address2 address3=model.address3}}
   <div class="layout-row">
-    {{postal-code-select postalCode=model.postalCode city=model.city class="md-input-wrapper xxlarge"}}
-    {{country-select value=country class="md-input-wrapper"}}
-    {{language-select value=language class="md-input-wrapper"}}
+    {{postal-code-select postalCode=model.postalCode city=model.city onSelectionChange=(action "setPostalCode") class="md-input-wrapper xxlarge"}}
+    {{country-select value=model.country onSelectionChange=(action (mut model.country)) class="md-input-wrapper"}}
+    {{language-select value=model.language onSelectionChange=(action (mut model.language)) class="md-input-wrapper"}}
   </div>
 </div>
 
@@ -44,8 +44,8 @@
     <div class="layout-column">
       {{#each telephones as |telephone|}}
         <div class="layout-row layout-align-start-center">
-          {{telephone-type-select value=telephone.telephoneType class="md-input-wrapper small"}}
-          {{telephone-prefix-select value=telephone.country class="md-input-wrapper small"}}
+          {{telephone-type-select value=telephone.telephoneType onSelectionChange=(action (mut telephone.telephoneType)) class="md-input-wrapper small"}}
+          {{telephone-prefix-select value=telephone.country onSelectionChange=(action (mut telephone.country)) class="md-input-wrapper small"}}
           {{paper-input class="xsmall" label="Zone" value=telephone.area onChange=(action (mut telephone.area))}}
           {{paper-input class="small" label="Nummer" value=telephone.number onChange=(action (mut telephone.number))}}
           {{paper-input class="large" label="Memo" value=telephone.memo onChange=(action (mut telephone.memo))}}

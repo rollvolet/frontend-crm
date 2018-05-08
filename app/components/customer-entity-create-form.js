@@ -29,8 +29,8 @@ export default Component.extend({
     const tels = this.telephones.filter(t => !t.isBlank);
 
     return this.validation.required(this.model.name, 'Naam')
-      && this.validation.required(this.country, 'Land')
-      && this.validation.required(this.language, 'Taal')
+      && this.validation.required(this.model.country, 'Land')
+      && this.validation.required(this.model.language, 'Taal')
       && this.validation.all(tels, t => this.validation.required(t.get('telephoneType.id'), 'Type van telefoon'))
       && this.validation.all(tels, t => this.validation.required(t.get('country.id'), 'Landcode van telefoon'))
       && this.validation.all(tels, t => this.validation.required(t.area, 'Telefoonzone'))
@@ -55,10 +55,6 @@ export default Component.extend({
   }),
   save: task(function * () {
     if (this.validate()) {
-      this.set('model.country', this.country);
-      this.set('model.language', this.language);
-      this.set('model.honorificPrefix', this.honorificPrefix);
-
       try {
         const customer = yield this.model.save();
         yield all(this.telephones.filter(tel => !tel.isBlank).map(tel => {
@@ -86,6 +82,10 @@ export default Component.extend({
         const telephone = this.store.createRecord('telephone', {});
         this.get('telephones').pushObject(telephone);
       }
+    },
+    setPostalCode(code, city) {
+      this.model.set('postalCode', code);
+      this.model.set('city', city);
     }
   }
 });

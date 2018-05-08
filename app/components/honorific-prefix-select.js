@@ -1,34 +1,44 @@
+import { next } from '@ember/runloop';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { computed, observer } from '@ember/object';
+import { computed } from '@ember/object';
 import { composeId } from '../models/honorific-prefix';
 
 export default Component.extend({
   store: service(),
-  init() {
+
+  async init() {
     this._super(...arguments);
     const prefixes = this.store.peekAll('honorific-prefix');
     this.set('honorificPrefixes', prefixes);
   },
+
   label: 'Aanspreektitel',
   value: null,
   language: null,
+  onSelectionChange: null,
+
   options: computed('honorificPrefixes', 'honorificPrefixes.[]', 'language', function() {
-    if (this.get('honorificPrefixes') && this.get('language')) {
-      return this.get('honorificPrefixes').filter(p => {
-        return p.get('name') && p.get('languageId') == this.get('language.id');
+    if (this.honorificPrefixes && this.get('language.id')) {
+      return this.honorificPrefixes.filter(p => {
+        return p.name && p.languageId == this.get('language.id');
       });
     } else {
-      return this.get('honorificPrefixes');
+      return this.honorificPrefixes.filter(p => p.name);
     }
   }),
-  languageChanged: observer('language', function() {
-    if (this.get('value')) {
-      const honorificPrefix = this.get('options').find(p => {
+
+  didUpdateAttrs() {
+    this._super(...arguments);
+
+    if (this.get('value.entityId') && this.get('language.id') && this.get('value.languageId') != this.get('language.id')) { // the language changed while a prefix has already been selected
+      const honorificPrefix = this.get('honorificPrefixes').find(p => {
         // Find same prefix in the new language
         return p.get('id') == composeId(this.get('value.entityId'), this.get('language.id'));
       });
-      this.set('value', honorificPrefix);
+      next(this, function() {
+        this.onSelectionChange(honorificPrefix);
+      });
     }
-  })
+  }
 });

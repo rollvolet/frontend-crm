@@ -1,5 +1,5 @@
 {{#paper-autocomplete label=label options=options selected=value
-     searchField="telephonePrefix" labelPath="telephonePrefix" onSelectionChange=(action (mut value))
+     searchField="telephonePrefix" labelPath="telephonePrefix" onSelectionChange=onSelectionChange
      noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
   {{paper-autocomplete-highlight label=option.telephonePrefix searchText=select.searchText flags="i"}}
 {{/paper-autocomplete}}

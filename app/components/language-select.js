@@ -7,13 +7,17 @@ export default Component.extend({
   init() {
     this._super(...arguments);
     const languages = this.store.peekAll('language');
-    if (this.value == null) {
-      const defaultValue = languages.find(l => l.get('code') == 'NED');
-      warn("No default language with code 'NED' found", defaultValue != null, { id: 'select.no-default-value' });
-      this.set('value', defaultValue);
-    }
     this.set('options', languages);
   },
+  didInsertElement() {
+    this._super(...arguments);
+    if (this.value == null || this.value.content === null) { // empty value or empty proxy object
+      const defaultValue = this.options.find(l => l.get('code') == 'NED');
+      warn("No default language with code 'NED' found", defaultValue != null, { id: 'select.no-default-value' });
+      this.onSelectionChange(defaultValue);
+    }
+  },
   label: 'Taal',
-  value: null
+  value: null,
+  onSelectionChange: null
 });

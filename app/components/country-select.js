@@ -7,13 +7,17 @@ export default Component.extend({
   init() {
     this._super(...arguments);
     const countries = this.store.peekAll('country');
-    if (this.value == null) {
-      const defaultValue = countries.find(c => c.get('code') == 'BE');
-      warn("No default country with code 'BE' found", defaultValue != null, { id: 'select.no-default-value' });
-      this.set('value', defaultValue);
-    }
     this.set('options', countries);
   },
+  didInsertElement() {
+    this._super(...arguments);
+    if (this.value == null || this.value.content === null) { // empty value or empty proxy object
+      const defaultValue = this.options.find(c => c.get('code') == 'BE');
+      warn("No default country with code 'BE' found", defaultValue != null, { id: 'select.no-default-value' });
+      this.onSelectionChange(defaultValue);
+    }
+  },
   label: 'Land',
-  value: null
+  value: null,
+  onSelectionChange: null
 });
