@@ -16,5 +16,12 @@ export default Component.extend({
   },
 
   customer: null,
-  onClose: null
+  onClose: null,
+
+  actions: {
+    async cancel() {
+      await this.model.destroyRecord();
+      this.onClose();
+    }
+  }
 });
