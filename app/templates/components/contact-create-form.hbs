@@ -3,4 +3,4 @@
   {{#paper-button onClick=(action "cancel") iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
 </div>
 
-{{customer-entity-create-form scope='contact' model=model onRollback=onClose onSave=onClose}}
+{{customer-entity-edit-form scope='contact' model=model onRollback=onClose onSave=onClose}}

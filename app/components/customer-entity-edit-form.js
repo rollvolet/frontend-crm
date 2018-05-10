@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task, all } from 'ember-concurrency';
+import { equal } from '@ember/object/computed';
 
 export default Component.extend({
   store: service(),
@@ -16,6 +17,14 @@ export default Component.extend({
     const telephone = this.store.createRecord('telephone', {});
     this.get('telephones').pushObject(telephone);
   },
+
+  model: null,
+  onRollback: null,
+  onSave: null,
+
+  scope: 'customer', // one of 'customer', 'contact', 'building'
+  isScopeCustomer: equal('scope', 'customer'),
+
   validate() {
     const tels = this.telephones.filter(t => !t.isBlank);
 
@@ -37,6 +46,7 @@ export default Component.extend({
   rollback: task(function * () {
     if (this.model.isNew)
       yield all(this.telephones.map(t => t.destroyRecord()));
+    // TODO if !model.isNew => restore old phone numbers
     this.model.rollbackAttributes();
     this.onRollback();
   }),
