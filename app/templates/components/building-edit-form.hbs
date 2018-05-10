@@ -1,0 +1,6 @@
+<div class="layout-row layout-align-space-between-center">
+  <h3>Bewerk gebouw</h3>
+  {{#paper-button onClick=onClose iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
+</div>
+
+{{customer-entity-edit-form scope='building' model=model onRollback=onClose onSave=onClose}}

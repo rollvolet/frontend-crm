@@ -53,6 +53,9 @@ export default Component.extend(DebouncedSearch, {
       this.set('street', undefined);
       this.set('telephone', undefined);
       this.get('search').perform();
+    },
+    edit(building) {
+      this.onEdit(building);
     }
   }
 });

@@ -3,10 +3,11 @@ import { equal } from '@ember/object/computed';
 
 export default Component.extend({
   customer: null,
-  state: 'list', // one of 'list', 'detail', 'create'
+  state: 'list', // one of 'list', 'detail', 'create', 'edit'
   displayList: equal('state', 'list'),
   displayDetail: equal('state', 'detail'),
   displayCreate: equal('state', 'create'),
+  displayEdit: equal('state', 'edit'),
 
   actions: {
     openDetail(building) {
@@ -22,6 +23,14 @@ export default Component.extend({
     },
     closeCreate() {
       this.set('state', 'list');
+    },
+    openEdit(contact) {
+      this.set('selectedBuilding', contact);
+      this.set('state', 'edit');
+    },
+    closeEdit() {
+      this.set('state', 'list');
+      this.set('selectedBuilding', null);
     }
   }
 });

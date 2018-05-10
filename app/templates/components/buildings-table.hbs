@@ -25,6 +25,7 @@
       {{th-sortable field='city' currentSorting=sort label='Gemeente'}}
       <th>Land</th>
       <th>Taal</th>
+      <th></th>
     {{/c.header}}
     {{#c.body as |row|}}
       <td>{{row.number}}</td>
@@ -36,6 +37,7 @@
       <td>{{row.city}}</td>
       <td>{{row.country.name}}</td>
       <td>{{row.language.name}}</td>
+      <td {{action "edit" row}}>{{paper-icon "mode edit"}}</td>
     {{/c.body}}
   {{/t.content}}
 {{/data-table}}

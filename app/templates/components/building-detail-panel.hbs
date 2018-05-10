@@ -1,7 +1,10 @@
 <div class="resource-details">
   <div class="layout-row layout-align-space-between-center">
     <h4><span class="small-text-fade">[{{model.number}}]</span> {{model.printName}}</h4>
-    {{#paper-button onClick=onClose iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
+    <div>
+      {{#paper-button onClick=(action "toggleEdit") iconButton=true}}{{paper-icon "edit mode"}}{{/paper-button}}
+      {{#paper-button onClick=onClose iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
+    </div>
   </div>
   <div class="layout-row">
     <div class="left-column">

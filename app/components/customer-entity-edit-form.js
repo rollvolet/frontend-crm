@@ -45,7 +45,8 @@ export default Component.extend({
       yield all(this.telephones.map(t => t.destroyRecord()));
     } else {
       // A best effort to rollback, but telephones that are already saved won't be rollbacked
-      yield all(this.telephones.map(t => t.rollbackAttributes()));
+      yield all(this.telephones.filter(t => t.isNew).map(t => t.destroyRecord()));
+      yield all(this.telephones.filter(t => !t.isNew).map(t => t.rollbackAttributes()));
     }
     this.model.rollbackAttributes();
     this.onRollback();
