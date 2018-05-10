@@ -40,13 +40,13 @@ export default Component.extend({
 
     // TODO add validation on phone number length
   },
-  // Best effort to rollback
-  // - remove already persisted phones for a new customer
-  // - phone updates on an already persisted customer will not be rollbacked
   rollback: task(function * () {
-    if (this.model.isNew)
+    if (this.model.isNew) {
       yield all(this.telephones.map(t => t.destroyRecord()));
-    // TODO if !model.isNew => restore old phone numbers
+    } else {
+      // A best effort to rollback, but telephones that are already saved won't be rollbacked
+      yield all(this.telephones.map(t => t.rollbackAttributes()));
+    }
     this.model.rollbackAttributes();
     this.onRollback();
   }),
