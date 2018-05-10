@@ -15,7 +15,7 @@ export default DS.Model.extend({
   fullNumber: computed('area', 'number', function() {
     return `${this.get('area')} ${this.get('number')}`;
   }),
-  isBlank: computed('area', 'number', 'memo', 'order', 'country', 'telephoneType', 'customer', function() {
-    return !(this.area || this.number || this.memo || this.order || this.get('country.id') || this.get('telephoneType.id') || this.get('customer.id'));
+  isBlank: computed('area', 'number', 'memo', 'order', 'country', 'telephoneType',  function() {
+    return !(this.area || this.number || this.memo || this.order || this.get('country.id') || this.get('telephoneType.id'));
   })
 });

@@ -16,6 +16,7 @@ export default Component.extend(DebouncedSearch, {
   sort: 'name',
 
   onClickRow: null,
+  onEdit: null,
 
   dataTableParamChanged: observer('page', 'size', 'sort', function() {
     this.get('search').perform();
@@ -53,6 +54,9 @@ export default Component.extend(DebouncedSearch, {
       this.set('street', undefined);
       this.set('telephone', undefined);
       this.get('search').perform();
+    },
+    edit(contact) {
+      this.onEdit(contact);
     }
   }
 });
