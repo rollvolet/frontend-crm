@@ -13,9 +13,8 @@ export default Component.extend({
     this._super(...arguments);
 
     const telephones = await this.model.get('telephones');
-    this.set('telephones', telephones);
     const telephone = this.store.createRecord('telephone', {});
-    this.get('telephones').pushObject(telephone);
+    telephones.pushObject(telephone);
   },
 
   model: null,
@@ -26,7 +25,7 @@ export default Component.extend({
   isScopeCustomer: equal('scope', 'customer'),
 
   validate() {
-    const tels = this.telephones.filter(t => !t.isBlank);
+    const tels = this.get('model.telephones').filter(t => !t.isBlank);
 
     return this.validation.required(this.model.name, 'Naam')
       && this.validation.required(this.model.country, 'Land')
@@ -42,11 +41,11 @@ export default Component.extend({
   },
   rollback: task(function * () {
     if (this.model.isNew) {
-      yield all(this.telephones.map(t => t.destroyRecord()));
+      yield all(this.get('model.telephones').map(t => t.destroyRecord()));
     } else {
       // A best effort to rollback, but telephones that are already saved won't be rollbacked
-      yield all(this.telephones.filter(t => t.isNew).map(t => t.destroyRecord()));
-      yield all(this.telephones.filter(t => !t.isNew).map(t => t.rollbackAttributes()));
+      yield all(this.get('model.telephones').filter(t => t.isNew).map(t => t.destroyRecord()));
+      yield all(this.get('model.telephones').filter(t => !t.isNew).map(t => t.rollbackAttributes()));
     }
     this.model.rollbackAttributes();
     this.onRollback();
@@ -56,7 +55,7 @@ export default Component.extend({
       if (telephone.isNew && !telephone.isBlank) {
         telephone.set(this.scope, this.model);
         yield telephone.save();
-      } else if (telephone.hasDirtyAttributes && !telephone.isBlank) {
+      } else if (!telephone.isBlank && (telephone.hasDirtyAttributes || telephone.hasDirtyRelations())) {
         // cannot patch phone. Create new and remove old phone.
         const newTelephone = this.store.createRecord('telephone', {
           area: telephone.area,
@@ -68,9 +67,13 @@ export default Component.extend({
         });
         newTelephone.set(this.scope, this.model);
         yield telephone.destroyRecord();
+        // TODO: Fix this hack when Ember Data allows creation of already deleted ID
+        // See https://github.com/emberjs/data/issues/4972
+        //  and https://github.com/emberjs/data/issues/5006
+        this.store._removeFromIdMap(telephone._internalModel);
         yield newTelephone.save();
       } else if (telephone.isBlank) {
-        telephone.destroyRecord();
+        yield telephone.destroyRecord();
       }
     } catch (e) {
       warn(`Error while saving new telephone: ${e.message}`, { id: 'save.error' });
@@ -82,7 +85,7 @@ export default Component.extend({
     if (this.validate()) {
       try {
         const customer = yield this.model.save();
-        yield all(this.telephones.map(tel => this.saveTelephone.perform(tel)));
+        yield all(this.get('model.telephones').map(tel => this.saveTelephone.perform(tel)));
         this.onSave(customer);
       } catch (e) {
         warn(`Error while saving ${this.scope}: ${e.message}`, { id: 'save.error' });
@@ -95,15 +98,15 @@ export default Component.extend({
   actions: {
     addTelephone() {
       const telephone = this.store.createRecord('telephone', {});
-      this.get('telephones').pushObject(telephone);
+      this.get('model.telephones').pushObject(telephone);
     },
     removeTelephone(phone) {
-      this.get('telephones').removeObject(phone);
+      this.get('model.telephones').removeObject(phone);
       phone.destroyRecord();
 
-      if (this.get('telephones').length == 0) {
+      if (this.get('model.telephones').length == 0) {
         const telephone = this.store.createRecord('telephone', {});
-        this.get('telephones').pushObject(telephone);
+        this.get('model.telephones').pushObject(telephone);
       }
     },
     setPostalCode(code, city) {

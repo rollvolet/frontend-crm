@@ -17,5 +17,11 @@ export default DS.Model.extend({
   }),
   isBlank: computed('area', 'number', 'memo', 'order', 'country', 'telephoneType',  function() {
     return !(this.area || this.number || this.memo || this.order || this.get('country.id') || this.get('telephoneType.id'));
-  })
+  }),
+
+  hasDirtyRelations() {
+    let _, telephoneTypeId, countryId; // eslint-disable-line no-unused-vars
+    [_, telephoneTypeId, countryId] = this.get('id').split('-');
+    return this.get('telephoneType.id') != telephoneTypeId || this.get('country.id') != countryId;
+  }
 });

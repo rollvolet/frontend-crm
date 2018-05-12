@@ -28,6 +28,17 @@ export default Controller.extend({
       const customer = this.get('model');
       const invoiceId = row.get('id');
       this.transitionToRoute('main.case.invoice', customer, invoiceId);
+    },
+    openEdit() {
+      this.set('isEdit', true);
+    },
+    onRollback() {
+      this.get('model.telephones').reload();
+      this.set('isEdit', false);
+    },
+    onSave(/*customer*/) {
+      this.get('model.telephones').reload();
+      this.set('isEdit', false);
     }
   }
 });

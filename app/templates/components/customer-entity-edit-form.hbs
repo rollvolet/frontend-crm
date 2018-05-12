@@ -42,7 +42,7 @@
 <div class="layout-column">
   <div class="layout-row">
     <div class="layout-column">
-      {{#each telephones as |telephone|}}
+      {{#each model.telephones as |telephone|}}
         <div class="layout-row layout-align-start-center">
           {{telephone-type-select value=telephone.telephoneType onSelectionChange=(action (mut telephone.telephoneType)) class="md-input-wrapper small"}}
           {{telephone-prefix-select value=telephone.country onSelectionChange=(action (mut telephone.country)) class="md-input-wrapper small"}}
