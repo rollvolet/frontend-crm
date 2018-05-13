@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed, observer } from '@ember/object';
+import { computed } from '@ember/object';
 import { A } from '@ember/array';
 import { warn } from '@ember/debug';
 
@@ -13,7 +13,7 @@ export default Component.extend({
   address3: null,
 
   value: computed('address1', 'address2', 'address3', {
-    get(key) {
+    get(/*key*/) {
       let value = '';
       let i = 0;
       while(i < 3) {
