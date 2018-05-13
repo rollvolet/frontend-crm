@@ -8,18 +8,32 @@ export default Component.extend({
   tagName: '',
   size: 'xxlarge',
   label: 'Adres (max. 3 lijnen)',
-  value: null,
   address1: null,
   address2: null,
   address3: null,
-  valueChanged: observer('value', function() {
-    const lines = (this.get('value') || '').split('\n');
-    if (lines.length > 3)
-      warn('Only 3 lines are allowed in the address text area', { id: 'input.too-many-address-lines' });
-    let i = 0;
-    while(i < 3) {
-      this.set(`address${i + 1}`, lines[i] || undefined);
-      i++;
+
+  value: computed('address1', 'address2', 'address3', {
+    get(key) {
+      let value = '';
+      let i = 0;
+      while(i < 3) {
+        if (this.get(`address${i + 1}`))
+          value += this.get(`address${i + 1}`);
+        value += '\n';
+        i++;
+      }
+      return value.replace(/[\s\uFEFF\xA0]+$/g, ''); // remove trailing newlines
+    },
+    set(key, value) {
+      const lines = (value || '').split('\n');
+      if (lines.length > 3)
+        warn('Only 3 lines are allowed in the address text area', { id: 'input.too-many-address-lines' });
+      let i = 0;
+      while(i < 3) {
+        this.set(`address${i + 1}`, lines[i] || undefined);
+        i++;
+      }
+      return value;
     }
   }),
   errors: computed('value', function() {
