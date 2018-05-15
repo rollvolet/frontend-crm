@@ -40,7 +40,7 @@
           {{#each model.telephones as |tel|}}
             <div>
               {{tel.telephoneType.name}}:
-              {{format-phone (concat tel.country.telephonePrefix " " tel.fullNumber)}}
+              {{format-phone tel.country.telephonePrefix tel.area tel.number}}
               {{#if tel.memo}}({{tel.memo}}){{/if}}
             </div>
           {{/each}}

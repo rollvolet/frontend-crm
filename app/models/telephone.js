@@ -12,16 +12,12 @@ export default DS.Model.extend({
   contact: DS.belongsTo('contact'),
   building: DS.belongsTo('building'),
 
-  fullNumber: computed('area', 'number', function() {
-    return `${this.get('area')} ${this.get('number')}`;
-  }),
   isBlank: computed('area', 'number', 'memo', 'order', 'country', 'telephoneType',  function() {
     return !(this.area || this.number || this.memo || this.order || this.get('country.id') || this.get('telephoneType.id'));
   }),
 
   hasDirtyRelations() {
-    let _, telephoneTypeId, countryId; // eslint-disable-line no-unused-vars
-    [_, telephoneTypeId, countryId] = this.get('id').split('-');
+    let [_, telephoneTypeId, countryId] = this.get('id').split('-'); // eslint-disable-line no-unused-vars
     return this.get('telephoneType.id') != telephoneTypeId || this.get('country.id') != countryId;
   }
 });
