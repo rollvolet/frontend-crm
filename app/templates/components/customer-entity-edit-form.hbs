@@ -5,7 +5,9 @@
         {{#group.radio value=false}}Particulier{{/group.radio}}
         {{#group.radio value=true}}Bedrijf{{/group.radio}}
       {{/paper-radio-group}}
-      {{#if model.isCompany}}{{paper-input class="flex-50 spacer-left" label="BTW nummer" value=model.vatNumber onChange=(action (mut model.vatNumber))}}{{/if}}
+      {{#if model.isCompany}}
+        {{paper-input-mask class="flex-50 spacer-left" label="BTW nummer" value=model.vatNumber mask='BE 9999.999.999' onChange=(action (mut model.vatNumber))}}
+      {{/if}}
     </div>
   {{/if}}
   <h4>

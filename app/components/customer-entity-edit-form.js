@@ -33,10 +33,10 @@ export default Component.extend({
     const tels = this.get('model.telephones').filter(t => !t.isBlank);
     tels.forEach(t => t.set('number', t.number.replace(onlyDigits, '')));
 
-    const vatNumber = this.get('model.vatNumber');
-    if (vatNumber && vatNumber.length > 2) {
-      const normalizedVatNumber = `${vatNumber.substr(0, 2)}${vatNumber.substr(2).replace(onlyDigits, '')}`;
-      this.set('model.vatNumber', normalizedVatNumber);
+    if (this.model.changedAttributes()['vatNumber']) {
+      // vatNumber has changed using an input mask. We need to add the country prefix again
+      const vatNumber = this.get('model.vatNumber');
+      this.set('model.vatNumber', `BE${vatNumber}`);
     }
 
     return this.validation.required(this.model.name, 'Naam')
@@ -102,7 +102,7 @@ export default Component.extend({
       try {
         const customer = yield this.model.save();
         yield all(this.get('model.telephones').map(tel => this.saveTelephone.perform(tel)));
-        yield all(this.get('telephonesToRemove').map(tel => this.destroyRecord()));
+        yield all(this.get('telephonesToRemove').map(tel => tel.destroyRecord()));
         this.onSave(customer);
       } catch (e) {
         warn(`Error while saving ${this.scope}: ${e.message}`, { id: 'save.error' });

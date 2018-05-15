@@ -49,6 +49,7 @@
     "ember-moment": "^7.5.0",
     "ember-paper": "^1.0.0-beta.4",
     "ember-paper-data-table": "^0.2.1",
+    "ember-paper-input-mask": "^2.0.1",
     "ember-paper-link": "0.0.2",
     "ember-promise-helpers": "^1.0.3",
     "ember-resolver": "^4.0.0",
