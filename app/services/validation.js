@@ -2,6 +2,7 @@ import Service, { inject } from '@ember/service';
 import { warn } from '@ember/debug';
 
 const onlyNumberRegex = /^\d*$/;
+const vatNumberRegex = /^[a-zA-Z]{2}\d{10,18}$/;
 
 export default Service.extend({
   paperToaster: inject(),
@@ -52,5 +53,14 @@ export default Service.extend({
         this.paperToaster.show(`${label} mag maximaal ${max} karakters bevatten`);
     }
     return isValid;
+  },
+  vatNumber(value, label, display = true) {
+    if (value && !vatNumberRegex.test(value)) {
+      warn(`Invalid ${label}`, { id: 'validation.vat-number' });
+      if (display)
+        this.paperToaster.show(`Ongelding ${label}`);
+      return false;
+    }
+    return true;
   }
 });

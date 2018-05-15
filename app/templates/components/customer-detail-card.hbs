@@ -9,7 +9,7 @@
           {{model.prefix}} {{model.name}} {{model.suffix}}
           {{#if (not model.printInFront)}}{{model.honorificPrefix.name}}{{/if}}
         </div>
-        <div>{{model.vatNumber}}</div>
+        <div>{{format-vat-number model.vatNumber}}</div>
       {{/detail-icon-list-item}}
 
       {{#detail-icon-list-item icon="location on" label="Adres" class="resource-details--section-address"}}

@@ -33,9 +33,16 @@ export default Component.extend({
     const tels = this.get('model.telephones').filter(t => !t.isBlank);
     tels.forEach(t => t.set('number', t.number.replace(onlyDigits, '')));
 
+    const vatNumber = this.get('model.vatNumber');
+    if (vatNumber && vatNumber.length > 2) {
+      const normalizedVatNumber = `${vatNumber.substr(0, 2)}${vatNumber.substr(2).replace(onlyDigits, '')}`;
+      this.set('model.vatNumber', normalizedVatNumber);
+    }
+
     return this.validation.required(this.model.name, 'Naam')
       && this.validation.required(this.model.country, 'Land')
       && this.validation.required(this.model.language, 'Taal')
+      && this.validation.vatNumber(this.model.vatNumber, 'BTW nummer')
       && this.validation.all(tels, t => this.validation.required(t.get('telephoneType.id'), 'Type van telefoon'))
       && this.validation.all(tels, t => this.validation.required(t.get('country.id'), 'Landcode van telefoon'))
       && this.validation.all(tels, t => this.validation.required(t.area, 'Telefoonzone'))
