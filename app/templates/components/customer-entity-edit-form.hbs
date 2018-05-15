@@ -48,7 +48,7 @@
         <div class="layout-row layout-align-start-center">
           {{telephone-type-select value=telephone.telephoneType onSelectionChange=(action (mut telephone.telephoneType)) class="md-input-wrapper small"}}
           {{telephone-prefix-select value=telephone.country onSelectionChange=(action (mut telephone.country)) class="md-input-wrapper small"}}
-          {{paper-input class="xsmall" label="Zone" value=telephone.area onChange=(action (mut telephone.area))}}
+          {{paper-input-mask class="xsmall" label="Zone" value=telephone.area mask='99[99]' onChange=(action (mut telephone.area))}}
           {{paper-input class="small" label="Nummer" value=telephone.number onChange=(action (mut telephone.number))}}
           {{paper-input class="large" label="Memo" value=telephone.memo onChange=(action (mut telephone.memo))}}
           {{#paper-button iconButton=true onClick=(action "removeTelephone" telephone)}}{{paper-icon "close"}}{{/paper-button}}
