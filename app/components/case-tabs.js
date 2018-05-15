@@ -1,3 +1,4 @@
+import { observer } from '@ember/object';
 import { assert } from '@ember/debug';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
@@ -22,6 +23,9 @@ export default Component.extend({
   session: service(),
   ajax: service(),
   currentRouteName: oneWay('router.currentRouteName'),
+  routeChanged: observer('router.currentRouteName', function() {
+    this.set('currentRouteName', this.get('router.currentRouteName'));
+  }),
   currentUrl: oneWay('router.currentURL'),
   init() {
     this._super(...arguments);
