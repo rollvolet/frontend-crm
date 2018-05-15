@@ -4,6 +4,8 @@ import { warn } from '@ember/debug';
 import { task, all } from 'ember-concurrency';
 import { equal } from '@ember/object/computed';
 
+const onlyDigits = /\D/g; // \D matches all non-digit characters
+
 export default Component.extend({
   store: service(),
   paperToaster: service(),
@@ -26,6 +28,7 @@ export default Component.extend({
 
   validate() {
     const tels = this.get('model.telephones').filter(t => !t.isBlank);
+    tels.forEach(t => t.set('number', t.number.replace(onlyDigits, '')));
 
     return this.validation.required(this.model.name, 'Naam')
       && this.validation.required(this.model.country, 'Land')
@@ -34,8 +37,10 @@ export default Component.extend({
       && this.validation.all(tels, t => this.validation.required(t.get('country.id'), 'Landcode van telefoon'))
       && this.validation.all(tels, t => this.validation.required(t.area, 'Telefoonzone'))
       && this.validation.all(tels, t => this.validation.onlyNumbers(t.area, 'Telefoonzone'))
+      && this.validation.all(tels, t => this.validation.length(t.area, 'Telefoonzone', 2, 4))
       && this.validation.all(tels, t => this.validation.required(t.number, 'Telefoonnummer'))
-      && this.validation.all(tels, t => this.validation.onlyNumbers(t.number, 'Telefoonnummer'));
+      && this.validation.all(tels, t => this.validation.onlyNumbers(t.number, 'Telefoonnummer'))
+      && this.validation.all(tels, t => this.validation.minLength(t.number, 'Telefoonnummer', 6));
 
     // TODO add validation on phone number length
   },
