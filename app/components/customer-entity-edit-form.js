@@ -1,3 +1,4 @@
+import { A } from '@ember/array';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
@@ -17,6 +18,8 @@ export default Component.extend({
     const telephones = await this.model.get('telephones');
     const telephone = this.store.createRecord('telephone', {});
     telephones.pushObject(telephone);
+
+    this.set('telephonesToRemove', A());
   },
 
   model: null,
@@ -41,16 +44,17 @@ export default Component.extend({
       && this.validation.all(tels, t => this.validation.required(t.number, 'Telefoonnummer'))
       && this.validation.all(tels, t => this.validation.onlyNumbers(t.number, 'Telefoonnummer'))
       && this.validation.all(tels, t => this.validation.minLength(t.number, 'Telefoonnummer', 6));
-
-    // TODO add validation on phone number length
   },
   rollback: task(function * () {
+    const telephones = this.get('model.telephones');
     if (this.model.isNew) {
-      yield all(this.get('model.telephones').map(t => t.destroyRecord()));
+      yield all(telephones.map(t => t.destroyRecord()));
     } else {
       // A best effort to rollback, but telephones that are already saved won't be rollbacked
-      yield all(this.get('model.telephones').filter(t => t.isNew).map(t => t.destroyRecord()));
-      yield all(this.get('model.telephones').filter(t => !t.isNew).map(t => t.rollbackAttributes()));
+      yield all(telephones.filter(t => t.isNew).map(t => t.destroyRecord()));
+      yield all(this.get('telephonesToRemove').filter(t => t.isNew).map(t => t.destroyRecord()));
+      this.get('telephonesToRemove').filter(t => !t.isNew).forEach(t => telephones.pushObject(t));
+      yield all(telephones.filter(t => !t.isNew).map(t => t.rollbackAttributes()));
     }
     this.model.rollbackAttributes();
     this.onRollback();
@@ -91,6 +95,7 @@ export default Component.extend({
       try {
         const customer = yield this.model.save();
         yield all(this.get('model.telephones').map(tel => this.saveTelephone.perform(tel)));
+        yield all(this.get('telephonesToRemove').map(tel => this.destroyRecord()));
         this.onSave(customer);
       } catch (e) {
         warn(`Error while saving ${this.scope}: ${e.message}`, { id: 'save.error' });
@@ -107,7 +112,8 @@ export default Component.extend({
     },
     removeTelephone(phone) {
       this.get('model.telephones').removeObject(phone);
-      phone.destroyRecord();
+      this.get('telephonesToRemove').pushObject(phone);
+      phone.deleteRecord();
 
       if (this.get('model.telephones').length == 0) {
         const telephone = this.store.createRecord('telephone', {});
