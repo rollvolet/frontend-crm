@@ -9,7 +9,11 @@ export default Service.extend({
       'honorific-prefix',
       'language',
       'postal-code',
-      'telephone-type'
+      'telephone-type',
+      'submission-type',
+      'vat-rate',
+      'way-of-entry',
+      'employee'
     ];
     return all(entities.map(e => this.store.findAll(e)));
   }
