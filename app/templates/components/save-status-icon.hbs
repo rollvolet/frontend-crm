@@ -1,7 +1,7 @@
 {{#if task.isRunning}}
   {{paper-icon "sync" class="running"}}
 {{else}}
-  {{#if task.last.isError}}
+  {{#if (or model.isError task.last.isError)}}
     {{paper-icon "error outline" class="error"}}
   {{else}}
     {{paper-icon "check circle outline" class="success"}}
