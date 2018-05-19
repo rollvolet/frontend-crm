@@ -4,6 +4,7 @@ import { equal } from '@ember/object/computed';
 
 export default Component.extend({
   store: service(),
+  configuration: service(),
 
   customer: null,
   state: 'list', // one of 'list', 'detail', 'create', 'edit'
@@ -13,14 +14,12 @@ export default Component.extend({
   displayEdit: equal('state', 'edit'),
 
   createNewBuilding() {
-    const defaultLanguage = this.store.peekAll('language').find(l => l.get('code') == 'NED');
-    const defaultCountry = this.store.peekAll('country').find(c => c.get('code') == 'BE');
     return this.store.createRecord('building', {
       printInFront: true,
       printPrefix: true,
       printSuffix: true,
-      language: defaultLanguage,
-      country: defaultCountry,
+      language: this.configuration.defaultLanguage(),
+      country: this.configuration.defaultCountry(),
       customer: this.customer
     });
   },

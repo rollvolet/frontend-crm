@@ -1,10 +1,10 @@
-import { warn } from '@ember/debug';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { equal } from '@ember/object/computed';
 
 export default Component.extend({
   store: service(),
+  configuration: service(),
 
   customer: null,
   state: 'list', // one of 'list', 'detail', 'create', 'edit'
@@ -14,17 +14,12 @@ export default Component.extend({
   displayEdit: equal('state', 'edit'),
 
   createNewContact() {
-    const defaultLanguage = this.store.peekAll('language').find(l => l.get('code') == 'NED');
-    warn("No default language with code 'NED' found", defaultLanguage != null, { id: 'select.no-default-value' });
-    const defaultCountry = this.store.peekAll('country').find(c => c.get('code') == 'BE');
-    warn("No default country with code 'BE' found", defaultCountry != null, { id: 'no-default-value' });
-
     return this.store.createRecord('contact', {
       printInFront: true,
       printPrefix: true,
       printSuffix: true,
-      language: defaultLanguage,
-      country: defaultCountry,
+      language: this.configuration.defaultLanguage(),
+      country: this.configuration.defaultCountry(),
       customer: this.customer
     });
   },
