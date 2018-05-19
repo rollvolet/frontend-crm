@@ -1,92 +1,107 @@
-<div class="layout-column">
-  {{#if isScopeCustomer}}
-    <div class="layout-row layout-xs-column layout-align-start-center">
-      {{#paper-radio-group groupValue=model.isCompany onChange=(action (mut model.isCompany)) class="layout-row" as |group|}}
-        {{#group.radio value=false}}Particulier{{/group.radio}}
-        {{#group.radio value=true}}Bedrijf{{/group.radio}}
-      {{/paper-radio-group}}
-      {{#if model.isCompany}}
-        {{paper-input-mask class="flex-50 spacer-left" label="BTW nummer" value=model.vatNumber mask='BE 9999.999.999' onChange=(action (mut model.vatNumber)) showMaskOnHover=false}}
-      {{/if}}
-    </div>
-  {{/if}}
-  <h4>
-    Geprinte naam: {{#if model.printInFront}}{{model.honorificPrefix.name}}{{/if}}
-    {{#if model.printPrefix}}{{model.prefix}}{{/if}} {{model.name}} {{#if model.printSuffix}}{{model.suffix}}{{/if}}
-    {{#if (not model.printInFront)}}{{model.honorificPrefix.name}}{{/if}}
-  </h4>
-  <div class="layout-row layout-xs-column">
-    <div class="layout-column">
-      {{honorific-prefix-select value=model.honorificPrefix language=model.language onSelectionChange=(action (mut model.honorificPrefix)) class="md-input-wrapper large no-spacer-bottom"}}
-      {{paper-checkbox label="Vooraan" value=model.printInFront onChange=(action (mut model.printInFront))}}
-    </div>
-    <div class="layout-column">
-      {{paper-input class="small no-spacer-bottom" label="Prefix" value=model.prefix onChange=(action (mut model.prefix))}}
-      {{paper-checkbox label="Print" value=model.printPrefix onChange=(action (mut model.printPrefix))}}
-    </div>
-    {{paper-input class="large" label="Naam" value=model.name onChange=(action (mut model.name))}}
-    <div class="layout-column">
-      {{paper-input class="small no-spacer-bottom" label="Suffix" value=model.suffix onChange=(action (mut model.suffix))}}
-      {{paper-checkbox label="Print" value=model.printSuffix onChange=(action (mut model.printSuffix))}}
-    </div>
-  </div>
-</div>
+{{yield (hash save=save remove=remove)}}
 
-<div class="layout-column">
-  {{address-input address1=model.address1 address2=model.address2 address3=model.address3}}
-  <div class="layout-row">
-    {{postal-code-select postalCode=model.postalCode city=model.city onSelectionChange=(action "setPostalCode") class="md-input-wrapper xxlarge"}}
-    {{country-select value=model.country onSelectionChange=(action (mut model.country)) class="md-input-wrapper"}}
-    {{language-select value=model.language onSelectionChange=(action (mut model.language)) class="md-input-wrapper"}}
+{{#if remove.isRunning}}
+  <div>
+    {{paper-progress-linear}}
+    <p>Aan het verwijderen...</p>
   </div>
-</div>
-
-<div class="layout-column">
-  <div class="layout-row">
-    <div class="layout-column">
-      {{#each model.telephones as |telephone|}}
-        <div class="layout-row layout-align-start-center">
-          {{telephone-type-select value=telephone.telephoneType onSelectionChange=(action (mut telephone.telephoneType)) class="md-input-wrapper small"}}
-          {{telephone-prefix-select value=telephone.country onSelectionChange=(action (mut telephone.country)) class="md-input-wrapper small"}}
-          {{paper-input-mask class="xsmall" label="Zone" value=telephone.area mask='99[99]' onChange=(action (mut telephone.area)) showMaskOnHover=false}}
-          {{paper-input class="small" label="Nummer" value=telephone.number onChange=(action (mut telephone.number))}}
-          {{paper-input class="large" label="Memo" value=telephone.memo onChange=(action (mut telephone.memo))}}
-          {{#paper-button iconButton=true onClick=(action "removeTelephone" telephone)}}{{paper-icon "close"}}{{/paper-button}}
-        </div>
-      {{/each}}
-      <div class="layout-row layout-align-end-center">
-        {{#paper-button primary=true fab=true mini=true raised=true onClick=(action "addTelephone")}}{{paper-icon "add"}}{{/paper-button}}
+{{else}}
+  <div class="layout-column">
+    {{#if isScopeCustomer}}
+      <div class="layout-row layout-xs-column layout-align-start-center">
+        {{#paper-radio-group groupValue=model.isCompany onChange=(queue (action (mut model.isCompany)) (perform save)) class="layout-row" as |group|}}
+          {{#group.radio value=false}}Particulier{{/group.radio}}
+          {{#group.radio value=true}}Bedrijf{{/group.radio}}
+        {{/paper-radio-group}}
+        {{#if model.isCompany}}
+          {{paper-input label="BTW nummer" value=model.vatNumber
+              onChange=(action (mut model.vatNumber)) onBlur=(perform save)
+              class="flex-50 spacer-left"
+          }}
+        {{/if}}
+      </div>
+    {{/if}}
+    <h4>
+      Geprinte naam: {{#if model.printInFront}}{{model.honorificPrefix.name}}{{/if}}
+      {{#if model.printPrefix}}{{model.prefix}}{{/if}} {{model.name}} {{#if model.printSuffix}}{{model.suffix}}{{/if}}
+      {{#if (not model.printInFront)}}{{model.honorificPrefix.name}}{{/if}}
+    </h4>
+    <div class="layout-row layout-xs-column">
+      <div class="layout-column">
+        {{honorific-prefix-select value=model.honorificPrefix language=model.language
+            onSelectionChange=(queue (action (mut model.honorificPrefix)) (perform save))
+            class="md-input-wrapper large no-spacer-bottom"}}
+        {{paper-checkbox label="Vooraan" value=model.printInFront
+            onChange=(queue (action (mut model.printInFront)) (perform save))}}
+      </div>
+      <div class="layout-column">
+        {{paper-input label="Prefix" value=model.prefix
+            onChange=(action (mut model.prefix)) onBlur=(perform save)
+            class="small no-spacer-bottom"}}
+        {{paper-checkbox label="Print" value=model.printPrefix
+            onChange=(queue (action (mut model.printPrefix)) (perform save))}}
+      </div>
+      {{paper-input label="Naam" value=model.name
+          onChange=(action (mut model.name)) onBlur=(perform save)
+          class="large"}}
+      <div class="layout-column">
+        {{paper-input label="Suffix" value=model.suffix
+            onChange=(action (mut model.suffix))  onBlur=(perform save)
+            class="small no-spacer-bottom"}}
+        {{paper-checkbox label="Print" value=model.printSuffix
+            onChange=(queue (action (mut model.printSuffix)) (perform save))}}
       </div>
     </div>
   </div>
-  <div class="layout-row layout-xs-column">
-    {{paper-input class="xlarge" label="Email" value=model.email onChange=(action (mut model.email))}}
-    {{paper-input class="xlarge" label="Email 2" value=model.email2 onChange=(action (mut model.email2))}}
-    {{paper-input class="xlarge" label="Website" value=model.url onChange=(action (mut model.url))}}
-  </div>
-  <div class="layout-row">
-  </div>
-</div>
 
-<div class="layout-column">
-  <div class="layout-row layout-xs-column">
-    {{paper-input textarea=true class="xxlarge" label="Opmerking (zichtbaar)" icon="comment" value=model.comment
-        passThru=(hash rows=3) onChange=(action (mut model.comment))}}
-    {{#if isScopeCustomer}}
-      {{paper-input textarea=true class="xxlarge" label="Memo (verborgen)" icon="assignment" value=model.memo
-          passThru=(hash rows=3) onChange=(action (mut model.memo))}}
-    {{/if}}
-  </div>
-</div>
-
-<div class="layout-row layout-align-end">
-  {{#if (or save.isRunning rollback.isRunning)}}
-    <div class="loader-buttons">
-      {{paper-progress-linear}}
-      <p>Aan het opslaan...</p>
+  <div class="layout-column">
+    {{address-input address1=model.address1 address2=model.address2 address3=model.address3
+        onBlur=(perform save)}}
+    <div class="layout-row">
+      {{postal-code-select postalCode=model.postalCode city=model.city
+          onSelectionChange=(queue (action "setPostalCode") (perform save))
+          class="md-input-wrapper xxlarge"}}
+      {{country-select value=model.country
+          onSelectionChange=(queue (action (mut model.country)) (perform save))
+          class="md-input-wrapper"}}
+      {{language-select value=model.language
+          onSelectionChange=(queue (action (mut model.language)) (perform save))
+          class="md-input-wrapper"}}
     </div>
-  {{else}}
-    {{paper-button label="Annuleer" primary=true raised=true onClick=(perform rollback)}}
-    {{paper-button label="Opslaan" primary=true raised=true onClick=(perform save)}}
-  {{/if}}
-</div>
+  </div>
+
+  <div class="layout-column">
+    <div class="layout-row">
+      <!-- telephone input -->
+    </div>
+    <div class="layout-row layout-xs-column">
+      {{paper-input label="Email" value=model.email
+          onChange=(action (mut model.email)) onBlur=(perform save)
+          class="xlarge"}}
+      {{paper-input label="Email 2" value=model.email2
+          onChange=(action (mut model.email2)) onBlur=(perform save)
+          class="xlarge"}}
+      {{paper-input label="Website" value=model.url
+          onChange=(action (mut model.url)) onBlur=(perform save)
+          class="xlarge"}}
+    </div>
+  </div>
+
+  <div class="layout-column">
+    <div class="layout-row layout-xs-column">
+      {{paper-input label="Opmerking (zichtbaar)" value=model.comment
+          onChange=(action (mut model.comment)) onBlur=(perform save)
+          textarea=true icon="comment" passThru=(hash rows=3) class="xxlarge"}}
+      {{#if isScopeCustomer}}
+        {{paper-input label="Memo (verborgen)" value=model.memo
+            onChange=(action (mut model.memo)) onBlur=(perform save)
+            textarea=true icon="assignment" passThru=(hash rows=3) class="xxlarge"}}
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="layout-row layout-align-end">
+    {{paper-button label="Verwijder" primary=true raised=true onClick=(perform remove)}}
+    {{paper-button label="Klaar" primary=true raised=true onClick=onClose}}
+  </div>
+{{/if}}

@@ -1,12 +1,10 @@
+import { warn } from '@ember/debug';
 import Controller from '@ember/controller';
 
 export default Controller.extend({
   actions: {
-    onRollback() {
+    close() {
       this.transitionToRoute('main.customers.index');
-    },
-    onSave(customer) {
-      this.transitionToRoute('main.customers.edit', customer.id);
     }
   }
 });

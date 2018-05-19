@@ -31,12 +31,7 @@ export default Controller.extend({
     openEdit() {
       this.set('isEdit', true);
     },
-    onRollback() {
-      this.get('model.telephones').reload();
-      this.set('isEdit', false);
-    },
-    onSave(/*customer*/) {
-      this.get('model.telephones').reload();
+    closeEdit() {
       this.set('isEdit', false);
     }
   }

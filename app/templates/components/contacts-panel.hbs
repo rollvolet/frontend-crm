@@ -6,7 +6,17 @@
 {{else if displayDetail}}
   {{contact-detail-panel model=selectedContact onClose=(action "closeDetail") onEdit=(action "openEdit")}}
 {{else if displayCreate}}
-  {{contact-create-form customer=customer onClose=(action "closeCreate")}}
+  {{#customer-entity-edit-form scope='contact' model=selectedContact onClose=(action "closeEdit") as |f|}}
+    <div class="layout-row layout-align-start-center">
+      <h3>Nieuw contact</h3>
+      {{save-status-icon task=f.save}}
+    </div>
+  {{/customer-entity-edit-form}}
 {{else if displayEdit}}
-  {{contact-edit-form model=selectedContact onClose=(action "closeEdit")}}
+  {{#customer-entity-edit-form scope='contact' model=selectedContact onClose=(action "closeEdit") as |f|}}
+    <div class="layout-row layout-align-start-center">
+      <h3>Bewerk contact</h3>
+      {{save-status-icon task=f.save}}
+    </div>
+  {{/customer-entity-edit-form}}
 {{/liquid-if}}

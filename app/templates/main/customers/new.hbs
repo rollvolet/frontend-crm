@@ -1,3 +1,6 @@
-<h1>Nieuw klant</h1>
-
-{{customer-entity-edit-form scope='customer' model=model onRollback=(action "onRollback") onSave=(action "onSave")}}
+{{#customer-entity-edit-form scope='customer' model=model onClose=(action "close") as |f|}}
+  <div class="layout-row layout-align-start-center">
+    <h1>Nieuwe klant <span class="small-text-fade">[{{model.number}}]</span></h1>
+    {{save-status-icon task=f.save}}
+  </div>
+{{/customer-entity-edit-form}}

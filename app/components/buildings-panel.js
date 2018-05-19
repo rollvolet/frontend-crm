@@ -1,13 +1,30 @@
 import Component from '@ember/component';
+import { inject as service } from '@ember/service';
 import { equal } from '@ember/object/computed';
 
 export default Component.extend({
+  store: service(),
+
   customer: null,
   state: 'list', // one of 'list', 'detail', 'create', 'edit'
   displayList: equal('state', 'list'),
   displayDetail: equal('state', 'detail'),
   displayCreate: equal('state', 'create'),
   displayEdit: equal('state', 'edit'),
+
+  createNewBuilding() {
+    const defaultLanguage = this.store.peekAll('language').find(l => l.get('code') == 'NED');
+    const defaultCountry = this.store.peekAll('country').find(c => c.get('code') == 'BE');
+    const building = this.store.createRecord('building', {
+      printInFront: true,
+      printPrefix: true,
+      printSuffix: true,
+      language: defaultLanguage,
+      country: defaultCountry,
+      customer: this.customer
+    });
+    return building.save();
+  },
 
   actions: {
     openDetail(building) {
@@ -18,14 +35,13 @@ export default Component.extend({
       this.set('state', 'list');
       this.set('selectedBuilding', null);
     },
-    openCreate() {
+    async openCreate() {
+      const building = await this.createNewBuilding();
+      this.set('selectedBuilding', building);
       this.set('state', 'create');
     },
-    closeCreate() {
-      this.set('state', 'list');
-    },
-    openEdit(contact) {
-      this.set('selectedBuilding', contact);
+    openEdit(building) {
+      this.set('selectedBuilding', building);
       this.set('state', 'edit');
     },
     closeEdit() {

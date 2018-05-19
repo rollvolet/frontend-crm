@@ -1,6 +1,0 @@
-<div class="layout-row layout-align-space-between-center">
-  <h3>Nieuw contact</h3>
-  {{#paper-button onClick=(action "cancel") iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
-</div>
-
-{{customer-entity-edit-form scope='contact' model=model onRollback=onClose onSave=onClose}}
