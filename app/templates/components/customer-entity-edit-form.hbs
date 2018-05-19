@@ -11,9 +11,9 @@
     </div>
   {{/if}}
   <h4>
-    Geprinte naam: {{#if model.printInFront}}{{honorificPrefix.name}}{{/if}}
+    Geprinte naam: {{#if model.printInFront}}{{model.honorificPrefix.name}}{{/if}}
     {{#if model.printPrefix}}{{model.prefix}}{{/if}} {{model.name}} {{#if model.printSuffix}}{{model.suffix}}{{/if}}
-    {{#if (not model.printInFront)}}{{honorificPrefix.name}}{{/if}}
+    {{#if (not model.printInFront)}}{{model.honorificPrefix.name}}{{/if}}
   </h4>
   <div class="layout-row layout-xs-column">
     <div class="layout-column">
