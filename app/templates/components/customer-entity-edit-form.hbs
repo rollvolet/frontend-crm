@@ -5,6 +5,11 @@
     {{paper-progress-linear}}
     <p>Aan het verwijderen...</p>
   </div>
+{{else if (and (not model.id) model.isSavivg)}}
+  <div>
+    {{paper-progress-linear}}
+    <p>Aan het aanmaken...</p>
+  </div>
 {{else}}
   <div class="layout-column">
     {{#if isScopeCustomer}}

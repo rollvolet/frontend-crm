@@ -34,10 +34,10 @@ export default Component.extend({
       this.set('selectedBuilding', null);
     },
     async openCreate() {
-      const building = this.createNewBuilding();
-      try { await building.save(); } catch(e) {};
-      this.set('selectedBuilding', building);
       this.set('state', 'create');
+      const building = this.createNewBuilding();
+      this.set('selectedBuilding', building);
+      try { await building.save(); } catch(e) {};
     },
     openEdit(building) {
       this.set('selectedBuilding', building);
