@@ -11,6 +11,7 @@ export default Component.extend({
   address1: null,
   address2: null,
   address3: null,
+  onBlur: null,
 
   value: computed('address1', 'address2', 'address3', {
     get(/*key*/) {
