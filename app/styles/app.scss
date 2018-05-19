@@ -59,3 +59,19 @@ md-input-container .md-errors-spacer {
 .data-table-pagination md-input-container {
   top: -1px;
 }
+
+.save-status {
+  margin-left: 10px;
+  position: relative;
+  top: 3px;
+
+  md-icon.success {
+    color: color('green');
+  }
+  md-icon.error {
+    color: color('red');
+  }
+  md-icon.running {
+    color: color('blue');
+  }
+}
