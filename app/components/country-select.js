@@ -9,14 +9,6 @@ export default Component.extend({
     const countries = this.store.peekAll('country');
     this.set('options', countries);
   },
-  didInsertElement() {
-    this._super(...arguments);
-    if (this.value == null || this.value.content === null) { // empty value or empty proxy object
-      const defaultValue = this.options.find(c => c.get('code') == 'BE');
-      warn("No default country with code 'BE' found", defaultValue != null, { id: 'select.no-default-value' });
-      this.onSelectionChange(defaultValue);
-    }
-  },
   label: 'Land',
   value: null,
   onSelectionChange: null
