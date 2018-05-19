@@ -15,7 +15,7 @@ export default Component.extend({
   createNewBuilding() {
     const defaultLanguage = this.store.peekAll('language').find(l => l.get('code') == 'NED');
     const defaultCountry = this.store.peekAll('country').find(c => c.get('code') == 'BE');
-    const building = this.store.createRecord('building', {
+    return this.store.createRecord('building', {
       printInFront: true,
       printPrefix: true,
       printSuffix: true,
@@ -23,7 +23,6 @@ export default Component.extend({
       country: defaultCountry,
       customer: this.customer
     });
-    return building.save();
   },
 
   actions: {
@@ -36,7 +35,8 @@ export default Component.extend({
       this.set('selectedBuilding', null);
     },
     async openCreate() {
-      const building = await this.createNewBuilding();
+      const building = this.createNewBuilding();
+      try { await building.save(); } catch(e) {};
       this.set('selectedBuilding', building);
       this.set('state', 'create');
     },

@@ -1,3 +1,4 @@
+import { warn } from '@ember/debug';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { equal } from '@ember/object/computed';
@@ -14,8 +15,11 @@ export default Component.extend({
 
   createNewContact() {
     const defaultLanguage = this.store.peekAll('language').find(l => l.get('code') == 'NED');
+    warn("No default language with code 'NED' found", defaultLanguage != null, { id: 'select.no-default-value' });
     const defaultCountry = this.store.peekAll('country').find(c => c.get('code') == 'BE');
-    const contact = this.store.createRecord('contact', {
+    warn("No default country with code 'BE' found", defaultCountry != null, { id: 'no-default-value' });
+
+    return this.store.createRecord('contact', {
       printInFront: true,
       printPrefix: true,
       printSuffix: true,
@@ -23,7 +27,6 @@ export default Component.extend({
       country: defaultCountry,
       customer: this.customer
     });
-    return contact.save();
   },
 
   actions: {
@@ -36,7 +39,8 @@ export default Component.extend({
       this.set('selectedContact', null);
     },
     async openCreate() {
-      const contact = await this.createNewContact();
+      const contact = this.createNewContact();
+      try { await contact.save(); } catch(e) {};
       this.set('selectedContact', contact);
       this.set('state', 'create');
     },
