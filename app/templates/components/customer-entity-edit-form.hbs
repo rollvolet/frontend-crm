@@ -70,10 +70,10 @@
 
 <div class="layout-column">
   <div class="layout-row layout-xs-column">
-    {{paper-input textarea=true class="xxlarge" label="Opmerking" icon="comment" value=model.comment
+    {{paper-input textarea=true class="xxlarge" label="Opmerking (zichtbaar)" icon="comment" value=model.comment
         passThru=(hash rows=3) onChange=(action (mut model.comment))}}
     {{#if isScopeCustomer}}
-      {{paper-input textarea=true class="xxlarge" label="Memo" icon="assignment" value=model.memo
+      {{paper-input textarea=true class="xxlarge" label="Memo (verborgen)" icon="assignment" value=model.memo
           passThru=(hash rows=3) onChange=(action (mut model.memo))}}
     {{/if}}
   </div>
