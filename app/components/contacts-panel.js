@@ -1,4 +1,3 @@
-import { later } from '@ember/runloop';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { equal } from '@ember/object/computed';
@@ -38,7 +37,7 @@ export default Component.extend({
       this.set('state', 'create');
       const contact = this.createNewContact();
       this.set('selectedContact', contact);
-      try { await contact.save(); } catch(e) {};
+      try { await contact.save(); } catch(e) {} // eslint-disable-line no-empty
     },
     openEdit(contact) {
       this.set('selectedContact', contact);

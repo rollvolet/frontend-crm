@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { task, timeout } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
 import { warn } from '@ember/debug';
 import { equal } from '@ember/object/computed';
 

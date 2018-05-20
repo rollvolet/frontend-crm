@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { warn } from '@ember/debug';
 
 export default Component.extend({
   store: service(),

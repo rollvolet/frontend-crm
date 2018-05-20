@@ -37,7 +37,7 @@ export default Component.extend({
       this.set('state', 'create');
       const building = this.createNewBuilding();
       this.set('selectedBuilding', building);
-      try { await building.save(); } catch(e) {};
+      try { await building.save(); } catch(e) {} // eslint-disable-line no-empty
     },
     openEdit(building) {
       this.set('selectedBuilding', building);
