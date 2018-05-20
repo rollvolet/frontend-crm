@@ -76,9 +76,11 @@
   </div>
 
   <div class="layout-column">
-    <div class="layout-row">
+    <div class="layout-column">
+      <label>Telefoonnummers</label>
       <table>
         <thead>
+          <th><!-- Buttons --></th>
           <th>Type</th>
           <th>Land</th>
           <th>Zone</th>
@@ -87,7 +89,9 @@
         </thead>
         <tbody>
           {{#each (sort-by "order" model.telephones) as |telephone|}}
-            {{telephone-edit-form-line model=telephone}}
+            {{telephone-edit-form-line model=telephone onRemove=(action "removeTelephone")}}
+          {{else}}
+            <tr><td colspan="6">Geen telefoonnummers</td></tr>
           {{/each}}
         </tbody>
       </table>

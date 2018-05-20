@@ -1,3 +1,6 @@
+<td onclick={{perform remove}}>
+  {{paper-icon "delete"}}
+</td>
 <td>
   {{telephone-type-select value=model.telephoneType
       onSelectionChange=(queue (action (mut model.telephoneType)) (perform save))

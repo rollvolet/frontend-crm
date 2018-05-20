@@ -8,7 +8,16 @@ export default Component.extend({
   store: service(),
 
   model: null,
+  onRemove: null,
 
+  remove: task(function * () {
+    this.onRemove(this.model);
+    yield this.model.destroyRecord();
+    // TODO: Fix this hack when Ember Data allows creation of already deleted ID
+    // See https://github.com/emberjs/data/issues/4972
+    //  and https://github.com/emberjs/data/issues/5006
+    this.store._removeFromIdMap(this.model._internalModel);
+  }),
   save: task(function * () { // cannot patch phone. Create new and remove old phone.
     // TODO add initial validation
     const resolvedPromises = yield hash({
@@ -26,11 +35,7 @@ export default Component.extend({
       country: resolvedPromises.country,
       telephoneType: resolvedPromises.telephoneType
     });
-    yield this.model.destroyRecord();
-    // TODO: Fix this hack when Ember Data allows creation of already deleted ID
-    // See https://github.com/emberjs/data/issues/4972
-    //  and https://github.com/emberjs/data/issues/5006
-    this.store._removeFromIdMap(this.model._internalModel);
+    yield this.remove.perform();
     newTelephone.setProperties({
       customer: resolvedPromises.customer,
       contact: resolvedPromises.contact,

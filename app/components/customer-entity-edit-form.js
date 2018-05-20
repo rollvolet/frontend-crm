@@ -38,6 +38,11 @@ export default Component.extend({
         telephone.save();
       });
     },
+    removeTelephone(telephone) {
+      this.model.telephones.then(telephones => {
+        telephones.removeObject(telephone);
+      });
+    },
     setPostalCode(code, city) {
       this.model.set('postalCode', code);
       this.model.set('city', city);
