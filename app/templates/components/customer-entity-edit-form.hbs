@@ -77,7 +77,20 @@
 
   <div class="layout-column">
     <div class="layout-row">
-      <!-- telephone input -->
+      <table>
+        <thead>
+          <th>Type</th>
+          <th>Land</th>
+          <th>Zone</th>
+          <th>Nummer</th>
+          <th>Memo</th>
+        </thead>
+        <tbody>
+          {{#each (sort-by "order" model.telephones) as |telephone|}}
+            {{telephone-edit-form-line model=telephone}}
+          {{/each}}
+        </tbody>
+      </table>
     </div>
     <div class="layout-row layout-xs-column">
       {{paper-input label="Email" value=model.email

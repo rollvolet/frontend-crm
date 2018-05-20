@@ -1,0 +1,28 @@
+<td>
+  {{telephone-type-select value=model.telephoneType
+      onSelectionChange=(queue (action (mut model.telephoneType)) (perform save))
+      class="md-input-wrapper small"}}
+</td>
+<td>
+  {{telephone-prefix-select value=model.country
+      onSelectionChange=(queue (action (mut model.country)) (perform save))
+      class="md-input-wrapper small"}}
+</td>
+<td>
+  {{paper-input value=model.area
+      onChange=(action (mut model.area)) onBlur=(perform save)
+      class="xsmall"}}
+</td>
+<td>
+  {{paper-input value=model.number
+      onChange=(action (mut model.number)) onBlur=(perform save)
+      class="small"}}
+</td>
+<td>
+  {{paper-input value=model.memo
+      onChange=(action (mut model.memo)) onBlur=(perform save)
+      class="large"}}
+</td>
+<td>
+  {{save-status-icon model=model task=save}}
+</td>
