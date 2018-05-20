@@ -92,6 +92,9 @@
         </tbody>
       </table>
     </div>
+    <div class="layout-row layout-align-end-center">
+      {{#paper-button primary=true fab=true mini=true raised=true onClick=(action "addTelephone")}}{{paper-icon "add"}}{{/paper-button}}
+    </div>
     <div class="layout-row layout-xs-column">
       {{paper-input label="Email" value=model.email
           onChange=(action (mut model.email)) onBlur=(perform save)

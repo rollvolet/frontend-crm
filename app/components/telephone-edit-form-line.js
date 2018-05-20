@@ -11,7 +11,6 @@ export default Component.extend({
 
   save: task(function * () { // cannot patch phone. Create new and remove old phone.
     // TODO add initial validation
-
     const resolvedPromises = yield hash({
       country: this.model.country,
       telephoneType: this.model.telephoneType,
