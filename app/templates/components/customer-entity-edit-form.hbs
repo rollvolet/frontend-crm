@@ -11,7 +11,7 @@
     <p>Aan het aanmaken...</p>
   </div>
 {{else}}
-  <div class="layout-column">
+  <section class="layout-column">
     {{#if isScopeCustomer}}
       <div class="layout-row layout-xs-column layout-align-start-center">
         {{#paper-radio-group groupValue=model.isCompany onChange=(queue (action (mut model.isCompany)) (perform save)) class="layout-row" as |group|}}
@@ -57,9 +57,10 @@
             onChange=(queue (action (mut model.printSuffix)) (perform save))}}
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="layout-column">
+  <h3>Adres</h3>
+  <section class="layout-column">
     {{address-input address1=model.address1 address2=model.address2 address3=model.address3
         onBlur=(perform save)}}
     <div class="layout-row">
@@ -73,57 +74,54 @@
           onSelectionChange=(queue (action (mut model.language)) (perform save))
           class="md-input-wrapper"}}
     </div>
-  </div>
+  </section>
 
-  <div class="layout-column">
-    <div class="layout-column">
-      <label>Telefoonnummers</label>
-      <table>
-        <thead>
-          <th><!-- Buttons --></th>
-          <th>Type</th>
-          <th>Land</th>
-          <th>Zone</th>
-          <th>Nummer</th>
-          <th>Memo</th>
-        </thead>
-        <tbody>
-          {{#each (sort-by "order" model.telephones) as |telephone|}}
-            {{telephone-edit-form-line model=telephone onRemove=(action "removeTelephone")}}
-          {{else}}
-            <tr><td colspan="6">Geen telefoonnummers</td></tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
+  <section class="layout-row layout-xs-column">
+    {{paper-input label="Email" value=model.email
+        onChange=(action (mut model.email)) onBlur=(perform save)
+        class="xlarge"}}
+    {{paper-input label="Email 2" value=model.email2
+        onChange=(action (mut model.email2)) onBlur=(perform save)
+        class="xlarge"}}
+    {{paper-input label="Website" value=model.url
+        onChange=(action (mut model.url)) onBlur=(perform save)
+        class="xlarge"}}
+  </section>
+
+  <h3>Telefoon</h3>
+  <section class="layout-column">
+    <table class="telephone-edit-table">
+      <thead>
+        <th><!-- Buttons --></th>
+        <th>Type</th>
+        <th>Land</th>
+        <th>Zone</th>
+        <th>Nummer</th>
+        <th>Memo</th>
+      </thead>
+      <tbody>
+        {{#each (sort-by "order" model.telephones) as |telephone|}}
+          {{telephone-edit-form-line model=telephone onRemove=(action "removeTelephone")}}
+        {{else}}
+          <tr><td colspan="6">Geen telefoonnummers</td></tr>
+        {{/each}}
+      </tbody>
+    </table>
     <div class="layout-row layout-align-end-center">
       {{#paper-button primary=true fab=true mini=true raised=true onClick=(action "addTelephone")}}{{paper-icon "add"}}{{/paper-button}}
     </div>
-    <div class="layout-row layout-xs-column">
-      {{paper-input label="Email" value=model.email
-          onChange=(action (mut model.email)) onBlur=(perform save)
-          class="xlarge"}}
-      {{paper-input label="Email 2" value=model.email2
-          onChange=(action (mut model.email2)) onBlur=(perform save)
-          class="xlarge"}}
-      {{paper-input label="Website" value=model.url
-          onChange=(action (mut model.url)) onBlur=(perform save)
-          class="xlarge"}}
-    </div>
-  </div>
+  </section>
 
-  <div class="layout-column">
-    <div class="layout-row layout-xs-column">
-      {{paper-input label="Opmerking (zichtbaar)" value=model.comment
-          onChange=(action (mut model.comment)) onBlur=(perform save)
-          textarea=true icon="comment" passThru=(hash rows=3) class="xxlarge"}}
-      {{#if isScopeCustomer}}
-        {{paper-input label="Memo (verborgen)" value=model.memo
-            onChange=(action (mut model.memo)) onBlur=(perform save)
-            textarea=true icon="assignment" passThru=(hash rows=3) class="xxlarge"}}
-      {{/if}}
-    </div>
-  </div>
+  <section class="layout-row layout-xs-column">
+    {{paper-input label="Opmerking (zichtbaar)" value=model.comment
+        onChange=(action (mut model.comment)) onBlur=(perform save)
+        textarea=true icon="comment" passThru=(hash rows=3) class="xxlarge"}}
+    {{#if isScopeCustomer}}
+      {{paper-input label="Memo (verborgen)" value=model.memo
+          onChange=(action (mut model.memo)) onBlur=(perform save)
+          textarea=true icon="assignment" passThru=(hash rows=3) class="xxlarge"}}
+    {{/if}}
+  </section>
 
   <div class="layout-row layout-align-end">
     {{paper-button label="Verwijder" primary=true raised=true onClick=(perform remove)}}

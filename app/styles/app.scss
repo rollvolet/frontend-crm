@@ -60,6 +60,8 @@ md-input-container .md-errors-spacer {
   top: -1px;
 }
 
+
+/* Edit pages */
 .save-status {
   margin-left: 10px;
   position: relative;
@@ -73,5 +75,20 @@ md-input-container .md-errors-spacer {
   }
   md-icon.running {
     color: color('blue');
+  }
+}
+
+.telephone-edit-table {
+  td {
+    md-input-container {
+      margin: 0;
+      label {
+        display: none;
+      }
+    }
+
+    md-autocomplete[md-floating-label] .md-show-clear-button button {
+      top: 3px;
+    }
   }
 }
