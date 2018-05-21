@@ -1,0 +1,22 @@
+<table class="telephone-edit-table">
+  <thead>
+    <th><!-- Buttons --></th>
+    <th>Type</th>
+    <th>Land</th>
+    <th>Zone</th>
+    <th>Nummer</th>
+    <th>Memo</th>
+  </thead>
+  <tbody>
+    {{#each (sort-by "order" model) as |telephone|}}
+      {{telephone-edit-form-line model=telephone scope=scope onRemove=(action "removeTelephone")}}
+    {{else}}
+      <tr><td colspan="6">Geen telefoonnummers</td></tr>
+    {{/each}}
+  </tbody>
+</table>
+<div class="layout-row layout-align-end-center">
+  {{#paper-button primary=true fab=true mini=true raised=true onClick=(action "addTelephone")}}
+    {{paper-icon "add"}}
+  {{/paper-button}}
+</div>

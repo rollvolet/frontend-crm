@@ -90,26 +90,7 @@
 
   <h3>Telefoon</h3>
   <section class="layout-column">
-    <table class="telephone-edit-table">
-      <thead>
-        <th><!-- Buttons --></th>
-        <th>Type</th>
-        <th>Land</th>
-        <th>Zone</th>
-        <th>Nummer</th>
-        <th>Memo</th>
-      </thead>
-      <tbody>
-        {{#each (sort-by "order" model.telephones) as |telephone|}}
-          {{telephone-edit-form-line model=telephone onRemove=(action "removeTelephone")}}
-        {{else}}
-          <tr><td colspan="6">Geen telefoonnummers</td></tr>
-        {{/each}}
-      </tbody>
-    </table>
-    <div class="layout-row layout-align-end-center">
-      {{#paper-button primary=true fab=true mini=true raised=true onClick=(action "addTelephone")}}{{paper-icon "add"}}{{/paper-button}}
-    </div>
+    {{telephone-edit-form model=model.telephones}}
   </section>
 
   <section class="layout-row layout-xs-column">
