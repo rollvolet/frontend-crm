@@ -19,13 +19,18 @@ export default Service.extend({
     return all(entities.map(e => this.store.findAll(e)));
   },
   defaultLanguage() {
-    const value = this.store.peekAll('language').find(l => l.get('code') == 'NED');
+    const value = this.store.peekAll('language').find(l => l.code == 'NED');
     warn("No default language with code 'NED' found", value != null, { id: 'no-default-value' });
     return value;
   },
   defaultCountry() {
-    const value = this.store.peekAll('country').find(c => c.get('code') == 'BE');
+    const value = this.store.peekAll('country').find(c => c.code == 'BE');
     warn("No default country with code 'BE' found", value != null, { id: 'no-default-value' });
+    return value;
+  },
+  defaultTelephoneType() {
+    const value = this.store.peekAll('telephoneType').find(t => t.name == 'TEL');
+    warn("No default telephone type with name 'TEL' found", value != null, { id: 'no-default-value' });
     return value;
   }
 });
