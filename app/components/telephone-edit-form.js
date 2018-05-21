@@ -1,7 +1,5 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { hash } from 'rsvp';
-import { computed } from '@ember/object';
 
 export default Component.extend({
   store: service(),

@@ -6,11 +6,23 @@ export default Component.extend({
   tagName: 'tr',
 
   store: service(),
+  validation: service(),
 
   model: null,
   onRemove: null,
   onUpdate: null,
   onUpdateFailure: null,
+
+  isValid() {
+    return this.validation.required(this.model.get('telephoneType.id'), 'Type van telefoon')
+      && this.validation.required(this.model.get('country.id'), 'Landcode van telefoon')
+      && this.validation.required(this.model.area, 'Telefoonzone')
+      && this.validation.onlyNumbers(this.model.area, 'Telefoonzone')
+      && this.validation.length(this.model.area, 'Telefoonzone', 2, 4)
+      && this.validation.required(this.model.number, 'Telefoonnummer')
+      && this.validation.onlyNumbers(this.model.number, 'Telefoonnummer')
+      && this.validation.minLength(this.model.number, 'Telefoonnummer', 6);
+  },
 
   remove: task(function * () {
     yield this.model.destroyRecord();
@@ -22,6 +34,9 @@ export default Component.extend({
   }),
   save: task(function * () { // cannot patch phone. Create new and remove old phone.
     try {
+      if (!this.isValid())
+        throw new Error('Invalid telephone');
+
       const resolvedPromises = yield hash({
         country: this.model.country,
         telephoneType: this.model.telephoneType,

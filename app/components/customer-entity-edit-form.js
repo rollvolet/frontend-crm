@@ -4,8 +4,11 @@ import { task, all } from 'ember-concurrency';
 import { warn } from '@ember/debug';
 import { equal } from '@ember/object/computed';
 import { A } from '@ember/array';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
+  validation: service(),
+
   model: null,
   onClose: null,
 
@@ -26,6 +29,13 @@ export default Component.extend({
     else
       return false;
   }),
+
+  isValid() {
+    return this.validation.required(this.model.name, 'Naam')
+      && this.validation.required(this.model.get('country.id'), 'Land')
+      && this.validation.required(this.model.get('language.id'), 'Taal')
+      && this.validation.vatNumber(this.model.vatNumber, 'BTW nummer');
+  },
 
   remove: task(function * () {
     // TODO remove telephones
@@ -52,6 +62,8 @@ export default Component.extend({
     yield all(rollbackPromises);
   }),
   save: task(function * () {
+    if (!this.isValid())
+      throw new Error(`Invalid ${this.scope}`);
     yield this.model.save();
   }).keepLatest(),
 

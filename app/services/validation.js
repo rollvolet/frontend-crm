@@ -58,7 +58,7 @@ export default Service.extend({
     if (value && !vatNumberRegex.test(value)) {
       warn(`Invalid ${label}`, { id: 'validation.vat-number' });
       if (display)
-        this.paperToaster.show(`Ongelding ${label}`);
+        this.paperToaster.show(`Ongeldig ${label}`);
       return false;
     }
     return true;
