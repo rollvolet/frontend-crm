@@ -1,5 +1,6 @@
 {{request-panel model=model editMode=editMode
     onOpenEdit=(action (mut editMode) true)
-    onCloseEdit=(action (mut editMode) false)}}
+    onCloseEdit=(action (mut editMode) false)
+    onRemove=(action "goToCustomer")}}
 
 {{liquid-outlet}}

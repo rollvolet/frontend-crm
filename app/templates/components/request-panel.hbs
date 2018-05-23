@@ -11,6 +11,9 @@
   </div>
   <div>
     {{#if editMode}}
+      {{#paper-button onClick=(perform remove) iconButton=true}}
+        {{paper-icon "delete"}}
+      {{/paper-button}}
       {{#paper-button onClick=(action "closeEdit") iconButton=true}}
         {{paper-icon "close"}}
       {{/paper-button}}

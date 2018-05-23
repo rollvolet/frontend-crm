@@ -21,7 +21,7 @@ export default DS.Model.extend({
       else
         return null;
     },
-    set(key, value, prevValue) {
+    set(key, value) {
       const date = value ? new Date(value) : null;
       this.set('requestDate', date);
       return value;
