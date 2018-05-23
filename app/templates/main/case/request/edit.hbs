@@ -1,29 +1,5 @@
-<div class="layout-row layout-align-space-between-center">
-  <div class="layout-row layout-align-start-center">
-    <h2>Aanvraag {{model.id}}</h2>
-    {{#if editMode}}
-      {{save-status-icon model=model task=save}}
-    {{else}}
-      {{#paper-button onClick=(action "openEdit") iconButton=true}}
-        {{paper-icon "edit mode"}}
-      {{/paper-button}}
-    {{/if}}
-  </div>
-  <div>
-    {{#if editMode}}
-      {{#paper-button onClick=(action "closeEdit") iconButton=true}}
-        {{paper-icon "close"}}
-      {{/paper-button}}
-    {{/if}}
-  </div>
-</div>
-
-{{#if editMode}}
-  {{request-edit-form model=model save=save}}
-{{else}}
-  {{request-detail-panel model=model}}
-{{/if}}
-
-{{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
+{{request-panel model=model editMode=editMode
+    onOpenEdit=(action (mut editMode) true)
+    onCloseEdit=(action (mut editMode) false)}}
 
 {{liquid-outlet}}
