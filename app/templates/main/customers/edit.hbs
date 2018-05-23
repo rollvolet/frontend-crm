@@ -1,3 +1,7 @@
+<div class="breadcrumbs">
+  {{#link-to 'main.customers.index'}}{{paper-icon "navigate before"}}Terug naar klanten{{/link-to}}
+</div>
+
 {{#if isEdit}}
   {{#customer-entity-edit-form scope='customer' model=model onClose=(action "closeEdit") as |f|}}
     <div class="layout-row layout-align-start-center">
