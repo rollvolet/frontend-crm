@@ -1,0 +1,25 @@
+{{#if show}}
+  {{#paper-dialog class="flex-50" onClose=(action "cancelClose") clickOutsideToClose=true
+       parent=".main-outlet" origin=".main-outlet"}}
+    <form>
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Opgelet</h2><span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "cancelClose")}}
+            {{paper-icon icon="close"}}
+          {{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <p>Bent u zeker dat u deze pagina wil verlaten? Mogelijk zijn niet alle wijzigingen correct opgeslagen.</p>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "cancelClose")}}Terug{{/paper-button}}
+        {{#paper-button onClick=(action "confirmClose")}}Ga toch verder{{/paper-button}}
+      {{/paper-dialog-actions}}
+    </form>
+  {{/paper-dialog}}
+{{/if}}

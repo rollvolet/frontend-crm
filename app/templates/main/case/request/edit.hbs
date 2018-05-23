@@ -4,14 +4,14 @@
     {{#if editMode}}
       {{save-status-icon model=model task=save}}
     {{else}}
-      {{#paper-button onClick=(action (toggle "editMode" this)) iconButton=true}}
+      {{#paper-button onClick=(action "openEdit") iconButton=true}}
         {{paper-icon "edit mode"}}
       {{/paper-button}}
     {{/if}}
   </div>
   <div>
     {{#if editMode}}
-      {{#paper-button onClick=(action (toggle "editMode" this)) iconButton=true}}
+      {{#paper-button onClick=(action "closeEdit") iconButton=true}}
         {{paper-icon "close"}}
       {{/paper-button}}
     {{/if}}
@@ -23,5 +23,7 @@
 {{else}}
   {{request-detail-panel model=model}}
 {{/if}}
+
+{{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
 
 {{liquid-outlet}}
