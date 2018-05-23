@@ -32,6 +32,9 @@ export default Controller.extend({
       const invoiceId = row.get('id');
       this.transitionToRoute('main.case.invoice', customer, invoiceId);
     },
+    goToIndex() {
+      this.transitionToRoute('main.customers.index');
+    },
     openEdit() {
       this.set('isEdit', true);
     },

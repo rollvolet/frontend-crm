@@ -6,14 +6,16 @@
 {{else if displayDetail}}
   {{contact-detail-panel model=selectedContact onClose=(action "closeDetail") onEdit=(action "openEdit")}}
 {{else if displayCreate}}
-  {{#customer-entity-edit-form scope='contact' model=selectedContact onClose=(action "closeEdit") as |f|}}
+  {{#customer-entity-edit-form scope='contact' model=selectedContact
+       onClose=(action "closeEdit") onRemove=(action "closeEdit") as |f|}}
     <div class="layout-row layout-align-start-center">
       <h3>Nieuw contact</h3>
       {{save-status-icon model=f.model task=f.save}}
     </div>
   {{/customer-entity-edit-form}}
 {{else if displayEdit}}
-  {{#customer-entity-edit-form scope='contact' model=selectedContact onClose=(action "closeEdit") as |f|}}
+  {{#customer-entity-edit-form scope='contact' model=selectedContact
+       onClose=(action "closeEdit") onRemove=(action "closeEdit") as |f|}}
     <div class="layout-row layout-align-start-center">
       <h3>Bewerk contact</h3>
       {{save-status-icon model=f.model task=f.save}}

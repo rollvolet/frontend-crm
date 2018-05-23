@@ -1,4 +1,5 @@
-{{#customer-entity-edit-form scope='customer' model=model onClose=(action "close") as |f|}}
+{{#customer-entity-edit-form scope='customer' model=model
+     onClose=(action "goToShow") onRemove=(action "goToIndex") as |f|}}
   <div class="layout-row layout-align-start-center">
     <h1>Nieuwe klant <span class="small-text-fade">[{{model.number}}]</span></h1>
     {{save-status-icon model=f.model task=f.save}}

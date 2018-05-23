@@ -11,6 +11,7 @@ export default Component.extend({
 
   model: null,
   onClose: null,
+  onRemove: null,
 
   scope: 'customer', // one of 'customer', 'contact', 'building'
   isScopeCustomer: equal('scope', 'customer'),
@@ -37,13 +38,13 @@ export default Component.extend({
   },
 
   remove: task(function * () {
-    // TODO remove telephones
     try {
+      yield all(this.model.telephones.map(t => t.destroyRecord()));
       yield this.model.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying ${this.scope} ${this.model.id}`, { id: 'destroy-failure' });
     } finally {
-      this.onClose();
+      this.onRemove();
     }
   }),
   rollbackTree: task( function * () {
