@@ -33,9 +33,9 @@ export default Component.extend({
     rollbackPromises.push(this.model.belongsTo('contact').reload());
     rollbackPromises.push(this.model.belongsTo('building').reload());
     yield all(rollbackPromises);
-    yield this.save.perform(true);
+    yield this.save.perform(null, { forceSucces: true });
   }),
-  save: task(function * (forceSuccess = false) {
+  save: task(function * (_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;
 
     if (!this.isValid())

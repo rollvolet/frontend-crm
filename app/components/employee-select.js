@@ -1,10 +1,10 @@
 import Component from '@ember/component';
+import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Component.extend({
   store: service(),
-  init() {
-    this._super(...arguments);
+  options: computed('onlyActive', 'type', 'function', function() {
     let employees = this.store.peekAll('employee');
 
     if (this.onlyActive)
@@ -13,10 +13,14 @@ export default Component.extend({
     if (this.type != null)
       employees = employees.filter(e => e.type == this.type);
 
-    this.set('options', employees);
-  },
+    if (this.function != null)
+      employees = employees.filter(e => e.function && e.function.startsWith(this.function));
+
+    return employees;
+  }),
   label: 'Werknemer',
   type: null,
+  function: null,
   onlyActive: true,
   value: null,
   onSelectionChange: null

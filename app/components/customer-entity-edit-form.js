@@ -40,6 +40,7 @@ export default Component.extend({
   remove: task(function * () {
     try {
       yield all(this.model.telephones.map(t => t.destroyRecord()));
+      // TODO remove contacts/buildings ?
       yield this.model.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying ${this.scope} ${this.model.id}`, { id: 'destroy-failure' });
