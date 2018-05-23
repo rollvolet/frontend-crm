@@ -70,17 +70,13 @@ export default Component.extend({
     close() {
       if (this.model.isNew || this.model.isError || (this.save.last && this.save.last.isError)
          || this.hasFailedTelephone) {
-        this.set('showWarningOnLeaveDialog', true);
+        this.set('showUnsavedChangesDialog', true);
       } else {
         this.onClose();
       }
     },
-    closeWarningOnLeaveDialog() {
-      this.set('showWarningOnLeaveDialog', false);
-    },
-    confirmedClose() {
+    confirmClose() {
       this.rollbackTree.perform();
-      this.set('showWarningOnLeaveDialog', false);
       this.onClose();
     },
     setPostalCode(code, city) {
