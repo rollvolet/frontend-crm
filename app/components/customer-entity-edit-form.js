@@ -31,8 +31,7 @@ export default Component.extend({
   }),
 
   isValid() {
-    return this.validation.required(this.model.name, 'Naam')
-      && this.validation.required(this.model.get('country.id'), 'Land')
+    return this.validation.required(this.model.get('country.id'), 'Land')
       && this.validation.required(this.model.get('language.id'), 'Taal')
       && this.validation.vatNumber(this.model.vatNumber, 'BTW nummer');
   },
