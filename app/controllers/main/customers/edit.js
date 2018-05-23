@@ -1,6 +1,8 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
+  queryParams: ['editMode'],
+  editMode: false,
   selectedTab: 0,
   actions: {
     goToRequestDetail(row) {
@@ -36,10 +38,10 @@ export default Controller.extend({
       this.transitionToRoute('main.customers.index');
     },
     openEdit() {
-      this.set('isEdit', true);
+      this.set('editMode', true);
     },
     closeEdit() {
-      this.set('isEdit', false);
+      this.set('editMode', false);
     }
   }
 });

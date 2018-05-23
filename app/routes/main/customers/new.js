@@ -14,5 +14,10 @@ export default Route.extend({
     });
 
     return customer.save();
+  },
+  afterModel(model) {
+    this.transitionTo('main.customers.edit', model, {
+      queryParams: { editMode: true }
+    });
   }
 });
