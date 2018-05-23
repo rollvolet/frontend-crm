@@ -22,7 +22,8 @@
 </div>
 
 {{#if editMode}}
-  {{request-edit-form model=model save=save}}
+  {{request-edit-form model=model save=save
+      onContactChange=onContactChange onBuildingChange=onBuildingChange}}
 {{else}}
   {{request-detail-panel model=model}}
 {{/if}}

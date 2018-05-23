@@ -32,16 +32,19 @@ export default DS.Model.extend({
 
   printName: computed('printPrefix', 'prefix', 'printSuffix', 'suffix', 'name', function() {
     var name = '';
-    if (this.get('printPrefix') && this.get('prefix')) { name += this.get('prefix') + ' '; }
-    name += this.get('name') + ' ';
-    if (this.get('printSuffix') && this.get('suffix')) { name += this.get('suffix'); }
+    if (this.printPrefix && this.prefix) { name += this.prefix + ' '; }
+    name += this.name + ' ';
+    if (this.printSuffix && this.suffix) { name += this.suffix; }
     return name.trim();
+  }),
+  searchName: computed('printName', 'number', function() {
+    return `[${this.number}] ${this.printName}`;
   }),
   address: computed('address1', 'address2', 'address3', function() {
     var address = '';
-    if (this.get('address1')) { address += this.get('address1') + ' '; }
-    if (this.get('address2')) { address += this.get('address2') + ' '; }
-    if (this.get('address3')) { address += this.get('address3') + ' '; }
+    if (this.address1) { address += this.address1 + ' '; }
+    if (this.address2) { address += this.address2 + ' '; }
+    if (this.address3) { address += this.address3 + ' '; }
     return address.trim();
   })
 });

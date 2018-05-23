@@ -11,6 +11,8 @@ export default Component.extend({
   onOpenEdit: null,
   onCloseEdit: null,
   onRemove: null,
+  onContactChange: null,
+  onBuildingChange: null,
 
   isValid() {
     return this.validation.required(this.model.get('requestDate'), 'Datum');
