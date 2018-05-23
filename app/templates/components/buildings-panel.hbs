@@ -5,19 +5,11 @@
   </div>
 {{else if displayDetail}}
   {{building-detail-panel model=selectedBuilding onClose=(action "closeDetail") onEdit=(action "openEdit")}}
-{{else if displayCreate}}
-  {{#customer-entity-edit-form scope='building' model=selectedBuilding
-       onClose=(action "closeEdit") onRemove=(action "closeEdit")  as |f|}}
-    <div class="layout-row layout-align-start-center">
-      <h3>Nieuw gebouw</h3>
-      {{save-status-icon model=f.model task=f.save}}
-    </div>
-  {{/customer-entity-edit-form}}
 {{else if displayEdit}}
   {{#customer-entity-edit-form scope='building' model=selectedBuilding
        onClose=(action "closeEdit") onRemove=(action "closeEdit") as |f|}}
     <div class="layout-row layout-align-start-center">
-      <h3>Bewerk gebouw</h3>
+      <h3>Gebouw</h3>
       {{save-status-icon model=f.model task=f.save}}
     </div>
   {{/customer-entity-edit-form}}

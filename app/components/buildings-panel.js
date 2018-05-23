@@ -7,10 +7,9 @@ export default Component.extend({
   configuration: service(),
 
   customer: null,
-  state: 'list', // one of 'list', 'detail', 'create', 'edit'
+  state: 'list', // one of 'list', 'detail', 'edit'
   displayList: equal('state', 'list'),
   displayDetail: equal('state', 'detail'),
-  displayCreate: equal('state', 'create'),
   displayEdit: equal('state', 'edit'),
 
   createNewBuilding() {
@@ -34,8 +33,8 @@ export default Component.extend({
       this.set('selectedBuilding', null);
     },
     async openCreate() {
-      this.set('state', 'create');
       const building = this.createNewBuilding();
+      this.set('state', 'edit');
       this.set('selectedBuilding', building);
       try { await building.save(); } catch(e) {} // eslint-disable-line no-empty
     },

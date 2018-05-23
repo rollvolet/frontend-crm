@@ -7,10 +7,9 @@ export default Component.extend({
   configuration: service(),
 
   customer: null,
-  state: 'list', // one of 'list', 'detail', 'create', 'edit'
+  state: 'list', // one of 'list', 'detail', 'edit'
   displayList: equal('state', 'list'),
   displayDetail: equal('state', 'detail'),
-  displayCreate: equal('state', 'create'),
   displayEdit: equal('state', 'edit'),
 
   createNewContact() {
@@ -34,8 +33,8 @@ export default Component.extend({
       this.set('selectedContact', null);
     },
     async openCreate() {
-      this.set('state', 'create');
       const contact = this.createNewContact();
+      this.set('state', 'edit');
       this.set('selectedContact', contact);
       try { await contact.save(); } catch(e) {} // eslint-disable-line no-empty
     },
