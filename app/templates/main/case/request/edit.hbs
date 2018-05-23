@@ -19,88 +19,9 @@
 </div>
 
 {{#if editMode}}
-  {{#if remove.isRunning}}
-    <div>
-      {{paper-progress-linear}}
-      <p>Aan het verwijderen...</p>
-    </div>
-  {{else if rollbackTree.isRunning}}
-    <div>
-      {{paper-progress-linear}}
-      <p>Aan het herstellen...</p>
-    </div>
-  {{else if (and (not model.id) model.isSavivg)}}
-    <div>
-      {{paper-progress-linear}}
-      <p>Aan het aanmaken...</p>
-    </div>
-  {{else}}
-    <section class="layout-column">
-      <div class="layout-row">
-        {{paper-input label="Datum" value=model.requestDateStr type="date"
-            onChange=(queue (action (mut model.requestDateStr)) (perform save))
-            class="default"}}
-      </div>
-      <div class="layout-row">
-        {{employee-select value=employee
-            onSelectionChange=(queue (action "setEmployee") (perform save))
-            class="md-input-wrapper"}}
-        {{way-of-entry-select value=model.wayOfEntry
-            onSelectionChange=(queue (action (mut model.wayOfEntry)) (perform save))
-            class="md-input-wrapper"}}
-      </div>
-      <div class="layout-row layout-align-start-center">
-        {{paper-checkbox label="Bezoek nodig" value=model.requiresVisit
-            onChange=(queue (action (mut model.requiresVisit)) (perform save))}}
-        {{#if model.requiresVisit}}TODO: Show visit date input{{/if}}
-      </div>
-      <div class="layout-row">
-        {{paper-input label="Opmerking" value=model.comment
-            onChange=(action (mut model.comment)) onBlur=(perform save)
-            textarea=true passThru=(hash rows=3) class="xxlarge"}}
-      </div>
-    </section>
-  {{/if}}
+  {{request-edit-form model=model save=save}}
 {{else}}
-  <div class="layout-row layout-xs-column layout-align-space-between">
-    <div class="case--left-panel case--request--entry flex-100 layout-column">
-      {{#detail-list-item label="Datum"}}
-        {{fmt-date model.requestDate}}
-      {{/detail-list-item}}
-      {{#detail-list-item label="Aanmelding"}}
-        {{model.wayOfEntry.name}}
-      {{/detail-list-item}}
-      {{#detail-list-item label="Bediende"}}
-        {{model.employee}}
-      {{/detail-list-item}}
-      {{#detail-list-item label="Bezoek nodig"}}
-        {{paper-checkbox value=model.requiresVisit onChange=null}}
-      {{/detail-list-item}}
-      {{#detail-list-item label="Opmerking"}}
-        <span class="html-body">{{model.comment}}</span>
-      {{/detail-list-item}}
-    </div>
-    {{#if model.visit}}
-      <div class="case--right-panel flex-noshrink layout-column">
-        <div class="case--request--visit">
-          <h3>{{paper-icon "event"}} Bezoek</h3>
-          {{#detail-list-item label="Datum"}}
-            {{fmt-date model.visit.visitDate}}
-          {{/detail-list-item}}
-          {{#detail-list-item label="Bezoeker"}}
-            {{model.visit.visitor}}
-          {{/detail-list-item}}
-          {{#detail-list-item label="Agenda"}}
-            {{model.visit.calendarSubject}}
-          {{/detail-list-item}}
-        </div>
-      </div>
-    {{else}}
-      <div class="case--request--visit flex-noshrink layout-column">
-        <h3>{{paper-icon "event"}} Geen bezoek gepland</h3>
-      </div>
-    {{/if}}
-  </div>
+  {{request-detail-panel model=model}}
 {{/if}}
 
 {{liquid-outlet}}
