@@ -19,7 +19,10 @@ Router.map(function() {
     this.route('deposit-invoices', function() {});
     this.route('invoices', function() {});
     this.route('case', { path: '/case/:customer_id' }, function() {
-      this.route('request', { path: '/request/:request_id' });
+      this.route('request', function() {
+        this.route('edit', { path: '/:request_id' });
+        this.route('new');
+      });
       this.route('offer', { path: '/offer/:offer_id' });
       this.route('order', { path: '/order/:order_id' }, function() {
         this.route('deposit-invoices');

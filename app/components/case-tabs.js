@@ -14,7 +14,7 @@ const regexMap = {
 const calcQueryParam = function(routeUrl, key) {
   const regex = regexMap[key];
   const matches = routeUrl.match(regex);
-  assert("Expected 1 full match and 1 group capture", matches.length == 2);
+  assert("Expected 1 full match and 1 group capture", matches && matches.length == 2);
   return `${key}=${matches[1]}`;
 };
 
@@ -34,13 +34,13 @@ export default Component.extend({
     const currentUrl = this.get('currentUrl');
 
     let queryParam;
-    if (currentRoute.endsWith('case.request'))
+    if (currentRoute.includes('case.request'))
       queryParam = calcQueryParam(currentUrl, 'requestId');
-    else if (currentRoute.endsWith('case.offer'))
+    else if (currentRoute.includes('case.offer'))
       queryParam = calcQueryParam(currentUrl, 'offerId');
     else if (currentRoute.includes('case.order'))
       queryParam = calcQueryParam(currentUrl, 'orderId');
-    else if (currentRoute.endsWith('case.invoice'))
+    else if (currentRoute.includes('case.invoice'))
       queryParam = calcQueryParam(currentUrl, 'invoiceId');
 
     const { access_token } = this.get('session.data.authenticated');

@@ -9,6 +9,10 @@ export default Component.extend(DebouncedSearch, {
     this._super(...arguments);
     this.get('search').perform();
   },
+
+  onClickRow: null,
+  openNew: null,
+
   page: 0,
   size: 10,
   sort: '-request-date',
@@ -41,11 +45,7 @@ export default Component.extend(DebouncedSearch, {
       this.get('debounceSearch').perform(this.get('search'));
     },
     resetFilters() {
-      this.set('number', undefined);
-      this.set('name', undefined);
-      this.set('postalCode', undefined);
-      this.set('city', undefined);
-      this.set('street', undefined);
+      ['number', 'name', 'postalCode', 'city', 'street'].forEach(f => this.set(f, undefined));
       this.get('search').perform();
     }
   }

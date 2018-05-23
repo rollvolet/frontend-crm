@@ -1,6 +1,6 @@
 {{#paper-tabs selected=currentRouteName borderBottom=true as |tabs|}}
   {{#if case.requestId}}
-    {{#tabs.tab value="main.case.request" href=(href-to "main.case.request" case.requestId)}}
+    {{#tabs.tab value="main.case.request.edit" href=(href-to "main.case.request.edit" case.requestId)}}
       Aanvraag
     {{/tabs.tab}}
   {{/if}}

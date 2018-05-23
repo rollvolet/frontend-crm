@@ -33,4 +33,8 @@
   {{/t.content}}
 {{/data-table}}
 
-{{liquid-yield}}
+<div class="layout-row layout-align-end">
+  {{#paper-button primary=true fab=true raised=true mini=true onClick=openNew}}{{paper-icon "add"}}{{/paper-button}}
+</div>
+
+{{yield}}

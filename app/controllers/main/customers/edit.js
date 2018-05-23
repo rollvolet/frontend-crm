@@ -6,7 +6,11 @@ export default Controller.extend({
     goToRequestDetail(row) {
       const customer = this.get('model');
       const requestId = row.get('id');
-      this.transitionToRoute('main.case.request', customer, requestId);
+      this.transitionToRoute('main.case.request.edit', customer, requestId);
+    },
+    goToNewRequest() {
+      const customer = this.get('model');
+      this.transitionToRoute('main.case.request.new', customer);
     },
     goToOfferDetail(row) {
       const customer = this.get('model');

@@ -34,7 +34,7 @@
       {{else if (eq current.tab 1)}}
         {{buildings-panel customer=model}}
       {{else if (eq current.tab 2)}}
-        {{requests-table customer=model onClickRow=(action "goToRequestDetail")}}
+        {{requests-table customer=model onClickRow=(action "goToRequestDetail") openNew=(action "goToNewRequest")}}
       {{else if (eq current.tab 3)}}
         {{offers-table customer=model onClickRow=(action "goToOfferDetail")}}
       {{else if (eq current.tab 4)}}
