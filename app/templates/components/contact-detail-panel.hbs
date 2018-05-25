@@ -9,7 +9,7 @@
   <div class="layout-row">
     <div class="left-column">
       <div class="resource-details--section resource-details--section-name layout-row">
-        <div class="category-icon">{{#if model.isCompany}}{{paper-icon "business"}}{{else}}{{paper-icon "home"}}{{/if}}</div>
+        <div class="category-icon">{{#if model.isCompany}}{{paper-icon "business"}}{{else}}{{paper-icon "person"}}{{/if}}</div>
         <div>
           {{#if model.printInFront}}{{model.honorificPrefix.name}}{{/if}}
           {{model.prefix}} {{model.name}} {{model.suffix}}
