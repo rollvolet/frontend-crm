@@ -22,7 +22,7 @@ export default Component.extend(DebouncedSearch, {
         number: this.get('page')
       },
       sort: this.get('sort'),
-      include: 'building',
+      include: 'building,request,request.visit',
       filter: {
         number: this.getFilterValue('number'),
         reference: this.getFilterValue('reference'),

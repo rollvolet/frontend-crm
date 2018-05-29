@@ -19,6 +19,7 @@
       {{th-sortable field='number' currentSorting=sort label='Nr'}}
       {{th-sortable field='reference' currentSorting=sort label='Referentie'}}
       {{th-sortable field='offer-date' currentSorting=sort label='Datum'}}
+      <th>Bezoeker</th>
       <th>Gebouw</th>
       <th>Adres</th>
       <th>Postcode</th>
@@ -28,6 +29,7 @@
       <td>{{row.number}}</td>
       <td>{{row.reference}}</td>
       <td>{{fmt-date row.offerDate}}</td>
+      <td>{{row.request.visit.visitor}}</td>
       <td>{{row.building.printName}}</td>
       <td>{{row.building.address1}}</td>
       <td>{{row.building.postalCode}}</td>

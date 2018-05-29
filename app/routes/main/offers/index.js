@@ -26,7 +26,7 @@ export default Route.extend(DataTableRouteMixin, {
     return {
       // Building and contact must already be included
       // such that correct values can be set in the case controller when opening the detail
-      include: 'customer,customer.honorific-prefix,building,contact,request',
+      include: 'customer,customer.honorific-prefix,building,contact,request,request.visit',
       filter: {
         number: params.number,
         reference: params.reference,

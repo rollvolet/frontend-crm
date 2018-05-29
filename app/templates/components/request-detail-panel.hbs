@@ -16,24 +16,5 @@
       <span class="html-body">{{model.comment}}</span>
     {{/detail-list-item}}
   </div>
-  {{#if model.visit}}
-    <div class="case--right-panel flex-noshrink layout-column">
-      <div class="case--request--visit">
-        <h3>{{paper-icon "event"}} Bezoek</h3>
-        {{#detail-list-item label="Datum"}}
-          {{fmt-date model.visit.visitDate}}
-        {{/detail-list-item}}
-        {{#detail-list-item label="Bezoeker"}}
-          {{model.visit.visitor}}
-        {{/detail-list-item}}
-        {{#detail-list-item label="Agenda"}}
-          {{model.visit.calendarSubject}}
-        {{/detail-list-item}}
-      </div>
-    </div>
-  {{else}}
-    <div class="case--request--visit flex-noshrink layout-column">
-      <h3>{{paper-icon "event"}} Geen bezoek gepland</h3>
-    </div>
-  {{/if}}
+  {{visit-detail-panel model=model.visit}}
 </div>

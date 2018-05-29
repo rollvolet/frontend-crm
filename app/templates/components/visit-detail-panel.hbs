@@ -1,0 +1,21 @@
+{{#if model}}
+  <div class="case--right-panel flex-noshrink layout-column">
+    <div class="case--request--visit">
+      <h3>{{paper-icon "event"}} Bezoek</h3>
+      {{#detail-list-item label="Datum"}}
+        {{fmt-date model.visitDate}}
+      {{/detail-list-item}}
+      {{#detail-list-item label="Bezoeker"}}
+        {{model.visitor}}
+      {{/detail-list-item}}
+      {{#detail-list-item label="Agenda"}}
+        {{model.calendarSubject}}
+      {{/detail-list-item}}
+    </div>
+  </div>
+{{else}}
+  <div class="case--request--visit flex-noshrink layout-column">
+    <h3>{{paper-icon "event"}} Geen bezoek gepland</h3>
+  </div>
+{{/if}}
+{{yield}}

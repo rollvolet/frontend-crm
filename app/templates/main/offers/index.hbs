@@ -67,6 +67,7 @@
         <th>Aanvraag</th>
         {{th-sortable field='number' currentSorting=sort label='Nr'}}
         {{th-sortable field='offer-date' currentSorting=sort label='Datum'}}
+        <th>Bezoeker</th>
         <th><!-- customer / building --></th>
         <th>Naam</th>
         <th>Adres</th>
@@ -77,6 +78,7 @@
         <td>{{row.request.id}}</td>
         <td>{{row.number}}</td>
         <td>{{fmt-date row.offerDate}}</td>
+        <td>{{row.request.visit.visitor}}</td>
         {{#if row.building}}
           <td>{{paper-icon "home"}}</td>
           <td>
