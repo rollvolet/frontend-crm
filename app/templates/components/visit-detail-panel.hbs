@@ -11,6 +11,9 @@
       {{#detail-list-item label="Agenda"}}
         {{model.calendarSubject}}
       {{/detail-list-item}}
+      {{#if model.isMasteredByAccess}}
+        <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
+      {{/if}}
     </div>
   </div>
 {{else}}

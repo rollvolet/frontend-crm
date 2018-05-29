@@ -1,7 +1,7 @@
-import { warn } from '@ember/debug';
 import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
+import { warn } from '@ember/debug';
 
 export default Component.extend({
   validation: service(),
@@ -21,6 +21,9 @@ export default Component.extend({
   remove: task(function * () {
     const customer = yield this.model.customer;
     try {
+      const visit = yield this.model.visit;
+      if (visit)
+        yield visit.destroyRecord();
       yield this.model.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying request ${this.model.id}`, { id: 'destroy-failure' });

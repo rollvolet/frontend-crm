@@ -14,37 +14,53 @@
     <p>Aan het aanmaken...</p>
   </div>
 {{else}}
-  <section class="layout-column">
-    <div class="layout-row">
-      {{paper-input label="Datum" value=model.requestDateStr type="date"
-          onChange=(queue (action (mut model.requestDateStr)) (perform save))
-          class="default"}}
-    </div>
-    <div class="layout-row">
-      {{employee-select label="Bediende" value=employee function='A'
-          onSelectionChange=(queue (action "setEmployee") (perform save))
-          class="md-input-wrapper"}}
-      {{way-of-entry-select value=model.wayOfEntry
-          onSelectionChange=(queue (action (mut model.wayOfEntry)) (perform save))
-          class="md-input-wrapper"}}
-    </div>
-    <div class="layout-row layout-align-start-center">
-      {{paper-checkbox label="Bezoek nodig" value=model.requiresVisit
-          onChange=(queue (action (mut model.requiresVisit)) (perform save))}}
-      {{#if model.requiresVisit}}TODO: Show visit date input{{/if}}
-    </div>
-    <div class="layout-row">
-      {{paper-input label="Opmerking" value=model.comment
-          onChange=(action (mut model.comment)) onBlur=(perform save)
-          textarea=true passThru=(hash rows=3) class="xxlarge"}}
-    </div>
-    <div class="layout-row">
-      {{contact-select value=model.contact customer=(await model.customer)
-          onSelectionChange=(queue (action "setContact") (perform save))
-          class="md-input-wrapper"}}
-      {{building-select value=model.building customer=(await model.customer)
-          onSelectionChange=(queue (action "setBuilding") (perform save))
-          class="md-input-wrapper"}}
-    </div>
-  </section>
+  <div class="layout-row layout-align-start-start">
+    <section class="layout-column">
+      <div class="layout-row">
+        {{paper-input label="Datum" value=model.requestDateStr type="date"
+            onChange=(queue (action (mut model.requestDateStr)) (perform save))
+            class="default"}}
+      </div>
+      <div class="layout-row">
+        {{employee-select label="Bediende" value=employee function='A'
+            onSelectionChange=(queue (action "setEmployee") (perform save))
+            class="md-input-wrapper"}}
+        {{way-of-entry-select value=model.wayOfEntry
+            onSelectionChange=(queue (action (mut model.wayOfEntry)) (perform save))
+            class="md-input-wrapper"}}
+      </div>
+      <div class="layout-row layout-align-start-center">
+        {{paper-checkbox label="Bezoek nodig" value=model.requiresVisit
+            onChange=(action "setRequiresVisit")}}
+      </div>
+      <div class="layout-row">
+        {{paper-input label="Opmerking" value=model.comment
+            onChange=(action (mut model.comment)) onBlur=(perform save)
+            textarea=true passThru=(hash rows=3) class="xxlarge"}}
+      </div>
+      <div class="layout-row">
+        {{contact-select value=model.contact customer=(await model.customer)
+            onSelectionChange=(queue (action "setContact") (perform save))
+            class="md-input-wrapper"}}
+        {{building-select value=model.building customer=(await model.customer)
+            onSelectionChange=(queue (action "setBuilding") (perform save))
+            class="md-input-wrapper"}}
+      </div>
+    </section>
+    {{#if model.requiresVisit}}
+      <section class="case--request--visit">
+        <div class="layout-row layout-align-start-center">
+          <h3>{{paper-icon "event"}} Bezoek</h3>
+          {{save-status-icon model=model task=saveVisit}}
+        </div>
+        {{paper-input label="Datum" value=model.visit.visitDateStr type="date"
+            onChange=(queue (action (mut model.visit.visitDateStr)) (perform saveVisit))
+            class="default"}}
+        {{employee-select label="Bezoeker" value=visitor function='B'
+            onSelectionChange=(queue (action "setVisitor") (perform saveVisit))
+            class="md-input-wrapper"}}
+        <!-- periode -->
+      </section>
+    {{/if}}
+  </div>
 {{/if}}

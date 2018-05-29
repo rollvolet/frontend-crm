@@ -1,5 +1,7 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
+import { task } from 'ember-concurrency';
+import { warn } from '@ember/debug';
 
 export default Component.extend({
   store: service(),
@@ -17,9 +19,53 @@ export default Component.extend({
       const employee = this.store.peekAll('employee').find(e => e.firstName == this.model.employee);
       this.set('employee', employee);
     }
+    this.model.visit.then(visit => {
+      if (visit && visit.visitor) {
+        const visitor = this.store.peekAll('employee').find(e => e.firstName == visit.visitor);
+        this.set('visitor', visitor);
+      }
+    });
   },
 
+  removeVisit: task(function * () {
+    const visit = yield this.model.get('visit');
+    try {
+      yield visit.destroyRecord();
+      this.model.set('visit', null);
+      this.set('visitor', null);
+    } catch (e) {
+      warn(`Something went wrong while destroying visit ${visit.id}`, { id: 'destroy-failure' });
+    }
+  }),
+  createVisit: task(function * () {
+    const visit = this.store.createRecord('visit', {
+      request: this.model,
+      visitDate: new Date(),
+      offerExpected: false
+    });
+    yield this.saveVisit.perform();
+  }),
+  saveVisit: task(function * () {
+    const visit = yield this.model.visit;
+    yield visit.save();
+  }),
+
   actions: {
+    setRequiresVisit(value) {
+      this.model.set('requiresVisit', value);
+      this.save.perform();
+
+      if (value) {
+        this.createVisit.perform();
+      } else {
+        this.removeVisit.perform();
+      }
+    },
+    setVisitor(visitor) {
+      this.set('visitor', visitor);
+      const firstName = visitor ? visitor.firstName : null;
+      this.model.set('visit.visitor', firstName);
+    },
     setEmployee(employee) {
       this.set('employee', employee);
       const firstName = employee ? employee.firstName : null;

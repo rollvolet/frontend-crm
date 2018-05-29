@@ -1,5 +1,5 @@
-import { computed } from '@ember/object';
 import DS from 'ember-data';
+import { computed } from '@ember/object';
 import moment from 'moment';
 
 export default DS.Model.extend({
@@ -14,6 +14,7 @@ export default DS.Model.extend({
   visit: DS.belongsTo('visit'),
   offer: DS.belongsTo('offer'),
 
+  // TODO: create a computed property for dateStr
   requestDateStr: computed('requestDate', {
     get() {
       if (this.requestDate)

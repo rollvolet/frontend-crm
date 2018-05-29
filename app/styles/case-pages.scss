@@ -17,6 +17,10 @@
   background-color: color($accent, '50');
   padding: 0 25px 15px 25px;
   margin: 0 25px;
+
+  .note--info {
+    margin-top: 15px;
+  }
 }
 
 .case--order--delivery {

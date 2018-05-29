@@ -25,3 +25,12 @@ h6 .small-text-fade {
 .text-fade {
   color: color('grey', '600');
 }
+
+.note {
+  font-style: italic;
+  font-size: 0.8em;
+
+  &.note--info {
+    color: color('grey');
+  }
+}
