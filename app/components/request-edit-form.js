@@ -1,7 +1,9 @@
+import { computed } from '@ember/object';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { warn } from '@ember/debug';
+import { bool } from '@ember/object/computed';
 
 export default Component.extend({
   store: service(),
@@ -27,6 +29,8 @@ export default Component.extend({
     });
   },
 
+  hasVisitMasteredByAccess: bool('model.visit.isMasteredByAccess'),
+
   removeVisit: task(function * () {
     const visit = yield this.model.get('visit');
     try {
@@ -38,7 +42,7 @@ export default Component.extend({
     }
   }),
   createVisit: task(function * () {
-    const visit = this.store.createRecord('visit', {
+    this.store.createRecord('visit', {
       request: this.model,
       visitDate: new Date(),
       offerExpected: false

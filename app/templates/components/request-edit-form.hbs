@@ -31,7 +31,7 @@
       </div>
       <div class="layout-row layout-align-start-center">
         {{paper-checkbox label="Bezoek nodig" value=model.requiresVisit
-            onChange=(action "setRequiresVisit")}}
+            disabled=hasVisitMasteredByAccess onChange=(action "setRequiresVisit")}}
       </div>
       <div class="layout-row">
         {{paper-input label="Opmerking" value=model.comment
@@ -47,7 +47,9 @@
             class="md-input-wrapper"}}
       </div>
     </section>
-    {{#if model.requiresVisit}}
+    {{#if hasVisitMasteredByAccess}}
+      {{visit-detail-panel model=model.visit}}
+    {{else if model.requiresVisit}}
       <section class="case--request--visit">
         <div class="layout-row layout-align-start-center">
           <h3>{{paper-icon "event"}} Bezoek</h3>

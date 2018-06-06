@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 import { computed } from '@ember/object';
-import { bool, not } from '@ember/object/computed';
+import { bool } from '@ember/object/computed';
 import moment from 'moment';
 
 export default DS.Model.extend({
@@ -30,5 +30,5 @@ export default DS.Model.extend({
   }),
 
   isMastered: bool('msObjectId'),
-  isMasteredByAccess: not('isMastered')
+  isMasteredByAccess: bool('calendarId')
 });
