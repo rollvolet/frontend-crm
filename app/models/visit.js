@@ -5,6 +5,7 @@ import moment from 'moment';
 
 export default DS.Model.extend({
   visitDate: DS.attr('date'),
+  period: DS.attr(),
   visitor: DS.attr(),
   offerExpected: DS.attr(),
   comment: DS.attr(),

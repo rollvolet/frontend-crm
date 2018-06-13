@@ -3,7 +3,7 @@ import Route from '@ember/routing/route';
 export default Route.extend({
   model(params) {
     return this.get('store').findRecord('request', params.request_id, {
-      include: 'way-of-entry,building,contact,visit,offer'
+      include: 'way-of-entry,building,contact,offer'
     });
   },
   afterModel(model) {

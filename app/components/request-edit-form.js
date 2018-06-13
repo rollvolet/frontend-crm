@@ -45,6 +45,7 @@ export default Component.extend({
     this.store.createRecord('visit', {
       request: this.model,
       visitDate: new Date(),
+      period: 'GD',
       offerExpected: false
     });
     yield this.saveVisit.perform();

@@ -1,7 +1,14 @@
-{{#if model}}
+{{#if (is-pending model)}}
+  {{paper-progress-circular}}
+{{else if model}}
   <div class="case--right-panel flex-noshrink layout-column">
     <div class="case--request--visit">
-      <h3>{{paper-icon "event"}} Bezoek</h3>
+      <div class="layout-row layout-align-space-between-center">
+        <h3>{{paper-icon "event"}} Bezoek</h3>
+        {{#if (not model.isMasteredByAccess)}}
+          {{#paper-button iconButton=true onClick=onSync}}{{paper-icon "sync"}}{{/paper-button}}
+        {{/if}}
+      </div>
       {{#detail-list-item label="Datum"}}
         {{fmt-date model.visitDate}}
       {{/detail-list-item}}
@@ -17,7 +24,7 @@
     </div>
   </div>
 {{else}}
-  <div class="case--request--visit flex-noshrink layout-column">
+  <div class="case--right-panel case--request--visit flex-noshrink layout-column">
     <h3>{{paper-icon "event"}} Geen bezoek gepland</h3>
   </div>
 {{/if}}

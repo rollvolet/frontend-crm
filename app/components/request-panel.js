@@ -50,10 +50,12 @@ export default Component.extend({
 
   actions: {
     openEdit() {
+      this.model.belongsTo('visit').reload(); // make sure we have the latest version
       this.onOpenEdit();
     },
     closeEdit() {
-      if (this.model.isNew || this.model.isError || (this.save.last && this.save.last.isError)) {
+      if (this.model.isNew || this.model.isError || (this.save.last && this.save.last.isError)
+          || this.model.get('visit.isError')) {
         this.set('showUnsavedChangesDialog', true);
       } else {
         this.onCloseEdit();

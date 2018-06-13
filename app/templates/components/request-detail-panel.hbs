@@ -16,5 +16,5 @@
       <span class="html-body">{{model.comment}}</span>
     {{/detail-list-item}}
   </div>
-  {{visit-detail-panel model=model.visit}}
+  {{visit-detail-panel model=model.visit onSync=(action "reloadVisit")}}
 </div>

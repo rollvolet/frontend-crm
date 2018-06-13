@@ -61,7 +61,9 @@
         {{employee-select label="Bezoeker" value=visitor function='B'
             onSelectionChange=(queue (action "setVisitor") (perform saveVisit))
             class="md-input-wrapper"}}
-        <!-- periode -->
+        {{calendar-period-select value=model.visit.period
+            onSelectionChange=(queue (action (mut model.visit.period)) (perform saveVisit))
+            class="md-input-wrapper"}}
       </section>
     {{/if}}
   </div>
