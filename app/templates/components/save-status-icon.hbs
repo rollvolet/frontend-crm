@@ -1,9 +1,12 @@
 {{#if task.isRunning}}
   {{paper-icon "sync" class="running"}}
+  {{#paper-tooltip}}Aan het opslaan{{/paper-tooltip}}
 {{else}}
   {{#if (or model.isError task.last.isError)}}
     {{paper-icon "error outline" class="error"}}
+    {{#paper-tooltip}}Fout{{/paper-tooltip}}
   {{else}}
     {{paper-icon "check circle outline" class="success"}}
+    {{#paper-tooltip}}Opgeslagen{{/paper-tooltip}}
   {{/if}}
 {{/if}}

@@ -9,16 +9,20 @@
     {{#if editMode}}
       {{#paper-button onClick=(perform remove) iconButton=true}}
         {{paper-icon "delete"}}
+        {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
       {{/paper-button}}
       {{#paper-button onClick=(action "closeEdit") iconButton=true}}
         {{paper-icon "close"}}
+        {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
       {{/paper-button}}
     {{else}}
       {{#paper-button onClick=(action "openEdit") iconButton=true}}
         {{paper-icon "edit mode"}}
+        {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
       {{/paper-button}}
       {{#paper-button onClick=(action "generateVisitReport") iconButton=true}}
         {{paper-icon "description"}}
+        {{#paper-tooltip}}Bezoekrapport{{/paper-tooltip}}
       {{/paper-button}}
     {{/if}}
   </div>

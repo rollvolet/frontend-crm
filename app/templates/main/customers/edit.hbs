@@ -11,9 +11,14 @@
     </div>
   {{/customer-entity-edit-form}}
 {{else}}
-  <div class="layout-row layout-align-space-between-center">
+  <div class="layout-row layout-align-start-center">
     <h1>{{print-name model=model}} <span class="small-text-fade">[{{model.number}}]</span></h1>
-    <div>{{#paper-button onClick=(action "openEdit") iconButton=true}}{{paper-icon "edit mode"}}{{/paper-button}}</div>
+    <div>
+      {{#paper-button onClick=(action "openEdit") iconButton=true}}
+        {{paper-icon "edit mode"}}
+        {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
+      {{/paper-button}}
+    </div>
   </div>
 
   {{customer-detail-card model=model}}
