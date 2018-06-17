@@ -21,6 +21,11 @@
   .note--info {
     margin-top: 15px;
   }
+
+  &.skeleton {
+    width: 500px;
+    height: 150px;
+  }
 }
 
 .case--order--delivery {

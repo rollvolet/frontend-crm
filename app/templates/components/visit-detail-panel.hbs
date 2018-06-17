@@ -1,5 +1,7 @@
 {{#if (is-pending model)}}
-  {{paper-progress-circular}}
+  <div class="case--right-panel case--request--visit skeleton flex-noshrink layout-column layout-align-center-center">
+    {{paper-progress-circular diameter=25}}
+  </div>
 {{else if model}}
   <div class="case--right-panel flex-noshrink layout-column">
     <div class="case--request--visit">
