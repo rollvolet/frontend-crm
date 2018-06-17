@@ -5,6 +5,7 @@ import { warn } from '@ember/debug';
 
 export default Component.extend({
   validation: service(),
+  documentGeneration: service(),
 
   model: null,
   editMode: false,
@@ -64,7 +65,9 @@ export default Component.extend({
     confirmCloseEdit() {
       this.rollbackTree.perform();
       this.onCloseEdit();
+    },
+    generateVisitReport() {
+      return this.documentGeneration.visitReport(this.model.id);
     }
   }
-
 });

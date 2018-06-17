@@ -3,10 +3,6 @@
     <h2>Aanvraag {{model.id}}</h2>
     {{#if editMode}}
       {{save-status-icon model=model task=save}}
-    {{else}}
-      {{#paper-button onClick=(action "openEdit") iconButton=true}}
-        {{paper-icon "edit mode"}}
-      {{/paper-button}}
     {{/if}}
   </div>
   <div>
@@ -16,6 +12,13 @@
       {{/paper-button}}
       {{#paper-button onClick=(action "closeEdit") iconButton=true}}
         {{paper-icon "close"}}
+      {{/paper-button}}
+    {{else}}
+      {{#paper-button onClick=(action "openEdit") iconButton=true}}
+        {{paper-icon "edit mode"}}
+      {{/paper-button}}
+      {{#paper-button onClick=(action "generateVisitReport") iconButton=true}}
+        {{paper-icon "description"}}
       {{/paper-button}}
     {{/if}}
   </div>
