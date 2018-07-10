@@ -3,12 +3,8 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { warn } from '@ember/debug';
 import { equal } from '@ember/object/computed';
-import { A } from '@ember/array';
-import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  validation: service(),
-
   model: null,
   onClose: null,
   onRemove: null,
@@ -20,12 +16,6 @@ export default Component.extend({
   hasFailedTelephone: computed('model.telephones.[]', function() {
     return this.model.telephones.find(t => t.isNew || t.validations.isInvalid || t.isError) != null;
   }),
-
-  isValid() {
-    return this.validation.required(this.model.get('country.id'), 'Land')
-      && this.validation.required(this.model.get('language.id'), 'Taal')
-      && this.validation.vatNumber(this.model.vatNumber, 'BTW nummer');
-  },
 
   remove: task(function * () {
     try {
@@ -53,9 +43,9 @@ export default Component.extend({
     yield all(rollbackPromises);
   }),
   save: task(function * () {
-    if (!this.isValid())
-      throw new Error(`Invalid ${this.scope}`);
-    yield this.model.save();
+    const { validations } = yield this.model.validate();
+    if (validations.isValid)
+      yield this.model.save();
   }).keepLatest(),
 
   actions: {

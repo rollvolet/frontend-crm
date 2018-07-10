@@ -3,23 +3,25 @@
 </td>
 <td>
   {{telephone-type-select value=model.telephoneType
-      onSelectionChange=(queue (action (mut model.telephoneType)) (perform save)) errors=(v-get model 'telephoneType' 'messages')
+      onSelectionChange=(queue (action (mut model.telephoneType)) (perform save))
+      errors=(v-get model 'telephoneType' 'messages')
       class="md-input-wrapper small"}}
 </td>
 <td>
   {{telephone-prefix-select value=model.country
-      onSelectionChange=(queue (action (mut model.country)) (perform save)) errors=(v-get model 'country' 'messages')
+      onSelectionChange=(queue (action (mut model.country)) (perform save))
+      errors=(v-get model 'country' 'messages')
       class="md-input-wrapper small"}}
 </td>
 <td>
   {{paper-input value=model.area
       onChange=(action (mut model.area)) onBlur=(perform save) errors=(v-get model 'area' 'messages')
-      class="xsmall"}}
+      required="style" class="xsmall"}}
 </td>
 <td>
   {{paper-input value=model.number
       onChange=(action (mut model.number)) onBlur=(perform save) errors=(v-get model 'number' 'messages')
-      class="small"}}
+      required="style" class="small"}}
 </td>
 <td>
   {{paper-input value=model.memo

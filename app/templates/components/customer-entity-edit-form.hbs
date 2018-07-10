@@ -74,21 +74,23 @@
           class="md-input-wrapper xxlarge"}}
       {{country-select value=model.country
           onSelectionChange=(queue (action (mut model.country)) (perform save))
+          errors=(v-get model 'country' 'messages')
           class="md-input-wrapper"}}
       {{language-select value=model.language
           onSelectionChange=(queue (action (mut model.language)) (perform save))
+          errors=(v-get model 'language' 'messages')
           class="md-input-wrapper"}}
     </div>
   </section>
 
   <section class="layout-row layout-xs-column">
-    {{paper-input label="Email" value=model.email
+    {{paper-input label="Email" value=model.email errors=(v-get model 'email' 'messages')
         onChange=(action (mut model.email)) onBlur=(perform save)
         class="xlarge"}}
-    {{paper-input label="Email 2" value=model.email2
+    {{paper-input label="Email 2" value=model.email2 errors=(v-get model 'email2' 'messages')
         onChange=(action (mut model.email2)) onBlur=(perform save)
         class="xlarge"}}
-    {{paper-input label="Website" value=model.url
+    {{paper-input label="Website" value=model.url errors=(v-get model 'url' 'messages')
         onChange=(action (mut model.url)) onBlur=(perform save)
         class="xlarge"}}
   </section>

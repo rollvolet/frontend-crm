@@ -1,7 +1,16 @@
 import DS from 'ember-data';
 import { computed } from '@ember/object';
+import { validator, buildValidations } from 'ember-cp-validations';
 
-export default DS.Model.extend({
+const Validations = buildValidations({
+  email: validator('format', { type: 'email', allowBlank: true }),
+  email2: validator('format', { type: 'email', allowBlank: true }),
+  url: validator('format', { type: 'url', allowBlank: true }),
+  language: validator('presence', true),
+  country: validator('presence', true)
+});
+
+export default DS.Model.extend(Validations, {
   name: DS.attr(),
   address1: DS.attr(),
   address2: DS.attr(),

@@ -10,5 +10,6 @@ export default Component.extend({
   },
   label: 'Taal',
   value: null,
+  errors: null,
   onSelectionChange: null
 });

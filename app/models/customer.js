@@ -1,7 +1,17 @@
 import DS from 'ember-data';
 import HasManyQuery from 'ember-data-has-many-query';
+import { validator, buildValidations } from 'ember-cp-validations';
 
-export default DS.Model.extend(HasManyQuery.ModelMixin, {
+const Validations = buildValidations({
+  email: validator('format', { type: 'email', allowBlank: true }),
+  email2: validator('format', { type: 'email', allowBlank: true }),
+  url: validator('format', { type: 'url', allowBlank: true }),
+  // TODO add VAT number validation
+  language: validator('presence', true),
+  country: validator('presence', true)
+});
+
+export default DS.Model.extend(Validations, HasManyQuery.ModelMixin, {
   dataId: DS.attr(),
   number: DS.attr(),
   name: DS.attr(),

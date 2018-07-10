@@ -2,7 +2,7 @@
   {{paper-icon "sync" class="running"}}
   {{#paper-tooltip}}Aan het opslaan{{/paper-tooltip}}
 {{else}}
-  {{#if model.isInvalid}}
+  {{#if model.validations.isInvalid}}
     {{paper-icon "error outline" class="error"}}
     {{#paper-tooltip}}Ongeldig{{/paper-tooltip}}
   {{else if (or model.isError task.last.isError)}}

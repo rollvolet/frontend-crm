@@ -7,7 +7,7 @@ import { warn } from '@ember/debug';
 export default Component.extend({
   tagName: '',
   size: 'xxlarge',
-  label: 'Adres (max. 3 lijnen)',
+  label: 'Adres',
   address1: null,
   address2: null,
   address3: null,

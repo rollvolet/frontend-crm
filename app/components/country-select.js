@@ -10,5 +10,6 @@ export default Component.extend({
   },
   label: 'Land',
   value: null,
+  errors: null,
   onSelectionChange: null
 });
