@@ -1,7 +1,34 @@
 import DS from 'ember-data';
 import { computed } from '@ember/object';
+import { validator, buildValidations } from 'ember-cp-validations';
 
-export default DS.Model.extend({
+const Validations = buildValidations({
+  area: [
+    validator('presence', true),
+    validator('length', {
+      min: 2,
+      max: 4
+    }),
+    validator('format', { regex: /^\d*$/ })
+  ],
+  number: [
+    validator('presence', true),
+    validator('length', {
+      min: 6
+    }),
+    validator('format', { regex: /^\d*$/ })
+  ],
+  telephoneType: validator('presence', {
+    presence: true,
+    message: 'Maak een keuze'
+  }),
+  country:  validator('presence', {
+    presence: true,
+    message: 'Maak een keuze'
+  })
+});
+
+export default DS.Model.extend(Validations, {
   area: DS.attr(),
   number: DS.attr(),
   memo: DS.attr(),

@@ -10,8 +10,7 @@
   <tbody>
     {{#each (sort-by "order" model) as |telephone|}}
       {{telephone-edit-form-line model=telephone scope=scope
-          onUpdate=(action "updateTelephone") onRemove=(action "removeTelephone")
-          onUpdateFailure=(action "addFailedUpdate")}}
+          onUpdate=(action "updateTelephone") onRemove=(action "removeTelephone")}}
     {{else}}
       <tr><td colspan="6">Geen telefoonnummers</td></tr>
     {{/each}}

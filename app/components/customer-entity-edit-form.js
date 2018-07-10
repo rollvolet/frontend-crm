@@ -17,18 +17,8 @@ export default Component.extend({
   isScopeCustomer: equal('scope', 'customer'),
   showWarningOnLeaveDialog: false,
 
-  init() {
-    this._super(...arguments);
-    this.set('failedTelephoneUpdates', A());
-  },
-
-  hasFailedTelephone: computed('model.telephones.[]', 'failedTelephoneUpdates.[]', function() {
-    if (this.model.telephones.find(t => t.isNew || t.isError))
-      return true;
-    if (this.model.telephones.find(t => this.failedTelephoneUpdates.includes(t.get('id'))))
-      return true;
-    else
-      return false;
+  hasFailedTelephone: computed('model.telephones.[]', function() {
+    return this.model.telephones.find(t => t.isNew || t.validations.isInvalid || t.isError) != null;
   }),
 
   isValid() {
@@ -70,8 +60,9 @@ export default Component.extend({
 
   actions: {
     close() {
-      if (this.model.isNew || this.model.isError || (this.save.last && this.save.last.isError)
-         || this.hasFailedTelephone) {
+      if (this.model.isNew || this.model.validations.isInvalid || this.model.isError
+          || (this.save.last && this.save.last.isError)
+          || this.hasFailedTelephone) {
         this.set('showUnsavedChangesDialog', true);
       } else {
         this.onClose();

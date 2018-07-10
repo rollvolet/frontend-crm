@@ -7,7 +7,6 @@ export default Component.extend({
 
   model: null,
   scope: 'customer', // one of 'customer', 'contact', 'building',
-  failedUpdates: null,
 
   actions: {
     addTelephone() {
@@ -27,7 +26,6 @@ export default Component.extend({
     },
     async updateTelephone(oldTelephone, newTelephone) {
       await this.model.then(async (telephones) => {
-        this.failedUpdates.removeObject(oldTelephone.get('id'));
         telephones.removeObject(oldTelephone);
         telephones.pushObject(newTelephone);
       });
@@ -35,14 +33,8 @@ export default Component.extend({
     async removeTelephone(telephone) {
       await this.model.then(async (telephones) => {
         // removal of the data record happens in the telephone-edit-form-line component
-        this.failedUpdates.removeObject(telephone.get('id'));
         telephones.removeObject(telephone);
       });
-    },
-    addFailedUpdate(telephone) {
-      const id = telephone.get('id');
-      if (id && !this.failedUpdates.includes(id))
-        this.failedUpdates.pushObject(id);
     }
   }
 });

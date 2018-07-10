@@ -39,6 +39,7 @@
     "ember-cli-update": "^0.21.3",
     "ember-composable-helpers": "^2.1.0",
     "ember-concurrency": "^0.8.12",
+    "ember-cp-validations": "^4.0.0-beta.1",
     "ember-data": "~3.1.0",
     "ember-data-has-many-query": "^0.2.0",
     "ember-dynamic-format-currency": "https://github.com:erikap/ember-dynamic-format-currency.git",

@@ -2,9 +2,12 @@
   {{paper-icon "sync" class="running"}}
   {{#paper-tooltip}}Aan het opslaan{{/paper-tooltip}}
 {{else}}
-  {{#if (or model.isError task.last.isError)}}
+  {{#if model.isInvalid}}
     {{paper-icon "error outline" class="error"}}
-    {{#paper-tooltip}}Fout{{/paper-tooltip}}
+    {{#paper-tooltip}}Ongeldig{{/paper-tooltip}}
+  {{else if (or model.isError task.last.isError)}}
+      {{paper-icon "error outline" class="error"}}
+      {{#paper-tooltip}}Fout bij opslaan{{/paper-tooltip}}
   {{else}}
     {{paper-icon "check circle outline" class="success"}}
     {{#paper-tooltip}}Opgeslagen{{/paper-tooltip}}

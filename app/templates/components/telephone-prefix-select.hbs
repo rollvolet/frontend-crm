@@ -1,4 +1,4 @@
-{{#paper-autocomplete label=label options=options selected=value
+{{#paper-autocomplete label=label options=options selected=value errors=errors
      searchField="telephonePrefix" labelPath="telephonePrefix" onSelectionChange=onSelectionChange
      noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
   {{paper-autocomplete-highlight label=option.telephonePrefix searchText=select.searchText flags="i"}}
