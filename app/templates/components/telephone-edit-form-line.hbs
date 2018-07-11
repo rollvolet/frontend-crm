@@ -15,12 +15,12 @@
 </td>
 <td>
   {{paper-input value=model.area
-      onChange=(action (mut model.area)) onBlur=(perform save) errors=(v-get model 'area' 'messages')
+      onChange=(action "setArea") onBlur=(perform save) errors=(v-get model 'area' 'messages')
       required="style" class="xsmall"}}
 </td>
 <td>
-  {{paper-input value=model.number
-      onChange=(action (mut model.number)) onBlur=(perform save) errors=(v-get model 'number' 'messages')
+  {{paper-input value=formattedNumber
+      onChange=(action "setNumber") onBlur=(perform save) errors=(v-get model 'number' 'messages')
       required="style" class="small"}}
 </td>
 <td>

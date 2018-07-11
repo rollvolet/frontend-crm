@@ -8,15 +8,13 @@ const Validations = buildValidations({
     validator('length', {
       min: 2,
       max: 4
-    }),
-    validator('format', { regex: /^\d*$/ })
+    })
   ],
   number: [
     validator('presence', true),
     validator('length', {
       min: 6
-    }),
-    validator('format', { regex: /^\d*$/ })
+    })
   ],
   telephoneType: validator('presence', {
     presence: true,

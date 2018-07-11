@@ -1,6 +1,9 @@
+import { computed } from '@ember/object';
 import Component from '@ember/component';
 import { task, hash } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
+
+const digitsOnly = /\D/g;
 
 export default Component.extend({
   tagName: 'tr',
@@ -10,6 +13,23 @@ export default Component.extend({
   model: null,
   onRemove: null,
   onUpdate: null,
+
+  formattedNumber: computed('model.number', function() {
+    if (this.model.number) {
+      const number = this.model.number.replace(digitsOnly, '');
+      if (number.length > 6) {
+        return `${number.substr(0,3)} ${number.substr(3,2)} ${number.substr(5)}`;
+      } else if (number.length >= 5) {
+        return `${number.substr(0,2)} ${number.substr(2,2)} ${number.substr(4)}`;
+      } else if (number.length >= 3) {
+        return `${number.substr(0,2)} ${number.substr(2,2)}`;
+      } else {
+        return number;
+      }
+    } else {
+      return this.model.number;
+    }
+  }),
 
   remove: task(function * () {
     yield this.model.destroyRecord();
@@ -57,5 +77,18 @@ export default Component.extend({
     //  and https://github.com/emberjs/data/issues/5006
     this.store._removeFromIdMap(this.model._internalModel);
     this.onUpdate(this.model, newTelephone);
-  }).keepLatest()
+  }).keepLatest(),
+
+  actions: {
+    setArea(area) {
+      if (area)
+        area = area.replace(digitsOnly, '');
+      this.model.set('area', area);
+    },
+    setNumber(number) {
+      if (number)
+        number = number.replace(digitsOnly, '');
+      this.model.set('number', number);
+    }
+  }
 });
