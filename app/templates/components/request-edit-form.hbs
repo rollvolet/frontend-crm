@@ -42,10 +42,12 @@
       <div class="layout-row">
         {{contact-select value=model.contact customer=(await model.customer)
             onSelectionChange=(queue (action "setContact") (perform save))
-            class="md-input-wrapper"}}
+            class="md-input-wrapper xxlarge"}}
+      </div>
+      <div class="layout-row">
         {{building-select value=model.building customer=(await model.customer)
             onSelectionChange=(queue (action "setBuilding") (perform save))
-            class="md-input-wrapper"}}
+            class="md-input-wrapper xxlarge"}}
       </div>
     </section>
     {{#if hasVisitMasteredByAccess}}

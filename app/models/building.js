@@ -45,8 +45,13 @@ export default DS.Model.extend(Validations, {
     name += this.name;
     return name.trim();
   }),
-  searchName: computed('printName', 'number', function() {
-    return `[${this.number}] ${this.printName}`;
+  searchName: computed('printName', 'number', 'city', 'postalCode', 'address', function() {
+    let search = `[${this.number}] ${this.printName}`;
+    if (this.postalCode || this.city || this.address) {
+      const fullAddress = `${this.address} ${this.postalCode} ${this.city}`;
+      search += ` (${fullAddress.trim()})`;
+    }
+    return search;
   }),
   address: computed('address1', 'address2', 'address3', function() {
     var address = '';
