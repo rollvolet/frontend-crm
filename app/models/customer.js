@@ -7,8 +7,14 @@ const Validations = buildValidations({
   email2: validator('format', { type: 'email', allowBlank: true }),
   url: validator('format', { type: 'url', allowBlank: true }),
   // TODO add VAT number validation
-  language: validator('presence', true),
-  country: validator('presence', true)
+  language: validator('presence', {
+    presence: true,
+    message: 'Kies een geldige taal'
+  }),
+  country: validator('presence', {
+    presence: true,
+    message: 'Kies een geldig land'
+  })
 });
 
 export default DS.Model.extend(Validations, HasManyQuery.ModelMixin, {

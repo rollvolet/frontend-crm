@@ -74,11 +74,11 @@
           class="md-input-wrapper xxlarge"}}
       {{country-select value=model.country
           onSelectionChange=(queue (action (mut model.country)) (perform save))
-          errors=(v-get model 'country' 'messages')
+          required="style" errors=(v-get model 'country' 'messages')
           class="md-input-wrapper"}}
       {{language-select value=model.language
           onSelectionChange=(queue (action (mut model.language)) (perform save))
-          errors=(v-get model 'language' 'messages')
+          required="style" errors=(v-get model 'language' 'messages')
           class="md-input-wrapper"}}
     </div>
   </section>
