@@ -1,3 +1,4 @@
+/* material variables are spread in the SCSS files of https://github.com/angular/material */
 $primary: "red";
 $accent: "blue-grey";
 
@@ -10,6 +11,7 @@ html, body {
   font-family: 'Nunito', sans-serif;
 }
 
+$md-autocomplete-item-height: 36px !default;
 @import 'ember-paper';
 @import 'ember-paper-link';
 @import 'ember-paper-data-table';
