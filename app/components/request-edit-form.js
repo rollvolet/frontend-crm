@@ -51,7 +51,9 @@ export default Component.extend({
   }),
   saveVisit: task(function * () {
     const visit = yield this.model.visit;
-    yield visit.save();
+    const { validations } = yield visit.validate();
+    if (validations.isValid)
+      yield visit.save();
   }),
 
   actions: {

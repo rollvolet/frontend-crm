@@ -18,6 +18,7 @@
     <section class="layout-column">
       <div class="layout-row">
         {{paper-input label="Datum" value=model.requestDateStr type="date"
+            required="style" errors=(v-get model 'requestDate' 'messages')
             onChange=(queue (action (mut model.requestDateStr)) (perform save))
             class="default"}}
       </div>
@@ -53,9 +54,10 @@
       <section class="case--request--visit">
         <div class="layout-row layout-align-start-center">
           <h3>{{paper-icon "event"}} Bezoek</h3>
-          {{save-status-icon model=model task=saveVisit}}
+          {{save-status-icon model=model.visit task=saveVisit}}
         </div>
         {{paper-input label="Datum" value=model.visit.visitDateStr type="date"
+            required="style" errors=(v-get model.visit 'visitDate' 'messages')
             onChange=(queue (action (mut model.visit.visitDateStr)) (perform saveVisit))
             class="default"}}
         {{employee-select label="Bezoeker" value=visitor function='B'

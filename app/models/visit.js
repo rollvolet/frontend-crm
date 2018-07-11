@@ -2,8 +2,13 @@ import DS from 'ember-data';
 import { computed } from '@ember/object';
 import { bool } from '@ember/object/computed';
 import moment from 'moment';
+import { validator, buildValidations } from 'ember-cp-validations';
 
-export default DS.Model.extend({
+const Validations = buildValidations({
+  visitDate: validator('presence', true)
+});
+
+export default DS.Model.extend(Validations, {
   visitDate: DS.attr('date'),
   period: DS.attr(),
   visitor: DS.attr(),
