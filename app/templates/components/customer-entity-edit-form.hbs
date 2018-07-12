@@ -24,8 +24,9 @@
           {{#group.radio value=true}}Bedrijf{{/group.radio}}
         {{/paper-radio-group}}
         {{#if model.isCompany}}
-          {{paper-input label="BTW nummer" value=model.vatNumber
-              onChange=(action (mut model.vatNumber)) onBlur=(perform save)
+          {{paper-input label="BTW nummer" value=formattedVatNumber
+              errors=(v-get model 'vatNumber' 'messages')
+              onChange=(action "setVatNumber") onBlur=(perform save)
               class="flex-50 spacer-left"
           }}
         {{/if}}

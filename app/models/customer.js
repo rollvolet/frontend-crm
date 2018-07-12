@@ -14,6 +14,27 @@ const Validations = buildValidations({
   country: validator('presence', {
     presence: true,
     message: 'Kies een geldig land'
+  }),
+  vatNumber: validator('inline', {
+    validate(value, options, model, attribute) {
+      if (value && value.length >= 2) {
+        const country = value.substr(0, 2);
+        if (country.toUpperCase() == 'BE') {
+          const number = value.substr(2);
+
+          if (number.length != 10)
+            return 'BTW nummer moet exact 10 cijfers bevatten';
+
+          const firstPart = parseInt(number.substr(0, 8));
+          const secondPart = parseInt(number.substr(8));
+          const modulo = firstPart % 97;
+
+          if (secondPart + modulo != 97)
+            return 'Ongeldig BTW nummer';
+        }
+      }
+      return true;
+    }
   })
 });
 
