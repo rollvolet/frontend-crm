@@ -1,6 +1,8 @@
 import Component from '@ember/component';
 
 export default Component.extend({
+  onSelectionChange: null,
+
   init() {
     this._super(...arguments);
 
@@ -26,8 +28,9 @@ export default Component.extend({
 
   label: 'Periode',
   value: null,
+  errors: null,
+  required: false,
   onSelectionChange: null,
-
 
   actions: {
     changeSelection(option) {

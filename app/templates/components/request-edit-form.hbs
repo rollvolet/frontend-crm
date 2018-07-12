@@ -53,22 +53,7 @@
     {{#if hasVisitMasteredByAccess}}
       {{visit-detail-panel model=model.visit}}
     {{else if model.requiresVisit}}
-      <section class="case--request--visit">
-        <div class="layout-row layout-align-start-center">
-          <h3>{{paper-icon "event"}} Bezoek</h3>
-          {{save-status-icon model=model.visit task=saveVisit}}
-        </div>
-        {{paper-input label="Datum" value=model.visit.visitDateStr type="date"
-            required="style" errors=(v-get model.visit 'visitDate' 'messages')
-            onChange=(queue (action (mut model.visit.visitDateStr)) (perform saveVisit))
-            class="default"}}
-        {{employee-select label="Bezoeker" value=visitor function='B'
-            onSelectionChange=(queue (action "setVisitor") (perform saveVisit))
-            class="md-input-wrapper"}}
-        {{calendar-period-select value=model.visit.period
-            onSelectionChange=(queue (action (mut model.visit.period)) (perform saveVisit))
-            class="md-input-wrapper"}}
-      </section>
+      {{visit-edit-form model=model.visit}}
     {{/if}}
   </div>
 {{/if}}

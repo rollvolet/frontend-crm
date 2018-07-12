@@ -49,12 +49,6 @@ export default Component.extend({
     });
     yield this.saveVisit.perform();
   }),
-  saveVisit: task(function * () {
-    const visit = yield this.model.visit;
-    const { validations } = yield visit.validate();
-    if (validations.isValid)
-      yield visit.save();
-  }),
 
   actions: {
     setRequiresVisit(value) {
@@ -66,11 +60,6 @@ export default Component.extend({
       } else {
         this.removeVisit.perform();
       }
-    },
-    setVisitor(visitor) {
-      this.set('visitor', visitor);
-      const firstName = visitor ? visitor.firstName : null;
-      this.model.set('visit.visitor', firstName);
     },
     setEmployee(employee) {
       this.set('employee', employee);
