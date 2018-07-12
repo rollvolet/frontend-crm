@@ -19,7 +19,7 @@
   <section class="layout-column">
     {{#if isScopeCustomer}}
       <div class="layout-row layout-xs-column layout-align-start-center">
-        {{#paper-radio-group groupValue=model.isCompany onChange=(queue (action (mut model.isCompany)) (perform save)) class="layout-row" as |group|}}
+        {{#paper-radio-group groupValue=model.isCompany onChange=(action "setIsCompany") class="layout-row" as |group|}}
           {{#group.radio value=false}}Particulier{{/group.radio}}
           {{#group.radio value=true}}Bedrijf{{/group.radio}}
         {{/paper-radio-group}}

@@ -65,6 +65,13 @@ export default Component.extend({
     setPostalCode(code, city) {
       this.model.set('postalCode', code);
       this.model.set('city', city);
+    },
+    setIsCompany(isCompany) {
+      if (!isCompany)
+        this.model.set('vatNumber', null);
+
+      this.model.set('isCompany', isCompany);
+      this.save.perform();
     }
   }
 });
