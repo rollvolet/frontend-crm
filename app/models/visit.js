@@ -7,7 +7,7 @@ const Validations = buildValidations({
   visitDate: validator('presence', true),
   period: validator('presence', true),
   fromHour: validator('inline', {
-    validate(value, options, model, attribute) {
+    validate(value, options, model/*, attribute*/) {
       if (model.period == 'vanaf' || model.period == 'bepaald uur' || model.period == 'stipt uur'
           || model.period == 'benaderend uur' || model.period == 'van-tot')
         return value ? true : 'Tijdstip is verplicht';
@@ -16,7 +16,7 @@ const Validations = buildValidations({
     }
   }),
   untilHour: validator('inline', {
-    validate(value, options, model, attribute) {
+    validate(value, options, model/*, attribute*/) {
       if (model.period == 'van-tot')
         return value ? true : 'Tijdstip is verplicht';
       else

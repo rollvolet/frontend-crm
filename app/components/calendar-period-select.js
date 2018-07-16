@@ -1,8 +1,6 @@
 import Component from '@ember/component';
 
 export default Component.extend({
-  onSelectionChange: null,
-
   init() {
     this._super(...arguments);
 

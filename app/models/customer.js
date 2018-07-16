@@ -16,7 +16,7 @@ const Validations = buildValidations({
     message: 'Kies een geldig land'
   }),
   vatNumber: validator('inline', {
-    validate(value, options, model, attribute) {
+    validate(value/*, options, model, attribute*/) {
       if (value && value.length >= 2) {
         const country = value.substr(0, 2);
         if (country.toUpperCase() == 'BE') {
