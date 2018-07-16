@@ -6,14 +6,15 @@ import { computed } from '@ember/object';
 
 export default Component.extend({
   documentGeneration: service(),
+  router: service(),
 
   model: null,
   editMode: false,
   onOpenEdit: null,
   onCloseEdit: null,
-  onRemove: null,
   onContactChange: null,
   onBuildingChange: null,
+  showUnsavedChangesDialog: false,
 
   hasFailedVisit: computed('model.visit', function() {
     return this.model.get('visit') &&
@@ -32,7 +33,7 @@ export default Component.extend({
     } catch (e) {
       warn(`Something went wrong while destroying request ${this.model.id}`, { id: 'destroy-failure' });
     } finally {
-      this.onRemove(customer);
+      this.router.transitionTo('main.customers.edit', customer);
     }
   }),
   rollbackTree: task( function * () {
