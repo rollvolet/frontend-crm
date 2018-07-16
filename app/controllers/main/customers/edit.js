@@ -17,7 +17,7 @@ export default Controller.extend({
     goToOfferDetail(row) {
       const customer = this.get('model');
       const offerId = row.get('id');
-      this.transitionToRoute('main.case.offer', customer, offerId);
+      this.transitionToRoute('main.case.offer.edit', customer, offerId);
     },
     goToOrderDetail(row) {
       const customer = this.get('model');

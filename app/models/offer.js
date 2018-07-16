@@ -1,19 +1,36 @@
 import DS from 'ember-data';
 import { computed } from '@ember/object';
+import { validator, buildValidations } from 'ember-cp-validations';
+import { dateString } from '../utils/date-string';
 
-export default DS.Model.extend({
+const Validations = buildValidations({
+  offerDate: validator('presence', true),
+  amount: validator('number', {
+    allowBlank: true,
+    positive: true
+  }),
+  foreseenHours: validator('number', {
+    allowBlank: true,
+    positive: true
+  }),
+  foreseenNbOfPersons: validator('number', {
+    allowBlank: true,
+    positive: true
+  })
+});
+
+
+export default DS.Model.extend(Validations, {
   number: DS.attr(),
   sequenceNumber: DS.attr(),
   offerDate: DS.attr('date'),
-  amount: DS.attr(),
+  amount: DS.attr('number'),
   submissionDate: DS.attr('date'),
-  foreseenHours: DS.attr(),
-  foreseenNbOfPersons: DS.attr(),
+  foreseenHours: DS.attr('number'),
+  foreseenNbOfPersons: DS.attr('number'),
   comment: DS.attr(),
   reference: DS.attr(),
-  updated: DS.attr('date', {
-    defaultValue() { return new Date(); }
-  }),
+
   request: DS.belongsTo('request'),
   order: DS.belongsTo('order'),
   customer: DS.belongsTo('customer'),
@@ -24,5 +41,8 @@ export default DS.Model.extend({
 
   foreseenTotal: computed('foreseenHours', 'foreseenNbOfPersons', function() {
     return this.get('foreseenHours') * this.get('foreseenNbOfPersons');
-  })
+  }),
+
+  offerDateStr: dateString('offerDate'),
+  submissionDateStr: dateString('submissionDate')
 });

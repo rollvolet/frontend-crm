@@ -1,6 +1,6 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
-    <h2>Aanvraag {{model.id}}</h2>
+    <h2>Offerte {{model.number}}</h2>
     {{#if editMode}}
       {{save-status-icon model=model task=save}}
     {{/if}}
@@ -19,10 +19,6 @@
       {{#paper-button onClick=(action "openEdit") iconButton=true}}
         {{paper-icon "edit mode"}}
         {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
-      {{/paper-button}}
-      {{#paper-button onClick=(action "generateVisitReport") iconButton=true}}
-        {{paper-icon "description"}}
-        {{#paper-tooltip}}Bezoekrapport{{/paper-tooltip}}
       {{/paper-button}}
     {{/if}}
   </div>
@@ -45,11 +41,11 @@
       <p>Aan het aanmaken...</p>
     </div>
   {{else}}
-    {{request-edit-form model=model save=save
+    {{offer-edit-form model=model save=save
         onContactChange=onContactChange onBuildingChange=onBuildingChange}}
   {{/if}}
 {{else}}
-  {{request-detail-panel model=model}}
+  {{offer-detail-panel model=model}}
 {{/if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}

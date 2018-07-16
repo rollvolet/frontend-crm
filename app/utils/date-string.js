@@ -1,5 +1,4 @@
-import { get, set } from '@ember/object';
-import { computed } from '@ember/object';
+import { get, set, computed } from '@ember/object';
 import moment from 'moment';
 
 export function dateString(dependentKey) {

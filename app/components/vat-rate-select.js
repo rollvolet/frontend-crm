@@ -8,7 +8,7 @@ export default Component.extend({
     const vatRates = this.store.peekAll('vat-rate');
     this.set('options', vatRates);
   },
-  label: 'BTW',
+  label: 'BTW tarief',
   value: null,
   onSelectionChange: null
 });

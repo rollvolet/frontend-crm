@@ -8,7 +8,7 @@ export default Component.extend({
     const submissionTypes = this.store.peekAll('submission-type');
     this.set('options', submissionTypes);
   },
-  label: 'Verzonden',
+  label: 'Verzendmethode',
   value: null,
   onSelectionChange: null
 });

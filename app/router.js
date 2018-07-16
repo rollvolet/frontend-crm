@@ -20,10 +20,14 @@ Router.map(function() {
     this.route('invoices', function() {});
     this.route('case', { path: '/case/:customer_id' }, function() {
       this.route('request', function() {
-        this.route('edit', { path: '/:request_id' });
         this.route('new');
+        this.route('edit', { path: '/:request_id' }, function() {
+          this.route('offer');
+        });
       });
-      this.route('offer', { path: '/offer/:offer_id' });
+      this.route('offer', function() {
+        this.route('edit', { path: '/:offer_id' });
+      });
       this.route('order', { path: '/order/:order_id' }, function() {
         this.route('deposit-invoices');
       });

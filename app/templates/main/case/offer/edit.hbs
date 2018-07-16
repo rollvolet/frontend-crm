@@ -1,0 +1,7 @@
+{{offer-panel model=model editMode=editMode
+    onOpenEdit=(action (mut editMode) true)
+    onCloseEdit=(action (mut editMode) false)
+    onContactChange=(route-action "setContact")
+    onBuildingChange=(route-action "setBuilding")}}
+
+{{liquid-outlet}}
