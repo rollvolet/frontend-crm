@@ -1,6 +1,9 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
+  case: service(),
+
   async model() {
     const customer = this.modelFor('main.case');
     const request = this.modelFor('main.case.request.edit');
@@ -23,7 +26,6 @@ export default Route.extend({
     });
 
     // update case to display the new offer tab
-    const controller = this.controllerFor('main.case');
-    controller.set('case.offerId', model.get('id'));
+    this.case.set('current.offerId', model.get('id'));
   }
 });

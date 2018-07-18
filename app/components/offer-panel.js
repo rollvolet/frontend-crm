@@ -5,6 +5,7 @@ import { warn } from '@ember/debug';
 import { notEmpty } from '@ember/object/computed';
 
 export default Component.extend({
+  case: service(),
   router: service(),
 
   model: null,
@@ -19,7 +20,10 @@ export default Component.extend({
 
   remove: task(function * () {
     const request = yield this.model.request;
+    request.set('offer', null);
     try {
+      yield request.save();
+      this.case.set('current.offerId', null);
       yield this.model.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying offer ${this.model.id}`, { id: 'destroy-failure' });
