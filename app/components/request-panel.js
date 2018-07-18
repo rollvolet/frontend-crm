@@ -3,6 +3,7 @@ import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { computed } from '@ember/object';
+import { notEmpty } from '@ember/object/computed';
 
 export default Component.extend({
   documentGeneration: service(),
@@ -15,6 +16,8 @@ export default Component.extend({
   onContactChange: null,
   onBuildingChange: null,
   showUnsavedChangesDialog: false,
+
+  isDisabledEdit: notEmpty('model.offer.id'),
 
   hasFailedVisit: computed('model.visit', function() {
     return this.model.get('visit') &&

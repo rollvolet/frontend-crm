@@ -16,7 +16,7 @@
         {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
       {{/paper-button}}
     {{else}}
-      {{#paper-button onClick=(action "openEdit") iconButton=true}}
+      {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
         {{paper-icon "edit mode"}}
         {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
       {{/paper-button}}
