@@ -18,5 +18,9 @@ export default Route.extend({
     this.transitionTo('main.case.offer.edit', customer, model, {
       queryParams: { editMode: true }
     });
+
+    // update case to display the new offer tab
+    const controller = this.controllerFor('main.case');
+    controller.set('case.offerId', model.get('id'));
   }
 });

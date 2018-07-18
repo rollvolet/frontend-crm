@@ -1,25 +1,35 @@
 {{#paper-tabs selected=currentRouteName borderBottom=true as |tabs|}}
-  {{#if case.requestId}}
-    {{#tabs.tab value="main.case.request.edit.index" href=(href-to "main.case.request.edit.index" case.requestId)}}
+  {{#if model.requestId}}
+    {{#tabs.tab value="main.case.request.edit.index" href=(href-to "main.case.request.edit.index" model.requestId)}}
       Aanvraag
     {{/tabs.tab}}
   {{/if}}
-  {{#if case.offerId}}
-    {{#tabs.tab value="main.case.offer.edit" href=(href-to "main.case.offer.edit" case.offerId)}}
+  {{#if model.offerId}}
+    {{#tabs.tab value="main.case.offer.edit" href=(href-to "main.case.offer.edit" model.offerId)}}
       Offerte
     {{/tabs.tab}}
   {{/if}}
-  {{#if case.orderId}}
-    {{#tabs.tab value="main.case.order.index" href=(href-to "main.case.order.index" case.orderId)}}
+  {{#if model.orderId}}
+    {{#tabs.tab value="main.case.order.index" href=(href-to "main.case.order.index" model.orderId)}}
       Bestelling
     {{/tabs.tab}}
-    {{#tabs.tab value="main.case.order.deposit-invoices" href=(href-to "main.case.order.deposit-invoices" case.orderId)}}
+    {{#tabs.tab value="main.case.order.deposit-invoices" href=(href-to "main.case.order.deposit-invoices" model.orderId)}}
       Voorschotfacturen
     {{/tabs.tab}}
   {{/if}}
-  {{#if case.invoiceId}}
-    {{#tabs.tab value="main.case.invoice" href=(href-to "main.case.invoice" case.invoiceId)}}
+  {{#if model.invoiceId}}
+    {{#tabs.tab value="main.case.invoice" href=(href-to "main.case.invoice" model.invoiceId)}}
       Factuur
+    {{/tabs.tab}}
+  {{/if}}
+  {{#if hasNextStepOffer}}
+    {{#tabs.tab value="main.case.request.edit.offer" onClick=(action "openNewOffer")}}
+      {{paper-icon "add box"}} {{#paper-tooltip}}Maak offerte{{/paper-tooltip}}
+    {{/tabs.tab}}
+  {{/if}}
+  {{#if hasNextStepOrder}}
+    {{#tabs.tab value="main.case.offer.edit.order" onClick=(action "openNewOrder")}}
+      {{paper-icon "add box"}} {{#paper-tooltip}}Maak bestelling{{/paper-tooltip}}
     {{/tabs.tab}}
   {{/if}}
 {{/paper-tabs}}
