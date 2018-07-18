@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
+import { notEmpty } from '@ember/object/computed';
 
 export default Component.extend({
   router: service(),
@@ -13,6 +14,8 @@ export default Component.extend({
   onContactChange: null,
   onBuildingChange: null,
   showUnsavedChangesDialog: false,
+
+  isDisabledEdit: notEmpty('model.order.id'),
 
   remove: task(function * () {
     const request = yield this.model.request;
