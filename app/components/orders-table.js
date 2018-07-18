@@ -2,9 +2,13 @@ import Component from '@ember/component';
 import DebouncedSearch from '../mixins/debounced-search-task';
 import { observer } from '@ember/object';
 import { task } from 'ember-concurrency';
+import { inject as service } from '@ember/service';
 
 export default Component.extend(DebouncedSearch, {
   classNames: ['orders-table'],
+
+  router: service(),
+
   init() {
     this._super(...arguments);
     this.get('search').perform();
@@ -51,6 +55,10 @@ export default Component.extend(DebouncedSearch, {
       this.set('city', undefined);
       this.set('street', undefined);
       this.get('search').perform();
+    },
+    clickRow(row) {
+      const orderId = row.get('id');
+      this.router.transitionTo('main.case.order.index', this.customer, orderId);
     }
   }
 });

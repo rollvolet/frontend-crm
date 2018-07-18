@@ -2,16 +2,17 @@ import Component from '@ember/component';
 import DebouncedSearch from '../mixins/debounced-search-task';
 import { observer } from '@ember/object';
 import { task } from 'ember-concurrency';
+import { inject as service } from '@ember/service';
 
 export default Component.extend(DebouncedSearch, {
   classNames: ['requests-table'],
+
+  router: service(),
+
   init() {
     this._super(...arguments);
     this.get('search').perform();
   },
-
-  onClickRow: null,
-  openNew: null,
 
   page: 0,
   size: 10,
@@ -47,6 +48,13 @@ export default Component.extend(DebouncedSearch, {
     resetFilters() {
       ['number', 'name', 'postalCode', 'city', 'street'].forEach(f => this.set(f, undefined));
       this.get('search').perform();
+    },
+    clickRow(row) {
+      const requestId = row.get('id');
+      this.router.transitionTo('main.case.request.edit', this.customer, requestId);
+    },
+    openNewRequest() {
+      this.router.transitionTo('main.case.request.new', this.customer);
     }
   }
 });

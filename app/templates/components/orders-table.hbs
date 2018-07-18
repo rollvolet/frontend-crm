@@ -13,7 +13,7 @@
 </div>
 
 {{#data-table content=orders isLoading=(not search.isIdle) noDataMessage="Geen bestellingen"
-     onClickRow=onClickRow page=page size=size sort=sort as |t|}}
+     onClickRow=(action "clickRow") page=page size=size sort=sort as |t|}}
   {{#t.content as |c|}}
     {{#c.header}}
       {{th-sortable field='offer-number' currentSorting=sort label='Offerte'}}

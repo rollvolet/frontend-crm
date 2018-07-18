@@ -3,13 +3,15 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { warn } from '@ember/debug';
 import { equal } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 
 const digitsOnly = /\D/g;
 
 export default Component.extend({
+  router: service(),
+
   model: null,
   onClose: null,
-  onRemove: null,
 
   scope: 'customer', // one of 'customer', 'contact', 'building'
   isScopeCustomer: equal('scope', 'customer'),
@@ -60,7 +62,7 @@ export default Component.extend({
     } catch (e) {
       warn(`Something went wrong while destroying ${this.scope} ${this.model.id}`, { id: 'destroy-failure' });
     } finally {
-      this.onRemove();
+      this.router.transitionTo('main.customers.index');
     }
   }),
   rollbackTree: task( function * () {

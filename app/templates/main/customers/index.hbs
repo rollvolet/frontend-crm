@@ -20,7 +20,7 @@
 </div>
 
 {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
-     sort=sort page=page size=size onClickRow=(action 'clickRow') as |t|}}
+     sort=sort page=page size=size onClickRow=(action "clickRow") as |t|}}
   {{#t.content as |c|}}
     {{#c.header}}
       {{th-sortable field='number' currentSorting=sort label='Nr'}}
