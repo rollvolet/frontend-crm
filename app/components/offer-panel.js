@@ -27,6 +27,7 @@ export default Component.extend({
       yield this.model.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying offer ${this.model.id}`, { id: 'destroy-failure' });
+      // TODO rollback to detail view?
     } finally {
       this.router.transitionTo('main.case.request.edit', request);
     }
