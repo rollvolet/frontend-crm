@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   model() {
-    const order = this.modelFor('main.case.order');
+    const order = this.modelFor('main.case.order.edit');
     return order.query('depositInvoices', {
       sort: '-number',
       page: {

@@ -22,14 +22,18 @@ Router.map(function() {
       this.route('request', function() {
         this.route('new');
         this.route('edit', { path: '/:request_id' }, function() {
-          this.route('offer');
+          this.route('offer'); // create new offer
         });
       });
       this.route('offer', function() {
-        this.route('edit', { path: '/:offer_id' });
+        this.route('edit', { path: '/:offer_id' }, function() {
+          this.route('order'); // create new order
+        });
       });
-      this.route('order', { path: '/order/:order_id' }, function() {
-        this.route('deposit-invoices');
+      this.route('order', function() {
+        this.route('edit', { path: '/:order_id' }, function() {
+          this.route('deposit-invoices');
+        });
       });
       this.route('invoice', { path: '/invoice/:invoice_id' });
     });

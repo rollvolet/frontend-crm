@@ -1,28 +1,51 @@
 import DS from 'ember-data';
-import { computed } from '@ember/object';
 import HasManyQuery from 'ember-data-has-many-query';
+import { computed } from '@ember/object';
+import { validator, buildValidations } from 'ember-cp-validations';
+import { dateString } from '../utils/date-string';
 
-export default DS.Model.extend(HasManyQuery.ModelMixin, {
+const Validations = buildValidations({
+  orderDate: validator('presence', true),
+  amount: validator('number', {
+    allowBlank: true,
+    positive: true
+  }),
+  scheduledHours: validator('number', {
+    allowBlank: true,
+    positive: true
+  }),
+  scheduledNbOfPersons: validator('number', {
+    allowBlank: true,
+    positive: true
+  }),
+  invoicableHours: validator('number', {
+    allowBlank: true,
+    positive: true
+  }),
+  invoicableNbOfPersons: validator('number', {
+    allowBlank: true,
+    positive: true
+  })
+});
+
+export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   orderDate: DS.attr('date'),
   offerNumber: DS.attr(),
-  amount: DS.attr(),
-  depositRequired: DS.attr(),
-  hasProductionTicket: DS.attr(),
-  mustBeInstalled: DS.attr(),
-  mustBeDelivered: DS.attr(),
-  isReady: DS.attr(),
+  amount: DS.attr('number'),
+  depositRequired: DS.attr('boolean'),
+  hasProductionTicket: DS.attr('boolean'),
+  mustBeInstalled: DS.attr('boolean'),
+  mustBeDelivered: DS.attr('boolean'),
+  isReady: DS.attr('boolean'),
   expectedDate: DS.attr('date'),
   requiredDate: DS.attr('date'),
-  scheduledHours: DS.attr(),
-  scheduledNbOfPersons: DS.attr(),
-  invoicableHours: DS.attr(),
-  invoicableNbOfPersons: DS.attr(),
+  scheduledHours: DS.attr('number'),
+  scheduledNbOfPersons: DS.attr('number'),
+  invoicableHours: DS.attr('number'),
+  invoicableNbOfPersons: DS.attr('number'),
   comment: DS.attr(),
-  canceled: DS.attr(),
+  canceled: DS.attr('boolean'),
   cancellationReason: DS.attr(),
-  updated: DS.attr('date', {
-    defaultValue() { return new Date(); }
-  }),
   offer: DS.belongsTo('offer'),
   invoice: DS.belongsTo('invoice'),
   customer: DS.belongsTo('customer'),
@@ -42,5 +65,8 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, {
     if (this.get('mustBeInstalled')) return 'installation';
     else if (this.get('mustBeDelivered')) return 'delivery';
     else return 'pickup';
-  })
+  }),
+  orderDateStr: dateString('orderDate'),
+  expectedDateStr: dateString('expectedDate'),
+  requiredDateStr: dateString('requiredDate')
 });

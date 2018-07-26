@@ -1,12 +1,19 @@
-import Controller from '@ember/controller';
+import Component from '@ember/component';
 import { mapBy } from 'ember-awesome-macros/array';
 import { sum } from 'ember-awesome-macros';
 import raw from 'ember-macro-helpers/raw';
+import { inject as service } from '@ember/service';
 
-export default Controller.extend({
+export default Component.extend({
+  router: service(),
+
+  model: null,
   showDepositsDialog: false,
+  onCreateNewDeposit: null,
+
   depositsAmount: sum(mapBy('model.deposits', raw('amount'))),
   depositInvoicesAmount: sum(mapBy('model.depositInvoices', raw('arithmeticAmount'))),
+
   actions: {
     closeDepositsDialog() {
       this.set('showDepositsDialog', false);
@@ -16,7 +23,7 @@ export default Controller.extend({
     },
     goToDepositInvoices() {
       const order = this.get('model');
-      this.transitionToRoute('main.case.order.edit.deposit-invoices', order);
+      this.router.transitionTo('main.case.order.edit.deposit-invoices', order);
     }
   }
 });

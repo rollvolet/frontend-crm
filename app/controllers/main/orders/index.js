@@ -24,7 +24,7 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
     clickRow(row) {
       const customerId = row.get('customer.id');
       const orderId = row.get('id');
-      this.transitionToRoute('main.case.order', customerId, orderId);
+      this.transitionToRoute('main.case.order.edit', customerId, orderId);
     },
     setFilter(key, value) {
       this.set(`${key}Filter`, value);

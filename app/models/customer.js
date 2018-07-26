@@ -71,6 +71,7 @@ export default DS.Model.extend(Validations, HasManyQuery.ModelMixin, {
   requests: DS.hasMany('request'),
   offers: DS.hasMany('offer'),
   orders: DS.hasMany('order'),
+  deposits: DS.hasMany('deposit'),
   depositInvoices: DS.hasMany('deposit-invoice'),
   invoices: DS.hasMany('invoice'),
   tags: DS.hasMany('tag')

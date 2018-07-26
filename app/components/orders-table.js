@@ -58,7 +58,7 @@ export default Component.extend(DebouncedSearch, {
     },
     clickRow(row) {
       const orderId = row.get('id');
-      this.router.transitionTo('main.case.order.index', this.customer, orderId);
+      this.router.transitionTo('main.case.order.edit', this.customer, orderId);
     }
   }
 });

@@ -14,7 +14,8 @@ export default Service.extend({
       'submission-type',
       'vat-rate',
       'way-of-entry',
-      'employee'
+      'employee',
+      'payment'
     ];
     return all(entities.map(e => this.store.findAll(e)));
   },

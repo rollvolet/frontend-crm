@@ -57,7 +57,7 @@ export default Component.extend(DebouncedSearch, {
     },
     clickRow(row) {
       const orderId = row.get('order.id');
-      this.router.transitionTo('main.case.order.deposit-invoices', this.customer, orderId);
+      this.router.transitionTo('main.case.order.edit.deposit-invoices', this.customer, orderId);
     }
   }
 });

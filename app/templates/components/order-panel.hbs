@@ -1,0 +1,54 @@
+<div class="layout-row layout-align-space-between-center">
+  <div class="layout-row layout-align-start-center">
+    <h2>Bestelling {{model.offerNumber}}</h2>
+    {{#if editMode}}
+      {{save-status-icon model=model task=save}}
+    {{/if}}
+  </div>
+  <div>
+    {{#if editMode}}
+      {{#unless isDisabledEdit}}
+        {{#paper-button onClick=(perform remove) iconButton=true}}
+          {{paper-icon "delete"}}
+          {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+        {{/paper-button}}
+      {{/unless}}
+      {{#paper-button onClick=(action "closeEdit") iconButton=true}}
+        {{paper-icon "close"}}
+        {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
+      {{/paper-button}}
+    {{else}}
+      {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
+        {{paper-icon "edit mode"}}
+        {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
+      {{/paper-button}}
+    {{/if}}
+  </div>
+</div>
+
+{{#if editMode}}
+  {{#if remove.isRunning}}
+    <div>
+      {{paper-progress-linear}}
+      <p>Aan het verwijderen...</p>
+    </div>
+  {{else if rollbackTree.isRunning}}
+    <div>
+      {{paper-progress-linear}}
+      <p>Aan het herstellen...</p>
+    </div>
+  {{else if (and (not model.id) model.isSavivg)}}
+    <div>
+      {{paper-progress-linear}}
+      <p>Aan het aanmaken...</p>
+    </div>
+  {{else}}
+    {{order-edit-form model=model save=save
+        onContactChange=onContactChange onBuildingChange=onBuildingChange
+        onCreateNewDeposit=(action "createNewDeposit")}}
+  {{/if}}
+{{else}}
+  {{order-detail-panel model=model onCreateNewDeposit=(action "createNewDeposit")}}
+{{/if}}
+
+{{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}

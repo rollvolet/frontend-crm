@@ -5,15 +5,15 @@
     {{/tabs.tab}}
   {{/if}}
   {{#if model.offerId}}
-    {{#tabs.tab value="main.case.offer.edit" href=(href-to "main.case.offer.edit" model.offerId)}}
+    {{#tabs.tab value="main.case.offer.edit.index" href=(href-to "main.case.offer.edit.index" model.offerId)}}
       Offerte
     {{/tabs.tab}}
   {{/if}}
   {{#if model.orderId}}
-    {{#tabs.tab value="main.case.order.index" href=(href-to "main.case.order.index" model.orderId)}}
+    {{#tabs.tab value="main.case.order.edit.index" href=(href-to "main.case.order.edit.index" model.orderId)}}
       Bestelling
     {{/tabs.tab}}
-    {{#tabs.tab value="main.case.order.deposit-invoices" href=(href-to "main.case.order.deposit-invoices" model.orderId)}}
+    {{#tabs.tab value="main.case.order.edit.deposit-invoices" href=(href-to "main.case.order.edit.deposit-invoices" model.orderId)}}
       Voorschotfacturen
     {{/tabs.tab}}
   {{/if}}

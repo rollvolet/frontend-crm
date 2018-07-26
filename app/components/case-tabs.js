@@ -32,7 +32,9 @@ export default Component.extend({
       this.router.transitionTo('main.case.request.edit.offer', customerId, requestId);
     },
     openNewOrder() {
-      console.log('Not implemented yet');
+      const customerId = this.model.customerId;
+      const offerId = this.model.offerId;
+      this.router.transitionTo('main.case.offer.edit.order', customerId, offerId);
     }
   }
 });

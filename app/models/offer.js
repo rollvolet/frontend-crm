@@ -19,7 +19,6 @@ const Validations = buildValidations({
   })
 });
 
-
 export default DS.Model.extend(Validations, {
   number: DS.attr(),
   sequenceNumber: DS.attr(),

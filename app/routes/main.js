@@ -8,6 +8,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   afterModel() {
     debug('Preloading static lists');
+    // TODO don't await the loading?
     return this.configuration.preloadStaticLists();
   }
 });
