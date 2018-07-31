@@ -4,6 +4,8 @@ import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
+  offerlines: validator('has-many'),
+
   offerDate: validator('presence', true),
   amount: validator('number', {
     allowBlank: true,
@@ -37,6 +39,7 @@ export default DS.Model.extend(Validations, {
   building: DS.belongsTo('building'),
   vatRate: DS.belongsTo('vat-rate'),
   submissionType: DS.belongsTo('submission-type'),
+  offerlines: DS.hasMany('offerline'),
 
   foreseenTotal: computed('foreseenHours', 'foreseenNbOfPersons', function() {
     return this.get('foreseenHours') * this.get('foreseenNbOfPersons');

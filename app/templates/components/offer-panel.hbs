@@ -50,4 +50,29 @@
   {{offer-detail-panel model=model}}
 {{/if}}
 
+<div class="layout-row layout-align-space-between-center">
+  <div class="layout-row layout-align-start-center">
+    <h2>Inhoud</h2>
+  </div>
+  <div>
+    {{#unless isDisabledEdit}}
+      {{#paper-button primary=true fab=true mini=true raised=true onClick=(action "addOfferline")}}
+        {{paper-icon "add"}}
+        {{#paper-tooltip}}Lijn toevoegen{{/paper-tooltip}}
+      {{/paper-button}}
+    {{/unless}}
+  </div>
+</div>
+
+{{#if editMode}}
+  <div class="layout-column">
+    {{#each model.offerlines as |offerline|}}
+      {{offerline-edit-form model=offerline onDelete=(action "deleteOfferline")}}
+    {{/each}}
+  </div>
+{{else}}
+  {{offerlines-detail-panel model=model.offerlines isDisableEdit=isDisabledEdit
+      onDelete=(action "deleteOfferline")}}
+{{/if}}
+
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}

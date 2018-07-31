@@ -39,9 +39,11 @@
                 <td>
                   {{#paper-button onClick=(action "selectDeposit" deposit) iconButton=true}}
                     {{paper-icon "edit mode"}}
+                    {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
                   {{/paper-button}}
                   {{#paper-button onClick=(action "deleteDeposit" deposit) iconButton=true}}
                     {{paper-icon "delete"}}
+                    {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
                   {{/paper-button}}
                 </td>
               </tr>

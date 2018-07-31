@@ -1,0 +1,27 @@
+<table>
+  <thead>
+    <th></th>
+    <th>Beschrijving</th>
+    <th>Bedrag</th>
+    <th>BTW</th>
+    <th></th>
+  </thead>
+  <tbody>
+    {{#each model as |offerline|}}
+      <tr>
+        <td>{{offerline.sequenceNumber}}</td>
+        <td>{{{offerline.description}}}</td>
+        <td>{{fmt-currency offerline.amount}}</td>
+        <td>{{offerline.vatRate.rate}}%</td>
+        <td>
+          {{#paper-button onClick=(action "delete" offerline) iconButton=true disabled=isDisabledEdit}}
+            {{paper-icon "delete"}}
+            {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+          {{/paper-button}}
+        </td>
+      </tr>
+    {{else}}
+      <tr><td colspan="5">Geen inhoud</td></tr>
+    {{/each}}
+  </tbody>
+</table>
