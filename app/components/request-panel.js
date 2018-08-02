@@ -76,7 +76,7 @@ export default Component.extend({
       this.onCloseEdit();
     },
     generateVisitReport() {
-      return this.documentGeneration.visitReport(this.model.id);
+      return this.documentGeneration.visitReport(this.model);
     }
   }
 });

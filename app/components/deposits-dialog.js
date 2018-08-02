@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { filterBy } from '@ember/object/computed';
 import { task } from 'ember-concurrency';
 
 export default Component.extend({

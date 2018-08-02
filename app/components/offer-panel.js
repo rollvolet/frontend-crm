@@ -7,6 +7,7 @@ import { computed } from '@ember/object';
 
 export default Component.extend({
   case: service(),
+  documentGeneration: service(),
   router: service(),
   store: service(),
 
@@ -96,6 +97,9 @@ export default Component.extend({
     deleteOfferline(offerline) {
       this.model.offerlines.removeObject(offerline);
       offerline.destroyRecord();
+    },
+    generateOfferDocument() {
+      return this.documentGeneration.offerDocument(this.model);
     }
   }
 });
