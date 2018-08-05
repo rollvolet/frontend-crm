@@ -73,7 +73,7 @@ module.exports = function(environment) {
     // acceptance env
     ENV.torii.providers['azure-ad2-oauth2'].apiKey = '552ea087-fcd9-4d53-911b-19b11ff6631a';
     ENV.torii.providers['azure-ad2-oauth2'].scope = 'api://552ea087-fcd9-4d53-911b-19b11ff6631a/access_as_user offline_access',
-    ENV.torii.providers['azure-ad2-oauth2'].redirectUri = 'https://rollvolet-crm.moof-it.be/torii/redirect.html';
+    ENV.torii.providers['azure-ad2-oauth2'].redirectUri = 'https://crm.rollvolet.info/torii/redirect.html';
   }
 
   if (process.env.DEPLOY_ENV === 'rollvolet') {
