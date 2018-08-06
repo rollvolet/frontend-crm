@@ -26,6 +26,10 @@
   </div>
 </div>
 
+{{#if isDisabledEdit}}
+  {{warning-message message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk."}}
+{{/if}}
+
 {{#if editMode}}
   {{#if remove.isRunning}}
     <div>

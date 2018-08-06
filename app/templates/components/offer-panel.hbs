@@ -30,6 +30,10 @@
   </div>
 </div>
 
+{{#if isDisabledEdit}}
+  {{warning-message message="Reeds besteld. Geen wijzigingen meer mogelijk."}}
+{{/if}}
+
 {{#if editMode}}
   {{#if remove.isRunning}}
     <div>
