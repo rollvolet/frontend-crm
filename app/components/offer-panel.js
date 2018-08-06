@@ -3,7 +3,6 @@ import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { notEmpty } from '@ember/object/computed';
-import { computed } from '@ember/object';
 
 export default Component.extend({
   case: service(),
@@ -20,13 +19,13 @@ export default Component.extend({
   showUnsavedChangesDialog: false,
 
   isDisabledEdit: notEmpty('model.order.id'),
-  hasUnsavedChanges: computed('model', async function() {
+  hasUnsavedChanges: async function() {
     const offerlines = await this.model.offerlines;
     const offerlineWithUnsavedChanges = offerlines.find(o => o.isNew || o.validations.isInvalid || o.isError);
     return offerlineWithUnsavedChanges != null
       || this.model.isNew || this.model.validations.isInvalid || this.model.isError
       || (this.save.last && this.save.last.isError);
-  }),
+  },
 
   remove: task(function * () {
     const request = yield this.model.request;
@@ -72,8 +71,9 @@ export default Component.extend({
     openEdit() {
       this.onOpenEdit();
     },
-    closeEdit() {
-      if (this.hasUnsavedChanges) {
+    async closeEdit() {
+      const hasUnsavedChanges = await this.hasUnsavedChanges();
+      if (hasUnsavedChanges) {
         this.set('showUnsavedChangesDialog', true);
       } else {
         this.onCloseEdit();
