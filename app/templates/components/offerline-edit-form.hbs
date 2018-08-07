@@ -4,10 +4,10 @@
 {{paper-input label="Bedrag" value=amountInput
     errors=(v-get model 'amount' 'messages')
     onChange=(action (mut amountInput)) onBlur=(queue (action "formatDecimal" "amount") (perform save))
-    class="small"}}
+    class="small" required="style"}}
 {{vat-rate-select value=model.vatRate
     onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
-    class="md-input-wrapper"}}
+    class="md-input-wrapper" required="style"}}
 {{save-status-icon model=model task=save}}
 {{#paper-button onClick=(action "delete") iconButton=true}}
   {{paper-icon "delete"}}
