@@ -14,11 +14,10 @@ export default Component.extend(DecimalInputFormatting, {
   },
 
   save: task(function * () {
-    yield timeout(1000);
     const { validations } = yield this.model.validate();
     if (validations.isValid)
       yield this.model.save();
-  }).keepLatest(),
+  }),
 
   actions: {
     delete() {
