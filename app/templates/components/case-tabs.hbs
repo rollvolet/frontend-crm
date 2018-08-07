@@ -1,24 +1,29 @@
 {{#paper-tabs selected=currentRouteName borderBottom=true as |tabs|}}
   {{#if model.requestId}}
-    {{#tabs.tab value="main.case.request.edit.index" href=(href-to "main.case.request.edit.index" model.requestId)}}
+    {{#tabs.tab value="main.case.request.edit.index"
+         href=(href-to "main.case.request.edit.index" model.customerId model.requestId)}}
       Aanvraag
     {{/tabs.tab}}
   {{/if}}
   {{#if model.offerId}}
-    {{#tabs.tab value="main.case.offer.edit.index" href=(href-to "main.case.offer.edit.index" model.offerId)}}
+    {{#tabs.tab value="main.case.offer.edit.index"
+         href=(href-to "main.case.offer.edit.index" model.customerId model.offerId)}}
       Offerte
     {{/tabs.tab}}
   {{/if}}
   {{#if model.orderId}}
-    {{#tabs.tab value="main.case.order.edit.index" href=(href-to "main.case.order.edit.index" model.orderId)}}
+    {{#tabs.tab value="main.case.order.edit.index"
+         href=(href-to "main.case.order.edit.index" model.customerId model.orderId)}}
       Bestelling
     {{/tabs.tab}}
-    {{#tabs.tab value="main.case.order.edit.deposit-invoices" href=(href-to "main.case.order.edit.deposit-invoices" model.orderId)}}
+    {{#tabs.tab value="main.case.order.edit.deposit-invoices"
+         href=(href-to "main.case.order.edit.deposit-invoices" model.customerId model.orderId)}}
       Voorschotfacturen
     {{/tabs.tab}}
   {{/if}}
   {{#if model.invoiceId}}
-    {{#tabs.tab value="main.case.invoice" href=(href-to "main.case.invoice" model.invoiceId)}}
+    {{#tabs.tab value="main.case.invoice"
+         href=(href-to "main.case.invoice" model.customerId model.invoiceId)}}
       Factuur
     {{/tabs.tab}}
   {{/if}}
