@@ -4,8 +4,10 @@ import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { computed } from '@ember/object';
 import { notEmpty } from '@ember/object/computed';
+import { on } from '@ember/object/evented';
+import { EKMixin, keyUp } from 'ember-keyboard';
 
-export default Component.extend({
+export default Component.extend(EKMixin, {
   documentGeneration: service(),
   router: service(),
 
@@ -25,6 +27,11 @@ export default Component.extend({
        || this.model.get('visit.validations.isInvalid')
        || this.model.get('visit.isError'));
   }),
+
+  init() {
+    this._super(...arguments);
+    this.set('keyboardActivated', true); // required for ember-keyboard
+  },
 
   remove: task(function * () {
     const customer = yield this.model.customer;
@@ -57,9 +64,12 @@ export default Component.extend({
       yield this.model.save();
   }).keepLatest(),
 
+  openEditByShortcut: on(keyUp('ctrl+alt+KeyU'), function() {
+    this.onOpenEdit();
+  }),
+
   actions: {
     openEdit() {
-      this.model.belongsTo('visit').reload(); // make sure we have the latest version
       this.onOpenEdit();
     },
     closeEdit() {

@@ -3,8 +3,10 @@ import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { notEmpty } from '@ember/object/computed';
+import { on } from '@ember/object/evented';
+import { EKMixin, keyUp } from 'ember-keyboard';
 
-export default Component.extend({
+export default Component.extend(EKMixin, {
   case: service(),
   documentGeneration: service(),
   router: service(),
@@ -25,6 +27,11 @@ export default Component.extend({
     return offerlineWithUnsavedChanges != null
       || this.model.isNew || this.model.validations.isInvalid || this.model.isError
       || (this.save.last && this.save.last.isError);
+  },
+
+  init() {
+    this._super(...arguments);
+    this.set('keyboardActivated', true); // required for ember-keyboard
   },
 
   remove: task(function * () {
@@ -66,6 +73,10 @@ export default Component.extend({
     if (validations.isValid)
       yield this.model.save();
   }).keepLatest(),
+
+  openEditByShortcut: on(keyUp('ctrl+alt+KeyU'), function() {
+    this.onOpenEdit();
+  }),
 
   actions: {
     openEdit() {
