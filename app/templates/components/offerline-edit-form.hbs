@@ -1,5 +1,5 @@
 <div>{{model.sequenceNumber}}</div>
-{{pell-editor class="pell-editor" value=model.description
+{{pell-editor class="pell-editor" value=model.description pellOptions=pellOptions
     onChange=(action (mut model.description)) focusOut=(perform save)}}
 {{paper-input label="Bedrag" value=amountInput
     errors=(v-get model 'amount' 'messages')
