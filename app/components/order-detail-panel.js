@@ -14,7 +14,7 @@ export default Component.extend({
 
   actions: {
     goToDepositInvoices() {
-      const order = this.get('model');
+      const order = this.model;
       this.router.transitionTo('main.case.order.edit.deposit-invoices', order);
     }
   }

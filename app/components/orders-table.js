@@ -11,21 +11,21 @@ export default Component.extend(DebouncedSearch, {
 
   init() {
     this._super(...arguments);
-    this.get('search').perform();
+    this.search.perform();
   },
   page: 0,
   size: 10,
   sort: '-order-date',
   dataTableParamChanged: observer('page', 'size', 'sort', function() {
-    this.get('search').perform();
+    this.search.perform();
   }),
   search: task(function * () {
-    const orders = yield this.get('customer').query('orders', {
+    const orders = yield this.customer.query('orders', {
       page: {
-        size: this.get('size'),
-        number: this.get('page')
+        size: this.size,
+        number: this.page
       },
-      sort: this.get('sort'),
+      sort: this.sort,
       include: 'building,offer',
       filter: {
         offerNumber: this.getFilterValue('offerNumber'),
@@ -45,7 +45,7 @@ export default Component.extend(DebouncedSearch, {
   actions: {
     setFilter(key, value) {
       this.set(key, value);
-      this.get('debounceSearch').perform(this.get('search'));
+      this.debounceSearch.perform(this.search);
     },
     resetFilters() {
       this.set('offerNumber', undefined);
@@ -54,7 +54,7 @@ export default Component.extend(DebouncedSearch, {
       this.set('postalCode', undefined);
       this.set('city', undefined);
       this.set('street', undefined);
-      this.get('search').perform();
+      this.search.perform();
     },
     clickRow(row) {
       const orderId = row.get('id');

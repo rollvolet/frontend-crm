@@ -49,7 +49,7 @@ export default Service.extend({
 
     const { access_token } = this.get('session.data.authenticated');
     const headers = { 'Authorization': `Bearer ${access_token}` };
-    const response = await this.get('ajax').request(`/api/cases?${queryParam}`, { headers });
+    const response = await this.ajax.request(`/api/cases?${queryParam}`, { headers });
     return Case.create({
       customerId: response.customerId,
       requestId: response.requestId,

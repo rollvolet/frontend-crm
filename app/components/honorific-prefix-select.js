@@ -32,7 +32,7 @@ export default Component.extend({
     this._super(...arguments);
 
     if (this.get('value.entityId') && this.get('language.id') && this.get('value.languageId') != this.get('language.id')) { // the language changed while a prefix has already been selected
-      const honorificPrefix = this.get('honorificPrefixes').find(p => {
+      const honorificPrefix = this.honorificPrefixes.find(p => {
         // Find same prefix in the new language
         return p.get('id') == composeId(this.get('value.entityId'), this.get('language.id'));
       });

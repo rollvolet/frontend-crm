@@ -42,7 +42,7 @@ export default DS.Model.extend(Validations, {
   }),
 
   hasDirtyRelations() {
-    let [_, telephoneTypeId, countryId] = this.get('id').split('-'); // eslint-disable-line no-unused-vars
+    let [_, telephoneTypeId, countryId] = this.id.split('-'); // eslint-disable-line no-unused-vars
     return this.get('telephoneType.id') != telephoneTypeId || this.get('country.id') != countryId;
   }
 });

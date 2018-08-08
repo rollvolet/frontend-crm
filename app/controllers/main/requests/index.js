@@ -27,7 +27,7 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
     },
     setFilter(key, value) {
       this.set(`${key}Filter`, value);
-      this.get('debounceFilter').perform(key, value);
+      this.debounceFilter.perform(key, value);
     },
     resetFilters() {
       this.set('withoutOffer', false);

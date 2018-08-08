@@ -28,7 +28,7 @@ export default DS.Model.extend({
   code: DS.attr(),
   name: DS.attr(),
   search: computed('code', 'name', function() {
-    let search = `${this.get('code')} ${this.get('name')}`;
+    let search = `${this.code} ${this.name}`;
 
     const additionalLabel = additionalLabelMap[this.code];
     if (additionalLabel) {

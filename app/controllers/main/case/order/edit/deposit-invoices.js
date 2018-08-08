@@ -7,10 +7,10 @@ export default Controller.extend({
   store: service(),
 
   arithmeticAmounts: computed('model', function() {
-    return this.get('model') ? this.get('model').map(i => i.get('arithmeticAmount')) : 0;
+    return this.model ? this.model.map(i => i.get('arithmeticAmount')) : 0;
   }),
   arithmeticVats: computed('model', function() {
-    return this.get('model') ? this.get('model').map(i => i.get('arithmeticVat')) : 0;
+    return this.model ? this.model.map(i => i.get('arithmeticVat')) : 0;
   }),
   totalAmount: sum('arithmeticAmounts'),
   totalVat: sum('arithmeticVats'),

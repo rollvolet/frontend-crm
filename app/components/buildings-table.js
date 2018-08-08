@@ -8,7 +8,7 @@ export default Component.extend(DebouncedSearch, {
 
   init() {
     this._super(...arguments);
-    this.get('search').perform();
+    this.search.perform();
   },
 
   page: 0,
@@ -18,15 +18,15 @@ export default Component.extend(DebouncedSearch, {
   onClickRow: null,
 
   dataTableParamChanged: observer('page', 'size', 'sort', function() {
-    this.get('search').perform();
+    this.search.perform();
   }),
   search: task(function * () {
-    const buildings = yield this.get('customer').query('buildings', {
+    const buildings = yield this.customer.query('buildings', {
       page: {
-        size: this.get('size'),
-        number: this.get('page')
+        size: this.size,
+        number: this.page
       },
-      sort: this.get('sort'),
+      sort: this.sort,
       include: 'country,language,honorific-prefix',
       filter: {
         number: this.getFilterValue('number'),
@@ -43,7 +43,7 @@ export default Component.extend(DebouncedSearch, {
   actions: {
     setFilter(key, value) {
       this.set(key, value);
-      this.get('debounceSearch').perform(this.get('search'));
+      this.debounceSearch.perform(this.search);
     },
     resetFilters() {
       this.set('number', undefined);
@@ -52,7 +52,7 @@ export default Component.extend(DebouncedSearch, {
       this.set('city', undefined);
       this.set('street', undefined);
       this.set('telephone', undefined);
-      this.get('search').perform();
+      this.search.perform();
     },
     edit(building) {
       this.onEdit(building);

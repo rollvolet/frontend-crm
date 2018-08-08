@@ -15,7 +15,7 @@ export default Controller.extend({
       this.set('showDepositsDialog', true);
     },
     goToDepositInvoices() {
-      const order = this.get('model');
+      const order = this.model;
       this.transitionToRoute('main.case.order.edit.deposit-invoices', order);
     }
   }

@@ -12,6 +12,6 @@ module('Integration | Helper | format-invoice-number', function(hooks) {
 
     await render(hbs`{{format-invoice-number inputValue}}`);
 
-    assert.equal(this.element.textContent.trim(), '1234');
+    assert.dom(this.element).hasText('1234');
   });
 });

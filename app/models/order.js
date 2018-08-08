@@ -56,14 +56,14 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   depositInvoices: DS.hasMany('deposit-invoices'),
 
   scheduledTotal: computed('scheduledHours', 'scheduledNbOfPersons', function() {
-    return this.get('scheduledHours') * this.get('scheduledNbOfPersons');
+    return this.scheduledHours * this.scheduledNbOfPersons;
   }),
   invoicableTotal: computed('invoicableHours', 'invoicableNbOfPersons', function() {
-    return this.get('invoicableHours') * this.get('invoicableNbOfPersons');
+    return this.invoicableHours * this.invoicableNbOfPersons;
   }),
   execution: computed('mustBeInstalled', 'mustBeDelivered', function() {
-    if (this.get('mustBeInstalled')) return 'installation';
-    else if (this.get('mustBeDelivered')) return 'delivery';
+    if (this.mustBeInstalled) return 'installation';
+    else if (this.mustBeDelivered) return 'delivery';
     else return 'pickup';
   }),
   orderDateStr: dateString('orderDate'),

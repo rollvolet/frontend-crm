@@ -1,24 +1,26 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('buildings-table', 'Integration | Component | buildings table', {
-  integration: true
-});
+module('Integration | Component | buildings table', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  test('it renders', async function(assert) {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{buildings-table}}`);
+    await render(hbs`{{buildings-table}}`);
 
-  assert.equal(this.$().text().trim(), '');
+    assert.dom('*').hasText('');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#buildings-table}}
-      template block text
-    {{/buildings-table}}
-  `);
+    // Template block usage:
+    await render(hbs`
+      {{#buildings-table}}
+        template block text
+      {{/buildings-table}}
+    `);
 
-  assert.equal(this.$().text().trim(), 'template block text');
+    assert.dom('*').hasText('template block text');
+  });
 });

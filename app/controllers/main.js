@@ -8,7 +8,7 @@ export default Controller.extend({
       window.location.href = 'mailto:support@moof-it.be';
     },
     logout() {
-      this.get('session').invalidate();
+      this.session.invalidate();
     },
     goToProfile() {
       window.alert("User profile not implemented yet");

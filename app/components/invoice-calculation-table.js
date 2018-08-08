@@ -1,6 +1,12 @@
 import Component from '@ember/component';
 import { mapBy } from 'ember-awesome-macros/array';
-import { add, product, quotient, subtract, sum } from 'ember-awesome-macros';
+import {
+  add,
+  product,
+  quotient,
+  subtract,
+  sum
+} from 'ember-awesome-macros';
 import raw from 'ember-macro-helpers/raw';
 
 export default Component.extend({

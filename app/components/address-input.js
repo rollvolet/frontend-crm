@@ -39,7 +39,7 @@ export default Component.extend({
   }),
   errors: computed('value', function() {
     const errors = A();
-    const lines = (this.get('value') || '').split('\n');
+    const lines = (this.value || '').split('\n');
     if (lines.length > 3)
       errors.pushObject("Adres mag maximaal 3 lijnen bevatten");
     return errors;

@@ -1,12 +1,14 @@
-import { moduleForModel, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-moduleForModel('submission-type', 'Unit | Model | submission type', {
-  // Specify the other units that are required for this test.
-  needs: []
-});
+import { run } from '@ember/runloop';
 
-test('it exists', function(assert) {
-  let model = this.subject();
-  // let store = this.store();
-  assert.ok(!!model);
+module('Unit | Model | submission type', function(hooks) {
+  setupTest(hooks);
+
+  test('it exists', function(assert) {
+    let model = run(() => this.owner.lookup('service:store').createRecord('submission-type'));
+    // let store = this.store();
+    assert.ok(!!model);
+  });
 });

@@ -11,22 +11,22 @@ export default Component.extend(DebouncedSearch, {
 
   init() {
     this._super(...arguments);
-    this.get('search').perform();
+    this.search.perform();
   },
 
   page: 0,
   size: 10,
   sort: '-request-date',
   dataTableParamChanged: observer('page', 'size', 'sort', function() {
-    this.get('search').perform();
+    this.search.perform();
   }),
   search: task(function * () {
-    const requests = yield this.get('customer').query('requests', {
+    const requests = yield this.customer.query('requests', {
       page: {
-        size: this.get('size'),
-        number: this.get('page')
+        size: this.size,
+        number: this.page
       },
-      sort: this.get('sort'),
+      sort: this.sort,
       include: 'way-of-entry,building',
       filter: {
         number: this.getFilterValue('number'),
@@ -43,11 +43,11 @@ export default Component.extend(DebouncedSearch, {
   actions: {
     setFilter(key, value) {
       this.set(key, value);
-      this.get('debounceSearch').perform(this.get('search'));
+      this.debounceSearch.perform(this.search);
     },
     resetFilters() {
       ['number', 'name', 'postalCode', 'city', 'street'].forEach(f => this.set(f, undefined));
-      this.get('search').perform();
+      this.search.perform();
     },
     clickRow(row) {
       const requestId = row.get('id');

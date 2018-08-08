@@ -42,7 +42,7 @@ export default DS.Model.extend(Validations, {
   offerlines: DS.hasMany('offerline'),
 
   foreseenTotal: computed('foreseenHours', 'foreseenNbOfPersons', function() {
-    return this.get('foreseenHours') * this.get('foreseenNbOfPersons');
+    return this.foreseenHours * this.foreseenNbOfPersons;
   }),
 
   offerDateStr: dateString('offerDate'),

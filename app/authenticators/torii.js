@@ -43,7 +43,7 @@ export default ToriiAuthenticator.extend({
         const refreshToken = data.refresh_token;
         this.scheduleAccessTokenRefresh(expiresAt, refreshToken);
 
-        if (!this.get('refreshTokenTimeout')) {
+        if (!this.refreshTokenTimeout) {
           // No refresh token task scheduled in the future. Attempt to refresh the token now.
           // If the server rejects the token the user session will be invalidated
           return new resolve(this.refreshAccessToken(refreshToken));
@@ -54,7 +54,7 @@ export default ToriiAuthenticator.extend({
   },
 
   getTokenByAuthorizationCode(data) {
-    return this.get('ajax').request(this.get('tokenEndpoint'), {
+    return this.ajax.request(this.tokenEndpoint, {
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json',
@@ -76,7 +76,7 @@ export default ToriiAuthenticator.extend({
     const accessToken = response.access_token;
     const tokenData = this.decodeToken(accessToken);
     return {
-      provider: this.get('toriiProvider'), // required to make session restore work
+      provider: this.toriiProvider, // required to make session restore work
       'access_token': accessToken,
       'refresh_token': refreshToken,
       expiresAt: expiresAt,
@@ -89,7 +89,7 @@ export default ToriiAuthenticator.extend({
 
   scheduleAccessTokenRefresh(expiresAt, refreshToken) {
     const now = this.getCurrentTime();
-    const wait = (expiresAt - now - this.get('refreshLeeway')) * 1000;
+    const wait = (expiresAt - now - this.refreshLeeway) * 1000;
 
     if (!isEmpty(refreshToken) && !isEmpty(expiresAt) && wait > 0) {
       cancel(this.refreshTokenTimeout);
@@ -102,7 +102,7 @@ export default ToriiAuthenticator.extend({
   refreshAccessToken(refreshToken) {
     debug(`Attempt to refresh access token at ${new Date()}`);
     return new Promise( (resolve, reject) => {
-      this.get('ajax').request(this.get('refreshTokenEndpoint'), {
+      this.ajax.request(this.refreshTokenEndpoint, {
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
