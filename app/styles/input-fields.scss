@@ -1,3 +1,8 @@
+/* Don't display input placeholder in date fields if empty */
+md-input-container:not(.md-input-has-value) input:not(:focus) {
+  color: transparent;
+}
+
 md-input-container {
   &.no-spacer-bottom {
     margin-bottom: 0px;
