@@ -5,7 +5,7 @@ export default Route.extend({
     return this.store.findRecord('customer', params.customer_id, {
       // don't include telephones here. Telephones need to be retrieved in a separate request
       // so we can include the telephone types in them
-      include: 'language,country,honorific-prefix,tags'
+      include: 'honorific-prefix'
     });
   }
 });

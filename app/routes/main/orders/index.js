@@ -23,9 +23,7 @@ export default Route.extend(DataTableRouteMixin, {
   },
   mergeQueryOptions(params) {
     return {
-      // Building and contact must already be included
-      // such that correct values can be set in the case controller when opening the detail
-      include: 'customer,customer.honorific-prefix,building,contact',
+      include: 'customer,customer.honorific-prefix,building',
       filter: {
         'offer-number': params.offerNumber,
         invoice: !params.withoutInvoice,

@@ -17,7 +17,7 @@ export default Route.extend(DataTableRouteMixin, {
   },
   mergeQueryOptions(params) {
     return {
-      include: 'language,country,honorific-prefix',
+      include: 'honorific-prefix',
       filter: {
         number: params.number,
         name: params.name,
