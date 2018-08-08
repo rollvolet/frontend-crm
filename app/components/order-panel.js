@@ -62,17 +62,6 @@ export default Component.extend(EKMixin, {
   }),
 
   actions: {
-    async createNewDeposit() {
-      const customer = await this.model.customer;
-      const deposit = this.store.createRecord('deposit', {
-        customer: customer,
-//        order: this.model,
-        paymentDate: new Date(),
-        amount: 0
-      });
-      this.model.deposits.pushObject(deposit);
-      return deposit;
-    },
     openEdit() {
       this.onOpenEdit();
     },

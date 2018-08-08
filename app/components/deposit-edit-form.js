@@ -3,9 +3,12 @@ import DecimalInputFormatting from '../mixins/decimal-input-formatting';
 
 export default Component.extend(DecimalInputFormatting, {
   model: null,
+  save: null,
 
   didReceiveAttrs() {
     this._super(...arguments);
-    this.initDecimalInput('amount');
+
+    if (this.model)
+      this.initDecimalInput('amount');
   }
 });

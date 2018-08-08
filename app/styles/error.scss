@@ -8,6 +8,19 @@
   }
 }
 
+.info-message {
+  color: color('blue');
+  background-color: color('blue', '50');
+  border: 1px solid color('blue');
+  padding: 10px;
+  margin-top: 0;
+
+  md-icon {
+    color: color('blue');
+    position: relative;
+    top: -2px;
+  }
+}
 
 .warning-message {
   color: color('red');

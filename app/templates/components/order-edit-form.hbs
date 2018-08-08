@@ -45,19 +45,9 @@
           onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
           class="md-input-wrapper"}}
     </div>
-    <div class="layout-column checkbox-with-action">
-      <div class="layout-row layout-align-start-center">
-        {{paper-checkbox label="Voorschot nodig" value=model.depositRequired
-            onChange=(queue (action (mut model.depositRequired)) (perform save))}}
-      </div>
-      <div class="action-section">
-        {{#liquid-if model.depositRequired class="expand-more action-section--action"}}
-          <div {{action "openDepositsDialog"}}>{{paper-icon "add"}} Voorschot toevoegen</div>
-        {{/liquid-if}}
-        <div class="action-section--content">
-          <span class="u-bold">Voorschotten:</span> {{fmt-currency depositsAmount}}
-        </div>
-      </div>
+    <div class="layout-row layout-align-start-center">
+      {{paper-checkbox label="Voorschot nodig" value=model.depositRequired
+          onChange=(queue (action (mut model.depositRequired)) (perform save))}}
     </div>
   </section>
   <section class="case--right-panel flex-noshrink layout-column">
@@ -98,6 +88,3 @@
     </div>
   </section>
 </div>
-
-{{deposits-dialog model=(await model.deposits) show=showDepositsDialog
-    onClose=(action "closeDepositsDialog") onCreateNewDeposit=onCreateNewDeposit}}

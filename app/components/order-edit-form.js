@@ -1,7 +1,4 @@
 import Component from '@ember/component';
-import { mapBy } from 'ember-awesome-macros/array';
-import { sum } from 'ember-awesome-macros';
-import raw from 'ember-macro-helpers/raw';
 import { inject as service } from '@ember/service';
 import DecimalInputFormatting from '../mixins/decimal-input-formatting';
 
@@ -12,8 +9,6 @@ export default Component.extend(DecimalInputFormatting, {
   save: null,
   onContactChange: null,
   onBuildingChange: null,
-  onCreateNewDeposit: null,
-  showDepositsDialog: false,
 
   init() {
     this._super(...arguments);
@@ -24,15 +19,7 @@ export default Component.extend(DecimalInputFormatting, {
     this.initDecimalInput('invoicableNbOfPersons');
   },
 
-  depositsAmount: sum(mapBy('model.deposits', raw('amount'))),
-
   actions: {
-    closeDepositsDialog() {
-      this.set('showDepositsDialog', false);
-    },
-    openDepositsDialog() {
-      this.set('showDepositsDialog', true);
-    },
     setContact(contact) {
       this.set('model.contact', contact);
       this.onContactChange(contact);

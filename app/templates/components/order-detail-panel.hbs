@@ -24,7 +24,7 @@
     {{/detail-list-item}}
     {{#detail-list-item label="Voorschotten"}}
       {{paper-checkbox label="Nodig" value=model.depositRequired onChange=null}}
-      {{#detail-list-subitem label="Bedrag" click=(action "openDepositsDialog") class="clickable"}}
+      {{#detail-list-subitem label="Bedrag" click=(action "goToDepositInvoices") class="clickable"}}
         {{fmt-currency depositsAmount}} {{paper-icon "info" size=18}}
       {{/detail-list-subitem}}
     {{/detail-list-item}}
@@ -65,8 +65,5 @@
     {{/detail-list-item}}
   </div>
 </div>
-
-{{deposits-dialog model=model.deposits show=showDepositsDialog
-    onClose=(action "closeDepositsDialog") onCreateNewDeposit=onCreateNewDeposit}}
 
 {{yield}}

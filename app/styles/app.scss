@@ -96,31 +96,6 @@ md-input-container .md-errors-spacer {
   }
 }
 
-.checkbox-with-action {
-  md-checkbox {
-    margin-bottom: 0;
-  }
-
-  .action-section {
-    position: relative;
-    left: 25px;
-
-    .action-section--action {
-      text-decoration: underline;
-      color: color($primary);
-
-      md-icon {
-        color: color($primary);
-      }
-    }
-
-    .action-section--content {
-      position: relative;
-      left: 27px;
-    }
-  }
-}
-
 .link-action {
   text-decoration: underline;
   color: color($primary);

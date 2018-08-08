@@ -1,17 +1,14 @@
 <div class="layout-row">
   {{paper-input label="Datum" value=model.paymentDateStr type="date"
       required="style" errors=(v-get model 'paymentDate' 'messages')
-      onChange=(action (mut model.paymentDateStr))
+      onChange=(action (mut model.paymentDateStr)) onBlur=(perform save)
       class="default"}}
   {{paper-input label="Bedrag" value=amountInput
-      errors=(v-get model 'amount' 'messages')
-      onChange=(action (mut amountInput)) onBlur=(action "formatDecimal" "amount")
+      required="style" errors=(v-get model 'amount' 'messages')
+      onChange=(action (mut amountInput)) onBlur=(queue (action "formatDecimal" "amount") (perform save))
       class="small"}}
   {{payment-select value=model.payment
-      onSelectionChange=(action (mut model.payment))
+      onSelectionChange=(queue (action (mut model.payment)) (perform save))
       class="md-input-wrapper"}}
-  {{#paper-button primary=true disabled=(not model.validations.isValid) onClick=(perform save model)}}
-    Opslaan
-  {{/paper-button}}
 </div>
 {{yield}}

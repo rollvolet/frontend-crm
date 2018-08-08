@@ -10,5 +10,11 @@ export default Route.extend({
       },
       include: 'building,contact,vat-rate'
     });
+  },
+  setupController(controller) {
+    const customer = this.modelFor('main.case');
+    const order = this.modelFor('main.case.order.edit');
+    controller.set('customer', customer);
+    controller.set('order', order);
   }
 });

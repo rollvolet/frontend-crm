@@ -48,11 +48,10 @@
     </div>
   {{else}}
     {{order-edit-form model=model save=save
-        onContactChange=onContactChange onBuildingChange=onBuildingChange
-        onCreateNewDeposit=(action "createNewDeposit")}}
+        onContactChange=onContactChange onBuildingChange=onBuildingChange}}
   {{/if}}
 {{else}}
-  {{order-detail-panel model=model onCreateNewDeposit=(action "createNewDeposit")}}
+  {{order-detail-panel model=model}}
 {{/if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
