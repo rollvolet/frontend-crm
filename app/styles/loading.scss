@@ -20,3 +20,11 @@
     color: color('grey');
   }
 }
+
+md-progress-circular.md-progress-white path {
+  stroke: white;
+}
+
+md-toolbar .data-preloader {
+  margin-left: 25px;
+}

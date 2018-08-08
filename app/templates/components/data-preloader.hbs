@@ -1,0 +1,6 @@
+{{#if isError}}
+  {{paper-icon "error"}}
+  {{#paper-tooltip}}Fout bij ophalen data{{/paper-tooltip}}
+{{else if isLoading}}
+  {{paper-progress-circular class="md-progress-white" diameter=25}}
+{{/if}}
