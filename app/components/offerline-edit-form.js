@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { task, timeout } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
 import DecimalInputFormatting from '../mixins/decimal-input-formatting';
 import { exec } from 'pell';
 

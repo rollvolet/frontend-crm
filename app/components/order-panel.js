@@ -57,6 +57,7 @@ export default Component.extend(EKMixin, {
       yield this.model.save();
   }).keepLatest(),
 
+  // eslint-disable-next-line ember/no-on-calls-in-components
   openEditByShortcut: on(keyUp('ctrl+alt+KeyU'), function() {
     this.onOpenEdit();
   }),
