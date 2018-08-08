@@ -47,6 +47,12 @@
     {{/detail-list-item}}
     {{#detail-list-item label="Productiebon"}}
       {{paper-checkbox value=model.hasProductionTicket onChange=null}}
+      {{#if model.hasProductionTicket}}
+        <span {{action "downloadProductionTicket"}}>
+          {{paper-icon "find in page"}}
+          {{#paper-tooltip}}Bekijken{{/paper-tooltip}}
+        </span>
+      {{/if}}
     {{/detail-list-item}}
     {{#detail-list-item label="Product klaar"}}
       {{paper-checkbox value=model.isReady onChange=null}}

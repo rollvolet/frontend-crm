@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 
 export default Component.extend({
   router: service(),
+  documentGeneration: service(),
 
   model: null,
 
@@ -16,6 +17,9 @@ export default Component.extend({
     goToDepositInvoices() {
       const order = this.model;
       this.router.transitionTo('main.case.order.edit.deposit-invoices', order);
+    },
+    downloadProductionTicket() {
+      this.documentGeneration.downloadProductionTicket(this.model);
     }
   }
 });

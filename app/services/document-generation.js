@@ -6,28 +6,36 @@ export default Service.extend(FileSaverMixin, {
   session: inject(),
 
   visitReport(request) {
-    const requestId = request.get('id');
-    const { access_token } = this.get('session.data.authenticated');
-    this.ajax.request(`/api/requests/${requestId}/reports`, {
-      method: 'POST',
-      dataType: 'binary',
-      xhr: () => { // hack to prevent ember-ajax tries to parse the response as JSON. See https://github.com/ember-cli/ember-ajax/issues/321
-        const myXhr = $.ajaxSettings.xhr();
-        myXhr.responseType = 'arraybuffer';
-        return myXhr;
-      },
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        Accept: 'application/pdf'
-      }
-    }).then((content) => {
-      return this.saveFileAs(`bezoekrapport-${requestId}.pdf`, content, 'application/pdf');
-    });
+    return this._generate(`/api/requests/${request.id}/reports`,
+                   `${request.id}-bezoekrapport.pdf`,
+                  'application/pdf');
   },
   offerDocument(offer) {
+    return this._generate(`/api/offers/${offer.get('id')}/documents`,
+                   `${offer.number}-offerte.pdf`,
+                  'application/pdf');
+  },
+  uploadProductionTicket(order, file) {
     const { access_token } = this.get('session.data.authenticated');
-    this.ajax.request(`/api/offers/${offer.get('id')}/documents`, {
-      method: 'POST',
+    return file.upload(`/api/orders/${order.id}/production-ticket`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+  },
+  downloadProductionTicket(order) {
+    return this._download(`/api/orders/${order.id}/production-ticket`,
+                          `${order.offerNumber}-productiebon.pdf`,
+                          'application/pdf');
+  },
+
+  _generate(url, fileName, contentType) {
+    return this._download(url, fileName, contentType, 'POST');
+  },
+  _download(url, fileName, contentType, method = 'GET') {
+    const { access_token } = this.get('session.data.authenticated');
+    return this.ajax.request(url, {
+      method: method,
       dataType: 'binary',
       xhr: () => { // hack to prevent ember-ajax tries to parse the response as JSON. See https://github.com/ember-cli/ember-ajax/issues/321
         const myXhr = $.ajaxSettings.xhr();
@@ -35,11 +43,10 @@ export default Service.extend(FileSaverMixin, {
         return myXhr;
       },
       headers: {
-        Authorization: `Bearer ${access_token}`,
-        Accept: 'application/pdf'
+        Authorization: `Bearer ${access_token}`
       }
     }).then((content) => {
-      return this.saveFileAs(`offerte-${offer.number}.pdf`, content, 'application/pdf');
+      return this.saveFileAs(fileName, content, contentType);
     });
   }
 });
