@@ -19,6 +19,7 @@ export default Component.extend(EKMixin, {
   onContactChange: null,
   onBuildingChange: null,
   showUnsavedChangesDialog: false,
+  showOfferDocumentNotFoundDialog: false,
 
   isDisabledEdit: notEmpty('model.order.id'),
   hasUnsavedChanges: async function() {
@@ -112,6 +113,15 @@ export default Component.extend(EKMixin, {
     },
     generateOfferDocument() {
       return this.documentGeneration.offerDocument(this.model);
+    },
+    async downloadOfferDocument() {
+      const document = await this.documentGeneration.downloadOfferDocument(this.model);
+
+      if (!document)
+        this.set('showOfferDocumentNotFoundDialog', true);
+    },
+    confirmAlert() {
+      this.set('showOfferDocumentNotFoundDialog', false);
     }
   }
 });
