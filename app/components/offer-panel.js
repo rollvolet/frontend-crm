@@ -74,6 +74,9 @@ export default Component.extend(EKMixin, {
     if (validations.isValid)
       yield this.model.save();
   }).keepLatest(),
+  generateOfferDocument: task(function * () {
+    yield this.documentGeneration.offerDocument(this.model);
+  }),
 
   // eslint-disable-next-line ember/no-on-calls-in-components
   openEditByShortcut: on(keyUp('ctrl+alt+KeyU'), function() {
@@ -110,9 +113,6 @@ export default Component.extend(EKMixin, {
     deleteOfferline(offerline) {
       this.model.offerlines.removeObject(offerline);
       offerline.destroyRecord();
-    },
-    generateOfferDocument() {
-      return this.documentGeneration.offerDocument(this.model);
     },
     async downloadOfferDocument() {
       const document = await this.documentGeneration.downloadOfferDocument(this.model);

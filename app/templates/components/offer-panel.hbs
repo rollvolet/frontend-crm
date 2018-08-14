@@ -6,7 +6,9 @@
     {{/if}}
   </div>
   <div>
-    {{#if editMode}}
+    {{#if generateOfferDocument.isRunning}}
+      {{paper-progress-circular diameter=18}}
+    {{else if editMode}}
       {{#unless isDisabledEdit}}
         {{#paper-button onClick=(perform remove) iconButton=true}}
           {{paper-icon "delete"}}
@@ -23,7 +25,7 @@
         {{#paper-tooltip}}Offerte bekijken{{/paper-tooltip}}
       {{/paper-button}}
       {{#unless isDisabledEdit}}
-        {{#paper-button onClick=(action "generateOfferDocument") iconButton=true}}
+        {{#paper-button onClick=(perform generateOfferDocument) iconButton=true}}
           {{paper-icon "restore page"}}
           {{#paper-tooltip}}Offerte maken{{/paper-tooltip}}
         {{/paper-button}}
