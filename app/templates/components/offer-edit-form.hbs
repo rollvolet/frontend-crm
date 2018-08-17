@@ -20,9 +20,9 @@
           errors=(v-get model 'foreseenHours' 'messages')
           onChange=(action (mut foreseenHoursInput)) onBlur=(queue (action "formatDecimal" "foreseenHours") (perform save))
           class="small"}}<span class="input-postfix"> uur x</span>
-      {{paper-input label="Personen" value=foreseenNbOfPersonsInput
+      {{paper-input label="Techniekers" value=foreseenNbOfPersonsInput
           errors=(v-get model 'foreseenNbOfPersons' 'messages')
-          onChange=(action (mut model.foreseenNbOfPersonsInput)) onBlur=(queue (action "formatDecimal" "foreseenNbOfPersons") (perform save))
+          onChange=(action (mut foreseenNbOfPersonsInput)) onBlur=(queue (action "formatDecimal" "foreseenNbOfPersons") (perform save))
           class="small"}}<span class="input-postfix"> man = {{model.foreseenTotal}} uur</span>
     </div>
     <div class="layout-row">
