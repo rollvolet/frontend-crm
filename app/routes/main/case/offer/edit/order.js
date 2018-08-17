@@ -15,6 +15,8 @@ export default Route.extend({
       offerNumber: offer.number,
       comment: offer.comment,
       amount: offer.amount,
+      scheduledHours: offer.foreseenHours,
+      scheduledNbOfPersons: offer.foreseenNbOfPersons,
       depositRequired: false,
       hasProductionTicket: false,
       mustBeInstalled: true,

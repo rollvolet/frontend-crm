@@ -11,6 +11,7 @@ export default Route.extend({
     const building = await request.get('building');
     const offer = this.store.createRecord('offer', {
       offerDate: new Date(),
+      foreseenNbOfPersons: 2,
       customer,
       request,
       contact,
