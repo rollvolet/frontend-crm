@@ -26,7 +26,6 @@ export default DS.Model.extend(Validations, {
   sequenceNumber: DS.attr(),
   offerDate: DS.attr('date'),
   amount: DS.attr('number'),
-  submissionDate: DS.attr('date'),
   foreseenHours: DS.attr('number'),
   foreseenNbOfPersons: DS.attr('number'),
   comment: DS.attr(),
@@ -45,6 +44,5 @@ export default DS.Model.extend(Validations, {
     return this.foreseenHours * this.foreseenNbOfPersons;
   }),
 
-  offerDateStr: dateString('offerDate'),
-  submissionDateStr: dateString('submissionDate')
+  offerDateStr: dateString('offerDate')
 });
