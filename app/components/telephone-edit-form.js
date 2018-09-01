@@ -6,7 +6,6 @@ export default Component.extend({
   configuration: service(),
 
   model: null,
-  scope: 'customer', // one of 'customer', 'contact', 'building',
 
   actions: {
     addTelephone() {
@@ -19,7 +18,6 @@ export default Component.extend({
           telephoneType: telephoneType,
           country: country
         });
-        telephone.set(this.scope, this.model);
         telephones.pushObject(telephone);
         telephone.save();
       });
