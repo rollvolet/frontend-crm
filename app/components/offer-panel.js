@@ -73,7 +73,7 @@ export default Component.extend(EKMixin, {
     const { validations } = yield this.model.validate();
     if (validations.isValid)
       yield this.model.save();
-  }).keepLatest(),
+  }),
   generateOfferDocument: task(function * () {
     yield this.documentGeneration.offerDocument(this.model);
   }),
