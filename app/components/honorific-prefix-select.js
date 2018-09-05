@@ -18,7 +18,7 @@ export default Component.extend({
   language: null,
   onSelectionChange: null,
 
-  options: computed('honorificPrefixes', 'honorificPrefixes.[]', 'language', function() {
+  options: computed('honorificPrefixes', 'honorificPrefixes.[]', 'language.content', function() {
     if (this.honorificPrefixes && this.get('language.id')) {
       return this.honorificPrefixes.filter(p => {
         return p.name && p.languageId == this.get('language.id');
