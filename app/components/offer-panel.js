@@ -42,6 +42,7 @@ export default Component.extend(EKMixin, PellOptions, {
     try {
       yield request.save();
       this.case.set('current.offerId', null);
+      yield all(this.model.offerlines.map(t => t.destroyRecord()));
       yield this.model.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying offer ${this.model.id}`, { id: 'destroy-failure' });
