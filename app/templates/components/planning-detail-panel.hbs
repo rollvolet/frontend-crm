@@ -1,0 +1,13 @@
+{{#if model.isMasteredByAccess}}
+  <div class="case--right-panel flex-noshrink layout-column">
+    <div class="case--order--planning">
+      <h3>{{paper-icon "event"}} Planning</h3>
+      <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
+    </div>
+  </div>
+{{else}}
+  <div class="case--right-panel case--order--planning skeleton flex-noshrink layout-column layout-align-center-center">
+    {{paper-progress-circular diameter=25}}
+  </div>
+{{/if}}
+{{yield}}

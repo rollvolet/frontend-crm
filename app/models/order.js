@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import HasManyQuery from 'ember-data-has-many-query';
+import { bool } from '@ember/object/computed';
 import { computed } from '@ember/object';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
@@ -46,6 +47,8 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   comment: DS.attr(),
   canceled: DS.attr('boolean'),
   cancellationReason: DS.attr(),
+  planningId: DS.attr(),
+  planningMsObjectId: DS.attr(),
   offer: DS.belongsTo('offer'),
   invoice: DS.belongsTo('invoice'),
   customer: DS.belongsTo('customer'),
@@ -68,5 +71,7 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   }),
   orderDateStr: dateString('orderDate'),
   expectedDateStr: dateString('expectedDate'),
-  requiredDateStr: dateString('requiredDate')
+  requiredDateStr: dateString('requiredDate'),
+  isMastered: bool('planningMsObjectId'),
+  isMasteredByAccess: bool('planningId')
 });
