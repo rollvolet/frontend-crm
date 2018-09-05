@@ -1,6 +1,6 @@
 .error-page {
   .error--tech-description {
-    color: color('grey');
+    color: paper-color('grey');
 
     md-icon {
       margin-right: 15px;
@@ -9,34 +9,34 @@
 }
 
 .info-message {
-  color: color('blue');
-  background-color: color('blue', '50');
-  border: 1px solid color('blue');
+  color: paper-color('blue');
+  background-color: paper-color('blue', '50');
+  border: 1px solid paper-color('blue');
   padding: 10px;
   margin-top: 0;
 
   md-icon {
-    color: color('blue');
+    color: paper-color('blue');
     position: relative;
     top: -2px;
   }
 }
 
 .warning-message {
-  color: color('red');
-  background-color: color('red', '50');
-  border: 1px solid color('red');
+  color: paper-color('red');
+  background-color: paper-color('red', '50');
+  border: 1px solid paper-color('red');
   padding: 10px;
   margin-top: 0;
 
   md-icon {
-    color: color('red');
+    color: paper-color('red');
     position: relative;
     top: -2px;
   }
 }
 
 .warning-inline {
-  color: color('red');
-  background-color: color('red', '50');
+  color: paper-color('red');
+  background-color: paper-color('red', '50');
 }

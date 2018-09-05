@@ -4,7 +4,7 @@
 
 .breadcrumbs {
   a {
-    color: color('grey');
+    color: paper-color('grey');
   }
 }
 
@@ -18,12 +18,12 @@ h3 .small-text-fade,
 h4 .small-text-fade,
 h5 .small-text-fade,
 h6 .small-text-fade {
-  color: color('grey', '600');
+  color: paper-color('grey', '600');
   font-size: 75%;
 }
 
 .text-fade {
-  color: color('grey', '600');
+  color: paper-color('grey', '600');
 }
 
 .note {
@@ -31,7 +31,7 @@ h6 .small-text-fade {
   font-size: 0.8em;
 
   &.note--info {
-    color: color('grey');
+    color: paper-color('grey');
   }
 }
 

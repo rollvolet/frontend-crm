@@ -6,11 +6,11 @@
   }
 
   .error--message {
-    color: color($warn);
+    color: paper-color($warn);
   }
 
   .error--tech-description {
-    color: color('grey');
+    color: paper-color('grey');
     font-size: 0.8em;
     font-style: italic;
   }

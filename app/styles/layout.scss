@@ -22,10 +22,10 @@
 
   .main-side-nav {
     text-transform: uppercase;
-    background-color: color($primary);
+    background-color: paper-color($primary);
 
     md-content {
-      background-color: color($primary);
+      background-color: paper-color($primary);
     }
 
     a.paper-link, md-list-item .md-button {
@@ -35,13 +35,14 @@
     .md-subheader {
       text-align: right;
       margin-top: 15px;
+      background-color: paper-color($primary);
     }
 
     md-list {
-      background-color: color($primary);
+      background-color: paper-color($primary);
 
       md-list-item {
-        color: color($primary, 'contrastDefaultColor');
+        color: paper-color($primary, 'contrastDefaultColor');
       }
     }
   }

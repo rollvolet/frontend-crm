@@ -16,7 +16,7 @@
   }
 
   md-switch .md-label {
-    color: color('grey');
+    color: paper-color('grey');
   }
 
   .data-table-filters--title {
@@ -27,18 +27,18 @@
     background-color: #FFF;
     text-transform: uppercase;
     font-size: 0.8em;
-    color: color('grey');
+    color: paper-color('grey');
   }
 
   .data-table-filters--group-title {
     text-transform: uppercase;
     font-size: 0.8em;
-    color: color('grey');
+    color: paper-color('grey');
     min-height: 18px;
   }
 
   md-icon.md-default-theme, md-icon {
-    color: color('grey');
+    color: paper-color('grey');
   }
 }
 
