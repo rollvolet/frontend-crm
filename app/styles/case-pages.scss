@@ -53,3 +53,33 @@
     font-weight: bold;
   }
 }
+
+.offer-document {
+  max-width: 800px;
+
+  section {
+    margin: 10px 0;
+  }
+}
+
+.offer-document-form {
+  section {
+    background-color: paper-color($accent, '50');
+    margin: 10px 0;
+    padding: 10px 5px;
+
+    label {
+      text-transform: uppercase;
+      color: grey;
+      margin: 5px;
+    }
+
+    .link-action {
+      margin-right: 5px;
+    }
+
+    .pell-editor {
+      background-color: #FFF;
+    }
+  }
+}

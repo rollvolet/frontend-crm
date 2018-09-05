@@ -30,6 +30,8 @@ export default DS.Model.extend(Validations, {
   foreseenNbOfPersons: DS.attr('number'),
   comment: DS.attr(),
   reference: DS.attr(),
+  documentIntro: DS.attr(),
+  documentOutro: DS.attr(),
 
   request: DS.belongsTo('request'),
   order: DS.belongsTo('order'),

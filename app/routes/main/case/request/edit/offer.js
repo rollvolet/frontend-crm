@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import snippets from '../../../../../config/snippets';
 
 export default Route.extend({
   case: service(),
@@ -9,9 +10,20 @@ export default Route.extend({
     const request = this.modelFor('main.case.request.edit');
     const contact = await request.get('contact');
     const building = await request.get('building');
+
+    let language;
+    if (contact)
+      language = (await contact.get('language')).get('code');
+    else if (customer)
+      language = (await customer.get('language')).get('code');
+    if (!['NED', 'FRA'].includes(language))
+      language = 'NED';
+
     const offer = this.store.createRecord('offer', {
       offerDate: new Date(),
       foreseenNbOfPersons: 2,
+      documentIntro: snippets[language]['offerDocumentIntro'],
+      documentOutro: snippets[language]['offerDocumentOutro'],
       customer,
       request,
       contact,

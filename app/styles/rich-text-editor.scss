@@ -1,9 +1,15 @@
 .pell-editor {
   border: 1px solid paper-color('grey');
   margin: 5px;
-}
+  background-color: #FFF;
 
-.pell-content {
-  height: 150px;
-  width: 500px;
+  &.small .pell-content {
+    height: 150px;
+    width: 500px;
+  }
+
+  &.wide .pell-content {
+    height: 100px;
+    width: 800px;
+  }
 }

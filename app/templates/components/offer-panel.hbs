@@ -42,54 +42,59 @@
   {{warning-message message="Reeds besteld. Geen wijzigingen meer mogelijk."}}
 {{/if}}
 
-{{#if editMode}}
-  {{#if remove.isRunning}}
-    <div>
-      {{paper-progress-linear}}
-      <p>Aan het verwijderen...</p>
-    </div>
-  {{else if rollbackTree.isRunning}}
-    <div>
-      {{paper-progress-linear}}
-      <p>Aan het herstellen...</p>
-    </div>
-  {{else if (and (not model.id) model.isSavivg)}}
-    <div>
-      {{paper-progress-linear}}
-      <p>Aan het aanmaken...</p>
-    </div>
-  {{else}}
+{{#if remove.isRunning}}
+  <div>
+    {{paper-progress-linear}}
+    <p>Aan het verwijderen...</p>
+  </div>
+{{else if rollbackTree.isRunning}}
+  <div>
+    {{paper-progress-linear}}
+    <p>Aan het herstellen...</p>
+  </div>
+{{else if (and (not model.id) model.isSavivg)}}
+  <div>
+    {{paper-progress-linear}}
+    <p>Aan het aanmaken...</p>
+  </div>
+{{else}}
+  {{#if editMode}}
     {{offer-edit-form model=model save=save
         onContactChange=onContactChange onBuildingChange=onBuildingChange}}
+  {{else}}
+    {{offer-detail-panel model=model}}
   {{/if}}
-{{else}}
-  {{offer-detail-panel model=model}}
-{{/if}}
 
-<div class="layout-row layout-align-space-between-center">
-  <div class="layout-row layout-align-start-center">
-    <h2>Inhoud</h2>
-  </div>
-  <div>
-    {{#unless isDisabledEdit}}
-      {{#paper-button primary=true fab=true mini=true raised=true onClick=(action "addOfferline")}}
-        {{paper-icon "add"}}
-        {{#paper-tooltip}}Lijn toevoegen{{/paper-tooltip}}
-      {{/paper-button}}
-    {{/unless}}
-  </div>
-</div>
-
-{{#if editMode}}
-  <div class="layout-column">
-    {{#each model.offerlines as |offerline|}}
-      {{offerline-edit-form model=offerline onDelete=(action "deleteOfferline")}}
-    {{else}}
-      <div class="link-action" {{action "addOfferline"}}>{{paper-icon "add"}} Lijn toevoegen</div>
-    {{/each}}
-  </div>
-{{else}}
-  {{offerlines-detail-panel model=model.offerlines}}
+  <h2>Inhoud</h2>
+  {{#if editMode}}
+    <div class="offer-document-form layout-column">
+      <section>
+        <label>Introductie</label>
+        {{pell-editor class="pell-editor wide" value=model.documentIntro pellOptions=pellOptions
+            onChange=(action (mut model.documentIntro)) focusOut=(perform save)}}
+      </section>
+      <section>
+        <div class="layout-row layout-align-space-between-center">
+          <label>Producten</label>
+          <div class="link-action" {{action "addOfferline"}}>{{paper-icon "add"}} Lijn toevoegen</div>
+        </div>
+        {{#each model.offerlines as |offerline|}}
+          {{offerline-edit-form model=offerline onDelete=(action "deleteOfferline")}}
+        {{/each}}
+      </section>
+      <section>
+        <label>Voorwaarden</label>
+        {{pell-editor class="pell-editor wide" value=model.documentOutro pellOptions=pellOptions
+            onChange=(action (mut model.documentOutro)) focusOut=(perform save)}}
+      </section>
+    </div>
+  {{else}}
+    <div class="offer-document layout-column">
+      <section>{{{model.documentIntro}}}</section>
+      <section>{{offerlines-detail-panel model=model.offerlines}}</section>
+      <section>{{{model.documentOutro}}}</section>
+    </div>
+  {{/if}}
 {{/if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}

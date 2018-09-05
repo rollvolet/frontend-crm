@@ -5,8 +5,9 @@ import { warn } from '@ember/debug';
 import { notEmpty } from '@ember/object/computed';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
+import PellOptions from '../mixins/pell-options';
 
-export default Component.extend(EKMixin, {
+export default Component.extend(EKMixin, PellOptions, {
   case: service(),
   documentGeneration: service(),
   router: service(),
