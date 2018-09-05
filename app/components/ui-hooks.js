@@ -3,18 +3,18 @@ import Component from '@ember/component';
 export default Component.extend({
   tagName: '',
 
-  didInsert() {},
-  willDestroy() {},
+  didInsertHook() {},
+  willDestroyHook() {},
 
   didInsertElement() {
     this._super(...arguments);
 
-    this.get('didInsert')();
+    this.get('didInsertHook')();
   },
 
   willDestroyElement() {
     this._super(...arguments);
 
-    this.get('willDestroy')();
+    this.get('willDestroyHook')();
   }
 });
