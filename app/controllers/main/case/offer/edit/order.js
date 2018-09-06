@@ -18,13 +18,15 @@ export default Controller.extend({
     const building = yield this.model.get('building');
     const vatRate = yield this.model.get('vat-rate');
 
+    const orderedAmount = offerlines.filterBy('isOrdered').mapBy('amount').reduce((a, b) => a + b);
+
     const order = this.store.createRecord('order', {
       orderDate: new Date(),
       offerNumber: this.model.number,
       comment: this.model.comment,
-      amount: this.model.amount,
       scheduledHours: this.model.foreseenHours,
       scheduledNbOfPersons: this.model.foreseenNbOfPersons,
+      amount: orderedAmount,
       depositRequired: false,
       hasProductionTicket: false,
       mustBeInstalled: true,
