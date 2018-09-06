@@ -5,6 +5,8 @@ import { warn } from '@ember/debug';
 import { notEmpty } from '@ember/object/computed';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
+import raw from 'ember-awesome-macros/raw';
+import { filterBy } from 'ember-awesome-macros/array';
 
 export default Component.extend(EKMixin, {
   case: service(),
@@ -20,6 +22,7 @@ export default Component.extend(EKMixin, {
   showUnsavedChangesDialog: false,
 
   isDisabledEdit: notEmpty('model.invoice.id'),
+  orderedOfferlines: filterBy('model.offer.offerlines.@each.isOrdered', raw('isOrdered')),
 
   init() {
     this._super(...arguments);

@@ -1,4 +1,4 @@
-<table>
+<table class="offerlines-data-table">
   <thead>
     <th></th>
     <th>Beschrijving</th>
@@ -7,7 +7,7 @@
   </thead>
   <tbody>
     {{#each model as |offerline|}}
-      <tr>
+      <tr class="{{if offerline.isOrdered "is-ordered"}}">
         <td>{{offerline.sequenceNumber}}</td>
         <td>{{{offerline.description}}}</td>
         <td>{{fmt-currency offerline.amount}}</td>
