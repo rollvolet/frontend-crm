@@ -53,7 +53,7 @@
             onChange=(queue (action (mut model.printPrefix)) (perform save))}}
       </div>
       {{paper-input label="Naam" value=model.name
-          onChange=(action (mut model.name)) onBlur=(perform save)
+          onChange=(action "setName") onBlur=(perform save)
           class="large"}}
       <div class="layout-column">
         {{paper-input label="Suffix" value=model.suffix

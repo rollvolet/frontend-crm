@@ -112,6 +112,12 @@ export default Component.extend({
       this.model.set('isCompany', isCompany);
       this.save.perform();
     },
+    setName(name) {
+      if (this.scope == 'customer' && name)
+        this.model.set('name', name.toUpperCase());
+      else
+        this.model.set('name', name);
+    },
     setVatNumber(formattedVatNumber) {
       let vatNumber = formattedVatNumber;
 
