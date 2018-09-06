@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { task, timeout } from 'ember-concurrency';
 import { notEmpty, reads } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
+import { next } from '@ember/runloop';
 
 export default Component.extend({
   ajax: service(),
@@ -44,6 +45,7 @@ export default Component.extend({
   actions: {
     openEdit() {
       this.set('editMode', true);
+      next(this, function() { this.element.querySelector('input').focus(); });
     }
   }
 });
