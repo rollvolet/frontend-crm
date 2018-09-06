@@ -25,7 +25,6 @@ export default DS.Model.extend(Validations, {
   number: DS.attr(),
   sequenceNumber: DS.attr(),
   offerDate: DS.attr('date'),
-  amount: DS.attr('number'),
   foreseenHours: DS.attr('number'),
   foreseenNbOfPersons: DS.attr('number'),
   comment: DS.attr(),

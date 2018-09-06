@@ -7,7 +7,7 @@
       {{model.sequenceNumber}}
     {{/detail-list-item}}
     {{#detail-list-item label="Bedrag"}}
-      {{fmt-currency model.amount}} ({{model.vatRate.name}} BTW)
+      {{fmt-currency totalAmount}} ({{model.vatRate.name}} BTW)
     {{/detail-list-item}}
     {{#detail-list-item label="Werkuren"}}
       {{fmt-decimal model.foreseenHours}} uur x
