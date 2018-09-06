@@ -1,8 +1,12 @@
 import Component from '@ember/component';
 import { task, timeout } from 'ember-concurrency';
 import { notEmpty, reads } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
+  ajax: service(),
+  session: service(),
+
   calendarSubject: null,
   editMode: false,
   model: null,
@@ -17,8 +21,11 @@ export default Component.extend({
 
   loadCalendarEvent: task(function * () {
     if (this.model.planningMsObjectId) {
-      // TODO Load calendar subject from background
-      this.set('calendarSubject', 'Some calendar subject must be shown here');
+      const { access_token } = this.get('session.data.authenticated');
+      const headers = { 'Authorization': `Bearer ${access_token}` };
+      const url = `/api/calendars/planning/${this.model.planningMsObjectId}/subject`;
+      const { subject } = yield this.ajax.request(url, { headers });
+      this.set('calendarSubject', subject);
     } else {
       this.set('calendarSubject', null);
     }
