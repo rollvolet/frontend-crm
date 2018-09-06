@@ -45,6 +45,10 @@ export default Component.extend(EKMixin, {
 
       // delete order
       yield this.model.destroyRecord();
+      // TODO: Fix this hack when Ember Data allows creation of already deleted ID
+      // See https://github.com/emberjs/data/issues/5006
+      this.store._removeFromIdMap(this.model._internalModel);
+
       this.router.transitionTo('main.case.offer.edit', offer);
     } catch (e) {
       warn(`Something went wrong while destroying order ${this.model.id}`, { id: 'destroy-failure' });
