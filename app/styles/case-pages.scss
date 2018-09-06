@@ -84,3 +84,29 @@
     }
   }
 }
+
+.case--order--offerlines-selection {
+  .case--order--offerlines-selection--offerline {
+    transition: background-color 0.5s ease;
+    background-color: paper-color($accent, '50');
+    margin: 10px 0;
+    padding: 10px 5px;
+
+    &.case--order--offerlines-selection--offerline--ordered {
+      background-color: paper-color('light-green', '200');
+    }
+
+    .col {
+      margin: 10px;
+
+      &.col--description {
+        width: 600px;
+      }
+
+      &.col--amount,
+      &.col--rate {
+        min-width: 75px;
+      }
+    }
+  }
+}

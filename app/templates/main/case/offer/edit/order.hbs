@@ -1,1 +1,41 @@
-{{outlet}} <!-- redirect to order edit page in afterModel hook -->
+<div class="layout-row layout-align-space-between-center">
+  <div class="layout-row layout-align-start-center">
+    <h2>Bestelling {{model.number}} maken</h2>
+  </div>
+  <div>
+    <!-- Buttons on right side of title -->
+  </div>
+</div>
+
+{{#if createOrder.isRunning}}
+  <div>
+    {{paper-progress-linear}}
+    <p>Bestelling aan het aanmaken...</p>
+  </div>
+{{else}}
+  <div class="case--order--offerlines-selection">
+    {{#each model.offerlines as |offerline|}}
+      <div class="case--order--offerlines-selection--offerline layout-row layout-align-start-center
+           {{if offerline.isOrdered "case--order--offerlines-selection--offerline--ordered"}}"
+           {{action (toggle "isOrdered" offerline)}}>
+        <div class="col col--is-ordered">
+          {{#liquid-if offerline.isOrdered class="move-up"}}
+            {{paper-icon "check" size=28}}
+          {{else}}
+            {{paper-icon "close" size=28}}
+          {{/liquid-if}}
+        </div>
+        <div class="col col--description">{{{offerline.description}}}</div>
+        <div class="col col--amount">{{fmt-currency offerline.amount}}</div>
+        <div class="col col--rate">{{offerline.vatRate.rate}}%</div>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
+
+<div class="layout-row layout-align-end-center">
+  {{#paper-button onClick=(action "cancel")}}Annuleer{{/paper-button}}
+  {{#paper-button primary=true raised=true onClick=(perform createOrder) disabled=(not hasSelectedLines)}}
+    Ga verder
+  {{/paper-button}}
+</div>

@@ -12,4 +12,11 @@ export default function(){
     this.use('toDown'),
     this.reverse('toUp')
   );
+
+  this.transition(
+    this.hasClass('move-up'),
+    this.toValue(true),
+    this.use('toUp'),
+    this.reverse('toUp')
+  );
 }
