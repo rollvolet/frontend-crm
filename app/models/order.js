@@ -47,6 +47,7 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   comment: DS.attr(),
   canceled: DS.attr('boolean'),
   cancellationReason: DS.attr(),
+  planningDate: DS.attr('date'),
   planningId: DS.attr(),
   planningMsObjectId: DS.attr(),
   offer: DS.belongsTo('offer'),
@@ -72,6 +73,7 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   orderDateStr: dateString('orderDate'),
   expectedDateStr: dateString('expectedDate'),
   requiredDateStr: dateString('requiredDate'),
-  isMastered: bool('planningMsObjectId'),
+  planningDateStr: dateString('planningDate'),
+  isPlanned: bool('planningMsObjectId'),
   isMasteredByAccess: bool('planningId')
 });

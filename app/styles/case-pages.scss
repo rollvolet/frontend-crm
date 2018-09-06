@@ -17,7 +17,7 @@
 .case--request--visit {
   background-color: paper-color($accent, '50');
   padding: 0 25px 15px 25px;
-  margin: 0 25px;
+  margin: 0 25px 25px 0;
 
   .note--info {
     margin-top: 15px;
@@ -26,6 +26,17 @@
   &.skeleton {
     width: 500px;
     height: 150px;
+  }
+}
+
+.case--order--planning {
+  .case--order--planning--description {
+    padding-left: 32px;
+
+    .col--subject {
+      font-style: italic;
+      margin-top: 5px;
+    }
   }
 }
 

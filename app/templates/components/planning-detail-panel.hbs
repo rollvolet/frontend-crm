@@ -2,12 +2,43 @@
   <div class="case--right-panel flex-noshrink layout-column">
     <div class="case--order--planning">
       <h3>{{paper-icon "event"}} Planning</h3>
+      <div class="case--order--planning--description">
+        {{#if model.planningDate}}{{fmt-date model.planningDate}}{{else}}Niet ingepland{{/if}}
+      </div>
       <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
     </div>
   </div>
 {{else}}
-  <div class="case--right-panel case--order--planning skeleton flex-noshrink layout-column layout-align-center-center">
-    {{paper-progress-circular diameter=25}}
+  <div class="case--right-panel flex-noshrink layout-column">
+    <div class="case--order--planning">
+      <h3>{{paper-icon "event"}} Planning</h3>
+      <div class="case--order--planning--description">
+        {{#if editMode}}
+          {{#if planEvent.isRunning}}
+            {{paper-progress-circular diameter=25}}
+          {{else}}
+            {{paper-input label="Datum" value=inputDateStr type="date"
+                onChange=(action (mut inputDateStr)) onBlur=(perform planEvent) class="default"}}
+          {{/if}}
+        {{else}}
+          <div>
+            {{#if model.planningDate}}{{fmt-date model.planningDate}}{{else}}Niet ingepland{{/if}}
+            {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
+              {{paper-icon "edit mode"}}
+              {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
+            {{/paper-button}}
+          </div>
+        {{/if}}
+        <div class="col--subject">
+          {{#if loadCalendarEvent.isRunning}}
+            {{paper-progress-circular diameter=25}}
+          {{else}}
+            {{calendarSubject}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
   </div>
 {{/if}}
+
 {{yield}}

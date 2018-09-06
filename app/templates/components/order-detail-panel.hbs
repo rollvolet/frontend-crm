@@ -38,6 +38,7 @@
     {{/detail-list-item}}
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
+    {{planning-detail-panel model=model}}
     {{#detail-list-item label="Uitvoering"}}
       {{#paper-radio-group groupValue=(readonly model.execution) onChange=null as |group|}}
         {{#group.radio value='installation'}}{{order-execution 'installation'}}{{/group.radio}}
@@ -69,7 +70,6 @@
         {{/detail-list-subitem}}
       {{/if}}
     {{/detail-list-item}}
-    {{planning-detail-panel model=model}}
   </div>
 </div>
 
