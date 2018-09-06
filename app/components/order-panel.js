@@ -31,16 +31,28 @@ export default Component.extend(EKMixin, {
 
   remove: task(function * () {
     const offer = yield this.model.offer;
-    offer.set('order', null);
     try {
+      // unorder offerlines
+      this.orderedOfferlines.forEach(o => o.set('isOrdered', false));
+      yield all(offer.offerlines.map(o => o.save()));
+
+      // unlink offer
+      offer.set('order', null);
       yield offer.save();
+
+      // update case-tabs
       this.case.set('current.orderId', null);
+
+      // delete order
       yield this.model.destroyRecord();
+      this.router.transitionTo('main.case.offer.edit', offer);
     } catch (e) {
       warn(`Something went wrong while destroying order ${this.model.id}`, { id: 'destroy-failure' });
-      // TODO rollback to detail view?
-    } finally {
-      this.router.transitionTo('main.case.offer.edit', offer);
+
+      offer.set('order', this.model);
+      yield offer.save();
+      this.case.set('current.orderId', this.model.id);
+      yield this.model.rollbackAttributes(); // undo delete-state
     }
   }),
   rollbackTree: task(function * () {

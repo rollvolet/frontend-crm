@@ -52,12 +52,11 @@
   {{/if}}
 {{else}}
   {{order-detail-panel model=model}}
-
-  <h2>Inhoud</h2>
-  <div class="offer-document layout-column">
-    <section>{{offerlines-detail-panel model=orderedOfferlines}}</section>
-  </div>
-
 {{/if}}
+
+<h2>Inhoud</h2>
+<div class="offer-document layout-column">
+  <section>{{offerlines-detail-panel model=orderedOfferlines}}</section>
+</div>
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}

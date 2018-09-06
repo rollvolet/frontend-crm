@@ -50,6 +50,8 @@ export default Controller.extend({
 
   actions: {
     async cancel() {
+      const offerlines = await this.model.get('offerlines');
+      offerlines.forEach(o => o.set('isOrdered', false));
       const customer = await this.model.get('customer');
       this.transitionToRoute('main.case.offer.edit', customer, this.model);
     }
