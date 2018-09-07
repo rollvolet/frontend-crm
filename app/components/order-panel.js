@@ -36,6 +36,10 @@ export default Component.extend(EKMixin, {
       this.orderedOfferlines.forEach(o => o.set('isOrdered', false));
       yield all(offer.offerlines.map(o => o.save()));
 
+      // destroy deposits
+      const deposits = yield this.model.deposits;
+      yield all(deposits.map(d => d.destroyRecord()));
+
       // unlink offer
       offer.set('order', null);
       yield offer.save();
