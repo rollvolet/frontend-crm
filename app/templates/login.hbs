@@ -1,6 +1,6 @@
 <div class="layout-row login-screen">
   <div class="layout-column layout-align-center-center flex">
-    <img src="/assets/images/logo.jpg" alt="Rollvolet" class="logo" />
+    <img src="/assets/images/logo.jpg" alt="Rollvolet" class="logo">
     <h1 class="header">Klantenbeheer</h1>
     {{#if session.isAuthenticated}}
       <p>U bent reeds ingelogd. <a href="#" {{action "logout"}}>Log uit</a> of ga naar de {{link-to 'applicatie' 'main.index'}}.</p>
