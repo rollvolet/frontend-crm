@@ -9,12 +9,12 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
-    this.get('didInsertHook')();
+    this.didInsertHook();
   },
 
   willDestroyElement() {
     this._super(...arguments);
 
-    this.get('willDestroyHook')();
+    this.willDestroyHook();
   }
 });
