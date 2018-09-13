@@ -7,7 +7,7 @@
           class="default"}}
     </div>
     <div class="layout-row">
-      {{employee-select label="Bediende" value=employee function='A'
+      {{employee-select label="Bediende" value=employee
           onSelectionChange=(queue (action "setEmployee") (perform save))
           class="md-input-wrapper"}}
       {{way-of-entry-select value=model.wayOfEntry
