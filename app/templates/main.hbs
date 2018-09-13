@@ -82,7 +82,9 @@
 
   <div class="layout-row flex">
     <div class="main-outlet">
-      {{liquid-outlet}}
+      {{#unless configuration.preloadStaticLists.isRunning}}
+        {{liquid-outlet}}
+      {{/unless}}
     </div>
   </div>
 

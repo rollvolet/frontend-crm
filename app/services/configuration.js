@@ -1,10 +1,11 @@
 import Service, { inject as service } from '@ember/service';
-import { all } from 'rsvp';
 import { warn } from '@ember/debug';
+import { task, all } from 'ember-concurrency';
 
 export default Service.extend({
   store: service(),
-  preloadStaticLists() {
+
+  preloadStaticLists: task(function * (key, value) {
     const entities = [
       'country',
       'honorific-prefix',
@@ -17,8 +18,8 @@ export default Service.extend({
       'employee',
       'payment'
     ];
-    return all(entities.map(e => this.store.findAll(e)));
-  },
+    yield all(entities.map(e => this.store.findAll(e)));
+  }).drop(),
   defaultLanguage() {
     const value = this.store.peekAll('language').find(l => l.code == 'NED');
     warn("No default language with code 'NED' found", value != null, { id: 'no-default-value' });

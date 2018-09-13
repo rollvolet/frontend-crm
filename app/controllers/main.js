@@ -1,8 +1,9 @@
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 
 export default Controller.extend({
-  session: inject(),
+  configuration: service(),
+  session: service(),
   actions: {
     openMail() {
       window.location.href = 'mailto:support@moof-it.be';

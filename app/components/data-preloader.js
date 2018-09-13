@@ -8,16 +8,8 @@ export default Component.extend({
 
   classNames: ['data-preloader'],
 
-  async didInsertElement() {
+  didInsertElement() {
     debug('Preloading static lists');
-    this.set('isError', false);
-    this.set('isLoading', true);
-    try {
-      await this.configuration.preloadStaticLists();
-      this.set('isLoading', false);
-    } catch (e) {
-      warn(`Failed to preload data: ${e.message || e}`);
-      this.set('isError', true);
-    }
+    this.configuration.preloadStaticLists.perform();
   }
 });
