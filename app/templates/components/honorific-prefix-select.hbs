@@ -1,5 +1,6 @@
 {{#paper-autocomplete label=label options=options selected=value.content
      searchField="name" labelPath="name" onSelectionChange=onSelectionChange
      noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
+  {{log select.searchText}}
   {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
 {{/paper-autocomplete}}
