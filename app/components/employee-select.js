@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { sort } from 'ember-awesome-macros/array';
+import { proxyAware } from '../utils/proxy-aware';
 
 const groupByFunction = function(arr) {
   return arr.reduce(function(grouped, e) {
@@ -13,6 +14,8 @@ const groupByFunction = function(arr) {
 
 export default Component.extend({
   store: service(),
+
+  selected: proxyAware('value'),
   employees: computed('onlyActive', 'onlyWithFunction', 'type', 'function', function() {
     let employees = this.store.peekAll('employee');
 

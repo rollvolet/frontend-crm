@@ -1,4 +1,4 @@
-{{#paper-autocomplete label=label options=options selected=value.content
+{{#paper-autocomplete label=label options=options selected=selected
      searchField="firstName" labelPath="firstName" onSelectionChange=onSelectionChange
      noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
   {{paper-autocomplete-highlight label=option.firstName searchText=select.searchText flags="i"}}

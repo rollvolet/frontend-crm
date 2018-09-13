@@ -3,9 +3,12 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import { composeId } from '../models/honorific-prefix';
+import { proxyAware } from '../utils/proxy-aware';
 
 export default Component.extend({
   store: service(),
+
+  selected: proxyAware('value'),
 
   async init() {
     this._super(...arguments);
@@ -18,7 +21,7 @@ export default Component.extend({
   language: null,
   onSelectionChange: null,
 
-  options: computed('honorificPrefixes', 'honorificPrefixes.[]', 'language.content', function() {
+  options: computed('honorificPrefixes', 'honorificPrefixes.[]', 'language', 'language.content', function() {
     if (this.honorificPrefixes && this.get('language.id')) {
       return this.honorificPrefixes.filter(p => {
         return p.name && p.languageId == this.get('language.id');
