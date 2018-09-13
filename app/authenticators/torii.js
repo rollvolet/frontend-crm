@@ -15,8 +15,8 @@ export default ToriiAuthenticator.extend({
   torii: inject(),
   ajax: inject(),
 
-  tokenEndpoint: 'api/authentication/token',
-  refreshTokenEndpoint: 'api/authentication/refresh-token',
+  tokenEndpoint: '/api/authentication/token',
+  refreshTokenEndpoint: '/api/authentication/refresh-token',
   refreshLeeway: 60, // in seconds
   refreshTokenTimeout: null,
 
