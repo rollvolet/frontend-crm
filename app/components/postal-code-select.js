@@ -13,7 +13,7 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
     if (this.postalCode && this.city) {
-      const value = this.options.find(o => o.code == this.postalCode && o.name == this.city);
+      const value = this.options.find(o => o.code == this.postalCode && o.name == this.city.toUpperCase());
       this.set('value', value);
     }
   },
