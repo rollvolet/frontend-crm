@@ -1,5 +1,9 @@
 {{#paper-autocomplete label=label options=options selected=value
-     searchField="search" labelPath="search" onSelectionChange=(action "selectValue")
+     searchField="search" labelPath=(if titleize "searchTitleized" "search") onSelectionChange=(action "selectValue")
      noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
-  {{paper-autocomplete-highlight label=option.search searchText=select.searchText flags="i"}}
+  {{#if titleize}}
+    {{paper-autocomplete-highlight label=(titleize-extended (lowercase option.search)) searchText=select.searchText flags="i"}}
+  {{else}}
+    {{paper-autocomplete-highlight label=option.search searchText=select.searchText flags="i"}}
+  {{/if}}
 {{/paper-autocomplete}}

@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import { computed } from '@ember/object';
+import titleizeExtended from '../utils/titleize-extended';
 
 const additionalLabelMap = {
   '1020': { 'nl': 'Laken', 'fr': 'Laeken' },
@@ -39,5 +40,8 @@ export default DS.Model.extend({
     }
 
     return search;
+  }),
+  searchTitleized: computed('search', function() {
+    return titleizeExtended(this.search);
   })
 });

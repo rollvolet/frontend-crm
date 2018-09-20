@@ -23,6 +23,7 @@ export default Component.extend({
   postalCode: null,
   city: null,
   onSelectionChange: null,
+  titleize: false,
 
   actions: {
     selectValue(value) {

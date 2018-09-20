@@ -70,7 +70,7 @@
     {{address-input address1=model.address1 address2=model.address2 address3=model.address3
         onBlur=(perform save)}}
     <div class="layout-row">
-      {{postal-code-select postalCode=model.postalCode city=model.city
+      {{postal-code-select postalCode=model.postalCode city=model.city titleize=(not isScopeCustomer)
           onSelectionChange=(queue (action "setPostalCode") (perform save))
           class="md-input-wrapper xxlarge"}}
       {{country-select value=model.country
