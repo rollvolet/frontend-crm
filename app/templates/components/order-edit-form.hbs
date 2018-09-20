@@ -14,15 +14,15 @@
           onChange=(queue (action (mut model.requiredDateStr)) (perform save))
           class="default"}}
     </div>
-    <div class="u-bold">Werkuren</div>
+    <div class="u-bold">Geplande uren</div>
     <div class="layout-row layout-align-start-end">
-      {{paper-input label="Gepland" value=scheduledHoursInput
+      {{paper-input label="Werkuren" value=scheduledHoursInput
           errors=(v-get model 'scheduledHours' 'messages')
           onChange=(action (mut scheduledHoursInput)) onBlur=(queue (action "formatDecimal" "scheduledHours") (perform save))
           class="small"}}<span class="input-postfix"> uur x</span>
       {{paper-input label="Personen" value=scheduledNbOfPersonsInput
           errors=(v-get model 'scheduledNbOfPersons' 'messages')
-          onChange=(action (mut model.scheduledNbOfPersonsInput)) onBlur=(queue (action "formatDecimal" "scheduledNbOfPersons") (perform save))
+          onChange=(action (mut scheduledNbOfPersonsInput)) onBlur=(queue (action "formatDecimal" "scheduledNbOfPersons") (perform save))
           class="small"}}<span class="input-postfix"> man = {{model.scheduledTotal}} uur</span>
     </div>
     <div class="u-bold">Bedrag</div>

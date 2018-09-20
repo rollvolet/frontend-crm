@@ -12,9 +12,9 @@
       {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Werkuren"}}
-      {{#detail-list-subitem label="Gepland"}}
-        {{model.scheduledHours}} uur x {{model.scheduledNbOfPersons}} man = {{model.scheduledTotal}} uur
-      {{/detail-list-subitem}}
+      {{fmt-decimal model.scheduledHours}} uur x
+      <span class="{{if isNbOfPersonsWarning "warning-inline"}}">{{model.scheduledNbOfPersons}} man</span>
+      = {{model.scheduledTotal}} uur
     {{/detail-list-item}}
     {{#detail-list-item label="Bedrag"}}
       {{fmt-currency model.amount}} ({{model.vatRate.rate}}% BTW)
