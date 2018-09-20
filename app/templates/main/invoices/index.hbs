@@ -12,6 +12,7 @@
             <div class="data-table-filters--group-title"></div>
             <div class="layout-row data-table-filters--group-fields">
               {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number") class="small"}}
+              {{paper-input label="Referentie" value=referenceFilter onChange=(action "setFilter" "reference") class="small"}}
             </div>
           </div>
           <div class="layout-column data-table-filter--group">
@@ -29,8 +30,8 @@
           <div class="layout-column data-table-filter--group">
             <div class="data-table-filters--group-title"></div>
             <div class="layout-row data-table-filters--group-fields">
+              {{paper-input label="Aanvraag" value=requestNumberFilter onChange=(action "setFilter" "requestNumber") class="small"}}
               {{paper-input label="Offerte" value=offerNumberFilter onChange=(action "setFilter" "offerNumber") class="small"}}
-              {{paper-input label="Referentie" value=referenceFilter onChange=(action "setFilter" "reference")}}
             </div>
           </div>
           <div class="layout-column data-table-filter--group">
@@ -59,7 +60,7 @@
     {{#t.content as |c|}}
       {{#c.header}}
         {{th-sortable field='number' currentSorting=sort label='Nr'}}
-        {{th-sortable field='offer.number' currentSorting=sort label='Offerte'}}
+        <th>Aanvraag</th>
         {{th-sortable field='invoice-date' currentSorting=sort label='Datum'}}
         <th><!-- customer / building --></th>
         <th>Naam</th>
@@ -69,7 +70,7 @@
       {{/c.header}}
       {{#c.body as |row|}}
         <td>{{format-invoice-number row.number}}</td>
-        <td>{{row.order.offerNumber}}</td>
+        <td>{{row.order.requestNumber}}</td>
         <td>{{fmt-date row.invoiceDate}}</td>
         {{#if row.building}}
           <td>{{paper-icon "home"}}</td>
