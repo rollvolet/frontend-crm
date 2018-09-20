@@ -22,6 +22,7 @@ export default Controller.extend({
 
     const order = this.store.createRecord('order', {
       orderDate: new Date(),
+      requestNumber: this.model.requestNumber,
       offerNumber: this.model.number,
       comment: this.model.comment,
       scheduledHours: 0,

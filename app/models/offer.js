@@ -15,6 +15,7 @@ const Validations = buildValidations({
 export default DS.Model.extend(Validations, {
   number: DS.attr(),
   sequenceNumber: DS.attr(),
+  requestNumber: DS.attr(),
   offerDate: DS.attr('date'),
   comment: DS.attr(),
   reference: DS.attr(),

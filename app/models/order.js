@@ -24,6 +24,7 @@ const Validations = buildValidations({
 export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   orderDate: DS.attr('date'),
   offerNumber: DS.attr(),
+  requestNumber: DS.attr(),
   amount: DS.attr('number'),
   depositRequired: DS.attr('boolean'),
   hasProductionTicket: DS.attr('boolean'),

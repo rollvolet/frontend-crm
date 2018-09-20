@@ -7,6 +7,7 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
   size: 25,
   sort: '-order-date',
 
+  requestNumberFilter: oneWay('requestNumber'),
   offerNumberFilter: oneWay('offerNumber'),
   referenceFilter: oneWay('reference'),
   cNameFilter: oneWay('cName'),
@@ -33,6 +34,7 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
     resetFilters() {
       this.set('withoutInvoice', false);
       [
+        'requestNumberFilter', 'requestNumber',
         'offerNumberFilter', 'offerNumber',
         'referenceFilter', 'reference',
         'cNameFilter', 'cName',
