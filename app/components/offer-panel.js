@@ -77,7 +77,16 @@ export default Component.extend(EKMixin, PellOptions, {
       yield this.model.save();
   }),
   generateOfferDocument: task(function * () {
-    yield this.documentGeneration.offerDocument(this.model);
+    const oldOfferDate = this.model.offerDate;
+    try {
+      this.model.set('offerDate', new Date());
+      yield this.save.perform();
+      yield this.documentGeneration.offerDocument(this.model);
+    } catch(e) {
+      warn(`Something went wrong while generating the offer document`, { id: 'document-generation-failure' });
+      this.model.set('offerDate', oldOfferDate);
+      yield this.save.perform();
+    }
   }),
 
   // eslint-disable-next-line ember/no-on-calls-in-components
