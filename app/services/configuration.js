@@ -5,7 +5,7 @@ import { task, all } from 'ember-concurrency';
 export default Service.extend({
   store: service(),
 
-  preloadStaticLists: task(function * (key, value) {
+  preloadStaticLists: task(function * () {
     const entities = [
       'country',
       'honorific-prefix',

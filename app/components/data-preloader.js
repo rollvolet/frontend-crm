@@ -1,4 +1,3 @@
-import { warn } from '@ember/debug';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { debug } from '@ember/debug';

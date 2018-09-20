@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import { sort } from 'ember-awesome-macros/array';
 import { proxyAware } from '../utils/proxy-aware';
 
-const groupByFunction = function(arr) {
+const groupByFunction = function(arr) { // eslint-disable-line no-unused-vars
   return arr.reduce(function(grouped, e) {
     const group = e.function ? e.function[0] : '';
     (grouped[group] = grouped[group] || []).push(e);

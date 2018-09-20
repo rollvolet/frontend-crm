@@ -1,4 +1,4 @@
-import { get, set, computed } from '@ember/object';
+import { get, computed } from '@ember/object';
 import ObjectProxy from '@ember/object/proxy';
 
 export function proxyAware(dependentKey) {
