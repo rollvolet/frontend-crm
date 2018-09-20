@@ -27,7 +27,7 @@ export default Controller.extend({
       scheduledHours: 0,
       scheduledNbOfPersons: 2,
       amount: orderedAmount,
-      depositRequired: false,
+      depositRequired: true,
       hasProductionTicket: false,
       mustBeInstalled: true,
       mustBeDelivered: false,
