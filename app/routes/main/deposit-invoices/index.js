@@ -9,6 +9,7 @@ export default Route.extend(DataTableRouteMixin, {
     sort: { refreshModel: true },
     // filter params
     number: { refreshModel: true },
+    requestNumber: { refreshModel: true },
     offerNumber: { refreshModel: true },
     reference: { refreshModel: true },
     cName: { refreshModel: true },
@@ -30,7 +31,8 @@ export default Route.extend(DataTableRouteMixin, {
         number: params.number,
         reference: params.reference,
         offer: {
-          number: params.offerNumber
+          number: params.offerNumber,
+          'request-number': params.requestNumber
         },
         customer: {
           name: params.cName,

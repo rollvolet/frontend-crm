@@ -10,6 +10,7 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
   numberFilter: oneWay('number'),
   referenceFilter: oneWay('reference'),
   offerNumberFilter: oneWay('offerNumber'),
+  requestNumberFilter: oneWay('requestNumber'),
   cNameFilter: oneWay('cName'),
   cPostalCodeFilter: oneWay('cPostalCode'),
   cCityFilter: oneWay('cCity'),
@@ -34,6 +35,7 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
       [
         'numberFilter', 'number',
         'referenceFilter', 'reference',
+        'requestNumberFilter', 'requestNumber',
         'offerNumberFilter', 'offerNumber',
         'cNameFilter', 'cName',
         'cPostalCodeFilter', 'cPostalCode',
