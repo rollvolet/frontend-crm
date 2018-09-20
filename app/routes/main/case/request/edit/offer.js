@@ -21,7 +21,6 @@ export default Route.extend({
 
     const offer = this.store.createRecord('offer', {
       offerDate: new Date(),
-      foreseenNbOfPersons: 2,
       documentIntro: snippets[language]['offerDocumentIntro'],
       documentOutro: snippets[language]['offerDocumentOutro'],
       customer,

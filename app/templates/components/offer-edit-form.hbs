@@ -11,16 +11,6 @@
           onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
           class="md-input-wrapper"}}
     </div>
-    <div class="layout-row layout-align-start-end">
-      {{paper-input label="Werkuren" value=foreseenHoursInput
-          errors=(v-get model 'foreseenHours' 'messages')
-          onChange=(action (mut foreseenHoursInput)) onBlur=(queue (action "formatDecimal" "foreseenHours") (perform save))
-          class="small"}}<span class="input-postfix"> uur x</span>
-      {{paper-input label="Techniekers" value=foreseenNbOfPersonsInput
-          errors=(v-get model 'foreseenNbOfPersons' 'messages')
-          onChange=(action (mut foreseenNbOfPersonsInput)) onBlur=(queue (action "formatDecimal" "foreseenNbOfPersons") (perform save))
-          class="small"}}<span class="input-postfix"> man = {{model.foreseenTotal}} uur</span>
-    </div>
     <div class="layout-row">
       {{submission-type-select value=model.submissionType
           onSelectionChange=(queue (action (mut model.submissionType)) (perform save))

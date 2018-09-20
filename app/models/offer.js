@@ -10,14 +10,6 @@ const Validations = buildValidations({
   amount: validator('number', {
     allowBlank: true,
     positive: true
-  }),
-  foreseenHours: validator('number', {
-    allowBlank: true,
-    positive: true
-  }),
-  foreseenNbOfPersons: validator('number', {
-    allowBlank: true,
-    positive: true
   })
 });
 
@@ -25,8 +17,6 @@ export default DS.Model.extend(Validations, {
   number: DS.attr(),
   sequenceNumber: DS.attr(),
   offerDate: DS.attr('date'),
-  foreseenHours: DS.attr('number'),
-  foreseenNbOfPersons: DS.attr('number'),
   comment: DS.attr(),
   reference: DS.attr(),
   documentIntro: DS.attr(),
@@ -40,10 +30,6 @@ export default DS.Model.extend(Validations, {
   vatRate: DS.belongsTo('vat-rate'),
   submissionType: DS.belongsTo('submission-type'),
   offerlines: DS.hasMany('offerline'),
-
-  foreseenTotal: computed('foreseenHours', 'foreseenNbOfPersons', function() {
-    return this.foreseenHours * this.foreseenNbOfPersons;
-  }),
 
   offerDateStr: dateString('offerDate')
 });

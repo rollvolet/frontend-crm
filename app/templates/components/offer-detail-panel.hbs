@@ -9,11 +9,6 @@
     {{#detail-list-item label="Bedrag"}}
       {{fmt-currency totalAmount}} ({{model.vatRate.name}} BTW)
     {{/detail-list-item}}
-    {{#detail-list-item label="Werkuren"}}
-      {{fmt-decimal model.foreseenHours}} uur x
-      <span class="{{if isNbOfPersonsWarning "warning-inline"}}">{{model.foreseenNbOfPersons}} man</span>
-      = {{model.foreseenTotal}} uur
-    {{/detail-list-item}}
     {{#detail-list-item label="Verzonden"}}
       {{model.submissionType.name}}
     {{/detail-list-item}}
