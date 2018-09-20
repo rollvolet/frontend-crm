@@ -25,16 +25,6 @@
           onChange=(action (mut model.scheduledNbOfPersonsInput)) onBlur=(queue (action "formatDecimal" "scheduledNbOfPersons") (perform save))
           class="small"}}<span class="input-postfix"> man = {{model.scheduledTotal}} uur</span>
     </div>
-    <div class="layout-row layout-align-start-end">
-      {{paper-input label="Gerekend" value=invoicableHoursInput
-          errors=(v-get model 'invoicableHours' 'messages')
-          onChange=(action (mut invoicableHoursInput)) onBlur=(queue (action "formatDecimal" "invoicableHours") (perform save))
-          class="small"}}<span class="input-postfix"> uur x</span>
-      {{paper-input label="Personen" value=invoicableNbOfPersonsInput
-          errors=(v-get model 'invoicableNbOfPersons' 'messages')
-          onChange=(action (mut model.invoicableNbOfPersonsInput)) onBlur=(queue (action "formatDecimal" "invoicableNbOfPersons") (perform save))
-          class="small"}}<span class="input-postfix"> man = {{model.invoicableTotal}} uur</span>
-    </div>
     <div class="u-bold">Bedrag</div>
     <div class="layout-row">
       {{paper-input label="Bedrag" value=amountInput

@@ -15,9 +15,6 @@
       {{#detail-list-subitem label="Gepland"}}
         {{model.scheduledHours}} uur x {{model.scheduledNbOfPersons}} man = {{model.scheduledTotal}} uur
       {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Gerekend"}}
-        {{model.invoicableHours}} uur x {{model.invoicableNbOfPersons}} man = {{model.invoicableTotal}} uur
-      {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Bedrag"}}
       {{fmt-currency model.amount}} ({{model.vatRate.rate}}% BTW)

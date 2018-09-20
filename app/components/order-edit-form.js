@@ -19,8 +19,6 @@ export default Component.extend(DecimalInputFormatting, {
     this.initDecimalInput('amount');
     this.initDecimalInput('scheduledHours');
     this.initDecimalInput('scheduledNbOfPersons');
-    this.initDecimalInput('invoicableHours');
-    this.initDecimalInput('invoicableNbOfPersons');
   },
 
   uploadProductionTicket: task(function * (file) {

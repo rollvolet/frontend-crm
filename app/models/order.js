@@ -18,14 +18,6 @@ const Validations = buildValidations({
   scheduledNbOfPersons: validator('number', {
     allowBlank: true,
     positive: true
-  }),
-  invoicableHours: validator('number', {
-    allowBlank: true,
-    positive: true
-  }),
-  invoicableNbOfPersons: validator('number', {
-    allowBlank: true,
-    positive: true
   })
 });
 
@@ -42,8 +34,6 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   requiredDate: DS.attr('date'),
   scheduledHours: DS.attr('number'),
   scheduledNbOfPersons: DS.attr('number'),
-  invoicableHours: DS.attr('number'),
-  invoicableNbOfPersons: DS.attr('number'),
   comment: DS.attr(),
   canceled: DS.attr('boolean'),
   cancellationReason: DS.attr(),
@@ -61,9 +51,6 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
 
   scheduledTotal: computed('scheduledHours', 'scheduledNbOfPersons', function() {
     return this.scheduledHours * this.scheduledNbOfPersons;
-  }),
-  invoicableTotal: computed('invoicableHours', 'invoicableNbOfPersons', function() {
-    return this.invoicableHours * this.invoicableNbOfPersons;
   }),
   execution: computed('mustBeInstalled', 'mustBeDelivered', function() {
     if (this.mustBeInstalled) return 'installation';
