@@ -23,6 +23,7 @@ export default Route.extend({
       offerDate: new Date(),
       documentIntro: snippets[language]['offerDocumentIntro'],
       documentOutro: snippets[language]['offerDocumentOutro'],
+      documentVersion: 'v1',
       customer,
       request,
       contact,

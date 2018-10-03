@@ -65,9 +65,15 @@
     {{offer-detail-panel model=model}}
   {{/if}}
 
-  <h2>Inhoud</h2>
+  <h2>Offerte <span class="small-text-fade">[{{model.documentVersion}}]</span></h2>
   {{#if editMode}}
     <div class="offer-document-form layout-column">
+      <section class="layout-row">
+        {{paper-input label="Versie" value=model.documentVersion
+            required="style" errors=(v-get model 'documentVersion' 'messages')
+            onChange=(action (mut model.documentVersion)) onBlur=(perform save)
+            class="default"}}
+      </section>
       <section>
         <label>Introductie</label>
         {{pell-editor class="pell-editor wide" value=model.documentIntro pellOptions=pellOptions

@@ -21,6 +21,7 @@ export default DS.Model.extend(Validations, {
   reference: DS.attr(),
   documentIntro: DS.attr(),
   documentOutro: DS.attr(),
+  documentVersion: DS.attr(),
 
   request: DS.belongsTo('request'),
   order: DS.belongsTo('order'),
