@@ -2,19 +2,19 @@ import { warn } from '@ember/debug';
 import Service, { inject } from '@ember/service';
 import FileSaverMixin from 'ember-cli-file-saver/mixins/file-saver';
 
+const onlyAlphaNumeric = /[^a-zA-Z0-9_]|_$/g;
+
 export default Service.extend(FileSaverMixin, {
   ajax: inject(),
   session: inject(),
 
   visitReport(request) {
-    return this._generate(`/api/requests/${request.id}/reports`,
-                   `${request.id}-bezoekrapport.pdf`,
-                  'application/pdf');
+    const fileName = this._visitReportName(request);
+    return this._generate(`/api/requests/${request.id}/reports`, fileName, 'application/pdf');
   },
   offerDocument(offer) {
-    return this._generate(`/api/offers/${offer.get('id')}/documents`,
-                   `${offer.number}-offerte.pdf`,
-                  'application/pdf');
+    const fileName = this._offerDocumentName(offer);
+    return this._generate(`/api/offers/${offer.get('id')}/documents`, fileName, 'application/pdf');
   },
   uploadProductionTicket(order, file) {
     const { access_token } = this.get('session.data.authenticated');
@@ -25,16 +25,23 @@ export default Service.extend(FileSaverMixin, {
     });
   },
   downloadProductionTicket(order) {
-    return this._download(`/api/orders/${order.id}/production-ticket`,
-                          `${order.offerNumber}-productiebon.pdf`,
-                          'application/pdf');
+    const fileName = this._productionTicketName(order);
+    return this._download(`/api/orders/${order.id}/production-ticket`, fileName, 'application/pdf');
   },
   downloadOfferDocument(offer) {
-    return this._download(`/api/offers/${offer.id}/document`,
-                          `${offer.number}-offerte.pdf`,
-                          'application/pdf');
+    const fileName = this._offerDocumentName(offer);
+    return this._download(`/api/offers/${offer.id}/document`, fileName, 'application/pdf');
   },
 
+  _visitReportName(request) {
+    return `AD${request.id}_bezoekrapport.pdf`;
+  },
+  _offerDocumentName(offer) {
+    return `${offer.number}_offerte_${offer.documentVersion || ''}`.replace(onlyAlphaNumeric, '') + '.pdf';
+  },
+  _productionTicketName(order) {
+    return `${order.offerNumber}_productiebon`.replace(onlyAlphaNumeric, '') + '.pdf';
+  },
   _generate(url, fileName, contentType) {
     return this._download(url, fileName, contentType, 'POST');
   },
