@@ -16,7 +16,7 @@ export default Controller.extend({
     const customer = yield this.model.get('customer');
     const contact = yield this.model.get('contact');
     const building = yield this.model.get('building');
-    const vatRate = yield this.model.get('vat-rate');
+    const vatRate = yield this.model.get('vatRate');
 
     const orderedAmount = offerlines.filterBy('isOrdered').mapBy('amount').reduce((a, b) => a + b);
 
