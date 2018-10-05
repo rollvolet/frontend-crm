@@ -5,11 +5,7 @@ import { dateString } from '../utils/date-string';
 const Validations = buildValidations({
   offerlines: validator('has-many'),
 
-  offerDate: validator('presence', true),
-  amount: validator('number', {
-    allowBlank: true,
-    positive: true
-  })
+  offerDate: validator('presence', true)
 });
 
 export default DS.Model.extend(Validations, {
