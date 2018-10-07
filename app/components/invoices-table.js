@@ -57,7 +57,7 @@ export default Component.extend(DebouncedSearch, {
     },
     clickRow(row) {
       const invoiceId = row.get('id');
-      this.router.transitionTo('main.case.invoice', this.customer, invoiceId);
+      this.router.transitionTo('main.case.invoice.edit', this.customer, invoiceId);
     }
   }
 });

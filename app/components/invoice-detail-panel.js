@@ -1,7 +1,9 @@
-import Controller from '@ember/controller';
+import Component from '@ember/component';
 
-export default Controller.extend({
+export default Component.extend({
+  model: null,
   showWorkingHoursDialog: false,
+
   actions: {
     closeWorkingHoursDialog() {
       this.set('showWorkingHoursDialog', false);

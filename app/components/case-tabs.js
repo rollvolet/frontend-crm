@@ -24,6 +24,9 @@ export default Component.extend({
   hasNextStepOrder: computed('model', 'model.{offerId,orderId}', function() {
     return this.model && this.model.offerId && this.model.orderId == null;
   }),
+  hasNextStepInvoice: computed('model', 'model.{orderId,invoiceId}', function() {
+    return this.model && this.model.orderId && this.model.invoiceId == null;
+  }),
 
   actions: {
     openNewOffer() {
@@ -35,6 +38,11 @@ export default Component.extend({
       const customerId = this.model.customerId;
       const offerId = this.model.offerId;
       this.router.transitionTo('main.case.offer.edit.order', customerId, offerId);
+    },
+    openNewInvoice() {
+      const customerId = this.model.customerId;
+      const orderId = this.model.orderId;
+      this.router.transitionTo('main.case.order.edit.invoice', customerId, orderId);
     }
   }
 });

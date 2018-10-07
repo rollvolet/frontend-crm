@@ -18,6 +18,7 @@ export default Controller.extend({
     const building = yield this.model.get('building');
     const vatRate = yield this.model.get('vatRate');
 
+    // TODO deprecate amount or it must be updated on each change
     const orderedAmount = offerlines.filterBy('isOrdered').mapBy('amount').reduce((a, b) => a + b);
 
     const order = this.store.createRecord('order', {

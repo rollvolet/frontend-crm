@@ -1,0 +1,83 @@
+<div class="layout-row layout-xs-column layout-align-space-between">
+  <div class="case--left-panel case--invoice--entry flex-100 layout-column">
+    {{#detail-list-item label="Datum"}}
+      {{#detail-list-subitem label="Factuurdatum"}}
+        {{fmt-date model.invoiceDate}}
+      {{/detail-list-subitem}}
+      {{#detail-list-subitem label="Vervaldag"}}
+        {{fmt-date model.dueDate}}
+      {{/detail-list-subitem}}
+      {{#detail-list-subitem label="Geboekt"}}
+        {{fmt-date model.bookingDate}}
+      {{/detail-list-subitem}}
+      {{#detail-list-subitem label="Betaald"}}
+        {{fmt-date model.paymentDate}}
+      {{/detail-list-subitem}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Techniekers" click=(action "openWorkingHoursDialog") class="clickable"}}
+      {{#if model.workingHours}}{{paper-icon "info" size=18}}{{else}}- {{paper-icon "add circle" size=18}}{{/if}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Referentie"}}
+      {{model.reference}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="BTW-attest"}}
+      {{paper-checkbox label="Nodig" value=model.certificateRequired onChange=null}}
+      {{paper-checkbox label="Ontvangen" value=model.certificateReceived disabled=(not model.certificateRequired) onChange=null}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Opmerking"}}
+      <span class="html-body">{{model.comment}}</span>
+    {{/detail-list-item}}
+  </div>
+  <div class="case--right-panel flex-noshrink layout-column">
+    {{#detail-list-item label="Productiebon"}}
+      {{paper-checkbox value=model.hasProductionTicket onChange=null}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Contant"}}
+      {{paper-checkbox value=model.isPaidInCash onChange=null}}
+    {{/detail-list-item}}
+    {{#detail-list-item label="Creditnota"}}
+      {{paper-checkbox value=model.isCreditNote onChange=null}}
+    {{/detail-list-item}}
+
+    {{#detail-list-item label="Bedrag"}}
+      {{invoice-calculation-table model=model}}
+    {{/detail-list-item}}
+  </div>
+</div>
+
+{{#if showWorkingHoursDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "closeWorkingHoursDialog") parent=".main-outlet" origin=".main-outlet" clickOutsideToClose=true}}
+    <form>
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Werkuren</h2><span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "closeWorkingHoursDialog")}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <table>
+          <thead>
+            <th>Datum</th>
+            <th>Technieker</th>
+          </thead>
+          <tbody>
+            {{#each model.workingHours as |workingHour|}}
+              <tr>
+                <td>{{fmt-date workingHour.date}}</td>
+                <td>{{workingHour.employee.firstName}}</td>
+              </tr>
+            {{else}}
+              <tr><td colspan="3">Geen werkuren</td></tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "closeWorkingHoursDialog")}}Sluit{{/paper-button}}
+      {{/paper-dialog-actions}}
+    </form>
+  {{/paper-dialog}}
+{{/if}}

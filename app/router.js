@@ -33,9 +33,12 @@ Router.map(function() {
       this.route('order', function() {
         this.route('edit', { path: '/:order_id' }, function() {
           this.route('deposit-invoices');
+          this.route('invoice'); // create new invoice
         });
       });
-      this.route('invoice', { path: '/invoice/:invoice_id' });
+      this.route('invoice', function() {
+        this.route('edit', { path: '/:invoice_id' }, function() {});
+      });
     });
   });
 });

@@ -22,8 +22,8 @@
     {{/tabs.tab}}
   {{/if}}
   {{#if model.invoiceId}}
-    {{#tabs.tab value="main.case.invoice"
-         href=(href-to "main.case.invoice" model.customerId model.invoiceId)}}
+    {{#tabs.tab value="main.case.invoice.edit.index"
+         href=(href-to "main.case.invoice.edit.index" model.customerId model.invoiceId)}}
       Factuur
     {{/tabs.tab}}
   {{/if}}
@@ -35,6 +35,11 @@
   {{#if hasNextStepOrder}}
     {{#tabs.tab value="main.case.offer.edit.order" onClick=(action "openNewOrder")}}
       {{paper-icon "add box"}} {{#paper-tooltip}}Maak bestelling{{/paper-tooltip}}
+    {{/tabs.tab}}
+  {{/if}}
+  {{#if hasNextStepInvoice}}
+    {{#tabs.tab value="main.case.order.edit.invoice" onClick=(action "openNewInvoice")}}
+      {{paper-icon "add box"}} {{#paper-tooltip}}Maak factuur{{/paper-tooltip}}
     {{/tabs.tab}}
   {{/if}}
 {{/paper-tabs}}

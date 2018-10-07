@@ -5,5 +5,7 @@ export default DS.Model.extend({
   name: DS.attr(),
   rate: DS.attr(),
   order: DS.attr(),
-  offers: DS.hasMany('offer')
+  offers: DS.hasMany('offer'),
+  orders: DS.hasMany('order'),
+  invoices: DS.hasMany('invoice')
 });
