@@ -7,18 +7,6 @@ const Validations = buildValidations({
   baseAmount: validator('number', {
     allowBlank: true,
     positive: true
-  }),
-  amount: validator('number', {
-    allowBlank: true,
-    positive: true
-  }),
-  vat: validator('number', {
-    allowBlank: true,
-    positive: true
-  }),
-  totalAmount: validator('number', {
-    allowBlank: true,
-    positive: true
   })
 });
 
@@ -29,11 +17,7 @@ export default DS.Model.extend(Validations, {
   bookingDate: DS.attr('date'),
   paymentDate: DS.attr('date'),
   cancellationDate: DS.attr('date'),
-  // TODO deprecate either baseAmount or amount
   baseAmount: DS.attr(),
-  amount: DS.attr(),
-  vat: DS.attr(),
-  totalAmount: DS.attr(),
   isPaidInCash: DS.attr('boolean'),
   certificateRequired: DS.attr('boolean'),
   certificateReceived: DS.attr('boolean'),

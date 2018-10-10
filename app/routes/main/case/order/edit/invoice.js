@@ -15,14 +15,6 @@ export default Route.extend({
 
     const orderedOfferlines = offerlines.filterBy('isOrdered');
     const amount = orderedOfferlines.mapBy('amount').reduce((a, b) => a + b, 0);
-    // TODO add additional invoice lines to amount?
-
-    const vatPromises = await Promise.all(offerlines.map(async function(offerline) {
-      const vatRate = await offerline.vatRate;
-      const vat = offerline.amount * (vatRate.rate / 100.0);
-      return vat;
-    }));
-    const vat = vatPromises.reduce((a, b) => a + b, 0);
 
     const invoice = this.store.createRecord('invoice', {
       invoiceDate: new Date(),
@@ -34,7 +26,6 @@ export default Route.extend({
       isCreditNote: false,
       hasProductionTicket: order.hasProductionTicket,
       reference: offer.reference,
-      vat,
       order,
       customer,
       contact,

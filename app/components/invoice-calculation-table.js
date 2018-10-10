@@ -18,6 +18,7 @@ export default Component.extend({
   totalNetAmount: subtract('subtotalAmount', 'depositsAmount'),
   vatRate: quotient('model.vatRate.rate', 100),
   grossFactor: quotient(sum(100, 'model.vatRate.rate'), 100),
+  baseAmountVat: product('model.baseAmount', 'vatRate'),
   supplementsVat: product('supplementsAmount', 'vatRate'),
   depositInvoicesVat: product('depositInvoicesAmount', 'vatRate'),
   subtotalVat: product('subtotalAmount', 'vatRate'),

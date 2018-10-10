@@ -25,7 +25,7 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   orderDate: DS.attr('date'),
   offerNumber: DS.attr(),
   requestNumber: DS.attr(),
-  amount: DS.attr('number'),
+  amount: DS.attr('number'), // TODO deprecate (is sum of offerlines)
   depositRequired: DS.attr('boolean'),
   hasProductionTicket: DS.attr('boolean'),
   mustBeInstalled: DS.attr('boolean'),
