@@ -10,7 +10,7 @@
       <td>{{fmt-currency model.baseAmount}}</td>
       <td>{{fmt-currency baseAmountVat}}</td>
     </tr>
-    <tr {{action "openExtrasDialog"}}>
+    <tr {{action "openSupplementsDialog"}}>
       <td>Extra's {{paper-icon "info" size=18}}</td>
       <td>{{fmt-currency supplementsAmount}}</td>
       <td>{{fmt-currency supplementsVat}}</td>
@@ -37,41 +37,4 @@
   </tbody>
 </table>
 
-{{#if showExtrasDialog}}
-  {{#paper-dialog class="flex-50" onClose=(action "closeExtrasDialog") parent=".main-outlet" origin=".main-outlet" clickOutsideToClose=true}}
-    <form>
-      {{#paper-toolbar}}
-        {{#paper-toolbar-tools}}
-          <h2>Extra's</h2><span class="flex"></span>
-          {{#paper-button iconButton=true onClick=(action "closeExtrasDialog")}}{{paper-icon icon="close"}}{{/paper-button}}
-        {{/paper-toolbar-tools}}
-      {{/paper-toolbar}}
-
-      {{#paper-dialog-content}}
-        <table>
-          <thead>
-            <th>Aantal</th>
-            <th>Omschrijving</th>
-            <th>Nettobedrag</th>
-          </thead>
-          <tbody>
-            {{#each model.supplements as |supplement|}}
-              <tr>
-                <td>{{supplement.nbOfPieces}}</td>
-                <td>{{supplement.description}}</td>
-                <td>{{fmt-currency supplement.amount}}</td>
-              </tr>
-            {{else}}
-              <tr><td colspan="3">Geen extra's</td></tr>
-            {{/each}}
-          </tbody>
-        </table>
-      {{/paper-dialog-content}}
-
-      {{#paper-dialog-actions class="layout-row"}}
-        <span class="flex"></span>
-        {{#paper-button onClick=(action "closeExtrasDialog")}}Sluit{{/paper-button}}
-      {{/paper-dialog-actions}}
-    </form>
-  {{/paper-dialog}}
-{{/if}}
+{{invoice-supplements-dialog show=showSupplementsDialog model=model}}

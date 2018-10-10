@@ -1,0 +1,38 @@
+{{#if show}}
+  {{#paper-dialog class="flex-50" onClose=(action "close") parent=".main-outlet" origin=".main-outlet" clickOutsideToClose=true}}
+    <form>
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Extra's</h2><span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "close")}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <table>
+          <thead>
+            <th>Aantal</th>
+            <th>Omschrijving</th>
+            <th>Nettobedrag</th>
+          </thead>
+          <tbody>
+            {{#each model.supplements as |supplement|}}
+              <tr>
+                <td>{{supplement.nbOfPieces}}</td>
+                <td>{{supplement.description}}</td>
+                <td>{{fmt-currency supplement.amount}}</td>
+              </tr>
+            {{else}}
+              <tr><td colspan="3">Geen extra's</td></tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "close")}}Sluit{{/paper-button}}
+      {{/paper-dialog-actions}}
+    </form>
+  {{/paper-dialog}}
+{{/if}}

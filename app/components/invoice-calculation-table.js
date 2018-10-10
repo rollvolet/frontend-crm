@@ -10,7 +10,7 @@ import {
 import raw from 'ember-macro-helpers/raw';
 
 export default Component.extend({
-  showExtrasDialog: false,
+  showSupplementsDialog: false,
   supplementsAmount: sum(mapBy('model.supplements', raw('amount'))),
   depositInvoicesAmount: sum(mapBy('model.depositInvoices', raw('arithmeticAmount'))),
   subtotalAmount: subtract(add('model.baseAmount', 'supplementsAmount'), 'depositInvoicesAmount'),
@@ -24,11 +24,8 @@ export default Component.extend({
   subtotalVat: product('subtotalAmount', 'vatRate'),
   grossTotalAmount: subtract(sum('subtotalAmount', 'subtotalVat'), 'depositsAmount'),
   actions: {
-    closeExtrasDialog() {
-      this.set('showExtrasDialog', false);
-    },
-    openExtrasDialog() {
-      this.set('showExtrasDialog', true);
+    openSupplementsDialog() {
+      this.set('showSupplementsDialog', true);
     }
   }
 });
