@@ -5,8 +5,7 @@ export default Route.extend({
     return this.store.findRecord('invoice', params.invoice_id, {
       include: [
         'building',
-        'contact',
-        'supplements'
+        'contact'
       ].join(',')
     });
   },
