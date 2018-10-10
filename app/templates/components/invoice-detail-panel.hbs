@@ -20,15 +20,15 @@
     {{#detail-list-item label="Referentie"}}
       {{model.reference}}
     {{/detail-list-item}}
-    {{#detail-list-item label="BTW-attest"}}
-      {{paper-checkbox label="Nodig" value=model.certificateRequired onChange=null}}
-      {{paper-checkbox label="Ontvangen" value=model.certificateReceived disabled=(not model.certificateRequired) onChange=null}}
-    {{/detail-list-item}}
     {{#detail-list-item label="Opmerking"}}
       <span class="html-body">{{model.comment}}</span>
     {{/detail-list-item}}
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
+    {{#detail-list-item label="BTW-attest"}}
+      {{paper-checkbox label="Nodig" value=model.certificateRequired onChange=null}}
+      {{paper-checkbox label="Ontvangen" value=model.certificateReceived disabled=(not model.certificateRequired) onChange=null}}
+    {{/detail-list-item}}
     {{#detail-list-item label="Productiebon"}}
       {{paper-checkbox value=model.hasProductionTicket onChange=null}}
     {{/detail-list-item}}
@@ -38,7 +38,11 @@
     {{#detail-list-item label="Creditnota"}}
       {{paper-checkbox value=model.isCreditNote onChange=null}}
     {{/detail-list-item}}
+  </div>
+</div>
 
+<div class="layout-row layout-xs-column layout-align-space-between">
+  <div class="flex-100 layout-column">
     {{#detail-list-item label="Bedrag"}}
       {{invoice-calculation-table model=model}}
     {{/detail-list-item}}

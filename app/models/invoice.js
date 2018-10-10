@@ -7,7 +7,8 @@ const Validations = buildValidations({
   baseAmount: validator('number', {
     allowBlank: true,
     positive: true
-  })
+  }),
+  vatRate: validator('presence', true)
 });
 
 export default DS.Model.extend(Validations, {

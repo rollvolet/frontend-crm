@@ -19,13 +19,6 @@
           onChange=(action (mut model.reference)) onBlur=(perform save)
           class="xlarge"}}
     </div>
-    <div class="u-bold">BTW-attest</div>
-    <div class="layout-row layout-align-start-center">
-      {{paper-checkbox label="Nodig" value=model.certificateRequired
-          onChange=(queue (action (mut model.certificateRequired)) (perform save))}}
-      {{paper-checkbox label="Ontvangen" value=model.certificateReceived
-          onChange=(queue (action (mut model.certificateReceived)) (perform save))}}
-    </div>
     <div class="layout-row">
       {{paper-input label="Opmerking" value=model.comment
           onChange=(action (mut model.comment)) onBlur=(perform save)
@@ -40,6 +33,13 @@
     <div class="layout-row layout-align-start-center">
       {{paper-checkbox label="Creditnota" value=model.isCreditNote
           onChange=(queue (action (mut model.isCreditNote)) (perform save))}}
+    </div>
+    <div class="u-bold">BTW-attest</div>
+    <div class="layout-row layout-align-start-center">
+      {{paper-checkbox label="Nodig" value=model.certificateRequired
+          onChange=(queue (action (mut model.certificateRequired)) (perform save))}}
+      {{paper-checkbox label="Ontvangen" value=model.certificateReceived
+          onChange=(queue (action (mut model.certificateReceived)) (perform save))}}
     </div>
   </section>
 </div>
