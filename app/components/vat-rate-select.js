@@ -15,5 +15,7 @@ export default Component.extend({
 
   label: 'BTW tarief',
   value: null,
+  errors: null,
+  required: false,
   onSelectionChange: null
 });

@@ -17,14 +17,19 @@ export default Component.extend({
   isDisabledEdit: notEmpty('model.bookingDate'),
 
   remove: task(function * () {
+    const customer = yield this.model.customer;
     const order = yield this.model.order;
+
     try {
       yield this.model.destroyRecord();
 
       // update case-tabs
       this.case.set('current.invoiceId', null);
 
-      this.router.transitionTo('main.case.order.edit', order);
+      if (order)
+        this.router.transitionTo('main.case.order.edit', order);
+      else
+        this.router.transitionTo('main.customers.edit', customer);
     } catch (e) {
       warn(`Something went wrong while destroying invoice ${this.model.id}`, { id: 'destroy-failure' });
     }

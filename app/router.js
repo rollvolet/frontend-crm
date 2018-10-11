@@ -37,6 +37,7 @@ Router.map(function() {
         });
       });
       this.route('invoice', function() {
+        this.route('new'); // create new isolated invoice
         this.route('edit', { path: '/:invoice_id' }, function() {});
       });
     });
