@@ -1,0 +1,31 @@
+<table>
+  <thead>
+    <th>Aantal</th>
+    <th>Omschrijving</th>
+    <th>Nettobedrag</th>
+    <th><!-- Edit/Delete --></th>
+  </thead>
+  <tbody>
+    {{#each model as |supplement|}}
+      <tr>
+        <td>{{supplement.nbOfPieces}}</td>
+        <td>{{{supplement.description}}}</td>
+        <td>{{fmt-currency supplement.amount}}</td>
+        <td>
+          <div class="layout-row">
+            {{#paper-button onClick=(action onOpenEdit supplement) iconButton=true}}
+              {{paper-icon "edit mode"}}
+              {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
+            {{/paper-button}}
+            {{#paper-button onClick=(action onDelete supplement) iconButton=true}}
+              {{paper-icon "delete"}}
+              {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+            {{/paper-button}}
+          </div>
+        </td>
+      </tr>
+    {{else}}
+      <tr><td colspan="4">Geen extra's</td></tr>
+    {{/each}}
+  </tbody>
+</table>

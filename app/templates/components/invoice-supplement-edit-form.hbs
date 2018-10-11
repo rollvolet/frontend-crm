@@ -1,0 +1,16 @@
+<div class="layout-row">
+  {{paper-input label="Aantal" value=nbOfPiecesInput
+      errors=(v-get model 'nbOfPieces' 'messages')
+      onChange=(action (mut nbOfPiecesInput)) onBlur=(queue (action "formatDecimal" "nbOfPieces") (perform save))
+      class="small"}}
+  {{paper-input label="Bedrag" value=amountInput
+      errors=(v-get model 'amount' 'messages')
+      onChange=(action (mut amountInput)) onBlur=(queue (action "formatDecimal" "amount") (perform save))
+      class="small"}}
+</div>
+<div class="layout-row">
+  {{paper-input label="Beschrijving" value=model.description
+      errors=(v-get model 'description' 'messages')
+      onChange=(action (mut model.description)) onBlur=(perform save)
+      textarea=true passThru=(hash rows=3) class="xxlarge"}}
+</div>
