@@ -3,7 +3,7 @@
       required="style" errors=(v-get model 'paymentDate' 'messages')
       onChange=(action (mut model.paymentDateStr)) onBlur=(perform save)
       class="default"}}
-  {{paper-input label="Bedrag" value=amountInput
+  {{paper-input label="Bedrag (€)" value=amountInput
       required="style" errors=(v-get model 'amount' 'messages')
       onChange=(action (mut amountInput)) onBlur=(queue (action "formatDecimal" "amount") (perform save))
       class="small"}}

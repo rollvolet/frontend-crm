@@ -31,7 +31,6 @@ export default Component.extend({
   }),
   rollbackTree: task( function * () {
     this.model.rollbackAttributes();
-    // TODO rollback relations that might have changed?
     yield this.save.perform(null, { forceSucces: true });
   }),
   save: task(function * (_, { forceSuccess = false } = {} ) {
