@@ -40,5 +40,7 @@ export default Component.extend({
   onlyActive: true,
   onlyWithFunction: true,
   value: null,
+  errors: null,
+  required: false,
   onSelectionChange: null
 });

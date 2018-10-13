@@ -1,0 +1,59 @@
+{{#if show}}
+  {{#paper-dialog class="flex-50" onClose=(action "close") parent=".main-outlet" origin=".main-outlet" clickOutsideToClose=true}}
+    {{#paper-toolbar}}
+      {{#paper-toolbar-tools}}
+        <h2>Werkuren</h2><span class="flex"></span>
+        {{#paper-button iconButton=true onClick=(action "close")}}
+          {{paper-icon icon="close"}}
+        {{/paper-button}}
+      {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+
+    {{#paper-dialog-content}}
+      <div class="layout-row layout-align-start-center">
+        {{paper-input label="Datum" value=newWorkingHour.dateStr type="date"
+            required="style" errors=(v-get newWorkingHour 'date' 'messages')
+            onChange=(action (mut newWorkingHour.dateStr))
+            class="default"}}
+        {{employee-select label="Technieker" value=newWorkingHour.employee function="T"
+            required="style" errors=(v-get newWorkingHour 'employee' 'messages')
+            onSelectionChange=(action (mut newWorkingHour.employee))
+            class="md-input-wrapper"}}
+        {{#if save.isRunning}}
+          {{paper-progress-circular diameter=18}}
+        {{else}}
+          {{paper-button label="Toevoegen" primary=true onClick=(perform save)}}
+        {{/if}}
+      </div>
+
+      <table>
+        <thead>
+          <th>Datum</th>
+          <th>Technieker</th>
+          <th><!-- Delete --></th>
+        </thead>
+        <tbody>
+          {{#each savedWorkingHours as |workingHour|}}
+            <tr>
+              <td>{{fmt-date workingHour.date}}</td>
+              <td>{{workingHour.employee.firstName}}</td>
+              <td>
+                {{#paper-button onClick=(action "remove" workingHour) iconButton=true}}
+                  {{paper-icon "delete"}}
+                  {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+                {{/paper-button}}
+              </td>
+            </tr>
+          {{else}}
+            <tr><td colspan="3">Geen werkuren</td></tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class="layout-row"}}
+      <span class="flex"></span>
+      {{#paper-button onClick=(action "close")}}Sluit{{/paper-button}}
+    {{/paper-dialog-actions}}
+  {{/paper-dialog}}
+{{/if}}

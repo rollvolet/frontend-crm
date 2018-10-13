@@ -1,7 +1,18 @@
 import DS from 'ember-data';
+import { validator, buildValidations } from 'ember-cp-validations';
+import { dateString } from '../utils/date-string';
 
-export default DS.Model.extend({
+const Validations = buildValidations({
+  date: validator('presence', true),
+  invoice: validator('presence', true),
+  employee: validator('presence', true)
+});
+
+
+export default DS.Model.extend(Validations, {
   date: DS.attr('date'),
   invoice: DS.belongsTo('invoice'),
-  employee: DS.belongsTo('employee')
+  employee: DS.belongsTo('employee'),
+
+  dateStr: dateString('date')
 });

@@ -5,9 +5,6 @@ export default Component.extend({
   showWorkingHoursDialog: false,
 
   actions: {
-    closeWorkingHoursDialog() {
-      this.set('showWorkingHoursDialog', false);
-    },
     openWorkingHoursDialog() {
       this.set('showWorkingHoursDialog', true);
     }
