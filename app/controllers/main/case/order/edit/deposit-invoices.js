@@ -1,19 +1,8 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember/object';
-import { sum } from 'ember-awesome-macros';
 import { inject as service } from '@ember/service';
 
 export default Controller.extend({
   store: service(),
-
-  arithmeticAmounts: computed('model', function() {
-    return this.model ? this.model.map(i => i.get('arithmeticAmount')) : 0;
-  }),
-  arithmeticVats: computed('model', function() {
-    return this.model ? this.model.map(i => i.get('arithmeticVat')) : 0;
-  }),
-  totalAmount: sum('arithmeticAmounts'),
-  totalVat: sum('arithmeticVats'),
 
   actions: {
     async createNewDeposit() {
@@ -25,6 +14,33 @@ export default Controller.extend({
       });
       this.order.deposits.pushObject(deposit);
       return deposit.save();
+    },
+    async createNewDepositInvoice() {
+      const offer = await this.order.offer;
+      const customer = this.customer;
+      const contact = await this.order.contact;
+      const building = await this.order.building;
+      const vatRate = await this.order.vatRate;
+
+      const depositInvoice = this.store.createRecord('deposit-invoice', {
+        invoiceDate: new Date(),
+        isPaidInCash: false,
+        certificateRequired: vatRate.code == 6,
+        certificateReceived: false,
+        certificateClosed: false,
+        isCreditNote: false,
+        hasProductionTicket: false,
+        reference: offer.reference,
+        order: this.order,
+        vatRate,
+        customer,
+        contact,
+        building
+      });
+
+      this.model.pushObject(depositInvoice);
+      // don't save yet since it will fail because baseAemount is not filled yet
+      return depositInvoice;
     }
   }
 });

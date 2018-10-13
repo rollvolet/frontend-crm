@@ -3,44 +3,6 @@
 
 <div class="u-margin-bottom-large"></div>
 
-<h2>Voorschotfacturen</h2>
-
-<div class="layout-row layout-xs-column layout-align-space-between">
-  <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
-    {{#detail-list-item label="Totaal" displayRow=true}}
-      {{#detail-list-subitem label="Netto"}}
-        {{fmt-currency totalAmount}}
-      {{/detail-list-subitem}}
-      {{#detail-list-subitem label="BTW"}}
-        {{fmt-currency totalVat}}
-      {{/detail-list-subitem}}
-    {{/detail-list-item}}
-  </div>
-</div>
-
-<table class="case--deposit-invoices-table">
-  <thead>
-    <th>Nummer</th>
-    <th>Factuurdatum</th>
-    <th>Vervaldatum</th>
-    <th>Nettobedrag</th>
-    <th>BTW</th>
-    <th>Creditnota</th>
-  </thead>
-  <tbody>
-    {{#each model as |invoice|}}
-      <tr>
-        <td>{{format-invoice-number invoice.number}}</td>
-        <td>{{fmt-date invoice.invoiceDate}}</td>
-        <td>{{fmt-date invoice.dueDate}}</td>
-        <td>{{fmt-currency invoice.arithmeticAmount}}</td>
-        <td>{{fmt-currency invoice.vat}}</td>
-        <td>{{#if invoice.isCreditNote}}{{paper-icon "check"}}{{/if}}</td>
-      </tr>
-    {{else}}
-      <tr><td colspan="6">Geen voorschotfacturen</td></tr>
-    {{/each}}
-  </tbody>
-</table>
+{{deposit-invoices-panel model=model onCreate=(action "createNewDepositInvoice")}}
 
 {{liquid-outlet}}

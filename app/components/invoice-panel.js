@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { task } from 'ember-concurrency';
+import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { notEmpty } from '@ember/object/computed';
@@ -35,7 +35,13 @@ export default Component.extend({
     }
   }),
   rollbackTree: task( function * () {
+    const rollbackPromises = [];
+
     this.model.rollbackAttributes();
+
+    rollbackPromises.push(this.model.belongsTo('vatRate').reload());
+
+    yield all(rollbackPromises);
     yield this.save.perform(null, { forceSucces: true });
   }),
   save: task(function * (_, { forceSuccess = false } = {} ) {

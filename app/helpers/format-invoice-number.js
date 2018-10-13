@@ -1,7 +1,7 @@
 import { helper } from '@ember/component/helper';
 
 export function formatInvoiceNumber([value]) {
-  const valueStr = value.toString() || '';
+  const valueStr = (value && value.toString()) || '';
   return `${valueStr.substring(0,2)}/${valueStr.substring(2)}`;
 }
 

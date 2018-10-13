@@ -1,0 +1,73 @@
+<div class="layout-row layout-align-space-between-center">
+  <h2>Voorschotfacturen</h2>
+  {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "createNew") disabled=selected}}
+    {{paper-icon "add"}}
+  {{/paper-button}}
+</div>
+
+{{#liquid-if selected class="data-table-selection"}}
+  <div class="layout-row layout-align-space-between-center">
+    <div class="layout-row layout-align-start-center">
+      <h2>Factuur {{format-invoice-number selected.number}}</h2>
+      {{save-status-icon model=selected task=save}}
+    </div>
+    <div>
+      {{#paper-button onClick=(action "closeEdit") iconButton=true}}
+        {{paper-icon "close"}}
+        {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
+      {{/paper-button}}
+    </div>
+  </div>
+  {{deposit-invoice-edit-form model=selected save=save}}
+{{else}}
+  <div class="layout-row layout-xs-column layout-align-space-between">
+    <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
+      {{#detail-list-item label="Totaal" displayRow=true}}
+        {{#detail-list-subitem label="Netto"}}
+          {{fmt-currency totalAmount}}
+        {{/detail-list-subitem}}
+        {{#detail-list-subitem label="BTW"}}
+          {{fmt-currency (await totalVat)}}
+        {{/detail-list-subitem}}
+      {{/detail-list-item}}
+    </div>
+  </div>
+
+  <table class="case--deposit-invoices-table">
+    <thead>
+      <th>Nummer</th>
+      <th>Factuurdatum</th>
+      <th>Vervaldatum</th>
+      <th>Nettobedrag</th>
+      <th>BTW</th>
+      <th>Creditnota</th>
+      <th><!-- Edit/Delete --></th>
+    </thead>
+    <tbody>
+      {{#each model as |invoice|}}
+        <tr>
+          <td>{{format-invoice-number invoice.number}}</td>
+          <td>{{fmt-date invoice.invoiceDate}}</td>
+          <td>{{fmt-date invoice.dueDate}}</td>
+          <td>{{fmt-currency invoice.arithmeticAmount}}</td>
+          <td>{{fmt-currency (await invoice.arithmeticVat)}}</td>
+          <td>{{#if invoice.isCreditNote}}{{paper-icon "check"}}{{/if}}</td>
+          <td>
+            {{#paper-button onClick=(action "openEdit" invoice) iconButton=true}}
+              {{paper-icon "edit mode"}}
+              {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
+            {{/paper-button}}
+            {{#paper-button onClick=(action "remove" invoice) iconButton=true}}
+              {{paper-icon "delete"}}
+              {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+            {{/paper-button}}
+          </td>
+        </tr>
+    {{else}}
+        <tr><td colspan="7">Geen voorschotfacturen</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{/liquid-if}}
+
+{{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
