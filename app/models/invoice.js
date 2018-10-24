@@ -1,3 +1,4 @@
+import { empty } from '@ember/object/computed';
 import DS from 'ember-data';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
@@ -43,5 +44,7 @@ export default DS.Model.extend(Validations, {
   dueDateStr: dateString('dueDate'),
   bookingDateStr: dateString('bookingDate'),
   paymentDateStr: dateString('paymentDate'),
-  cancellationDateStr: dateString('cancellationDate')
+  cancellationDateStr: dateString('cancellationDate'),
+
+  isIsolated: empty('order.id')
 });

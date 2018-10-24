@@ -29,9 +29,17 @@
       {{paper-checkbox label="Nodig" value=model.certificateRequired onChange=null}}
       {{paper-checkbox label="Ontvangen" value=model.certificateReceived disabled=(not model.certificateRequired) onChange=null}}
     {{/detail-list-item}}
-    {{#detail-list-item label="Productiebon"}}
-      {{paper-checkbox value=model.hasProductionTicket onChange=null}}
-    {{/detail-list-item}}
+    {{#unless model.isIsolated}}
+      {{#detail-list-item label="Productiebon"}}
+        {{paper-checkbox value=model.hasProductionTicket onChange=null}}
+        {{#if model.hasProductionTicket}}
+          <span {{action "downloadProductionTicket"}}>
+            {{paper-icon "find in page"}}
+            {{#paper-tooltip}}Bekijken{{/paper-tooltip}}
+          </span>
+        {{/if}}
+      {{/detail-list-item}}
+    {{/unless}}
     {{#detail-list-item label="Creditnota"}}
       {{paper-checkbox value=model.isCreditNote onChange=null}}
     {{/detail-list-item}}
