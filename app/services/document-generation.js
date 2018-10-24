@@ -1,6 +1,7 @@
 import { warn } from '@ember/debug';
 import Service, { inject } from '@ember/service';
 import FileSaverMixin from 'ember-cli-file-saver/mixins/file-saver';
+import $ from 'jquery';
 
 const onlyAlphaNumeric = /[^a-zA-Z0-9_]|_$/g;
 
