@@ -3,9 +3,6 @@
     {{#detail-list-item label="Datum"}}
       {{fmt-date model.offerDate}}
     {{/detail-list-item}}
-    {{#detail-list-item label="Volgnummer"}}
-      {{model.sequenceNumber}}
-    {{/detail-list-item}}
     {{#detail-list-item label="Bedrag"}}
       {{fmt-currency totalAmount}} ({{model.vatRate.name}} BTW)
     {{/detail-list-item}}
