@@ -24,7 +24,6 @@ export default Controller.extend({
 
       const depositInvoice = this.store.createRecord('deposit-invoice', {
         invoiceDate: new Date(),
-        isPaidInCash: false,
         certificateRequired: vatRate.code == 6,
         certificateReceived: false,
         certificateClosed: false,

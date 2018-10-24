@@ -6,7 +6,6 @@ export default Route.extend({
     const vatRate = this.store.peekAll('vat-rate').find(v => v.rate == 21);
     const invoice = this.store.createRecord('invoice', {
       invoiceDate: new Date(),
-      isPaidInCash: false,
       certificateRequired: false,
       certificateReceived: false,
       certificateClosed: false,

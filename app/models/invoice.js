@@ -19,7 +19,6 @@ export default DS.Model.extend(Validations, {
   paymentDate: DS.attr('date'),
   cancellationDate: DS.attr('date'),
   baseAmount: DS.attr(),
-  isPaidInCash: DS.attr('boolean'),
   certificateRequired: DS.attr('boolean'),
   certificateReceived: DS.attr('boolean'),
   certificateClosed: DS.attr('boolean'),

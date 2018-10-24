@@ -19,7 +19,6 @@ export default Route.extend({
     const invoice = this.store.createRecord('invoice', {
       invoiceDate: new Date(),
       baseAmount: amount,
-      isPaidInCash: false,
       certificateRequired: vatRate.code == 6,
       certificateReceived: false,
       certificateClosed: false,

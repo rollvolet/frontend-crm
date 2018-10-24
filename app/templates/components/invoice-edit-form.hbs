@@ -27,10 +27,6 @@
   </section>
   <section class="case--right-panel flex-noshrink layout-column">
     <div class="layout-row layout-align-start-center">
-      {{paper-checkbox label="Contant" value=model.isPaidInCash
-          onChange=(queue (action (mut model.isPaidInCash)) (perform save))}}
-    </div>
-    <div class="layout-row layout-align-start-center">
       {{paper-checkbox label="Creditnota" value=model.isCreditNote
           onChange=(queue (action (mut model.isCreditNote)) (perform save))}}
     </div>
