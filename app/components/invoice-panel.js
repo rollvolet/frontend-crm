@@ -6,12 +6,14 @@ import { notEmpty } from '@ember/object/computed';
 
 export default Component.extend({
   case: service(),
+  documentGeneration: service(),
   router: service(),
 
   model: null,
   editMode: false,
   onOpenEdit: null,
   onCloseEdit: null,
+  showInvoiceDocumentNotFoundDialog: false,
   showUnsavedChangesDialog: false,
 
   isDisabledEdit: notEmpty('model.bookingDate'),
@@ -51,6 +53,18 @@ export default Component.extend({
     if (validations.isValid)
       yield this.model.save();
   }).keepLatest(),
+  generateInvoiceDocument: task(function * () {
+    const oldInvoiceDate = this.model.invoiceDate;
+    try {
+      this.model.set('invoiceDate', new Date());
+      yield this.save.perform();
+      yield this.documentGeneration.invoiceDocument(this.model);
+    } catch(e) {
+      warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
+      this.model.set('invoiceDate', oldInvoiceDate);
+      yield this.save.perform();
+    }
+  }),
 
   actions: {
     openEdit() {
@@ -68,6 +82,15 @@ export default Component.extend({
     confirmCloseEdit() {
       this.rollbackTree.perform();
       this.onCloseEdit();
+    },
+    async downloadInvoiceDocument() {
+      const document = await this.documentGeneration.downloadInvoiceDocument(this.model);
+
+      if (!document)
+        this.set('showInvoiceDocumentNotFoundDialog', true);
+    },
+    confirmAlert() {
+      this.set('showInvoiceDocumentNotFoundDialog', false);
     }
   }
 });

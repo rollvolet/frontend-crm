@@ -17,6 +17,10 @@ export default Service.extend(FileSaverMixin, {
     const fileName = this._offerDocumentName(offer);
     return this._generate(`/api/offers/${offer.get('id')}/documents`, fileName, 'application/pdf');
   },
+  invoiceDocument(invoice) {
+    const fileName = this._invoiceDocumentName(invoice);
+    return this._generate(`/api/invoices/${invoice.get('id')}/documents`, fileName, 'application/pdf');
+  },
   uploadProductionTicket(order, file) {
     const { access_token } = this.get('session.data.authenticated');
     return file.upload(`/api/orders/${order.id}/production-ticket`, {
@@ -33,12 +37,19 @@ export default Service.extend(FileSaverMixin, {
     const fileName = this._offerDocumentName(offer);
     return this._download(`/api/offers/${offer.id}/document`, fileName, 'application/pdf');
   },
+  downloadInvoiceDocument(invoice) {
+    const fileName = this._invoiceDocumentName(invoice);
+    return this._download(`/api/invoices/${invoice.id}/document`, fileName, 'application/pdf');
+  },
 
   _visitReportName(request) {
     return `AD${request.id}_bezoekrapport.pdf`;
   },
   _offerDocumentName(offer) {
     return `${offer.number}_offerte_${offer.documentVersion || ''}`.replace(onlyAlphaNumeric, '') + '.pdf';
+  },
+  _invoiceDocumentName(invoice) {
+    return `F${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
   },
   _productionTicketName(order) {
     return `${order.offerNumber}_productiebon`.replace(onlyAlphaNumeric, '') + '.pdf';
