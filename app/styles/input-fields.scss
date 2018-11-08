@@ -89,7 +89,8 @@ md-input-container {
   padding: 0 15px 0 5px;
 }
 
-.file-upload.production-ticket-upload {
+.file-upload.production-ticket-upload,
+.file-upload.certificate-upload {
   margin-left: 15px;
   margin-bottom: 20px;
 
@@ -97,5 +98,18 @@ md-input-container {
     position: relative;
     top: 5px;
     color: paper-color($accent);
+    cursor: pointer;
+  }
+}
+
+.input--certificate .certificate-download,
+.input--certificate .md-button.md-icon-button {
+  margin-bottom: 18px;
+  margin-left: 5px;
+  padding-left: 0px;
+
+  md-icon {
+    color: paper-color($accent);
+    cursor: pointer;
   }
 }

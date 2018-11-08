@@ -27,7 +27,11 @@
   <div class="case--right-panel flex-noshrink layout-column">
     {{#detail-list-item label="BTW-attest"}}
       {{paper-checkbox label="Nodig" value=model.certificateRequired onChange=null}}
-      {{paper-checkbox label="Ontvangen" value=model.certificateReceived disabled=(not model.certificateRequired) onChange=null}}
+      <span {{action "generateCertificate"}}>
+        {{paper-icon "restore page"}}
+        {{#paper-tooltip}}Certificaat maken{{/paper-tooltip}}
+      </span>
+      {{#if model.certificateReceived}}{{certificate-download-button invoice=model}}{{/if}}
     {{/detail-list-item}}
     {{#unless model.isIsolated}}
       {{#detail-list-item label="Productiebon"}}
@@ -35,7 +39,7 @@
         {{#if model.hasProductionTicket}}
           <span {{action "downloadProductionTicket"}}>
             {{paper-icon "find in page"}}
-            {{#paper-tooltip}}Bekijken{{/paper-tooltip}}
+            {{#paper-tooltip}}Certificaat bekijken{{/paper-tooltip}}
           </span>
         {{/if}}
       {{/detail-list-item}}

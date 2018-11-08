@@ -19,6 +19,7 @@ export default Component.extend({
   vatRate: quotient('model.vatRate.rate', 100),
   baseAmountVat: product('model.baseAmount', 'vatRate'),
   supplementsVat: product('supplementsAmount', 'vatRate'),
+  // assumption that all deposit invoices have the same vat rate as the parent invoice
   depositInvoicesVat: product('depositInvoicesAmount', 'vatRate'),
   subtotalVat: product('subtotalAmount', 'vatRate'),
   grossTotalAmount: subtract(sum('subtotalAmount', 'subtotalVat'), 'depositsAmount'),

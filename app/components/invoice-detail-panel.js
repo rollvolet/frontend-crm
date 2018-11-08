@@ -14,6 +14,9 @@ export default Component.extend({
     async downloadProductionTicket() {
       const order = await this.model.order;
       this.documentGeneration.downloadProductionTicket(order);
+    },
+    async generateCertificate() {
+      this.documentGeneration.certificate(this.model);
     }
   }
 });
