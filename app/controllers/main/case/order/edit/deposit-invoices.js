@@ -24,6 +24,7 @@ export default Controller.extend({
 
       const depositInvoice = this.store.createRecord('deposit-invoice', {
         invoiceDate: new Date(),
+        baseAmount: 0,
         certificateRequired: vatRate.code == 6,
         certificateReceived: false,
         certificateClosed: false,
@@ -38,7 +39,7 @@ export default Controller.extend({
       });
 
       this.model.pushObject(depositInvoice);
-      // don't save yet since it will fail because baseAemount is not filled yet
+      await depositInvoice.save();
       return depositInvoice;
     }
   }

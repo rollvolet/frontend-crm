@@ -30,12 +30,14 @@
       {{paper-checkbox label="Creditnota" value=model.isCreditNote
           onChange=(queue (action (mut model.isCreditNote)) (perform save))}}
     </div>
-    <div class="layout-row">
-      {{vat-rate-select value=model.vatRate
-          required="style" errors=(v-get model 'vatRate' 'messages')
-          onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
-          class="md-input-wrapper"}}
-    </div>
+    {{#if model.isIsolated}}
+      <div class="layout-row">
+        {{vat-rate-select value=model.vatRate
+            required="style" errors=(v-get model 'vatRate' 'messages')
+            onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
+            class="md-input-wrapper"}}
+      </div>
+    {{/if}}
     <div class="u-bold">BTW-attest</div>
     <div class="layout-row layout-align-start-center input--certificate">
       {{paper-checkbox label="Nodig" value=model.certificateRequired

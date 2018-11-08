@@ -26,7 +26,7 @@
         {{#detail-list-subitem label="Netto"}}
           {{fmt-currency totalAmount}}
         {{/detail-list-subitem}}
-        {{#detail-list-subitem label="BTW"}}
+        {{#detail-list-subitem label=(concat (get vatRate 'rate') "% BTW")}}
           {{fmt-currency (await totalVat)}}
         {{/detail-list-subitem}}
       {{/detail-list-item}}

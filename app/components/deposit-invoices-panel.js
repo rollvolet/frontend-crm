@@ -5,6 +5,8 @@ import { sum } from 'ember-awesome-macros';
 
 export default Component.extend({
   model: null,
+  onCreate: null,
+  order: null,
   selected: null,
   showUnsavedChangesDialog: false,
 

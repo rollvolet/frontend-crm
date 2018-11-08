@@ -5,16 +5,12 @@
           required="style" errors=(v-get model 'invoiceDate' 'messages')
           onChange=(queue (action (mut model.invoiceDateStr)) (perform save))
           class="default"}}
-    </div>
-    <div class="layout-row">
       {{paper-input label="Bedrag (€)" value=baseAmountInput
           required="style" errors=(v-get model 'baseAmount' 'messages')
           onChange=(action (mut baseAmountInput)) onBlur=(queue (action "formatDecimal" "baseAmount") (perform save))
           class="small"}}
-      {{vat-rate-select value=model.vatRate
-          required="style" errors=(v-get model 'vatRate' 'messages')
-          onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
-          class="md-input-wrapper"}}
+    </div>
+    <div class="layout-row">
     </div>
     <div class="layout-row">
       {{paper-input label="Vervaldag" value=model.dueDateStr type="date"

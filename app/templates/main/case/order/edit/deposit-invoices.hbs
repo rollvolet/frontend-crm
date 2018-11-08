@@ -3,6 +3,6 @@
 
 <div class="u-margin-bottom-large"></div>
 
-{{deposit-invoices-panel model=model onCreate=(action "createNewDepositInvoice")}}
+{{deposit-invoices-panel model=model vatRate=order.vatRate onCreate=(action "createNewDepositInvoice")}}
 
 {{liquid-outlet}}
