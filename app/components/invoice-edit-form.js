@@ -8,6 +8,8 @@ export default Component.extend({
 
   model: null,
   save: null,
+  onBuildingChange: null,
+  onContactChange: null,
   hasCertificateUploadError: false,
 
   uploadCertificate: task(function * (file) {
@@ -28,6 +30,14 @@ export default Component.extend({
     async deleteCertificate() {
       this.model.set('certificateReceived', false);
       await this.model.save();
+    },
+    setContact(contact) {
+      this.set('model.contact', contact);
+      this.onContactChange(contact);
+    },
+    setBuilding(building) {
+      this.set('model.building', building);
+      this.onBuildingChange(building);
     }
   }
 });
