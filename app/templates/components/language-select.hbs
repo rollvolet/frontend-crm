@@ -1,5 +1,8 @@
-{{#paper-autocomplete label=label options=options selected=selected errors=errors required=required
-     searchField="name" labelPath="name" onSelectionChange=onSelectionChange
+{{#power-select placeholder=placeholder searchPlaceholder="Typ om te zoeken"
+     options=options selected=selected
+     searchField="name" onchange=onSelectionChange
      noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
-  {{paper-autocomplete-highlight label=option.name searchText=select.searchText flags="i"}}
-{{/paper-autocomplete}}
+  {{highlight-substr option.name select.lastSearchedText}}
+{{/power-select}}
+
+{{md-error-messages errors=errors}}

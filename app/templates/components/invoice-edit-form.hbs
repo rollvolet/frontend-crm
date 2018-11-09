@@ -35,7 +35,7 @@
         {{vat-rate-select value=model.vatRate
             required="style" errors=(v-get model 'vatRate' 'messages')
             onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
-            class="md-input-wrapper"}}
+            class="md-input-wrapper default"}}
       </div>
     {{/if}}
     <div class="u-bold">BTW-attest</div>

@@ -14,10 +14,10 @@
         class="default"}}
     {{employee-select label="Bezoeker" value=visitor function='B'
         onSelectionChange=(queue (action "setVisitor") (perform save))
-        class="md-input-wrapper"}}
+        class="md-input-wrapper large"}}
     {{calendar-period-select value=model.period errors=(v-get model 'period' 'messages') required=true
         onSelectionChange=(action "changePeriod")
-        class="md-input-wrapper"}}
+        class="md-input-wrapper large"}}
     {{#if requiresSingleTime}}
       {{paper-input label="Tijdstip" value=model.fromHour errors=(v-get model 'fromHour' 'messages')
           onChange=(action (mut model.fromHour))  onBlur=(perform save)

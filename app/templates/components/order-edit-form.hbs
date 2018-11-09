@@ -33,7 +33,7 @@
           class="small"}}
       {{vat-rate-select value=model.vatRate
           onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
-          class="md-input-wrapper"}}
+          class="md-input-wrapper default"}}
     </div>
     <div class="layout-row layout-align-start-center">
       {{paper-checkbox label="Voorschot nodig" value=model.depositRequired

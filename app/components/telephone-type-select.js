@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { proxyAware } from '../utils/proxy-aware';
+import { computed } from '@ember/object';
 
 export default Component.extend({
   store: service(),
@@ -16,5 +17,9 @@ export default Component.extend({
 
   label: 'Type',
   value: null,
-  onSelectionChange: null
+  onSelectionChange: null,
+
+  placeholder: computed('label', 'required', function() {
+    return this.required ? `${this.label} *` : this.label;
+  })
 });

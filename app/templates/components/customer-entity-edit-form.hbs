@@ -72,15 +72,15 @@
     <div class="layout-row">
       {{postal-code-select postalCode=model.postalCode city=model.city titleize=(not isScopeCustomer)
           onSelectionChange=(queue (action "setPostalCode") (perform save))
-          class="md-input-wrapper xxlarge"}}
+          class="md-input-wrapper xxxlarge"}}
       {{country-select value=model.country
           onSelectionChange=(queue (action (mut model.country)) (perform save))
           required="style" errors=(v-get model 'country' 'messages')
-          class="md-input-wrapper"}}
+          class="md-input-wrapper xlarge"}}
       {{language-select value=model.language
           onSelectionChange=(queue (action (mut model.language)) (perform save))
           required="style" errors=(v-get model 'language' 'messages')
-          class="md-input-wrapper"}}
+          class="md-input-wrapper xlarge"}}
     </div>
   </section>
 

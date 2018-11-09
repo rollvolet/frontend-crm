@@ -7,7 +7,7 @@
     class="small" required="style"}}
 {{vat-rate-select value=model.vatRate
     onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
-    class="md-input-wrapper" required="style"}}
+    class="md-input-wrapper default" required="style"}}
 {{save-status-icon model=model task=save}}
 {{#paper-button onClick=(action "delete") iconButton=true}}
   {{paper-icon "delete"}}

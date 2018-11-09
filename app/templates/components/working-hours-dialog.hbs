@@ -18,7 +18,7 @@
         {{employee-select label="Technieker" value=newWorkingHour.employee function="T"
             required="style" errors=(v-get newWorkingHour 'employee' 'messages')
             onSelectionChange=(action (mut newWorkingHour.employee))
-            class="md-input-wrapper"}}
+            class="md-input-wrapper large"}}
         {{#if save.isRunning}}
           {{paper-progress-circular diameter=18}}
         {{else}}

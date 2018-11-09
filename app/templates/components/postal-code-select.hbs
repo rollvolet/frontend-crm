@@ -1,9 +1,9 @@
-{{#paper-autocomplete label=label options=options selected=value
-     searchField="search" labelPath=(if titleize "searchTitleized" "search") onSelectionChange=(action "selectValue")
+{{#power-select placeholder=label searchPlaceholder="Typ om te zoeken" options=options selected=value
+     searchField="search" onchange=(action "selectValue")
      noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
   {{#if titleize}}
-    {{paper-autocomplete-highlight label=(titleize-extended (lowercase option.search)) searchText=select.searchText flags="i"}}
+    {{highlight-substr (titleize-extended (lowercase option.search)) select.lastSearchedText}}
   {{else}}
-    {{paper-autocomplete-highlight label=option.search searchText=select.searchText flags="i"}}
+    {{highlight-substr option.search select.lastSearchedText}}
   {{/if}}
-{{/paper-autocomplete}}
+{{/power-select}}

@@ -9,10 +9,10 @@
     <div class="layout-row">
       {{employee-select label="Bediende" value=employee
           onSelectionChange=(queue (action "setEmployee") (perform save))
-          class="md-input-wrapper"}}
+          class="md-input-wrapper large"}}
       {{way-of-entry-select value=model.wayOfEntry
           onSelectionChange=(queue (action (mut model.wayOfEntry)) (perform save))
-          class="md-input-wrapper"}}
+          class="md-input-wrapper default"}}
     </div>
     <div class="layout-row layout-align-start-center">
       {{paper-checkbox label="Bezoek nodig" value=model.requiresVisit

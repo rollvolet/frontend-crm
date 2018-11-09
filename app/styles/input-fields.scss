@@ -70,6 +70,11 @@ md-input-container {
     md-autocomplete { min-width: 400px; }
   }
 
+  &.xxxlarge {
+    width: 500px;
+    md-autocomplete { min-width: 500px; }
+  }
+
   &.no-spacer-bottom {
     md-input-container {
       margin-bottom: 0px;

@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 export default Component.extend({
   init() {
@@ -29,6 +30,10 @@ export default Component.extend({
   errors: null,
   required: false,
   onSelectionChange: null,
+
+  placeholder: computed('label', 'required', function() {
+    return this.required ? `${this.label} *` : this.label;
+  }),
 
   actions: {
     changeSelection(option) {

@@ -34,6 +34,9 @@ export default Component.extend({
     return employees;
   }),
   options: sort('employees', ['function:asc']),
+  placeholder: computed('label', 'required', function() {
+    return this.required ? `${this.label} *` : this.label;
+  }),
   label: 'Werknemer',
   type: null,
   function: null,
