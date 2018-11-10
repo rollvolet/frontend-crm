@@ -25,6 +25,7 @@ export default Route.extend({
       isCreditNote: false,
       hasProductionTicket: order.hasProductionTicket,
       reference: offer.reference,
+      comment: order.comment,
       order,
       customer,
       contact,

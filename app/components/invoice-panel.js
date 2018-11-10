@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
-import { warn } from '@ember/debug';
+import { debug, warn } from '@ember/debug';
 import { notEmpty } from '@ember/object/computed';
 
 export default Component.extend({
@@ -52,8 +52,27 @@ export default Component.extend({
     if (forceSuccess) return;
 
     const { validations } = yield this.model.validate();
-    if (validations.isValid)
+    if (validations.isValid) {
+      if (this.model.changedAttributes().comment) {
+        const order = yield this.model.order;
+        if (order) {
+          debug('Syncing comment of order with updated comment of invoice');
+          order.set('comment', this.model.comment);
+          yield order.save();
+        }
+      }
+
+      if (this.model.changedAttributes().reference) {
+        const offer = yield this.model.offer;
+        if (offer) {
+          debug('Syncing reference of offer with updated reference of invoice');
+          offer.set('reference', this.model.reference);
+          yield offer.save();
+        }
+      }
+
       yield this.model.save();
+    }
   }).keepLatest(),
   generateInvoiceDocument: task(function * () {
     const oldInvoiceDate = this.model.invoiceDate;

@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
-import { warn } from '@ember/debug';
+import { debug, warn } from '@ember/debug';
 import { notEmpty } from '@ember/object/computed';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
@@ -76,8 +76,17 @@ export default Component.extend(EKMixin, {
     if (forceSuccess) return;
 
     const { validations } = yield this.model.validate();
-    if (validations.isValid)
+    if (validations.isValid) {
+      if (this.model.changedAttributes().comment) {
+        const invoice = yield this.model.invoice;
+        if (invoice) {
+          debug('Syncing comment of invoice with updated comment of order');
+          invoice.set('comment', this.model.comment);
+          yield invoice.save();
+        }
+      }
       yield this.model.save();
+    }
   }).keepLatest(),
 
   // eslint-disable-next-line ember/no-on-calls-in-components
