@@ -29,7 +29,7 @@
       {{paper-checkbox label="Nodig" value=model.certificateRequired onChange=null}}
       <span {{action "generateCertificate"}}>
         {{paper-icon "restore page"}}
-        {{#paper-tooltip}}Certificaat maken{{/paper-tooltip}}
+        {{#paper-tooltip}}BTW attest maken{{/paper-tooltip}}
       </span>
       {{#if model.certificateReceived}}{{certificate-download-button invoice=model}}{{/if}}
     {{/detail-list-item}}
@@ -39,7 +39,7 @@
         {{#if model.hasProductionTicket}}
           <span {{action "downloadProductionTicket"}}>
             {{paper-icon "find in page"}}
-            {{#paper-tooltip}}Certificaat bekijken{{/paper-tooltip}}
+            {{#paper-tooltip}}BTW attest bekijken{{/paper-tooltip}}
           </span>
         {{/if}}
       {{/detail-list-item}}
