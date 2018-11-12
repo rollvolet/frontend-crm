@@ -82,6 +82,7 @@ export default Component.extend(EKMixin, PellOptions, {
           yield request.save();
         }
       }
+      // TODO sync reference from offer to invoice (if it exists)
       yield this.model.save();
     }
   }),
