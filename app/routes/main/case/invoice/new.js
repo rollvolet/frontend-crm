@@ -1,11 +1,17 @@
 import Route from '@ember/routing/route';
+import moment from 'moment';
 
 export default Route.extend({
   async model() {
     const customer = this.modelFor('main.case');
     const vatRate = this.store.peekAll('vat-rate').find(v => v.rate == 21);
+
+    const invoiceDate = new Date();
+    const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+
     const invoice = this.store.createRecord('invoice', {
-      invoiceDate: new Date(),
+      invoiceDate,
+      dueDate,
       certificateRequired: false,
       certificateReceived: false,
       certificateClosed: false,

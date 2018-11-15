@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import moment from 'moment';
 
 export default Controller.extend({
   store: service(),
@@ -22,8 +23,12 @@ export default Controller.extend({
       const building = await this.order.building;
       const vatRate = await this.order.vatRate;
 
+      const invoiceDate = new Date();
+      const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+
       const depositInvoice = this.store.createRecord('deposit-invoice', {
-        invoiceDate: new Date(),
+        invoiceDate,
+        dueDate,
         baseAmount: 0,
         certificateRequired: vatRate.code == 6,
         certificateReceived: false,

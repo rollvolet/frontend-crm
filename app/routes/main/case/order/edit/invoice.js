@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import moment from 'moment';
 
 export default Route.extend({
   case: service(),
@@ -16,8 +17,12 @@ export default Route.extend({
     const orderedOfferlines = offerlines.filterBy('isOrdered');
     const amount = orderedOfferlines.mapBy('amount').reduce((a, b) => a + b, 0);
 
+    const invoiceDate = new Date();
+    const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+
     const invoice = this.store.createRecord('invoice', {
-      invoiceDate: new Date(),
+      invoiceDate,
+      dueDate,
       baseAmount: amount,
       certificateRequired: vatRate.code == 6,
       certificateReceived: false,
