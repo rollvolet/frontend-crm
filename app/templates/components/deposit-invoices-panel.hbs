@@ -1,6 +1,6 @@
 <div class="layout-row layout-align-space-between-center">
   <h2>Voorschotfacturen</h2>
-  {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "createNew") disabled=selected}}
+  {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "createNew") disabled=(or isDisabledEdit selected)}}
     {{paper-icon "add"}}
   {{/paper-button}}
 </div>
@@ -53,14 +53,16 @@
           <td>{{fmt-currency (await invoice.arithmeticVat)}}</td>
           <td>{{#if invoice.isCreditNote}}{{paper-icon "check"}}{{/if}}</td>
           <td>
-            {{#paper-button onClick=(action "openEdit" invoice) iconButton=true}}
-              {{paper-icon "edit mode"}}
-              {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
-            {{/paper-button}}
-            {{#paper-button onClick=(action "remove" invoice) iconButton=true}}
-              {{paper-icon "delete"}}
-              {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-            {{/paper-button}}
+            {{#unless isDisabledEdit}}
+              {{#paper-button onClick=(action "openEdit" invoice) iconButton=true}}
+                {{paper-icon "edit mode"}}
+                {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
+              {{/paper-button}}
+              {{#paper-button onClick=(action "remove" invoice) iconButton=true}}
+                {{paper-icon "delete"}}
+                {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+              {{/paper-button}}
+            {{/unless}}
           </td>
         </tr>
     {{else}}

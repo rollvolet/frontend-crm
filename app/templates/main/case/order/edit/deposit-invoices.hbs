@@ -1,8 +1,12 @@
-{{deposits-panel model=order.deposits depositRequired=order.depositRequired
+{{#if isDisabledEdit}}
+  <div class="u-margin-top-small">{{warning-message message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk."}}</div>
+{{/if}}
+
+{{deposits-panel model=order.deposits depositRequired=order.depositRequired isDisabledEdit=isDisabledEdit
     onCreate=(action "createNewDeposit")}}
 
 <div class="u-margin-bottom-large"></div>
 
-{{deposit-invoices-panel model=model vatRate=order.vatRate onCreate=(action "createNewDepositInvoice")}}
+{{deposit-invoices-panel model=model vatRate=order.vatRate isDisabledEdit=isDisabledEdit onCreate=(action "createNewDepositInvoice")}}
 
 {{liquid-outlet}}

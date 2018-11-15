@@ -1,9 +1,12 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
+import { notEmpty } from '@ember/object/computed';
 
 export default Controller.extend({
   store: service(),
+
+  isDisabledEdit: notEmpty('order.invoice.id'),
 
   actions: {
     async createNewDeposit() {

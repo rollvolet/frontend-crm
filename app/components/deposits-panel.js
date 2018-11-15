@@ -10,6 +10,7 @@ export default Component.extend({
   depositRequired: false,
   onCreateNewDeposit: null,
   showUnsavedChangesDialog: false,
+  isDisabledEdit: false,
 
   totalAmount: sum(mapBy('model', raw('amount'))),
   hasDeposits: not(isEmpty('model')),

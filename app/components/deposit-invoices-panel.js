@@ -9,6 +9,7 @@ export default Component.extend({
   order: null,
   selected: null,
   showUnsavedChangesDialog: false,
+  isDisabledEdit: false,
 
   arithmeticAmounts: computed('model', 'model.@each.{baseAmount,isCreditNote}', function() {
     return this.model ? this.model.map(i => i.arithmeticAmount) : 0;
