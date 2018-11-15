@@ -15,6 +15,7 @@ export default Component.extend({
   onContactChange: null,
   onOpenEdit: null,
   onCloseEdit: null,
+  showInvoiceDocumentDialog: false,
   showInvoiceDocumentNotFoundDialog: false,
   showUnsavedChangesDialog: false,
 
@@ -77,18 +78,6 @@ export default Component.extend({
       yield this.model.save();
     }
   }).keepLatest(),
-  generateInvoiceDocument: task(function * () {
-    const oldInvoiceDate = this.model.invoiceDate;
-    try {
-      this.model.set('invoiceDate', new Date());
-      yield this.save.perform();
-      yield this.documentGeneration.invoiceDocument(this.model);
-    } catch(e) {
-      warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
-      this.model.set('invoiceDate', oldInvoiceDate);
-      yield this.save.perform();
-    }
-  }),
 
   actions: {
     openEdit() {
@@ -115,6 +104,9 @@ export default Component.extend({
     },
     confirmAlert() {
       this.set('showInvoiceDocumentNotFoundDialog', false);
+    },
+    openInvoiceDocumentDialog() {
+      this.set('showInvoiceDocumentDialog', true);
     }
   }
 });

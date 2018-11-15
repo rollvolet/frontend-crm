@@ -33,7 +33,7 @@ export default Controller.extend({
         invoiceDate,
         dueDate,
         baseAmount: 0,
-        certificateRequired: vatRate.code == 6,
+        certificateRequired: vatRate.rate == 6,
         certificateReceived: false,
         certificateClosed: false,
         isCreditNote: false,

@@ -6,9 +6,7 @@
     {{/if}}
   </div>
   <div>
-    {{#if generateInvoiceDocument.isRunning}}
-      {{paper-progress-circular diameter=18}}
-    {{else if editMode}}
+    {{#if editMode}}
       {{#unless isDisabledEdit}}
         {{#paper-button onClick=(perform remove) iconButton=true}}
           {{paper-icon "delete"}}
@@ -25,7 +23,7 @@
         {{#paper-tooltip}}Factuur bekijken{{/paper-tooltip}}
       {{/paper-button}}
       {{#unless isDisabledEdit}}
-        {{#paper-button onClick=(perform generateInvoiceDocument) iconButton=true}}
+        {{#paper-button onClick=(action "openInvoiceDocumentDialog") iconButton=true}}
           {{paper-icon "restore page"}}
           {{#paper-tooltip}}Factuur maken{{/paper-tooltip}}
         {{/paper-button}}
@@ -86,3 +84,5 @@
     {{/paper-dialog-actions}}
   {{/paper-dialog}}
 {{/if}}
+
+{{invoice-document-dialog show=showInvoiceDocumentDialog model=model save=save}}

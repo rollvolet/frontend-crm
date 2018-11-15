@@ -1,0 +1,57 @@
+{{#if show}}
+  {{#paper-dialog class="flex-50 invoice-document-dialog" onClose=(action "close") clickOutsideToClose=true
+       parent=".main-outlet" origin=".main-outlet"}}
+    {{#paper-toolbar}}
+      {{#paper-toolbar-tools}}
+        <h2>Factuur maken</h2><span class="flex"></span>
+        {{#paper-button iconButton=true onClick=(action "close")}}
+          {{paper-icon icon="close"}}
+        {{/paper-button}}
+      {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+
+    {{#paper-dialog-content}}
+      <div class="layout-row layout-align-start-center panel--language">
+        <label class="key">Kies een taal</label>
+        {{#paper-radio-group groupValue=(readonly language) onChange=(action (mut language)) as |group|}}
+          {{#group.radio value="NED"}}Nederlands{{/group.radio}}
+          {{#group.radio value="FR"}}Frans{{/group.radio}}
+        {{/paper-radio-group}}
+      </div>
+      {{#if model.certificateRequired}}
+        <div class="layout-row layout-align-start-center panel--vat-certificate">
+          <label class="key">BTW attest</label>
+          {{#if (or model.certificateReceived newCertificateGenerated)}}
+            <span>{{paper-icon primary=true icon="done" size=36}}</span>
+          {{else if (or uploadCertificate.isRunning generateCertificate.isRunning)}}
+            {{paper-progress-circular diameter=36}}
+          {{else}}
+            <div class="layout-row">
+              {{#file-upload name="certificates" class="md-default-theme md-button md-primary md-raised" accept="application/pdf"
+                   onfileadd=(perform uploadCertificate) as |queue|}}
+                {{#if hasCertificateUploadError}}
+                  {{paper-icon "error" primary=true}}
+                  {{#paper-tooltip}}Bestand niet correct opgeladen{{/paper-tooltip}}
+                {{/if}}
+                Attest opladen
+              {{/file-upload}}
+              <div>
+                {{#paper-button primary=true raised=true onClick=(perform generateCertificate)}}Nieuw attest maken{{/paper-button}}
+              </div>
+            </div>
+          {{/if}}
+        </div>
+      {{/if}}
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class="layout-row"}}
+      <span class="flex"></span>
+      {{#if generateInvoiceDocument.isRunning}}
+        {{paper-progress-circular diameter=18}}
+      {{else}}
+        {{#paper-button onClick=(action "close")}}Annuleer{{/paper-button}}
+        {{#paper-button onClick=(perform generateInvoiceDocument)}}OK{{/paper-button}}
+      {{/if}}
+    {{/paper-dialog-actions}}
+  {{/paper-dialog}}
+{{/if}}

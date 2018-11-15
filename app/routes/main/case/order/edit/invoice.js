@@ -24,7 +24,7 @@ export default Route.extend({
       invoiceDate,
       dueDate,
       baseAmount: amount,
-      certificateRequired: vatRate.code == 6,
+      certificateRequired: vatRate.rate == 6,
       certificateReceived: false,
       certificateClosed: false,
       isCreditNote: false,

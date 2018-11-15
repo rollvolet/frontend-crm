@@ -8,7 +8,7 @@ export default Component.extend({
   classNames: ['certificate-download'],
 
   invoice: null,
-  tooltip: 'Bekijken',
+  tooltip: 'BTW attest bekijken',
 
   click() {
     this.documentGeneration.downloadCertificate(this.invoice);

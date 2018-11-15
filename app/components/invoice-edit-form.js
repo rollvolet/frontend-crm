@@ -1,36 +1,12 @@
 import Component from '@ember/component';
-import { inject as service } from '@ember/service';
-import { task } from 'ember-concurrency';
-import { warn } from '@ember/debug';
 
 export default Component.extend({
-  documentGeneration: service(),
-
   model: null,
   save: null,
   onBuildingChange: null,
   onContactChange: null,
-  hasCertificateUploadError: false,
-
-  uploadCertificate: task(function * (file) {
-    try {
-      this.set('hasCertificateUploadError', false);
-      yield this.documentGeneration.uploadCertificate(this.model, file);
-      this.model.set('certificateReceived', true);
-      yield this.model.save();
-    } catch (e) {
-      warn(`Error while uploading certificate: ${e.message || JSON.stringify(e)}`, { id: 'failure.upload' } );
-      file.queue.remove(file);
-      this.model.set('certificateReceived', false);
-      this.set('hasCertificateUploadError', true);
-    }
-  }).enqueue(),
 
   actions: {
-    async deleteCertificate() {
-      this.model.set('certificateReceived', false);
-      await this.model.save();
-    },
     setContact(contact) {
       this.set('model.contact', contact);
       this.onContactChange(contact);
@@ -38,6 +14,11 @@ export default Component.extend({
     setBuilding(building) {
       this.set('model.building', building);
       this.onBuildingChange(building);
+    },
+    setVatRate(vatRate) {
+      this.set('model.vatRate', vatRate);
+      this.set('model.certificateRequired', vatRate.rate == 6);
+
     }
   }
 });
