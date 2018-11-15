@@ -4,12 +4,14 @@ import snippets from '../../../../../config/snippets';
 
 export default Route.extend({
   case: service(),
+  store: service(),
 
   async model() {
     const customer = this.modelFor('main.case');
     const request = this.modelFor('main.case.request.edit');
     const contact = await request.get('contact');
     const building = await request.get('building');
+    const vatRate = this.store.peekAll('vat-rate').find(v => v.rate == 21);
 
     let language;
     if (contact)
@@ -25,6 +27,7 @@ export default Route.extend({
       documentOutro: snippets[language]['offerDocumentOutro'],
       documentVersion: 'v1',
       comment: request.comment,
+      vatRate,
       customer,
       request,
       contact,

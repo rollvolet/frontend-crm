@@ -19,13 +19,13 @@ export default Service.extend(FileSaverMixin, {
     const fileName = this._offerDocumentName(offer);
     return this._generate(`/api/offers/${offer.get('id')}/documents`, fileName, 'application/pdf');
   },
-  invoiceDocument(invoice) {
+  invoiceDocument(invoice, language) {
     const fileName = this._invoiceDocumentName(invoice);
-    return this._generate(`/api/invoices/${invoice.get('id')}/documents`, fileName, 'application/pdf');
+    return this._generate(`/api/invoices/${invoice.get('id')}/documents?language=${language}`, fileName, 'application/pdf');
   },
-  certificate(invoice) {
+  certificate(invoice, language) {
     const fileName = this._certificateName(invoice);
-    return this._generate(`/api/invoices/${invoice.id}/certificates`, fileName, 'application/pdf');
+    return this._generate(`/api/invoices/${invoice.id}/certificates?language=${language}`, fileName, 'application/pdf');
   },
 
 

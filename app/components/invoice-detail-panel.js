@@ -32,9 +32,6 @@ export default Component.extend({
       const order = await this.model.order;
       this.documentGeneration.downloadProductionTicket(order);
     },
-    generateCertificate() {
-      this.documentGeneration.certificate(this.model);
-    },
     async deleteCertificate() {
       this.model.set('certificateReceived', false);
       await this.model.save();

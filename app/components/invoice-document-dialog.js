@@ -16,14 +16,11 @@ export default Component.extend({
   newCertificateGenerated: false,
 
   generateInvoiceDocument: task(function * () {
-    debug(`Selected language is: ${this.language}`);
-    // TODO take language into account on document generation
-
     const oldInvoiceDate = this.model.invoiceDate;
     try {
       this.model.set('invoiceDate', new Date());
       yield this.save.perform();
-      yield this.documentGeneration.invoiceDocument(this.model);
+      yield this.documentGeneration.invoiceDocument(this.model, this.language);
       this.set('show', false);
     } catch(e) {
       warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
@@ -32,7 +29,7 @@ export default Component.extend({
     }
   }),
   generateCertificate: task(function * () {
-    yield this.documentGeneration.certificate(this.model);
+    yield this.documentGeneration.certificate(this.model, this.language);
     this.set('newCertificateGenerated', true);
   }),
   uploadCertificate: task(function * (file) {

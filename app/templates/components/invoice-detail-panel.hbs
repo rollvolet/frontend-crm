@@ -37,10 +37,6 @@
             {{#paper-tooltip}}BTW attest verwijderen{{/paper-tooltip}}
           {{/paper-button}}
         {{else}}
-          <span {{action "generateCertificate"}}>
-            {{paper-icon "restore page"}}
-            {{#paper-tooltip}}BTW attest maken{{/paper-tooltip}}
-          </span>
           {{#file-upload name="certificates" accept="application/pdf" class="certificate-upload"
                onfileadd=(perform uploadCertificate) as |queue|}}
             {{#if hasCertificateUploadError}}
