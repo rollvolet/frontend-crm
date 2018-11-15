@@ -81,6 +81,13 @@ md-input-container .md-errors-spacer {
   background: #ffffff00; /* transparent */
 }
 
+.md-panel.md-tooltip {
+  background-color: #FFF;
+  color: $base-color;
+  font-size: 0.9em;
+  border: 1px solid $base-color;
+}
+
 
 /* Edit pages */
 .save-status {
