@@ -64,11 +64,13 @@ export default Component.extend({
 
       if (this.model.changedAttributes().reference) {
         const order = yield this.model.order;
-        const offer = yield order.offer;
-        if (offer) {
-          debug('Syncing reference of offer with updated reference of invoice');
-          offer.set('reference', this.model.reference);
-          yield offer.save();
+        if (order) {
+          const offer = yield order.offer;
+          if (offer) {
+            debug('Syncing reference of offer with updated reference of invoice');
+            offer.set('reference', this.model.reference);
+            yield offer.save();
+          }
         }
       }
 
