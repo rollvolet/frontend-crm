@@ -36,8 +36,6 @@ export default Controller.extend({
         certificateRequired: vatRate.rate == 6,
         certificateReceived: false,
         certificateClosed: false,
-        isCreditNote: false,
-        hasProductionTicket: false,
         reference: offer.reference,
         order: this.order,
         vatRate,

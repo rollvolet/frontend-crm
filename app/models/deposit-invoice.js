@@ -26,8 +26,6 @@ export default DS.Model.extend(Validations, {
   certificateRequired: DS.attr('boolean'),
   certificateReceived: DS.attr('boolean'),
   certificateClosed: DS.attr('boolean'),
-  isCreditNote: DS.attr('boolean'),
-  hasProductionTicket: DS.attr('boolean'),
   comment: DS.attr(),
   qualification: DS.attr(),
   reference: DS.attr(),
