@@ -18,7 +18,6 @@ export default Component.extend({
     setVatRate(vatRate) {
       this.set('model.vatRate', vatRate);
       this.set('model.certificateRequired', vatRate.rate == 6);
-
     }
   }
 });
