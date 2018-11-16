@@ -13,7 +13,6 @@ export default Component.extend({
   save: null,
   show: false,
   hasCertificateUploadError: false,
-  newCertificateGenerated: false,
 
   generateInvoiceDocument: task(function * () {
     const oldInvoiceDate = this.model.invoiceDate;
@@ -30,7 +29,6 @@ export default Component.extend({
   }),
   generateCertificate: task(function * () {
     yield this.documentGeneration.certificate(this.model, this.language);
-    this.set('newCertificateGenerated', true);
   }),
   uploadCertificate: task(function * (file) {
     try {

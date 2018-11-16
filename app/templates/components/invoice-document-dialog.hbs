@@ -21,7 +21,7 @@
       {{#if model.certificateRequired}}
         <div class="layout-row layout-align-start-center panel--vat-certificate">
           <label class="key">BTW attest</label>
-          {{#if (or model.certificateReceived newCertificateGenerated)}}
+          {{#if model.certificateReceived}}
             <span>{{paper-icon primary=true icon="done" size=36}}</span>
           {{else if (or uploadCertificate.isRunning generateCertificate.isRunning)}}
             {{paper-progress-circular diameter=36}}
