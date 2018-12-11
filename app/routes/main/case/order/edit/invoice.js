@@ -43,9 +43,7 @@ export default Route.extend({
 
   afterModel(model) {
     const customer = this.modelFor('main.case');
-    this.transitionTo('main.case.invoice.edit', customer, model, {
-      queryParams: { editMode: true }
-    });
+    this.transitionTo('main.case.invoice.edit', customer, model);
 
     // update case to display the new invoice tab
     this.case.set('current.invoiceId', model.get('id'));
