@@ -84,7 +84,7 @@ export default Service.extend(FileSaverMixin, {
     return `${order.offerNumber}_productiebon`.replace(onlyAlphaNumeric, '') + '.pdf';
   },
   _certificateName(invoice) {
-    return `F${invoice.number}_attest`.replace(onlyAlphaNumeric, '') + '.pdf';
+    return `A${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
   },
 
 
