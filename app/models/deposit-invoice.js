@@ -1,8 +1,9 @@
 import DS from 'ember-data';
-import { conditional, product } from 'ember-awesome-macros';
+import { product } from 'ember-awesome-macros';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
 import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 
 const Validations = buildValidations({
   invoiceDate: validator('presence', true),
@@ -42,11 +43,11 @@ export default DS.Model.extend(Validations, {
   bookingDateStr: dateString('bookingDate'),
   paymentDateStr: dateString('paymentDate'),
   cancellationDateStr: dateString('cancellationDate'),
-  arithmeticAmount: conditional('isCreditNote', product('baseAmount', -1), 'baseAmount'),
-  arithmeticVat: computed('baseAmount', 'creditNote', 'vatRate', async function() {
+  arithmeticAmount: alias('baseAmount'),
+  arithmeticVat: computed('baseAmount', 'vatRate', async function() {
     const vatRate = await this.vatRate;
     const rate = vatRate.rate / 100;
     const vat = this.baseAmount * rate;
-    return this.isCreditNote ? vat * -1 : vat;
+    return vat;
   })
 });

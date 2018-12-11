@@ -40,7 +40,6 @@
       <th>Vervaldatum</th>
       <th>Nettobedrag</th>
       <th>BTW</th>
-      <th>Creditnota</th>
       <th><!-- Edit/Delete --></th>
     </thead>
     <tbody>
@@ -51,7 +50,6 @@
           <td>{{fmt-date invoice.dueDate}}</td>
           <td>{{fmt-currency invoice.arithmeticAmount}}</td>
           <td>{{fmt-currency (await invoice.arithmeticVat)}}</td>
-          <td>{{#if invoice.isCreditNote}}{{paper-icon "check"}}{{/if}}</td>
           <td>
             {{#unless isDisabledEdit}}
               {{#paper-button onClick=(action "openEdit" invoice) iconButton=true}}
@@ -66,7 +64,7 @@
           </td>
         </tr>
     {{else}}
-        <tr><td colspan="7">Geen voorschotfacturen</td></tr>
+        <tr><td colspan="6">Geen voorschotfacturen</td></tr>
       {{/each}}
     </tbody>
   </table>

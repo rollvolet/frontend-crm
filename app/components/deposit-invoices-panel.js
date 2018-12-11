@@ -11,10 +11,10 @@ export default Component.extend({
   showUnsavedChangesDialog: false,
   isDisabledEdit: false,
 
-  arithmeticAmounts: computed('model', 'model.@each.{baseAmount,isCreditNote}', function() {
+  arithmeticAmounts: computed('model', 'model.{[],@each.arithmeticAmount}', function() {
     return this.model ? this.model.map(i => i.arithmeticAmount) : 0;
   }),
-  arithmeticVats: computed('model', 'model.@each.{vatRate,isCreditNote}', function() {
+  arithmeticVats: computed('model', 'model.{[],@each.arithmeticVat}', function() {
     return this.model ? this.model.map(i => i.arithmeticVat) : 0;
   }),
   totalAmount: sum('arithmeticAmounts'),
