@@ -7,10 +7,6 @@ import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   orderDate: validator('presence', true),
-  amount: validator('number', {
-    allowBlank: true,
-    positive: true
-  }),
   scheduledHours: validator('number', {
     allowBlank: true,
     positive: true
@@ -25,7 +21,6 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   orderDate: DS.attr('date'),
   offerNumber: DS.attr(),
   requestNumber: DS.attr(),
-  amount: DS.attr('number'), // TODO deprecate (is sum of offerlines)
   depositRequired: DS.attr('boolean'),
   hasProductionTicket: DS.attr('boolean'),
   mustBeInstalled: DS.attr('boolean'),

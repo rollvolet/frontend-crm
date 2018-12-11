@@ -18,9 +18,6 @@ export default Controller.extend({
     const building = yield this.model.get('building');
     const vatRate = yield this.model.get('vatRate');
 
-    // TODO deprecate amount or it must be updated on each change
-    const orderedAmount = offerlines.filterBy('isOrdered').mapBy('amount').reduce((a, b) => a + b);
-
     const order = this.store.createRecord('order', {
       orderDate: new Date(),
       requestNumber: this.model.requestNumber,
@@ -28,7 +25,6 @@ export default Controller.extend({
       comment: this.model.comment,
       scheduledHours: 0,
       scheduledNbOfPersons: 2,
-      amount: orderedAmount,
       depositRequired: true,
       hasProductionTicket: false,
       mustBeInstalled: true,

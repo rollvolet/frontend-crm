@@ -1,19 +1,13 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import DecimalInputFormatting from '../mixins/decimal-input-formatting';
 
-export default Component.extend(DecimalInputFormatting, {
+export default Component.extend({
   store: service(),
 
   model: null,
   save: null,
   onContactChange: null,
   onBuildingChange: null,
-
-  init() {
-    this._super(...arguments);
-    this.initDecimalInput('amount');
-  },
 
   actions: {
     setContact(contact) {

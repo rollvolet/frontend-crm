@@ -25,16 +25,6 @@
           onChange=(action (mut scheduledNbOfPersonsInput)) onBlur=(queue (action "formatDecimal" "scheduledNbOfPersons") (perform save))
           class="small"}}<span class="input-postfix"> man = {{model.scheduledTotal}} uur</span>
     </div>
-    <div class="u-bold">Bedrag</div>
-    <div class="layout-row">
-      {{paper-input label="Bedrag (€)" value=amountInput
-          errors=(v-get model 'amount' 'messages')
-          onChange=(action (mut amountInput)) onBlur=(queue (action "formatDecimal" "amount") (perform save))
-          class="small"}}
-      {{vat-rate-select value=model.vatRate
-          onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
-          class="md-input-wrapper default"}}
-    </div>
     <div class="layout-row layout-align-start-center">
       {{paper-checkbox label="Voorschot nodig" value=model.depositRequired
           onChange=(queue (action (mut model.depositRequired)) (perform save))}}

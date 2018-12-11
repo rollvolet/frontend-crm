@@ -16,8 +16,8 @@
       <span class="{{if isNbOfPersonsWarning "warning-inline"}}">{{model.scheduledNbOfPersons}} man</span>
       = {{model.scheduledTotal}} uur
     {{/detail-list-item}}
-    {{#detail-list-item label="Bedrag"}}
-      {{fmt-currency model.amount}} ({{model.vatRate.rate}}% BTW)
+    {{#detail-list-item label="BTW tarief"}}
+      {{model.vatRate.name}} BTW
     {{/detail-list-item}}
     {{#detail-list-item label="Voorschotten"}}
       {{paper-checkbox label="Nodig" value=model.depositRequired onChange=null}}

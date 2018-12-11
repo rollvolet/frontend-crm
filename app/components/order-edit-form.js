@@ -16,7 +16,6 @@ export default Component.extend(DecimalInputFormatting, {
 
   init() {
     this._super(...arguments);
-    this.initDecimalInput('amount');
     this.initDecimalInput('scheduledHours');
     this.initDecimalInput('scheduledNbOfPersons');
   },
