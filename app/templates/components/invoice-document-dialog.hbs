@@ -15,11 +15,11 @@
         <label class="key">Kies een taal</label>
         {{#paper-radio-group groupValue=(readonly language) onChange=(action (mut language)) as |group|}}
           {{#group.radio value="NED"}}Nederlands{{/group.radio}}
-          {{#group.radio value="FR"}}Frans{{/group.radio}}
+          {{#group.radio value="FRA"}}Frans{{/group.radio}}
         {{/paper-radio-group}}
       </div>
-      {{#if model.certificateRequired}}
-        <div class="layout-row layout-align-start-center panel--vat-certificate">
+      <div class="layout-row layout-align-start-center panel--vat-certificate">
+        {{#if model.certificateRequired}}
           <label class="key">BTW attest</label>
           {{#if model.certificateReceived}}
             <span>{{paper-icon primary=true icon="done" size=36}}</span>
@@ -40,8 +40,10 @@
               </div>
             </div>
           {{/if}}
-        </div>
-      {{/if}}
+        {{else}}
+          <p class="note">Er is geen BTW attest nodig.</p>
+        {{/if}}
+      </div>
     {{/paper-dialog-content}}
 
     {{#paper-dialog-actions class="layout-row"}}
