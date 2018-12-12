@@ -21,11 +21,13 @@ export default Service.extend(FileSaverMixin, {
   },
   invoiceDocument(invoice, language) {
     const fileName = this._invoiceDocumentName(invoice);
-    return this._generate(`/api/invoices/${invoice.get('id')}/documents?language=${language}`, fileName, 'application/pdf');
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    return this._generate(`/api/${resource}/${invoice.get('id')}/documents?language=${language}`, fileName, 'application/pdf');
   },
   certificate(invoice, language) {
     const fileName = this._certificateName(invoice);
-    return this._generate(`/api/invoices/${invoice.id}/certificates?language=${language}`, fileName, 'application/pdf');
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    return this._generate(`/api/${resource}/${invoice.id}/certificates?language=${language}`, fileName, 'application/pdf');
   },
 
 
@@ -56,16 +58,18 @@ export default Service.extend(FileSaverMixin, {
     return this._download(`/api/orders/${order.id}/production-ticket`, fileName, 'application/pdf');
   },
   downloadCertificate(invoice) {
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     const fileName = this._certificateName(invoice);
-    return this._download(`/api/invoices/${invoice.id}/certificate`, fileName, 'application/pdf');
+    return this._download(`/api/${resource}/${invoice.id}/certificate`, fileName, 'application/pdf');
   },
   downloadOfferDocument(offer) {
     const fileName = this._offerDocumentName(offer);
     return this._download(`/api/offers/${offer.id}/document`, fileName, 'application/pdf');
   },
   downloadInvoiceDocument(invoice) {
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     const fileName = this._invoiceDocumentName(invoice);
-    return this._download(`/api/invoices/${invoice.id}/document`, fileName, 'application/pdf');
+    return this._download(`/api/${resource}/${invoice.id}/document`, fileName, 'application/pdf');
   },
 
 

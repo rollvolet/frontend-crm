@@ -1,13 +1,18 @@
 import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
+import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
-import { sum } from 'ember-awesome-macros';
+import { sum, and, not } from 'ember-awesome-macros';
 
 export default Component.extend({
+  documentGeneration: service(),
+
   model: null,
   onCreate: null,
   order: null,
   selected: null,
+  showInvoiceDocumentDialog: false,
+  showInvoiceDocumentNotFoundDialog: false,
   showUnsavedChangesDialog: false,
   isDisabledEdit: false,
 
@@ -23,6 +28,7 @@ export default Component.extend({
       return values.reduce((a, b) => a + b, 0);
     });
   }),
+  editMode: and('selected', not('showInvoiceDocumentDialog')),
 
   rollbackTree: task(function * () {
     const rollbackPromises = [];
@@ -69,6 +75,20 @@ export default Component.extend({
     async remove(invoice) {
       this.model.removeObject(invoice);
       invoice.destroyRecord();
+    },
+    async downloadInvoiceDocument(invoice) {
+      const document = await this.documentGeneration.downloadInvoiceDocument(invoice);
+
+      if (!document)
+        this.set('showInvoiceDocumentNotFoundDialog', true);
+    },
+    closeInvoiceDocumentDialog() {
+      // showInvoiceDocumentDialog is updated by the component
+      this.set('selected', null);
+    },
+    openInvoiceDocumentDialog(invoice) {
+      this.set('selected', invoice);
+      this.set('showInvoiceDocumentDialog', true);
     }
   }
 

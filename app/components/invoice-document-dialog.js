@@ -1,7 +1,7 @@
 import Component from '@ember/component';
-import { task, all } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
-import { debug, warn } from '@ember/debug';
+import { warn } from '@ember/debug';
 
 export default Component.extend({
   documentGeneration: service(),
@@ -13,6 +13,7 @@ export default Component.extend({
   save: null,
   show: false,
   hasCertificateUploadError: false,
+  onClose: function() {},
 
   generateInvoiceDocument: task(function * () {
     const oldInvoiceDate = this.model.invoiceDate;
@@ -20,7 +21,7 @@ export default Component.extend({
       this.model.set('invoiceDate', new Date());
       yield this.save.perform();
       yield this.documentGeneration.invoiceDocument(this.model, this.language);
-      this.set('show', false);
+      this._close();
     } catch(e) {
       warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
       this.model.set('invoiceDate', oldInvoiceDate);
@@ -44,10 +45,14 @@ export default Component.extend({
     }
   }).enqueue(),
 
+  _close() {
+    this.set('show', false);
+    this.onClose();
+  },
 
   actions: {
     close() {
-      this.set('show', false);
+      this._close();
     }
   }
 });

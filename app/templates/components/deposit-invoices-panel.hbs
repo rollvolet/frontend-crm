@@ -5,7 +5,7 @@
   {{/paper-button}}
 </div>
 
-{{#liquid-if selected class="data-table-selection"}}
+{{#liquid-if editMode class="data-table-selection"}}
   <div class="layout-row layout-align-space-between-center">
     <div class="layout-row layout-align-start-center">
       <h2>Factuur {{format-invoice-number selected.number}}</h2>
@@ -60,7 +60,15 @@
                 {{paper-icon "delete"}}
                 {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
               {{/paper-button}}
+              {{#paper-button onClick=(action "openInvoiceDocumentDialog" invoice) iconButton=true}}
+                {{paper-icon "restore page"}}
+                {{#paper-tooltip}}Voorschotfactuur maken{{/paper-tooltip}}
+              {{/paper-button}}
             {{/unless}}
+            {{#paper-button onClick=(action "downloadInvoiceDocument" invoice) iconButton=true}}
+              {{paper-icon "find in page"}}
+              {{#paper-tooltip}}Voorschotfactuur bekijken{{/paper-tooltip}}
+            {{/paper-button}}
           </td>
         </tr>
     {{else}}
@@ -71,3 +79,9 @@
 {{/liquid-if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
+
+{{#document-not-found-dialog show=showInvoiceDocumentNotFoundDialog}}
+  <p>Er is nog geen voorschotfactuur aangemaakt.</p>
+{{/document-not-found-dialog}}
+
+{{invoice-document-dialog show=showInvoiceDocumentDialog model=selected save=save onClose=(action "closeInvoiceDocumentDialog")}}
