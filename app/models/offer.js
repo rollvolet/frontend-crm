@@ -13,7 +13,6 @@ export default DS.Model.extend(Validations, {
   sequenceNumber: DS.attr(),
   requestNumber: DS.attr(),
   offerDate: DS.attr('date'),
-  comment: DS.attr(),
   reference: DS.attr(),
   documentIntro: DS.attr(),
   documentOutro: DS.attr(),

@@ -74,15 +74,17 @@ export default Component.extend(EKMixin, PellOptions, {
 
     const { validations } = yield this.model.validate();
     if (validations.isValid) {
-      if (this.model.changedAttributes().comment) {
-        const request = yield this.model.request;
-        if (request) {
-          debug('Syncing comment of request with updated comment of offer');
-          request.set('comment', this.model.comment);
-          yield request.save();
+      if (this.model.changedAttributes().reference) {
+        const order = yield this.model.order;
+        if (order) {
+          const invoice = yield order.invoice;
+          if (invoice) {
+            debug('Syncing reference of invoice with updated reference of offer');
+            invoice.set('reference', this.model.reference);
+            yield invoice.save();
+          }
         }
       }
-      // TODO sync reference from offer to invoice (if it exists)
       yield this.model.save();
     }
   }),

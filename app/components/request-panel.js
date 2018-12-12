@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
-import { debug, warn } from '@ember/debug';
+import { warn } from '@ember/debug';
 import { computed } from '@ember/object';
 import { notEmpty } from '@ember/object/computed';
 import { on } from '@ember/object/evented';
@@ -61,14 +61,6 @@ export default Component.extend(EKMixin, {
 
     const { validations } = yield this.model.validate();
     if (validations.isValid) {
-      if (this.model.changedAttributes().comment) {
-        const offer = yield this.model.offer;
-        if (offer) {
-          debug('Syncing comment of offer with updated comment of request');
-          offer.set('comment', this.model.comment);
-          yield offer.save();
-        }
-      }
       yield this.model.save();
     }
   }).keepLatest(),

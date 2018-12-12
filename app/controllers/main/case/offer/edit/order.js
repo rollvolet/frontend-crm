@@ -22,7 +22,6 @@ export default Controller.extend({
       orderDate: new Date(),
       requestNumber: this.model.requestNumber,
       offerNumber: this.model.number,
-      comment: this.model.comment,
       scheduledHours: 0,
       scheduledNbOfPersons: 2,
       depositRequired: true,

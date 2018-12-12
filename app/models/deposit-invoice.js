@@ -1,5 +1,4 @@
 import DS from 'ember-data';
-import { product } from 'ember-awesome-macros';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
 import { computed } from '@ember/object';

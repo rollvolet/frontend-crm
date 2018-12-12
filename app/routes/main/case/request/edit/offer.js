@@ -26,7 +26,6 @@ export default Route.extend({
       documentIntro: snippets[language]['offerDocumentIntro'],
       documentOutro: snippets[language]['offerDocumentOutro'],
       documentVersion: 'v1',
-      comment: request.comment,
       vatRate,
       customer,
       request,
