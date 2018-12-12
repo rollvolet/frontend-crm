@@ -1,14 +1,16 @@
 <table>
   <thead>
     <th>Aantal</th>
+    <th>Eenheid</th>
     <th>Omschrijving</th>
-    <th>Nettobedrag</th>
+    <th>Netto/eenheid (&euro;)</th>
     <th><!-- Edit/Delete --></th>
   </thead>
   <tbody>
     {{#each model as |supplement|}}
       <tr>
         <td>{{supplement.nbOfPieces}}</td>
+        <td>{{supplement.unit}}</td>
         <td>{{{supplement.description}}}</td>
         <td>{{fmt-currency supplement.amount}}</td>
         <td>
@@ -25,7 +27,7 @@
         </td>
       </tr>
     {{else}}
-      <tr><td colspan="4">Geen extra's</td></tr>
+      <tr><td colspan="5">Geen extra's</td></tr>
     {{/each}}
   </tbody>
 </table>

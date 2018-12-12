@@ -1,0 +1,7 @@
+{{#power-select placeholder=label searchPlaceholder="Typ om te zoeken" options=options selected=selectedOption
+     searchField="value" onchange=(action "changeSelection")
+     noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
+  {{highlight-substr option.value select.lastSearchedText}}
+{{/power-select}}
+
+{{md-error-messages errors=errors}}

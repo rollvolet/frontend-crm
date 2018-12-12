@@ -3,11 +3,14 @@
       errors=(v-get model 'nbOfPieces' 'messages')
       onChange=(action (mut nbOfPiecesInput)) onBlur=(queue (action "formatDecimal" "nbOfPieces") (perform save))
       class="small"}}
+  {{unit-for-amount-select value=model.unit errors=(v-get model 'unit' 'messages')
+      onSelectionChange=(queue (action (mut model.unit)) (perform save))
+      class="md-input-wrapper default"}}
   <div>
-    {{paper-input label="Bedrag (€)" value=amountInput
+    {{paper-input label="Netto/eenheid (€)" value=amountInput
         errors=(v-get model 'amount' 'messages')
         onChange=(action (mut amountInput)) onBlur=(queue (action "formatDecimal" "amount") (perform save))
-        class="small"}}
+        class="default"}}
   </div>
 </div>
 <div class="layout-row">
