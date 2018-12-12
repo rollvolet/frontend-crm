@@ -69,6 +69,30 @@
               {{paper-icon "find in page"}}
               {{#paper-tooltip}}Voorschotfactuur bekijken{{/paper-tooltip}}
             {{/paper-button}}
+            {{#if invoice.certificateRequired}}
+              <br>
+              BTW attest:
+              {{#if invoice.certificateReceived}}
+                {{certificate-download-button invoice=invoice}}
+                {{#paper-button onClick=(action "deleteCertificate" invoice) iconButton=true}}
+                  {{paper-icon "delete"}}
+                  {{#paper-tooltip}}BTW attest verwijderen{{/paper-tooltip}}
+                {{/paper-button}}
+              {{else}}
+                {{#file-upload name="certificates" accept="application/pdf" class="certificate-upload"
+                     onfileadd=(perform uploadCertificate invoice) as |queue|}}
+                  {{#if invoice.hasCertificateUploadError}}
+                    {{paper-icon "error" primary=true}}
+                    {{#paper-tooltip}}Bestand niet correct opgeladen{{/paper-tooltip}}
+                  {{/if}}
+                  {{#if queue.files.length}}
+                    {{paper-progress-circular diameter=25}}
+                  {{else}}
+                    <i class="material-icons md-18">cloud_upload</i>
+                  {{/if}}
+                {{/file-upload}}
+              {{/if}}
+            {{/if}}
           </td>
         </tr>
     {{else}}

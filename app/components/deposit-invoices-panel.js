@@ -3,6 +3,7 @@ import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import { sum, and, not } from 'ember-awesome-macros';
+import { warn } from '@ember/debug';
 
 export default Component.extend({
   documentGeneration: service(),
@@ -29,6 +30,20 @@ export default Component.extend({
     });
   }),
   editMode: and('selected', not('showInvoiceDocumentDialog')),
+
+  uploadCertificate: task(function * (invoice, file) {
+    try {
+      invoice.set('hasCertificateUploadError', false);
+      yield this.documentGeneration.uploadCertificate(invoice, file);
+      invoice.set('certificateReceived', true);
+      yield invoice.save();
+    } catch (e) {
+      warn(`Error while uploading certificate: ${e.message || JSON.stringify(e)}`, { id: 'failure.upload' } );
+      file.queue.remove(file);
+      invoice.set('certificateReceived', false);
+      invoice.set('hasCertificateUploadError', true);
+    }
+  }).enqueue(),
 
   rollbackTree: task(function * () {
     const rollbackPromises = [];
@@ -89,6 +104,10 @@ export default Component.extend({
     openInvoiceDocumentDialog(invoice) {
       this.set('selected', invoice);
       this.set('showInvoiceDocumentDialog', true);
+    },
+    async deleteCertificate(invoice) {
+      invoice.set('certificateReceived', false);
+      await invoice.save();
     }
   }
 

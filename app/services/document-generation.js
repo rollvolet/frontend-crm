@@ -43,7 +43,8 @@ export default Service.extend(FileSaverMixin, {
   },
   uploadCertificate(invoice, file) {
     const { access_token } = this.get('session.data.authenticated');
-    return file.upload(`/api/invoices/${invoice.id}/certificate`, {
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    return file.upload(`/api/${resource}/${invoice.id}/certificate`, {
       headers: {
         Authorization: `Bearer ${access_token}`
       }
