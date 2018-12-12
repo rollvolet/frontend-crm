@@ -102,9 +102,6 @@ export default Component.extend({
       if (!document)
         this.set('showInvoiceDocumentNotFoundDialog', true);
     },
-    confirmAlert() {
-      this.set('showInvoiceDocumentNotFoundDialog', false);
-    },
     openInvoiceDocumentDialog() {
       this.set('showInvoiceDocumentDialog', true);
     }
