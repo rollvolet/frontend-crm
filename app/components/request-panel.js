@@ -20,6 +20,7 @@ export default Component.extend(EKMixin, {
   showUnsavedChangesDialog: false,
 
   isDisabledEdit: notEmpty('model.offer.id'),
+  isLinkedToCustomer: notEmpty('model.customer.id'),
 
   hasFailedVisit: computed('model.visit', function() {
     return this.model.get('visit') &&
@@ -64,6 +65,13 @@ export default Component.extend(EKMixin, {
       yield this.model.save();
     }
   }).keepLatest(),
+  unlinkCustomer: task(function * () {
+    this.model.set('customer', null);
+    this.model.set('contact', null);
+    this.model.set('building', null);
+    yield this.save.perform();
+    this.router.transitionTo('main.requests.edit', this.model);
+  }),
 
   // eslint-disable-next-line ember/no-on-calls-in-components
   openEditByShortcut: on(keyUp('ctrl+alt+KeyU'), function() {

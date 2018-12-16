@@ -83,7 +83,7 @@
           <td>{{row.building.postalCode}}</td>
           <td>{{row.building.city}}</td>
         {{else}}
-          <td>{{paper-icon "person"}}</td>
+          <td>{{#if row.customer}}{{paper-icon "person"}}{{else}}{{paper-icon "link off"}}{{/if}}</td>
           <td>{{print-name model=row.customer}}</td>
           <td>{{row.customer.address1}}</td>
           <td>{{row.customer.postalCode}}</td>

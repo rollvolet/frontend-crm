@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { warn } from '@ember/debug';
-import { bool } from '@ember/object/computed';
+import { bool, notEmpty } from '@ember/object/computed';
 
 export default Component.extend({
   store: service(),
@@ -29,6 +29,7 @@ export default Component.extend({
   },
 
   hasVisitMasteredByAccess: bool('model.visit.isMasteredByAccess'),
+  isLinkedToCustomer: notEmpty('model.customer.id'),
 
   removeVisit: task(function * () {
     const visit = yield this.model.get('visit');

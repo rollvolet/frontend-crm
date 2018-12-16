@@ -14,16 +14,18 @@
           onSelectionChange=(queue (action (mut model.wayOfEntry)) (perform save))
           class="md-input-wrapper default"}}
     </div>
-    <div class="layout-row layout-align-start-center">
-      {{paper-checkbox label="Bezoek nodig" value=model.requiresVisit
-          disabled=hasVisitMasteredByAccess onChange=(action "setRequiresVisit")}}
-    </div>
+    {{#if isLinkedToCustomer}}
+      <div class="layout-row layout-align-start-center">
+        {{paper-checkbox label="Bezoek nodig" value=model.requiresVisit
+            disabled=hasVisitMasteredByAccess onChange=(action "setRequiresVisit")}}
+      </div>
+    {{/if}}
     <div class="layout-row">
       {{paper-input label="Opmerking" value=model.comment
           onChange=(action (mut model.comment)) onBlur=(perform save)
           textarea=true passThru=(hash rows=3) class="xxlarge"}}
     </div>
-    {{#if (await model.customer)}}
+    {{#if isLinkedToCustomer}}
       <div class="layout-row">
         {{contact-select value=model.contact customer=(await model.customer)
             onSelectionChange=(queue (action "setContact") (perform save))
@@ -36,9 +38,11 @@
       </div>
     {{/if}}
   </section>
-  {{#if hasVisitMasteredByAccess}}
-    {{visit-detail-panel model=model.visit}}
-  {{else if model.requiresVisit}}
-    {{visit-edit-form model=model.visit}}
+  {{#if isLinkedToCustomer}}
+    {{#if hasVisitMasteredByAccess}}
+      {{visit-detail-panel model=model.visit}}
+    {{else if model.requiresVisit}}
+      {{visit-edit-form model=model.visit}}
+    {{/if}}
   {{/if}}
 </div>
