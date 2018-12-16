@@ -6,9 +6,7 @@
     {{/if}}
   </div>
   <div>
-    {{#if generateOfferDocument.isRunning}}
-      {{paper-progress-circular diameter=18}}
-    {{else if editMode}}
+    {{#if editMode}}
       {{#unless isDisabledEdit}}
         {{#paper-button onClick=(perform remove) iconButton=true}}
           {{paper-icon "delete"}}
@@ -20,16 +18,6 @@
         {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
       {{/paper-button}}
     {{else}}
-      {{#paper-button onClick=(action "downloadOfferDocument") iconButton=true}}
-        {{paper-icon "find in page"}}
-        {{#paper-tooltip}}Offerte bekijken{{/paper-tooltip}}
-      {{/paper-button}}
-      {{#unless isDisabledEdit}}
-        {{#paper-button onClick=(perform generateOfferDocument) iconButton=true}}
-          {{paper-icon "restore page"}}
-          {{#paper-tooltip}}Offerte maken{{/paper-tooltip}}
-        {{/paper-button}}
-      {{/unless}}
       {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
         {{paper-icon "edit mode"}}
         {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
@@ -65,7 +53,28 @@
     {{offer-detail-panel model=model}}
   {{/if}}
 
-  <h2>Offerte <span class="small-text-fade">[{{model.documentVersion}}]</span></h2>
+  <div class="layout-row layout-align-space-between-center">
+    <h2>Offerte <span class="small-text-fade">[{{model.documentVersion}}]</span></h2>
+    <div>
+      {{#if generateOfferDocument.isRunning}}
+        {{paper-progress-circular diameter=18}}
+      {{else}}
+        {{#unless editMode}}
+          {{#paper-button onClick=(action "downloadOfferDocument") iconButton=true}}
+            {{paper-icon "find in page"}}
+            {{#paper-tooltip}}Offerte bekijken{{/paper-tooltip}}
+          {{/paper-button}}
+        {{/unless}}
+        {{#unless isDisabledEdit}}
+          {{#paper-button onClick=(perform generateOfferDocument) iconButton=true}}
+            {{paper-icon "restore page"}}
+            {{#paper-tooltip}}Offerte maken{{/paper-tooltip}}
+          {{/paper-button}}
+        {{/unless}}
+      {{/if}}
+    </div>
+  </div>
+
   {{#if editMode}}
     <div class="offer-document-form layout-column">
       <section class="layout-row">
