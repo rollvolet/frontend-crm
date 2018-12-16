@@ -89,6 +89,9 @@ export default Component.extend(EKMixin, {
     },
     generateVisitReport() {
       return this.documentGeneration.visitReport(this.model);
+    },
+    linkCustomer() {
+      this.router.transitionTo('main.requests.edit.customer', this.model);
     }
   }
 });

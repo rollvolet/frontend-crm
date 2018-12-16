@@ -10,17 +10,22 @@ Router.map(function() {
   this.route('login');
   this.route('main', { path: '/' }, function() {
     this.route('customers', function() {
-      this.route('edit', { path: '/:customer_id' });
       this.route('new');
+      this.route('edit', { path: '/:customer_id' });
     });
-    this.route('requests', function() {});
+    this.route('requests', function() {
+      this.route('new'); // create a new request without a customer
+      this.route('edit', { path: '/:request_id' }, function() {
+        this.route('customer');
+      });
+    });
     this.route('offers', function() {});
     this.route('orders', function() {});
     this.route('deposit-invoices', function() {});
     this.route('invoices', function() {});
     this.route('case', { path: '/case/:customer_id' }, function() {
       this.route('request', function() {
-        this.route('new');
+        this.route('new'); // create a new request with a customer
         this.route('edit', { path: '/:request_id' }, function() {
           this.route('offer'); // create new offer
         });

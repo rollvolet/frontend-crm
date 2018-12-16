@@ -22,10 +22,17 @@
         {{paper-icon "edit mode"}}
         {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
       {{/paper-button}}
-      {{#paper-button onClick=(action "generateVisitReport") iconButton=true}}
-        {{paper-icon "description"}}
-        {{#paper-tooltip}}Bezoekrapport{{/paper-tooltip}}
-      {{/paper-button}}
+      {{#if (await model.customer)}}
+        {{#paper-button onClick=(action "generateVisitReport") iconButton=true}}
+          {{paper-icon "description"}}
+          {{#paper-tooltip}}Bezoekrapport{{/paper-tooltip}}
+        {{/paper-button}}
+      {{else}}
+        {{#paper-button onClick=(action "linkCustomer") iconButton=true}}
+          {{paper-icon "link"}}
+          {{#paper-tooltip}}Koppel klant{{/paper-tooltip}}
+        {{/paper-button}}
+      {{/if}}
     {{/if}}
   </div>
 </div>
