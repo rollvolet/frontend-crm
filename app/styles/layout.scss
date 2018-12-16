@@ -1,10 +1,16 @@
 .main-outlet {
+  margin-top: 64px;
   padding: 25px;
   min-width: 800px;
 }
 
 /* Top toolbar */
 .top-toolbar {
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+
   h1 {
     padding-left: 5px;
     text-transform: uppercase;
