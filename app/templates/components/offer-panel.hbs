@@ -85,7 +85,7 @@
       </section>
       <section>
         <label>Introductie</label>
-        {{pell-editor class="pell-editor wide" value=model.documentIntro pellOptions=pellOptions
+        {{pell-editor class="pell-editor offer-intro" value=model.documentIntro pellOptions=pellOptions
             onChange=(action (mut model.documentIntro)) focusOut=(perform save)}}
       </section>
       <section>
@@ -99,7 +99,7 @@
       </section>
       <section>
         <label>Voorwaarden</label>
-        {{pell-editor class="pell-editor wide" value=model.documentOutro pellOptions=pellOptions
+        {{pell-editor class="pell-editor offer-outro" value=model.documentOutro pellOptions=pellOptions
             onChange=(action (mut model.documentOutro)) focusOut=(perform save)}}
       </section>
     </div>

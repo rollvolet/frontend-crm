@@ -3,13 +3,23 @@
   margin: 5px;
   background-color: #FFF;
 
-  &.small .pell-content {
-    height: 150px;
-    width: 500px;
+  &.offerline {
+    width: 800px;
+
+    .pell-content {
+      height: 150px;
+      width: 800px;
+    }
   }
 
-  &.wide .pell-content {
-    height: 100px;
-    width: 800px;
+  &.offer-intro,
+  &.offer-outro {
+    width: 1000px;
+
+    .pell-content {
+      height: 100px;
+      width: 1000px;
+    }
   }
+
 }
