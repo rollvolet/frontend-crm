@@ -8,19 +8,37 @@
     <th>Memo</th>
   </thead>
   <tbody>
-    {{#if (is-pending model)}}
+    {{#if (is-pending model.telephones)}}
       <tr><td colspan="6">Aan het laden...</td></tr>
     {{else}}
-      {{#each (sort-by "order" "id" model) as |telephone|}}
-        {{telephone-edit-form-line model=telephone}}
+      {{#each (sort-by "order" "id" displayTelephones) as |telephone|}}
+        <tr>
+          <td onclick={{perform removeTelephone telephone}}>
+            {{paper-icon "delete"}}
+            {{#paper-tooltip}}Verwijder nummer{{/paper-tooltip}}
+          </td>
+          <td>{{telephone.telephoneType.name}}</td>
+          <td>{{telephone.country.telephonePrefix}}</td>
+          <td>{{telephone.area}}</td>
+          <td>{{format-phone-number telephone.number}}</td>
+          <td>{{telephone.memo}}</td>
+        </tr>
       {{else}}
-        <tr><td colspan="6">Geen telefoonnummers</td></tr>
+        {{#unless newTelephone}}
+          <tr><td colspan="6">Geen telefoonnummers</td></tr>
+        {{/unless}}
       {{/each}}
+    {{/if}}
+    {{#if newTelephone}}
+      {{telephone-edit-form-line model=newTelephone
+          save=updateNewTelephone remove=removeNewTelephone
+          errorMessages=errorMessages}}
     {{/if}}
   </tbody>
 </table>
 <div class="layout-row layout-align-end-center">
-  {{#paper-button primary=true fab=true mini=true raised=true onClick=(action "addTelephone")}}
+  {{#paper-button primary=true fab=true mini=true raised=true disabled=isDisabledCreateNew
+       onClick=(perform createNewTelephone)}}
     {{paper-icon "add"}}
   {{/paper-button}}
 </div>
