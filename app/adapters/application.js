@@ -9,5 +9,24 @@ export default DS.JSONAPIAdapter.extend(HasManyQuery.RESTAdapterMixin, DataAdapt
   authorize(xhr) {
     const { access_token } = this.get('session.data.authenticated');
     xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+  },
+
+
+  handleResponse(status, headers, payload, requestData) {
+    if (!this.isSuccess(status, headers, payload)) {
+      payload = {
+        errors: [
+          {
+            status: `${status}`,
+            code: `${payload.code}`,
+            title: `${payload.title}`,
+            detail: `${payload.detail}`
+          },
+        ]
+      };
+    }
+
+    return this._super(...arguments);
   }
+
 });
