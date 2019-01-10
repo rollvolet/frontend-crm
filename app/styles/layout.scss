@@ -1,5 +1,5 @@
 .main-outlet {
-  margin-top: 64px;
+  margin-top: 64px; /* height of the fixed toolbar on top */
   padding: 25px;
   min-width: 800px;
 }
@@ -52,4 +52,13 @@
       }
     }
   }
+}
+
+/*
+  Workaround to make fixed position work with liquid-fire
+  See: https://github.com/ember-animation/liquid-fire/issues/197
+*/
+.liquid-container > .liquid-child,
+.liquid-container {
+  transform: initial;
 }
