@@ -1,7 +1,8 @@
-import { computed } from '@ember/object';
 import Component from '@ember/component';
 import { task, hash } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
+import { A } from '@ember/array';
+import { computed } from '@ember/object';
 
 const digitsOnly = /\D/g;
 
@@ -13,6 +14,7 @@ export default Component.extend({
   model: null,
   onRemove: null,
   onUpdate: null,
+  errorMessages: A(),
 
   formattedNumber: computed('model.number', function() {
     if (this.model.number) {
@@ -67,7 +69,11 @@ export default Component.extend({
     try {
       yield newTelephone.save();
     } catch(e) {
+      if (!newTelephone.isValid)
+        this.errorMessages.pushObject('Nummer bestaat al');
+
       newTelephone.deleteRecord();
+
       throw e; // save task must fail
     }
 
@@ -76,7 +82,9 @@ export default Component.extend({
     // See https://github.com/emberjs/data/issues/4972
     //  and https://github.com/emberjs/data/issues/5006
     this.store._removeFromIdMap(this.model._internalModel);
+
     this.onUpdate(this.model, newTelephone);
+    this.errorMessages.clear();
   }).keepLatest(),
 
   actions: {

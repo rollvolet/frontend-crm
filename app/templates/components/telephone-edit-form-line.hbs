@@ -20,7 +20,8 @@
 </td>
 <td>
   {{paper-input value=formattedNumber
-      onChange=(action "setNumber") onBlur=(perform save) errors=(v-get model 'number' 'messages')
+      onChange=(action "setNumber") onBlur=(perform save)
+      errors=(union (v-get model 'number' 'messages') errorMessages)
       required="style" class="small"}}
 </td>
 <td>
