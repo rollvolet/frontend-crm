@@ -8,12 +8,15 @@
     <th>Memo</th>
   </thead>
   <tbody>
-    {{#each (sort-by "order" model) as |telephone|}}
-      {{telephone-edit-form-line model=telephone scope=scope
-          onUpdate=(action "updateTelephone") onRemove=(action "removeTelephone")}}
+    {{#if (is-pending model)}}
+      <tr><td colspan="6">Aan het laden...</td></tr>
     {{else}}
-      <tr><td colspan="6">Geen telefoonnummers</td></tr>
-    {{/each}}
+      {{#each (sort-by "order" "id" model) as |telephone|}}
+        {{telephone-edit-form-line model=telephone}}
+      {{else}}
+        <tr><td colspan="6">Geen telefoonnummers</td></tr>
+      {{/each}}
+    {{/if}}
   </tbody>
 </table>
 <div class="layout-row layout-align-end-center">
