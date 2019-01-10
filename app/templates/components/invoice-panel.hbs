@@ -18,16 +18,16 @@
         {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
       {{/paper-button}}
     {{else}}
+      {{#paper-button onClick=(action "downloadInvoiceDocument") iconButton=true}}
+        {{paper-icon "find in page"}}
+        {{#paper-tooltip}}Factuur bekijken{{/paper-tooltip}}
+      {{/paper-button}}
       {{#unless isDisabledEdit}}
         {{#paper-button onClick=(action "openInvoiceDocumentDialog") iconButton=true}}
           {{paper-icon "restore page"}}
           {{#paper-tooltip}}Factuur maken{{/paper-tooltip}}
         {{/paper-button}}
       {{/unless}}
-      {{#paper-button onClick=(action "downloadInvoiceDocument") iconButton=true}}
-        {{paper-icon "find in page"}}
-        {{#paper-tooltip}}Factuur bekijken{{/paper-tooltip}}
-      {{/paper-button}}
       {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
         {{paper-icon "edit mode"}}
         {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
