@@ -137,6 +137,10 @@ export default Component.extend(EKMixin, PellOptions, {
         offer: this.model,
         vatRate
       });
+      if (this.model.isMasteredByAccess) {
+        this.model.set('amount', 0); // make sure offer is no longer mastered by Access
+        this.model.save();
+      }
       offerline.save();
       this.onOpenEdit();
     },

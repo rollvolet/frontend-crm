@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import { bool } from '@ember/object/computed';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
 
@@ -13,6 +14,7 @@ export default DS.Model.extend(Validations, {
   sequenceNumber: DS.attr(),
   requestNumber: DS.attr(),
   offerDate: DS.attr('date'),
+  amount: DS.attr(),
   reference: DS.attr(),
   documentIntro: DS.attr(),
   documentOutro: DS.attr(),
@@ -27,5 +29,6 @@ export default DS.Model.extend(Validations, {
   submissionType: DS.belongsTo('submission-type'),
   offerlines: DS.hasMany('offerline'),
 
-  offerDateStr: dateString('offerDate')
+  offerDateStr: dateString('offerDate'),
+  isMasteredByAccess: bool('amount')
 });

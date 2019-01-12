@@ -3,6 +3,11 @@
     {{#detail-list-item label="Datum"}}
       {{fmt-date model.offerDate}}
     {{/detail-list-item}}
+    {{#if model.isMasteredByAccess}}
+      {{#detail-list-item label="Bedrag"}}
+        {{fmt-currency model.amount}}
+      {{/detail-list-item}}
+    {{/if}}
     {{#detail-list-item label="BTW tarief"}}
       {{model.vatRate.name}} BTW
     {{/detail-list-item}}
