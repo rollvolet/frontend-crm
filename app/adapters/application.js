@@ -12,7 +12,7 @@ export default DS.JSONAPIAdapter.extend(HasManyQuery.RESTAdapterMixin, DataAdapt
   },
 
 
-  handleResponse(status, headers, payload, requestData) {
+  handleResponse(status, headers, payload/*, requestData*/) {
     if (!this.isSuccess(status, headers, payload)) {
       payload = {
         errors: [

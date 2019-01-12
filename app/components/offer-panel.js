@@ -2,7 +2,10 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { notEmpty } from '@ember/object/computed';
+import { computed } from '@ember/object';
+import { notEmpty, mapBy } from '@ember/object/computed';
+import { uniqBy, length } from 'ember-awesome-macros/array';
+import { gt, raw } from 'ember-awesome-macros';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import PellOptions from '../mixins/pell-options';
@@ -23,6 +26,9 @@ export default Component.extend(EKMixin, PellOptions, {
   showOfferDocumentNotFoundDialog: false,
 
   isDisabledEdit: notEmpty('model.order.id'),
+
+  vatRates: mapBy('model.offerlines', 'vatRate'),
+  hasMixedVatRates: gt(length(uniqBy('vatRates', raw('code'))), raw(1)),
   hasUnsavedChanges: async function() {
     const offerlines = await this.model.offerlines;
     const offerlineWithUnsavedChanges = offerlines.find(o => o.isNew || o.validations.isInvalid || o.isError);

@@ -29,6 +29,9 @@
 {{#if isDisabledEdit}}
   {{warning-message message="Reeds besteld. Geen wijzigingen meer mogelijk."}}
 {{/if}}
+{{#if hasMixedVatRates}}
+  {{info-message message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden."}}
+{{/if}}
 
 {{#if remove.isRunning}}
   <div>

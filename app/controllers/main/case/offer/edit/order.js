@@ -1,13 +1,19 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { task, all } from 'ember-concurrency';
-import { any } from 'ember-awesome-macros/array';
+import { notEmpty, filterBy, mapBy } from '@ember/object/computed';
+import { any, uniqBy, length } from 'ember-awesome-macros/array';
+import { gt, or, not, raw } from 'ember-awesome-macros';
 
 export default Controller.extend({
   case: service(),
   store: service(),
 
-  hasSelectedLines: any('model.offerlines.@each.isOrdered', o => o.isOrdered),
+  orderedOfferlines: filterBy('model.offerlines', 'isOrdered'),
+  hasSelectedLines: notEmpty('orderedOfferlines'),
+  vatRates: mapBy('orderedOfferlines', 'vatRate'),
+  hasMixedVatRates: gt(length(uniqBy('vatRates', raw('code'))), raw(1)),
+  isDisabledCreate: or(not('hasSelectedLines'), 'hasMixedVatRates'),
 
   createOrder: task(function * () {
     const offerlines = yield this.model.get('offerlines');

@@ -13,6 +13,11 @@
     <p>Bestelling aanmaken...</p>
   </div>
 {{else}}
+  {{#if hasMixedVatRates}}
+    <div class="u-margin-top-small">
+      {{warning-message message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden."}}
+    </div>
+  {{/if}}
   <p>Klik op 1 of meer lijnen om toe te voegen aan de bestelling</p>
   <div class="case--order--offerlines-selection">
     {{#each model.offerlines as |offerline|}}
@@ -36,7 +41,7 @@
 
 <div class="layout-row layout-align-end-center">
   {{#paper-button onClick=(action "cancel")}}Annuleer{{/paper-button}}
-  {{#paper-button primary=true raised=true onClick=(perform createOrder) disabled=(not hasSelectedLines)}}
+  {{#paper-button primary=true raised=true onClick=(perform createOrder) disabled=isDisabledCreate}}
     Ga verder
   {{/paper-button}}
 </div>
