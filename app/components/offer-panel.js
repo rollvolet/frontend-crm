@@ -2,7 +2,6 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { computed } from '@ember/object';
 import { notEmpty, mapBy } from '@ember/object/computed';
 import { uniqBy, length } from 'ember-awesome-macros/array';
 import { gt, raw } from 'ember-awesome-macros';

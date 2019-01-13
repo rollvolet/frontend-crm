@@ -55,8 +55,12 @@
 {{/if}}
 
 <h2>Bestelde producten</h2>
-<div class="offer-document layout-column">
-  <section>{{offerlines-detail-panel model=orderedOfferlines}}</section>
-</div>
+{{#if model.isMasteredByAccess}}
+  <p class="note-message">De bestelling is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
+{{else}}
+  <div class="offer-document layout-column">
+    <section>{{offerlines-detail-panel model=orderedOfferlines}}</section>
+  </div>
+{{/if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}

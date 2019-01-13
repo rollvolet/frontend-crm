@@ -1,7 +1,8 @@
 import DS from 'ember-data';
 import HasManyQuery from 'ember-data-has-many-query';
-import { bool } from '@ember/object/computed';
+import { or } from 'ember-awesome-macros';
 import { computed } from '@ember/object';
+import { bool } from '@ember/object/computed';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
 
@@ -19,6 +20,7 @@ const Validations = buildValidations({
 
 export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   orderDate: DS.attr('date'),
+  amount: DS.attr(),
   offerNumber: DS.attr(),
   requestNumber: DS.attr(),
   depositRequired: DS.attr('boolean'),
@@ -58,5 +60,5 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   requiredDateStr: dateString('requiredDate'),
   planningDateStr: dateString('planningDate'),
   isPlanned: bool('planningMsObjectId'),
-  isMasteredByAccess: bool('planningId')
+  isMasteredByAccess: or('planningId', 'amount')
 });
