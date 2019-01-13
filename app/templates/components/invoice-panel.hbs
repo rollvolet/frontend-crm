@@ -1,6 +1,8 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
-    <h2>Factuur {{format-invoice-number model.number}}</h2>
+    <div>
+      <h2>Factuur {{format-invoice-number model.number}}</h2>
+    </div>
     {{#if editMode}}
       {{save-status-icon model=model task=save}}
     {{/if}}
@@ -36,7 +38,7 @@
   </div>
 </div>
 
-{{#if isDisabledEdit}}
+{{#if isBooked}}
   {{warning-message message="Factuur reeds geboekt. Geen wijzigingen meer mogelijk."}}
 {{/if}}
 
@@ -63,6 +65,13 @@
   {{/if}}
 {{else}}
   {{invoice-detail-panel model=model}}
+{{/if}}
+
+{{#if model.isMasteredByAccess}}
+  <div class="layout-row">
+    <span class="flex"></span>
+    <p class="note note--info">Beheerd in Access</p>
+  </div>
 {{/if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}

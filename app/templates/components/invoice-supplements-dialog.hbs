@@ -18,6 +18,9 @@
         {{invoice-supplements-table model=model.supplements
             onOpenEdit=(action "openEdit") onDelete=(action "deleteSupplement")}}
       {{/liquid-if}}
+      {{#if model.isMasteredByAccess}}
+        <p class="note-message">De factuur is aangemaakt in Access. De extra's kunnen hier niet aangepast worden.</p>
+      {{/if}}
     {{/paper-dialog-content}}
 
     {{#paper-dialog-actions class="layout-row"}}
@@ -30,7 +33,7 @@
           {{save-status-icon model=selected task=save}}
           {{#paper-button onClick=(action "closeEdit")}}Klaar{{/paper-button}}
         {{else}}
-          {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "createNew") disabled=selected}}
+          {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "createNew") disabled=isDisabledNew}}
             {{paper-icon "add"}}
             {{#paper-tooltip}}Nieuwe extra{{/paper-tooltip}}
           {{/paper-button}}

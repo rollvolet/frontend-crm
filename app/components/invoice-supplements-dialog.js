@@ -1,6 +1,8 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { notEmpty } from '@ember/object/computed';
+import { or } from 'ember-awesome-macros';
 
 export default Component.extend({
   store: service(),
@@ -9,6 +11,8 @@ export default Component.extend({
   show: false,
   model: null,
   showUnsavedChangesWarning: false,
+
+  isDisabledNew: or(notEmpty('selected'), notEmpty('model.bookingDate'), 'model.isMasteredByAccess'),
 
   rollbackTree: task(function * () {
     this.selected.rollbackAttributes();

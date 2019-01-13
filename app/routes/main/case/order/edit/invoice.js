@@ -5,6 +5,13 @@ import moment from 'moment';
 export default Route.extend({
   case: service(),
 
+  beforeModel(transition) {
+    const order = this.modelFor('main.case.order.edit');
+
+    if (order.isMasteredByAccess)
+      transition.abort();
+  },
+
   async model() {
     const order = this.modelFor('main.case.order.edit');
     const vatRate = await order.vatRate;
