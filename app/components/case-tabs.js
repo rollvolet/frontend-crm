@@ -18,14 +18,14 @@ export default Component.extend({
     this.set('currentRouteName', this.get('router.currentRouteName'));
   }),
 
-  hasNextStepOffer: computed('model', 'model.{requestId,offerId}', function() {
+  canCreateNewOffer: computed('model', 'model.{requestId,offerId}', function() {
     return this.model && this.model.requestId && this.model.offerId == null;
   }),
-  hasNextStepOrder: computed('model', 'model.{offerId,orderId}', function() {
+  canCreateNewOrder: computed('model', 'model.{offerId,orderId}', function() {
     return this.model && this.model.offerId && this.model.orderId == null;
   }),
-  hasNextStepInvoice: computed('model', 'model.{orderId,invoiceId}', function() {
-    return this.model && this.model.orderId && this.model.invoiceId == null;
+  canCreateNewInvoice: computed('model', 'model.{orderId,invoiceId,order}', function() {
+    return this.model && this.model.orderId && this.model.invoiceId == null && this.model.order && !this.model.order.isMasteredByAccess;
   }),
 
   actions: {

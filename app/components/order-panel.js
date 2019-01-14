@@ -46,13 +46,13 @@ export default Component.extend(EKMixin, {
       yield offer.save();
 
       // update case-tabs
-      this.case.set('current.orderId', null);
+      this.case.updateRecord('order', null);
 
       // delete order
       yield this.model.destroyRecord();
       // TODO: Fix this hack when Ember Data allows creation of already deleted ID
       // See https://github.com/emberjs/data/issues/5006
-      this.store._removeFromIdMap(this.model._internalModel);
+      // this.store._removeFromIdMap(this.model._internalModel);
 
       this.router.transitionTo('main.case.offer.edit', offer);
     } catch (e) {

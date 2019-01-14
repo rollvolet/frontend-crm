@@ -31,7 +31,7 @@ export default Component.extend({
       yield this.model.destroyRecord();
 
       // update case-tabs
-      this.case.set('current.invoiceId', null);
+      this.case.updateRecord('invoice', null);
 
       if (order)
         this.router.transitionTo('main.case.order.edit', order);

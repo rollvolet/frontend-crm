@@ -42,6 +42,6 @@ export default Route.extend({
     });
 
     // update case to display the new offer tab
-    this.case.set('current.offerId', model.get('id'));
+    this.case.updateRecord('offer', model);
   }
 });

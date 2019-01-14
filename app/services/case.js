@@ -1,6 +1,8 @@
+import { debug } from '@ember/debug';
 import Service, { inject as service } from '@ember/service';
 import { assert } from '@ember/debug';
 import Case from '../models/case';
+import { task } from 'ember-concurrency';
 
 const regexMap = {
   requestId: /case\/\d+\/request\/(\d+)/i,
@@ -21,6 +23,7 @@ export default Service.extend({
 
   router: service(),
   session: service(),
+  store: service(),
   ajax: service(),
 
   async init() {
@@ -29,11 +32,41 @@ export default Service.extend({
   },
 
   async initCase() {
-    const currentCase = await this.loadCaseForCurrentRoute();
+    const currentCase = await this.loadCaseForCurrentRoute.perform();
     this.set('current', currentCase);
+    await this.loadRecords.perform();
   },
 
-  async loadCaseForCurrentRoute() {
+  updateRecord(type, record) {
+    this.set(`current.${type}`, record);
+    this.set(`current.${type}Id`, record && record.get('id'));
+  },
+
+  loadRecords: task(function * () {
+    const promises = ['request', 'offer', 'order', 'invoice'].map(async (type) => {
+      debug(`Trying to resolve ${type} resource of current case`);
+      const idProp = `${type}Id`;
+      const currentId = this.current.get(idProp);
+      const currentResource = this.current.get(type);
+      if ( (currentId && !currentResource)
+           || (currentId && currentResource && currentId != currentResource.get('id'))) {
+        let record = this.store.peekRecord(type, currentId);
+
+        if (!record) {
+          debug(`Fetching ${type} resource of current case from backend`);
+          record = await this.store.findRecord(type, currentId);
+        } else {
+          debug(`${type} resource of current case is already loaded in the store`);
+        }
+
+        this.set(`current.${type}`, record);
+      }
+    });
+
+    yield Promise.all(promises);
+  }).keepLatest(),
+
+  loadCaseForCurrentRoute: task(function * () {
     const currentRoute = this.get('router.currentRouteName');
     const currentUrl = this.get('router.currentURL');
 
@@ -49,7 +82,7 @@ export default Service.extend({
 
     const { access_token } = this.get('session.data.authenticated');
     const headers = { 'Authorization': `Bearer ${access_token}` };
-    const response = await this.ajax.request(`/api/cases?${queryParam}`, { headers });
+    const response = yield this.ajax.request(`/api/cases?${queryParam}`, { headers });
     return Case.create({
       customerId: response.customerId,
       requestId: response.requestId,
@@ -57,5 +90,5 @@ export default Service.extend({
       orderId: response.orderId,
       invoiceId: response.invoiceId
     });
-  }
+  })
 });

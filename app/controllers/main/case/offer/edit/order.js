@@ -50,7 +50,7 @@ export default Controller.extend({
     });
 
     // update case to display the new order tab
-    this.case.set('current.orderId', this.model.get('id'));
+    this.case.updateRecord('order', this.model);
   }),
 
   actions: {

@@ -46,7 +46,7 @@ export default Component.extend(EKMixin, PellOptions, {
     request.set('offer', null);
     try {
       yield request.save();
-      this.case.set('current.offerId', null);
+      this.case.updateRecord('offer', null);
       yield all(this.model.offerlines.map(t => t.destroyRecord()));
       yield this.model.destroyRecord();
     } catch (e) {
