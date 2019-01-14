@@ -55,20 +55,54 @@
       </div>
       <div class="right-column layout-column">
         <div>
-          <h3>Gebouw</h3>
-          {{#if building}}
-            {{building-detail-card model=building}}
+          <div class="layout-row layout-align-space-between-center">
+            <h3>Gebouw</h3>
+            {{#if isEnabledEditBuilding}}
+              {{#paper-button onClick=(action "toggleBuildingEdit") iconButton=true}}
+                {{paper-icon "exit to app"}}
+                {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
+              {{/paper-button}}
+            {{else}}
+              {{#paper-button onClick=(action "toggleBuildingEdit") iconButton=true}}
+                {{paper-icon "edit mode"}}
+                {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
+              {{/paper-button}}
+            {{/if}}
+          </div>
+          {{#unless isEnabledEditBuilding}}
+            {{#if building}}
+              {{building-detail-card model=building}}
+            {{else}}
+              <p>n.v.t.</p>
+            {{/if}}
           {{else}}
-            <p>n.v.t</p>
-          {{/if}}
+{{building-select value=building customer=model onSelectionChange=(action "updateBuilding") class="md-input-wrapper xxlarge"}}
+          {{/unless}}
         </div>
         <div>
-          <h3>Contact</h3>
-          {{#if contact}}
-            {{contact-detail-card model=contact}}
+          <div class="layout-row layout-align-space-between-center">
+            <h3>Contact</h3>
+            {{#if isEnabledEditContact}}
+              {{#paper-button onClick=(action "toggleContactEdit") iconButton=true}}
+                {{paper-icon "exit to app"}}
+                {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
+              {{/paper-button}}
+            {{else}}
+              {{#paper-button onClick=(action "toggleContactEdit") iconButton=true}}
+                {{paper-icon "edit mode"}}
+                {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
+              {{/paper-button}}
+            {{/if}}
+          </div>
+          {{#unless isEnabledEditContact}}
+            {{#if contact}}
+              {{contact-detail-card model=contact}}
+            {{else}}
+              <p>n.v.t.</p>
+            {{/if}}
           {{else}}
-            <p>n.v.t</p>
-          {{/if}}
+            {{contact-select value=contact customer=model onSelectionChange=(action "updateContact") class="md-input-wrapper xxlarge"}}
+          {{/unless}}
         </div>
       </div>
     </div>

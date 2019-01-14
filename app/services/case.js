@@ -1,4 +1,3 @@
-import { debug } from '@ember/debug';
 import Service, { inject as service } from '@ember/service';
 import { assert } from '@ember/debug';
 import Case from '../models/case';
@@ -85,5 +84,37 @@ export default Service.extend({
       orderId: response.orderId,
       invoiceId: response.invoiceId
     });
+  }),
+
+  updateContactAndBuilding: task(function * (contact, building) {
+    const { access_token } = this.get('session.data.authenticated');
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${access_token}`
+    };
+    const data = {
+      contactId: contact && contact.get('id'),
+      buildingId: building && building.get('id'),
+      requestId: this.current.requestId,
+      offerId: this.current.offerId,
+      orderId: this.current.orderId,
+      invoiceId: this.current.invoiceId
+    };
+    const options = { headers, data };
+    yield this.ajax.post(`/api/cases/contact-and-building`, options);
+
+    const reloadPromises = [];
+    if (this.current.request)
+      reloadPromises.push(this.current.request.reload());
+    if (this.current.offer)
+      reloadPromises.push(this.current.offer.reload());
+    if (this.current.order) {
+      reloadPromises.push(this.current.order.reload());
+      reloadPromises.push(this.current.order.hasMany('deposit-invoice').reload());
+    }
+    if (this.current.invoice)
+      reloadPromises.push(this.current.invoice.reload());
+
+    yield Promise.all(reloadPromises);
   })
 });
