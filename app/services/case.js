@@ -44,7 +44,6 @@ export default Service.extend({
 
   loadRecords: task(function * () {
     const promises = ['request', 'offer', 'order', 'invoice'].map(async (type) => {
-      debug(`Trying to resolve ${type} resource of current case`);
       const idProp = `${type}Id`;
       const currentId = this.current.get(idProp);
       const currentResource = this.current.get(type);
@@ -52,12 +51,8 @@ export default Service.extend({
            || (currentId && currentResource && currentId != currentResource.get('id'))) {
         let record = this.store.peekRecord(type, currentId);
 
-        if (!record) {
-          debug(`Fetching ${type} resource of current case from backend`);
+        if (!record)
           record = await this.store.findRecord(type, currentId);
-        } else {
-          debug(`${type} resource of current case is already loaded in the store`);
-        }
 
         this.set(`current.${type}`, record);
       }
