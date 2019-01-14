@@ -10,8 +10,6 @@ export default Component.extend(DecimalInputFormatting, {
 
   model: null,
   save: null,
-  onContactChange: null,
-  onBuildingChange: null,
   hasProductionTicketUploadError: false,
 
   init() {
@@ -32,14 +30,6 @@ export default Component.extend(DecimalInputFormatting, {
   }).enqueue(),
 
   actions: {
-    setContact(contact) {
-      this.set('model.contact', contact);
-      this.onContactChange(contact);
-    },
-    setBuilding(building) {
-      this.set('model.building', building);
-      this.onBuildingChange(building);
-    },
     setCanceled(value) {
       this.model.set('canceled', value);
 

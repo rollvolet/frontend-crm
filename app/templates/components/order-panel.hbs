@@ -47,8 +47,7 @@
       <p>Aan het aanmaken...</p>
     </div>
   {{else}}
-    {{order-edit-form model=model save=save
-        onContactChange=onContactChange onBuildingChange=onBuildingChange}}
+    {{order-edit-form model=model save=save}}
   {{/if}}
 {{else}}
   {{order-detail-panel model=model}}

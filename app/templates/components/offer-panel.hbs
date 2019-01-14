@@ -50,8 +50,7 @@
   </div>
 {{else}}
   {{#if editMode}}
-    {{offer-edit-form model=model save=save
-        onContactChange=onContactChange onBuildingChange=onBuildingChange}}
+    {{offer-edit-form model=model save=save}}
   {{else}}
     {{offer-detail-panel model=model}}
   {{/if}}

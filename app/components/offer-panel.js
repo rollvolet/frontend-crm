@@ -19,8 +19,6 @@ export default Component.extend(EKMixin, PellOptions, {
   editMode: false,
   onOpenEdit: null,
   onCloseEdit: null,
-  onContactChange: null,
-  onBuildingChange: null,
   showUnsavedChangesDialog: false,
   showOfferDocumentNotFoundDialog: false,
 
