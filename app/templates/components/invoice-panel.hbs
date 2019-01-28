@@ -60,8 +60,7 @@
       <p>Aan het aanmaken...</p>
     </div>
   {{else}}
-    {{invoice-edit-form model=model save=save
-        onContactChange=onContactChange onBuildingChange=onBuildingChange}}
+    {{invoice-edit-form model=model save=save}}
   {{/if}}
 {{else}}
   {{invoice-detail-panel model=model}}

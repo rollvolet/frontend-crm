@@ -7,15 +7,5 @@ export default Route.extend({
       // because telephone types need to be included
       include: 'honorific-prefix'
     });
-  },
-  actions: {
-    setContact(contact) {
-      const controller = this.controllerFor('main.case');
-      controller.set('contact', contact);
-    },
-    setBuilding(building) {
-      const controller = this.controllerFor('main.case');
-      controller.set('building', building);
-    }
   }
 });

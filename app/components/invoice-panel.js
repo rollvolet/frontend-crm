@@ -12,8 +12,6 @@ export default Component.extend({
 
   model: null,
   editMode: false,
-  onBuildingChange: null,
-  onContactChange: null,
   onOpenEdit: null,
   onCloseEdit: null,
   showInvoiceDocumentDialog: false,

@@ -9,8 +9,6 @@ export default Component.extend({
 
   model: null,
   save: null,
-  onContactChange: null,
-  onBuildingChange: null,
 
   employee: null,
 
@@ -66,14 +64,6 @@ export default Component.extend({
       this.set('employee', employee);
       const firstName = employee ? employee.firstName : null;
       this.model.set('employee', firstName);
-    },
-    setContact(contact) {
-      this.set('model.contact', contact);
-      this.onContactChange(contact);
-    },
-    setBuilding(building) {
-      this.set('model.building', building);
-      this.onBuildingChange(building);
     }
   }
 });

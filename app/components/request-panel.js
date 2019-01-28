@@ -15,8 +15,6 @@ export default Component.extend(EKMixin, {
   editMode: false,
   onOpenEdit: null,
   onCloseEdit: null,
-  onContactChange: null,
-  onBuildingChange: null,
   showUnsavedChangesDialog: false,
 
   isDisabledEdit: notEmpty('model.offer.id'),

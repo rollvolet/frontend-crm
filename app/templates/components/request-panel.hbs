@@ -67,8 +67,7 @@
       <p>Aanvraag aan het loskoppelen van klant...</p>
     </div>
   {{else}}
-    {{request-edit-form model=model save=save
-        onContactChange=onContactChange onBuildingChange=onBuildingChange}}
+    {{request-edit-form model=model save=save}}
   {{/if}}
 {{else}}
   {{request-detail-panel model=model}}
