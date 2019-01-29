@@ -11,11 +11,13 @@ export default DS.Model.extend(Validations, {
   requiresVisit: DS.attr(),
   comment: DS.attr(),
   employee: DS.attr(),
+  visitor: DS.attr(),
+  offerExpected: DS.attr(),
   customer: DS.belongsTo('customer'),
   contact: DS.belongsTo('contact'),
   building: DS.belongsTo('building'),
   wayOfEntry: DS.belongsTo('way-of-entry'),
-  visit: DS.belongsTo('visit'),
+  calendarEvent: DS.belongsTo('calendar-event'),
   offer: DS.belongsTo('offer'),
 
   requestDateStr: dateString('requestDate')

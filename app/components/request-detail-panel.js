@@ -8,7 +8,7 @@ export default Component.extend({
 
   actions: {
     reloadVisit() {
-      this.model.belongsTo('visit').reload();
+      this.model.belongsTo('calendarEvent').reload();
     }
   }
 });

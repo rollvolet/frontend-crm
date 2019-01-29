@@ -21,6 +21,11 @@
       </div>
     {{/if}}
     <div class="layout-row">
+      {{employee-select label="Bezoeker" value=visitor function='B'
+          onSelectionChange=(queue (action "setVisitor") (perform save))
+          class="md-input-wrapper large"}}
+    </div>
+    <div class="layout-row">
       {{paper-input label="Opmerking" value=model.comment
           onChange=(action (mut model.comment)) onBlur=(perform save)
           textarea=true passThru=(hash rows=3) class="xxlarge"}}
@@ -28,9 +33,9 @@
   </section>
   {{#if isLinkedToCustomer}}
     {{#if hasVisitMasteredByAccess}}
-      {{visit-detail-panel model=model.visit}}
+      {{visit-detail-panel model=model.calendarEvent}}
     {{else if model.requiresVisit}}
-      {{visit-edit-form model=model.visit}}
+      {{visit-edit-form model=model.calendarEvent save=saveCalendarEvent}}
     {{/if}}
   {{/if}}
 </div>

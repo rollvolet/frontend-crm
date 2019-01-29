@@ -20,11 +20,11 @@ export default Component.extend(EKMixin, {
   isDisabledEdit: notEmpty('model.offer.id'),
   isLinkedToCustomer: notEmpty('model.customer.id'),
 
-  hasFailedVisit: computed('model.visit', function() {
-    return this.model.get('visit') &&
-      (this.model.get('visit.isNew')
-       || this.model.get('visit.validations.isInvalid')
-       || this.model.get('visit.isError'));
+  hasFailedCalendarEvent: computed('model.calendarEvent', function() {
+    return this.model.get('calendarEvent') &&
+      (this.model.get('calendarEvent.isNew')
+       || this.model.get('calendarEvent.validations.isInvalid')
+       || this.model.get('calendarEvent.isError'));
   }),
 
   init() {
@@ -35,9 +35,9 @@ export default Component.extend(EKMixin, {
   remove: task(function * () {
     const customer = yield this.model.customer;
     try {
-      const visit = yield this.model.visit;
-      if (visit)
-        yield visit.destroyRecord();
+      const calendarEvent = yield this.model.calendarEvent;
+      if (calendarEvent)
+        yield calendarEvent.destroyRecord();
       yield this.model.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying request ${this.model.id}`, { id: 'destroy-failure' });
@@ -50,8 +50,6 @@ export default Component.extend(EKMixin, {
     this.model.rollbackAttributes();
     const rollbackPromises = [];
     rollbackPromises.push(this.model.belongsTo('wayOfEntry').reload());
-    rollbackPromises.push(this.model.belongsTo('contact').reload());
-    rollbackPromises.push(this.model.belongsTo('building').reload());
     yield all(rollbackPromises);
     yield this.save.perform(null, { forceSucces: true });
   }),
@@ -83,7 +81,7 @@ export default Component.extend(EKMixin, {
     closeEdit() {
       if (this.model.isNew || this.model.validations.isInvalid || this.model.isError
           || (this.save.last && this.save.last.isError)
-          || this.hasFailedVisit) {
+          || this.hasFailedCalendarEvent) {
         this.set('showUnsavedChangesDialog', true);
       } else {
         this.onCloseEdit();

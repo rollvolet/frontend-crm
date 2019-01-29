@@ -64,6 +64,7 @@
       {{#c.header}}
         {{th-sortable field='number' currentSorting=sort label='Nr'}}
         {{th-sortable field='request-date' currentSorting=sort label='Datum'}}
+        <th>Bezoeker</th>
         <th><!-- customer / building --></th>
         {{th-sortable field='customer.name' currentSorting=sort label='Naam'}}
         {{th-sortable field='customer.address' currentSorting=sort label='Adres'}}
@@ -73,6 +74,7 @@
       {{#c.body as |row|}}
         <td>{{row.id}}</td>
         <td>{{fmt-date row.requestDate}}</td>
+        <td>{{row.visitor}}</td>
         {{#if row.building}}
           <td>{{paper-icon "home"}}</td>
           <td>

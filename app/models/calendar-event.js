@@ -30,8 +30,6 @@ export default DS.Model.extend(Validations, {
   period: DS.attr(),
   fromHour: DS.attr(),
   untilHour: DS.attr(),
-  visitor: DS.attr(),
-  offerExpected: DS.attr(),
   comment: DS.attr(),
   calendarSubject: DS.attr(),
   calendarId: DS.attr(),

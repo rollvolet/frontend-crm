@@ -24,7 +24,7 @@ export default Route.extend(DataTableRouteMixin, {
   },
   mergeQueryOptions(params) {
     return {
-      include: 'customer,customer.honorific-prefix,building,request,request.visit',
+      include: 'customer,customer.honorific-prefix,building,request',
       filter: {
         number: params.number,
         'request-number': params.requestNumber,

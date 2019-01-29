@@ -6,7 +6,7 @@ export default Component.extend({
   actions: {
     async reloadVisit() {
       const request = await this.model.request;
-      request.belongsTo('visit').reload();
+      request.belongsTo('calendarEvent').reload();
     }
   }
 });

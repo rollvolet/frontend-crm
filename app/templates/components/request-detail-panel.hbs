@@ -12,11 +12,14 @@
     {{#detail-list-item label="Bezoek nodig"}}
       {{paper-checkbox value=model.requiresVisit onChange=null}}
     {{/detail-list-item}}
+    {{#detail-list-item label="Bezoeker"}}
+      {{model.visitor}}
+    {{/detail-list-item}}
     {{#detail-list-item label="Opmerking"}}
       <span class="html-body">{{model.comment}}</span>
     {{/detail-list-item}}
   </div>
   {{#if isLinkedToCustomer}}
-    {{visit-detail-panel model=model.visit onSync=(action "reloadVisit")}}
+    {{visit-detail-panel model=model.calendarEvent onSync=(action "reloadVisit")}}
   {{/if}}
 </div>

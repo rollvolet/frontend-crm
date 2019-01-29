@@ -27,7 +27,7 @@ export default Component.extend(DebouncedSearch, {
         number: this.page
       },
       sort: this.sort,
-      include: 'building,request,request.visit',
+      include: 'building,request',
       filter: {
         number: this.getFilterValue('number'),
         reference: this.getFilterValue('reference'),

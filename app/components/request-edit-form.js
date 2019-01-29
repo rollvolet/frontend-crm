@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { warn } from '@ember/debug';
+import { warn, debug } from '@ember/debug';
 import { bool, notEmpty } from '@ember/object/computed';
 
 export default Component.extend({
@@ -18,35 +18,41 @@ export default Component.extend({
       const employee = this.store.peekAll('employee').find(e => e.firstName == this.model.employee);
       this.set('employee', employee);
     }
-    this.model.visit.then(visit => {
-      if (visit && visit.visitor) {
-        const visitor = this.store.peekAll('employee').find(e => e.firstName == visit.visitor);
-        this.set('visitor', visitor);
-      }
-    });
+    if (this.model.visitor) {
+      const visitor = this.store.peekAll('employee').find(e => e.firstName == this.model.visitor);
+      this.set('visitor', visitor);
+    }
   },
 
-  hasVisitMasteredByAccess: bool('model.visit.isMasteredByAccess'),
+  hasVisitMasteredByAccess: bool('model.calendarEvent.isMasteredByAccess'),
   isLinkedToCustomer: notEmpty('model.customer.id'),
 
   removeVisit: task(function * () {
-    const visit = yield this.model.get('visit');
+    const calendarEvent = yield this.model.calendarEvent;
     try {
-      yield visit.destroyRecord();
-      this.model.set('visit', null);
-      this.set('visitor', null);
+      yield calendarEvent.destroyRecord();
+      // TODO: Fix this hack when Ember Data allows creation of already deleted ID
+      // See https://github.com/emberjs/data/issues/5006
+      this.store._internalModelsFor('calendar-event').remove(calendarEvent._internalModel, calendarEvent.id);
+      this.model.set('calendarEvent', null);
     } catch (e) {
-      warn(`Something went wrong while destroying visit ${visit.id}`, { id: 'destroy-failure' });
+      warn(`Something went wrong while destroying calendar event ${calendarEvent.id}`, { id: 'destroy-failure' });
+      debug(e);
     }
   }),
   createVisit: task(function * () {
-    this.store.createRecord('visit', {
+    this.store.createRecord('calendar-event', {
       request: this.model,
       visitDate: new Date(),
-      period: 'GD',
-      offerExpected: false
+      period: 'GD'
     });
-    yield this.saveVisit.perform();
+    yield this.saveCalendarEvent.perform();
+  }),
+  saveCalendarEvent: task(function * () {
+    const calendarEvent = yield this.model.calendarEvent;
+    const { validations } = yield calendarEvent.validate();
+    if (validations.isValid)
+      yield calendarEvent.save();
   }),
 
   actions: {
@@ -64,6 +70,11 @@ export default Component.extend({
       this.set('employee', employee);
       const firstName = employee ? employee.firstName : null;
       this.model.set('employee', firstName);
+    },
+    setVisitor(visitor) {
+      this.set('visitor', visitor);
+      const firstName = visitor ? visitor.firstName : null;
+      this.model.set('visitor', firstName);
     }
   }
 });
