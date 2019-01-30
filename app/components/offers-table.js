@@ -29,6 +29,7 @@ export default Component.extend(DebouncedSearch, {
       sort: this.sort,
       include: 'building,request',
       filter: {
+        'request-number': this.getFilterValue('requestNumber'),
         number: this.getFilterValue('number'),
         reference: this.getFilterValue('reference'),
         building: {
@@ -47,6 +48,7 @@ export default Component.extend(DebouncedSearch, {
       this.debounceSearch.perform(this.search);
     },
     resetFilters() {
+      this.set('requestNumber', undefined);
       this.set('number', undefined);
       this.set('reference', undefined);
       this.set('name', undefined);

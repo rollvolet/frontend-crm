@@ -1,6 +1,7 @@
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  {{paper-input label="Offerte nummer" value=offerNumber onChange=(action "setFilter" "offerNumber") class="small"}}
+  {{paper-input label="Aanvraag" value=requestNumber onChange=(action "setFilter" "requestNumber") class="small"}}
+  {{paper-input label="Offerte" value=offerNumber onChange=(action "setFilter" "offerNumber") class="small"}}
   {{paper-input label="Referentie" value=reference onChange=(action "setFilter" "reference") class="small"}}
   {{paper-input label="Gebouw" value=name onChange=(action "setFilter" "name")}}
   {{paper-input label="Adres" value=street onChange=(action "setFilter" "street") class="large"}}
@@ -16,6 +17,7 @@
      onClickRow=(action "clickRow") page=page size=size sort=sort as |t|}}
   {{#t.content as |c|}}
     {{#c.header}}
+      <th>Aanvraag</th>
       {{th-sortable field='offer-number' currentSorting=sort label='Offerte'}}
       {{th-sortable field='offer.reference' currentSorting=sort label='Referentie'}}
       {{th-sortable field='offer-date' currentSorting=sort label='Datum'}}
@@ -25,6 +27,7 @@
       <th>Gemeente</th>
     {{/c.header}}
     {{#c.body as |row|}}
+      <td>{{row.requestNumber}}</td>
       <td>{{row.offerNumber}}</td>
       <td>{{row.offer.reference}}</td>
       <td>{{fmt-date row.orderDate}}</td>
