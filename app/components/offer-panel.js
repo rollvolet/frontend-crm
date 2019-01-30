@@ -49,9 +49,7 @@ export default Component.extend(EKMixin, PellOptions, {
 
   remove: task(function * () {
     const request = yield this.model.request;
-    request.set('offer', null);
     try {
-      yield request.save();
       this.case.updateRecord('offer', null);
       yield all(this.model.offerlines.map(t => t.destroyRecord()));
       yield this.model.destroyRecord();

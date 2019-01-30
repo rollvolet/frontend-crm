@@ -50,10 +50,6 @@ export default Component.extend(EKMixin, {
       const deposits = yield this.model.deposits;
       yield all(deposits.map(d => d.destroyRecord()));
 
-      // unlink offer
-      offer.set('order', null);
-      yield offer.save();
-
       // update case-tabs
       this.case.updateRecord('order', null);
 
