@@ -3,13 +3,11 @@ import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { notEmpty, mapBy } from '@ember/object/computed';
-import { computed } from '@ember/object';
 import { uniqBy, length } from 'ember-awesome-macros/array';
 import { gt, raw } from 'ember-awesome-macros';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import PellOptions from '../mixins/pell-options';
-import DS from 'ember-data';
 
 export default Component.extend(EKMixin, PellOptions, {
   case: service(),
@@ -25,13 +23,6 @@ export default Component.extend(EKMixin, PellOptions, {
   showOfferDocumentNotFoundDialog: false,
 
   isDisabledEdit: notEmpty('model.order.id'),
-  visitorPromise: computed('model.request.visitor', function() {
-    return DS.PromiseObject.create({
-      promise: this.model.request.then((request) => {
-        return request && this.store.peekAll('employee').find(e => e.firstName == request.visitor);
-      })
-    });
-  }),
   vatRates: mapBy('model.offerlines', 'vatRate'),
   hasMixedVatRates: gt(length(uniqBy('vatRates', raw('code'))), raw(1)),
   hasUnsavedChanges: async function() {

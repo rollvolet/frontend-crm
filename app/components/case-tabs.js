@@ -2,10 +2,12 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { computed, observer } from '@ember/object';
 import { alias, oneWay } from '@ember/object/computed';
+import DS from 'ember-data';
 
 export default Component.extend({
   case: service(),
   router: service(),
+  store: service(),
 
   init() {
     this._super(...arguments);
@@ -13,6 +15,10 @@ export default Component.extend({
   },
 
   model: alias('case.current'),
+  visitorName: alias('model.request.visitor'),
+  visitor: computed('visitorName', function() {
+    return this.store.peekAll('employee').find(e => e.firstName == this.visitorName);
+  }),
   currentRouteName: oneWay('router.currentRouteName'),
   routeChanged: observer('router.currentRouteName', function() {
     this.set('currentRouteName', this.get('router.currentRouteName'));

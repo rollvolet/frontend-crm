@@ -1,3 +1,8 @@
+<div class="layout-row case--tabs">
+  <div class="case--tabs--number">AD {{model.request.id}} {{visitor.initials}}</div>
+  <div class="flex"></div>
+</div>
+
 {{#paper-tabs selected=currentRouteName borderBottom=true as |tabs|}}
   {{#if model.requestId}}
     {{#tabs.tab value="main.case.request.edit.index"

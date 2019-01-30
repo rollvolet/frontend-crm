@@ -1,3 +1,16 @@
+.case--tabs {
+  .case--tabs--number {
+    padding: 10px;
+    margin-top: 0;
+    background-color: paper-color('red');
+    color: #FFF;
+    font-weight: bold;
+  }
+  .flex {
+    border-bottom: 1px solid paper-color('red');
+  }
+}
+
 .case--request--entry,
 .case--order--entry,
 .case--offer--entry,

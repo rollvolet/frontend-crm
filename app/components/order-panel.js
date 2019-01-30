@@ -2,13 +2,11 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { computed } from '@ember/object';
 import { notEmpty } from '@ember/object/computed';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import { or, raw } from 'ember-awesome-macros';
 import { filterBy } from 'ember-awesome-macros/array';
-import DS from 'ember-data';
 
 export default Component.extend(EKMixin, {
   case: service(),
@@ -24,15 +22,6 @@ export default Component.extend(EKMixin, {
   orderedOfferlines: filterBy('model.offer.offerlines.@each.isOrdered', raw('isOrdered')),
   hasInvoice: notEmpty('model.invoice.id'),
   isDisabledEdit: or('model.isMasteredByAccess', 'hasInvoice'),
-  visitorPromise: computed('model.offer.request.visitor', function() {
-    return DS.PromiseObject.create({
-      promise: this.model.offer.then((offer) => {
-        return offer && offer.request.then((request) => {
-          return request && this.store.peekAll('employee').find(e => e.firstName == request.visitor);
-        });
-      })
-    });
-  }),
 
   init() {
     this._super(...arguments);
