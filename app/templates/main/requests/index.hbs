@@ -66,10 +66,10 @@
         {{th-sortable field='request-date' currentSorting=sort label='Datum'}}
         <th>Bezoeker</th>
         <th><!-- customer / building --></th>
-        {{th-sortable field='customer.name' currentSorting=sort label='Naam'}}
-        {{th-sortable field='customer.address' currentSorting=sort label='Adres'}}
-        {{th-sortable field='customer.postal-code' currentSorting=sort label='Postcode'}}
-        {{th-sortable field='customer.city' currentSorting=sort label='Gemeente'}}
+        <th>Naam</th>
+        <th>Adres</th>
+        <th>Postcode</th>
+        <th>Gemeente</th>
       {{/c.header}}
       {{#c.body as |row|}}
         <td>{{row.id}}</td>

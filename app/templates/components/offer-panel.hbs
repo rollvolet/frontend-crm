@@ -1,6 +1,9 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
-    <h2>Offerte {{model.number}}</h2>
+    <h2>
+      Offerte {{model.requestNumber}} {{visitorPromise.initials}}
+      <span class="small-text-fade">{{model.number}}</span>
+    </h2>
     {{#if editMode}}
       {{save-status-icon model=model task=save}}
     {{/if}}

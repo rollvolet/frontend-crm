@@ -1,14 +1,23 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { task, all } from 'ember-concurrency';
+import { computed } from '@ember/object';
 import { notEmpty, filterBy, mapBy } from '@ember/object/computed';
 import { uniqBy, length } from 'ember-awesome-macros/array';
 import { gt, or, not, raw } from 'ember-awesome-macros';
+import DS from 'ember-data';
 
 export default Controller.extend({
   case: service(),
   store: service(),
 
+  visitorPromise: computed('model.request.visitor', function() {
+    return DS.PromiseObject.create({
+      promise: this.model.request.then((request) => {
+        return this.store.peekAll('employee').find(e => e.firstName == request.visitor);
+      })
+    });
+  }),
   orderedOfferlines: filterBy('model.offerlines', 'isOrdered'),
   hasSelectedLines: notEmpty('orderedOfferlines'),
   vatRates: mapBy('orderedOfferlines', 'vatRate'),

@@ -10,6 +10,7 @@ import { EKMixin, keyUp } from 'ember-keyboard';
 export default Component.extend(EKMixin, {
   documentGeneration: service(),
   router: service(),
+  store: service(),
 
   model: null,
   editMode: false,
@@ -25,6 +26,10 @@ export default Component.extend(EKMixin, {
       (this.model.get('calendarEvent.isNew')
        || this.model.get('calendarEvent.validations.isInvalid')
        || this.model.get('calendarEvent.isError'));
+  }),
+
+  visitor: computed('model.visitor', function() {
+    return this.store.peekAll('employee').find(e => e.firstName == this.model.visitor);
   }),
 
   init() {
