@@ -27,8 +27,8 @@ export default Component.extend(EKMixin, {
   visitorPromise: computed('model.offer.request.visitor', function() {
     return DS.PromiseObject.create({
       promise: this.model.offer.then((offer) => {
-        return offer.request.then((request) => {
-          return this.store.peekAll('employee').find(e => e.firstName == request.visitor);
+        return offer && offer.request.then((request) => {
+          return request && this.store.peekAll('employee').find(e => e.firstName == request.visitor);
         });
       })
     });

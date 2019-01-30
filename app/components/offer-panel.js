@@ -28,7 +28,7 @@ export default Component.extend(EKMixin, PellOptions, {
   visitorPromise: computed('model.request.visitor', function() {
     return DS.PromiseObject.create({
       promise: this.model.request.then((request) => {
-        return this.store.peekAll('employee').find(e => e.firstName == request.visitor);
+        return request && this.store.peekAll('employee').find(e => e.firstName == request.visitor);
       })
     });
   }),

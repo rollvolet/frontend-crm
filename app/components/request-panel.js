@@ -63,7 +63,13 @@ export default Component.extend(EKMixin, {
 
     const { validations } = yield this.model.validate();
     if (validations.isValid) {
-      yield this.model.save();
+      if (this.model.changedAttributes()['comment']) {
+        yield this.model.save();
+        // reload after save so calendar event has been updated
+        this.model.belongsTo('calendarEvent').reload();
+      } else {
+        yield this.model.save();
+      }
     }
   }).keepLatest(),
   unlinkCustomer: task(function * () {
