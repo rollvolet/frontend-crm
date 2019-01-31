@@ -80,16 +80,16 @@ export default Service.extend(FileSaverMixin, {
     return `AD${request.id}_bezoekrapport.pdf`;
   },
   _offerDocumentName(offer) {
-    return `${offer.number}_offerte_${offer.documentVersion || ''}`.replace(onlyAlphaNumeric, '') + '.pdf';
+    return `${offer.number}_${offer.documentVersion || ''}`.replace(onlyAlphaNumeric, '') + '.pdf';
   },
   _invoiceDocumentName(invoice) {
-    return `F${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
+    return `F0${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
   },
   _productionTicketName(order) {
-    return `${order.offerNumber}_productiebon`.replace(onlyAlphaNumeric, '') + '.pdf';
+    return `${order.offerNumber}`.replace(onlyAlphaNumeric, '') + '.pdf';
   },
   _certificateName(invoice) {
-    return `A${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
+    return `A0${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
   },
 
 
