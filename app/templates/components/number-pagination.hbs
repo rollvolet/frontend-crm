@@ -1,0 +1,32 @@
+<div class="layout-row layout-align-space-between-center">
+  <div class="layout-row layout-align-start-center data-table-pagination-left">
+    Toon {{startItem}}-{{endItem}}
+    {{#if total}} van {{total}}{{/if}}
+    {{#if sizeOptions}} |
+      {{#power-select options=sizeOptions selected=size onchange=(action (mut size))
+           searchEnabled=false verticalPosition="above" as |size|}}
+        {{size}}
+      {{/power-select}} per pagina
+    {{/if}}
+  </div>
+  {{#if hasMultiplePages}}
+    <div class="layout-row layout-align-end-center data-table-pagination-right">
+      {{#paper-button disabled=isFirstPage onClick=(action "changePage" links.first) iconButton=true}}
+        {{paper-icon "first page"}}
+      {{/paper-button}}
+      {{#paper-button disabled=isFirstPage onClick=(action "changePage" links.prev) iconButton=true}}
+        {{paper-icon "chevron left"}}
+      {{/paper-button}}
+      {{#power-select options=pageOptions selected=currentPage onchange=(action (mut currentPage))
+           searchEnabled=false verticalPosition="above" as |page|}}
+        {{page}}
+      {{/power-select}}
+      {{#paper-button disabled=isLastPage onClick=(action "changePage" links.next) iconButton=true}}
+        {{paper-icon "chevron right"}}
+      {{/paper-button}}
+      {{#paper-button disabled=isLastPage onClick=(action "changePage" links.last) iconButton=true}}
+        {{paper-icon "last page"}}
+      {{/paper-button}}
+    </div>
+  {{/if}}
+</div>

@@ -71,3 +71,8 @@
     }
   }
 }
+
+.data-table-pagination-left .ember-power-select-trigger,
+.data-table-pagination-right .ember-power-select-trigger {
+  min-width: 75px;
+}
