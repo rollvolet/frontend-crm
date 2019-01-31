@@ -26,8 +26,8 @@ export default Component.extend({
   canCreateNewOffer: computed('model', 'model.{requestId,offerId}', function() {
     return this.model && this.model.requestId && this.model.offerId == null;
   }),
-  canCreateNewOrder: computed('model', 'model.{offerId,orderId}', function() {
-    return this.model && this.model.offerId && this.model.orderId == null;
+  canCreateNewOrder: computed('model', 'model.{offerId,orderId,offer}', function() {
+    return this.model && this.model.offerId && this.model.orderId == null && this.model.offer && !this.model.offer.isMasteredByAccess;;
   }),
   canCreateNewInvoice: computed('model', 'model.{orderId,invoiceId,order}', function() {
     return this.model && this.model.orderId && this.model.invoiceId == null && this.model.order && !this.model.order.isMasteredByAccess;

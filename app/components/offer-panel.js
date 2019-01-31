@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { notEmpty, mapBy } from '@ember/object/computed';
 import { uniqBy, length } from 'ember-awesome-macros/array';
-import { gt, raw } from 'ember-awesome-macros';
+import { or, gt, raw } from 'ember-awesome-macros';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import PellOptions from '../mixins/pell-options';
@@ -22,7 +22,8 @@ export default Component.extend(EKMixin, PellOptions, {
   showUnsavedChangesDialog: false,
   showOfferDocumentNotFoundDialog: false,
 
-  isDisabledEdit: notEmpty('model.order.id'),
+  hasOrder: notEmpty('model.order.id'),
+  isDisabledEdit: or('model.isMasteredByAccess', 'hasOrder'),
   vatRates: mapBy('model.offerlines', 'vatRate'),
   hasMixedVatRates: gt(length(uniqBy('vatRates', raw('code'))), raw(1)),
   hasUnsavedChanges: async function() {

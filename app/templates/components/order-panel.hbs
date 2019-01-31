@@ -30,6 +30,8 @@
 
 {{#if hasInvoice}}
   {{warning-message message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk."}}
+{{else if model.isMasteredByAccess}}
+  {{warning-message message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."}}
 {{/if}}
 
 {{#if editMode}}
