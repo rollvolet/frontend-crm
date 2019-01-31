@@ -29,7 +29,7 @@
        lockedOpen=false onToggle=(action (mut isMainMenuOpen))}}
     {{#paper-toolbar as |toolbar|}}
       {{#toolbar.tools}}
-        Menu
+        Menu <span class="version">v{{app-version versionOnly=true}}</span>
         <span class="flex"></span>
         {{#paper-button iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
       {{/toolbar.tools}}

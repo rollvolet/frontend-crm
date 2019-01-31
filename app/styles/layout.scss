@@ -51,6 +51,14 @@
         color: paper-color($primary, 'contrastDefaultColor');
       }
     }
+
+    span.version {
+      margin-top: 4px;
+      margin-left: 15px;
+      font-size: 0.75em;
+      background-color: paper-color($primary);
+      text-transform: none;
+    }
   }
 }
 
