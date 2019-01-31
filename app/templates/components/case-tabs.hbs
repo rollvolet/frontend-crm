@@ -1,7 +1,9 @@
-<div class="layout-row case--tabs">
-  <div class="case--tabs--number">AD {{model.request.id}} {{visitor.initials}}</div>
-  <div class="flex"></div>
-</div>
+{{#if model.requestId}}
+  <div class="layout-row case--tabs">
+    <div class="case--tabs--number">AD {{model.requestId}} {{visitor.initials}}</div>
+    <div class="flex"></div>
+  </div>
+{{/if}}
 
 {{#paper-tabs selected=currentRouteName borderBottom=true as |tabs|}}
   {{#if model.requestId}}
