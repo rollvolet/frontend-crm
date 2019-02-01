@@ -11,6 +11,7 @@ export default Component.extend(DecimalInputFormatting, {
   model: null,
   save: null,
   hasProductionTicketUploadError: false,
+  showProductionTicketNotFoundDialog: false,
 
   init() {
     this._super(...arguments);
@@ -49,6 +50,12 @@ export default Component.extend(DecimalInputFormatting, {
     },
     uploadProductionTicket(file) {
       this.uploadProductionTicket.perform(file);
+    },
+    async downloadProductionTicket() {
+      const document = await this.documentGeneration.downloadProductionTicket(this.model);
+
+      if (!document)
+        this.set('showProductionTicketNotFoundDialog', true);
     }
   }
 });

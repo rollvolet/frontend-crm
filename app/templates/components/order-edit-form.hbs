@@ -57,6 +57,10 @@
             <i class="material-icons md-18">cloud_upload</i>
           {{/if}}
         {{/file-upload}}
+        <span {{action "downloadProductionTicket"}} class="production-ticket-download">
+          {{paper-icon "find in page"}}
+          {{#paper-tooltip}}Bekijken{{/paper-tooltip}}
+        </span>
       {{/if}}
     </div>
     <div class="layout-row layout-align-start-center">
@@ -82,3 +86,7 @@
     </div>
   </section>
 </div>
+
+{{#document-not-found-dialog show=showProductionTicketNotFoundDialog}}
+  <p>Er is nog geen productiebon opgeladen.</p>
+{{/document-not-found-dialog}}

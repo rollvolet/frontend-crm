@@ -9,6 +9,7 @@ export default Component.extend({
   model: null,
   showWorkingHoursDialog: false,
   hasCertificateUploadError: false,
+  showProductionTicketNotFoundDialog: false,
 
   uploadCertificate: task(function * (file) {
     try {
@@ -30,7 +31,11 @@ export default Component.extend({
     },
     async downloadProductionTicket() {
       const order = await this.model.order;
-      this.documentGeneration.downloadProductionTicket(order);
+      const document = await this.documentGeneration.downloadProductionTicket(order);
+
+      if (!document)
+        this.set('showProductionTicketNotFoundDialog', true);
+
     },
     async deleteCertificate() {
       this.model.set('certificateReceived', false);
