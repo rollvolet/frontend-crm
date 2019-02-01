@@ -10,7 +10,7 @@ export default Component.extend({
   invoice: null,
   tooltip: 'BTW attest bekijken',
 
-  click() {
-    this.documentGeneration.downloadCertificate(this.invoice);
+  async click() {
+    await this.documentGeneration.downloadCertificate(this.invoice);
   }
 });

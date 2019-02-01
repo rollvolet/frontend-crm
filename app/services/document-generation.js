@@ -25,7 +25,7 @@ export default Service.extend(FileSaverMixin, {
     return this._generate(`/api/${resource}/${invoice.get('id')}/documents?language=${language}`, fileName, 'application/pdf');
   },
   certificate(invoice, language) {
-    const fileName = this._certificateName(invoice);
+    const fileName = this._generatedCertificateName(invoice);
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     return this._generate(`/api/${resource}/${invoice.id}/certificates?language=${language}`, fileName, 'application/pdf');
   },
@@ -54,13 +54,13 @@ export default Service.extend(FileSaverMixin, {
 
   // Document downloads
 
-  downloadProductionTicket(order) {
-    const fileName = this._productionTicketName(order);
+  async downloadProductionTicket(order) {
+    const fileName = await this._productionTicketName(order);
     return this._download(`/api/orders/${order.id}/production-ticket`, fileName, 'application/pdf');
   },
-  downloadCertificate(invoice) {
+  async downloadCertificate(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    const fileName = this._certificateName(invoice);
+    const fileName = await this._receivedCertificateName(invoice);
     return this._download(`/api/${resource}/${invoice.id}/certificate`, fileName, 'application/pdf');
   },
   downloadOfferDocument(offer) {
@@ -80,16 +80,22 @@ export default Service.extend(FileSaverMixin, {
     return `AD${request.id}_bezoekrapport.pdf`;
   },
   _offerDocumentName(offer) {
-    return `${offer.number}_${offer.documentVersion || ''}`.replace(onlyAlphaNumeric, '') + '.pdf';
+    const number = offer.number.substr(0, 8) + '_' + offer.number.substr(9); // YY/MM/DD_nb  eg. 29/01/30_20
+    return `${number}_${offer.documentVersion || ''}`.replace(onlyAlphaNumeric, '') + '.pdf';
   },
   _invoiceDocumentName(invoice) {
     return `F0${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
   },
-  _productionTicketName(order) {
-    return `${order.offerNumber}`.replace(onlyAlphaNumeric, '') + '.pdf';
+  async _productionTicketName(order) {
+    const customer = await order.customer;
+    return `${order.offerNumber}`.replace(onlyAlphaNumeric, '') + `_${customer.name}.pdf`;
   },
-  _certificateName(invoice) {
+  _generatedCertificateName(invoice) {
     return `A0${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
+  },
+  async _receivedCertificateName(invoice) {
+    const customer = await invoice.customer;
+    return `A0${invoice.number}`.replace(onlyAlphaNumeric, '') + `_${customer.name}.pdf`;
   },
 
 
