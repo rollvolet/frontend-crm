@@ -2,6 +2,7 @@
   <h2>Voorschotten</h2>
   {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "createNew") disabled=(or isDisabledEdit selected)}}
     {{paper-icon "add"}}
+    {{#paper-tooltip}}Voeg nieuw voorschot toe{{/paper-tooltip}}
   {{/paper-button}}
 </div>
 

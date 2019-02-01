@@ -1,7 +1,10 @@
 {{#liquid-if displayList class="data-table-selection"}}
   {{buildings-table customer=customer onClickRow=(action "openDetail") onEdit=(action "openEdit")}}
   <div class="layout-row layout-align-end">
-    {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "openCreate")}}{{paper-icon "add"}}{{/paper-button}}
+    {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "openCreate")}}
+      {{paper-icon "add"}}
+      {{#paper-tooltip}}Voeg nieuw gebouw toe{{/paper-tooltip}}
+    {{/paper-button}}
   </div>
 {{else if displayDetail}}
   {{building-detail-panel model=selectedBuilding onClose=(action "closeDetail") onEdit=(action "openEdit")}}

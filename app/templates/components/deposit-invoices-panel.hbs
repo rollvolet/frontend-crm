@@ -2,6 +2,7 @@
   <h2>Voorschotfacturen</h2>
   {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "createNew") disabled=(or isDisabledEdit selected)}}
     {{paper-icon "add"}}
+    {{#paper-tooltip}}Maak nieuwe voorschotfactuur{{/paper-tooltip}}
   {{/paper-button}}
 </div>
 

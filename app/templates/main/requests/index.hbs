@@ -2,7 +2,10 @@
 
 <div class="layout-row layout-align-space-between-center">
   <h1>Aanvragen</h1>
-  {{#paper-button primary=true fab=true raised=true onClick=(transition-to "main.requests.new")}}{{paper-icon "add"}}{{/paper-button}}
+  {{#paper-button primary=true fab=true raised=true onClick=(transition-to "main.requests.new")}}
+    {{paper-icon "add"}}
+    {{#paper-tooltip}}Maak nieuwe aanvraag{{/paper-tooltip}}
+  {{/paper-button}}
 </div>
 
 <div class="requests-data-table">
