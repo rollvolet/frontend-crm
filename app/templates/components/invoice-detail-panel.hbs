@@ -26,9 +26,9 @@
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
     {{#if model.certificateRequired}}
-      {{#detail-list-item label="BTW-attest"}}
-        {{paper-checkbox label="Nodig" value=model.certificateRequired onChange=null}}
-        {{paper-checkbox label="Ontvangen" value=model.certificateReceived onChange=null}}
+      {{#detail-list-item label="BTW-attest" class="layout-align-start-center"}}
+        {{paper-icon (if model.certificateRequired "check_box" "check_box_outline_blank")}} Nodig
+        {{paper-icon (if model.certificateReceived "check_box" "check_box_outline_blank")}} Ontvangen
 
         {{#if model.certificateReceived}}
           {{certificate-download-button invoice=model}}
@@ -54,7 +54,7 @@
     {{/if}}
     {{#unless model.isIsolated}}
       {{#detail-list-item label="Productiebon"}}
-        {{paper-checkbox value=model.hasProductionTicket onChange=null}}
+        {{paper-icon (if model.hasProductionTicket "check_box" "check_box_outline_blank")}}
         {{#if model.hasProductionTicket}}
           <span {{action "downloadProductionTicket"}}>
             {{paper-icon "find in page"}}
@@ -64,7 +64,7 @@
       {{/detail-list-item}}
     {{/unless}}
     {{#detail-list-item label="Creditnota"}}
-      {{paper-checkbox value=model.isCreditNote onChange=null}}
+      {{paper-icon (if model.isCreditNote "check_box" "check_box_outline_blank")}}
     {{/detail-list-item}}
   </div>
 </div>

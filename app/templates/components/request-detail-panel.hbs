@@ -10,7 +10,7 @@
       {{model.employee}}
     {{/detail-list-item}}
     {{#detail-list-item label="Bezoek nodig"}}
-      {{paper-checkbox value=model.requiresVisit onChange=null}}
+      {{paper-icon (if model.requiresVisit "check_box" "check_box_outline_blank")}}
     {{/detail-list-item}}
     {{#detail-list-item label="Bezoeker"}}
       {{model.visitor}}

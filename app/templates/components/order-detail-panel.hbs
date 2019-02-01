@@ -25,7 +25,7 @@
       {{model.vatRate.name}} BTW
     {{/detail-list-item}}
     {{#detail-list-item label="Voorschotten"}}
-      {{paper-checkbox label="Nodig" value=model.depositRequired onChange=null}}
+      {{paper-icon (if model.depositRequired "check_box" "check_box_outline_blank")}} Nodig
       {{#detail-list-subitem label="Bedrag" click=(action "goToDepositInvoices") class="clickable"}}
         {{fmt-currency depositsAmount}} {{paper-icon "info" size=18}}
       {{/detail-list-subitem}}
@@ -49,7 +49,7 @@
       {{/paper-radio-group}}
     {{/detail-list-item}}
     {{#detail-list-item label="Productiebon"}}
-      {{paper-checkbox value=model.hasProductionTicket onChange=null}}
+      {{paper-icon (if model.hasProductionTicket "check_box" "check_box_outline_blank")}}
       {{#if model.hasProductionTicket}}
         <span {{action "downloadProductionTicket"}}>
           {{paper-icon "find in page"}}
@@ -58,10 +58,10 @@
       {{/if}}
     {{/detail-list-item}}
     {{#detail-list-item label="Product klaar"}}
-      {{paper-checkbox value=model.isReady onChange=null}}
+      {{paper-icon (if model.isReady "check_box" "check_box_outline_blank")}}
     {{/detail-list-item}}
     {{#detail-list-item label="Afgesloten"}}
-      {{paper-checkbox value=model.canceled onChange=null}}
+      {{paper-icon (if model.canceled "check_box" "check_box_outline_blank")}}
       {{#if model.canceled}}
         {{#detail-list-subitem label="Reden"}}
           {{#if model.cancellationReason}}
