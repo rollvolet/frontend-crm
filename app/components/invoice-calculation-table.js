@@ -11,7 +11,7 @@ import raw from 'ember-macro-helpers/raw';
 
 export default Component.extend({
   showSupplementsDialog: false,
-  supplementsAmount: sum(mapBy('model.supplements', raw('totalAmount'))),
+  supplementsAmount: sum(mapBy('model.supplements', raw('amount'))),
   depositInvoicesAmount: sum(mapBy('model.depositInvoices', raw('arithmeticAmount'))),
   subtotalAmount: subtract(add('model.baseAmount', 'supplementsAmount'), 'depositInvoicesAmount'),
   depositsAmount: sum(mapBy('model.deposits', raw('amount'))),

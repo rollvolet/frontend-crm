@@ -17,10 +17,5 @@ export default DS.Model.extend(Validations, {
   unit: DS.attr(),
   amount: DS.attr('number'),
   description: DS.attr(),
-  invoice: DS.belongsTo('invoice'),
-
-  totalAmount: computed('amount', 'nbOfPieces', function() {
-    const nbOfPieces = this.nbOfPieces || 1;
-    return nbOfPieces * this.amount;
-  })
+  invoice: DS.belongsTo('invoice')
 });
