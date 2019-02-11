@@ -4,6 +4,7 @@ import { task, all } from 'ember-concurrency';
 import { warn } from '@ember/debug';
 import { equal } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
+import { and, isEmpty } from 'ember-awesome-macros';
 
 const digitsOnly = /\D/g;
 
@@ -20,6 +21,10 @@ export default Component.extend({
   hasFailedTelephone: computed('model.telephones.[]', function() {
     return this.model.telephones.find(t => t.isNew || t.validations.isInvalid || t.isError) != null;
   }),
+
+  hasNoRequestsOrInvoices: and(isEmpty('model.requests'), isEmpty('model.invoices')),
+  hasNoContactsOrBuildings: and(isEmpty('model.contacts'), isEmpty('model.buildings')),
+  isEnabledDelete: and('isScopeCustomer', 'hasNoRequestsOrInvoices', 'hasNoContactsOrBuildings'),
 
   formattedVatNumber: computed('model.vatNumber', {
     get() {
@@ -56,8 +61,8 @@ export default Component.extend({
 
   remove: task(function * () {
     try {
-      yield all(this.model.telephones.map(t => t.destroyRecord()));
-      // TODO remove contacts/buildings ?
+      const telephones = yield this.model.telephones;
+      yield all(telephones.map(t => t.destroyRecord()));
       yield this.model.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying ${this.scope} ${this.model.id}`, { id: 'destroy-failure' });

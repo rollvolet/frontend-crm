@@ -1,4 +1,3 @@
-import { computed } from '@ember/object';
 import DS from 'ember-data';
 import { validator, buildValidations } from 'ember-cp-validations';
 

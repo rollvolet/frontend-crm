@@ -113,7 +113,9 @@
   </section>
 
   <div class="layout-row layout-align-end">
-    {{paper-button label="Verwijder" primary=true raised=true onClick=(perform remove)}}
+    {{#if isEnabledDelete}}
+      {{paper-button label="Verwijder" primary=true raised=true onClick=(perform remove)}}
+    {{/if}}
     {{paper-button label="Klaar" primary=true raised=true onClick=(action "close")}}
   </div>
 {{/if}}
