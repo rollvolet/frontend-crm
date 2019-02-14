@@ -1,10 +1,10 @@
 export default {
   'NED': {
-    offerDocumentIntro: '<p class="aanhef">Geachte Heer, Mevrouw,</p><div>Ingevolge uw verzoek hebben wij de eer U offerte te doen voor het leveren en plaatsen van:</div>',
-    offerDocumentOutro: '<div>Geldigheidsduur offerte: 1 maand, daarna vrijblijvend.</div><div>Betaling: 30% bij bestelling, saldo na plaatsing.</div>'
+    offerDocumentIntro: '<p class="aanhef">Geachte heer, mevrouw,</p><div>Met genoegen bezorgen wij u onze beste prijs voor het leveren en plaatsen van:</div>',
+    offerDocumentOutro: '<p>Deze offerte is 30 dagen geldig.</p><div>Indien u akkoord gaat met deze offerte vragen wij u vriendelijk ons dit schriftelijk te bevestigen (via email of per post) en een <b>voorschot van 30%</b> op de totale bestelling te storten op ons rekeningnummer <b>BE24 4347 1829 8138</b> met vermelding van het referentienummer bovenaan op deze offerte.</div>'
   },
   'FRA': {
-    offerDocumentIntro: `<p class="aanhef">Monsieur, Madame,</p><div>Suite à votre demande, nous avons l'avantage de vous faire offre pour fourniture et placement de:</div>`,
-    offerDocumentOutro: '<div>Option : 1 mois, après sans engagement</div><div>Paiement : 30% à la commande, solde après placement.</div>'
+    offerDocumentIntro: `<p class="aanhef">Madame, Monsieur,</p><div>Suite à votre demande, nous avons l'avantage de vous faire notre meilleure offre pour fourniture et placement de:</div>`,
+    offerDocumentOutro: `<p>Cette offre est valable pendant 30 jours.</p><div>Si vous êtes d'accord, veuillez nous envoyer votre confirmation par écrite et verser un <b>acompte de 30%</b> sur la commande complète sur notre compte <b>BE24 4347 1829 8138</b> en mentionnant la référence de cette offre.</div>`
   }
 };
