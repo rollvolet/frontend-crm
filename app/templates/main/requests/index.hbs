@@ -24,7 +24,7 @@
             <div class="data-table-filters--group-title">Klant</div>
             <div class="layout-row data-table-filters--group-fields">
               {{paper-input label="Naam" value=cNameFilter onChange=(action "setFilter" "cName")}}
-              {{paper-input label="Adres" value=cStreetFilter onChange=(action "setFilter" "cStreet") class="large"}}
+              {{paper-input label="Straat" value=cStreetFilter onChange=(action "setFilter" "cStreet") class="large"}}
               {{paper-input label="Postcode" value=cPostalCodeFilter onChange=(action "setFilter" "cPostalCode") class="small"}}
               {{paper-input label="Gemeente" value=cCityFilter onChange=(action "setFilter" "cCity")}}
               {{paper-input label="Telefoon" value=cTelephoneFilter onChange=(action "setFilter" "cTelephone")}}
@@ -36,7 +36,7 @@
             <div class="data-table-filters--group-title">Gebouw</div>
             <div class="layout-row data-table-filters--group-fields">
               {{paper-input label="Naam" value=bNameFilter onChange=(action "setFilter" "bName")}}
-              {{paper-input label="Adres" value=bStreetFilter onChange=(action "setFilter" "bStreet") class="large"}}
+              {{paper-input label="Straat" value=bStreetFilter onChange=(action "setFilter" "bStreet") class="large"}}
               {{paper-input label="Postcode" value=bPostalCodeFilter onChange=(action "setFilter" "bPostalCode") class="small"}}
               {{paper-input label="Gemeente" value=bCityFilter onChange=(action "setFilter" "bCity")}}
             </div>
@@ -70,7 +70,7 @@
         <th>Bezoeker</th>
         <th><!-- customer / building --></th>
         <th>Naam</th>
-        <th>Adres</th>
+        <th>Straat</th>
         <th>Postcode</th>
         <th>Gemeente</th>
       {{/c.header}}

@@ -4,7 +4,7 @@
   {{paper-input label="Offerte" value=offerNumber onChange=(action "setFilter" "offerNumber") class="small"}}
   {{paper-input label="Referentie" value=reference onChange=(action "setFilter" "reference") class="small"}}
   {{paper-input label="Gebouw" value=name onChange=(action "setFilter" "name")}}
-  {{paper-input label="Adres" value=street onChange=(action "setFilter" "street") class="large"}}
+  {{paper-input label="Straat" value=street onChange=(action "setFilter" "street") class="large"}}
   {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small"}}
   {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
   {{#paper-button iconButton=true onClick=(action "resetFilters")}}
@@ -22,7 +22,7 @@
       {{th-sortable field='offer.reference' currentSorting=sort label='Referentie'}}
       {{th-sortable field='offer-date' currentSorting=sort label='Datum'}}
       <th>Gebouw</th>
-      <th>Adres</th>
+      <th>Straat</th>
       <th>Postcode</th>
       <th>Gemeente</th>
     {{/c.header}}

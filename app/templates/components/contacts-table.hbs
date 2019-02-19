@@ -2,7 +2,7 @@
   <div class="data-table-filters--title">{{paper-icon "search"}}</div>
   {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number") class="small"}}
   {{paper-input label="Naam" value=name onChange=(action "setFilter" "name")}}
-  {{paper-input label="Adres" value=street onChange=(action "setFilter" "street") class="large"}}
+  {{paper-input label="Straat" value=street onChange=(action "setFilter" "street") class="large"}}
   {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small"}}
   {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
   {{paper-input label="Telefoon" value=telephone onChange=(action "setFilter" "telephone")}}
@@ -20,7 +20,7 @@
       <th>Aanspreking</th>
       <th>Prefix</th>
       {{th-sortable field='name' currentSorting=sort label='Naam'}}
-      {{th-sortable field='address' currentSorting=sort label='Adres'}}
+      {{th-sortable field='address' currentSorting=sort label='Straat'}}
       {{th-sortable field='postal-code' currentSorting=sort label='Postcode'}}
       {{th-sortable field='city' currentSorting=sort label='Gemeente'}}
       <th>Land</th>

@@ -13,7 +13,7 @@
   <div class="layout-row flex layout-align-space-between-center">
     {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number") class="small"}}
     {{paper-input label="Naam" value=nameFilter onChange=(action "setFilter" "name")}}
-    {{paper-input label="Adres" value=streetFilter onChange=(action "setFilter" "street") class="large"}}
+    {{paper-input label="Straat" value=streetFilter onChange=(action "setFilter" "street") class="large"}}
     {{paper-input label="Postcode" value=postalCodeFilter onChange=(action "setFilter" "postalCode") class="small"}}
     {{paper-input label="Gemeente" value=cityFilter onChange=(action "setFilter" "city")}}
     {{paper-input label="Telefoon" value=telephoneFilter onChange=(action "setFilter" "telephone")}}
@@ -30,7 +30,7 @@
     {{#c.header}}
       {{th-sortable field='number' currentSorting=sort label='Nr'}}
       {{th-sortable field='name' currentSorting=sort label='Naam'}}
-      {{th-sortable field='address' currentSorting=sort label='Adres'}}
+      {{th-sortable field='address' currentSorting=sort label='Straat'}}
       {{th-sortable field='postal-code' currentSorting=sort label='Postcode'}}
       {{th-sortable field='city' currentSorting=sort label='Gemeente'}}
     {{/c.header}}
