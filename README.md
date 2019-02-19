@@ -1,7 +1,6 @@
 # rollvolet-crm
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+Frontend of Rollvolet CRM application. Full application stack is available in https://github.com/rollvolet/crm-app.
 
 ## Prerequisites
 
