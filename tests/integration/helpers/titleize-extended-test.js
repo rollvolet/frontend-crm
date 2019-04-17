@@ -12,6 +12,6 @@ module('Integration | Helper | titleize-extended', function(hooks) {
 
     await render(hbs`{{titleize-extended inputValue}}`);
 
-    assert.equal(this.element.textContent.trim(), '1234');
+    assert.dom(this.element).hasText('1234');
   });
 });
