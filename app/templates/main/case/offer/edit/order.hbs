@@ -9,7 +9,7 @@
   </div>
 </div>
 
-{{#if createOrder.isRunning}}
+{{#if (or updateOfferVatRate.isRunning createOrder.isRunning)}}
   <div>
     {{paper-progress-linear}}
     <p>Bestelling aanmaken...</p>
@@ -47,3 +47,32 @@
     Ga verder
   {{/paper-button}}
 </div>
+
+{{#if showIncompatibleVatRatesDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "closeIncompatibleVatRatesDialog")
+       clickOutsideToClose=true parent=".main-outlet" origin=".main-outlet"}}
+    {{#paper-toolbar}}
+      {{#paper-toolbar-tools}}
+        <h2>Opgelet</h2><span class="flex"></span>
+        {{#paper-button iconButton=true onClick=(action "closeIncompatibleVatRatesDialog")}}
+          {{paper-icon icon="close"}}
+        {{/paper-button}}
+      {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+
+    {{#paper-dialog-content}}
+      <p>
+        Het BTW-tarief van de offerte is {{model.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{orderedVatRate.rate}}% hebben.
+      </p>
+      <p>
+        Mag het BTW-tarief van de offerte aangepast worden naar {{orderedVatRate.rate}}%?
+      </p>
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class="layout-row"}}
+      <span class="flex"></span>
+      {{#paper-button onClick=(action "closeIncompatibleVatRatesDialog")}}Terug{{/paper-button}}
+      {{#paper-button onClick=(perform updateOfferVatRate)}}Pas BTW-tarief aan{{/paper-button}}
+    {{/paper-dialog-actions}}
+  {{/paper-dialog}}
+{{/if}}

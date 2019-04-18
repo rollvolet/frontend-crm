@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { task, all } from 'ember-concurrency';
 import { computed } from '@ember/object';
 import { notEmpty, filterBy, mapBy } from '@ember/object/computed';
-import { uniqBy, length } from 'ember-awesome-macros/array';
+import { first, uniqBy, length } from 'ember-awesome-macros/array';
 import { gt, or, not, raw } from 'ember-awesome-macros';
 import DS from 'ember-data';
 
@@ -23,43 +23,56 @@ export default Controller.extend({
   vatRates: mapBy('orderedOfferlines', 'vatRate'),
   hasMixedVatRates: gt(length(uniqBy('vatRates', raw('code'))), raw(1)),
   isDisabledCreate: or(not('hasSelectedLines'), 'hasMixedVatRates'),
+  orderedVatRate: first('vatRates'),
+  showIncompatibleVatRatesDialog: false,
 
+  updateOfferVatRate: task(function * () {
+    this.set('showIncompatibleVatRatesDialog', false);
+    this.model.set('vatRate', this.orderedVatRate);
+    yield this.model.save();
+    yield this.createOrder.perform();
+  }),
   createOrder: task(function * () {
-    const offerlines = yield this.model.get('offerlines');
-    yield all(offerlines.map(o => o.save()));
-
-    const customer = yield this.model.get('customer');
-    const contact = yield this.model.get('contact');
-    const building = yield this.model.get('building');
     const vatRate = yield this.model.get('vatRate');
 
-    const order = this.store.createRecord('order', {
-      orderDate: new Date(),
-      requestNumber: this.model.requestNumber,
-      offerNumber: this.model.number,
-      scheduledHours: 0,
-      scheduledNbOfPersons: 2,
-      depositRequired: true,
-      hasProductionTicket: false,
-      mustBeInstalled: true,
-      mustBeDelivered: false,
-      isReady: false,
-      canceled: false,
-      offer: this.model,
-      customer,
-      contact,
-      building,
-      vatRate
-    });
+    if (vatRate && this.orderedVatRate && this.orderedVatRate.get('id') != vatRate.get('id')) {
+      this.set('showIncompatibleVatRatesDialog', true);
+    } else {
+      const offerlines = yield this.model.get('offerlines');
+      yield all(offerlines.map(o => o.save()));
 
-    yield order.save();
+      const customer = yield this.model.get('customer');
+      const contact = yield this.model.get('contact');
+      const building = yield this.model.get('building');
 
-    this.transitionToRoute('main.case.order.edit', customer, order, {
-      queryParams: { editMode: true }
-    });
+      const order = this.store.createRecord('order', {
+        orderDate: new Date(),
+        requestNumber: this.model.requestNumber,
+        offerNumber: this.model.number,
+        scheduledHours: 0,
+        scheduledNbOfPersons: 2,
+        depositRequired: true,
+        hasProductionTicket: false,
+        mustBeInstalled: true,
+        mustBeDelivered: false,
+        isReady: false,
+        canceled: false,
+        offer: this.model,
+        customer,
+        contact,
+        building,
+        vatRate
+      });
 
-    // update case to display the new order tab
-    this.case.updateRecord('order', this.model);
+      yield order.save();
+
+      this.transitionToRoute('main.case.order.edit', customer, order, {
+        queryParams: { editMode: true }
+      });
+
+      // update case to display the new order tab
+      this.case.updateRecord('order', this.model);
+    }
   }),
 
   actions: {
@@ -68,6 +81,9 @@ export default Controller.extend({
       offerlines.forEach(o => o.set('isOrdered', false));
       const customer = await this.model.get('customer');
       this.transitionToRoute('main.case.offer.edit', customer, this.model);
+    },
+    closeIncompatibleVatRatesDialog() {
+      this.set('showIncompatibleVatRatesDialog', false);
     }
   }
 });
