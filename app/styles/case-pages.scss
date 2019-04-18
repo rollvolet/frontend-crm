@@ -141,3 +141,15 @@
     }
   }
 }
+
+.invoice-supplements--dialog--actions {
+  .save-status {
+    top: 0;
+    margin-right: -5px;
+  }
+
+  .md-button.md-fab {
+    margin-right: 10px;
+    margin-bottom: 15px;
+  }
+}

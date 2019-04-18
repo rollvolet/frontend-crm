@@ -23,7 +23,7 @@
       {{/if}}
     {{/paper-dialog-content}}
 
-    {{#paper-dialog-actions class="layout-row"}}
+    {{#paper-dialog-actions class="layout-row invoice-supplements--dialog--actions"}}
       <span class="flex"></span>
       {{#if showUnsavedChangesWarning}}
         {{#paper-button onClick=(action "cancelCloseEdit")}}Terug{{/paper-button}}
@@ -31,7 +31,7 @@
       {{else}}
         {{#if selected}}
           {{save-status-icon model=selected task=save}}
-          {{#paper-button onClick=(action "closeEdit")}}Klaar{{/paper-button}}
+          {{#paper-button class="close-edit-btn" onClick=(action "closeEdit")}}Klaar{{/paper-button}}
         {{else}}
           {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "createNew") disabled=isDisabledNew}}
             {{paper-icon "add"}}

@@ -55,7 +55,7 @@
       {{#if (not model.printInFront)}}{{model.honorificPrefix.name}}{{/if}}
     </h4>
     <div class="layout-row layout-xs-column">
-      <div class="layout-column">
+      <div class="layout-column u-rel-top-small">
         {{honorific-prefix-select value=model.honorificPrefix language=model.language
             onSelectionChange=(queue (action (mut model.honorificPrefix)) (perform save))
             class="md-input-wrapper large no-spacer-bottom"}}
