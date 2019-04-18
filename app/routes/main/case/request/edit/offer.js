@@ -13,18 +13,21 @@ export default Route.extend({
     const building = await request.get('building');
     const vatRate = this.store.peekAll('vat-rate').find(v => v.rate == 21);
 
-    let language;
-    if (contact)
-      language = (await contact.get('language')).get('code');
-    else if (customer)
-      language = (await customer.get('language')).get('code');
-    if (!['NED', 'FRA'].includes(language))
-      language = 'NED';
+    let languageCode;
+    if (contact) {
+      const lang = await contact.get('language');
+      languageCode = lang && lang.code;
+    } else if (customer) {
+      const lang = await customer.get('language');
+      languageCode = lang && lang.code;
+    }
+    if (!['NED', 'FRA'].includes(languageCode))
+      languageCode = 'NED';
 
     const offer = this.store.createRecord('offer', {
       offerDate: new Date(),
-      documentIntro: snippets[language]['offerDocumentIntro'],
-      documentOutro: snippets[language]['offerDocumentOutro'],
+      documentIntro: snippets[languageCode]['offerDocumentIntro'],
+      documentOutro: snippets[languageCode]['offerDocumentOutro'],
       documentVersion: 'v1',
       vatRate,
       customer,
