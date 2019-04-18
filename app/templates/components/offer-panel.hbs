@@ -32,8 +32,7 @@
   {{warning-message message="Reeds besteld. Geen wijzigingen meer mogelijk."}}
 {{else if model.isMasteredByAccess}}
   {{warning-message message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden."}}
-{{/if}}
-{{#if hasMixedVatRates}}
+{{else if hasMixedVatRates}}
   {{info-message message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden."}}
 {{/if}}
 
