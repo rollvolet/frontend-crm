@@ -10,10 +10,7 @@
   {{contact-detail-panel model=selectedContact onClose=(action "closeDetail") onEdit=(action "openEdit")}}
 {{else if displayEdit}}
   {{#customer-entity-edit-form scope='contact' model=selectedContact
-       onClose=(action "closeEdit") onRemove=(action "closeEdit") as |f|}}
-    <div class="layout-row layout-align-start-center">
-      <h3>Contact</h3>
-      {{save-status-icon model=f.model task=f.save}}
-    </div>
+       onClose=(action "closeEdit") onRemove=(action "closeEdit")}}
+    <h3>Contact</h3>
   {{/customer-entity-edit-form}}
 {{/liquid-if}}

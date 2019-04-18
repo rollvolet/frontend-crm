@@ -1,4 +1,21 @@
-{{yield (hash save=save remove=remove model=model)}}
+<div class="layout-row layout-align-space-between-center">
+  <div class="layout-row layout-align-start-center">
+    {{yield}}
+    {{save-status-icon model=model task=save}}
+  </div>
+  <div>
+    {{#if isEnabledDelete}}
+      {{#paper-button onClick=(perform remove) iconButton=true}}
+        {{paper-icon "delete"}}
+        {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+      {{/paper-button}}
+    {{/if}}
+    {{#paper-button onClick=(action "close") iconButton=true}}
+      {{paper-icon "exit to app"}}
+      {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
+    {{/paper-button}}
+  </div>
+</div>
 
 {{#if remove.isRunning}}
   <div>
@@ -111,13 +128,6 @@
           textarea=true icon="assignment" passThru=(hash rows=3) class="xxlarge"}}
     {{/if}}
   </section>
-
-  <div class="layout-row layout-align-end">
-    {{#if isEnabledDelete}}
-      {{paper-button label="Verwijder" primary=true raised=true onClick=(perform remove)}}
-    {{/if}}
-    {{paper-button label="Klaar" primary=true raised=true onClick=(action "close")}}
-  </div>
 {{/if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmClose")}}
