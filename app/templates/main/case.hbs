@@ -62,6 +62,8 @@
                 {{paper-icon "exit to app"}}
                 {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
               {{/paper-button}}
+            {{else if isUpdatingBuilding}}
+              {{paper-progress-circular diameter=18}}
             {{else}}
               {{#paper-button onClick=(action "toggleBuildingEdit") iconButton=true}}
                 {{paper-icon "edit mode"}}
@@ -87,6 +89,8 @@
                 {{paper-icon "exit to app"}}
                 {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
               {{/paper-button}}
+            {{else if isUpdatingContact}}
+              {{paper-progress-circular diameter=18}}
             {{else}}
               {{#paper-button onClick=(action "toggleContactEdit") iconButton=true}}
                 {{paper-icon "edit mode"}}

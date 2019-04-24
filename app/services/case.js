@@ -86,7 +86,51 @@ export default Service.extend({
     });
   }),
 
-  updateContactAndBuilding: task(function * (contact, building) {
+  updateContact: task(function * (contact, building) {
+    yield this._updateContactAndBuilding.perform(contact, building);
+
+    const reloadPromises = [];
+    if (this.current.request)
+      reloadPromises.push(this.current.request.belongsTo('contact').reload());
+    if (this.current.offer)
+      reloadPromises.push(this.current.offer.belongsTo('contact').reload());
+    if (this.current.order) {
+      reloadPromises.push(this.current.order.belongsTo('contact').reload());
+
+      const depositInvoices = yield this.current.order.get('depositInvoices');
+      depositInvoices.forEach( depositInvoice => {
+        reloadPromises.push(depositInvoice.belongsTo('contact').reload());
+      });
+    }
+    if (this.current.invoice)
+      reloadPromises.push(this.current.invoice.belongsTo('contact').reload());
+
+    yield Promise.all(reloadPromises);
+  }),
+
+  updateBuilding: task(function * (contact, building) {
+    yield this._updateContactAndBuilding.perform(contact, building);
+
+    const reloadPromises = [];
+    if (this.current.request)
+      reloadPromises.push(this.current.request.belongsTo('building').reload());
+    if (this.current.offer)
+      reloadPromises.push(this.current.offer.belongsTo('building').reload());
+    if (this.current.order) {
+      reloadPromises.push(this.current.order.belongsTo('building').reload());
+
+      const depositInvoices = yield this.current.order.get('depositInvoices');
+      depositInvoices.forEach( depositInvoice => {
+        reloadPromises.push(depositInvoice.belongsTo('building').reload());
+      });
+    }
+    if (this.current.invoice)
+      reloadPromises.push(this.current.invoice.belongsTo('building').reload());
+
+    yield Promise.all(reloadPromises);
+  }),
+
+  _updateContactAndBuilding: task(function * (contact, building) {
     const { access_token } = this.get('session.data.authenticated');
     const headers = {
       'Content-Type': 'application/json',
@@ -102,19 +146,5 @@ export default Service.extend({
     };
     const options = { headers, data };
     yield this.ajax.post(`/api/cases/contact-and-building`, options);
-
-    const reloadPromises = [];
-    if (this.current.request)
-      reloadPromises.push(this.current.request.reload());
-    if (this.current.offer)
-      reloadPromises.push(this.current.offer.reload());
-    if (this.current.order) {
-      reloadPromises.push(this.current.order.reload());
-      reloadPromises.push(this.current.order.hasMany('deposit-invoice').reload());
-    }
-    if (this.current.invoice)
-      reloadPromises.push(this.current.invoice.reload());
-
-    yield Promise.all(reloadPromises);
   })
 });
