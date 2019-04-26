@@ -4,7 +4,9 @@
     <th>Eenheid</th>
     <th>Omschrijving</th>
     <th>Netto totaal (&euro;)</th>
-    <th><!-- Edit/Delete --></th>
+    {{#unless isDisabledEdit}}
+      <th><!-- Edit/Delete --></th>
+    {{/unless}}
   </thead>
   <tbody>
     {{#each model as |supplement|}}
@@ -13,18 +15,20 @@
         <td>{{supplement.unit}}</td>
         <td>{{{supplement.description}}}</td>
         <td>{{fmt-currency supplement.amount}}</td>
-        <td>
-          <div class="layout-row">
-            {{#paper-button onClick=(action onOpenEdit supplement) iconButton=true}}
-              {{paper-icon "edit mode"}}
-              {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
-            {{/paper-button}}
-            {{#paper-button onClick=(action onDelete supplement) iconButton=true}}
-              {{paper-icon "delete"}}
-              {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-            {{/paper-button}}
-          </div>
-        </td>
+        {{#unless isDisabledEdit}}
+          <td>
+            <div class="layout-row">
+              {{#paper-button onClick=(action onOpenEdit supplement) iconButton=true}}
+                {{paper-icon "edit mode"}}
+                {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
+              {{/paper-button}}
+              {{#paper-button onClick=(action onDelete supplement) iconButton=true}}
+                {{paper-icon "delete"}}
+                {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+              {{/paper-button}}
+            </div>
+          </td>
+        {{/unless}}
       </tr>
     {{else}}
       <tr><td colspan="5">Geen extra's</td></tr>

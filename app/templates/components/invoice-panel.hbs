@@ -9,12 +9,12 @@
   </div>
   <div>
     {{#if editMode}}
-      {{#unless isDisabledEdit}}
+      {{#if isEnabledEdit}}
         {{#paper-button onClick=(perform remove) iconButton=true}}
           {{paper-icon "delete"}}
           {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
         {{/paper-button}}
-      {{/unless}}
+      {{/if}}
       {{#paper-button onClick=(action "closeEdit") iconButton=true}}
         {{paper-icon "exit to app"}}
         {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
@@ -38,7 +38,7 @@
   </div>
 </div>
 
-{{#if isBooked}}
+{{#if model.isBooked}}
   {{warning-message message="Factuur reeds geboekt. Geen wijzigingen meer mogelijk."}}
 {{/if}}
 

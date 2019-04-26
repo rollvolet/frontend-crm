@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { notEmpty } from '@ember/object/computed';
+import { not, notEmpty } from '@ember/object/computed';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import { or, raw } from 'ember-awesome-macros';
@@ -22,6 +22,7 @@ export default Component.extend(EKMixin, {
   orderedOfferlines: filterBy('model.offer.offerlines.@each.isOrdered', raw('isOrdered')),
   hasInvoice: notEmpty('model.invoice.id'),
   isDisabledEdit: or('model.isMasteredByAccess', 'hasInvoice'),
+  isEnabledDelete: not('isDisabledEdit'),
 
   init() {
     this._super(...arguments);

@@ -15,7 +15,7 @@
           {{invoice-supplement-edit-form model=selected save=save}}
         {{/if}}
 {{else}}
-        {{invoice-supplements-table model=model.supplements
+        {{invoice-supplements-table model=model.supplements isDisabledEdit=isDisabledEdit
             onOpenEdit=(action "openEdit") onDelete=(action "deleteSupplement")}}
       {{/liquid-if}}
       {{#if model.isMasteredByAccess}}

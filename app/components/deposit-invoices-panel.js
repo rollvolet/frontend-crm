@@ -15,7 +15,7 @@ export default Component.extend({
   showInvoiceDocumentDialog: false,
   showInvoiceDocumentNotFoundDialog: false,
   showUnsavedChangesDialog: false,
-  isDisabledEdit: false,
+  isDisabledEdit: false,  // passed as argument
 
   arithmeticAmounts: computed('model', 'model.{[],@each.arithmeticAmount}', function() {
     return this.model ? this.model.map(i => i.arithmeticAmount) : 0;

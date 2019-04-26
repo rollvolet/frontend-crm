@@ -1,8 +1,8 @@
-import { empty } from '@ember/object/computed';
 import DS from 'ember-data';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
 import { and, bool, not, or } from 'ember-awesome-macros';
+import { empty, notEmpty } from '@ember/object/computed';
 
 const Validations = buildValidations({
   invoiceDate: validator('presence', true),
@@ -46,6 +46,7 @@ export default DS.Model.extend(Validations, {
   paymentDateStr: dateString('paymentDate'),
   cancellationDateStr: dateString('cancellationDate'),
 
+  isBooked: notEmpty('bookingDate'),
   isIsolated: empty('order.id'),
   isMasteredByAccess: or(
     and(not('isIsolated'), 'order.isMasteredByAccess'),

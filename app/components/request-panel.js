@@ -3,7 +3,7 @@ import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { computed } from '@ember/object';
-import { notEmpty } from '@ember/object/computed';
+import { not, notEmpty } from '@ember/object/computed';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 
@@ -19,6 +19,7 @@ export default Component.extend(EKMixin, {
   showUnsavedChangesDialog: false,
 
   isDisabledEdit: notEmpty('model.offer.id'),
+  isEnabledDelete: not('isDisabledEdit'),
   isLinkedToCustomer: notEmpty('model.customer.id'),
 
   hasFailedCalendarEvent: computed('model.calendarEvent', function() {

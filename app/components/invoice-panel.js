@@ -2,8 +2,7 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { notEmpty } from '@ember/object/computed';
-import { or } from 'ember-awesome-macros';
+import { or, not } from 'ember-awesome-macros';
 
 export default Component.extend({
   case: service(),
@@ -18,8 +17,8 @@ export default Component.extend({
   showInvoiceDocumentNotFoundDialog: false,
   showUnsavedChangesDialog: false,
 
-  isBooked: notEmpty('model.bookingDate'),
-  isDisabledEdit: or('model.isMasteredByAccess', 'isBooked'),
+  isDisabledEdit: or('model.isMasteredByAccess', 'model.isBooked'),
+  isEnabledDelete: not('isDisabledEdit'),
 
   remove: task(function * () {
     const customer = yield this.model.customer;

@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { notEmpty, mapBy } from '@ember/object/computed';
+import { not, notEmpty, mapBy } from '@ember/object/computed';
 import { uniqBy, length } from 'ember-awesome-macros/array';
 import { or, gt, raw } from 'ember-awesome-macros';
 import { on } from '@ember/object/evented';
@@ -24,6 +24,7 @@ export default Component.extend(EKMixin, PellOptions, {
 
   hasOrder: notEmpty('model.order.id'),
   isDisabledEdit: or('model.isMasteredByAccess', 'hasOrder'),
+  isEnabledDelete: not('isDisabledEdit'),
   vatRates: mapBy('model.offerlines', 'vatRate'),
   hasMixedVatRates: gt(length(uniqBy('vatRates', raw('code'))), raw(1)),
   hasUnsavedChanges: async function() {

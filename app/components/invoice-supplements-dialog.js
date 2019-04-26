@@ -12,7 +12,8 @@ export default Component.extend({
   model: null,
   showUnsavedChangesWarning: false,
 
-  isDisabledNew: or(notEmpty('selected'), notEmpty('model.bookingDate'), 'model.isMasteredByAccess'),
+  isDisabledNew: or(notEmpty('selected'), 'model.isBooked', 'model.isMasteredByAccess'),
+  isDisabledEdit: or('model.isBooked', 'model.isMasteredByAccess'),
 
   rollbackTree: task(function * () {
     this.selected.rollbackAttributes();

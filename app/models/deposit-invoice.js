@@ -2,7 +2,7 @@ import DS from 'ember-data';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
 import { computed } from '@ember/object';
-import { alias } from '@ember/object/computed';
+import { alias, notEmpty } from '@ember/object/computed';
 
 const Validations = buildValidations({
   invoiceDate: validator('presence', true),
@@ -48,5 +48,8 @@ export default DS.Model.extend(Validations, {
     const rate = vatRate.rate / 100;
     const vat = this.baseAmount * rate;
     return vat;
-  })
+  }),
+
+  isBooked: notEmpty('bookingDate'),
+  isMasteredByAccess: alias('order.isMasteredByAccess')
 });
