@@ -2,10 +2,10 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { not, notEmpty } from '@ember/object/computed';
+import { not, notEmpty, bool } from '@ember/object/computed';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
-import { or, raw } from 'ember-awesome-macros';
+import { and, or, raw } from 'ember-awesome-macros';
 import { filterBy } from 'ember-awesome-macros/array';
 
 export default Component.extend(EKMixin, {
@@ -21,8 +21,10 @@ export default Component.extend(EKMixin, {
 
   orderedOfferlines: filterBy('model.offer.offerlines.@each.isOrdered', raw('isOrdered')),
   hasInvoice: notEmpty('model.invoice.id'),
+  hasDepositInvoice: bool('model.depositInvoices.length'),
+  hasDeposit: bool('model.deposits.length'),
   isDisabledEdit: or('model.isMasteredByAccess', 'hasInvoice'),
-  isEnabledDelete: not('isDisabledEdit'),
+  isEnabledDelete: and(not('isDisabledEdit'), not('hasDepositInvoice'), not('hasDeposit')),
 
   init() {
     this._super(...arguments);
@@ -35,10 +37,6 @@ export default Component.extend(EKMixin, {
       // unorder offerlines
       this.orderedOfferlines.forEach(o => o.set('isOrdered', false));
       yield all(offer.offerlines.map(o => o.save()));
-
-      // destroy deposits
-      const deposits = yield this.model.deposits;
-      yield all(deposits.map(d => d.destroyRecord()));
 
       // update case-tabs
       this.case.updateRecord('order', null);
