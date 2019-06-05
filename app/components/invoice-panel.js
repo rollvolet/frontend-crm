@@ -25,10 +25,11 @@ export default Component.extend({
     const order = yield this.model.order;
 
     try {
-      yield this.model.destroyRecord();
-
-      // update case-tabs
       this.case.updateRecord('invoice', null);
+
+      const supplements = yield this.model.supplements;
+      yield all(supplements.map(t => t.destroyRecord()));
+      yield this.model.destroyRecord();
 
       if (order)
         this.router.transitionTo('main.case.order.edit', order);
