@@ -54,3 +54,15 @@
     }
   }
 }
+
+/* Accountancy exports */
+.export-panel {
+  padding: 20px;
+  background-color: paper-color('grey', '100');
+
+  md-checkbox {
+    position: relative;
+    top: 8px;
+    margin-left: 30px;
+  }
+}

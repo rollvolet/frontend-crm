@@ -46,6 +46,10 @@ Router.map(function() {
         this.route('edit', { path: '/:invoice_id' }, function() {});
       });
     });
+
+    this.route('accountancy', function() {
+      this.route('exports', function() {});
+    });
   });
 });
 

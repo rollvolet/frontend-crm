@@ -1,0 +1,39 @@
+<div class="layout-row layout-align-space-between-center">
+  <h1>Exports naar boekhouding</h1>
+</div>
+
+{{accountancy-export-form}}
+
+{{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
+     sort=sort page=page size=size as |t|}}
+  {{#t.content as |c|}}
+    {{#c.header}}
+      {{th-sortable field='date' currentSorting=sort label='Datum export'}}
+      <th>Van</th>
+      <th>Tot</th>
+      <th>Test</th>
+    {{/c.header}}
+    {{#c.body as |row|}}
+      <td>{{fmt-date row.date}}</td>
+      <td>
+        {{#if row.fromNumber}}
+          {{format-invoice-number row.fromNumber}}
+        {{else}}
+          {{fmt-date row.fromDate}}
+        {{/if}}
+      </td>
+      <td>
+        {{#if row.untilNumber}}
+          {{format-invoice-number row.untilNumber}}
+        {{else}}
+          {{fmt-date row.untilDate}}
+        {{/if}}
+      </td>
+      <td>
+        {{#if row.isDryRun}}
+          {{paper-icon "done"}}
+        {{/if}}
+      </td>
+    {{/c.body}}
+  {{/t.content}}
+{{/data-table}}
