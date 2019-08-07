@@ -2,10 +2,10 @@
   "name": "rollvolet-crm",
   "version": "0.1.1",
   "private": true,
-  "description": "Frontend of rollvolet-crm",
+  "description": "Frontend of Rollvolet CRM",
   "repository": "",
   "license": "MIT",
-  "author": "",
+  "author": "Erika Pauwels <erika.pauwels@gmail.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
