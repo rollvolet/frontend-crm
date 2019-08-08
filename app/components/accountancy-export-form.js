@@ -9,6 +9,7 @@ export default Component.extend({
 
   classNames: ['export-panel'],
 
+  onExport: null,
   multipleExportEnabled: true,
 
   formattedFromNumber: computed('model.fromNumber', function() {
@@ -32,7 +33,7 @@ export default Component.extend({
   },
 
   startExport: task(function * () {
-    yield this.model.save();
+    yield this.onExport(this.model);
     this.initModel();
   }),
 

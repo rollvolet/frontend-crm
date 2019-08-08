@@ -2,7 +2,7 @@
   <h1>Exports naar boekhouding</h1>
 </div>
 
-{{accountancy-export-form}}
+{{accountancy-export-form onExport=(perform onExport)}}
 
 {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
      sort=sort page=page size=size as |t|}}
