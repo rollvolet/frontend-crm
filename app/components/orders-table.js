@@ -16,7 +16,7 @@ export default Component.extend(DebouncedSearch, {
   page: 0,
   size: 10,
   sort: '-order-date',
-  dataTableParamChanged: observer('page', 'size', 'sort', function() {
+  dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
     this.search.perform();
   }),
   search: task(function * () {
