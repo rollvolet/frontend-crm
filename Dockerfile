@@ -1,6 +1,6 @@
-FROM madnificent/ember:3.4.1 as builder
+FROM madnificent/ember:3.10.1 as builder
 
-MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
+LABEL maintainer="Erika Pauwels <erika.pauwels@gmail.com>"
 
 WORKDIR /app
 COPY package.json .
