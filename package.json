@@ -75,7 +75,7 @@
     "qunit-dom": "^0.9.0",
     "sass": "^1.22.9",
     "torii": "^0.10.1",
-    "torii-azure-ad2-provider": "^1.0.3"
+    "torii-azure-ad2-provider": "^1.0.4"
   },
   "engines": {
     "node": "8.* || >= 10.*"
