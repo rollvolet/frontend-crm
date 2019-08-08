@@ -19,9 +19,6 @@ export default Component.extend({
     return this.store.peekAll('employee').find(e => e.firstName == this.visitorName);
   }),
   currentRouteName: oneWay('router.currentRouteName'),
-  routeChanged: observer('router.currentRouteName', function() {
-    this.set('currentRouteName', this.get('router.currentRouteName'));
-  }),
 
   canCreateNewOffer: computed('model', 'model.{requestId,offerId}', function() {
     return this.model && this.model.requestId && this.model.offerId == null;
