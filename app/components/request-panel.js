@@ -49,7 +49,10 @@ export default Component.extend(EKMixin, {
       warn(`Something went wrong while destroying request ${this.model.id}`, { id: 'destroy-failure' });
       // TODO rollback to detail view?
     } finally {
-      this.router.transitionTo('main.customers.edit', customer);
+      if (customer)
+        this.router.transitionTo('main.customers.edit', customer);
+      else
+        this.router.transitionTo('main.requests.index');
     }
   }),
   rollbackTree: task( function * () {
