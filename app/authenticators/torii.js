@@ -118,19 +118,19 @@ export default ToriiAuthenticator.extend({
             this.trigger('sessionDataUpdated', sessionData);
             resolve(sessionData);
           } catch (error) {
-            reject(error);
-          }
-        }), (xhr, status, error) => {
-          warn(`Failed to refresh access token. Server responded with [${xhr.status}] ${error}`);
-
-          if (xhr.status === 401 || xhr.status === 403) {
+            warn(`Failed to update session data after access token refresh: ${error}`, { id: 'refresh-token.data-update-failure' });
             this.invalidate().then(() => {
               this.trigger('sessionDataInvalidated');
             });
+            reject(error);
           }
-
-          reject();
-        };
+        });
+      }).catch( (response) => {
+        warn(`Failed to refresh access token. Server responded with [${response.status}] ${response.payload}`, { id: 'refresh-token.server-failure' });
+        this.invalidate().then(() => {
+          this.trigger('sessionDataInvalidated');
+        });
+        reject();
       });
     });
   },
