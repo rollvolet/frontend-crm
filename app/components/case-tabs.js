@@ -8,9 +8,17 @@ export default Component.extend({
   router: service(),
   store: service(),
 
+  currentRouteName: oneWay('router.currentRouteName'),
+
   init() {
     this._super(...arguments);
     this.case.initCase();
+    this.router.addObserver('currentRouteName', this, 'currentRouteChanged');
+  },
+
+  willDestroyElement() {
+    this.router.removeObserver('currentRouteName', this, 'currentRouteChanged');
+    this._super(...arguments);
   },
 
   model: alias('case.current'),
@@ -18,7 +26,6 @@ export default Component.extend({
   visitor: computed('visitorName', function() {
     return this.store.peekAll('employee').find(e => e.firstName == this.visitorName);
   }),
-  currentRouteName: oneWay('router.currentRouteName'),
 
   canCreateNewOffer: computed('model', 'model.{requestId,offerId}', function() {
     return this.model && this.model.requestId && this.model.offerId == null;
@@ -29,6 +36,10 @@ export default Component.extend({
   canCreateNewInvoice: computed('model', 'model.{orderId,invoiceId,order}', function() {
     return this.model && this.model.orderId && this.model.invoiceId == null && this.model.order && !this.model.order.isMasteredByAccess;
   }),
+
+  currentRouteChanged(sender, key) {
+    this.set('currentRouteName', this.router.currentRouteName);
+  },
 
   actions: {
     openNewOffer() {
