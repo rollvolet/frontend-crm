@@ -21,11 +21,6 @@ export default Component.extend({
       this.newWorkingHour.destroyRecord();
   },
 
-  willDestroyElement() {
-    if (this.newWorkingHour)
-      this.newWorkingHour.destroyRecord();
-  },
-
   save: task(function * () {
     const { validations } = yield this.newWorkingHour.validate();
 
