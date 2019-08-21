@@ -129,3 +129,8 @@ md-input-container {
     cursor: pointer;
   }
 }
+
+md-checkbox .checkbox-tooltip {
+  color: paper-color('grey');
+  font-size: 0.8em;
+}

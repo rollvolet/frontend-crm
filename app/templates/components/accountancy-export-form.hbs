@@ -1,9 +1,11 @@
 <div class="layout-row layout-align-start-center">
-  {{#paper-switch value=multipleExportEnabled onChange=(action "toggleMultipleExportEnabled")}}
+  {{#paper-checkbox value=multipleExportEnabled onChange=(action "toggleMultipleExportEnabled")}}
     Exporteer meerdere facturen
-  {{/paper-switch}}
-  {{paper-checkbox label="Om te testen" value=model.isDryRun
-      onChange=(action (mut model.isDryRun))}}
+  {{/paper-checkbox}}
+  {{#paper-checkbox value=model.isDryRun onChange=(action (mut model.isDryRun))}}
+    Om te testen
+    <div class="checkbox-tooltip">Facturen worden niet gemarkeerd als 'geboekt' in de databank</div>
+  {{/paper-checkbox}}
 </div>
 
 {{#paper-form onSubmit=(perform startExport) as |form|}}
