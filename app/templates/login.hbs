@@ -11,7 +11,14 @@
         </div>
         <div class="error--tech-description">{{errorMessage}}</div>
       {{/if}}
-      {{#paper-button disabled=errorMessage raised=true primary=true onClick=(action "login")}}Login{{/paper-button}}
+      {{#if login.isRunning}}
+        {{#paper-button disabled=true raised=true primary=true onClick=null}}Bezig met aanmelden...{{/paper-button}}
+        <div class="error--tech-description">
+          Het aanmelden gebeurt in een pop-up; zorg dat de instellingen van uw browser correct staan indien deze niet verschijnt.
+        </div>
+      {{else}}
+        {{#paper-button disabled=errorMessage raised=true primary=true onClick=(perform login)}}Login{{/paper-button}}
+      {{/if}}
     {{/if}}
   </div>
 </div>
