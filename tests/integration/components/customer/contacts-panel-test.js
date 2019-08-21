@@ -3,24 +3,24 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | contacts table', function(hooks) {
+module('Integration | Component | customer/contacts-panel', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function(assert) {
     // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });
+    // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`{{contacts-table}}`);
+    await render(hbs`{{customer/contacts-panel}}`);
 
-    assert.dom('*').hasText('');
+    assert.equal(this.element.textContent.trim(), '');
 
     // Template block usage:
     await render(hbs`
-      {{#contacts-table}}
+      {{#customer/contacts-panel}}
         template block text
-      {{/contacts-table}}
+      {{/customer/contacts-panel}}
     `);
 
-    assert.dom('*').hasText('template block text');
+    assert.equal(this.element.textContent.trim(), 'template block text');
   });
 });

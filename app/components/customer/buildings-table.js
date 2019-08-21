@@ -1,10 +1,10 @@
 import Component from '@ember/component';
-import DebouncedSearch from '../mixins/debounced-search-task';
-import { task } from 'ember-concurrency';
+import DebouncedSearch from '../../mixins/debounced-search-task';
 import { observer } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default Component.extend(DebouncedSearch, {
-  classNames: ['contacts-table'],
+  classNames: ['buildings-table'],
 
   init() {
     this._super(...arguments);
@@ -16,13 +16,12 @@ export default Component.extend(DebouncedSearch, {
   sort: 'name',
 
   onClickRow: null,
-  onEdit: null,
 
   dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
     this.search.perform();
   }),
   search: task(function * () {
-    const contacts = yield this.customer.query('contacts', {
+    const buildings = yield this.customer.query('buildings', {
       page: {
         size: this.size,
         number: this.page
@@ -38,7 +37,7 @@ export default Component.extend(DebouncedSearch, {
         telephone: this.getFilterValue('telephone')
       }
     });
-    this.set('contacts', contacts);
+    this.set('buildings', buildings);
   }),
 
   actions: {
@@ -55,8 +54,8 @@ export default Component.extend(DebouncedSearch, {
       this.set('telephone', undefined);
       this.search.perform();
     },
-    edit(contact) {
-      this.onEdit(contact);
+    edit(building) {
+      this.onEdit(building);
     }
   }
 });

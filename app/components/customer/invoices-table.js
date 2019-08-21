@@ -1,11 +1,11 @@
 import Component from '@ember/component';
-import DebouncedSearch from '../mixins/debounced-search-task';
+import DebouncedSearch from '../../mixins/debounced-search-task';
 import { observer } from '@ember/object';
 import { task } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 
 export default Component.extend(DebouncedSearch, {
-  classNames: ['deposit-invoices-table'],
+  classNames: ['invoices-table'],
 
   router: service(),
 
@@ -21,13 +21,13 @@ export default Component.extend(DebouncedSearch, {
     this.search.perform();
   }),
   search: task(function * () {
-    const invoices = yield this.customer.query('depositInvoices', {
+    const invoices = yield this.customer.query('invoices', {
       page: {
         size: this.size,
         number: this.page
       },
       sort: this.sort,
-      include: 'order,building',
+      include: 'building',
       filter: {
         number: this.getFilterValue('number'),
         reference: this.getFilterValue('reference'),
@@ -39,7 +39,7 @@ export default Component.extend(DebouncedSearch, {
         }
       }
     });
-    this.set('depositInvoices', invoices);
+    this.set('invoices', invoices);
   }),
   actions: {
     setFilter(key, value) {
@@ -56,8 +56,11 @@ export default Component.extend(DebouncedSearch, {
       this.search.perform();
     },
     clickRow(row) {
-      const orderId = row.get('order.id');
-      this.router.transitionTo('main.case.order.edit.deposit-invoices', this.customer, orderId);
+      const invoiceId = row.get('id');
+      this.router.transitionTo('main.case.invoice.edit', this.customer, invoiceId);
+    },
+    openNewInvoice() {
+      this.router.transitionTo('main.case.invoice.new', this.customer);
     }
   }
 });

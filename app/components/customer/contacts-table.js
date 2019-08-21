@@ -1,13 +1,10 @@
 import Component from '@ember/component';
-import DebouncedSearch from '../mixins/debounced-search-task';
-import { observer } from '@ember/object';
+import DebouncedSearch from '../../mixins/debounced-search-task';
 import { task } from 'ember-concurrency';
-import { inject as service } from '@ember/service';
+import { observer } from '@ember/object';
 
 export default Component.extend(DebouncedSearch, {
-  classNames: ['invoices-table'],
-
-  router: service(),
+  classNames: ['contacts-table'],
 
   init() {
     this._super(...arguments);
@@ -16,31 +13,34 @@ export default Component.extend(DebouncedSearch, {
 
   page: 0,
   size: 10,
-  sort: '-number',
+  sort: 'name',
+
+  onClickRow: null,
+  onEdit: null,
+
   dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
     this.search.perform();
   }),
   search: task(function * () {
-    const invoices = yield this.customer.query('invoices', {
+    const contacts = yield this.customer.query('contacts', {
       page: {
         size: this.size,
         number: this.page
       },
       sort: this.sort,
-      include: 'building',
+      include: 'country,language,honorific-prefix',
       filter: {
         number: this.getFilterValue('number'),
-        reference: this.getFilterValue('reference'),
-        building: {
-          name: this.getFilterValue('name'),
-          'postal-code': this.getFilterValue('postalCode'),
-          city: this.getFilterValue('city'),
-          street: this.getFilterValue('street')
-        }
+        name: this.getFilterValue('name'),
+        'postal-code': this.getFilterValue('postalCode'),
+        city: this.getFilterValue('city'),
+        street: this.getFilterValue('street'),
+        telephone: this.getFilterValue('telephone')
       }
     });
-    this.set('invoices', invoices);
+    this.set('contacts', contacts);
   }),
+
   actions: {
     setFilter(key, value) {
       this.set(key, value);
@@ -48,19 +48,15 @@ export default Component.extend(DebouncedSearch, {
     },
     resetFilters() {
       this.set('number', undefined);
-      this.set('reference', undefined);
       this.set('name', undefined);
       this.set('postalCode', undefined);
       this.set('city', undefined);
       this.set('street', undefined);
+      this.set('telephone', undefined);
       this.search.perform();
     },
-    clickRow(row) {
-      const invoiceId = row.get('id');
-      this.router.transitionTo('main.case.invoice.edit', this.customer, invoiceId);
-    },
-    openNewInvoice() {
-      this.router.transitionTo('main.case.invoice.new', this.customer);
+    edit(contact) {
+      this.onEdit(contact);
     }
   }
 });

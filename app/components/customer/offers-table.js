@@ -1,10 +1,13 @@
 import Component from '@ember/component';
-import DebouncedSearch from '../mixins/debounced-search-task';
+import DebouncedSearch from '../../mixins/debounced-search-task';
 import { observer } from '@ember/object';
 import { task } from 'ember-concurrency';
+import { inject as service } from '@ember/service';
 
 export default Component.extend(DebouncedSearch, {
-  classNames: ['buildings-table'],
+  classNames: ['offers-table'],
+
+  router: service(),
 
   init() {
     this._super(...arguments);
@@ -13,49 +16,50 @@ export default Component.extend(DebouncedSearch, {
 
   page: 0,
   size: 10,
-  sort: 'name',
-
-  onClickRow: null,
-
+  sort: '-offer-date',
   dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
     this.search.perform();
   }),
   search: task(function * () {
-    const buildings = yield this.customer.query('buildings', {
+    const offers = yield this.customer.query('offers', {
       page: {
         size: this.size,
         number: this.page
       },
       sort: this.sort,
-      include: 'country,language,honorific-prefix',
+      include: 'building,request',
       filter: {
+        'request-number': this.getFilterValue('requestNumber'),
         number: this.getFilterValue('number'),
-        name: this.getFilterValue('name'),
-        'postal-code': this.getFilterValue('postalCode'),
-        city: this.getFilterValue('city'),
-        street: this.getFilterValue('street'),
-        telephone: this.getFilterValue('telephone')
+        reference: this.getFilterValue('reference'),
+        building: {
+          name: this.getFilterValue('name'),
+          'postal-code': this.getFilterValue('postalCode'),
+          city: this.getFilterValue('city'),
+          street: this.getFilterValue('street')
+        }
       }
     });
-    this.set('buildings', buildings);
+    this.set('offers', offers);
   }),
-
   actions: {
     setFilter(key, value) {
       this.set(key, value);
       this.debounceSearch.perform(this.search);
     },
     resetFilters() {
+      this.set('requestNumber', undefined);
       this.set('number', undefined);
+      this.set('reference', undefined);
       this.set('name', undefined);
       this.set('postalCode', undefined);
       this.set('city', undefined);
       this.set('street', undefined);
-      this.set('telephone', undefined);
       this.search.perform();
     },
-    edit(building) {
-      this.onEdit(building);
+    clickRow(row) {
+      const offerId = row.get('id');
+      this.router.transitionTo('main.case.offer.edit', this.customer, offerId);
     }
   }
 });

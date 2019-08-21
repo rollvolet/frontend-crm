@@ -1,11 +1,11 @@
 import Component from '@ember/component';
-import DebouncedSearch from '../mixins/debounced-search-task';
+import DebouncedSearch from '../../mixins/debounced-search-task';
 import { observer } from '@ember/object';
 import { task } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 
 export default Component.extend(DebouncedSearch, {
-  classNames: ['offers-table'],
+  classNames: ['deposit-invoices-table'],
 
   router: service(),
 
@@ -16,20 +16,19 @@ export default Component.extend(DebouncedSearch, {
 
   page: 0,
   size: 10,
-  sort: '-offer-date',
+  sort: '-number',
   dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
     this.search.perform();
   }),
   search: task(function * () {
-    const offers = yield this.customer.query('offers', {
+    const invoices = yield this.customer.query('depositInvoices', {
       page: {
         size: this.size,
         number: this.page
       },
       sort: this.sort,
-      include: 'building,request',
+      include: 'order,building',
       filter: {
-        'request-number': this.getFilterValue('requestNumber'),
         number: this.getFilterValue('number'),
         reference: this.getFilterValue('reference'),
         building: {
@@ -40,7 +39,7 @@ export default Component.extend(DebouncedSearch, {
         }
       }
     });
-    this.set('offers', offers);
+    this.set('depositInvoices', invoices);
   }),
   actions: {
     setFilter(key, value) {
@@ -48,7 +47,6 @@ export default Component.extend(DebouncedSearch, {
       this.debounceSearch.perform(this.search);
     },
     resetFilters() {
-      this.set('requestNumber', undefined);
       this.set('number', undefined);
       this.set('reference', undefined);
       this.set('name', undefined);
@@ -58,8 +56,8 @@ export default Component.extend(DebouncedSearch, {
       this.search.perform();
     },
     clickRow(row) {
-      const offerId = row.get('id');
-      this.router.transitionTo('main.case.offer.edit', this.customer, offerId);
+      const orderId = row.get('order.id');
+      this.router.transitionTo('main.case.order.edit.deposit-invoices', this.customer, orderId);
     }
   }
 });

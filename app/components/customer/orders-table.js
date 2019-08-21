@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import DebouncedSearch from '../mixins/debounced-search-task';
+import DebouncedSearch from '../../mixins/debounced-search-task';
 import { observer } from '@ember/object';
 import { task } from 'ember-concurrency';
 import { inject as service } from '@ember/service';

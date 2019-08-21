@@ -28,19 +28,19 @@
 
     {{#liquid-bind (hash tab=selectedTab) use="toRight" as |current|}}
       {{#if (eq current.tab 0)}}
-        {{contacts-panel customer=model}}
+        {{customer/contacts-panel customer=model}}
       {{else if (eq current.tab 1)}}
-        {{buildings-panel customer=model}}
+        {{customer/buildings-panel customer=model}}
       {{else if (eq current.tab 2)}}
-        {{requests-table customer=model}}
+        {{customer/requests-table customer=model}}
       {{else if (eq current.tab 3)}}
-        {{offers-table customer=model}}
+        {{customer/offers-table customer=model}}
       {{else if (eq current.tab 4)}}
-        {{orders-table customer=model}}
+        {{customer/orders-table customer=model}}
       {{else if (eq current.tab 5)}}
-        {{deposit-invoices-table customer=model}}
+        {{customer/deposit-invoices-table customer=model}}
       {{else if (eq current.tab 6)}}
-        {{invoices-table customer=model}}
+        {{customer/invoices-table customer=model}}
       {{/if}}
     {{/liquid-bind}}
   </div>
