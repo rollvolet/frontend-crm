@@ -38,7 +38,7 @@ export default Component.extend({
   }),
 
   currentRouteChanged(sender, key) {
-    this.set('currentRouteName', this.router.currentRouteName);
+    this.set('currentRouteName', sender[key]);
   },
 
   actions: {
