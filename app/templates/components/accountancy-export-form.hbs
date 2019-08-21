@@ -1,40 +1,51 @@
-<div class="layout-row layout-align-start-center">
-  {{#paper-checkbox value=multipleExportEnabled onChange=(action "toggleMultipleExportEnabled")}}
-    Exporteer meerdere facturen
-  {{/paper-checkbox}}
-  {{#paper-checkbox value=model.isDryRun onChange=(action (mut model.isDryRun))}}
-    Om te testen
-    <div class="checkbox-tooltip">Facturen worden niet gemarkeerd als 'geboekt' in de databank</div>
-  {{/paper-checkbox}}
-</div>
-
 {{#paper-form onSubmit=(perform startExport) as |form|}}
-  <div class="layout-row">
-    {{#if multipleExportEnabled}}
-      <p>Exporteer facturen van</p>
-      {{form.input placeholder="29/0001" value=formattedFromNumber
-          onChange=(action "setFromNumber")
-          class="small input-export-number"}}
-      <p>t.e.m.</p>
-      {{form.input placeholder="29/0439" value=formattedUntilNumber
-          onChange=(action "setUntilNumber")
-          class="small input-export-number"}}
-    {{else}}
-      <p>Exporteer factuur met nummer</p>
-      {{form.input placeholder="29/0001" value=formattedFromNumber
-          onChange=(action "setFromNumber")
-          class="small input-export-number"}}
-    {{/if}}
+  <div class="layout-row layout-align-start-center">
+    {{#paper-checkbox value=multipleExportEnabled onChange=(action "toggleMultipleExportEnabled")}}
+      Exporteer meerdere facturen
+    {{/paper-checkbox}}
   </div>
+
   <div class="layout-row">
+    <div class="layout-row">
+      {{#if multipleExportEnabled}}
+        <p>Exporteer facturen van</p>
+        {{form.input placeholder="29/0001" value=formattedFromNumber
+            onChange=(action "setFromNumber")
+            class="small input-export-number"}}
+        <p>t.e.m.</p>
+        {{form.input placeholder="29/0439" value=formattedUntilNumber
+            onChange=(action "setUntilNumber")
+            class="small input-export-number"}}
+      {{else}}
+        <p>Exporteer factuur met nummer</p>
+        {{form.input placeholder="29/0001" value=formattedFromNumber
+            onChange=(action "setFromNumber")
+            class="small input-export-number"}}
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="layout-row layout-align-space-between-center">
+    {{#paper-checkbox value=model.isDryRun onChange=(action (mut model.isDryRun))}}
+      Om te testen
+      <div class="checkbox-tooltip">Facturen worden niet gemarkeerd als 'geboekt' in de databank</div>
+    {{/paper-checkbox}}
     {{#if startExport.isRunning}}
       {{paper-progress-circular diameter=18}}
     {{else}}
-      {{#form.submit-button raised=true primary=true disabled=(or model.validations.isInvalid startExport.isRunning)}}
-        Start export
+      {{#form.submit-button
+           fab=true
+           raised=true
+           primary=true
+           iconButton=true
+           disabled=(or model.validations.isInvalid startExport.isRunning)
+      }}
+        {{paper-icon "play_arrow" size=48}}
+        {{#paper-tooltip}}Start export{{/paper-tooltip}}
       {{/form.submit-button}}
     {{/if}}
   </div>
+
 {{/paper-form}}
 
 {{liquid-outlet}}

@@ -22,6 +22,18 @@ h6 .small-text-fade {
   font-size: 75%;
 }
 
+h1 .note-fade,
+h2 .note-fade,
+h3 .note-fade,
+h4 .note-fade,
+h5 .note-fade,
+h6 .note-fade {
+  display: block;
+  color: paper-color('grey', '600');
+  font-size: 0.75em;
+  font-weight: normal;
+}
+
 .text-fade {
   color: paper-color('grey', '600');
 }
@@ -63,4 +75,8 @@ h6 .small-text-fade {
 .u-rel-top-small {
   position: relative;
   top: 9px;
+}
+
+.u-spacer-large {
+  min-width: 40px;
 }
