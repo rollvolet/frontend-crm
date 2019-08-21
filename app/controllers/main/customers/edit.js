@@ -1,9 +1,9 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
-  queryParams: ['editMode'],
+  queryParams: ['editMode', 'selectedTab'],
   editMode: false,
-  selectedTab: 0,
+  selectedTab: 2, // requests tab
   actions: {
     openEdit() {
       this.set('editMode', true);
