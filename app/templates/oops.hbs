@@ -1,0 +1,25 @@
+<div class="oops-page">
+  <div class="error-page">
+    <h1>Oeps, er is iets misgelopen...</h1>
+
+    <p>De foutmelding is automatisch doorgestuurd. We proberen dit zo snel mogelijk te verhelpen.</p>
+
+    <div class="layout-row layout-align-start-start error--tech-description">
+      {{paper-icon "error"}}
+      <div class="flex">
+        <pre>{{model.fileName}}:{{model.lineNumber}}:{{model.columnNumber}}</pre>
+        <pre>{{model.message}}</pre>
+        <pre>{{model.stack}}</pre>
+      </div>
+    </div>
+
+    <div class="layout-row layout-align-end-center">
+      {{paper-button
+          label="Ga terug"
+          onClick=(action "goBack")
+          primary=true
+          raised=true
+      }}
+    </div>
+  </div>
+</div>

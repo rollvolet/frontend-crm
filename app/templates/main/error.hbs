@@ -5,6 +5,10 @@
 
   <div class="layout-row error--tech-description">
     {{paper-icon "error"}}
-    <div class="flex"><pre>{{model}}</pre></div>
+    <div class="flex">
+      <pre>{{model.fileName}}:{{model.lineNumber}}:{{model.columnNumber}}</pre>
+      <pre>{{model.message}}</pre>
+      <pre>{{model.stack}}</pre>
+    </div>
   </div>
 </div>
