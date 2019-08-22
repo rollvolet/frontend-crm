@@ -8,28 +8,30 @@
     <tr>
       <td>Basis</td>
       <td>{{fmt-currency baseAmount}}</td>
-      <td>{{fmt-currency baseAmountVat}}</td>
+      <td>{{#if baseAmount}}{{fmt-currency baseAmountVat}}{{/if}}</td>
     </tr>
     <tr {{action "openSupplementsDialog"}}>
       <td>Extra's {{paper-icon "info" size=18}}</td>
       <td>{{fmt-currency supplementsAmount}}</td>
       <td>{{fmt-currency supplementsVat}}</td>
     </tr>
-    <tr class="subtotal">
-      <td>Totaal bestelling</td>
-      <td>{{fmt-currency totalOrderAmount}}</td>
-      <td>{{fmt-currency totalOrderVat}}</td>
-    </tr>
-    {{#link-to 'main.case.order.edit.deposit-invoices' model.order tagName='tr' class="clickable"}}
-      <td>Voorschotfacturen {{paper-icon "info" size=18}}</td>
-      <td>&minus; {{fmt-currency depositInvoicesAmount}}</td>
-      <td>&minus; {{fmt-currency depositInvoicesVat}}</td>
-    {{/link-to}}
+    {{#unless model.isIsolated}}
+      <tr class="subtotal">
+        <td>Totaal bestelling</td>
+        <td>{{fmt-currency totalOrderAmount}}</td>
+        <td>{{fmt-currency totalOrderVat}}</td>
+      </tr>
+      {{#link-to 'main.case.order.edit.deposit-invoices' model.order tagName='tr' class="clickable"}}
+        <td>Voorschotfacturen {{paper-icon "info" size=18}}</td>
+        <td>&minus; {{fmt-currency depositInvoicesAmount}}</td>
+        <td>&minus; {{fmt-currency depositInvoicesVat}}</td>
+      {{/link-to}}
+    {{/unless}}
     <tr>
       <td>Voorschot netto</td>
       <td>&minus; {{fmt-currency depositsAmount}}</td>
       <td></td>
-    </tr>
+      </tr>
     <tr class="subtotal">
       <td>Subtotaal</td>
       <td>{{fmt-currency totalNetAmount}}</td>
