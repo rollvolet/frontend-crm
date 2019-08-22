@@ -9,7 +9,8 @@ const Validations = buildValidations({
     allowBlank: true,
     positive: true
   }),
-  vatRate: validator('presence', true)
+  // Enable validation once https://github.com/offirgolan/ember-cp-validations/issues/651 is fixed
+  // vatRate: validator('presence', true)
 });
 
 export default DS.Model.extend(Validations, {
