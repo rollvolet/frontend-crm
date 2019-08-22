@@ -1,8 +1,7 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { notEmpty } from '@ember/object/computed';
-import { or } from 'ember-awesome-macros';
+import { or, notEmpty } from 'ember-awesome-macros';
 
 export default Component.extend({
   store: service(),
