@@ -49,6 +49,6 @@ export default DS.Model.extend(Validations, {
   isIsolated: isEmpty('order.id'),
   isMasteredByAccess: or(
     and(not('isIsolated'), 'order.isMasteredByAccess'),
-    and('isIsolated', bool('amount'))
+    and('isIsolated', bool('baseAmount'))
   )
 });
