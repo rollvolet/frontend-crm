@@ -7,7 +7,7 @@
   <tbody>
     <tr>
       <td>Basis</td>
-      <td>{{fmt-currency model.baseAmount}}</td>
+      <td>{{fmt-currency baseAmount}}</td>
       <td>{{fmt-currency baseAmountVat}}</td>
     </tr>
     <tr {{action "openSupplementsDialog"}}>
@@ -15,20 +15,25 @@
       <td>{{fmt-currency supplementsAmount}}</td>
       <td>{{fmt-currency supplementsVat}}</td>
     </tr>
+    <tr class="subtotal">
+      <td>Totaal bestelling</td>
+      <td>{{fmt-currency totalOrderAmount}}</td>
+      <td>{{fmt-currency totalOrderVat}}</td>
+    </tr>
     {{#link-to 'main.case.order.edit.deposit-invoices' model.order tagName='tr' class="clickable"}}
       <td>Voorschotfacturen {{paper-icon "info" size=18}}</td>
-      <td>{{fmt-currency depositInvoicesAmount}}</td>
-      <td>{{fmt-currency depositInvoicesVat}}</td>
+      <td>&minus; {{fmt-currency depositInvoicesAmount}}</td>
+      <td>&minus; {{fmt-currency depositInvoicesVat}}</td>
     {{/link-to}}
-    <tr class="subtotal">
-      <td>Subtotaal</td>
-      <td>{{fmt-currency subtotalAmount}}</td>
-      <td>{{fmt-currency subtotalVat}}</td>
-    </tr>
     <tr>
       <td>Voorschot netto</td>
-      <td>{{fmt-currency depositsAmount}}</td>
+      <td>&minus; {{fmt-currency depositsAmount}}</td>
       <td></td>
+    </tr>
+    <tr class="subtotal">
+      <td>Subtotaal</td>
+      <td>{{fmt-currency totalNetAmount}}</td>
+      <td>{{fmt-currency totalVat}}</td>
     </tr>
     <tr class="total">
       <td colspan="2">Totaal te betalen (bruto)</td>
