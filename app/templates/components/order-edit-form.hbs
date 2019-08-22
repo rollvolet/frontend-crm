@@ -32,6 +32,7 @@
   </section>
   <section class="case--right-panel flex-noshrink layout-column">
     <div class="u-bold">Uitvoering</div>
+    <div class="note note--info">De planning in de agenda kan in een volgende stap ingevuld worden</div>
     <div class="layout-row">
       {{#paper-radio-group groupValue=(readonly model.execution)
            onChange=(queue (action "setExecution") (perform save)) as |group|}}
