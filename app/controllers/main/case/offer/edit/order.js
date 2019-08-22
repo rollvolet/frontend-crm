@@ -6,6 +6,7 @@ import { notEmpty, filterBy, mapBy } from '@ember/object/computed';
 import { first, uniqBy, length } from 'ember-awesome-macros/array';
 import { gt, or, not, raw } from 'ember-awesome-macros';
 import DS from 'ember-data';
+import { debug } from '@ember/debug';
 
 export default Controller.extend({
   case: service(),
@@ -33,11 +34,18 @@ export default Controller.extend({
     yield this.createOrder.perform();
   }),
   createOrder: task(function * () {
-    const vatRate = yield this.model.get('vatRate');
+    let vatRate = yield this.model.get('vatRate');
 
     if (vatRate && this.orderedVatRate && this.orderedVatRate.get('id') != vatRate.get('id')) {
       this.set('showIncompatibleVatRatesDialog', true);
     } else {
+      if (!vatRate) {
+        vatRate = this.orderedVatRate;
+        debug(`Offer doesn't have a VAT rate yet. Updating VAT rate to ordered VAT rate ${this.orderedVatRate.get(`code`)}.`);
+        this.model.set('vatRate', vatRate);
+        yield this.model.save();
+      }
+
       const offerlines = yield this.model.get('offerlines');
       yield all(offerlines.map(o => o.save()));
 
