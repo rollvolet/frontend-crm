@@ -35,7 +35,7 @@
         {{vat-rate-select value=model.vatRate
             required="style" errors=(v-get model 'vatRate' 'messages')
             onSelectionChange=(queue (action "setVatRate") (perform save))
-            class="md-input-wrapper default"}}
+            class="md-input-wrapper large"}}
       </div>
     {{/if}}
   </section>

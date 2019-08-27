@@ -12,8 +12,8 @@
   {{paper-input label="Bedrag (€)" value=amountInput
       errors=(v-get model 'amount' 'messages')
       onChange=(action (mut amountInput)) onBlur=(queue (action "formatDecimal" "amount") (perform save))
-      class="small" required="style"}}
+      class="default" required="style"}}
   {{vat-rate-select value=model.vatRate
       onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
-      class="md-input-wrapper default" required="style"}}
+      class="md-input-wrapper large" required="style"}}
 </div>
