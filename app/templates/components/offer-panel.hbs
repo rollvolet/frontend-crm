@@ -63,7 +63,24 @@
     <p class="note-message">De offerte is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
   {{else}}
     <div class="layout-row layout-align-space-between-center">
-      <h2>Offerte <span class="small-text-fade">[{{model.documentVersion}}]</span></h2>
+      <h2>Offerte
+        <span class="small-text-fade">[
+          {{#if editMode}}
+            {{input
+                value=model.documentVersion
+                key-up=(action (mut model.documentVersion))
+                focus-out=(perform save)
+                class="xsmall"
+            }}
+            {{#paper-tooltip}}
+              Pas het versienummer aan om een nieuwe versie van het document te maken; anders wordt het vorige document overschreven.
+            {{/paper-tooltip}}
+          {{else}}
+            {{model.documentVersion}}
+          {{/if}}
+          ]
+        </span>
+      </h2>
       <div>
         {{#if generateOfferDocument.isRunning}}
           {{paper-progress-circular diameter=18}}
@@ -86,12 +103,6 @@
 
     {{#if editMode}}
       <div class="offer-document-form layout-column">
-        <section class="layout-row">
-          {{paper-input label="Versie" value=model.documentVersion
-              required="style" errors=(v-get model 'documentVersion' 'messages')
-              onChange=(action (mut model.documentVersion)) onBlur=(perform save)
-              class="default"}}
-        </section>
         <section>
           <label>Introductie</label>
           {{pell-editor class="pell-editor offer-intro" value=model.documentIntro pellOptions=pellOptions
@@ -104,6 +115,8 @@
           </div>
           {{#each model.offerlines as |offerline|}}
             {{offerline-edit-form model=offerline onDelete=(action "deleteOfferline")}}
+          {{else}}
+            <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{action "addOfferline"}}>hier</span> om producten toe te voegen aan de offerte.</div>
           {{/each}}
         </section>
         <section>

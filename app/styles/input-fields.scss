@@ -88,6 +88,32 @@ md-input-container {
   }
 }
 
+input {
+  &.xsmall {
+    width: 50px;
+  }
+
+  &.small {
+    width: 100px;
+  }
+
+  &.default {
+    width: 150px;
+  }
+
+  &.large {
+    width: 200px;
+  }
+
+  &.xlarge {
+    width: 250px;
+  }
+
+  &.xxlarge {
+    width: 400px;
+  }
+}
+
 .input-postfix {
   position: relative;
   top: -20px;
