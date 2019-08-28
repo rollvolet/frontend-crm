@@ -15,9 +15,10 @@ export default Controller.extend({
 
   handleApplicationError(error) {
     const shouldBeIgnored = function(error) {
-      return error.isAdapterError
-        && error.errors.length
-        && Math.floor(error.errors[0].status / 100) == 4;
+      return error.isInternalError ||
+        (error.isAdapterError
+         && error.errors.length
+         && Math.floor(error.errors[0].status / 100) == 4);
     };
 
     if (shouldBeIgnored(error)) {

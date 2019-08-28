@@ -95,8 +95,11 @@ export default Component.extend({
   updateNewTelephone: task(function * () { // cannot patch phone. Create new and remove old phone.
     const { validations } = yield this.newTelephone.validate();
 
-    if (!validations.isValid)
-      throw new Error('Invalid telephone');
+    if (!validations.isValid) {
+      const error = new Error('Invalid telephone');
+      error.isInternalError = true;
+      throw error;
+    }
 
     const resolvedPromises = yield hash({
       country: this.newTelephone.country,
@@ -119,9 +122,10 @@ export default Component.extend({
     });
 
     try {
+      // TODO fix error with ember data duplicate ID
+      yield this.newTelephone.destroyRecord();
       yield updatedTelephone.save();
       this.errorMessages.clear();
-      yield this.newTelephone.destroyRecord();
       this.set('newTelephone', updatedTelephone);
     } catch(e) {
       if (!updatedTelephone.isValid)
@@ -129,6 +133,7 @@ export default Component.extend({
 
       updatedTelephone.deleteRecord();
 
+      e.isInternalError = true;
       throw e; // save task must fail
     }
   }).keepLatest()
