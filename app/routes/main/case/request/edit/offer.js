@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import snippets from '../../../../../config/snippets';
+import getDocumentLanguageCode from '../../../../../utils/get-document-language-code';
 
 export default Route.extend({
   case: service(),
@@ -12,17 +13,7 @@ export default Route.extend({
     const contact = await request.get('contact');
     const building = await request.get('building');
     const vatRate = this.store.peekAll('vat-rate').find(v => v.rate == 21);
-
-    let languageCode;
-    if (contact) {
-      const lang = await contact.get('language');
-      languageCode = lang && lang.code;
-    } else if (customer) {
-      const lang = await customer.get('language');
-      languageCode = lang && lang.code;
-    }
-    if (!['NED', 'FRA'].includes(languageCode))
-      languageCode = 'NED';
+    const languageCode = await getDocumentLanguageCode({ customer, contact });
 
     const offer = this.store.createRecord('offer', {
       offerDate: new Date(),

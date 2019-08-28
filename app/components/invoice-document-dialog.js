@@ -2,18 +2,31 @@ import Component from '@ember/component';
 import { task } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
+import getDocumentLanguageCode from '../utils/get-document-language-code';
 
 export default Component.extend({
   documentGeneration: service(),
 
   tagName: '',
 
-  language: 'NED',
+  language: null,
   model: null,
   save: null,
   show: false,
   hasCertificateUploadError: false,
   onClose: function() {},
+
+  async didReceiveAttrs() {
+    this._super(...arguments);
+    if (this.show) {
+      await this.setDefaultDocumentLanguage.perform();
+    }
+  },
+
+  setDefaultDocumentLanguage: task(function * () {
+    const language = yield getDocumentLanguageCode({ model: this.model });
+    this.set('language', language);
+  }).keepLatest(),
 
   generateInvoiceDocument: task(function * () {
     const oldInvoiceDate = this.model.invoiceDate;
