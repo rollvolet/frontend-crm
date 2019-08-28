@@ -14,10 +14,11 @@ export default Component.extend({
   depositInvoicesAmount: sum(mapBy('model.depositInvoices', raw('arithmeticAmount'))),
   // assumption that all deposit invoices have the same vat rate as the parent invoice
   depositInvoicesVat: product('depositInvoicesAmount', 'vatRate'),
-  depositsAmount: sum(mapBy('model.deposits', raw('amount'))),
-  totalNetAmount: subtract('totalOrderAmount', 'depositInvoicesAmount', 'depositsAmount'),
+  totalNetAmount: subtract('totalOrderAmount', 'depositInvoicesAmount'),
   totalVat: subtract('totalOrderVat', 'depositInvoicesVat'),
-  grossTotalAmount: sum('totalNetAmount', 'totalVat'),
+  totalGrossAmount: sum('totalNetAmount', 'totalVat'),
+  depositsAmount: sum(mapBy('model.deposits', raw('amount'))),
+  totalToPay: subtract('totalGrossAmount', 'depositsAmount'),
   actions: {
     openSupplementsDialog() {
       this.set('showSupplementsDialog', true);

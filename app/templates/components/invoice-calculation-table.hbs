@@ -27,21 +27,35 @@
         <td>&minus; {{fmt-currency depositInvoicesVat}}</td>
       {{/link-to}}
     {{/unless}}
-    <tr>
-      <td>Voorschot netto</td>
-      <td>&minus; {{fmt-currency depositsAmount}}</td>
-      <td></td>
-      </tr>
     <tr class="subtotal">
       <td>Subtotaal</td>
       <td>{{fmt-currency totalNetAmount}}</td>
       <td>{{fmt-currency totalVat}}</td>
     </tr>
+  </tbody>
+</table>
+
+<table class="invoice-calculation-table">
+  <thead>
+    <th></th>
+    <th>Bruto</th>
+  </thead>
+  <tbody>
+    <tr class="subtotal">
+      <td>Totaal</td>
+      <td>{{fmt-currency totalGrossAmount}}</td>
+    </tr>
+    <tr>
+      <td>Betaalde voorschotten</td>
+      <td>&minus; {{fmt-currency depositsAmount}}</td>
+    </tr>
     <tr class="total">
-      <td colspan="2">Totaal te betalen (bruto)</td>
-      <td>{{fmt-currency grossTotalAmount}}</td>
+      <td>Totaal te betalen</td>
+      <td>{{fmt-currency totalToPay}}</td>
     </tr>
   </tbody>
 </table>
+<div>
+</div>
 
 {{invoice-supplements-dialog show=showSupplementsDialog model=model}}
