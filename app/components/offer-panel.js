@@ -2,9 +2,8 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { not, notEmpty, mapBy } from '@ember/object/computed';
-import { uniqBy, length } from 'ember-awesome-macros/array';
-import { or, gt, raw } from 'ember-awesome-macros';
+import { length } from 'ember-awesome-macros/array';
+import { not, notEmpty, or, gt, raw, uniqBy, mapBy } from 'ember-awesome-macros';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import PellOptions from '../mixins/pell-options';
@@ -25,7 +24,7 @@ export default Component.extend(EKMixin, PellOptions, {
   hasOrder: notEmpty('model.order.id'),
   isDisabledEdit: or('model.isMasteredByAccess', 'hasOrder'),
   isEnabledDelete: not('isDisabledEdit'),
-  vatRates: mapBy('model.offerlines', 'vatRate'),
+  vatRates: mapBy('model.offerlines', raw('vatRate')),
   hasMixedVatRates: gt(length(uniqBy('vatRates', raw('code'))), raw(1)),
   hasUnsavedChanges: async function() {
     const offerlines = await this.model.offerlines;

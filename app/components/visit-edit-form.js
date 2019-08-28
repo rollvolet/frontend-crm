@@ -1,7 +1,6 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { eq, or, not } from 'ember-awesome-macros';
-import raw from 'ember-macro-helpers/raw';
+import { eq, or, not, raw } from 'ember-awesome-macros';
 
 export default Component.extend({
   tagName: '',

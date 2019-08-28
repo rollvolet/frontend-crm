@@ -1,7 +1,5 @@
 import Component from '@ember/component';
-import { mapBy } from 'ember-awesome-macros/array';
-import { neq, sum } from 'ember-awesome-macros';
-import raw from 'ember-macro-helpers/raw';
+import { neq, sum, mapBy, raw } from 'ember-awesome-macros';
 import { inject as service } from '@ember/service';
 
 export default Component.extend({

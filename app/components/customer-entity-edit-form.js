@@ -2,9 +2,8 @@ import { computed } from '@ember/object';
 import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { warn } from '@ember/debug';
-import { equal } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import { and, isEmpty } from 'ember-awesome-macros';
+import { raw, equal, and, isEmpty } from 'ember-awesome-macros';
 
 const digitsOnly = /\D/g;
 
@@ -15,7 +14,7 @@ export default Component.extend({
   onClose: null,
 
   scope: 'customer', // one of 'customer', 'contact', 'building'
-  isScopeCustomer: equal('scope', 'customer'),
+  isScopeCustomer: equal('scope', raw('customer')),
   showWarningOnLeaveDialog: false,
 
   hasFailedTelephone: computed('model.telephones.[]', function() {

@@ -1,14 +1,6 @@
 import Component from '@ember/component';
 import { oneWay } from '@ember/object/computed';
-import { mapBy } from 'ember-awesome-macros/array';
-import {
-  add,
-  product,
-  quotient,
-  subtract,
-  sum
-} from 'ember-awesome-macros';
-import raw from 'ember-macro-helpers/raw';
+import { add, product, quotient, subtract, sum, raw, mapBy } from 'ember-awesome-macros';
 
 export default Component.extend({
   showSupplementsDialog: false,

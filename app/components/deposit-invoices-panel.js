@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
-import { sum, and, not } from 'ember-awesome-macros';
+import { sum, and, not, mapBy, raw } from 'ember-awesome-macros';
 import { warn } from '@ember/debug';
 
 export default Component.extend({
@@ -17,12 +17,8 @@ export default Component.extend({
   showUnsavedChangesDialog: false,
   isDisabledEdit: false,  // passed as argument
 
-  arithmeticAmounts: computed('model', 'model.{[],@each.arithmeticAmount}', function() {
-    return this.model ? this.model.map(i => i.arithmeticAmount) : 0;
-  }),
-  arithmeticVats: computed('model', 'model.{[],@each.arithmeticVat}', function() {
-    return this.model ? this.model.map(i => i.arithmeticVat) : 0;
-  }),
+  arithmeticAmounts: mapBy('model', raw('arithmeticAmount')),
+  arithmeticVats: mapBy('model', raw('arithmeticVat')),
   totalAmount: sum('arithmeticAmounts'),
   totalVat: computed('arithmeticVats', function() {
     return Promise.all(this.arithmeticVats).then(values => {

@@ -1,8 +1,6 @@
 import Component from '@ember/component';
 import { task } from 'ember-concurrency';
-import { mapBy } from 'ember-awesome-macros/array';
-import { sum, isEmpty, not } from 'ember-awesome-macros';
-import raw from 'ember-macro-helpers/raw';
+import { raw, sum, isEmpty, not, mapBy } from 'ember-awesome-macros';
 
 export default Component.extend({
   model: null,

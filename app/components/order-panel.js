@@ -2,11 +2,9 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { not, notEmpty, bool } from '@ember/object/computed';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
-import { and, or, raw } from 'ember-awesome-macros';
-import { filterBy } from 'ember-awesome-macros/array';
+import { and, or, bool, not, notEmpty, raw, filterBy } from 'ember-awesome-macros';
 
 export default Component.extend(EKMixin, {
   case: service(),
