@@ -14,8 +14,14 @@ export default Controller.extend({
   },
 
   handleApplicationError(error) {
-    if (error.isAdapterError) {
-      debug(`Adapter error reporting is disabled`);
+    const shouldBeIgnored = function(error) {
+      return error.isAdapterError
+        && error.errors.length
+        && Math.floor(error.errors[0].status / 100) == 4;
+    };
+
+    if (shouldBeIgnored(error)) {
+      debug(`An error occurred, but error reporting is disabled for this error: ${error}`);
     } else {
       this.appState.reportError(error);
       this.transitionToRoute('oops');
