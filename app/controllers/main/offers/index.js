@@ -5,7 +5,7 @@ import { oneWay } from '@ember/object/computed';
 
 export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
   size: 25,
-  sort: '-offer-date',
+  sort: '-number',
 
   numberFilter: oneWay('number'),
   referenceFilter: oneWay('reference'),
