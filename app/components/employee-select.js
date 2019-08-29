@@ -28,8 +28,8 @@ export default Component.extend({
     if (this.type != null)
       employees = employees.filter(e => e.type == this.type);
 
-    if (this.function != null)
-      employees = employees.filter(e => e.function && e.function.startsWith(this.function));
+    if (this.functions != null)
+      employees = employees.filter(e => e.function && this.functions.includes(e.function.substr(0, 1)));
 
     return employees;
   }),
