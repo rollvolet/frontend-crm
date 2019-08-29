@@ -7,7 +7,7 @@ const Validations = buildValidations({
 });
 
 export default DS.Model.extend(Validations, {
-  requestDate: DS.attr('date'),
+  requestDate: DS.attr('date-midnight'),
   requiresVisit: DS.attr(),
   comment: DS.attr(),
   employee: DS.attr(),

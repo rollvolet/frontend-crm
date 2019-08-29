@@ -10,7 +10,7 @@ const Validations = buildValidations({
 
 
 export default DS.Model.extend(Validations, {
-  date: DS.attr('date'),
+  date: DS.attr('date-midnight'),
   invoice: DS.belongsTo('invoice'),
   employee: DS.belongsTo('employee'),
 

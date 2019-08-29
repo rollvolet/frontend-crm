@@ -15,7 +15,7 @@ const Validations = buildValidations({
 export default DS.Model.extend(Validations, {
   sequenceNumber: DS.attr(),
   amount: DS.attr('number'),
-  paymentDate: DS.attr('date'),
+  paymentDate: DS.attr('date-midnight'),
   customer: DS.belongsTo('customer'),
   order: DS.belongsTo('order'),
   invoice: DS.belongsTo('invoice'),

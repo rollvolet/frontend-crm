@@ -18,11 +18,11 @@ const Validations = buildValidations({
 
 export default DS.Model.extend(Validations, {
   number: DS.attr(),
-  invoiceDate: DS.attr('date'),
-  dueDate: DS.attr('date'),
-  bookingDate: DS.attr('date'),
-  paymentDate: DS.attr('date'),
-  cancellationDate: DS.attr('date'),
+  invoiceDate: DS.attr('date-midnight'),
+  dueDate: DS.attr('date-midnight'),
+  bookingDate: DS.attr('date-midnight'),
+  paymentDate: DS.attr('date-midnight'),
+  cancellationDate: DS.attr('date-midnight'),
   baseAmount: DS.attr(),
   certificateRequired: DS.attr('boolean'),
   certificateReceived: DS.attr('boolean'),

@@ -26,7 +26,7 @@ const Validations = buildValidations({
 });
 
 export default DS.Model.extend(Validations, {
-  visitDate: DS.attr('date'),
+  visitDate: DS.attr('date-midnight'),
   period: DS.attr(),
   fromHour: DS.attr(),
   untilHour: DS.attr(),

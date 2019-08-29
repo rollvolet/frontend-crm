@@ -18,7 +18,7 @@ const Validations = buildValidations({
 });
 
 export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
-  orderDate: DS.attr('date'),
+  orderDate: DS.attr('date-midnight'),
   amount: DS.attr(),
   offerNumber: DS.attr(),
   requestNumber: DS.attr(),
@@ -27,14 +27,14 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   mustBeInstalled: DS.attr('boolean'),
   mustBeDelivered: DS.attr('boolean'),
   isReady: DS.attr('boolean'),
-  expectedDate: DS.attr('date'),
-  requiredDate: DS.attr('date'),
+  expectedDate: DS.attr('date-midnight'),
+  requiredDate: DS.attr('date-midnight'),
   scheduledHours: DS.attr('number'),
   scheduledNbOfPersons: DS.attr('number'),
   comment: DS.attr(),
   canceled: DS.attr('boolean'),
   cancellationReason: DS.attr(),
-  planningDate: DS.attr('date'),
+  planningDate: DS.attr('date-midnight'),
   planningId: DS.attr(),
   planningMsObjectId: DS.attr(),
   offer: DS.belongsTo('offer'),
