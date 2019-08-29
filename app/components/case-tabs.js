@@ -1,24 +1,35 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
-import { alias, oneWay } from '@ember/object/computed';
+import { alias } from '@ember/object/computed';
 
 export default Component.extend({
   case: service(),
   router: service(),
   store: service(),
 
-  currentRouteName: oneWay('router.currentRouteName'),
+  currentRouteName: null,
+  isEditRoute: null,
 
   init() {
     this._super(...arguments);
     this.case.initCase();
-    this.router.addObserver('currentRouteName', this, 'currentRouteChanged');
+
+    // computed properties on this.router.currentRoute don't seem to work
+    // hence we observe the currentRoute and derive related values manually
+    this.router.addObserver('currentRoute', this, 'currentRouteChanged');
+    this.currentRouteChanged(this.router, 'currentRoute'); // initialize derived values
   },
 
   willDestroyElement() {
-    this.router.removeObserver('currentRouteName', this, 'currentRouteChanged');
     this._super(...arguments);
+    this.router.removeObserver('currentRoute', this, 'currentRouteChanged');
+  },
+
+  currentRouteChanged(sender, key) {
+    const currentRoute = sender[key];
+    this.set('currentRouteName', currentRoute.name);
+    this.set('isEditRoute', currentRoute.queryParams.editMode == "true");
   },
 
   model: alias('case.current'),
@@ -27,19 +38,15 @@ export default Component.extend({
     return this.store.peekAll('employee').find(e => e.firstName == this.visitorName);
   }),
 
-  canCreateNewOffer: computed('model', 'model.{requestId,offerId}', function() {
-    return this.model && this.model.requestId && this.model.offerId == null;
+  canCreateNewOffer: computed('isEditRoute', 'model', 'model.{requestId,offerId}', function() {
+    return !this.isEditRoute && this.model && this.model.requestId && this.model.offerId == null;
   }),
-  canCreateNewOrder: computed('model', 'model.{offerId,orderId,offer}', function() {
-    return this.model && this.model.offerId && this.model.orderId == null && this.model.offer && !this.model.offer.isMasteredByAccess;
+  canCreateNewOrder: computed('isEditRoute', 'model', 'model.{offerId,orderId,offer}', function() {
+    return !this.isEditRoute && this.model && this.model.offerId && this.model.orderId == null && this.model.offer && !this.model.offer.isMasteredByAccess;
   }),
-  canCreateNewInvoice: computed('model', 'model.{orderId,invoiceId,order}', function() {
-    return this.model && this.model.orderId && this.model.invoiceId == null && this.model.order && !this.model.order.isMasteredByAccess;
+  canCreateNewInvoice: computed('isEditRoute', 'model', 'model.{orderId,invoiceId,order}', function() {
+    return !this.isEditRoute && this.model && this.model.orderId && this.model.invoiceId == null && this.model.order && !this.model.order.isMasteredByAccess;
   }),
-
-  currentRouteChanged(sender, key) {
-    this.set('currentRouteName', sender[key]);
-  },
 
   actions: {
     openNewOffer() {
