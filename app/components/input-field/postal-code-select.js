@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
+import { task, timeout } from 'ember-concurrency';
 
 export default Component.extend({
   store: service(),
@@ -7,7 +8,8 @@ export default Component.extend({
   init() {
     this._super(...arguments);
     const postalCodes = this.store.peekAll('postal-code');
-    this.set('options', postalCodes);
+    this.set('postalCodes', postalCodes);
+    this.set('options', this.postalCodes.slice(0, this.size));
   },
 
   didInsertElement() {
@@ -18,11 +20,17 @@ export default Component.extend({
     }
   },
 
+  search: task(function* (term) {
+    yield timeout(100);
+    return this.postalCodes.filter(p => p.search.toLowerCase().includes(term)).slice(0, this.size);
+  }).keepLatest(),
+
   label: 'Gemeente',
   value: null,
   postalCode: null,
   city: null,
   onSelectionChange: null,
+  size: 50,
   titleize: false,
 
   actions: {

@@ -1,6 +1,15 @@
-{{#power-select placeholder=label searchPlaceholder="Typ om te zoeken" options=options selected=value
-     searchField="search" onchange=(action "selectValue")
-     noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
+{{#power-select
+     placeholder=label
+     selected=value
+     onchange=(action "selectValue")
+     options=options
+     searchEnabled=true
+     search=(perform search)
+     searchPlaceholder="Typ om te zoeken"
+     noMatchesMessage="Geen resultaten"
+     allowClear=true
+     as |option select|
+}}
   {{#if titleize}}
     {{highlight-substr (titleize-extended (lowercase option.search)) select.lastSearchedText}}
   {{else}}
