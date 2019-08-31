@@ -1,6 +1,8 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
-    <h2>Aanvraag {{model.id}} {{visitor.initials}}</h2>
+    <h2>
+      {{#if editMode}}Bewerk details{{else}}Overzicht{{/if}} aanvraag {{model.id}} {{visitor.initials}}
+    </h2>
     {{#if editMode}}
       {{save-status-icon model=model task=save}}
     {{/if}}

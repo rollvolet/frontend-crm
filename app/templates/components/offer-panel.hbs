@@ -1,7 +1,7 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      Offerte {{model.number}}
+      {{#if editMode}}Bewerk details{{else}}Overzicht{{/if}} offerte {{model.number}}
     </h2>
     {{#if editMode}}
       {{save-status-icon model=model task=save}}

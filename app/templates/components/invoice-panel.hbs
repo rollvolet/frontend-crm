@@ -1,7 +1,9 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <div>
-      <h2>Factuur {{format-invoice-number model.number}}</h2>
+      <h2>
+        {{#if editMode}}Bewerk details{{else}}Overzicht{{/if}} factuur {{format-invoice-number model.number}}
+      </h2>
     </div>
     {{#if editMode}}
       {{save-status-icon model=model task=save}}
