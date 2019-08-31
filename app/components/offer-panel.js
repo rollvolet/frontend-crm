@@ -68,7 +68,7 @@ export default Component.extend(EKMixin, PellOptions, {
     rollbackPromises.push(this.model.belongsTo('building').reload());
 
     yield all(rollbackPromises);
-    yield this.save.perform(null, { forceSucces: true });
+    yield this.save.perform(null, { forceSuccess: true });
   }),
   save: task(function * (_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;

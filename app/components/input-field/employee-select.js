@@ -18,7 +18,6 @@ export default Component.extend({
       employees = employees.filter(e => e.active);
 
     const enabledFilters = filterKeys.filter(key => this.get(key));
-    console.trace(enabledFilters);
     if (enabledFilters.length) {
       const matches = function(employee) {
         for (let key of enabledFilters) {

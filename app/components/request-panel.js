@@ -60,7 +60,7 @@ export default Component.extend(EKMixin, {
     const rollbackPromises = [];
     rollbackPromises.push(this.model.belongsTo('wayOfEntry').reload());
     yield all(rollbackPromises);
-    yield this.save.perform(null, { forceSucces: true });
+    yield this.save.perform(null, { forceSuccess: true });
   }),
   save: task(function * (_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;

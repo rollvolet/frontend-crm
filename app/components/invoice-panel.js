@@ -47,7 +47,7 @@ export default Component.extend({
     rollbackPromises.push(this.model.belongsTo('vatRate').reload());
 
     yield all(rollbackPromises);
-    yield this.save.perform(null, { forceSucces: true });
+    yield this.save.perform(null, { forceSuccess: true });
   }),
   save: task(function * (_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;

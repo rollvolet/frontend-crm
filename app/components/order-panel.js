@@ -62,7 +62,7 @@ export default Component.extend(EKMixin, {
     rollbackPromises.push(this.model.belongsTo('contact').reload());
     rollbackPromises.push(this.model.belongsTo('building').reload());
     yield all(rollbackPromises);
-    yield this.save.perform(null, { forceSucces: true });
+    yield this.save.perform(null, { forceSuccess: true });
   }),
   save: task(function * (_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;
