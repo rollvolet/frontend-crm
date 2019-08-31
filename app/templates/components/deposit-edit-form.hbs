@@ -7,7 +7,7 @@
       required="style" errors=(v-get model 'amount' 'messages')
       onChange=(action (mut amountInput)) onBlur=(queue (action "formatDecimal" "amount") (perform save))
       class="small"}}
-  {{payment-select value=model.payment
+  {{input-field/payment-select value=model.payment
       onSelectionChange=(queue (action (mut model.payment)) (perform save))
       class="md-input-wrapper large u-rel-top-small"}}
 </div>

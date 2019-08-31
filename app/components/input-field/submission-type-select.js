@@ -1,19 +1,19 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { proxyAware } from '../utils/proxy-aware';
+import { proxyAware } from '../../utils/proxy-aware';
 
 export default Component.extend({
   store: service(),
 
   selected: proxyAware('value'),
 
-  didReceiveAttrs() {
-    if (this.customer)
-      this.get('customer.buildings').then((buildings) => this.set('options', buildings));
+  init() {
+    this._super(...arguments);
+    const submissionTypes = this.store.peekAll('submission-type');
+    this.set('options', submissionTypes);
   },
 
-  customer: null,
-  label: 'Gebouw',
+  label: 'Verzendmethode',
   value: null,
   onSelectionChange: null
 });

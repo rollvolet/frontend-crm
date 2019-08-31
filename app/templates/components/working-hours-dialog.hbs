@@ -15,7 +15,7 @@
             required="style" errors=(v-get newWorkingHour 'date' 'messages')
             onChange=(action (mut newWorkingHour.dateStr))
             class="default"}}
-        {{employee-select label="Technieker" value=newWorkingHour.employee function="T"
+        {{input-field/employee-select label="Technieker" value=newWorkingHour.employee function="T"
             required="style" errors=(v-get newWorkingHour 'employee' 'messages')
             onSelectionChange=(action (mut newWorkingHour.employee))
             class="md-input-wrapper large u-rel-top-xxsmall"}}

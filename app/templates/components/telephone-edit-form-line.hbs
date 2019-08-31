@@ -2,13 +2,13 @@
   {{paper-icon "delete"}}
 </td>
 <td>
-  {{telephone-type-select value=model.telephoneType
+  {{input-field/telephone-type-select value=model.telephoneType
       onSelectionChange=(queue (action (mut model.telephoneType)) (perform save))
       errors=(v-get model 'telephoneType' 'messages')
       class="md-input-wrapper small"}}
 </td>
 <td>
-  {{telephone-prefix-select value=model.country
+  {{input-field/telephone-prefix-select value=model.country
       onSelectionChange=(queue (action (mut model.country)) (perform save))
       errors=(v-get model 'country' 'messages')
       class="md-input-wrapper small"}}

@@ -2,8 +2,8 @@ import { next } from '@ember/runloop';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
-import { composeId } from '../models/honorific-prefix';
-import { proxyAware } from '../utils/proxy-aware';
+import { composeId } from '../../models/honorific-prefix';
+import { proxyAware } from '../../utils/proxy-aware';
 
 export default Component.extend({
   store: service(),

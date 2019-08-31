@@ -3,24 +3,24 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | telephone-prefix-select', function(hooks) {
+module('Integration | Component | input-field/submission-type-select', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function(assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`{{telephone-prefix-select}}`);
+    await render(hbs`{{input-field/submission-type-select}}`);
 
-    assert.dom(this.element).hasText('');
+    assert.equal(this.element.textContent.trim(), '');
 
     // Template block usage:
     await render(hbs`
-      {{#telephone-prefix-select}}
+      {{#input-field/submission-type-select}}
         template block text
-      {{/telephone-prefix-select}}
+      {{/input-field/submission-type-select}}
     `);
 
-    assert.dom(this.element).hasText('template block text');
+    assert.equal(this.element.textContent.trim(), 'template block text');
   });
 });

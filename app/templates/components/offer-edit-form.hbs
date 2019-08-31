@@ -7,12 +7,12 @@
           class="default"}}
     </div>
     <div class="layout-row">
-      {{vat-rate-select value=model.vatRate
+      {{input-field/vat-rate-select value=model.vatRate
           onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
           class="md-input-wrapper large"}}
     </div>
     <div class="layout-row">
-      {{submission-type-select value=model.submissionType
+      {{input-field/submission-type-select value=model.submissionType
           onSelectionChange=(queue (action (mut model.submissionType)) (perform save))
           class="md-input-wrapper large"}}
     </div>

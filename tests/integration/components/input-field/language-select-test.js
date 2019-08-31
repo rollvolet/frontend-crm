@@ -3,24 +3,24 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | calendar-period-select', function(hooks) {
+module('Integration | Component | input-field/language-select', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function(assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`{{calendar-period-select}}`);
+    await render(hbs`{{input-field/language-select}}`);
 
-    assert.dom(this.element).hasText('');
+    assert.equal(this.element.textContent.trim(), '');
 
     // Template block usage:
     await render(hbs`
-      {{#calendar-period-select}}
+      {{#input-field/language-select}}
         template block text
-      {{/calendar-period-select}}
+      {{/input-field/language-select}}
     `);
 
-    assert.dom(this.element).hasText('template block text');
+    assert.equal(this.element.textContent.trim(), 'template block text');
   });
 });

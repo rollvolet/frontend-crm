@@ -23,10 +23,10 @@
     <p>Aan het verwijderen...</p>
   </div>
 {{else if rollbackTree.isRunning}}
-    <div>
-      {{paper-progress-linear}}
-      <p>Aan het herstellen...</p>
-    </div>
+  <div>
+    {{paper-progress-linear}}
+    <p>Aan het herstellen...</p>
+  </div>
 {{else if (and (not model.id) model.isSavivg)}}
   <div>
     {{paper-progress-linear}}
@@ -56,7 +56,7 @@
     </h4>
     <div class="layout-row layout-xs-column">
       <div class="layout-column u-rel-top-small">
-        {{honorific-prefix-select value=model.honorificPrefix language=model.language
+        {{input-field/honorific-prefix-select value=model.honorificPrefix language=model.language
             onSelectionChange=(queue (action (mut model.honorificPrefix)) (perform save))
             class="md-input-wrapper large no-spacer-bottom"}}
         {{paper-checkbox label="Vooraan" value=model.printInFront
@@ -87,14 +87,14 @@
     {{address-input address1=model.address1 address2=model.address2 address3=model.address3
         onBlur=(perform save)}}
     <div class="layout-row">
-      {{postal-code-select postalCode=model.postalCode city=model.city titleize=(not isScopeCustomer)
+      {{input-field/postal-code-select postalCode=model.postalCode city=model.city titleize=(not isScopeCustomer)
           onSelectionChange=(queue (action "setPostalCode") (perform save))
           class="md-input-wrapper xxxlarge"}}
-      {{country-select value=model.country
+      {{input-field/country-select value=model.country
           onSelectionChange=(queue (action (mut model.country)) (perform save))
           required="style" errors=(v-get model 'country' 'messages')
           class="md-input-wrapper xlarge"}}
-      {{language-select value=model.language
+      {{input-field/language-select value=model.language
           onSelectionChange=(queue (action (mut model.language)) (perform save))
           required="style" errors=(v-get model 'language' 'messages')
           class="md-input-wrapper xlarge"}}

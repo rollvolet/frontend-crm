@@ -10,17 +10,17 @@ module('Integration | Component | working-hours-dialog', function(hooks) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`{{working-hours-dialog}}`);
+    await render(hbs`<WorkingHoursDialog />`);
 
-    assert.dom(this.element).hasText('');
+    assert.equal(this.element.textContent.trim(), '');
 
     // Template block usage:
     await render(hbs`
-      {{#working-hours-dialog}}
+      <WorkingHoursDialog>
         template block text
-      {{/working-hours-dialog}}
+      </WorkingHoursDialog>
     `);
 
-    assert.dom(this.element).hasText('template block text');
+    assert.equal(this.element.textContent.trim(), 'template block text');
   });
 });

@@ -7,10 +7,10 @@
           class="default"}}
     </div>
     <div class="layout-row">
-      {{employee-select label="Bediende" value=employee
+      {{input-field/employee-select label="Bediende" value=employee
           onSelectionChange=(queue (action "setEmployee") (perform save))
           class="md-input-wrapper large"}}
-      {{way-of-entry-select value=model.wayOfEntry
+      {{input-field/way-of-entry-select value=model.wayOfEntry
           onSelectionChange=(queue (action (mut model.wayOfEntry)) (perform save))
           class="md-input-wrapper default"}}
     </div>
@@ -21,7 +21,7 @@
       </div>
     {{/if}}
     <div class="layout-row">
-      {{employee-select label="Bezoeker" value=visitor functions=(array 'B' 'T')
+      {{input-field/employee-select label="Bezoeker" value=visitor functions=(array 'B' 'T')
           onSelectionChange=(queue (action "setVisitor") (perform save))
           class="md-input-wrapper large"}}
     </div>

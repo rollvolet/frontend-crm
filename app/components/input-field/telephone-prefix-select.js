@@ -1,7 +1,7 @@
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { proxyAware } from '../utils/proxy-aware';
+import { proxyAware } from '../../utils/proxy-aware';
 
 export default Component.extend({
   store: service(),

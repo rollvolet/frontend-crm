@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { proxyAware } from '../utils/proxy-aware';
+import { proxyAware } from '../../utils/proxy-aware';
 import { computed } from '@ember/object';
 
 export default Component.extend({
@@ -10,13 +10,14 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    const types = this.store.peekAll('telephone-type');
-    const supportedTypes = types.filter(t => ['TEL', 'FAX'].includes(t.name));
-    this.set('options', supportedTypes);
+    const countries = this.store.peekAll('country');
+    this.set('options', countries);
   },
 
-  label: 'Type',
+  label: 'Land',
   value: null,
+  errors: null,
+  required: false,
   onSelectionChange: null,
 
   placeholder: computed('label', 'required', function() {

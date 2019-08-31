@@ -12,7 +12,7 @@
         required="style" errors=(v-get model 'visitDate' 'messages')
         onChange=(queue (action (mut model.visitDateStr)) (perform save))
         class="default"}}
-    {{calendar-period-select value=model.period errors=(v-get model 'period' 'messages') required=true
+    {{input-field/calendar-period-select value=model.period errors=(v-get model 'period' 'messages') required=true
         onSelectionChange=(action "changePeriod")
         class="md-input-wrapper large"}}
     {{#if requiresSingleTime}}

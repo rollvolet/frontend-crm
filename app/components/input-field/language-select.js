@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { proxyAware } from '../utils/proxy-aware';
+import { proxyAware } from '../../utils/proxy-aware';
 import { computed } from '@ember/object';
 
 export default Component.extend({
@@ -10,11 +10,11 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    const countries = this.store.peekAll('country');
-    this.set('options', countries);
+    const languages = this.store.peekAll('language');
+    this.set('options', languages);
   },
 
-  label: 'Land',
+  label: 'Taal',
   value: null,
   errors: null,
   required: false,

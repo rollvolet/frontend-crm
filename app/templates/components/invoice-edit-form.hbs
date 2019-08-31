@@ -32,7 +32,7 @@
     </div>
     {{#if model.isIsolated}}
       <div class="layout-row">
-        {{vat-rate-select value=model.vatRate
+        {{input-field/vat-rate-select value=model.vatRate
             required="style" errors=(v-get model 'vatRate' 'messages')
             onSelectionChange=(queue (action "setVatRate") (perform save))
             class="md-input-wrapper large"}}

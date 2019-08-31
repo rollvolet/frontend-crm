@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { sort } from 'ember-awesome-macros/array';
-import { proxyAware } from '../utils/proxy-aware';
+import { proxyAware } from '../../utils/proxy-aware';
 
 const groupByFunction = function(arr) { // eslint-disable-line no-unused-vars
   return arr.reduce(function(grouped, e) {

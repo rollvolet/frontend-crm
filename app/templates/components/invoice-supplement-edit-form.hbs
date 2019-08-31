@@ -3,7 +3,7 @@
       errors=(v-get model 'nbOfPieces' 'messages')
       onChange=(action (mut nbOfPiecesInput)) onBlur=(queue (action "formatDecimal" "nbOfPieces") (perform save))
       class="small"}}
-  {{unit-for-amount-select value=model.unit errors=(v-get model 'unit' 'messages')
+  {{input-field/unit-for-amount-select value=model.unit errors=(v-get model 'unit' 'messages')
       onSelectionChange=(queue (action (mut model.unit)) (perform save))
       class="md-input-wrapper default u-rel-top-small"}}
   <div>
