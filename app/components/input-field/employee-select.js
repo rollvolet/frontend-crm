@@ -2,7 +2,6 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { sort } from 'ember-awesome-macros/array';
-import { or } from 'ember-awesome-macros';
 import { proxyAware } from '../../utils/proxy-aware';
 
 const filterKeys = ['isTechnician', 'isAdministrative', 'isOnRoad'];
