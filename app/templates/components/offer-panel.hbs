@@ -109,15 +109,17 @@
               onChange=(action (mut model.documentIntro)) focusOut=(perform save)}}
         </section>
         <section>
-          <div class="layout-row layout-align-space-between-center">
+          <div class="layout-row layout-align-start-center">
             <label>Producten</label>
-            <div class="link-action" {{action "addOfferline"}}>{{paper-icon "add"}} Lijn toevoegen</div>
           </div>
           {{#each model.offerlines as |offerline|}}
             {{offerline-edit-form model=offerline onDelete=(action "deleteOfferline")}}
           {{else}}
             <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{action "addOfferline"}}>hier</span> om producten toe te voegen aan de offerte.</div>
           {{/each}}
+          <div class="layout-row layout-align-end-center">
+            <div class="link-action" {{action "addOfferline"}}>{{paper-icon "add"}} Lijn toevoegen</div>
+          </div>
         </section>
         <section>
           <label>Voorwaarden</label>
