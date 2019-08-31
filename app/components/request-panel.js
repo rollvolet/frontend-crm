@@ -22,11 +22,13 @@ export default Component.extend(EKMixin, {
   isEnabledDelete: not('isDisabledEdit'),
   isLinkedToCustomer: notEmpty('model.customer.id'),
 
-  hasFailedCalendarEvent: computed('model.calendarEvent', function() {
-    return this.model.get('calendarEvent') &&
-      (this.model.get('calendarEvent.isNew')
-       || this.model.get('calendarEvent.validations.isInvalid')
-       || this.model.get('calendarEvent.isError'));
+  hasFailedCalendarEvent: computed('model.calendarEvent.{content,isMasteredByAccess,validations.isIsvalid,isError}', function() {
+    const calendarEvent = this.model.get('calendarEvent');
+    const isUpdatableCalendarEvent = calendarEvent && !calendarEvent.get('isMasteredByAccess');
+    return isUpdatableCalendarEvent && (
+      calendarEvent.get('isNew')
+        || calendarEvent.get('validations.isInvalid')
+        || calendarEvent.get('isError'));
   }),
 
   visitor: computed('model.visitor', function() {
@@ -57,8 +59,14 @@ export default Component.extend(EKMixin, {
   }),
   rollbackTree: task( function * () {
     this.model.rollbackAttributes();
+    const calendarEvent = yield this.model.calendarEvent;
+    if (calendarEvent)
+      calendarEvent.rollbackAttributes();
+
     const rollbackPromises = [];
     rollbackPromises.push(this.model.belongsTo('wayOfEntry').reload());
+    // reload of calendarEvent not necessary. We already rollbacked the attributes.
+    // rollbackPromises.push(this.model.belongsTo('calendarEvent').reload());
     yield all(rollbackPromises);
     yield this.save.perform(null, { forceSuccess: true });
   }),
@@ -76,6 +84,21 @@ export default Component.extend(EKMixin, {
       }
     }
   }).keepLatest(),
+  isValidForClosure: task( function * () {
+    if (this.model.isNew || this.model.validations.isInvalid || this.model.isError) {
+      return false;
+    } else if (this.save.last && this.save.last.isError) {
+      return false;
+    } else {
+      const calendarEvent = yield this.model.calendarEvent;
+      if (calendarEvent && !calendarEvent.isMasteredByAccess) {
+        if (calendarEvent.isNew || calendarEvent.validations.isInvalid || calendarEvent.isError) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }),
   unlinkCustomer: task(function * () {
     this.model.set('customer', null);
     this.model.set('contact', null);
@@ -93,17 +116,16 @@ export default Component.extend(EKMixin, {
     openEdit() {
       this.onOpenEdit();
     },
-    closeEdit() {
-      if (this.model.isNew || this.model.validations.isInvalid || this.model.isError
-          || (this.save.last && this.save.last.isError)
-          || this.hasFailedCalendarEvent) {
-        this.set('showUnsavedChangesDialog', true);
-      } else {
+    async closeEdit() {
+      const isValidForClosure = await this.isValidForClosure.perform();
+      if (isValidForClosure) {
         this.onCloseEdit();
+      } else {
+        this.set('showUnsavedChangesDialog', true);
       }
     },
-    confirmCloseEdit() {
-      this.rollbackTree.perform();
+    async confirmCloseEdit() {
+      await this.rollbackTree.perform();
       this.onCloseEdit();
     },
     generateVisitReport() {
