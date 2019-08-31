@@ -52,6 +52,23 @@
           <div>{{model.email2}}</div>
           <div>{{model.url}}</div>
         {{/detail-icon-list-item}}
+
+        {{#detail-icon-list-item icon="assignment" label="Memo" class="resource-details--section-memo"}}
+          <div {{action (toggle "memoExpanded" this)}}>
+            {{#if model.memo}}
+              {{#if memoExpanded}}
+                Memo {{paper-icon "expand less"}}
+              {{else}}
+                Memo {{paper-icon "expand more"}}
+              {{/if}}
+              {{#liquid-if memoExpanded class="expand-more"}}
+                <span class="html-body">{{model.memo}}</span>
+              {{/liquid-if}}
+            {{else}}
+              Geen memo
+            {{/if}}
+          </div>
+        {{/detail-icon-list-item}}
       </div>
       <div class="right-column layout-column">
         <div>

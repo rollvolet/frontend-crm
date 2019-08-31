@@ -7,5 +7,10 @@ export default Route.extend({
       // because telephone types need to be included
       include: 'honorific-prefix'
     });
+  },
+
+  setupController(controller) {
+    this._super(...arguments);
+    controller.set('memoExpanded', false);
   }
 });
