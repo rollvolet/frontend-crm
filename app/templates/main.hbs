@@ -40,23 +40,23 @@
       {{#paper-list}}
         {{#paper-link-item 'main.index'}}Home{{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.customers.index'}}Klanten{{/paper-link-item}}
+        {{#paper-link-item 'main.customers.index' (query-params page=0)}}Klanten{{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.requests.index'}}Aanvragen{{/paper-link-item}}
+        {{#paper-link-item 'main.requests.index' (query-params page=0)}}Aanvragen{{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.offers.index'}}Offertes{{/paper-link-item}}
+        {{#paper-link-item 'main.offers.index' (query-params page=0)}}Offertes{{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.orders.index'}}Bestellingen{{/paper-link-item}}
+        {{#paper-link-item 'main.orders.index' (query-params page=0)}}Bestellingen{{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.deposit-invoices.index'}}Voorschotfacturen{{/paper-link-item}}
+        {{#paper-link-item 'main.deposit-invoices.index' (query-params page=0)}}Voorschotfacturen{{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.invoices.index'}}Facturen{{/paper-link-item}}
+        {{#paper-link-item 'main.invoices.index' (query-params page=0)}}Facturen{{/paper-link-item}}
       {{/paper-list}}
 
       {{#paper-list}}
         {{#paper-subheader}}Boekhouding{{/paper-subheader}}
         {{paper-divider}}
-        {{#paper-link-item 'main.accountancy.exports'}}Exports{{/paper-link-item}}
+        {{#paper-link-item 'main.accountancy.exports' (query-params page=0)}}Exports{{/paper-link-item}}
       {{/paper-list}}
 
       <!-- {{#paper-list}}
