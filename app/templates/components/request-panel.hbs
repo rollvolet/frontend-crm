@@ -25,7 +25,7 @@
         {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
       {{/paper-button}}
       {{#if isLinkedToCustomer}}
-        {{#paper-button onClick=(perform unlinkCustomer) iconButton=true disabled=isDisabledEdit}}
+        {{#paper-button onClick=(perform unlinkCustomer) iconButton=true disabled=isDisabledUnlinkCustomer}}
           {{paper-icon "link off"}}
           {{#paper-tooltip}}Ontkoppel klant{{/paper-tooltip}}
         {{/paper-button}}
