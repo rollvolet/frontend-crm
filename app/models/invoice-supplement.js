@@ -4,9 +4,6 @@ import { validator, buildValidations } from 'ember-cp-validations';
 const Validations = buildValidations({
   nbOfPieces: validator('number', {
     positive: true
-  }),
-  amount: validator('number', {
-    positive: true
   })
 });
 
