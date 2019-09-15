@@ -28,6 +28,7 @@ export default DS.Model.extend(Validations, {
   hasProductionTicket: DS.attr('boolean'),
   comment: DS.attr(),
   qualification: DS.attr(),
+  documentOutro: DS.attr(),
   reference: DS.attr(),
 
   order: DS.belongsTo('order'),

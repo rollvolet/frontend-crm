@@ -77,6 +77,14 @@
   </div>
 </div>
 
+<div class="layout-row layout-xs-column layout-align-space-between">
+  <div class="flex-100 layout-column">
+    {{#detail-list-item label="Mededeling"}}
+      {{{model.documentOutro}}}
+    {{/detail-list-item}}
+  </div>
+</div>
+
 {{working-hours-dialog show=showWorkingHoursDialog model=model}}
 
 {{#document-not-found-dialog show=showProductionTicketNotFoundDialog}}
