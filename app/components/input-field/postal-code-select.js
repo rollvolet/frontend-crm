@@ -16,7 +16,16 @@ export default Component.extend({
     this._super(...arguments);
     if (this.postalCode && this.city) {
       const value = this.postalCodes.find(o => o.code == this.postalCode && o.name == this.city.toUpperCase());
-      this.set('value', value);
+
+      if (value) {
+        this.set('value', value);
+      } else {
+        const postalCode = this.store.createRecord('postal-code', {
+          code: this.postalCode,
+          name: this.city.toUpperCase()
+        });
+        this.set('value', postalCode);
+      }
     }
   },
 
@@ -40,6 +49,15 @@ export default Component.extend({
         this.onSelectionChange(value.code, value.name);
       else
         this.onSelectionChange(undefined, undefined);
+    },
+    addOption(code, name) {
+        const postalCode = this.store.createRecord('postal-code', {
+          code: 'L-4593',
+          name: 'Foobarbaz'.toUpperCase()
+        });
+      this.set('value', postalCode);
+      this.onSelectionChange(postalCode.code, postalCode.name);
+      this.set('showCreateModal', false);
     }
   }
 });

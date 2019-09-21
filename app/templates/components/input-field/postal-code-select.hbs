@@ -8,6 +8,7 @@
      searchPlaceholder="Typ om te zoeken"
      noMatchesMessage="Geen resultaten"
      allowClear=true
+     afterOptionsComponent=(component "input-field/postal-code-select/create-new" onCreate=(action (mut showCreateModal) true))
      as |option select|
 }}
   {{#if titleize}}
@@ -16,3 +17,26 @@
     {{highlight-substr option.search select.lastSearchedText}}
   {{/if}}
 {{/power-select}}
+
+{{#if showCreateModal}}
+  {{#paper-dialog class="flex-50" onClose=(action (mut showCreateModal) false)
+       clickOutsideToClose=true parent=".main-outlet" origin=".main-outlet"}}
+    {{#paper-toolbar}}
+      {{#paper-toolbar-tools}}
+        <h2>Nieuwe postcode</h2><span class="flex"></span>
+        {{#paper-button iconButton=true onClick=(action (mut showCreateModal) false)}}
+          {{paper-icon icon="close"}}
+        {{/paper-button}}
+      {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+
+    {{#paper-dialog-content}}
+      Voeg nieuwe postcode toe hier
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class="layout-row"}}
+      <span class="flex"></span>
+      {{#paper-button onClick=(action "addOption")}}Voeg toe{{/paper-button}}
+    {{/paper-dialog-actions}}
+  {{/paper-dialog}}
+{{/if}}
