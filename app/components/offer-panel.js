@@ -63,7 +63,6 @@ export default Component.extend(EKMixin, PellOptions, {
 
     this.model.rollbackAttributes();
     rollbackPromises.push(this.model.belongsTo('vatRate').reload());
-    rollbackPromises.push(this.model.belongsTo('submissionType').reload());
     rollbackPromises.push(this.model.belongsTo('contact').reload());
     rollbackPromises.push(this.model.belongsTo('building').reload());
 

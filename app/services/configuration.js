@@ -12,7 +12,6 @@ export default Service.extend({
       'language',
       'postal-code',
       'telephone-type',
-      'submission-type',
       'vat-rate',
       'way-of-entry',
       'employee',

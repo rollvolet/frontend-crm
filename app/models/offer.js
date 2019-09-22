@@ -26,7 +26,6 @@ export default DS.Model.extend(Validations, {
   contact: DS.belongsTo('contact'),
   building: DS.belongsTo('building'),
   vatRate: DS.belongsTo('vat-rate'),
-  submissionType: DS.belongsTo('submission-type'),
   offerlines: DS.hasMany('offerline'),
 
   offerDateStr: dateString('offerDate'),

@@ -12,11 +12,6 @@
           class="md-input-wrapper large"}}
     </div>
     <div class="layout-row">
-      {{input-field/submission-type-select value=model.submissionType
-          onSelectionChange=(queue (action (mut model.submissionType)) (perform save))
-          class="md-input-wrapper large"}}
-    </div>
-    <div class="layout-row">
       {{paper-input label="Referentie klant" value=model.reference
           onChange=(action (mut model.reference)) onBlur=(perform save)
           class="xxlarge"}}
