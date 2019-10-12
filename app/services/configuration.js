@@ -15,7 +15,8 @@ export default Service.extend({
       'vat-rate',
       'way-of-entry',
       'employee',
-      'payment'
+      'payment',
+      'product-unit'
     ];
     yield all(entities.map(e => this.store.findAll(e)));
   }).drop(),

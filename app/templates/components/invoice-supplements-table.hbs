@@ -12,7 +12,7 @@
     {{#each model as |supplement|}}
       <tr>
         <td>{{supplement.nbOfPieces}}</td>
-        <td>{{supplement.unit}}</td>
+        <td>{{supplement.unit.name}}</td>
         <td>{{{supplement.description}}}</td>
         <td>{{fmt-currency supplement.amount}}</td>
         {{#unless isDisabledEdit}}
