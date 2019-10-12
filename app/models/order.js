@@ -59,5 +59,6 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   requiredDateStr: dateString('requiredDate'),
   planningDateStr: dateString('planningDate'),
   isPlanned: bool('planningMsObjectId'),
-  isMasteredByAccess: or('planningId', 'amount')
+  isMasteredByAccess: bool('amount'),
+  isPlanningMasteredByAccess: bool('planningId')
 });
