@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { proxyAware } from '../../utils/proxy-aware';
+import { sort } from '@ember/object/computed';
 
 export default Component.extend({
   store: service(),
@@ -12,6 +13,9 @@ export default Component.extend({
     const wayOfEntries = this.store.peekAll('way-of-entry');
     this.set('options', wayOfEntries);
   },
+
+  optionSort: Object.freeze(['position']),
+  sortedOptions: sort('options', 'optionSort'),
 
   label: 'Aanmelding',
   value: null,
