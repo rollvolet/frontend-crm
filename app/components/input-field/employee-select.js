@@ -30,7 +30,8 @@ export default Component.extend({
 
     return employees;
   }),
-  options: sort('employees', ['functionSort:asc']),
+  optionSort: Object.freeze(['functionSort:asc']),
+  options: sort('employees', 'optionSort'),
   placeholder: computed('label', 'required', function() {
     return this.required ? `${this.label} *` : this.label;
   }),
