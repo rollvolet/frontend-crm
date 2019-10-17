@@ -7,6 +7,7 @@ import { not, notEmpty, or, gt, raw, uniqBy, mapBy } from 'ember-awesome-macros'
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import PellOptions from '../mixins/pell-options';
+import { sort } from '@ember/object/computed';
 
 export default Component.extend(EKMixin, PellOptions, {
   case: service(),
@@ -21,6 +22,8 @@ export default Component.extend(EKMixin, PellOptions, {
   showUnsavedChangesDialog: false,
   showOfferDocumentNotFoundDialog: false,
 
+  offerlineSorting: Object.freeze(['sequenceNumber']),
+  sortedOfferlines: sort('model.offerlines', 'offerlineSorting'),
   hasOrder: notEmpty('model.order.id'),
   isDisabledEdit: or('model.isMasteredByAccess', 'hasOrder'),
   isEnabledDelete: not('isDisabledEdit'),
@@ -123,7 +126,8 @@ export default Component.extend(EKMixin, PellOptions, {
       this.onCloseEdit();
     },
     async addOfferline() {
-      const number = this.model.get('offerlines.length');
+      const offerlines = await this.model.offerlines;
+      const number = Math.max(...offerlines.map(o => o.sequenceNumber));
       const vatRate = await this.model.vatRate;
       const offerline = this.store.createRecord('offerline', {
         sequenceNumber: number + 1,
@@ -135,7 +139,10 @@ export default Component.extend(EKMixin, PellOptions, {
         this.model.set('amount', 0); // make sure offer is no longer mastered by Access
         this.model.save();
       }
-      offerline.save();
+      const { validations } = await offerline.validate();
+      if (validations.isValid)
+        offerline.save();
+
       this.onOpenEdit();
     },
     deleteOfferline(offerline) {
