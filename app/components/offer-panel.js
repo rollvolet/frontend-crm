@@ -127,7 +127,7 @@ export default Component.extend(EKMixin, PellOptions, {
     },
     async addOfferline() {
       const offerlines = await this.model.offerlines;
-      const number = Math.max(...offerlines.map(o => o.sequenceNumber));
+      const number = offerlines.length ? Math.max(...offerlines.map(o => o.sequenceNumber)) : 0;
       const vatRate = await this.model.vatRate;
       const offerline = this.store.createRecord('offerline', {
         sequenceNumber: number + 1,
