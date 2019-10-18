@@ -33,7 +33,7 @@
   </section>
   {{#if isLinkedToCustomer}}
     {{#if hasVisitMasteredByAccess}}
-      {{visit-detail-panel model=model.calendarEvent}}
+      {{visit-detail-panel model=model}}
     {{else if model.requiresVisit}}
       {{visit-edit-form model=model.calendarEvent save=saveCalendarEvent}}
     {{/if}}

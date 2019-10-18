@@ -90,10 +90,13 @@ export default Service.extend({
     yield this._updateContactAndBuilding.perform(contact, building);
 
     const reloadPromises = [];
-    if (this.current.request)
+    if (this.current.request) {
       reloadPromises.push(this.current.request.belongsTo('contact').reload());
-    if (this.current.offer)
+      reloadPromises.push(this.current.request.belongsTo('calendarEvent').reload());
+    }
+    if (this.current.offer) {
       reloadPromises.push(this.current.offer.belongsTo('contact').reload());
+    }
     if (this.current.order) {
       reloadPromises.push(this.current.order.belongsTo('contact').reload());
 
@@ -102,8 +105,9 @@ export default Service.extend({
         reloadPromises.push(depositInvoice.belongsTo('contact').reload());
       });
     }
-    if (this.current.invoice)
+    if (this.current.invoice) {
       reloadPromises.push(this.current.invoice.belongsTo('contact').reload());
+    }
 
     yield Promise.all(reloadPromises);
   }),
@@ -112,10 +116,13 @@ export default Service.extend({
     yield this._updateContactAndBuilding.perform(contact, building);
 
     const reloadPromises = [];
-    if (this.current.request)
+    if (this.current.request) {
       reloadPromises.push(this.current.request.belongsTo('building').reload());
-    if (this.current.offer)
+      reloadPromises.push(this.current.request.belongsTo('calendarEvent').reload());
+    }
+    if (this.current.offer) {
       reloadPromises.push(this.current.offer.belongsTo('building').reload());
+    }
     if (this.current.order) {
       reloadPromises.push(this.current.order.belongsTo('building').reload());
 
@@ -124,8 +131,9 @@ export default Service.extend({
         reloadPromises.push(depositInvoice.belongsTo('building').reload());
       });
     }
-    if (this.current.invoice)
+    if (this.current.invoice) {
       reloadPromises.push(this.current.invoice.belongsTo('building').reload());
+    }
 
     yield Promise.all(reloadPromises);
   }),

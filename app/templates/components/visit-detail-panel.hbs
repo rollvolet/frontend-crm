@@ -1,23 +1,26 @@
-{{#if (is-pending model)}}
+{{#if (is-pending calendarEvent)}}
   <div class="case--right-panel case--request--visit skeleton flex-noshrink layout-column layout-align-center-center">
     {{paper-progress-circular diameter=25}}
   </div>
-{{else if model}}
+{{else if calendarEvent}}
   <div class="case--right-panel flex-noshrink layout-column">
     <div class="case--request--visit">
       <div class="layout-row layout-align-space-between-center">
         <h3>{{paper-icon "event"}} Bezoek</h3>
-        {{#if (not model.isMasteredByAccess)}}
-          {{#paper-button iconButton=true onClick=onSync}}{{paper-icon "sync"}}{{/paper-button}}
+        {{#if (not calendarEvent.isMasteredByAccess)}}
+          {{#paper-button iconButton=true onClick=(perform synchronize)}}
+            {{paper-icon "sync"}}
+            {{#paper-tooltip}}Stuur wijzigingen naar agenda{{/paper-tooltip}}
+          {{/paper-button}}
         {{/if}}
       </div>
       {{#detail-list-item label="Datum"}}
-        {{fmt-date model.visitDate}}
+        {{fmt-date calendarEvent.visitDate}}
       {{/detail-list-item}}
       {{#detail-list-item label="Agenda"}}
-        {{model.calendarSubject}}
+        {{calendarEvent.calendarSubject}}
       {{/detail-list-item}}
-      {{#if model.isMasteredByAccess}}
+      {{#if calendarEvent.isMasteredByAccess}}
         <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
       {{/if}}
     </div>
