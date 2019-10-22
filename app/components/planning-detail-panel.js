@@ -42,6 +42,13 @@ export default Component.extend({
     this.set('editMode', false);
   }),
 
+  synchronize: task(function * () {
+    const { access_token } = this.get('session.data.authenticated');
+    const headers = { 'Authorization': `Bearer ${access_token}` };
+    yield this.ajax.put(`/api/orders/${this.model.id}/planning-event`, { headers });
+    yield this.loadCalendarEvent.perform();
+  }).keepLatest(),
+
   actions: {
     openEdit() {
       this.set('editMode', true);

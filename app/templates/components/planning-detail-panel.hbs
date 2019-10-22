@@ -11,7 +11,21 @@
 {{else}}
   <div class="case--right-panel flex-noshrink layout-column">
     <div class="case--order--planning">
-      <h3>{{paper-icon "event"}} Planning</h3>
+      <div class="layout-row layout-align-space-between-center">
+        <h3>{{paper-icon "event"}} Planning</h3>
+        {{#unless editMode}}
+          <div>
+            {{#paper-button iconButton=true onClick=(perform synchronize)}}
+              {{paper-icon "sync"}}
+              {{#paper-tooltip}}Stuur wijzigingen naar agenda{{/paper-tooltip}}
+            {{/paper-button}}
+            {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
+              {{paper-icon "edit mode"}}
+              {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
+            {{/paper-button}}
+          </div>
+        {{/unless}}
+      </div>
       <div class="case--order--planning--description">
         {{#if editMode}}
           {{#if planEvent.isRunning}}
@@ -21,13 +35,7 @@
                 onChange=(action (mut inputDateStr)) onBlur=(perform planEvent) class="default"}}
           {{/if}}
         {{else}}
-          <div>
-            {{#if model.planningDate}}{{fmt-date model.planningDate}}{{else}}Niet ingepland{{/if}}
-            {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
-              {{paper-icon "edit mode"}}
-              {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
-            {{/paper-button}}
-          </div>
+          {{#if model.planningDate}}{{fmt-date model.planningDate}}{{else}}Niet ingepland{{/if}}
         {{/if}}
         <div class="col--subject">
           {{#if loadCalendarEvent.isRunning}}
