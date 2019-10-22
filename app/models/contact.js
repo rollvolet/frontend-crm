@@ -40,10 +40,10 @@ export default DS.Model.extend(Validations, {
   orders: DS.hasMany('order'),
 
   printName: computed('printPrefix', 'prefix', 'printSuffix', 'suffix', 'name', function() {
-    var name = '';
+    let name = '';
     if (this.printPrefix && this.prefix) { name += this.prefix + ' '; }
-    name += this.name + ' ';
-    if (this.printSuffix && this.suffix) { name += this.suffix; }
+    name += this.name || '';
+    if (this.printSuffix && this.suffix) { name += ' ' + this.suffix; }
     return name.trim();
   }),
   searchName: computed('printName', 'number', function() {

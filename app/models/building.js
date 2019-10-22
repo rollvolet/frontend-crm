@@ -40,9 +40,10 @@ export default DS.Model.extend(Validations, {
   orders: DS.hasMany('order'),
 
   printName: computed('prefix', 'name', function() {
-    var name = '';
-    if (this.prefix) { name += this.prefix + ' '; }
-    name += this.name;
+    let name = '';
+    if (this.printPrefix && this.prefix) { name += this.prefix + ' '; }
+    name += this.name || '';
+    if (this.printSuffix && this.suffix) { name += ' ' + this.suffix; }
     return name.trim();
   }),
   searchName: computed('printName', 'number', 'city', 'postalCode', 'address', function() {
