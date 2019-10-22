@@ -23,7 +23,7 @@ export default Component.extend({
 
   hasNoRequestsOrInvoices: and(isEmpty('model.requests'), isEmpty('model.invoices')),
   hasNoContactsOrBuildings: and(isEmpty('model.contacts'), isEmpty('model.buildings')),
-  isEnabledDelete: and('isScopeCustomer', 'hasNoRequestsOrInvoices', 'hasNoContactsOrBuildings'),
+  isEnabledDelete: and('hasNoRequestsOrInvoices', 'hasNoContactsOrBuildings'),
 
   formattedVatNumber: computed('model.vatNumber', {
     get() {

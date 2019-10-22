@@ -35,9 +35,10 @@ export default DS.Model.extend(Validations, {
   language: DS.belongsTo('language'),
   honorificPrefix: DS.belongsTo('honorific-prefix'),
   telephones: DS.hasMany('telephone'),
-  requests: DS.hasMany('request'),
-  offers: DS.hasMany('offer'),
-  orders: DS.hasMany('order'),
+  requests: DS.hasMany('request', { inverse: null }),
+  offers: DS.hasMany('offer', { inverse: null }),
+  orders: DS.hasMany('order', { inverse: null }),
+  invoices: DS.hasMany('invoice', { inverse: null }),
 
   printName: computed('prefix', 'name', function() {
     let name = '';
