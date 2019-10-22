@@ -45,6 +45,7 @@
     border: 2px dashed paper-color('red', '600');;
     position: relative;
 
+    .case--request--visit--description:after,
     .case--order--planning--description:after {
       content: "Niet gevonden in agenda";
       position: absolute;
