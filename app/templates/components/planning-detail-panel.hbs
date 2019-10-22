@@ -13,7 +13,18 @@
     <div class="case--order--planning">
       <div class="layout-row layout-align-space-between-center">
         <h3>{{paper-icon "event"}} Planning</h3>
-        {{#unless editMode}}
+        {{#if editMode}}
+          <div>
+          {{#paper-button onClick=(action "remove") iconButton=true}}
+            {{paper-icon "delete"}}
+            {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+          {{/paper-button}}
+          {{#paper-button onClick=(perform planEvent) iconButton=true}}
+            {{paper-icon "exit to app"}}
+            {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
+          {{/paper-button}}
+          </div>
+        {{else}}
           <div>
             {{#paper-button iconButton=true onClick=(perform synchronize)}}
               {{paper-icon "sync"}}
@@ -24,7 +35,7 @@
               {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
             {{/paper-button}}
           </div>
-        {{/unless}}
+        {{/if}}
       </div>
       <div class="case--order--planning--description">
         {{#if editMode}}
@@ -32,7 +43,7 @@
             {{paper-progress-circular diameter=25}}
           {{else}}
             {{paper-input label="Datum" value=inputDateStr type="date"
-                onChange=(action (mut inputDateStr)) onBlur=(perform planEvent) class="default"}}
+                onChange=(action (mut inputDateStr)) class="default"}}
           {{/if}}
         {{else}}
           {{#if model.planningDate}}{{fmt-date model.planningDate}}{{else}}Niet ingepland{{/if}}

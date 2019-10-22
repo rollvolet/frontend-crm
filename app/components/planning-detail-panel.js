@@ -6,6 +6,7 @@ import { next } from '@ember/runloop';
 
 export default Component.extend({
   ajax: service(),
+  case: service(),
   session: service(),
 
   calendarSubject: null,
@@ -17,6 +18,16 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
+    this.loadCalendarEvent.perform();
+    this.case.on('updateBuilding:succeeded', this, this.handleBuildingUpdatedEvent);
+  },
+
+  willDestroyElement() {
+    this.case.off('updateBuilding:succeeded', this, this.handleBuildingUpdatedEvent);
+    this._super(...arguments);
+  },
+
+  handleBuildingUpdatedEvent() {
     this.loadCalendarEvent.perform();
   },
 
@@ -53,6 +64,10 @@ export default Component.extend({
     openEdit() {
       this.set('editMode', true);
       next(this, function() { this.element.querySelector('input').focus(); });
+    },
+    async remove() {
+      this.set('inputDateStr', null);
+      await this.planEvent.perform();
     }
   }
 });

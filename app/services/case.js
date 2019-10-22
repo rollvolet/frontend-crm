@@ -2,6 +2,7 @@ import Service, { inject as service } from '@ember/service';
 import { assert } from '@ember/debug';
 import Case from '../models/case';
 import { task } from 'ember-concurrency';
+import Evented from '@ember/object/evented';
 
 const regexMap = {
   requestId: /case\/\d+\/request\/(\d+)/i,
@@ -17,7 +18,7 @@ const calcQueryParam = function(routeUrl, key) {
   return `${key}=${matches[1]}`;
 };
 
-export default Service.extend({
+export default Service.extend(Evented, {
   current: null,
 
   router: service(),
@@ -136,7 +137,7 @@ export default Service.extend({
     }
 
     yield Promise.all(reloadPromises);
-  }),
+  }).evented(),
 
   _updateContactAndBuilding: task(function * (contact, building) {
     const { access_token } = this.get('session.data.authenticated');
