@@ -40,6 +40,21 @@
     width: 500px;
     height: 150px;
   }
+
+  &.not-found {
+    border: 2px dashed paper-color('red', '600');;
+    position: relative;
+
+    .case--order--planning--description:after {
+      content: "Niet gevonden in agenda";
+      position: absolute;
+      right: -15px;
+      bottom: -15px;
+      padding: 5px;
+      background: paper-color('red', '600');
+      color: white;
+    }
+  }
 }
 
 .case--order--planning {

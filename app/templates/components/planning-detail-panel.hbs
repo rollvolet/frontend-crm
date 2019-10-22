@@ -10,7 +10,7 @@
   </div>
 {{else}}
   <div class="case--right-panel flex-noshrink layout-column">
-    <div class="case--order--planning">
+    <div class="case--order--planning {{if isNotAvailableInCalendar "not-found"}}">
       <div class="layout-row layout-align-space-between-center">
         <h3>{{paper-icon "event"}} Planning</h3>
         {{#if editMode}}
@@ -26,14 +26,18 @@
           </div>
         {{else}}
           <div>
-            {{#paper-button iconButton=true onClick=(perform synchronize)}}
-              {{paper-icon "sync"}}
-              {{#paper-tooltip}}Stuur wijzigingen naar agenda{{/paper-tooltip}}
-            {{/paper-button}}
-            {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
-              {{paper-icon "edit mode"}}
-              {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
-            {{/paper-button}}
+            {{#if model.planningDate}}
+              {{#paper-button iconButton=true onClick=(perform synchronize)}}
+                {{paper-icon "sync"}}
+                {{#paper-tooltip}}Stuur wijzigingen naar agenda{{/paper-tooltip}}
+              {{/paper-button}}
+            {{/if}}
+            {{#unless isNotAvailableInCalendar}}
+              {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
+                {{paper-icon "edit mode"}}
+                {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
+              {{/paper-button}}
+            {{/unless}}
           </div>
         {{/if}}
       </div>

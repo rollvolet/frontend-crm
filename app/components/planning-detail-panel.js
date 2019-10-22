@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { task } from 'ember-concurrency';
 import { notEmpty, reads } from '@ember/object/computed';
+import { not, and, isEmpty } from 'ember-awesome-macros';
 import { inject as service } from '@ember/service';
 import { next } from '@ember/runloop';
 
@@ -15,6 +16,7 @@ export default Component.extend({
 
   isDisabledEdit: notEmpty('model.invoice.id'),
   inputDateStr: reads('model.planningDateStr'),
+  isNotAvailableInCalendar: and('loadCalendarEvent.lastSuccessful', not('model.isPlanningMasteredByAccess'), 'model.planningMsObjectId', isEmpty('calendarSubject')),
 
   init() {
     this._super(...arguments);
@@ -57,6 +59,10 @@ export default Component.extend({
     const { access_token } = this.get('session.data.authenticated');
     const headers = { 'Authorization': `Bearer ${access_token}` };
     yield this.ajax.put(`/api/orders/${this.model.id}/planning-event`, { headers });
+
+    if (this.isNotAvailableInCalendar)
+      yield this.model.reload(); // order.planningMsObjectId will be updated
+
     yield this.loadCalendarEvent.perform();
   }).keepLatest(),
 
