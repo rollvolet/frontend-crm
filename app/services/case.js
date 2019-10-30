@@ -26,9 +26,9 @@ export default Service.extend(Evented, {
   store: service(),
   ajax: service(),
 
-  async init() {
+  init() {
     this._super(...arguments);
-    await this.initCase();
+    this.initCase();
   },
 
   async initCase() {

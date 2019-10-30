@@ -11,6 +11,9 @@
         {{fmt-date model.requiredDate}}
       {{/detail-list-subitem}}
     {{/detail-list-item}}
+    {{#detail-list-item label="Bezoeker"}}
+      {{model.offer.request.visitor}}
+    {{/detail-list-item}}
     {{#detail-list-item label="Werkuren"}}
       {{fmt-decimal model.scheduledHours}} uur x
       <span class="{{if isNbOfPersonsWarning "warning-inline"}}">{{model.scheduledNbOfPersons}} man</span>

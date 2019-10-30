@@ -14,6 +14,11 @@
           onChange=(queue (action (mut model.requiredDateStr)) (perform save))
           class="default"}}
     </div>
+    <div class="layout-row">
+      {{input-field/employee-select label="Bezoeker" value=visitor isOnRoad=true isTechnician=true
+          onSelectionChange=(queue (action "setVisitor") (perform save))
+          class="md-input-wrapper large"}}
+    </div>
     <div class="u-bold">Geplande uren</div>
     <div class="layout-row layout-align-start-end">
       {{paper-input label="Werkuren" value=scheduledHoursInput

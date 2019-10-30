@@ -79,6 +79,11 @@ export default Component.extend(EKMixin, {
       }
       yield this.model.save();
     }
+
+    // Save change of visitor
+    const offer = yield this.model.offer;
+    const request = yield offer.request;
+    yield request.save();
   }).keepLatest(),
 
   // eslint-disable-next-line ember/no-on-calls-in-components

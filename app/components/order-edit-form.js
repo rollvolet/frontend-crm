@@ -17,7 +17,17 @@ export default Component.extend(DecimalInputFormatting, {
     this._super(...arguments);
     this.initDecimalInput('scheduledHours');
     this.initDecimalInput('scheduledNbOfPersons');
+    this.initVisitor.perform();
   },
+
+  initVisitor: task(function * () {
+    const offer = yield this.model.offer;
+    const request = yield offer.request;
+    if (request.visitor) {
+      const visitor = this.store.peekAll('employee').find(e => e.firstName == request.visitor);
+      this.set('visitor', visitor);
+    }
+  }).keepLatest(),
 
   uploadProductionTicket: task(function * (file) {
     try {
@@ -47,6 +57,13 @@ export default Component.extend(DecimalInputFormatting, {
         this.model.set('mustBeInstalled', true);
       else if (execution == 'delivery')
         this.model.set('mustBeDelivered', true);
+    },
+    async setVisitor(visitor) {
+      this.set('visitor', visitor);
+      const firstName = visitor ? visitor.firstName : null;
+      const offer = await this.model.offer;
+      const request = await offer.request;
+      request.set('visitor', firstName);
     },
     uploadProductionTicket(file) {
       this.uploadProductionTicket.perform(file);

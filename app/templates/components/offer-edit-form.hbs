@@ -12,6 +12,11 @@
           class="md-input-wrapper large"}}
     </div>
     <div class="layout-row">
+      {{input-field/employee-select label="Bezoeker" value=visitor isOnRoad=true isTechnician=true
+          onSelectionChange=(queue (action "setVisitor") (perform save))
+          class="md-input-wrapper large"}}
+    </div>
+    <div class="layout-row">
       {{paper-input label="Referentie klant" value=model.reference
           onChange=(action (mut model.reference)) onBlur=(perform save)
           class="xxlarge"}}
