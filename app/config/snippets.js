@@ -5,6 +5,6 @@ export default {
   },
   'FRA': {
     offerDocumentIntro: `<p class="aanhef">Madame, Monsieur,</p><div>Suite à votre demande, nous avons l'avantage de vous faire notre meilleure offre pour:</div>`,
-    offerDocumentOutro: `<p>Cette offre est valable pendant 30 jours.</p><div>Si vous êtes d'accord, veuillez nous envoyer votre confirmation par écrit. Vous recevrez ensuite une facture d'acompte de 30% du montant total.<p>En acceptant cette offre, vous confirmez votre accord avec nos conditions g&eacute;n&eacute;rales de vente ci-jointes.</p></div>`
+    offerDocumentOutro: `<p>Cette offre est valable pendant 30 jours.</p><div><p>Si vous êtes d'accord, veuillez nous envoyer votre confirmation par écrit. Vous recevrez ensuite une facture d'acompte de 30% du montant total. En acceptant cette offre, vous confirmez votre accord avec nos conditions g&eacute;n&eacute;rales de vente ci-jointes.</p><p>Dans l'attente du plaisir de lire votre accord, nous vous prions d'agréer nos salutations distinguées.</p></div>`
   }
 };
