@@ -12,5 +12,7 @@ export default Route.extend({
   setupController(controller) {
     this._super(...arguments);
     controller.set('memoExpanded', false);
+    controller.set('isEnabledEditBuilding', false);
+    controller.set('isEnabledEditContact', false);
   }
 });
