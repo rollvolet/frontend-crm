@@ -90,6 +90,10 @@ export default Component.extend(EKMixin, PellOptions, {
       }
       yield this.model.save();
     }
+
+    // Save change of visitor
+    const request = yield this.model.request;
+    yield request.save();
   }),
   generateOfferDocument: task(function * () {
     const oldOfferDate = this.model.offerDate;
