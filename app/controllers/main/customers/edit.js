@@ -10,6 +10,9 @@ export default Controller.extend({
     },
     closeEdit() {
       this.set('editMode', false);
+    },
+    onRemove() {
+      this.transitionToRoute('main.customers.index');
     }
   }
 });

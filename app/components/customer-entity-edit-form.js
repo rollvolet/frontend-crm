@@ -3,7 +3,7 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { warn } from '@ember/debug';
 import { inject as service } from '@ember/service';
-import { raw, equal, and, isEmpty } from 'ember-awesome-macros';
+import { raw, equal, and, isEmpty, not } from 'ember-awesome-macros';
 
 const digitsOnly = /\D/g;
 
@@ -12,6 +12,7 @@ export default Component.extend({
 
   model: null,
   onClose: null,
+  onRemove: null,
 
   scope: 'customer', // one of 'customer', 'contact', 'building'
   isScopeCustomer: equal('scope', raw('customer')),
@@ -24,6 +25,7 @@ export default Component.extend({
   hasNoRequestsOrInvoices: and(isEmpty('model.requests'), isEmpty('model.invoices')),
   hasNoContactsOrBuildings: and(isEmpty('model.contacts'), isEmpty('model.buildings')),
   isEnabledDelete: and('hasNoRequestsOrInvoices', 'hasNoContactsOrBuildings'),
+  isDisabledDelete: not('isEnabledDelete'),
 
   formattedVatNumber: computed('model.vatNumber', {
     get() {
@@ -66,7 +68,7 @@ export default Component.extend({
     } catch (e) {
       warn(`Something went wrong while destroying ${this.scope} ${this.model.id}`, { id: 'destroy-failure' });
     } finally {
-      this.router.transitionTo('main.customers.index');
+      this.onRemove();
     }
   }),
   rollbackTree: task( function * () {

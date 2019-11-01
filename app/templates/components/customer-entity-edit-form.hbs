@@ -4,12 +4,10 @@
     {{save-status-icon model=model task=save}}
   </div>
   <div>
-    {{#if isEnabledDelete}}
-      {{#paper-button onClick=(perform remove) iconButton=true}}
-        {{paper-icon "delete"}}
-        {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-      {{/paper-button}}
-    {{/if}}
+    {{#paper-button onClick=(perform remove) iconButton=true disabled=isDisabledDelete}}
+      {{paper-icon "delete"}}
+      {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+    {{/paper-button}}
     {{#paper-button onClick=(action "close") iconButton=true}}
       {{paper-icon "exit to app"}}
       {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
