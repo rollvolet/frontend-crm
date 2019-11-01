@@ -18,32 +18,34 @@
           {{#group.radio value="FRA"}}Frans{{/group.radio}}
         {{/paper-radio-group}}
       </div>
-      <div class="layout-row layout-align-start-center panel--vat-certificate">
-        {{#if model.certificateRequired}}
-          <label class="key">BTW attest</label>
-          {{#if model.certificateReceived}}
-            <span>{{paper-icon primary=true icon="done" size=36}}</span>
-          {{else if (or uploadCertificate.isRunning generateCertificate.isRunning)}}
-            {{paper-progress-circular diameter=36}}
-          {{else}}
-            <div class="layout-row">
-              {{#file-upload name="certificates" class="md-default-theme md-button md-primary md-raised" accept="application/pdf"
-                   onfileadd=(perform uploadCertificate) as |queue|}}
-                {{#if hasCertificateUploadError}}
-                  {{paper-icon "error" primary=true}}
-                  {{#paper-tooltip}}Bestand niet correct opgeladen{{/paper-tooltip}}
-                {{/if}}
-                Attest opladen
-              {{/file-upload}}
-              <div>
-                {{#paper-button primary=true raised=true onClick=(perform generateCertificate)}}Nieuw attest maken{{/paper-button}}
+      {{#unless model.isCreditNote}}
+        <div class="layout-row layout-align-start-center panel--vat-certificate">
+          {{#if model.certificateRequired}}
+            <label class="key">BTW attest</label>
+            {{#if model.certificateReceived}}
+              <span>{{paper-icon primary=true icon="done" size=36}}</span>
+            {{else if (or uploadCertificate.isRunning generateCertificate.isRunning)}}
+              {{paper-progress-circular diameter=36}}
+            {{else}}
+              <div class="layout-row">
+                {{#file-upload name="certificates" class="md-default-theme md-button md-primary md-raised" accept="application/pdf"
+                     onfileadd=(perform uploadCertificate) as |queue|}}
+                  {{#if hasCertificateUploadError}}
+                    {{paper-icon "error" primary=true}}
+                    {{#paper-tooltip}}Bestand niet correct opgeladen{{/paper-tooltip}}
+                  {{/if}}
+                  Attest opladen
+                {{/file-upload}}
+                <div>
+                  {{#paper-button primary=true raised=true onClick=(perform generateCertificate)}}Nieuw attest maken{{/paper-button}}
+                </div>
               </div>
-            </div>
+            {{/if}}
+          {{else}}
+            <p class="note">Er is geen BTW attest nodig.</p>
           {{/if}}
-        {{else}}
-          <p class="note">Er is geen BTW attest nodig.</p>
-        {{/if}}
-      </div>
+        </div>
+      {{/unless}}
     {{/paper-dialog-content}}
 
     {{#paper-dialog-actions class="layout-row"}}
