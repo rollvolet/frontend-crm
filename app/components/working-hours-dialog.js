@@ -2,7 +2,7 @@ import { warn } from '@ember/debug';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { filterBy } from '@ember/object/computed';
+import { filterBy, sort } from '@ember/object/computed';
 
 export default Component.extend({
   store: service(),
@@ -12,6 +12,8 @@ export default Component.extend({
   model: null,
 
   savedWorkingHours: filterBy('model.workingHours', 'isNew', false),
+  workingHourSort: Object.freeze(['date']),
+  sortedWorkingHours: sort('savedWorkingHours', 'workingHourSort'),
 
   async didReceiveAttrs() {
     this._super(...arguments);
@@ -36,8 +38,9 @@ export default Component.extend({
 
   async _initNewWorkingHour() {
     const invoice = await this.model;
+    const date = this.sortedWorkingHours.length ? this.sortedWorkingHours[this.sortedWorkingHours.length - 1].date : new Date();
     const workingHour = this.store.createRecord('working-hour', {
-      date: new Date(),
+      date,
       invoice
     });
     this.set('newWorkingHour', workingHour);

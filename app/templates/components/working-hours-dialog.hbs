@@ -34,7 +34,7 @@
           <th><!-- Delete --></th>
         </thead>
         <tbody>
-          {{#each savedWorkingHours as |workingHour|}}
+          {{#each sortedWorkingHours as |workingHour|}}
             <tr>
               <td>{{fmt-date workingHour.date}}</td>
               <td>{{workingHour.employee.firstName}}</td>
