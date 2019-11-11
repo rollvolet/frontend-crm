@@ -20,7 +20,6 @@ export default Component.extend(EKMixin, PellOptions, {
   onOpenEdit: null,
   onCloseEdit: null,
   showUnsavedChangesDialog: false,
-  showOfferDocumentNotFoundDialog: false,
 
   offerlineSorting: Object.freeze(['sequenceNumber']),
   sortedOfferlines: sort('model.offerlines', 'offerlineSorting'),
@@ -153,14 +152,8 @@ export default Component.extend(EKMixin, PellOptions, {
       this.model.offerlines.removeObject(offerline);
       offerline.destroyRecord();
     },
-    async downloadOfferDocument() {
-      const document = await this.documentGeneration.downloadOfferDocument(this.model);
-
-      if (!document)
-        this.set('showOfferDocumentNotFoundDialog', true);
-    },
-    confirmAlert() {
-      this.set('showOfferDocumentNotFoundDialog', false);
+    downloadOfferDocument() {
+      this.documentGeneration.downloadOfferDocument(this.model);
     }
   }
 });

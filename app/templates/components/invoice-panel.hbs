@@ -77,8 +77,4 @@
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
 
-{{#document-not-found-dialog show=showInvoiceDocumentNotFoundDialog}}
-  <p>Er is nog geen factuur aangemaakt.</p>
-{{/document-not-found-dialog}}
-
 {{invoice-document-dialog show=showInvoiceDocumentDialog model=model save=save}}

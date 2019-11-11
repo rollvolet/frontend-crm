@@ -138,21 +138,3 @@
 {{/if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
-
-{{#if showOfferDocumentNotFoundDialog}}
-  {{#paper-dialog class="flex-50" onClose=(action "confirmAlert") clickOutsideToClose=true
-       parent=".main-outlet" origin=".main-outlet"}}
-    {{#paper-toolbar}}
-      {{#paper-toolbar-tools}}<h2>Document niet gevonden</h2>{{/paper-toolbar-tools}}
-    {{/paper-toolbar}}
-
-    {{#paper-dialog-content}}
-      <p>Er is nog geen offerte aangemaakt.</p>
-    {{/paper-dialog-content}}
-
-    {{#paper-dialog-actions class="layout-row"}}
-      <span class="flex"></span>
-      {{#paper-button onClick=(action "confirmAlert")}}OK{{/paper-button}}
-    {{/paper-dialog-actions}}
-  {{/paper-dialog}}
-{{/if}}

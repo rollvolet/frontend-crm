@@ -13,7 +13,6 @@ export default Component.extend({
   order: null,
   selected: null,
   showInvoiceDocumentDialog: false,
-  showInvoiceDocumentNotFoundDialog: false,
   showUnsavedChangesDialog: false,
   isDisabledEdit: false,  // passed as argument
 
@@ -87,11 +86,8 @@ export default Component.extend({
       this.model.removeObject(invoice);
       invoice.destroyRecord();
     },
-    async downloadInvoiceDocument(invoice) {
-      const document = await this.documentGeneration.downloadInvoiceDocument(invoice);
-
-      if (!document)
-        this.set('showInvoiceDocumentNotFoundDialog', true);
+    downloadInvoiceDocument(invoice) {
+      this.documentGeneration.downloadInvoiceDocument(invoice);
     },
     closeInvoiceDocumentDialog() {
       // showInvoiceDocumentDialog is updated by the component

@@ -14,7 +14,6 @@ export default Component.extend({
   onOpenEdit: null,
   onCloseEdit: null,
   showInvoiceDocumentDialog: false,
-  showInvoiceDocumentNotFoundDialog: false,
   showUnsavedChangesDialog: false,
 
   isDisabledEdit: or('model.isMasteredByAccess', 'model.isBooked'),
@@ -96,11 +95,8 @@ export default Component.extend({
       this.rollbackTree.perform();
       this.onCloseEdit();
     },
-    async downloadInvoiceDocument() {
-      const document = await this.documentGeneration.downloadInvoiceDocument(this.model);
-
-      if (!document)
-        this.set('showInvoiceDocumentNotFoundDialog', true);
+    downloadInvoiceDocument() {
+      this.documentGeneration.downloadInvoiceDocument(this.model);
     },
     openInvoiceDocumentDialog() {
       this.set('showInvoiceDocumentDialog', true);
