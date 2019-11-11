@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { warn } from '@ember/debug';
+import { filterBy, mapBy, uniqBy, sort } from '@ember/object/computed';
 
 export default Component.extend({
   documentGeneration: service(),
@@ -10,6 +11,13 @@ export default Component.extend({
   showWorkingHoursDialog: false,
   hasCertificateUploadError: false,
   showProductionTicketNotFoundDialog: false,
+
+  employeeSort: Object.freeze(['firstName']),
+  savedWorkingHours: filterBy('model.workingHours', 'isNew', false),
+  employees: mapBy('savedWorkingHours', 'employee'),
+  uniqEmployees: uniqBy('employees', 'firstName'),
+  sortedEmployees: sort('uniqEmployees', 'employeeSort'),
+  employeeFirstNames: mapBy('sortedEmployees', 'firstName'),
 
   uploadCertificate: task(function * (file) {
     try {

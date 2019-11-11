@@ -15,7 +15,11 @@
       {{/detail-list-subitem}}
     {{/detail-list-item}}
     {{#detail-list-item label="Techniekers" click=(action "openWorkingHoursDialog") class="clickable"}}
-      {{#if model.workingHours}}{{paper-icon "info" size=18}}{{else}}- {{paper-icon "add circle" size=18}}{{/if}}
+      {{#if model.workingHours}}
+        {{join ", " employeeFirstNames}} {{paper-icon "info" size=18}}
+      {{else}}
+        - {{paper-icon "add circle" size=18}}
+      {{/if}}
     {{/detail-list-item}}
     {{#detail-list-item label="Referentie"}}
       {{model.reference}}
