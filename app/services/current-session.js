@@ -17,8 +17,6 @@ export default Service.extend({
       } else {
         this.set('employee', null);
       }
-      console.log('Initialized employee');
-      console.trace(this.employee);
     }
     return this.employee;
   }
