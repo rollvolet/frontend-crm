@@ -2,39 +2,32 @@ import Component from '@ember/component';
 import { task } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
-import getDocumentLanguageCode from '../utils/get-document-language-code';
 
 export default Component.extend({
   documentGeneration: service(),
 
   tagName: '',
 
-  language: null,
   model: null,
   save: null,
-  show: false,
+  showDialog: false,
   hasCertificateUploadError: false,
-  onClose: function() {},
 
-  async didReceiveAttrs() {
-    this._super(...arguments);
-    if (this.show) {
-      await this.setDefaultDocumentLanguage.perform();
+  generateInvoice: task(function * () {
+    if (!this.model.isCreditNote && this.model.certificateRequired) {
+      this.set('showDialog', true);
+    } else {
+      this.generateDocument.perform();
     }
-  },
+  }),
 
-  setDefaultDocumentLanguage: task(function * () {
-    const language = yield getDocumentLanguageCode({ model: this.model });
-    this.set('language', language);
-  }).keepLatest(),
-
-  generateInvoiceDocument: task(function * () {
+  generateDocument: task(function * () {
     const oldInvoiceDate = this.model.invoiceDate;
     try {
       this.model.set('invoiceDate', new Date());
       yield this.save.perform();
-      yield this.documentGeneration.invoiceDocument(this.model, this.language);
-      this._close();
+      yield this.documentGeneration.invoiceDocument(this.model);
+      this.set('showDialog', false);
     } catch(e) {
       warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
       this.model.set('invoiceDate', oldInvoiceDate);
@@ -42,7 +35,7 @@ export default Component.extend({
     }
   }),
   generateCertificate: task(function * () {
-    yield this.documentGeneration.certificate(this.model, this.language);
+    yield this.documentGeneration.certificate(this.model);
   }),
   uploadCertificate: task(function * (file) {
     try {
@@ -58,14 +51,9 @@ export default Component.extend({
     }
   }).enqueue(),
 
-  _close() {
-    this.set('show', false);
-    this.onClose();
-  },
-
   actions: {
     close() {
-      this._close();
+      this.set('showDialog', false);
     }
   }
 });

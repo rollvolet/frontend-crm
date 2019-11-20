@@ -57,10 +57,7 @@
               {{#paper-tooltip}}Voorschotfactuur bekijken{{/paper-tooltip}}
             {{/paper-button}}
             {{#unless (or isDisabledEdit invoice.isBooked)}}
-              {{#paper-button onClick=(action "openInvoiceDocumentDialog" invoice) iconButton=true}}
-                {{paper-icon "restore page"}}
-                {{#paper-tooltip}}Voorschotfactuur maken{{/paper-tooltip}}
-              {{/paper-button}}
+              {{invoice-document-dialog model=invoice save=save tooltip="Voorschotfactuur maken"}}
               {{#paper-button onClick=(action "openEdit" invoice) iconButton=true}}
                 {{paper-icon "edit mode"}}
                 {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
@@ -108,5 +105,3 @@
 {{/liquid-if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
-
-{{invoice-document-dialog show=showInvoiceDocumentDialog model=selected save=save onClose=(action "closeInvoiceDocumentDialog")}}

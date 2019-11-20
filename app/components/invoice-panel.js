@@ -13,7 +13,6 @@ export default Component.extend({
   editMode: false,
   onOpenEdit: null,
   onCloseEdit: null,
-  showInvoiceDocumentDialog: false,
   showUnsavedChangesDialog: false,
 
   isDisabledEdit: or('model.isMasteredByAccess', 'model.isBooked'),
@@ -97,9 +96,6 @@ export default Component.extend({
     },
     downloadInvoiceDocument() {
       this.documentGeneration.downloadInvoiceDocument(this.model);
-    },
-    openInvoiceDocumentDialog() {
-      this.set('showInvoiceDocumentDialog', true);
     }
   }
 });

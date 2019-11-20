@@ -27,10 +27,7 @@
         {{#paper-tooltip}}Factuur bekijken{{/paper-tooltip}}
       {{/paper-button}}
       {{#unless isDisabledEdit}}
-        {{#paper-button onClick=(action "openInvoiceDocumentDialog") iconButton=true}}
-          {{paper-icon "restore page"}}
-          {{#paper-tooltip}}Factuur maken{{/paper-tooltip}}
-        {{/paper-button}}
+        {{invoice-document-dialog model=model save=save tooltip="Factuur maken"}}
       {{/unless}}
       {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
         {{paper-icon "edit mode"}}
@@ -76,5 +73,3 @@
 {{/if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
-
-{{invoice-document-dialog show=showInvoiceDocumentDialog model=model save=save}}

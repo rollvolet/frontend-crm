@@ -2,7 +2,8 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
-import { sum, and, not, mapBy, raw } from 'ember-awesome-macros';
+import { bool } from '@ember/object/computed';
+import { sum, mapBy, raw } from 'ember-awesome-macros';
 import { warn } from '@ember/debug';
 
 export default Component.extend({
@@ -12,7 +13,6 @@ export default Component.extend({
   onCreate: null,
   order: null,
   selected: null,
-  showInvoiceDocumentDialog: false,
   showUnsavedChangesDialog: false,
   isDisabledEdit: false,  // passed as argument
 
@@ -24,7 +24,7 @@ export default Component.extend({
       return values.reduce((a, b) => a + b, 0);
     });
   }),
-  editMode: and('selected', not('showInvoiceDocumentDialog')),
+  editMode: bool('selected'),
 
   uploadCertificate: task(function * (invoice, file) {
     try {
@@ -88,14 +88,6 @@ export default Component.extend({
     },
     downloadInvoiceDocument(invoice) {
       this.documentGeneration.downloadInvoiceDocument(invoice);
-    },
-    closeInvoiceDocumentDialog() {
-      // showInvoiceDocumentDialog is updated by the component
-      this.set('selected', null);
-    },
-    openInvoiceDocumentDialog(invoice) {
-      this.set('selected', invoice);
-      this.set('showInvoiceDocumentDialog', true);
     },
     async deleteCertificate(invoice) {
       invoice.set('certificateReceived', false);

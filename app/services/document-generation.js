@@ -27,15 +27,15 @@ export default Service.extend(FileSaverMixin, {
     await this._generate(`/api/orders/${order.get('id')}/delivery-notes`);
     this._openInNewTab(`/api/files/delivery-notes/${order.get('id')}`, '_blank');
   },
-  async invoiceDocument(invoice, language) {
+  async invoiceDocument(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    await this._generate(`/api/${resource}/${invoice.get('id')}/documents?language=${language}`);
+    await this._generate(`/api/${resource}/${invoice.get('id')}/documents`);
     this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}`, '_blank');
   },
-  certificate(invoice, language) {
+  certificate(invoice) {
     const fileName = this._generatedCertificateName(invoice);
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    return this._generateAndDownload(`/api/${resource}/${invoice.id}/certificates?language=${language}`, fileName, 'application/pdf');
+    return this._generateAndDownload(`/api/${resource}/${invoice.id}/certificates`, fileName, 'application/pdf');
   },
 
 
