@@ -8,6 +8,7 @@ import { and, or, bool, not, notEmpty, raw, filterBy } from 'ember-awesome-macro
 
 export default Component.extend(EKMixin, {
   case: service(),
+  documentGeneration: service(),
   router: service(),
   store: service(),
 
@@ -85,6 +86,20 @@ export default Component.extend(EKMixin, {
     const request = yield offer.request;
     yield request.save();
   }).keepLatest(),
+  generateOrderDocument: task(function * () {
+    try {
+      yield this.documentGeneration.orderDocument(this.model);
+    } catch(e) {
+      warn(`Something went wrong while generating the order document`, { id: 'document-generation-failure' });
+    }
+  }),
+  generateDeliveryNote: task(function * () {
+    try {
+      yield this.documentGeneration.deliveryNote(this.model);
+    } catch(e) {
+      warn(`Something went wrong while generating the delivery note`, { id: 'document-generation-failure' });
+    }
+  }),
 
   // eslint-disable-next-line ember/no-on-calls-in-components
   openEditByShortcut: on(keyUp('ctrl+alt+KeyU'), function() {
@@ -106,6 +121,12 @@ export default Component.extend(EKMixin, {
     confirmCloseEdit() {
       this.rollbackTree.perform();
       this.onCloseEdit();
+    },
+    downloadOrderDocument() {
+      this.documentGeneration.downloadOrderDocument(this.model);
+    },
+    downloadDeliveryNote() {
+      this.documentGeneration.downloadDeliveryNote(this.model);
     }
   }
 });

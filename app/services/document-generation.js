@@ -19,6 +19,14 @@ export default Service.extend(FileSaverMixin, {
     await this._generate(`/api/offers/${offer.get('id')}/documents`);
     this._openInNewTab(`/api/files/offers/${offer.get('id')}`, '_blank');
   },
+  async orderDocument(order) {
+    await this._generate(`/api/orders/${order.get('id')}/documents`);
+    this._openInNewTab(`/api/files/orders/${order.get('id')}`, '_blank');
+  },
+  async deliveryNote(order) {
+    await this._generate(`/api/orders/${order.get('id')}/delivery-notes`);
+    this._openInNewTab(`/api/files/delivery-notes/${order.get('id')}`, '_blank');
+  },
   async invoiceDocument(invoice, language) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     await this._generate(`/api/${resource}/${invoice.get('id')}/documents?language=${language}`);
@@ -65,6 +73,12 @@ export default Service.extend(FileSaverMixin, {
   },
   downloadOfferDocument(offer) {
     this._openInNewTab(`/api/files/offers/${offer.get('id')}`, '_blank');
+  },
+  downloadOrderDocument(order) {
+    this._openInNewTab(`/api/files/orders/${order.get('id')}`, '_blank');
+  },
+  downloadDeliveryNote(order) {
+    this._openInNewTab(`/api/files/orders/${order.get('id')}`, '_blank');
   },
   downloadInvoiceDocument(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';

@@ -38,6 +38,10 @@ h6 .note-fade {
   color: paper-color('grey', '600');
 }
 
+.text-fade-dark {
+  color: paper-color('grey', '800');
+}
+
 .note-message {
   font-style: italic;
 }
@@ -65,6 +69,10 @@ h6 .note-fade {
 
 .u-margin-bottom-large {
   margin-bottom: 40px;
+}
+
+.u-margin-right-small {
+  margin-right: 10px;
 }
 
 .u-rel-top-xxsmall {
