@@ -50,24 +50,7 @@
     <div class="layout-row layout-align-start-center">
       {{paper-checkbox label="Productiebon" value=model.hasProductionTicket
           onChange=(queue (action (mut model.hasProductionTicket)) (perform save))}}
-      {{#if model.hasProductionTicket}}
-        {{#file-upload name="production-tickets" accept="application/pdf" class="production-ticket-upload"
-             onfileadd=(action "uploadProductionTicket") as |queue|}}
-          {{#if hasProductionTicketUploadError}}
-            {{paper-icon "error" primary=true}}
-            {{#paper-tooltip}}Bestand niet correct opgeladen{{/paper-tooltip}}
-          {{/if}}
-          {{#if queue.files.length}}
-            {{paper-progress-circular diameter=25}}
-          {{else}}
-            <i class="material-icons md-18">cloud_upload</i>
-          {{/if}}
-        {{/file-upload}}
-        <span {{action "downloadProductionTicket"}} class="production-ticket-download">
-          {{paper-icon "find in page"}}
-          {{#paper-tooltip}}Bekijken{{/paper-tooltip}}
-        </span>
-      {{/if}}
+      {{production-ticket-buttons model=model}}
     </div>
     <div class="layout-row layout-align-start-center">
       {{paper-checkbox label="Product klaar" value=model.isReady

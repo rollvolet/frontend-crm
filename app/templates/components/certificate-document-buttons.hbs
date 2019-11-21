@@ -1,5 +1,5 @@
 <div class="certificate-document-buttons layout-row layout-align-start-center">
-  {{#if uploadCertificate.isRunning}}
+  {{#if upload.isRunning}}
     {{paper-progress-circular diameter=20}}
   {{else}}
     <div class="certificate--status">
@@ -17,24 +17,24 @@
     </div>
 
     <div class="certificate--buttons">
-      {{#paper-button onClick=(perform generateCertificateTemplate) iconButton=true}}
+      {{#paper-button onClick=(perform generateTemplate) iconButton=true}}
         {{paper-icon "restore page"}}
         {{#paper-tooltip}}Maak nieuw attest{{/paper-tooltip}}
       {{/paper-button}}
 
       {{#if model.certificateReceived}}
-        {{#paper-button onClick=(action "downloadCertificate") iconButton=true}}
+        {{#paper-button onClick=(action "download") iconButton=true}}
           {{paper-icon "find in page"}}
           {{#paper-tooltip}}BTW attest bekijken{{/paper-tooltip}}
         {{/paper-button}}
-        {{#paper-button onClick=(action "deleteCertificate") iconButton=true}}
+        {{#paper-button onClick=(action "delete") iconButton=true}}
           {{paper-icon "delete"}}
           {{#paper-tooltip}}BTW attest verwijderen{{/paper-tooltip}}
         {{/paper-button}}
       {{else}}
         {{#file-upload name="certificates" accept="application/pdf" class="certificate-upload"
-             onfileadd=(perform uploadCertificate) as |queue|}}
-          {{#if hasCertificateUploadError}}
+             onfileadd=(perform upload) as |queue|}}
+          {{#if hasUploadError}}
             {{paper-icon "error" primary=true}}
             {{#paper-tooltip}}Bestand niet correct opgeladen{{/paper-tooltip}}
           {{/if}}

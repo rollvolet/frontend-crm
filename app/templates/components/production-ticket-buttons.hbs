@@ -1,0 +1,37 @@
+<div class="production-ticket-buttons layout-row layout-align-start-center">
+  {{#if (or generateTemplate.isRunning upload.isRunning)}}
+    {{paper-progress-circular diameter=20}}
+  {{else}}
+    <div class="production-ticket--buttons">
+      {{#paper-button onClick=(perform generateTemplate) iconButton=true}}
+        {{paper-icon "restore page"}}
+        {{#paper-tooltip}}Maak nieuwe productiebon{{/paper-tooltip}}
+      {{/paper-button}}
+
+      {{#if model.hasProductionTicket}}
+        {{#paper-button onClick=(action "download") iconButton=true}}
+          {{paper-icon "find in page"}}
+          {{#paper-tooltip}}Productiebon bekijken{{/paper-tooltip}}
+        {{/paper-button}}
+        {{#paper-button onClick=(action "delete") iconButton=true}}
+          {{paper-icon "delete"}}
+          {{#paper-tooltip}}Productiebon verwijderen{{/paper-tooltip}}
+        {{/paper-button}}
+      {{else}}
+        {{#file-upload name="production-tickets" accept="application/pdf" class="production-ticket-upload"
+             onfileadd=(perform upload) as |queue|}}
+          {{#if hasUploadError}}
+            {{paper-icon "error" primary=true}}
+            {{#paper-tooltip}}Bestand niet correct opgeladen{{/paper-tooltip}}
+          {{/if}}
+          {{#if queue.files.length}}
+            {{paper-progress-circular diameter=25}}
+          {{else}}
+            <i class="material-icons md-18">cloud_upload</i>
+            {{#paper-tooltip}}Productiebon opladen{{/paper-tooltip}}
+          {{/if}}
+        {{/file-upload}}
+      {{/if}}
+    </div>
+  {{/if}}
+</div>

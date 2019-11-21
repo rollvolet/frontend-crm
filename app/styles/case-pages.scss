@@ -173,7 +173,9 @@
   }
 }
 
+.production-ticket-buttons,
 .certificate-document-buttons {
+  .production-ticket-status,
   .certificate--status {
     md-icon.success {
       color: paper-color('green')
@@ -184,6 +186,7 @@
     }
   }
 
+  .production-ticket--buttons,
   .certificate--buttons {
     margin-left: 15px;
 
