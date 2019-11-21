@@ -173,6 +173,27 @@
   }
 }
 
+.certificate-document-buttons {
+  .certificate--status {
+    md-icon.success {
+      color: paper-color('green')
+    }
+
+    md-icon.error {
+      color: paper-color('red')
+    }
+  }
+
+  .certificate--buttons {
+    margin-left: 15px;
+
+    .md-button {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
 .invoice-supplements--dialog--actions {
   .save-status {
     top: 0;

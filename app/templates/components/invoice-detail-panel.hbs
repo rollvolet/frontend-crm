@@ -31,29 +31,7 @@
   <div class="case--right-panel flex-noshrink layout-column">
     {{#if model.certificateRequired}}
       {{#detail-list-item label="BTW-attest" class="layout-align-start-center"}}
-        {{paper-icon (if model.certificateRequired "check_box" "check_box_outline_blank")}} Nodig
-        {{paper-icon (if model.certificateReceived "check_box" "check_box_outline_blank")}} Ontvangen
-
-        {{#if model.certificateReceived}}
-          {{certificate-download-button invoice=model}}
-          {{#paper-button onClick=(action "deleteCertificate") iconButton=true}}
-            {{paper-icon "delete"}}
-            {{#paper-tooltip}}BTW attest verwijderen{{/paper-tooltip}}
-          {{/paper-button}}
-        {{else}}
-          {{#file-upload name="certificates" accept="application/pdf" class="certificate-upload"
-               onfileadd=(perform uploadCertificate) as |queue|}}
-            {{#if hasCertificateUploadError}}
-              {{paper-icon "error" primary=true}}
-              {{#paper-tooltip}}Bestand niet correct opgeladen{{/paper-tooltip}}
-            {{/if}}
-            {{#if queue.files.length}}
-              {{paper-progress-circular diameter=25}}
-            {{else}}
-              <i class="material-icons md-18">cloud_upload</i>
-            {{/if}}
-          {{/file-upload}}
-        {{/if}}
+        {{certificate-document-buttons model=model}}
       {{/detail-list-item}}
     {{/if}}
     {{#unless model.isIsolated}}

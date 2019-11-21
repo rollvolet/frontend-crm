@@ -26,20 +26,6 @@ export default Component.extend({
   }),
   editMode: bool('selected'),
 
-  uploadCertificate: task(function * (invoice, file) {
-    try {
-      invoice.set('hasCertificateUploadError', false);
-      yield this.documentGeneration.uploadCertificate(invoice, file);
-      invoice.set('certificateReceived', true);
-      yield invoice.save();
-    } catch (e) {
-      warn(`Error while uploading certificate: ${e.message || JSON.stringify(e)}`, { id: 'failure.upload' } );
-      file.queue.remove(file);
-      invoice.set('certificateReceived', false);
-      invoice.set('hasCertificateUploadError', true);
-    }
-  }).enqueue(),
-
   rollbackTree: task(function * () {
     const rollbackPromises = [];
 
@@ -88,10 +74,6 @@ export default Component.extend({
     },
     downloadInvoiceDocument(invoice) {
       this.documentGeneration.downloadInvoiceDocument(invoice);
-    },
-    async deleteCertificate(invoice) {
-      invoice.set('certificateReceived', false);
-      await invoice.save();
     }
   }
 

@@ -17,25 +17,25 @@ export default Service.extend(FileSaverMixin, {
   },
   async offerDocument(offer) {
     await this._generate(`/api/offers/${offer.get('id')}/documents`);
-    this._openInNewTab(`/api/files/offers/${offer.get('id')}`, '_blank');
+    this.downloadOfferDocument(offer);
   },
   async orderDocument(order) {
     await this._generate(`/api/orders/${order.get('id')}/documents`);
-    this._openInNewTab(`/api/files/orders/${order.get('id')}`, '_blank');
+    this.downloadOrderDocument(order);
   },
   async deliveryNote(order) {
     await this._generate(`/api/orders/${order.get('id')}/delivery-notes`);
-    this._openInNewTab(`/api/files/delivery-notes/${order.get('id')}`, '_blank');
+    this.downloadDeliveryNote(order);
   },
   async invoiceDocument(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     await this._generate(`/api/${resource}/${invoice.get('id')}/documents`);
-    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}`, '_blank');
+    this.downloadInvoiceDocument(invoice);
   },
-  certificate(invoice) {
-    const fileName = this._generatedCertificateName(invoice);
+  async certificateTemplate(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    return this._generateAndDownload(`/api/${resource}/${invoice.id}/certificates`, fileName, 'application/pdf');
+    await this._generate(`/api/${resource}/${invoice.get('id')}/certificates`);
+    this.downloadCertificateTemplate(invoice);
   },
 
 
@@ -66,23 +66,26 @@ export default Service.extend(FileSaverMixin, {
     const fileName = await this._productionTicketName(order);
     return this._download(`/api/orders/${order.id}/production-ticket`, fileName, 'application/pdf');
   },
-  async downloadCertificate(invoice) {
-    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    const fileName = await this._receivedCertificateName(invoice);
-    return this._download(`/api/${resource}/${invoice.id}/certificate`, fileName, 'application/pdf');
-  },
   downloadOfferDocument(offer) {
-    this._openInNewTab(`/api/files/offers/${offer.get('id')}`, '_blank');
+    this._openInNewTab(`/api/files/offers/${offer.get('id')}`);
   },
   downloadOrderDocument(order) {
-    this._openInNewTab(`/api/files/orders/${order.get('id')}`, '_blank');
+    this._openInNewTab(`/api/files/orders/${order.get('id')}`);
   },
   downloadDeliveryNote(order) {
-    this._openInNewTab(`/api/files/orders/${order.get('id')}`, '_blank');
+    this._openInNewTab(`/api/files/orders/${order.get('id')}`);
   },
   downloadInvoiceDocument(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}`, '_blank');
+    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}`);
+  },
+  downloadCertificateTemplate(invoice) {
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}/certificate-template`);
+  },
+  downloadCertificate(invoice) {
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}/certificate`);
   },
 
 
@@ -94,9 +97,6 @@ export default Service.extend(FileSaverMixin, {
   async _productionTicketName(order) {
     const customer = await order.customer;
     return `${order.offerNumber}`.replace(onlyAlphaNumeric, '') + `_${customer.name}.pdf`;
-  },
-  _generatedCertificateName(invoice) {
-    return `A0${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
   },
   async _receivedCertificateName(invoice) {
     const customer = await invoice.customer;

@@ -35,7 +35,7 @@ export default Component.extend({
     }
   }),
   generateCertificate: task(function * () {
-    yield this.documentGeneration.certificate(this.model);
+    yield this.documentGeneration.certificateTemplate(this.model);
   }),
   uploadCertificate: task(function * (file) {
     try {
