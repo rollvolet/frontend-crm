@@ -46,6 +46,19 @@ export default Component.extend({
     }
   }).keepLatest(),
 
+  generateInvoiceDocument: task(function * (invoice) {
+    const oldInvoiceDate = invoice.invoiceDate;
+    try {
+      invoice.set('invoiceDate', new Date());
+      yield invoice.save();
+      yield this.documentGeneration.invoiceDocument(invoice);
+    } catch(e) {
+      warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
+      invoice.set('invoiceDate', oldInvoiceDate);
+      yield invoice.save();
+    }
+  }),
+
   actions: {
     async createNew() {
       const invoice = await this.onCreate();

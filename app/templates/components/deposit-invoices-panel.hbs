@@ -52,27 +52,37 @@
           <td>{{fmt-currency invoice.arithmeticAmount}}</td>
           <td>{{fmt-currency (await invoice.arithmeticVat)}}</td>
           <td>
-            {{#paper-button onClick=(action "downloadInvoiceDocument" invoice) iconButton=true}}
-              {{paper-icon "find in page"}}
-              {{#paper-tooltip}}Voorschotfactuur bekijken{{/paper-tooltip}}
-            {{/paper-button}}
-            {{#unless (or isDisabledEdit invoice.isBooked)}}
-              {{invoice-document-dialog model=invoice save=save tooltip="Voorschotfactuur maken"}}
-              {{#paper-button onClick=(action "openEdit" invoice) iconButton=true}}
-                {{paper-icon "edit mode"}}
-                {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
-              {{/paper-button}}
-              {{#paper-button onClick=(action "remove" invoice) iconButton=true}}
-                {{paper-icon "delete"}}
-                {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-              {{/paper-button}}
-            {{/unless}}
-            {{#if invoice.isBooked}}
-              {{paper-icon "lock"}}
-              {{#paper-tooltip}}Geboekt in boekhouding{{/paper-tooltip}}
-            {{/if}}
+            <div class="layout-row layout-align-start-center">
+              {{#if generateInvoiceDocument.isRunning}}
+                {{paper-progress-circular diameter=18}}
+              {{else}}
+                {{#paper-button onClick=(action "downloadInvoiceDocument" invoice) iconButton=true}}
+                  {{paper-icon "find in page"}}
+                  {{#paper-tooltip}}Voorschotfactuur bekijken{{/paper-tooltip}}
+                {{/paper-button}}
+                {{#unless (or isDisabledEdit invoice.isBooked)}}
+                  {{#paper-button onClick=(perform generateInvoiceDocument invoice) iconButton=true}}
+                    {{paper-icon "restore page"}}
+                    {{#paper-tooltip}}Voorschotfactuur maken{{/paper-tooltip}}
+                  {{/paper-button}}
+                {{/unless}}
+              {{/if}}
+              {{#unless (or isDisabledEdit invoice.isBooked)}}
+                {{#paper-button onClick=(action "openEdit" invoice) iconButton=true}}
+                  {{paper-icon "edit mode"}}
+                  {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
+                {{/paper-button}}
+                {{#paper-button onClick=(action "remove" invoice) iconButton=true}}
+                  {{paper-icon "delete"}}
+                  {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+                {{/paper-button}}
+              {{/unless}}
+              {{#if invoice.isBooked}}
+                {{paper-icon "lock"}}
+                {{#paper-tooltip}}Geboekt in boekhouding{{/paper-tooltip}}
+              {{/if}}
+            </div>
             {{#if invoice.certificateRequired}}
-              <br>
               <div class="layout-row layout-align-start-center">
                 <span>BTW attest: </span>
                 {{certificate-document-buttons model=invoice}}

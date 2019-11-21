@@ -77,6 +77,19 @@ export default Component.extend({
     }
   }).keepLatest(),
 
+  generateInvoiceDocument: task(function * () {
+    const oldInvoiceDate = this.model.invoiceDate;
+    try {
+      this.model.set('invoiceDate', new Date());
+      yield this.save.perform();
+      yield this.documentGeneration.invoiceDocument(this.model);
+    } catch(e) {
+      warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
+      this.model.set('invoiceDate', oldInvoiceDate);
+      yield this.save.perform();
+    }
+  }),
+
   actions: {
     openEdit() {
       this.onOpenEdit();
