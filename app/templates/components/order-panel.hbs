@@ -69,12 +69,10 @@
             {{#if generateOrderDocument.isRunning}}
               {{paper-progress-circular diameter=18}}
             {{else}}
-              {{#unless editMode}}
-                <div {{action "downloadOrderDocument"}}>
-                  {{paper-icon "find in page"}}
-                  {{#paper-tooltip}}Bestelbon bekijken{{/paper-tooltip}}
-                </div>
-              {{/unless}}
+              <div {{action "downloadOrderDocument"}}>
+                {{paper-icon "find in page"}}
+                {{#paper-tooltip}}Bestelbon bekijken{{/paper-tooltip}}
+              </div>
               {{#unless isDisabledEdit}}
                 <div {{action (perform generateOrderDocument)}}>
                   {{paper-icon "restore page"}}
@@ -90,12 +88,10 @@
             {{#if generateDeliveryNote.isRunning}}
               {{paper-progress-circular diameter=18}}
             {{else}}
-              {{#unless editMode}}
-                <div {{action "downloadDeliveryNote"}}>
-                  {{paper-icon "find in page"}}
-                  {{#paper-tooltip}}Leveringsbon bekijken{{/paper-tooltip}}
-                </div>
-              {{/unless}}
+              <div {{action "downloadDeliveryNote"}}>
+                {{paper-icon "find in page"}}
+                {{#paper-tooltip}}Leveringsbon bekijken{{/paper-tooltip}}
+              </div>
               {{#unless isDisabledEdit}}
                 <div {{action (perform generateDeliveryNote)}}>
                   {{paper-icon "restore page"}}
