@@ -3,8 +3,6 @@ import Service, { inject } from '@ember/service';
 import FileSaverMixin from 'ember-cli-file-saver/mixins/file-saver';
 import $ from 'jquery';
 
-const onlyAlphaNumeric = /[^a-zA-Z0-9_]|_$/g;
-
 export default Service.extend(FileSaverMixin, {
   ajax: inject(),
   session: inject(),
@@ -26,6 +24,10 @@ export default Service.extend(FileSaverMixin, {
   async deliveryNote(order) {
     await this._generate(`/api/orders/${order.get('id')}/delivery-notes`);
     this.downloadDeliveryNote(order);
+  },
+  async productionTicketTemplate(order) {
+    await this._generate(`/api/orders/${order.get('id')}/production-tickets`);
+    this.downloadProductionTicketTemplate(order);
   },
   async invoiceDocument(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
@@ -62,10 +64,6 @@ export default Service.extend(FileSaverMixin, {
 
   // Document downloads
 
-  async downloadProductionTicket(order) {
-    const fileName = await this._productionTicketName(order);
-    return this._download(`/api/orders/${order.id}/production-ticket`, fileName, 'application/pdf');
-  },
   downloadOfferDocument(offer) {
     this._openInNewTab(`/api/files/offers/${offer.get('id')}`);
   },
@@ -73,7 +71,13 @@ export default Service.extend(FileSaverMixin, {
     this._openInNewTab(`/api/files/orders/${order.get('id')}`);
   },
   downloadDeliveryNote(order) {
-    this._openInNewTab(`/api/files/orders/${order.get('id')}`);
+    this._openInNewTab(`/api/files/delivery-notes/${order.get('id')}`);
+  },
+  downloadProductionTicketTemplate(order) {
+    this._openInNewTab(`/api/files/production-ticket-templates/${order.get('id')}`);
+  },
+  downloadProductionTicket(order) {
+    this._openInNewTab(`/api/files/production-tickets/${order.get('id')}`);
   },
   downloadInvoiceDocument(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
@@ -94,15 +98,6 @@ export default Service.extend(FileSaverMixin, {
   _visitReportName(request) {
     return `AD${request.id}_bezoekrapport.pdf`;
   },
-  async _productionTicketName(order) {
-    const customer = await order.customer;
-    return `${order.offerNumber}`.replace(onlyAlphaNumeric, '') + `_${customer.name}.pdf`;
-  },
-  async _receivedCertificateName(invoice) {
-    const customer = await invoice.customer;
-    return `A0${invoice.number}`.replace(onlyAlphaNumeric, '') + `_${customer.name}.pdf`;
-  },
-
 
   // Core helpers
   _generate(url,  method = 'POST') {
