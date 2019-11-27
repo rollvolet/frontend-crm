@@ -32,7 +32,7 @@ export default Component.extend({
     async delete() {
       this.model.set('hasProductionTicket', false);
       await this.model.save();
-      // TODO remove file
+      this.documentGeneration.deleteProductionTicket(this.model);
     },
     download() {
       this.documentGeneration.downloadProductionTicket(this.model);

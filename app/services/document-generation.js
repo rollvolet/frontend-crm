@@ -61,6 +61,26 @@ export default Service.extend(FileSaverMixin, {
     });
   },
 
+  // Document removal
+
+  deleteProductionTicket(order) {
+    const { access_token } = this.get('session.data.authenticated');
+    return this.ajax.delete(`/api/orders/${order.id}/production-ticket`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+  },
+
+  deleteCertificate(invoice) {
+    const { access_token } = this.get('session.data.authenticated');
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    return this.ajax.delete(`/api/${resource}/${invoice.id}/certificate`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+  },
 
   // Document downloads
 

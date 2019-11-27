@@ -32,7 +32,7 @@ export default Component.extend({
     async delete() {
       this.model.set('certificateReceived', false);
       await this.model.save();
-      // TODO remove file
+      this.documentGeneration.deleteCertificate(this.model);
     },
     download() {
       this.documentGeneration.downloadCertificate(this.model);
