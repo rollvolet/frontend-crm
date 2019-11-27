@@ -1,5 +1,5 @@
 <div class="certificate-document-buttons layout-row layout-align-start-center">
-  {{#if upload.isRunning}}
+  {{#if (or generateTemplate.isRunning upload.isRunning)}}
     {{paper-progress-circular diameter=20}}
   {{else}}
     <div class="certificate--status">
