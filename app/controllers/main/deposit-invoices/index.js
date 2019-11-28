@@ -47,6 +47,7 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
         'bCityFilter', 'bCity',
         'bStreetFilter', 'bStreet'
       ].forEach(x => this.set(x, undefined));
+      document.querySelector('.search-autofocus input').focus();
     }
   }
 
