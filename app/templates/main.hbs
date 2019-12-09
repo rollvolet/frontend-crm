@@ -38,19 +38,33 @@
     {{#paper-content}}
 
       {{#paper-list}}
-        {{#paper-link-item 'main.index'}}Home{{/paper-link-item}}
+        {{#paper-link-item 'main.index'}}
+          Home
+        {{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.customers.index' (query-params page=0)}}Klanten{{/paper-link-item}}
+        {{#paper-link-item 'main.customers.index' (query-params page=0 number=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined)}}
+          Klanten
+        {{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.requests.index' (query-params page=0)}}Aanvragen{{/paper-link-item}}
+        {{#paper-link-item 'main.requests.index' (query-params page=0 number=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutOffer=undefined)}}
+          Aanvragen
+        {{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.offers.index' (query-params page=0)}}Offertes{{/paper-link-item}}
+        {{#paper-link-item 'main.offers.index' (query-params page=0 number=undefined reference=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutOrder=undefined)}}
+          Offertes
+        {{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.orders.index' (query-params page=0)}}Bestellingen{{/paper-link-item}}
+        {{#paper-link-item 'main.orders.index' (query-params page=0 reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutInvoice=undefined)}}
+          Bestellingen
+        {{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.deposit-invoices.index' (query-params page=0)}}Voorschotfacturen{{/paper-link-item}}
+        {{#paper-link-item 'main.deposit-invoices.index' (query-params page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined)}}
+          Voorschotfacturen
+        {{/paper-link-item}}
         {{paper-divider}}
-        {{#paper-link-item 'main.invoices.index' (query-params page=0)}}Facturen{{/paper-link-item}}
+        {{#paper-link-item 'main.invoices.index' (query-params page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined)}}
+          Facturen
+        {{/paper-link-item}}
       {{/paper-list}}
 
       {{#paper-list}}

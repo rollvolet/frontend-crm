@@ -1,59 +1,22 @@
-{{ui-hooks didInsertHook=(action "resetFilters")}}
-
 <h1>Voorschotfacturen</h1>
 
 <div class="deposit-invoices-data-table">
-  <div class="data-table-filters">
-    <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
-    <div class="layout-row flex layout-align-space-between-start">
-      <div class="layout-column">
-        <div class="layout-row data-table-filter--line">
-          <div class="layout-column data-table-filter--group">
-            <div class="data-table-filters--group-title"></div>
-            <div class="layout-row data-table-filters--group-fields">
-              {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number") class="small search-autofocus"}}
-              {{paper-input label="Referentie" value=referenceFilter onChange=(action "setFilter" "reference") class="small"}}
-            </div>
-          </div>
-          <div class="layout-column data-table-filter--group">
-            <div class="data-table-filters--group-title">Klant</div>
-            <div class="layout-row data-table-filters--group-fields">
-              {{paper-input label="Naam" value=cNameFilter onChange=(action "setFilter" "cName")}}
-              {{paper-input label="Straat" value=cStreetFilter onChange=(action "setFilter" "cStreet") class="large"}}
-              {{paper-input label="Postcode" value=cPostalCodeFilter onChange=(action "setFilter" "cPostalCode") class="small"}}
-              {{paper-input label="Gemeente" value=cCityFilter onChange=(action "setFilter" "cCity")}}
-              {{paper-input label="Telefoon" value=cTelephoneFilter onChange=(action "setFilter" "cTelephone")}}
-            </div>
-          </div>
-        </div>
-        <div class="layout-row data-table-filter--line">
-          <div class="layout-column data-table-filter--group">
-            <div class="data-table-filters--group-title"></div>
-            <div class="layout-row data-table-filters--group-fields">
-              {{paper-input label="Aanvraag" value=requestNumberFilter onChange=(action "setFilter" "requestNumber") class="small"}}
-              {{paper-input label="Offerte" value=offerNumberFilter onChange=(action "setFilter" "offerNumber") class="small"}}
-            </div>
-          </div>
-          <div class="layout-column data-table-filter--group">
-            <div class="data-table-filters--group-title">Gebouw</div>
-            <div class="layout-row data-table-filters--group-fields">
-              {{paper-input label="Naam" value=bNameFilter onChange=(action "setFilter" "bName")}}
-              {{paper-input label="Straat" value=bStreetFilter onChange=(action "setFilter" "bStreet") class="large"}}
-              {{paper-input label="Postcode" value=bPostalCodeFilter onChange=(action "setFilter" "bPostalCode") class="small"}}
-              {{paper-input label="Gemeente" value=bCityFilter onChange=(action "setFilter" "bCity")}}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="data-table-filters--reset">
-        {{#paper-button iconButton=true onClick=(action "resetFilters")}}
-          {{paper-icon "close"}}
-          {{#paper-tooltip}}Wis filters{{/paper-tooltip}}
-        {{/paper-button}}
-      </div>
-    </div>
-  </div>
+  {{invoice/data-table-filter
+      number=number
+      offerNumber=offerNumber
+      reference=reference
+      requestNumber=requestNumber
+      cName=cName
+      cStreet=cStreet
+      cPostalCode=cPostalCode
+      cCity=cCity
+      cTelephone=cTelephone
+      bName=bName
+      bPostalCode=bPostalCode
+      bCity=bCity
+      bStreet=bStreet
+      onChange=(action "applyFilter")
+  }}
 
   {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
        sort=sort page=page size=size onClickRow=(action 'clickRow') as |t|}}

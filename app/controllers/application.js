@@ -8,9 +8,9 @@ export default Controller.extend({
 
   init() {
     this._super(...arguments);
-    Ember.onerror = (error) => {
-      this.handleApplicationError(error);
-    };
+    // Ember.onerror = (error) => {
+    //   this.handleApplicationError(error);
+    // };
   },
 
   handleApplicationError(error) {
