@@ -48,8 +48,8 @@
         {{/detail-icon-list-item}}
 
         {{#detail-icon-list-item icon="mail outline" label="E-mail" class="resource-details--section-contact"}}
-          <div>{{model.email}}</div>
-          <div>{{model.email2}}</div>
+          <div>{{fmt-email value=model.email}}</div>
+          <div>{{fmt-email value=model.email2}}</div>
           <div>{{model.url}}</div>
         {{/detail-icon-list-item}}
 
