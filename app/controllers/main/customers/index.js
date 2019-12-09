@@ -30,6 +30,7 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
         'streetFilter', 'street',
         'telephoneFilter', 'telephone'
       ].forEach(x => this.set(x, undefined));
+      document.querySelector('.search-autofocus input').focus();
     }
   }
 });

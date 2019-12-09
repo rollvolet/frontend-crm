@@ -10,8 +10,8 @@
 {{/detail-icon-list-item}}
 
 {{#detail-icon-list-item icon="mail outline" label="E-mail" class="resource-details--section-contact"}}
-  <div>{{model.email}}</div>
-  <div>{{model.email2}}</div>
+  <div>{{fmt-email value=model.email}}</div>
+  <div>{{fmt-email value=model.email2}}</div>
 {{/detail-icon-list-item}}
 
 {{#detail-icon-list-item icon="phone" label="Telefoon" class="resource-details--section-telephone"}}
