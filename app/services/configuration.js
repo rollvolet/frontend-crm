@@ -12,11 +12,11 @@ export default Service.extend({
       'language',
       'postal-code',
       'telephone-type',
-      'submission-type',
       'vat-rate',
       'way-of-entry',
       'employee',
-      'payment'
+      'payment',
+      'product-unit'
     ];
     yield all(entities.map(e => this.store.findAll(e)));
   }).drop(),

@@ -2,7 +2,8 @@ import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
-import { sum, and, not, mapBy, raw } from 'ember-awesome-macros';
+import { bool } from '@ember/object/computed';
+import { sum, mapBy, raw } from 'ember-awesome-macros';
 import { warn } from '@ember/debug';
 
 export default Component.extend({
@@ -12,8 +13,6 @@ export default Component.extend({
   onCreate: null,
   order: null,
   selected: null,
-  showInvoiceDocumentDialog: false,
-  showInvoiceDocumentNotFoundDialog: false,
   showUnsavedChangesDialog: false,
   isDisabledEdit: false,  // passed as argument
 
@@ -25,21 +24,7 @@ export default Component.extend({
       return values.reduce((a, b) => a + b, 0);
     });
   }),
-  editMode: and('selected', not('showInvoiceDocumentDialog')),
-
-  uploadCertificate: task(function * (invoice, file) {
-    try {
-      invoice.set('hasCertificateUploadError', false);
-      yield this.documentGeneration.uploadCertificate(invoice, file);
-      invoice.set('certificateReceived', true);
-      yield invoice.save();
-    } catch (e) {
-      warn(`Error while uploading certificate: ${e.message || JSON.stringify(e)}`, { id: 'failure.upload' } );
-      file.queue.remove(file);
-      invoice.set('certificateReceived', false);
-      invoice.set('hasCertificateUploadError', true);
-    }
-  }).enqueue(),
+  editMode: bool('selected'),
 
   rollbackTree: task(function * () {
     const rollbackPromises = [];
@@ -60,6 +45,19 @@ export default Component.extend({
       yield this.selected.save();
     }
   }).keepLatest(),
+
+  generateInvoiceDocument: task(function * (invoice) {
+    const oldInvoiceDate = invoice.invoiceDate;
+    try {
+      invoice.set('invoiceDate', new Date());
+      yield invoice.save();
+      yield this.documentGeneration.invoiceDocument(invoice);
+    } catch(e) {
+      warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
+      invoice.set('invoiceDate', oldInvoiceDate);
+      yield invoice.save();
+    }
+  }),
 
   actions: {
     async createNew() {
@@ -87,23 +85,8 @@ export default Component.extend({
       this.model.removeObject(invoice);
       invoice.destroyRecord();
     },
-    async downloadInvoiceDocument(invoice) {
-      const document = await this.documentGeneration.downloadInvoiceDocument(invoice);
-
-      if (!document)
-        this.set('showInvoiceDocumentNotFoundDialog', true);
-    },
-    closeInvoiceDocumentDialog() {
-      // showInvoiceDocumentDialog is updated by the component
-      this.set('selected', null);
-    },
-    openInvoiceDocumentDialog(invoice) {
-      this.set('selected', invoice);
-      this.set('showInvoiceDocumentDialog', true);
-    },
-    async deleteCertificate(invoice) {
-      invoice.set('certificateReceived', false);
-      await invoice.save();
+    downloadInvoiceDocument(invoice) {
+      this.documentGeneration.downloadInvoiceDocument(invoice);
     }
   }
 

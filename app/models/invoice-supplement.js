@@ -10,8 +10,8 @@ const Validations = buildValidations({
 export default DS.Model.extend(Validations, {
   sequenceNumber: DS.attr(),
   nbOfPieces: DS.attr('number'),
-  unit: DS.attr(),
   amount: DS.attr('number'),
   description: DS.attr(),
-  invoice: DS.belongsTo('invoice')
+  invoice: DS.belongsTo('invoice'),
+  unit: DS.belongsTo('product-unit')
 });

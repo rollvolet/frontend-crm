@@ -1,5 +1,22 @@
 import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+import { reads } from '@ember/object/computed';
+import { task } from 'ember-concurrency';
+import { and, isEmpty } from 'ember-awesome-macros';
 
 export default Component.extend({
-  model: null
+  session: service(),
+  ajax: service(),
+
+  model: null,
+
+  calendarEvent: reads('model.calendarEvent'),
+  isNotAvailableInCalendar: and('calendarEvent.id', isEmpty('calendarEvent.calendarSubject')),
+
+  synchronize: task(function * () {
+    const { access_token } = this.get('session.data.authenticated');
+    const headers = { 'Authorization': `Bearer ${access_token}` };
+    yield this.ajax.put(`/api/requests/${this.model.id}/calendar-event`, { headers });
+    yield this.model.belongsTo('calendarEvent').reload();
+  }).keepLatest()
 });

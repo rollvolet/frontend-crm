@@ -3,22 +3,22 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | input-field/unit-for-amount-select', function(hooks) {
+module('Integration | Component | order/data-table-filter', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function(assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`{{input-field/unit-for-amount-select}}`);
+    await render(hbs`{{order/data-table-filter}}`);
 
     assert.equal(this.element.textContent.trim(), '');
 
     // Template block usage:
     await render(hbs`
-      {{#input-field/unit-for-amount-select}}
+      {{#order/data-table-filter}}
         template block text
-      {{/input-field/unit-for-amount-select}}
+      {{/order/data-table-filter}}
     `);
 
     assert.equal(this.element.textContent.trim(), 'template block text');

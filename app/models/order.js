@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 import HasManyQuery from 'ember-data-has-many-query';
-import { bool, or } from 'ember-awesome-macros';
+import { bool } from 'ember-awesome-macros';
 import { computed } from '@ember/object';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
@@ -59,5 +59,6 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   requiredDateStr: dateString('requiredDate'),
   planningDateStr: dateString('planningDate'),
   isPlanned: bool('planningMsObjectId'),
-  isMasteredByAccess: or('planningId', 'amount')
+  isMasteredByAccess: bool('amount'),
+  isPlanningMasteredByAccess: bool('planningId')
 });

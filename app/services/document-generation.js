@@ -3,8 +3,6 @@ import Service, { inject } from '@ember/service';
 import FileSaverMixin from 'ember-cli-file-saver/mixins/file-saver';
 import $ from 'jquery';
 
-const onlyAlphaNumeric = /[^a-zA-Z0-9_]|_$/g;
-
 export default Service.extend(FileSaverMixin, {
   ajax: inject(),
   session: inject(),
@@ -13,21 +11,33 @@ export default Service.extend(FileSaverMixin, {
 
   visitReport(request) {
     const fileName = this._visitReportName(request);
-    return this._generate(`/api/requests/${request.id}/reports`, fileName, 'application/pdf');
+    return this._generateAndDownload(`/api/requests/${request.id}/reports`, fileName, 'application/pdf');
   },
-  offerDocument(offer) {
-    const fileName = this._offerDocumentName(offer);
-    return this._generate(`/api/offers/${offer.get('id')}/documents`, fileName, 'application/pdf');
+  async offerDocument(offer) {
+    await this._generate(`/api/offers/${offer.get('id')}/documents`);
+    this.downloadOfferDocument(offer);
   },
-  invoiceDocument(invoice, language) {
-    const fileName = this._invoiceDocumentName(invoice);
+  async orderDocument(order) {
+    await this._generate(`/api/orders/${order.get('id')}/documents`);
+    this.downloadOrderDocument(order);
+  },
+  async deliveryNote(order) {
+    await this._generate(`/api/orders/${order.get('id')}/delivery-notes`);
+    this.downloadDeliveryNote(order);
+  },
+  async productionTicketTemplate(order) {
+    await this._generate(`/api/orders/${order.get('id')}/production-tickets`);
+    this.downloadProductionTicketTemplate(order);
+  },
+  async invoiceDocument(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    return this._generate(`/api/${resource}/${invoice.get('id')}/documents?language=${language}`, fileName, 'application/pdf');
+    await this._generate(`/api/${resource}/${invoice.get('id')}/documents`);
+    this.downloadInvoiceDocument(invoice);
   },
-  certificate(invoice, language) {
-    const fileName = this._generatedCertificateName(invoice);
+  async certificateTemplate(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    return this._generate(`/api/${resource}/${invoice.id}/certificates?language=${language}`, fileName, 'application/pdf');
+    await this._generate(`/api/${resource}/${invoice.get('id')}/certificates`);
+    this.downloadCertificateTemplate(invoice);
   },
 
 
@@ -51,26 +61,55 @@ export default Service.extend(FileSaverMixin, {
     });
   },
 
+  // Document removal
+
+  deleteProductionTicket(order) {
+    const { access_token } = this.get('session.data.authenticated');
+    return this.ajax.delete(`/api/orders/${order.id}/production-ticket`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+  },
+
+  deleteCertificate(invoice) {
+    const { access_token } = this.get('session.data.authenticated');
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    return this.ajax.delete(`/api/${resource}/${invoice.id}/certificate`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+  },
 
   // Document downloads
 
-  async downloadProductionTicket(order) {
-    const fileName = await this._productionTicketName(order);
-    return this._download(`/api/orders/${order.id}/production-ticket`, fileName, 'application/pdf');
-  },
-  async downloadCertificate(invoice) {
-    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    const fileName = await this._receivedCertificateName(invoice);
-    return this._download(`/api/${resource}/${invoice.id}/certificate`, fileName, 'application/pdf');
-  },
   downloadOfferDocument(offer) {
-    const fileName = this._offerDocumentName(offer);
-    return this._download(`/api/offers/${offer.id}/document`, fileName, 'application/pdf');
+    this._openInNewTab(`/api/files/offers/${offer.get('id')}`);
+  },
+  downloadOrderDocument(order) {
+    this._openInNewTab(`/api/files/orders/${order.get('id')}`);
+  },
+  downloadDeliveryNote(order) {
+    this._openInNewTab(`/api/files/delivery-notes/${order.get('id')}`);
+  },
+  downloadProductionTicketTemplate(order) {
+    this._openInNewTab(`/api/files/production-ticket-templates/${order.get('id')}`);
+  },
+  downloadProductionTicket(order) {
+    this._openInNewTab(`/api/files/production-tickets/${order.get('id')}`);
   },
   downloadInvoiceDocument(invoice) {
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    const fileName = this._invoiceDocumentName(invoice);
-    return this._download(`/api/${resource}/${invoice.id}/document`, fileName, 'application/pdf');
+    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}`);
+  },
+  downloadCertificateTemplate(invoice) {
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}/certificate-template`);
+  },
+  downloadCertificate(invoice) {
+    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}/certificate`);
   },
 
 
@@ -79,29 +118,26 @@ export default Service.extend(FileSaverMixin, {
   _visitReportName(request) {
     return `AD${request.id}_bezoekrapport.pdf`;
   },
-  _offerDocumentName(offer) {
-    const number = offer.number.substr(0, 8) + '_' + offer.number.substr(9); // YY/MM/DD_nb  eg. 29/01/30_20
-    return `${number}_${offer.documentVersion || ''}`.replace(onlyAlphaNumeric, '') + '.pdf';
-  },
-  _invoiceDocumentName(invoice) {
-    return `F0${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
-  },
-  async _productionTicketName(order) {
-    const customer = await order.customer;
-    return `${order.offerNumber}`.replace(onlyAlphaNumeric, '') + `_${customer.name}.pdf`;
-  },
-  _generatedCertificateName(invoice) {
-    return `A0${invoice.number}`.replace(onlyAlphaNumeric, '') + '.pdf';
-  },
-  async _receivedCertificateName(invoice) {
-    const customer = await invoice.customer;
-    return `A0${invoice.number}`.replace(onlyAlphaNumeric, '') + `_${customer.name}.pdf`;
-  },
-
 
   // Core helpers
+  _generate(url,  method = 'POST') {
+    const { access_token } = this.get('session.data.authenticated');
+    return this.ajax.request(url, {
+      method: method,
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+  },
+  _openInNewTab(href) {
+    Object.assign(document.createElement('a'), {
+      target: '_blank',
+      href,
+    }).click();
+  },
 
-  _generate(url, fileName, contentType) {
+  // TODO replace with _generate() and _openInNewTab()
+  _generateAndDownload(url, fileName, contentType) {
     return this._download(url, fileName, contentType, 'POST');
   },
   _download(url, fileName, contentType, method = 'GET') {

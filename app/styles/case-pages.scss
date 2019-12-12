@@ -40,6 +40,22 @@
     width: 500px;
     height: 150px;
   }
+
+  &.not-found {
+    border: 2px dashed paper-color('red', '600');;
+    position: relative;
+
+    .case--request--visit--description:after,
+    .case--order--planning--description:after {
+      content: "Niet gevonden in agenda";
+      position: absolute;
+      right: -15px;
+      bottom: -15px;
+      padding: 5px;
+      background: paper-color('red', '600');
+      color: white;
+    }
+  }
 }
 
 .case--order--planning {
@@ -147,6 +163,36 @@
       &.col--rate {
         min-width: 75px;
       }
+    }
+  }
+}
+
+.case--order--orderlines {
+  .document-buttons {
+    min-width: 50px;
+  }
+}
+
+.production-ticket-buttons,
+.certificate-document-buttons {
+  .production-ticket-status,
+  .certificate--status {
+    md-icon.success {
+      color: paper-color('green')
+    }
+
+    md-icon.error {
+      color: paper-color('red')
+    }
+  }
+
+  .production-ticket--buttons,
+  .certificate--buttons {
+    margin-left: 15px;
+
+    .md-button {
+      margin: 0;
+      padding: 0;
     }
   }
 }

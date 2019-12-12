@@ -2,6 +2,7 @@ import Service, { inject as service } from '@ember/service';
 import { assert } from '@ember/debug';
 import Case from '../models/case';
 import { task } from 'ember-concurrency';
+import Evented from '@ember/object/evented';
 
 const regexMap = {
   requestId: /case\/\d+\/request\/(\d+)/i,
@@ -17,7 +18,7 @@ const calcQueryParam = function(routeUrl, key) {
   return `${key}=${matches[1]}`;
 };
 
-export default Service.extend({
+export default Service.extend(Evented, {
   current: null,
 
   router: service(),
@@ -25,9 +26,9 @@ export default Service.extend({
   store: service(),
   ajax: service(),
 
-  async init() {
+  init() {
     this._super(...arguments);
-    await this.initCase();
+    this.initCase();
   },
 
   async initCase() {
@@ -90,10 +91,13 @@ export default Service.extend({
     yield this._updateContactAndBuilding.perform(contact, building);
 
     const reloadPromises = [];
-    if (this.current.request)
+    if (this.current.request) {
       reloadPromises.push(this.current.request.belongsTo('contact').reload());
-    if (this.current.offer)
+      reloadPromises.push(this.current.request.belongsTo('calendarEvent').reload());
+    }
+    if (this.current.offer) {
       reloadPromises.push(this.current.offer.belongsTo('contact').reload());
+    }
     if (this.current.order) {
       reloadPromises.push(this.current.order.belongsTo('contact').reload());
 
@@ -102,8 +106,9 @@ export default Service.extend({
         reloadPromises.push(depositInvoice.belongsTo('contact').reload());
       });
     }
-    if (this.current.invoice)
+    if (this.current.invoice) {
       reloadPromises.push(this.current.invoice.belongsTo('contact').reload());
+    }
 
     yield Promise.all(reloadPromises);
   }),
@@ -112,10 +117,13 @@ export default Service.extend({
     yield this._updateContactAndBuilding.perform(contact, building);
 
     const reloadPromises = [];
-    if (this.current.request)
+    if (this.current.request) {
       reloadPromises.push(this.current.request.belongsTo('building').reload());
-    if (this.current.offer)
+      reloadPromises.push(this.current.request.belongsTo('calendarEvent').reload());
+    }
+    if (this.current.offer) {
       reloadPromises.push(this.current.offer.belongsTo('building').reload());
+    }
     if (this.current.order) {
       reloadPromises.push(this.current.order.belongsTo('building').reload());
 
@@ -124,11 +132,12 @@ export default Service.extend({
         reloadPromises.push(depositInvoice.belongsTo('building').reload());
       });
     }
-    if (this.current.invoice)
+    if (this.current.invoice) {
       reloadPromises.push(this.current.invoice.belongsTo('building').reload());
+    }
 
     yield Promise.all(reloadPromises);
-  }),
+  }).evented(),
 
   _updateContactAndBuilding: task(function * (contact, building) {
     const { access_token } = this.get('session.data.authenticated');

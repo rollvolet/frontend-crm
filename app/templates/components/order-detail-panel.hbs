@@ -11,6 +11,9 @@
         {{fmt-date model.requiredDate}}
       {{/detail-list-subitem}}
     {{/detail-list-item}}
+    {{#detail-list-item label="Bezoeker"}}
+      {{model.offer.request.visitor}}
+    {{/detail-list-item}}
     {{#detail-list-item label="Werkuren"}}
       {{fmt-decimal model.scheduledHours}} uur x
       <span class="{{if isNbOfPersonsWarning "warning-inline"}}">{{model.scheduledNbOfPersons}} man</span>
@@ -49,13 +52,10 @@
       {{/paper-radio-group}}
     {{/detail-list-item}}
     {{#detail-list-item label="Productiebon"}}
-      {{paper-icon (if model.hasProductionTicket "check_box" "check_box_outline_blank")}}
-      {{#if model.hasProductionTicket}}
-        <span {{action "downloadProductionTicket"}}>
-          {{paper-icon "find in page"}}
-          {{#paper-tooltip}}Bekijken{{/paper-tooltip}}
-        </span>
-      {{/if}}
+      <div class="layout-row layout-align-start-center">
+        <div>{{paper-icon (if model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
+        {{production-ticket-buttons model=model}}
+      </div>
     {{/detail-list-item}}
     {{#detail-list-item label="Product klaar"}}
       {{paper-icon (if model.isReady "check_box" "check_box_outline_blank")}}

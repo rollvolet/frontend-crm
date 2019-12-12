@@ -1,12 +1,18 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
-  model() {
+  currentSession: service(),
+
+  async model() {
     const customer = this.modelFor('main.case');
+    const employee = await this.currentSession.getCurrentEmployee();
+    const firstName = employee ? employee.firstName : null;
     const request = this.store.createRecord('request', {
       requestDate: new Date(),
       requiresVisit: false,
-      customer: customer
+      customer: customer,
+      employee: firstName
     });
 
     return request.save();

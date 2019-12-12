@@ -14,11 +14,14 @@ export default Controller.extend({
       const deposit = this.store.createRecord('deposit', {
         customer: this.customer,
         order: this.order,
-        paymentDate: new Date(),
-        amount: 0
+        paymentDate: new Date()
       });
       this.order.deposits.pushObject(deposit);
-      return deposit.save();
+      const { validations } = await deposit.validate();
+      if (validations.isValid)
+        return deposit.save();
+      else
+        return deposit;
     },
     async createNewDepositInvoice() {
       const offer = await this.order.offer;
@@ -33,7 +36,6 @@ export default Controller.extend({
       const depositInvoice = this.store.createRecord('deposit-invoice', {
         invoiceDate,
         dueDate,
-        baseAmount: 0,
         certificateRequired: vatRate.rate == 6,
         certificateReceived: false,
         certificateClosed: false,
@@ -46,8 +48,11 @@ export default Controller.extend({
       });
 
       this.model.pushObject(depositInvoice);
-      await depositInvoice.save();
-      return depositInvoice;
+      const { validations } = await depositInvoice.validate();
+      if (validations.isValid)
+        return depositInvoice.save();
+      else
+        return depositInvoice;
     }
   }
 });

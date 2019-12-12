@@ -7,6 +7,7 @@ import { not, notEmpty, or, gt, raw, uniqBy, mapBy } from 'ember-awesome-macros'
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import PellOptions from '../mixins/pell-options';
+import { sort } from '@ember/object/computed';
 
 export default Component.extend(EKMixin, PellOptions, {
   case: service(),
@@ -19,8 +20,9 @@ export default Component.extend(EKMixin, PellOptions, {
   onOpenEdit: null,
   onCloseEdit: null,
   showUnsavedChangesDialog: false,
-  showOfferDocumentNotFoundDialog: false,
 
+  offerlineSorting: Object.freeze(['sequenceNumber']),
+  sortedOfferlines: sort('model.offerlines', 'offerlineSorting'),
   hasOrder: notEmpty('model.order.id'),
   isDisabledEdit: or('model.isMasteredByAccess', 'hasOrder'),
   isEnabledDelete: not('isDisabledEdit'),
@@ -63,7 +65,6 @@ export default Component.extend(EKMixin, PellOptions, {
 
     this.model.rollbackAttributes();
     rollbackPromises.push(this.model.belongsTo('vatRate').reload());
-    rollbackPromises.push(this.model.belongsTo('submissionType').reload());
     rollbackPromises.push(this.model.belongsTo('contact').reload());
     rollbackPromises.push(this.model.belongsTo('building').reload());
 
@@ -88,6 +89,10 @@ export default Component.extend(EKMixin, PellOptions, {
       }
       yield this.model.save();
     }
+
+    // Save change of visitor
+    const request = yield this.model.request;
+    yield request.save();
   }),
   generateOfferDocument: task(function * () {
     const oldOfferDate = this.model.offerDate;
@@ -124,7 +129,8 @@ export default Component.extend(EKMixin, PellOptions, {
       this.onCloseEdit();
     },
     async addOfferline() {
-      const number = this.model.get('offerlines.length');
+      const offerlines = await this.model.offerlines;
+      const number = offerlines.length ? Math.max(...offerlines.map(o => o.sequenceNumber)) : 0;
       const vatRate = await this.model.vatRate;
       const offerline = this.store.createRecord('offerline', {
         sequenceNumber: number + 1,
@@ -136,21 +142,18 @@ export default Component.extend(EKMixin, PellOptions, {
         this.model.set('amount', 0); // make sure offer is no longer mastered by Access
         this.model.save();
       }
-      offerline.save();
+      const { validations } = await offerline.validate();
+      if (validations.isValid)
+        offerline.save();
+
       this.onOpenEdit();
     },
     deleteOfferline(offerline) {
       this.model.offerlines.removeObject(offerline);
       offerline.destroyRecord();
     },
-    async downloadOfferDocument() {
-      const document = await this.documentGeneration.downloadOfferDocument(this.model);
-
-      if (!document)
-        this.set('showOfferDocumentNotFoundDialog', true);
-    },
-    confirmAlert() {
-      this.set('showOfferDocumentNotFoundDialog', false);
+    downloadOfferDocument() {
+      this.documentGeneration.downloadOfferDocument(this.model);
     }
   }
 });

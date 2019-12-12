@@ -12,8 +12,8 @@
           class="md-input-wrapper large"}}
     </div>
     <div class="layout-row">
-      {{input-field/submission-type-select value=model.submissionType
-          onSelectionChange=(queue (action (mut model.submissionType)) (perform save))
+      {{input-field/employee-select label="Bezoeker" value=visitor isOnRoad=true isTechnician=true
+          onSelectionChange=(queue (action "setVisitor") (perform save))
           class="md-input-wrapper large"}}
     </div>
     <div class="layout-row">
@@ -22,5 +22,5 @@
           class="xxlarge"}}
     </div>
   </section>
-  {{visit-detail-panel model=model.request.calendarEvent}}
+  {{visit-detail-panel model=model.request}}
 </div>

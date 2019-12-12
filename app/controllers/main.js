@@ -6,7 +6,7 @@ export default Controller.extend({
   session: service(),
   actions: {
     openMail() {
-      window.location.href = 'mailto:support@moof-it.be';
+      window.location.href = 'mailto:erika.pauwels@redpencil.io';
     },
     logout() {
       this.session.invalidate();

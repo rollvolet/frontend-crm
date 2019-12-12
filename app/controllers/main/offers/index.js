@@ -1,25 +1,10 @@
 import Controller from '@ember/controller';
 import DefaultQueryParams from 'ember-data-table/mixins/default-query-params';
-import DebouncedSearch from '../../../mixins/debounced-search-task';
-import { oneWay } from '@ember/object/computed';
+import applyFilterParams from '../../../utils/apply-filter-params';
 
-export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
+export default Controller.extend(DefaultQueryParams, {
   size: 25,
   sort: '-number',
-
-  numberFilter: oneWay('number'),
-  referenceFilter: oneWay('reference'),
-  reqestNumberFilter: oneWay('requestNumber'),
-  cNameFilter: oneWay('cName'),
-  cPostalCodeFilter: oneWay('cPostalCode'),
-  cCityFilter: oneWay('cCity'),
-  cStreetFilter: oneWay('cStreet'),
-  cTelephoneFilter: oneWay('cTelephone'),
-  bNameFilter: oneWay('bName'),
-  bPostalCodeFilter: oneWay('bPostalCode'),
-  bCityFilter: oneWay('bCity'),
-  bStreetFilter: oneWay('bStreet'),
-  withoutOrder: false,
 
   actions: {
     clickRow(row) {
@@ -27,26 +12,8 @@ export default Controller.extend(DefaultQueryParams, DebouncedSearch, {
       const offerId = row.get('id');
       this.transitionToRoute('main.case.offer.edit', customerId, offerId);
     },
-    setFilter(key, value) {
-      this.set(`${key}Filter`, value);
-      this.debounceFilter.perform(key, value);
-    },
-    resetFilters() {
-      this.set('withoutOrder', false);
-      [
-        'numberFilter', 'number',
-        'referenceFilter', 'reference',
-        'requestNumberFilter', 'requestNumber',
-        'cNameFilter', 'cName',
-        'cPostalCodeFilter', 'cPostalCode',
-        'cCityFilter', 'cCity',
-        'cStreetFilter', 'cStreet',
-        'cTelephoneFilter', 'cTelephone',
-        'bNameFilter', 'bName',
-        'bPostalCodeFilter', 'bPostalCode',
-        'bCityFilter', 'bCity',
-        'bStreetFilter', 'bStreet'
-      ].forEach(x => this.set(x, undefined));
+    applyFilter(filter) {
+      applyFilterParams.bind(this)(filter);
     }
   }
 

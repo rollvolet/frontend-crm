@@ -1,5 +1,6 @@
 {{#if editMode}}
-  {{#customer-entity-edit-form scope='customer' model=model onClose=(action "closeEdit")}}
+  {{#customer-entity-edit-form scope='customer' model=model
+       onClose=(action "closeEdit") onRemove=(action "onRemove")}}
     <h1>Bewerk klant <span class="small-text-fade">[{{model.number}}]</span></h1>
   {{/customer-entity-edit-form}}
 {{else}}

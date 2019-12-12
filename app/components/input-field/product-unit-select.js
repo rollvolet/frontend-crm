@@ -9,11 +9,13 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    const submissionTypes = this.store.peekAll('submission-type');
-    this.set('options', submissionTypes);
+    const units = this.store.peekAll('product-unit');
+    this.set('options', units);
   },
 
-  label: 'Verzendmethode',
+  label: 'Eenheid',
   value: null,
+  errors: null,
+  required: false,
   onSelectionChange: null
 });

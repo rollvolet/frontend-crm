@@ -34,36 +34,79 @@
   {{warning-message message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."}}
 {{/if}}
 
-{{#if editMode}}
-  {{#if remove.isRunning}}
-    <div>
-      {{paper-progress-linear}}
-      <p>Aan het verwijderen...</p>
-    </div>
-  {{else if rollbackTree.isRunning}}
-    <div>
-      {{paper-progress-linear}}
-      <p>Aan het herstellen...</p>
-    </div>
-  {{else if (and (not model.id) model.isSavivg)}}
-    <div>
-      {{paper-progress-linear}}
-      <p>Aan het aanmaken...</p>
-    </div>
-  {{else}}
-    {{order-edit-form model=model save=save}}
-  {{/if}}
-{{else}}
-  {{order-detail-panel model=model}}
-{{/if}}
-
-<h2>Bestelde producten</h2>
-{{#if model.isMasteredByAccess}}
-  <p class="note-message">De bestelling is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
-{{else}}
-  <div class="offer-document layout-column">
-    <section>{{offerlines-detail-panel model=orderedOfferlines}}</section>
+{{#if remove.isRunning}}
+  <div>
+    {{paper-progress-linear}}
+    <p>Aan het verwijderen...</p>
   </div>
+{{else if rollbackTree.isRunning}}
+  <div>
+    {{paper-progress-linear}}
+    <p>Aan het herstellen...</p>
+  </div>
+{{else if (and (not model.id) model.isSavivg)}}
+  <div>
+    {{paper-progress-linear}}
+    <p>Aan het aanmaken...</p>
+  </div>
+{{else}}
+  {{#if editMode}}
+    {{order-edit-form model=model save=save}}
+  {{else}}
+    {{order-detail-panel model=model}}
+  {{/if}}
+
+  {{#if model.isMasteredByAccess}}
+    <h2>Bestelde producten</h2>
+    <p class="note-message">De bestelling is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
+  {{else}}
+    <div class="case--order--orderlines layout-row layout-align-space-between-center">
+      <h2>Bestelde producten</h2>
+      <div class="layout-column layout-align-center-end">
+        <div class="layout-row layout-align-start-center">
+          <span class="text-fade-dark u-margin-right-small">Bestelbon</span>
+          <div class="layout-row document-buttons">
+            {{#if generateOrderDocument.isRunning}}
+              {{paper-progress-circular diameter=18}}
+            {{else}}
+              <div {{action "downloadOrderDocument"}}>
+                {{paper-icon "find in page"}}
+                {{#paper-tooltip}}Bestelbon bekijken{{/paper-tooltip}}
+              </div>
+              {{#unless isDisabledEdit}}
+                <div {{action (perform generateOrderDocument)}}>
+                  {{paper-icon "restore page"}}
+                  {{#paper-tooltip}}Bestelbon maken{{/paper-tooltip}}
+                </div>
+              {{/unless}}
+            {{/if}}
+          </div>
+        </div>
+        <div class="layout-row layout-align-start-center">
+          <span class="text-fade-dark u-margin-right-small">Leveringsbon</span>
+          <div class="layout-row document-buttons">
+            {{#if generateDeliveryNote.isRunning}}
+              {{paper-progress-circular diameter=18}}
+            {{else}}
+              <div {{action "downloadDeliveryNote"}}>
+                {{paper-icon "find in page"}}
+                {{#paper-tooltip}}Leveringsbon bekijken{{/paper-tooltip}}
+              </div>
+              {{#unless isDisabledEdit}}
+                <div {{action (perform generateDeliveryNote)}}>
+                  {{paper-icon "restore page"}}
+                  {{#paper-tooltip}}Leveringsbon maken{{/paper-tooltip}}
+                </div>
+              {{/unless}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="offer-document layout-column">
+      <section>{{offerlines-detail-panel model=orderedOfferlines}}</section>
+    </div>
+  {{/if}}
 {{/if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}

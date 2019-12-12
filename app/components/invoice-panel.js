@@ -13,8 +13,6 @@ export default Component.extend({
   editMode: false,
   onOpenEdit: null,
   onCloseEdit: null,
-  showInvoiceDocumentDialog: false,
-  showInvoiceDocumentNotFoundDialog: false,
   showUnsavedChangesDialog: false,
 
   isDisabledEdit: or('model.isMasteredByAccess', 'model.isBooked'),
@@ -79,6 +77,19 @@ export default Component.extend({
     }
   }).keepLatest(),
 
+  generateInvoiceDocument: task(function * () {
+    const oldInvoiceDate = this.model.invoiceDate;
+    try {
+      this.model.set('invoiceDate', new Date());
+      yield this.save.perform();
+      yield this.documentGeneration.invoiceDocument(this.model);
+    } catch(e) {
+      warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
+      this.model.set('invoiceDate', oldInvoiceDate);
+      yield this.save.perform();
+    }
+  }),
+
   actions: {
     openEdit() {
       this.onOpenEdit();
@@ -96,14 +107,8 @@ export default Component.extend({
       this.rollbackTree.perform();
       this.onCloseEdit();
     },
-    async downloadInvoiceDocument() {
-      const document = await this.documentGeneration.downloadInvoiceDocument(this.model);
-
-      if (!document)
-        this.set('showInvoiceDocumentNotFoundDialog', true);
-    },
-    openInvoiceDocumentDialog() {
-      this.set('showInvoiceDocumentDialog', true);
+    downloadInvoiceDocument() {
+      this.documentGeneration.downloadInvoiceDocument(this.model);
     }
   }
 });

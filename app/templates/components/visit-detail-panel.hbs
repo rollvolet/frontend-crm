@@ -1,30 +1,39 @@
-{{#if (is-pending model)}}
+{{#if (is-pending calendarEvent)}}
   <div class="case--right-panel case--request--visit skeleton flex-noshrink layout-column layout-align-center-center">
     {{paper-progress-circular diameter=25}}
   </div>
-{{else if model}}
+{{else}}
   <div class="case--right-panel flex-noshrink layout-column">
-    <div class="case--request--visit">
-      <div class="layout-row layout-align-space-between-center">
-        <h3>{{paper-icon "event"}} Bezoek</h3>
-        {{#if (not model.isMasteredByAccess)}}
-          {{#paper-button iconButton=true onClick=onSync}}{{paper-icon "sync"}}{{/paper-button}}
-        {{/if}}
-      </div>
-      {{#detail-list-item label="Datum"}}
-        {{fmt-date model.visitDate}}
-      {{/detail-list-item}}
-      {{#detail-list-item label="Agenda"}}
-        {{model.calendarSubject}}
-      {{/detail-list-item}}
-      {{#if model.isMasteredByAccess}}
-        <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
+    <div class="case--request--visit {{if isNotAvailableInCalendar "not-found"}}">
+      {{#if calendarEvent}}
+        <div class="layout-row layout-align-space-between-center">
+          <h3>{{paper-icon "event"}} Bezoek</h3>
+          {{#if (not calendarEvent.isMasteredByAccess)}}
+            {{#paper-button iconButton=true onClick=(perform synchronize)}}
+              {{paper-icon "sync"}}
+              {{#paper-tooltip}}Stuur wijzigingen naar agenda{{/paper-tooltip}}
+            {{/paper-button}}
+          {{/if}}
+        </div>
+        <div class="case--request--visit--description">
+          {{#detail-list-item label="Datum"}}
+            {{fmt-date calendarEvent.visitDate}}
+          {{/detail-list-item}}
+          {{#detail-list-item label="Agenda"}}
+            {{#if isNotAvailableInCalendar}}
+              Niet gevonden
+            {{else}}
+              {{calendarEvent.calendarSubject}}
+            {{/if}}
+          {{/detail-list-item}}
+          {{#if calendarEvent.isMasteredByAccess}}
+            <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
+          {{/if}}
+        </div>
+      {{else}}
+        <h3>{{paper-icon "event"}} Geen bezoek gepland</h3>
       {{/if}}
     </div>
-  </div>
-{{else}}
-  <div class="case--right-panel case--request--visit flex-noshrink layout-column">
-    <h3>{{paper-icon "event"}} Geen bezoek gepland</h3>
   </div>
 {{/if}}
 {{yield}}

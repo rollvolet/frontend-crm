@@ -1,0 +1,15 @@
+<div class="data-table-filters">
+  <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
+  <div class="layout-row flex layout-align-space-between-center">
+    {{paper-input label="Nummer" value=numberFilter onChange=(perform debounceFilter "number") class="small"}}
+    {{paper-input label="Naam" value=nameFilter onChange=(perform debounceFilter "name") class="search-autofocus"}}
+    {{paper-input label="Straat" value=streetFilter onChange=(perform debounceFilter "street") class="large"}}
+    {{paper-input label="Postcode" value=postalCodeFilter onChange=(perform debounceFilter "postalCode") class="small"}}
+    {{paper-input label="Gemeente" value=cityFilter onChange=(perform debounceFilter "city")}}
+    {{paper-input label="Telefoon" value=telephoneFilter onChange=(perform debounceFilter "telephone")}}
+    {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+      {{paper-icon "close"}}
+      {{#paper-tooltip}}Wis filters{{/paper-tooltip}}
+    {{/paper-button}}
+  </div>
+</div>

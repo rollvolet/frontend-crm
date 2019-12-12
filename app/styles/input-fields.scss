@@ -75,6 +75,11 @@ md-input-container {
     md-autocomplete { min-width: 500px; }
   }
 
+  &.xxxxlarge {
+    width: 600px;
+    md-autocomplete { min-width: 600px; }
+  }
+
   &.no-spacer-bottom {
     md-input-container {
       margin-bottom: 0px;
@@ -126,21 +131,14 @@ input {
   padding: 0 15px;
 }
 
-.production-ticket-download {
-  margin-left: 15px;
-  margin-bottom: 20px;
-}
-
 .file-upload.production-ticket-upload,
 .file-upload.certificate-upload {
-  margin-left: 15px;
-  margin-bottom: 20px;
-
   i {
     position: relative;
-    top: 5px;
-    color: paper-color($accent);
+    color: paper-color('grey', '600');
     cursor: pointer;
+    top: 5px;
+    left: -6px;
   }
 }
 

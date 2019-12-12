@@ -46,7 +46,8 @@ export default Component.extend({
   },
 
   willDestroyElement() {
-    this.model.hasMany('telephones').reload();
+    if (!this.model.isDeleted)
+      this.model.hasMany('telephones').reload();
     this._super(...arguments);
   },
 

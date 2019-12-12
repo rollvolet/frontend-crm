@@ -52,51 +52,41 @@
           <td>{{fmt-currency invoice.arithmeticAmount}}</td>
           <td>{{fmt-currency (await invoice.arithmeticVat)}}</td>
           <td>
-            {{#paper-button onClick=(action "downloadInvoiceDocument" invoice) iconButton=true}}
-              {{paper-icon "find in page"}}
-              {{#paper-tooltip}}Voorschotfactuur bekijken{{/paper-tooltip}}
-            {{/paper-button}}
-            {{#unless (or isDisabledEdit invoice.isBooked)}}
-              {{#paper-button onClick=(action "openInvoiceDocumentDialog" invoice) iconButton=true}}
-                {{paper-icon "restore page"}}
-                {{#paper-tooltip}}Voorschotfactuur maken{{/paper-tooltip}}
-              {{/paper-button}}
-              {{#paper-button onClick=(action "openEdit" invoice) iconButton=true}}
-                {{paper-icon "edit mode"}}
-                {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
-              {{/paper-button}}
-              {{#paper-button onClick=(action "remove" invoice) iconButton=true}}
-                {{paper-icon "delete"}}
-                {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-              {{/paper-button}}
-            {{/unless}}
-            {{#if invoice.isBooked}}
-              {{paper-icon "lock"}}
-              {{#paper-tooltip}}Geboekt in boekhouding{{/paper-tooltip}}
-            {{/if}}
-            {{#if invoice.certificateRequired}}
-              <br>
-              BTW attest:
-              {{#if invoice.certificateReceived}}
-                {{certificate-download-button invoice=invoice}}
-                {{#paper-button onClick=(action "deleteCertificate" invoice) iconButton=true}}
-                  {{paper-icon "delete"}}
-                  {{#paper-tooltip}}BTW attest verwijderen{{/paper-tooltip}}
-                {{/paper-button}}
+            <div class="layout-row layout-align-start-center">
+              {{#if generateInvoiceDocument.isRunning}}
+                {{paper-progress-circular diameter=18}}
               {{else}}
-                {{#file-upload name="certificates" accept="application/pdf" class="certificate-upload"
-                     onfileadd=(perform uploadCertificate invoice) as |queue|}}
-                  {{#if invoice.hasCertificateUploadError}}
-                    {{paper-icon "error" primary=true}}
-                    {{#paper-tooltip}}Bestand niet correct opgeladen{{/paper-tooltip}}
-                  {{/if}}
-                  {{#if queue.files.length}}
-                    {{paper-progress-circular diameter=25}}
-                  {{else}}
-                    <i class="material-icons md-18">cloud_upload</i>
-                  {{/if}}
-                {{/file-upload}}
+                {{#paper-button onClick=(action "downloadInvoiceDocument" invoice) iconButton=true}}
+                  {{paper-icon "find in page"}}
+                  {{#paper-tooltip}}Voorschotfactuur bekijken{{/paper-tooltip}}
+                {{/paper-button}}
+                {{#unless (or isDisabledEdit invoice.isBooked)}}
+                  {{#paper-button onClick=(perform generateInvoiceDocument invoice) iconButton=true}}
+                    {{paper-icon "restore page"}}
+                    {{#paper-tooltip}}Voorschotfactuur maken{{/paper-tooltip}}
+                  {{/paper-button}}
+                {{/unless}}
               {{/if}}
+              {{#unless (or isDisabledEdit invoice.isBooked)}}
+                {{#paper-button onClick=(action "openEdit" invoice) iconButton=true}}
+                  {{paper-icon "edit mode"}}
+                  {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
+                {{/paper-button}}
+                {{#paper-button onClick=(action "remove" invoice) iconButton=true}}
+                  {{paper-icon "delete"}}
+                  {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
+                {{/paper-button}}
+              {{/unless}}
+              {{#if invoice.isBooked}}
+                {{paper-icon "lock"}}
+                {{#paper-tooltip}}Geboekt in boekhouding{{/paper-tooltip}}
+              {{/if}}
+            </div>
+            {{#if invoice.certificateRequired}}
+              <div class="layout-row layout-align-start-center">
+                <span>BTW attest: </span>
+                {{certificate-document-buttons model=invoice}}
+              </div>
             {{/if}}
           </td>
         </tr>
@@ -108,9 +98,3 @@
 {{/liquid-if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
-
-{{#document-not-found-dialog show=showInvoiceDocumentNotFoundDialog}}
-  <p>Er is nog geen voorschotfactuur aangemaakt.</p>
-{{/document-not-found-dialog}}
-
-{{invoice-document-dialog show=showInvoiceDocumentDialog model=selected save=save onClose=(action "closeInvoiceDocumentDialog")}}

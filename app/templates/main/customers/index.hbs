@@ -1,5 +1,3 @@
-{{ui-hooks didInsertHook=(action "resetFilters")}}
-
 <div class="layout-row layout-align-space-between-center">
   <h1>Klanten</h1>
   {{#paper-button primary=true fab=true raised=true onClick=(transition-to "main.customers.new")}}
@@ -8,21 +6,15 @@
   {{/paper-button}}
 </div>
 
-<div class="data-table-filters">
-  <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
-  <div class="layout-row flex layout-align-space-between-center">
-    {{paper-input label="Nummer" value=numberFilter onChange=(action "setFilter" "number") class="small"}}
-    {{paper-input label="Naam" value=nameFilter onChange=(action "setFilter" "name")}}
-    {{paper-input label="Straat" value=streetFilter onChange=(action "setFilter" "street") class="large"}}
-    {{paper-input label="Postcode" value=postalCodeFilter onChange=(action "setFilter" "postalCode") class="small"}}
-    {{paper-input label="Gemeente" value=cityFilter onChange=(action "setFilter" "city")}}
-    {{paper-input label="Telefoon" value=telephoneFilter onChange=(action "setFilter" "telephone")}}
-    {{#paper-button iconButton=true onClick=(action "resetFilters")}}
-      {{paper-icon "close"}}
-      {{#paper-tooltip}}Wis filters{{/paper-tooltip}}
-    {{/paper-button}}
-  </div>
-</div>
+{{customer/data-table-filter
+    number=number
+    name=name
+    street=street
+    postalCode=postalCode
+    city=city
+    telephone=telephone
+    onChange=(action "applyFilter")
+}}
 
 {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
      sort=sort page=page size=size onClickRow=(action "clickRow") as |t|}}

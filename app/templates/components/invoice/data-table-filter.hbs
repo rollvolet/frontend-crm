@@ -1,0 +1,51 @@
+<div class="data-table-filters">
+  <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
+  <div class="layout-row flex layout-align-space-between-start">
+    <div class="layout-column">
+      <div class="layout-row data-table-filter--line">
+        <div class="layout-column data-table-filter--group">
+          <div class="data-table-filters--group-title"></div>
+          <div class="layout-row data-table-filters--group-fields">
+            {{paper-input label="Nummer" value=numberFilter onChange=(perform debounceFilter "number") class="small search-autofocus"}}
+            {{paper-input label="Referentie" value=referenceFilter onChange=(perform debounceFilter "reference") class="small"}}
+          </div>
+        </div>
+        <div class="layout-column data-table-filter--group">
+          <div class="data-table-filters--group-title">Klant</div>
+          <div class="layout-row data-table-filters--group-fields">
+            {{paper-input label="Naam" value=cNameFilter onChange=(perform debounceFilter "cName")}}
+            {{paper-input label="Straat" value=cStreetFilter onChange=(perform debounceFilter "cStreet") class="large"}}
+            {{paper-input label="Postcode" value=cPostalCodeFilter onChange=(perform debounceFilter "cPostalCode") class="small"}}
+            {{paper-input label="Gemeente" value=cCityFilter onChange=(perform debounceFilter "cCity")}}
+            {{paper-input label="Telefoon" value=cTelephoneFilter onChange=(perform debounceFilter "cTelephone")}}
+          </div>
+        </div>
+      </div>
+      <div class="layout-row data-table-filter--line">
+        <div class="layout-column data-table-filter--group">
+          <div class="data-table-filters--group-title"></div>
+          <div class="layout-row data-table-filters--group-fields">
+            {{paper-input label="Aanvraag" value=requestNumberFilter onChange=(perform debounceFilter "requestNumber") class="small"}}
+            {{paper-input label="Offerte" value=offerNumberFilter onChange=(perform debounceFilter "offerNumber") class="small"}}
+          </div>
+        </div>
+        <div class="layout-column data-table-filter--group">
+          <div class="data-table-filters--group-title">Gebouw</div>
+          <div class="layout-row data-table-filters--group-fields">
+            {{paper-input label="Naam" value=bNameFilter onChange=(perform debounceFilter "bName")}}
+            {{paper-input label="Straat" value=bStreetFilter onChange=(perform debounceFilter "bStreet") class="large"}}
+            {{paper-input label="Postcode" value=bPostalCodeFilter onChange=(perform debounceFilter "bPostalCode") class="small"}}
+            {{paper-input label="Gemeente" value=bCityFilter onChange=(perform debounceFilter "bCity")}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-table-filters--reset">
+      {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+        {{paper-icon "close"}}
+        {{#paper-tooltip}}Wis filters{{/paper-tooltip}}
+      {{/paper-button}}
+    </div>
+  </div>
+</div>
