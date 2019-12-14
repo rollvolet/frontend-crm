@@ -1,9 +1,12 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
+import { or, isEmpty } from 'ember-awesome-macros';
 
 export default Component.extend({
   store: service(),
+
+  isAddOptionDisabled: or(isEmpty('newCode'), isEmpty('newCity')),
 
   init() {
     this._super(...arguments);
@@ -50,14 +53,16 @@ export default Component.extend({
       else
         this.onSelectionChange(undefined, undefined);
     },
-    addOption(code, name) {
-        const postalCode = this.store.createRecord('postal-code', {
-          code: 'L-4593',
-          name: 'Foobarbaz'.toUpperCase()
-        });
+    addOption() {
+      const postalCode = this.store.createRecord('postal-code', {
+        code: this.newCode,
+        name: this.newCity.toUpperCase()
+      });
       this.set('value', postalCode);
       this.onSelectionChange(postalCode.code, postalCode.name);
       this.set('showCreateModal', false);
+      this.set('newCode', null);
+      this.set('newCity', null);
     }
   }
 });
