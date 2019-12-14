@@ -165,6 +165,19 @@
       }
     }
   }
+
+  .case--order--offerlines-selection--total {
+    font-weight: bold;
+
+    .col--label {
+      text-align: right;
+      text-transform: uppercase;
+      margin-left: 507px;
+      padding-right: 10px;
+    }
+    .col--amount {
+    }
+  }
 }
 
 .case--order--orderlines {

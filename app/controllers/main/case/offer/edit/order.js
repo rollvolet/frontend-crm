@@ -4,13 +4,15 @@ import { task, all } from 'ember-concurrency';
 import { computed } from '@ember/object';
 import { notEmpty, filterBy, mapBy } from '@ember/object/computed';
 import { first, uniqBy, length } from 'ember-awesome-macros/array';
-import { gt, or, not, raw } from 'ember-awesome-macros';
+import { gt, or, not, raw, sum } from 'ember-awesome-macros';
 import DS from 'ember-data';
 import { debug } from '@ember/debug';
 
 export default Controller.extend({
   case: service(),
   store: service(),
+
+  showIncompatibleVatRatesDialog: false,
 
   visitorPromise: computed('model.request.visitor', function() {
     return DS.PromiseObject.create({
@@ -25,7 +27,8 @@ export default Controller.extend({
   hasMixedVatRates: gt(length(uniqBy('vatRates', raw('code'))), raw(1)),
   isDisabledCreate: or(not('hasSelectedLines'), 'hasMixedVatRates'),
   orderedVatRate: first('vatRates'),
-  showIncompatibleVatRatesDialog: false,
+  arithmeticOrderedAmounts: mapBy('orderedOfferlines', 'arithmeticAmount'),
+  orderedAmount: sum('arithmeticOrderedAmounts'),
 
   updateOfferVatRate: task(function * () {
     this.set('showIncompatibleVatRatesDialog', false);

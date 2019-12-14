@@ -1,7 +1,7 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      Selecteer producten voor bestelling {{model.requestNumber}} {{visitorPromise.initials}} - {{model.number}}
+      Selecteer producten voor bestelling AD{{model.requestNumber}} {{visitorPromise.initials}} - {{model.number}}
     </h2>
   </div>
   <div>
@@ -39,6 +39,10 @@
           <div class="col col--rate">{{offerline.vatRate.rate}}%</div>
         </div>
       {{/each}}
+      <div class="case--order--offerlines-selection--total layout-row layout-align-start-center">
+        <div class="col col--label">Totaal bestelling</div>
+        <div class="col col--amount">{{fmt-currency orderedAmount}}</div>
+      </div>
     </div>
   {{else}}
     <div class="u-margin-top-small">
