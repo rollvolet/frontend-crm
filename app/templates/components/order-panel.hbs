@@ -103,6 +103,18 @@
         </div>
       </div>
     </div>
+    <div class="layout-row layout-xs-column layout-align-space-between">
+      <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
+        {{#detail-list-item label="Totaal" displayRow=true}}
+          {{#detail-list-subitem label="Netto"}}
+            {{fmt-currency totalAmount}}
+          {{/detail-list-subitem}}
+          {{#detail-list-subitem label=(concat (get (await model.vatRate) 'rate') "% BTW")}}
+            {{fmt-currency (await totalVat)}}
+          {{/detail-list-subitem}}
+        {{/detail-list-item}}
+      </div>
+    </div>
     <div class="offer-document layout-column">
       <section>{{offerlines-detail-panel model=orderedOfferlines}}</section>
     </div>

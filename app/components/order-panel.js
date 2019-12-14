@@ -4,7 +4,8 @@ import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
-import { and, or, bool, not, notEmpty, raw, filterBy } from 'ember-awesome-macros';
+import { computed } from '@ember/object';
+import { and, or, bool, not, notEmpty, raw, filterBy, mapBy, sum } from 'ember-awesome-macros';
 
 export default Component.extend(EKMixin, {
   case: service(),
@@ -24,6 +25,14 @@ export default Component.extend(EKMixin, {
   hasDeposit: bool('model.deposits.length'),
   isDisabledEdit: or('model.isMasteredByAccess', 'hasInvoice'),
   isEnabledDelete: and(not('isDisabledEdit'), not('hasDepositInvoice'), not('hasDeposit')),
+  arithmeticAmounts: mapBy('orderedOfferlines', raw('arithmeticAmount')),
+  arithmeticVats: mapBy('orderedOfferlines', raw('arithmeticVat')),
+  totalAmount: sum('arithmeticAmounts'),
+  totalVat: computed('arithmeticVats', function() {
+    return Promise.all(this.arithmeticVats).then(values => {
+      return values.reduce((a, b) => a + b, 0);
+    });
+  }),
 
   init() {
     this._super(...arguments);
