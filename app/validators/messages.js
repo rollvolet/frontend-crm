@@ -41,6 +41,7 @@ export default Messages.extend({
   tooLong: '{description} is te lang (maximum {max} karakters)',
   tooShort: '{description} is te kort (minimum {min} karakters)',
   between: '{description} moet tussen {min} en {max} karakters bevatten',
+  uniqueVatNumber: 'Er is al een klant met dit BTW-nummer',
   url: '{description} moet een geldige URL zijn',
   wrongDateFormat: '{description} moet het formaat {format} volgen',
   wrongLength: '{description} moet exact {is} karakters bevatten'

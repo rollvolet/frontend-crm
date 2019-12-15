@@ -46,6 +46,9 @@
           }}
         {{/if}}
       </div>
+      {{#if isDuplicateVatNumber}}
+        {{duplicate-vat-number-warning customer=model}}
+      {{/if}}
     {{/if}}
     <h4>
       Geprinte naam: {{#if model.printInFront}}{{model.honorificPrefix.name}}{{/if}}

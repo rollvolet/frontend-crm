@@ -26,6 +26,7 @@ export default Component.extend({
   hasNoContactsOrBuildings: and(isEmpty('model.contacts'), isEmpty('model.buildings')),
   isEnabledDelete: and('hasNoRequestsOrInvoices', 'hasNoContactsOrBuildings'),
   isDisabledDelete: not('isEnabledDelete'),
+  isDuplicateVatNumber: equal('model.validations.attrs.vatNumber.error.type', raw('unique-vat-number')),
 
   formattedVatNumber: computed('model.vatNumber', {
     get() {
