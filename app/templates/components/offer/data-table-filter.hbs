@@ -6,7 +6,8 @@
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title"></div>
           <div class="layout-row data-table-filters--group-fields">
-            {{paper-input label="Nummer" value=numberFilter onChange=(perform debounceFilter "number") class="small"}}
+            {{paper-input label="Aanvraag" value=requestNumberFilter onChange=(perform debounceFilter "requestNumber") class="small search-autofocus"}}
+            {{paper-input label="Bezoeker" value=visitorFilter onChange=(perform debounceFilter "visitor") class="small"}}
           </div>
         </div>
         <div class="layout-column data-table-filter--group">
@@ -24,8 +25,8 @@
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title"></div>
           <div class="layout-row data-table-filters--group-fields">
-            {{paper-input label="Aanvraag" value=requestNumberFilter onChange=(perform debounceFilter "requestNumber") class="small search-autofocus"}}
-            {{paper-input label="Referentie" value=referenceFilter onChange=(perform debounceFilter "reference")}}
+            {{paper-input label="Nummer" value=numberFilter onChange=(perform debounceFilter "number") class="small"}}
+            {{paper-input label="Referentie" value=referenceFilter onChange=(perform debounceFilter "reference") class="small"}}
           </div>
         </div>
         <div class="layout-column data-table-filter--group">

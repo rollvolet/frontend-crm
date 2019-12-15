@@ -9,6 +9,7 @@ export default Route.extend(DataTableRouteMixin, {
     sort: { refreshModel: true },
     // filter params
     number: { refreshModel: true },
+    visitor: { refreshModel: true },
     withoutOffer: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
@@ -25,6 +26,7 @@ export default Route.extend(DataTableRouteMixin, {
       include: 'customer,customer.honorific-prefix,building',
       filter: {
         number: params.number,
+        visitor: params.visitor,
         offer: !params.withoutOffer,
         customer: {
           name: params.cName,

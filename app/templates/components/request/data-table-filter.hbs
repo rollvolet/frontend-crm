@@ -20,7 +20,13 @@
           </div>
         </div>
       </div>
-      <div class="layout-row data-table-filter--line layout-align-end">
+      <div class="layout-row data-table-filter--line">
+        <div class="layout-column data-table-filter--group">
+          <div class="data-table-filters--group-title"></div>
+          <div class="layout-row data-table-filters--group-fields">
+            {{paper-input label="Bezoeker" value=visitorFilter onChange=(perform debounceFilter "visitor") class="small"}}
+          </div>
+        </div>
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title">Gebouw</div>
           <div class="layout-row data-table-filters--group-fields">
