@@ -64,19 +64,19 @@
       <h2>Bestelde producten</h2>
       <div class="layout-column layout-align-center-end">
         <div class="layout-row layout-align-start-center">
-          <span class="text-fade-dark u-margin-right-small">Bestelbon</span>
+          <span class="text-fade-dark u-margin-right-small">Orderbevestiging</span>
           <div class="layout-row document-buttons">
             {{#if generateOrderDocument.isRunning}}
               {{paper-progress-circular diameter=18}}
             {{else}}
               <div {{action "downloadOrderDocument"}}>
                 {{paper-icon "find in page"}}
-                {{#paper-tooltip}}Bestelbon bekijken{{/paper-tooltip}}
+                {{#paper-tooltip}}Orderbevestiging bekijken{{/paper-tooltip}}
               </div>
               {{#unless isDisabledEdit}}
                 <div {{action (perform generateOrderDocument)}}>
                   {{paper-icon "restore page"}}
-                  {{#paper-tooltip}}Bestelbon maken{{/paper-tooltip}}
+                  {{#paper-tooltip}}Orderbevestiging maken{{/paper-tooltip}}
                 </div>
               {{/unless}}
             {{/if}}
