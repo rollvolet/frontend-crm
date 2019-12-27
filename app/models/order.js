@@ -22,6 +22,7 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   amount: DS.attr(),
   offerNumber: DS.attr(),
   requestNumber: DS.attr(),
+  reference: DS.attr(),
   depositRequired: DS.attr('boolean'),
   hasProductionTicket: DS.attr('boolean'),
   mustBeInstalled: DS.attr('boolean'),

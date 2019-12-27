@@ -52,24 +52,24 @@ export default Component.extend({
 
     const { validations } = yield this.model.validate();
     if (validations.isValid) {
-      if (this.model.changedAttributes().comment) {
+      const changedAttributes = this.model.changedAttributes();
+
+      if (changedAttributes.reference) {
+        const order = yield this.model.order;
+        if (order) {
+          debug('Syncing reference of offer/order with updated reference of invoice');
+          order.set('reference', this.model.reference);
+          yield order.save();
+          yield order.belongsTo('offer').reload();
+        }
+      }
+
+      if (changedAttributes.comment) {
         const order = yield this.model.order;
         if (order) {
           debug('Syncing comment of order with updated comment of invoice');
           order.set('comment', this.model.comment);
           yield order.save();
-        }
-      }
-
-      if (this.model.changedAttributes().reference) {
-        const order = yield this.model.order;
-        if (order) {
-          const offer = yield order.offer;
-          if (offer) {
-            debug('Syncing reference of offer with updated reference of invoice');
-            offer.set('reference', this.model.reference);
-            yield offer.save();
-          }
         }
       }
 

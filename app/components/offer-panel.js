@@ -76,7 +76,8 @@ export default Component.extend(EKMixin, PellOptions, {
 
     const { validations } = yield this.model.validate();
     if (validations.isValid) {
-      if (this.model.changedAttributes().reference) {
+      const changedAttributes = this.model.changedAttributes();
+      if (changedAttributes.reference) {
         const order = yield this.model.order;
         if (order) {
           const invoice = yield order.invoice;
@@ -88,6 +89,9 @@ export default Component.extend(EKMixin, PellOptions, {
         }
       }
       yield this.model.save();
+
+      if (changedAttributes.reference)
+        yield this.model.belongsTo('order').reload();
     }
 
     // Save change of visitor

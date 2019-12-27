@@ -19,6 +19,11 @@
           onSelectionChange=(queue (action "setVisitor") (perform save))
           class="md-input-wrapper large"}}
     </div>
+    <div class="layout-row">
+      {{paper-input label="Referentie klant" value=model.reference
+          onChange=(action (mut model.reference)) onBlur=(perform save)
+          class="large"}}
+    </div>
     <div class="u-bold">Geplande uren</div>
     <div class="layout-row layout-align-start-end">
       {{paper-input label="Werkuren" value=scheduledHoursInput

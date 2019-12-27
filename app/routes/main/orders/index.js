@@ -29,9 +29,9 @@ export default Route.extend(DataTableRouteMixin, {
       filter: {
         'request-number': params.requestNumber,
         'offer-number': params.offerNumber,
+        reference: params.reference,
         invoice: !params.withoutInvoice,
         offer: {
-          reference: params.reference,
           request: {
             visitor: params.visitor,
           }

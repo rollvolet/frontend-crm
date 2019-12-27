@@ -30,9 +30,7 @@ export default Component.extend(DebouncedSearch, {
       filter: {
         'request-number': this.getFilterValue('requestNumber'),
         'offer-number': this.getFilterValue('offerNumber'),
-        offer: {
-          reference: this.getFilterValue('reference')
-        },
+        reference: this.getFilterValue('reference'),
         building: {
           name: this.getFilterValue('name'),
           'postal-code': this.getFilterValue('postalCode'),

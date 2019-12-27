@@ -79,7 +79,8 @@ export default Component.extend(EKMixin, {
 
     const { validations } = yield this.model.validate();
     if (validations.isValid) {
-      if (this.model.changedAttributes().comment) {
+      const changedAttributes = this.model.changedAttributes();
+      if (changedAttributes.comment) {
         const invoice = yield this.model.invoice;
         if (invoice) {
           debug('Syncing comment of invoice with updated comment of order');
@@ -87,7 +88,19 @@ export default Component.extend(EKMixin, {
           yield invoice.save();
         }
       }
+      if (changedAttributes.reference) {
+        const invoice = yield this.model.invoice;
+        if (invoice) {
+          debug('Syncing reference of invoice with updated reference of order');
+          invoice.set('reference', this.model.reference);
+          yield invoice.save();
+        }
+      }
+
       yield this.model.save();
+
+      if (changedAttributes.reference)
+        yield this.model.belongsTo('offer').reload();
     }
 
     // Save change of visitor

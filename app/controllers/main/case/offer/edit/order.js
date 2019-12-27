@@ -60,6 +60,7 @@ export default Controller.extend({
         orderDate: new Date(),
         requestNumber: this.model.requestNumber,
         offerNumber: this.model.number,
+        reference: this.model.reference,
         scheduledHours: 0,
         scheduledNbOfPersons: 2,
         depositRequired: true,
