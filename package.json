@@ -57,7 +57,7 @@
     "ember-math-helpers": "^2.11.3",
     "ember-maybe-import-regenerator": "^0.1.6",
     "ember-moment": "^8.0.0",
-    "ember-paper": "^1.0.0-beta.26",
+    "ember-paper": "https://github.com/miguelcobain/ember-paper.git#8fed29fd85066164c45d2ebdc450cf850c04f7de",
     "ember-paper-data-table": "^0.2.4",
     "ember-paper-link": "0.0.6",
     "ember-pell": "^1.4.5",
