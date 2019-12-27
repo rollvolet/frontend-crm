@@ -14,6 +14,7 @@ export default Component.extend({
   onOpenEdit: null,
   onCloseEdit: null,
   showUnsavedChangesDialog: false,
+  showMissingCertificateDialog: false,
 
   isDisabledEdit: or('model.isMasteredByAccess', 'model.isBooked'),
   isEnabledDelete: not('isDisabledEdit'),
@@ -78,15 +79,20 @@ export default Component.extend({
   }).keepLatest(),
 
   generateInvoiceDocument: task(function * () {
-    const oldInvoiceDate = this.model.invoiceDate;
-    try {
-      this.model.set('invoiceDate', new Date());
-      yield this.save.perform();
-      yield this.documentGeneration.invoiceDocument(this.model);
-    } catch(e) {
-      warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
-      this.model.set('invoiceDate', oldInvoiceDate);
-      yield this.save.perform();
+    if (!this.showMissingCertificateDialog && this.model.certificateRequired && !this.model.certificateReceived) {
+      this.set('showMissingCertificateDialog', true);
+    } else {
+      this.set('showMissingCertificateDialog', false);
+      const oldInvoiceDate = this.model.invoiceDate;
+      try {
+        this.model.set('invoiceDate', new Date());
+        yield this.save.perform();
+        yield this.documentGeneration.invoiceDocument(this.model);
+      } catch(e) {
+        warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
+        this.model.set('invoiceDate', oldInvoiceDate);
+        yield this.save.perform();
+      }
     }
   }),
 

@@ -8,6 +8,7 @@ export default Component.extend({
 
   documentGeneration: service(),
 
+  iconButton: true,
   hasUploadError: false,
 
   generateTemplate: task(function * () {

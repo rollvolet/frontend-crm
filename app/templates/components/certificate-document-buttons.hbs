@@ -11,25 +11,37 @@
       {{else}}
         <span>
           {{paper-icon class="error" icon="error outline" size=28}}
-          {{#paper-tooltip}}BTW attest ontbreekt{{/paper-tooltip}}
+          {{#paper-tooltip}}BTW-attest ontbreekt{{/paper-tooltip}}
         </span>
       {{/if}}
     </div>
 
     <div class="certificate--buttons">
-      {{#paper-button onClick=(perform generateTemplate) iconButton=true}}
-        {{paper-icon "restore page"}}
-        {{#paper-tooltip}}Maak nieuw attest{{/paper-tooltip}}
+      {{#paper-button onClick=(perform generateTemplate) iconButton=iconButton raised=(not iconButton) primary=(not iconButton)}}
+        {{#if iconButton}}
+          {{paper-icon "restore page"}}
+          {{#paper-tooltip}}Maak nieuw attest{{/paper-tooltip}}
+        {{else}}
+          Maak nieuw attest
+        {{/if}}
       {{/paper-button}}
 
       {{#if model.certificateReceived}}
-        {{#paper-button onClick=(action "download") iconButton=true}}
-          {{paper-icon "find in page"}}
-          {{#paper-tooltip}}BTW attest bekijken{{/paper-tooltip}}
+        {{#paper-button onClick=(action "download") iconButton=iconButton raised=(not iconButton) primary=(not iconButton)}}
+          {{#if iconButton}}
+            {{paper-icon "find in page"}}
+            {{#paper-tooltip}}BTW-attest bekijken{{/paper-tooltip}}
+          {{else}}
+            BTW-attest bekijken
+          {{/if}}
         {{/paper-button}}
-        {{#paper-button onClick=(action "delete") iconButton=true}}
-          {{paper-icon "delete"}}
-          {{#paper-tooltip}}BTW attest verwijderen{{/paper-tooltip}}
+        {{#paper-button onClick=(action "delete") iconButton=iconButton raised=(not iconButton) primary=(not iconButton)}}
+          {{#if iconButton}}
+            {{paper-icon "delete"}}
+            {{#paper-tooltip}}BTW-attest verwijderen{{/paper-tooltip}}
+          {{else}}
+            BTW-attest verwijderen
+          {{/if}}
         {{/paper-button}}
       {{else}}
         {{#file-upload name="certificates" accept="application/pdf" class="certificate-upload"
@@ -41,8 +53,14 @@
           {{#if queue.files.length}}
             {{paper-progress-circular diameter=25}}
           {{else}}
-            <i class="material-icons md-18">cloud_upload</i>
-            {{#paper-tooltip}}BTW attest opladen{{/paper-tooltip}}
+            {{#if iconButton}}
+              <i class="material-icons md-18">cloud_upload</i>
+              {{#paper-tooltip}}BTW-attest opladen{{/paper-tooltip}}
+            {{else}}
+              <span class="md-default-theme md-button md-primary md-raised">
+                BTW-attest opladen
+              </span>
+            {{/if}}
           {{/if}}
         {{/file-upload}}
       {{/if}}

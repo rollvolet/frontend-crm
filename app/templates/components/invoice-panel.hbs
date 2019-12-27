@@ -80,3 +80,4 @@
 {{/if}}
 
 {{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
+{{missing-certificate-dialog show=showMissingCertificateDialog model=model onClose=(perform generateInvoiceDocument)}}
