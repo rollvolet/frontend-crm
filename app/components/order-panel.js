@@ -5,7 +5,7 @@ import { debug, warn } from '@ember/debug';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import { computed } from '@ember/object';
-import { and, or, bool, not, notEmpty, raw, filterBy, mapBy, sum } from 'ember-awesome-macros';
+import { and, or, bool, not, notEmpty, raw, sum, array } from 'ember-awesome-macros';
 
 export default Component.extend(EKMixin, {
   case: service(),
@@ -19,14 +19,14 @@ export default Component.extend(EKMixin, {
   onCloseEdit: null,
   showUnsavedChangesDialog: false,
 
-  orderedOfferlines: filterBy('model.offer.offerlines.@each.isOrdered', raw('isOrdered')),
+  orderedOfferlines: array.filterBy('model.offer.offerlines.@each.isOrdered', raw('isOrdered')),
   hasInvoice: notEmpty('model.invoice.id'),
   hasDepositInvoice: bool('model.depositInvoices.length'),
   hasDeposit: bool('model.deposits.length'),
   isDisabledEdit: or('model.isMasteredByAccess', 'hasInvoice'),
   isEnabledDelete: and(not('isDisabledEdit'), not('hasDepositInvoice'), not('hasDeposit')),
-  arithmeticAmounts: mapBy('orderedOfferlines', raw('arithmeticAmount')),
-  arithmeticVats: mapBy('orderedOfferlines', raw('arithmeticVat')),
+  arithmeticAmounts: array.mapBy('orderedOfferlines', raw('arithmeticAmount')),
+  arithmeticVats: array.mapBy('orderedOfferlines', raw('arithmeticVat')),
   totalAmount: sum('arithmeticAmounts'),
   totalVat: computed('arithmeticVats', function() {
     return Promise.all(this.arithmeticVats).then(values => {

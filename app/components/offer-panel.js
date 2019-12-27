@@ -3,7 +3,7 @@ import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { length } from 'ember-awesome-macros/array';
-import { not, notEmpty, or, gt, raw, uniqBy, mapBy } from 'ember-awesome-macros';
+import { not, notEmpty, or, gt, raw, array } from 'ember-awesome-macros';
 import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import PellOptions from '../mixins/pell-options';
@@ -26,8 +26,8 @@ export default Component.extend(EKMixin, PellOptions, {
   hasOrder: notEmpty('model.order.id'),
   isDisabledEdit: or('model.isMasteredByAccess', 'hasOrder'),
   isEnabledDelete: not('isDisabledEdit'),
-  vatRates: mapBy('model.offerlines', raw('vatRate')),
-  hasMixedVatRates: gt(length(uniqBy('vatRates', raw('code'))), raw(1)),
+  vatRates: array.mapBy('model.offerlines', raw('vatRate')),
+  hasMixedVatRates: gt(length(array.uniqBy('vatRates', raw('code'))), raw(1)),
   hasUnsavedChanges: async function() {
     const offerlines = await this.model.offerlines;
     const offerlineWithUnsavedChanges = offerlines.find(o => o.isNew || o.validations.isInvalid || o.isError);

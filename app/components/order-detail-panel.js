@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { neq, sum, mapBy, raw } from 'ember-awesome-macros';
+import { neq, sum, array, raw } from 'ember-awesome-macros';
 import { inject as service } from '@ember/service';
 
 export default Component.extend({
@@ -7,8 +7,8 @@ export default Component.extend({
 
   model: null,
 
-  depositsAmount: sum(mapBy('model.deposits', raw('amount'))),
-  depositInvoicesAmount: sum(mapBy('model.depositInvoices', raw('arithmeticAmount'))),
+  depositsAmount: sum(array.mapBy('model.deposits', raw('amount'))),
+  depositInvoicesAmount: sum(array.mapBy('model.depositInvoices', raw('arithmeticAmount'))),
   isNbOfPersonsWarning: neq('model.scheduledNbOfPersons', raw(2)),
 
   actions: {
