@@ -16,6 +16,7 @@ export default DS.Model.extend(Validations, {
   offerDate: DS.attr('date-midnight'),
   amount: DS.attr(),
   reference: DS.attr(),
+  comment: DS.attr(),
   documentIntro: DS.attr(),
   documentOutro: DS.attr(),
   documentVersion: DS.attr(),

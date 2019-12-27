@@ -21,6 +21,11 @@
           onChange=(action (mut model.reference)) onBlur=(perform save)
           class="xxlarge"}}
     </div>
+    <div class="layout-row">
+      {{paper-input label="Opmerking" value=model.comment
+          onChange=(action (mut model.comment)) onBlur=(perform save)
+          textarea=true passThru=(hash rows=3) class="xxlarge"}}
+    </div>
   </section>
   {{visit-detail-panel model=model.request}}
 </div>

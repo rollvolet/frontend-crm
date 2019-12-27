@@ -75,22 +75,27 @@ export default Component.extend(EKMixin, PellOptions, {
     if (forceSuccess) return;
 
     const { validations } = yield this.model.validate();
+    let requiresOrderReload = false;
     if (validations.isValid) {
       const changedAttributes = this.model.changedAttributes();
-      if (changedAttributes.reference) {
-        const order = yield this.model.order;
-        if (order) {
-          const invoice = yield order.invoice;
-          if (invoice) {
-            debug('Syncing reference of invoice with updated reference of offer');
-            invoice.set('reference', this.model.reference);
-            yield invoice.save();
+      const fieldsToSyncWithInvoice = ['reference', 'comment'];
+      for (let field of fieldsToSyncWithInvoice) {
+        if (changedAttributes[field]) {
+          const order = yield this.model.order;
+          if (order) {
+            const invoice = yield order.invoice;
+            if (invoice) {
+              debug(`Syncing ${field} of invoice with updated ${field} of offer`);
+              invoice.set(field, this.model.get(field));
+              yield invoice.save();
+            }
           }
+          requiresOrderReload = true;
         }
       }
       yield this.model.save();
 
-      if (changedAttributes.reference)
+      if (requiresOrderReload)
         yield this.model.belongsTo('order').reload();
     }
 

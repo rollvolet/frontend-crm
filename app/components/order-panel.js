@@ -78,28 +78,25 @@ export default Component.extend(EKMixin, {
     if (forceSuccess) return;
 
     const { validations } = yield this.model.validate();
+    let requiresOfferReload = false;
     if (validations.isValid) {
       const changedAttributes = this.model.changedAttributes();
-      if (changedAttributes.comment) {
-        const invoice = yield this.model.invoice;
-        if (invoice) {
-          debug('Syncing comment of invoice with updated comment of order');
-          invoice.set('comment', this.model.comment);
-          yield invoice.save();
-        }
-      }
-      if (changedAttributes.reference) {
-        const invoice = yield this.model.invoice;
-        if (invoice) {
-          debug('Syncing reference of invoice with updated reference of order');
-          invoice.set('reference', this.model.reference);
-          yield invoice.save();
+      const fieldsToSyncWithInvoice = ['reference', 'comment'];
+      for (let field of fieldsToSyncWithInvoice) {
+        if (changedAttributes[field]) {
+          const invoice = yield this.model.invoice;
+          if (invoice) {
+            debug(`Syncing ${field} of invoice with updated ${field} of order`);
+            invoice.set(field, this.model.get(field));
+            yield invoice.save();
+          }
+          requiresOfferReload = true;
         }
       }
 
       yield this.model.save();
 
-      if (changedAttributes.reference)
+      if (requiresOfferReload)
         yield this.model.belongsTo('offer').reload();
     }
 

@@ -61,6 +61,7 @@ export default Controller.extend({
         requestNumber: this.model.requestNumber,
         offerNumber: this.model.number,
         reference: this.model.reference,
+        comment: this.model.comment,
         scheduledHours: 0,
         scheduledNbOfPersons: 2,
         depositRequired: true,
