@@ -48,6 +48,11 @@
     {{#detail-list-item label="Creditnota"}}
       {{paper-icon (if model.isCreditNote "check_box" "check_box_outline_blank")}}
     {{/detail-list-item}}
+    {{#unless model.isCreditNote}}
+      {{#detail-list-item label="Betaalref."}}
+        {{format-bank-reference model.bankReference}}
+      {{/detail-list-item}}
+    {{/unless}}
   </div>
 </div>
 

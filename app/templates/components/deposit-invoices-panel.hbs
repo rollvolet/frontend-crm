@@ -88,6 +88,9 @@
                 {{certificate-document-buttons model=invoice}}
               </div>
             {{/if}}
+            <div class="layout-row layout-align-start-center">
+              {{format-bank-reference invoice.bankReference}}
+            </div>
           </td>
         </tr>
     {{else}}

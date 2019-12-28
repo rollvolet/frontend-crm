@@ -1,6 +1,7 @@
 import DS from 'ember-data';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
+import { computed } from '@ember/object';
 import { and, bool, not, or, isEmpty, notEmpty } from 'ember-awesome-macros';
 
 const Validations = buildValidations({
@@ -52,5 +53,9 @@ export default DS.Model.extend(Validations, {
   isMasteredByAccess: or(
     and(not('isIsolated'), 'order.isMasteredByAccess'),
     and('isIsolated', bool('baseAmount'))
-  )
+  ),
+  bankReference: computed('number', function() {
+    const modulo = this.number % 97;
+    return `${this.number}${modulo}`.padStart(12, '0');
+  })
 });
