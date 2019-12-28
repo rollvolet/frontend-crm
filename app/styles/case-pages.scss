@@ -74,7 +74,6 @@
   margin: 0 25px;
 }
 
-.case--deposit-invoices-table,
 .case--deposits-table,
 .case--deposits-form {
   margin-top: 25px;
@@ -220,4 +219,12 @@
     margin-right: 10px;
     margin-bottom: 15px;
   }
+}
+
+.case--deposit-invoices--summary {
+  margin-bottom: 10px;
+}
+
+.case--deposit-invoices--detail-panel {
+  padding-bottom: 10px;
 }
