@@ -75,7 +75,7 @@
     "loader.js": "^4.7.0",
     "qunit-dom": "^0.9.0",
     "sass": "^1.22.9",
-    "torii": "^0.10.1",
+    "torii": "https://github.com/jmonster/torii.git#bbbd0ba317da193039193e47295224d2290b8443",
     "torii-azure-ad2-provider": "^1.0.5"
   },
   "engines": {
