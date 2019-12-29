@@ -1,21 +1,21 @@
-<td onclick={{perform remove}}>
+<td onclick={{perform this.remove}}>
   {{paper-icon "delete"}}
 </td>
 <td>
-  <InputField::TelephoneTypeSelect @value={{model.telephoneType}} @onSelectionChange={{queue (action (mut model.telephoneType)) (perform save)}} @errors={{v-get model "telephoneType" "messages"}} @class="md-input-wrapper small" />
+  <InputField::TelephoneTypeSelect @value={{this.model.telephoneType}} @onSelectionChange={{queue (action (mut this.model.telephoneType)) (perform this.save)}} @errors={{v-get this.model "telephoneType" "messages"}} @class="md-input-wrapper small" />
 </td>
 <td>
-  <InputField::TelephonePrefixSelect @value={{model.country}} @onSelectionChange={{queue (action (mut model.country)) (perform save)}} @errors={{v-get model "country" "messages"}} @class="md-input-wrapper small" />
+  <InputField::TelephonePrefixSelect @value={{this.model.country}} @onSelectionChange={{queue (action (mut this.model.country)) (perform this.save)}} @errors={{v-get this.model "country" "messages"}} @class="md-input-wrapper small" />
 </td>
 <td>
-  <PaperInput @value={{model.area}} @onChange={{action "setArea"}} @onBlur={{perform save}} @errors={{v-get model "area" "messages"}} @required="style" @class="xsmall" />
+  <PaperInput @value={{this.model.area}} @onChange={{action "setArea"}} @onBlur={{perform this.save}} @errors={{v-get this.model "area" "messages"}} @required="style" @class="xsmall" />
 </td>
 <td>
-  <PaperInput @value={{formattedNumber}} @onChange={{action "setNumber"}} @onBlur={{perform save}} @errors={{union (v-get model "number" "messages") errorMessages}} @required="style" @class="small" />
+  <PaperInput @value={{this.formattedNumber}} @onChange={{action "setNumber"}} @onBlur={{perform this.save}} @errors={{union (v-get this.model "number" "messages") this.errorMessages}} @required="style" @class="small" />
 </td>
 <td>
-  <PaperInput @value={{model.memo}} @onChange={{action (mut model.memo)}} @onBlur={{perform save}} @class="large" />
+  <PaperInput @value={{this.model.memo}} @onChange={{action (mut this.model.memo)}} @onBlur={{perform this.save}} @class="large" />
 </td>
 <td>
-  <SaveStatusIcon @model={{model}} @task={{save}} />
+  <SaveStatusIcon @model={{model}} @task={{this.save}} />
 </td>

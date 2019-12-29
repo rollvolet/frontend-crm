@@ -1,45 +1,45 @@
-{{#if model.requestId}}
+{{#if this.model.requestId}}
   <div class="layout-row case--tabs">
-    <div class="case--tabs--number">AD {{model.requestId}} {{visitor.initials}}</div>
+    <div class="case--tabs--number">AD {{this.model.requestId}} {{this.visitor.initials}}</div>
     <div class="flex"></div>
   </div>
 {{/if}}
 
-<PaperTabs @selected={{currentRouteName}} @borderBottom={{true}} as |tabs|>
-  {{#if model.requestId}}
-    <tabs.tab @value="main.case.request.edit.index" @href={{href-to "main.case.request.edit.index" model.customerId model.requestId (query-params editMode=false)}}>
+<PaperTabs @selected={{this.currentRouteName}} @borderBottom={{true}} as |tabs|>
+  {{#if this.model.requestId}}
+    <tabs.tab @value="main.case.request.edit.index" @href={{href-to "main.case.request.edit.index" this.model.customerId this.model.requestId (query-params editMode=false)}}>
       Aanvraag
     </tabs.tab>
   {{/if}}
-  {{#if model.offerId}}
-    <tabs.tab @value="main.case.offer.edit.index" @href={{href-to "main.case.offer.edit.index" model.customerId model.offerId (query-params editMode=false)}}>
+  {{#if this.model.offerId}}
+    <tabs.tab @value="main.case.offer.edit.index" @href={{href-to "main.case.offer.edit.index" this.model.customerId this.model.offerId (query-params editMode=false)}}>
       Offerte
     </tabs.tab>
   {{/if}}
-  {{#if model.orderId}}
-    <tabs.tab @value="main.case.order.edit.index" @href={{href-to "main.case.order.edit.index" model.customerId model.orderId (query-params editMode=false)}}>
+  {{#if this.model.orderId}}
+    <tabs.tab @value="main.case.order.edit.index" @href={{href-to "main.case.order.edit.index" this.model.customerId this.model.orderId (query-params editMode=false)}}>
       Bestelling
     </tabs.tab>
-    <tabs.tab @value="main.case.order.edit.deposit-invoices" @href={{href-to "main.case.order.edit.deposit-invoices" model.customerId model.orderId (query-params editMode=false)}}>
+    <tabs.tab @value="main.case.order.edit.deposit-invoices" @href={{href-to "main.case.order.edit.deposit-invoices" this.model.customerId this.model.orderId (query-params editMode=false)}}>
       Voorschotten
     </tabs.tab>
   {{/if}}
-  {{#if model.invoiceId}}
-    <tabs.tab @value="main.case.invoice.edit.index" @href={{href-to "main.case.invoice.edit.index" model.customerId model.invoiceId (query-params editMode=false)}}>
+  {{#if this.model.invoiceId}}
+    <tabs.tab @value="main.case.invoice.edit.index" @href={{href-to "main.case.invoice.edit.index" this.model.customerId this.model.invoiceId (query-params editMode=false)}}>
       Factuur
     </tabs.tab>
   {{/if}}
-  {{#if canCreateNewOffer}}
+  {{#if this.canCreateNewOffer}}
     <tabs.tab @value="main.case.request.edit.offer" @onClick={{action "openNewOffer"}}>
       {{paper-icon "add box"}} <PaperTooltip>Maak offerte</PaperTooltip>
     </tabs.tab>
   {{/if}}
-  {{#if canCreateNewOrder}}
+  {{#if this.canCreateNewOrder}}
     <tabs.tab @value="main.case.offer.edit.order" @onClick={{action "openNewOrder"}}>
       {{paper-icon "add box"}} <PaperTooltip>Maak bestelling</PaperTooltip>
     </tabs.tab>
   {{/if}}
-  {{#if canCreateNewInvoice}}
+  {{#if this.canCreateNewInvoice}}
     <tabs.tab @value="main.case.order.edit.invoice" @onClick={{action "openNewInvoice"}}>
       {{paper-icon "add box"}} <PaperTooltip>Maak factuur</PaperTooltip>
     </tabs.tab>

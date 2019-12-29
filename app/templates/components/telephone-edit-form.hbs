@@ -8,12 +8,12 @@
     <th>Memo</th>
   </thead>
   <tbody>
-    {{#if (is-pending model.telephones)}}
+    {{#if (is-pending this.model.telephones)}}
       <tr><td colspan="6">Aan het laden...</td></tr>
     {{else}}
-      {{#each (sort-by "order" "id" displayTelephones) as |telephone|}}
+      {{#each (sort-by "order" "id" this.displayTelephones) as |telephone|}}
         <tr>
-          <td onclick={{perform removeTelephone telephone}}>
+          <td onclick={{perform this.removeTelephone telephone}}>
             {{paper-icon "delete"}}
             <PaperTooltip>Verwijder nummer</PaperTooltip>
           </td>
@@ -24,18 +24,18 @@
           <td>{{telephone.memo}}</td>
         </tr>
       {{else}}
-        {{#unless newTelephone}}
+        {{#unless this.newTelephone}}
           <tr><td colspan="6">Geen telefoonnummers</td></tr>
         {{/unless}}
       {{/each}}
     {{/if}}
-    {{#if newTelephone}}
-      <TelephoneEditFormLine @model={{newTelephone}} @save={{updateNewTelephone}} @remove={{removeNewTelephone}} @errorMessages={{errorMessages}} />
+    {{#if this.newTelephone}}
+      <TelephoneEditFormLine @model={{this.newTelephone}} @save={{this.updateNewTelephone}} @remove={{this.removeNewTelephone}} @errorMessages={{this.errorMessages}} />
     {{/if}}
   </tbody>
 </table>
 <div class="layout-row layout-align-end-center">
-  <PaperButton @primary={{true}} @fab={{true}} @mini={{true}} @raised={{true}} @disabled={{isDisabledCreateNew}} @onClick={{perform createNewTelephone}}>
+  <PaperButton @primary={{true}} @fab={{true}} @mini={{true}} @raised={{true}} @disabled={{this.isDisabledCreateNew}} @onClick={{perform this.createNewTelephone}}>
     {{paper-icon "add"}}
     <PaperTooltip>Voeg nieuw nummer toe</PaperTooltip>
   </PaperButton>

@@ -1,15 +1,15 @@
 <div class="layout-row layout-align-space-between-center">
   <h2>Voorschotten</h2>
-  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{action "createNew"}} @disabled={{or isDisabledEdit selected}}>
+  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{action "createNew"}} @disabled={{or this.isDisabledEdit this.selected}}>
     {{paper-icon "add"}}
     <PaperTooltip>Voeg nieuw voorschot toe</PaperTooltip>
   </PaperButton>
 </div>
 
-{{#if model}}
-  {{#if (and depositRequired (not hasDeposits))}}
+{{#if this.model}}
+  {{#if (and this.depositRequired (not this.hasDeposits))}}
     <WarningMessage @message="Er is een voorschot gevraagd bij bestelling" />
-  {{else if (and (not depositRequired) hasDeposits)}}
+  {{else if (and (not this.depositRequired) this.hasDeposits)}}
     <InfoMessage @message="Er is geen voorschot gevraagd bij bestelling" />
   {{/if}}
 {{/if}}
@@ -17,15 +17,15 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--deposits--entry flex-100 layout-column">
     <DetailListItem @label="Totaal">
-      {{fmt-currency totalAmount}}
+      {{fmt-currency this.totalAmount}}
     </DetailListItem>
   </div>
 </div>
 
-{{#liquid-if selected class="data-table-selection"}}
+{{#liquid-if this.selected class="data-table-selection"}}
   <div class="layout-row layout-align-start-center case--deposits-form">
-    <DepositEditForm @model={{selected}} @save={{save}} />
-    <SaveStatusIcon @model={{selected}} @task={{save}} />
+    <DepositEditForm @model={{selected}} @save={{this.save}} />
+    <SaveStatusIcon @model={{selected}} @task={{this.save}} />
     <PaperButton @primary={{true}} @onClick={{action "closeEdit"}}>Klaar</PaperButton>
   </div>
 {{else}}
@@ -37,13 +37,13 @@
       <th><!-- Edit/Delete --></th>
     </thead>
     <tbody>
-      {{#each model as |deposit|}}
+      {{#each this.model as |deposit|}}
         <tr>
           <td>{{fmt-date deposit.paymentDate}}</td>
           <td>{{fmt-currency deposit.amount}}</td>
           <td>{{deposit.payment.name}}</td>
           <td>
-            {{#unless isDisabledEdit}}
+            {{#unless this.isDisabledEdit}}
               <PaperButton @onClick={{action "openEdit" deposit}} @iconButton={{true}}>
                 {{paper-icon "edit mode"}}
                 <PaperTooltip>Bewerken</PaperTooltip>
@@ -62,4 +62,4 @@
   </table>
 {{/liquid-if}}
 
-<UnsavedChangesDialog @show={{showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />

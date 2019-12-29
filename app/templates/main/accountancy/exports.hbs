@@ -5,18 +5,18 @@
   </h1>
 </div>
 
-<AccountancyExportForm @onExport={{perform onExport}} />
+<AccountancyExportForm @onExport={{perform this.onExport}} />
 
 <h2 {{action (toggle "isInvoicesExpanded" this)}}>
   Bekijk facturen
-  {{#if isInvoicesExpanded}}
+  {{#if this.isInvoicesExpanded}}
     {{paper-icon "expand_less"}}
   {{else}}
     {{paper-icon "expand_more"}}
     <span class="note-fade">Klik om een overzicht van de facturen te bekijken.</span>
   {{/if}}
 </h2>
-{{#liquid-if isInvoicesExpanded class="expand-more"}}
+{{#liquid-if this.isInvoicesExpanded class="expand-more"}}
   <InvoicesTable @size={{50}} />
 {{/liquid-if}}
 
@@ -24,18 +24,18 @@
 
 <h2 {{action (toggle "isHistoryExpanded" this)}}>
   Export historiek
-  {{#if isHistoryExpanded}}
+  {{#if this.isHistoryExpanded}}
     {{paper-icon "expand_less"}}
   {{else}}
     {{paper-icon "expand_more"}}
     <span class="note-fade">Klik om een historiek van de exports te bekijken.</span>
   {{/if}}
 </h2>
-{{#liquid-if isHistoryExpanded class="expand-more"}}
-  <DataTable @content={{model}} @isLoading={{isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{sort}} @page={{page}} @size={{size}} as |t|>
+{{#liquid-if this.isHistoryExpanded class="expand-more"}}
+  <DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} as |t|>
     <t.content as |c|>
       <c.header>
-        <ThSortable @field="date" @currentSorting={{sort}} @label="Datum export" />
+        <ThSortable @field="date" @currentSorting={{this.sort}} @label="Datum export" />
         <th>Van</th>
         <th>Tot</th>
         <th>Test</th>

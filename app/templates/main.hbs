@@ -2,7 +2,7 @@
 
 <PaperToolbar @class="top-toolbar" as |toolbar|>
   <toolbar.tools>
-    <PaperButton @iconButton={{true}} @onClick={{action (mut isMainMenuOpen)}}>
+    <PaperButton @iconButton={{true}} @onClick={{action (mut this.isMainMenuOpen)}}>
       {{paper-icon "menu"}}
     </PaperButton>
     <h1>Rollvolet Klantenbeheer</h1>
@@ -16,7 +16,7 @@
       {{paper-icon "account circle"}}
       <PaperTooltip>Profiel</PaperTooltip>
     </PaperButton>
-    {{session.data.authenticated.user.account}}
+    {{this.session.data.authenticated.user.account}}
     <PaperButton @onClick={{action "logout"}} @iconButton={{true}}>
       {{paper-icon "exit to app"}}
       <PaperTooltip>Log uit</PaperTooltip>
@@ -25,7 +25,7 @@
 </PaperToolbar>
 
 <PaperSidenavContainer @class="main-side-nav-container">
-  <PaperSidenav @class="main-side-nav" @open={{isMainMenuOpen}} @lockedOpen={{false}} @onToggle={{action (mut isMainMenuOpen)}}>
+  <PaperSidenav @class="main-side-nav" @open={{this.isMainMenuOpen}} @lockedOpen={{false}} @onToggle={{action (mut this.isMainMenuOpen)}}>
     <PaperToolbar as |toolbar|>
       <toolbar.tools>
         Menu <span class="version">v{{app-version versionOnly=true}}</span>
@@ -101,7 +101,7 @@
 
   <div class="layout-row flex">
     <div class="main-outlet">
-      {{#unless configuration.preloadStaticLists.isRunning}}
+      {{#unless this.configuration.preloadStaticLists.isRunning}}
         {{liquid-outlet}}
       {{/unless}}
     </div>

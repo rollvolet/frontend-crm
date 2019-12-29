@@ -1,16 +1,16 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      {{#if editMode}}Bewerk details{{else}}Overzicht{{/if}} aanvraag {{model.id}} {{visitor.initials}}
+      {{#if this.editMode}}Bewerk details{{else}}Overzicht{{/if}} aanvraag {{this.model.id}} {{this.visitor.initials}}
     </h2>
-    {{#if editMode}}
-      <SaveStatusIcon @model={{model}} @task={{save}} />
+    {{#if this.editMode}}
+      <SaveStatusIcon @model={{model}} @task={{this.save}} />
     {{/if}}
   </div>
   <div>
-    {{#if editMode}}
-      {{#if isEnabledDelete}}
-        <PaperButton @onClick={{perform remove}} @iconButton={{true}}>
+    {{#if this.editMode}}
+      {{#if this.isEnabledDelete}}
+        <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
           {{paper-icon "delete"}}
           <PaperTooltip>Verwijderen</PaperTooltip>
         </PaperButton>
@@ -20,12 +20,12 @@
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
     {{else}}
-      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{isDisabledEdit}}>
+      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>
       </PaperButton>
-      {{#if isLinkedToCustomer}}
-        <PaperButton @onClick={{perform unlinkCustomer}} @iconButton={{true}} @disabled={{isDisabledUnlinkCustomer}}>
+      {{#if this.isLinkedToCustomer}}
+        <PaperButton @onClick={{perform this.unlinkCustomer}} @iconButton={{true}} @disabled={{this.isDisabledUnlinkCustomer}}>
           {{paper-icon "link off"}}
           <PaperTooltip>Ontkoppel klant</PaperTooltip>
         </PaperButton>
@@ -43,36 +43,36 @@
   </div>
 </div>
 
-{{#if isDisabledEdit}}
+{{#if this.isDisabledEdit}}
   <WarningMessage @message="Offerte reeds opgemaakt. Geen wijzigingen meer mogelijk." />
 {{/if}}
 
-{{#if editMode}}
-  {{#if remove.isRunning}}
+{{#if this.editMode}}
+  {{#if this.remove.isRunning}}
     <div>
       <PaperProgressLinear />
       <p>Aan het verwijderen...</p>
     </div>
-  {{else if rollbackTree.isRunning}}
+  {{else if this.rollbackTree.isRunning}}
     <div>
       <PaperProgressLinear />
       <p>Aan het herstellen...</p>
     </div>
-  {{else if (and (not model.id) model.isSavivg)}}
+  {{else if (and (not this.model.id) this.model.isSavivg)}}
     <div>
       <PaperProgressLinear />
       <p>Aan het aanmaken...</p>
     </div>
-  {{else if unlinkCustomer.isRunning}}
+  {{else if this.unlinkCustomer.isRunning}}
     <div>
       <PaperProgressLinear />
       <p>Aanvraag aan het loskoppelen van klant...</p>
     </div>
   {{else}}
-    <RequestEditForm @model={{model}} @save={{save}} />
+    <RequestEditForm @model={{model}} @save={{this.save}} />
   {{/if}}
 {{else}}
   <RequestDetailPanel @model={{model}} />
 {{/if}}
 
-<UnsavedChangesDialog @show={{showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />

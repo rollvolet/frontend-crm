@@ -1,15 +1,15 @@
-{{#liquid-if displayList class="data-table-selection"}}
-  <Customer::ContactsTable @customer={{customer}} @onClickRow={{action "openDetail"}} @onEdit={{action "openEdit"}} />
+{{#liquid-if this.displayList class="data-table-selection"}}
+  <Customer::ContactsTable @customer={{this.customer}} @onClickRow={{action "openDetail"}} @onEdit={{action "openEdit"}} />
   <div class="layout-row layout-align-end">
     <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{action "openCreate"}}>
       {{paper-icon "add"}}
       <PaperTooltip>Voeg nieuw contact toe</PaperTooltip>
     </PaperButton>
   </div>
-{{else if displayDetail}}
-  <ContactDetailPanel @model={{selectedContact}} @onClose={{action "closeDetail"}} @onEdit={{action "openEdit"}} />
-{{else if displayEdit}}
-  <CustomerEntityEditForm @scope="contact" @model={{selectedContact}} @onClose={{action "closeEdit"}} @onRemove={{action "closeEdit"}}>
+{{else if this.displayDetail}}
+  <ContactDetailPanel @model={{this.selectedContact}} @onClose={{action "closeDetail"}} @onEdit={{action "openEdit"}} />
+{{else if this.displayEdit}}
+  <CustomerEntityEditForm @scope="contact" @model={{this.selectedContact}} @onClose={{action "closeEdit"}} @onRemove={{action "closeEdit"}}>
     <h3>Contact</h3>
   </CustomerEntityEditForm>
 {{/liquid-if}}

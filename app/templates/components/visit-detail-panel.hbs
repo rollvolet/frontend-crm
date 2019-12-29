@@ -1,15 +1,15 @@
-{{#if (is-pending calendarEvent)}}
+{{#if (is-pending this.calendarEvent)}}
   <div class="case--right-panel case--request--visit skeleton flex-noshrink layout-column layout-align-center-center">
     <PaperProgressCircular @diameter={{25}} />
   </div>
 {{else}}
   <div class="case--right-panel flex-noshrink layout-column">
-    <div class="case--request--visit {{if isNotAvailableInCalendar "not-found"}}">
-      {{#if calendarEvent}}
+    <div class="case--request--visit {{if this.isNotAvailableInCalendar "not-found"}}">
+      {{#if this.calendarEvent}}
         <div class="layout-row layout-align-space-between-center">
           <h3>{{paper-icon "event"}} Bezoek</h3>
-          {{#if (not calendarEvent.isMasteredByAccess)}}
-            <PaperButton @iconButton={{true}} @onClick={{perform synchronize}}>
+          {{#if (not this.calendarEvent.isMasteredByAccess)}}
+            <PaperButton @iconButton={{true}} @onClick={{perform this.synchronize}}>
               {{paper-icon "sync"}}
               <PaperTooltip>Stuur wijzigingen naar agenda</PaperTooltip>
             </PaperButton>
@@ -17,16 +17,16 @@
         </div>
         <div class="case--request--visit--description">
           <DetailListItem @label="Datum">
-            {{fmt-date calendarEvent.visitDate}}
+            {{fmt-date this.calendarEvent.visitDate}}
           </DetailListItem>
           <DetailListItem @label="Agenda">
-            {{#if isNotAvailableInCalendar}}
+            {{#if this.isNotAvailableInCalendar}}
               Niet gevonden
             {{else}}
-              {{calendarEvent.calendarSubject}}
+              {{this.calendarEvent.calendarSubject}}
             {{/if}}
           </DetailListItem>
-          {{#if calendarEvent.isMasteredByAccess}}
+          {{#if this.calendarEvent.isMasteredByAccess}}
             <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
           {{/if}}
         </div>

@@ -1,17 +1,17 @@
-<PowerSelect @placeholder={{label}} @selected={{value}} @onchange={{action "selectValue"}} @options={{options}} @searchEnabled={{true}} @search={{perform search}} @searchPlaceholder="Typ om te zoeken" @noMatchesMessage="Geen resultaten" @allowClear={{true}} @afterOptionsComponent={{component "input-field/postal-code-select/create-new" onCreate=(action (mut showCreateModal) true)}} as |option select|>
-  {{#if titleize}}
+<PowerSelect @placeholder={{this.label}} @selected={{this.value}} @onchange={{action "selectValue"}} @options={{this.options}} @searchEnabled={{true}} @search={{perform this.search}} @searchPlaceholder="Typ om te zoeken" @noMatchesMessage="Geen resultaten" @allowClear={{true}} @afterOptionsComponent={{component "input-field/postal-code-select/create-new" onCreate=(action (mut this.showCreateModal) true)}} as |option select|>
+  {{#if this.titleize}}
     {{highlight-substr (titleize-extended (lowercase option.search)) select.lastSearchedText}}
   {{else}}
     {{highlight-substr option.search select.lastSearchedText}}
   {{/if}}
 </PowerSelect>
 
-{{#if showCreateModal}}
-  <PaperDialog @class="flex-50" @onClose={{action (mut showCreateModal) false}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
+{{#if this.showCreateModal}}
+  <PaperDialog @class="flex-50" @onClose={{action (mut this.showCreateModal) false}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
     <PaperToolbar>
       <PaperToolbarTools>
         <h2>Nieuwe postcode</h2><span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{action (mut showCreateModal) false}}>
+        <PaperButton @iconButton={{true}} @onClick={{action (mut this.showCreateModal) false}}>
           <PaperIcon @icon="close" />
         </PaperButton>
       </PaperToolbarTools>
@@ -19,14 +19,14 @@
 
     <PaperDialogContent>
       <div class="layout-row">
-        <PaperInput @label="Postcode" @value={{newCode}} @onChange={{action (mut newCode)}} @class="small" />
-        <PaperInput @label="Gemeente" @value={{newCity}} @onChange={{action (mut newCity)}} @class="large" />
+        <PaperInput @label="Postcode" @value={{this.newCode}} @onChange={{action (mut this.newCode)}} @class="small" />
+        <PaperInput @label="Gemeente" @value={{this.newCity}} @onChange={{action (mut this.newCity)}} @class="large" />
       </div>
     </PaperDialogContent>
 
     <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
-      <PaperButton @onClick={{action "addOption"}} @disabled={{isAddOptionDisabled}}>
+      <PaperButton @onClick={{action "addOption"}} @disabled={{this.isAddOptionDisabled}}>
         Voeg toe
       </PaperButton>
     </PaperDialogActions>

@@ -1,10 +1,10 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     {{yield}}
-    <SaveStatusIcon @model={{model}} @task={{save}} />
+    <SaveStatusIcon @model={{model}} @task={{this.save}} />
   </div>
   <div>
-    <PaperButton @onClick={{perform remove}} @iconButton={{true}} @disabled={{isDisabledDelete}}>
+    <PaperButton @onClick={{perform this.remove}} @iconButton={{true}} @disabled={{this.isDisabledDelete}}>
       {{paper-icon "delete"}}
       <PaperTooltip>Verwijderen</PaperTooltip>
     </PaperButton>
@@ -15,73 +15,73 @@
   </div>
 </div>
 
-{{#if remove.isRunning}}
+{{#if this.remove.isRunning}}
   <div>
     <PaperProgressLinear />
     <p>Aan het verwijderen...</p>
   </div>
-{{else if rollbackTree.isRunning}}
+{{else if this.rollbackTree.isRunning}}
   <div>
     <PaperProgressLinear />
     <p>Aan het herstellen...</p>
   </div>
-{{else if (and (not model.id) model.isSavivg)}}
+{{else if (and (not this.model.id) this.model.isSavivg)}}
   <div>
     <PaperProgressLinear />
     <p>Aan het aanmaken...</p>
   </div>
 {{else}}
   <section class="layout-column">
-    {{#if isScopeCustomer}}
+    {{#if this.isScopeCustomer}}
       <div class="layout-row layout-xs-column layout-align-start-center">
-        <PaperRadioGroup @groupValue={{model.isCompany}} @onChange={{action "setIsCompany"}} @class="layout-row" as |group|>
+        <PaperRadioGroup @groupValue={{this.model.isCompany}} @onChange={{action "setIsCompany"}} @class="layout-row" as |group|>
           <group.radio @value={{false}}>Particulier</group.radio>
           <group.radio @value={{true}}>Bedrijf</group.radio>
         </PaperRadioGroup>
-        {{#if model.isCompany}}
-          <PaperInput @label="BTW nummer" @value={{formattedVatNumber}} @errors={{v-get model "vatNumber" "messages"}} @onChange={{action "setVatNumber"}} @onBlur={{perform save}} @class="flex-50 spacer-left" />
+        {{#if this.model.isCompany}}
+          <PaperInput @label="BTW nummer" @value={{this.formattedVatNumber}} @errors={{v-get this.model "vatNumber" "messages"}} @onChange={{action "setVatNumber"}} @onBlur={{perform this.save}} @class="flex-50 spacer-left" />
         {{/if}}
       </div>
-      {{#if isDuplicateVatNumber}}
+      {{#if this.isDuplicateVatNumber}}
         <DuplicateVatNumberWarning @customer={{model}} />
       {{/if}}
     {{/if}}
     <h4>
-      Geprinte naam: {{#if model.printInFront}}{{model.honorificPrefix.name}}{{/if}}
-      {{#if model.printPrefix}}{{model.prefix}}{{/if}} {{model.name}} {{#if model.printSuffix}}{{model.suffix}}{{/if}}
-      {{#if (not model.printInFront)}}{{model.honorificPrefix.name}}{{/if}}
+      Geprinte naam: {{#if this.model.printInFront}}{{this.model.honorificPrefix.name}}{{/if}}
+      {{#if this.model.printPrefix}}{{this.model.prefix}}{{/if}} {{this.model.name}} {{#if this.model.printSuffix}}{{this.model.suffix}}{{/if}}
+      {{#if (not this.model.printInFront)}}{{this.model.honorificPrefix.name}}{{/if}}
     </h4>
     <div class="layout-row layout-xs-column">
       <div class="layout-column u-rel-top-small">
-        <InputField::HonorificPrefixSelect @value={{model.honorificPrefix}} @language={{model.language}} @onSelectionChange={{queue (action (mut model.honorificPrefix)) (perform save)}} @class="md-input-wrapper large no-spacer-bottom" />
-        <PaperCheckbox @label="Vooraan" @value={{model.printInFront}} @onChange={{queue (action (mut model.printInFront)) (perform save)}} />
+        <InputField::HonorificPrefixSelect @value={{this.model.honorificPrefix}} @language={{this.model.language}} @onSelectionChange={{queue (action (mut this.model.honorificPrefix)) (perform this.save)}} @class="md-input-wrapper large no-spacer-bottom" />
+        <PaperCheckbox @label="Vooraan" @value={{this.model.printInFront}} @onChange={{queue (action (mut this.model.printInFront)) (perform this.save)}} />
       </div>
       <div class="layout-column">
-        <PaperInput @label="Prefix" @value={{model.prefix}} @onChange={{action (mut model.prefix)}} @onBlur={{perform save}} @class="small no-spacer-bottom" />
-        <PaperCheckbox @label="Print" @value={{model.printPrefix}} @onChange={{queue (action (mut model.printPrefix)) (perform save)}} />
+        <PaperInput @label="Prefix" @value={{this.model.prefix}} @onChange={{action (mut this.model.prefix)}} @onBlur={{perform this.save}} @class="small no-spacer-bottom" />
+        <PaperCheckbox @label="Print" @value={{this.model.printPrefix}} @onChange={{queue (action (mut this.model.printPrefix)) (perform this.save)}} />
       </div>
-      <PaperInput @label="Naam" @value={{model.name}} @onChange={{action "setName"}} @onBlur={{perform save}} @class="large" />
+      <PaperInput @label="Naam" @value={{this.model.name}} @onChange={{action "setName"}} @onBlur={{perform this.save}} @class="large" />
       <div class="layout-column">
-        <PaperInput @label="Suffix" @value={{model.suffix}} @onChange={{action (mut model.suffix)}} @onBlur={{perform save}} @class="small no-spacer-bottom" />
-        <PaperCheckbox @label="Print" @value={{model.printSuffix}} @onChange={{queue (action (mut model.printSuffix)) (perform save)}} />
+        <PaperInput @label="Suffix" @value={{this.model.suffix}} @onChange={{action (mut this.model.suffix)}} @onBlur={{perform this.save}} @class="small no-spacer-bottom" />
+        <PaperCheckbox @label="Print" @value={{this.model.printSuffix}} @onChange={{queue (action (mut this.model.printSuffix)) (perform this.save)}} />
       </div>
     </div>
   </section>
 
   <h3>Adres</h3>
   <section class="layout-column">
-    <AddressInput @address1={{model.address1}} @address2={{model.address2}} @address3={{model.address3}} @onBlur={{perform save}} />
+    <AddressInput @address1={{this.model.address1}} @address2={{this.model.address2}} @address3={{this.model.address3}} @onBlur={{perform this.save}} />
     <div class="layout-row">
-      <InputField::PostalCodeSelect @postalCode={{model.postalCode}} @city={{model.city}} @titleize={{not isScopeCustomer}} @onSelectionChange={{queue (action "setPostalCode") (perform save)}} @class="md-input-wrapper xxxlarge" />
-      <InputField::CountrySelect @value={{model.country}} @onSelectionChange={{queue (action (mut model.country)) (perform save)}} @required="style" @errors={{v-get model "country" "messages"}} @class="md-input-wrapper xlarge" />
-      <InputField::LanguageSelect @value={{model.language}} @onSelectionChange={{queue (action (mut model.language)) (perform save)}} @required="style" @errors={{v-get model "language" "messages"}} @class="md-input-wrapper xlarge" />
+      <InputField::PostalCodeSelect @postalCode={{this.model.postalCode}} @city={{this.model.city}} @titleize={{not this.isScopeCustomer}} @onSelectionChange={{queue (action "setPostalCode") (perform this.save)}} @class="md-input-wrapper xxxlarge" />
+      <InputField::CountrySelect @value={{this.model.country}} @onSelectionChange={{queue (action (mut this.model.country)) (perform this.save)}} @required="style" @errors={{v-get this.model "country" "messages"}} @class="md-input-wrapper xlarge" />
+      <InputField::LanguageSelect @value={{this.model.language}} @onSelectionChange={{queue (action (mut this.model.language)) (perform this.save)}} @required="style" @errors={{v-get this.model "language" "messages"}} @class="md-input-wrapper xlarge" />
     </div>
   </section>
 
   <section class="layout-row layout-xs-column">
-    <PaperInput @label="Email" @value={{model.email}} @errors={{v-get model "email" "messages"}} @onChange={{action (mut model.email)}} @onBlur={{perform save}} @class="xxlarge" />
-    <PaperInput @label="Email 2" @value={{model.email2}} @errors={{v-get model "email2" "messages"}} @onChange={{action (mut model.email2)}} @onBlur={{perform save}} @class="xxlarge" />
-    <PaperInput @label="Website" @value={{model.url}} @errors={{v-get model "url" "messages"}} @onChange={{action (mut model.url)}} @onBlur={{perform save}} @class="xlarge" />
+    <PaperInput @label="Email" @value={{this.model.email}} @errors={{v-get this.model "email" "messages"}} @onChange={{action (mut this.model.email)}} @onBlur={{perform this.save}} @class="xxlarge" />
+    <PaperInput @label="Email 2" @value={{this.model.email2}} @errors={{v-get this.model "email2" "messages"}} @onChange={{action (mut this.model.email2)}} @onBlur={{perform this.save}} @class="xxlarge" />
+    <PaperInput @label="Website" @value={{this.model.url}} @errors={{v-get this.model "url" "messages"}} @onChange={{action (mut this.model.url)}} @onBlur={{perform this.save}} @class="xlarge" />
   </section>
 
   <h3>Telefoon</h3>
@@ -90,11 +90,11 @@
   </section>
 
   <section class="layout-row layout-xs-column">
-    <PaperInput @label="Opmerking (zichtbaar)" @value={{model.comment}} @onChange={{action (mut model.comment)}} @onBlur={{perform save}} @textarea={{true}} @icon="comment" @passThru={{hash rows=3}} @class="xxlarge" />
-    {{#if isScopeCustomer}}
-      <PaperInput @label="Memo (verborgen)" @value={{model.memo}} @onChange={{action (mut model.memo)}} @onBlur={{perform save}} @textarea={{true}} @icon="assignment" @passThru={{hash rows=3}} @class="xxlarge" />
+    <PaperInput @label="Opmerking (zichtbaar)" @value={{this.model.comment}} @onChange={{action (mut this.model.comment)}} @onBlur={{perform this.save}} @textarea={{true}} @icon="comment" @passThru={{hash rows=3}} @class="xxlarge" />
+    {{#if this.isScopeCustomer}}
+      <PaperInput @label="Memo (verborgen)" @value={{this.model.memo}} @onChange={{action (mut this.model.memo)}} @onBlur={{perform this.save}} @textarea={{true}} @icon="assignment" @passThru={{hash rows=3}} @class="xxlarge" />
     {{/if}}
   </section>
 {{/if}}
 
-<UnsavedChangesDialog @show={{showUnsavedChangesDialog}} @onConfirm={{action "confirmClose"}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{action "confirmClose"}} />

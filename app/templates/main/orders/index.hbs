@@ -1,14 +1,14 @@
 <h1>Bestellingen</h1>
 
 <div class="orders-data-table">
-  <Order::DataTableFilter @offerNumber={{offerNumber}} @reference={{reference}} @requestNumber={{requestNumber}} @cName={{cName}} @cStreet={{cStreet}} @cPostalCode={{cPostalCode}} @cCity={{cCity}} @cTelephone={{cTelephone}} @bName={{bName}} @bPostalCode={{bPostalCode}} @bCity={{bCity}} @bStreet={{bStreet}} @withoutInvoice={{withoutInvoice}} @onChange={{action "applyFilter"}} />
+  <Order::DataTableFilter @offerNumber={{this.offerNumber}} @reference={{reference}} @requestNumber={{this.requestNumber}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutInvoice={{this.withoutInvoice}} @onChange={{action "applyFilter"}} />
 
-  <DataTable @content={{model}} @isLoading={{isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{sort}} @page={{page}} @size={{size}} @onClickRow={{action "clickRow"}} as |t|>
+  <DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{action "clickRow"}} as |t|>
     <t.content as |c|>
       <c.header>
         <th>Aanvraag</th>
-        <ThSortable @field="offer-number" @currentSorting={{sort}} @label="Offerte" />
-        <ThSortable @field="order-date" @currentSorting={{sort}} @label="Datum" />
+        <ThSortable @field="offer-number" @currentSorting={{this.sort}} @label="Offerte" />
+        <ThSortable @field="order-date" @currentSorting={{this.sort}} @label="Datum" />
         <th>Bezoeker</th>
         <th><!-- customer / building --></th>
         <th>Naam</th>

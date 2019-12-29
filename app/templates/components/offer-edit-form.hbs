@@ -1,20 +1,20 @@
 <div class="layout-row layout-align-start-start">
   <section class="layout-column">
     <div class="layout-row">
-      <PaperInput @label="Datum" @value={{model.offerDateStr}} @type="date" @required="style" @errors={{v-get model "offerDate" "messages"}} @onChange={{queue (action (mut model.offerDateStr)) (perform save)}} @class="default" />
+      <PaperInput @label="Datum" @value={{this.model.offerDateStr}} @type="date" @required="style" @errors={{v-get this.model "offerDate" "messages"}} @onChange={{queue (action (mut this.model.offerDateStr)) (perform this.save)}} @class="default" />
     </div>
     <div class="layout-row">
-      <InputField::VatRateSelect @value={{model.vatRate}} @onSelectionChange={{queue (action (mut model.vatRate)) (perform save)}} @class="md-input-wrapper large" />
+      <InputField::VatRateSelect @value={{this.model.vatRate}} @onSelectionChange={{queue (action (mut this.model.vatRate)) (perform this.save)}} @class="md-input-wrapper large" />
     </div>
     <div class="layout-row">
-      <InputField::EmployeeSelect @label="Bezoeker" @value={{visitor}} @isOnRoad={{true}} @isTechnician={{true}} @onSelectionChange={{queue (action "setVisitor") (perform save)}} @class="md-input-wrapper large" />
+      <InputField::EmployeeSelect @label="Bezoeker" @value={{this.visitor}} @isOnRoad={{true}} @isTechnician={{true}} @onSelectionChange={{queue (action "setVisitor") (perform this.save)}} @class="md-input-wrapper large" />
     </div>
     <div class="layout-row">
-      <PaperInput @label="Referentie klant" @value={{model.reference}} @onChange={{action (mut model.reference)}} @onBlur={{perform save}} @class="xxlarge" />
+      <PaperInput @label="Referentie klant" @value={{this.model.reference}} @onChange={{action (mut this.model.reference)}} @onBlur={{perform this.save}} @class="xxlarge" />
     </div>
     <div class="layout-row">
-      <PaperInput @label="Opmerking" @value={{model.comment}} @onChange={{action (mut model.comment)}} @onBlur={{perform save}} @textarea={{true}} @passThru={{hash rows=3}} @class="xxlarge" />
+      <PaperInput @label="Opmerking" @value={{this.model.comment}} @onChange={{action (mut this.model.comment)}} @onBlur={{perform this.save}} @textarea={{true}} @passThru={{hash rows=3}} @class="xxlarge" />
     </div>
   </section>
-  <VisitDetailPanel @model={{model.request}} />
+  <VisitDetailPanel @model={{this.model.request}} />
 </div>

@@ -1,5 +1,5 @@
-<PowerSelect @placeholder={{placeholder}} @searchPlaceholder="Typ om te zoeken" @options={{options}} @selected={{selected}} @searchEnabled={{false}} @onchange={{onSelectionChange}} @allowClear={{true}} as |option select|>
+<PowerSelect @placeholder={{this.placeholder}} @searchPlaceholder="Typ om te zoeken" @options={{this.options}} @selected={{selected}} @searchEnabled={{false}} @onchange={{this.onSelectionChange}} @allowClear={{true}} as |option select|>
   {{option.name}}
 </PowerSelect>
 
-<MdErrorMessages @errors={{errors}} />
+<MdErrorMessages @errors={{this.errors}} />

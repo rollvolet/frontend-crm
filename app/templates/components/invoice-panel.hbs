@@ -2,17 +2,17 @@
   <div class="layout-row layout-align-start-center">
     <div>
       <h2>
-        {{#if editMode}}Bewerk details{{else}}Overzicht{{/if}} factuur {{format-invoice-number model.number}}
+        {{#if this.editMode}}Bewerk details{{else}}Overzicht{{/if}} factuur {{format-invoice-number this.model.number}}
       </h2>
     </div>
-    {{#if editMode}}
-      <SaveStatusIcon @model={{model}} @task={{save}} />
+    {{#if this.editMode}}
+      <SaveStatusIcon @model={{model}} @task={{this.save}} />
     {{/if}}
   </div>
   <div class="layout-row layout-align-start-center">
-    {{#if editMode}}
-      {{#if isEnabledDelete}}
-        <PaperButton @onClick={{perform remove}} @iconButton={{true}}>
+    {{#if this.editMode}}
+      {{#if this.isEnabledDelete}}
+        <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
           {{paper-icon "delete"}}
           <PaperTooltip>Verwijderen</PaperTooltip>
         </PaperButton>
@@ -22,21 +22,21 @@
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
     {{else}}
-      {{#if generateInvoiceDocument.isRunning}}
+      {{#if this.generateInvoiceDocument.isRunning}}
         <PaperProgressCircular @diameter={{18}} />
       {{else}}
         <PaperButton @onClick={{action "downloadInvoiceDocument"}} @iconButton={{true}}>
           {{paper-icon "find in page"}}
           <PaperTooltip>Factuur bekijken</PaperTooltip>
         </PaperButton>
-        {{#unless isDisabledEdit}}
-          <PaperButton @onClick={{perform generateInvoiceDocument}} @iconButton={{true}}>
+        {{#unless this.isDisabledEdit}}
+          <PaperButton @onClick={{perform this.generateInvoiceDocument}} @iconButton={{true}}>
             {{paper-icon "restore page"}}
             <PaperTooltip>Factuur maken</PaperTooltip>
           </PaperButton>
         {{/unless}}
       {{/if}}
-      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{isDisabledEdit}}>
+      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>
       </PaperButton>
@@ -44,40 +44,40 @@
   </div>
 </div>
 
-{{#if model.isBooked}}
+{{#if this.model.isBooked}}
   <WarningMessage @message="Factuur reeds geboekt. Geen wijzigingen meer mogelijk." />
 {{/if}}
 
 
-{{#if editMode}}
-  {{#if remove.isRunning}}
+{{#if this.editMode}}
+  {{#if this.remove.isRunning}}
     <div>
       <PaperProgressLinear />
       <p>Aan het verwijderen...</p>
     </div>
-  {{else if rollbackTree.isRunning}}
+  {{else if this.rollbackTree.isRunning}}
     <div>
       <PaperProgressLinear />
       <p>Aan het herstellen...</p>
     </div>
-  {{else if (and (not model.id) model.isSavivg)}}
+  {{else if (and (not this.model.id) this.model.isSavivg)}}
     <div>
       <PaperProgressLinear />
       <p>Aan het aanmaken...</p>
     </div>
   {{else}}
-    <InvoiceEditForm @model={{model}} @save={{save}} />
+    <InvoiceEditForm @model={{model}} @save={{this.save}} />
   {{/if}}
 {{else}}
   <InvoiceDetailPanel @model={{model}} />
 {{/if}}
 
-{{#if model.isMasteredByAccess}}
+{{#if this.model.isMasteredByAccess}}
   <div class="layout-row">
     <span class="flex"></span>
     <p class="note note--info">Beheerd in Access</p>
   </div>
 {{/if}}
 
-<UnsavedChangesDialog @show={{showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />
-<MissingCertificateDialog @show={{showMissingCertificateDialog}} @model={{model}} @onClose={{perform generateInvoiceDocument}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />
+<MissingCertificateDialog @show={{this.showMissingCertificateDialog}} @model={{model}} @onClose={{perform this.generateInvoiceDocument}} />

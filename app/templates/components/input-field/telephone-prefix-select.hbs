@@ -1,5 +1,5 @@
-<PowerSelect @placeholder={{placeholder}} @searchPlaceholder="Zoeken" @options={{options}} @selected={{selected}} @searchField="telephonePrefix" @onchange={{onSelectionChange}} @noMatchesMessage="Geen resultaten" @allowClear={{true}} as |option select|>
+<PowerSelect @placeholder={{this.placeholder}} @searchPlaceholder="Zoeken" @options={{this.options}} @selected={{selected}} @searchField="telephonePrefix" @onchange={{this.onSelectionChange}} @noMatchesMessage="Geen resultaten" @allowClear={{true}} as |option select|>
   {{highlight-substr option.telephonePrefix select.lastSearchedText}}
 </PowerSelect>
 
-<MdErrorMessages @errors={{errors}} />
+<MdErrorMessages @errors={{this.errors}} />

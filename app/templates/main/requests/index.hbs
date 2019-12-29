@@ -7,13 +7,13 @@
 </div>
 
 <div class="requests-data-table">
-  <Request::DataTableFilter @number={{number}} @visitor={{visitor}} @cName={{cName}} @cStreet={{cStreet}} @cPostalCode={{cPostalCode}} @cCity={{cCity}} @cTelephone={{cTelephone}} @bName={{bName}} @bPostalCode={{bPostalCode}} @bCity={{bCity}} @bStreet={{bStreet}} @withoutOffer={{withoutOffer}} @onChange={{action "applyFilter"}} />
+  <Request::DataTableFilter @number={{number}} @visitor={{this.visitor}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutOffer={{this.withoutOffer}} @onChange={{action "applyFilter"}} />
 
-  <DataTable @content={{model}} @isLoading={{isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{sort}} @page={{page}} @size={{size}} @onClickRow={{action "clickRow"}} as |t|>
+  <DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{action "clickRow"}} as |t|>
     <t.content as |c|>
       <c.header>
-        <ThSortable @field="number" @currentSorting={{sort}} @label="Nr" />
-        <ThSortable @field="request-date" @currentSorting={{sort}} @label="Datum" />
+        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
+        <ThSortable @field="request-date" @currentSorting={{this.sort}} @label="Datum" />
         <th>Bezoeker</th>
         <th><!-- customer / building --></th>
         <th>Naam</th>

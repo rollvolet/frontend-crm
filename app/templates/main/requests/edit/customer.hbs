@@ -1,21 +1,21 @@
 <h2>Koppel klant aan aanvraag</h2>
 
-{{#if linkCustomerToRequest.isRunning}}
+{{#if this.linkCustomerToRequest.isRunning}}
   <div>
     <PaperProgressLinear />
     <p>Klant koppelen aan aanvraag...</p>
   </div>
 {{else}}
-  <Customer::DataTableFilter @number={{number}} @name={{name}} @street={{street}} @postalCode={{postalCode}} @city={{city}} @telephone={{telephone}} @onChange={{action "applyFilter"}} />
+  <Customer::DataTableFilter @number={{number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{action "applyFilter"}} />
 
-  <DataTable @content={{model}} @isLoading={{isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{sort}} @page={{page}} @size={{size}} @onClickRow={{perform linkCustomerToRequest}} as |t|>
+  <DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{perform this.linkCustomerToRequest}} as |t|>
     <t.content as |c|>
       <c.header>
-        <ThSortable @field="number" @currentSorting={{sort}} @label="Nr" />
-        <ThSortable @field="name" @currentSorting={{sort}} @label="Naam" />
-        <ThSortable @field="address" @currentSorting={{sort}} @label="Straat" />
-        <ThSortable @field="postal-code" @currentSorting={{sort}} @label="Postcode" />
-        <ThSortable @field="city" @currentSorting={{sort}} @label="Gemeente" />
+        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
+        <ThSortable @field="name" @currentSorting={{this.sort}} @label="Naam" />
+        <ThSortable @field="address" @currentSorting={{this.sort}} @label="Straat" />
+        <ThSortable @field="postal-code" @currentSorting={{this.sort}} @label="Postcode" />
+        <ThSortable @field="city" @currentSorting={{this.sort}} @label="Gemeente" />
       </c.header>
       <c.body as |row|>
         <td>{{row.number}}</td>

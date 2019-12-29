@@ -6,7 +6,7 @@
     <th>BTW</th>
   </thead>
   <tbody>
-    {{#each sortedOfferlines as |offerline|}}
+    {{#each this.sortedOfferlines as |offerline|}}
       <tr class="{{if offerline.isOrdered "is-ordered"}}">
         <td>{{offerline.sequenceNumber}}</td>
         <td>{{{offerline.description}}}</td>

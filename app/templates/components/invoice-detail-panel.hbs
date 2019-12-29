@@ -2,42 +2,42 @@
   <div class="case--left-panel case--invoice--entry flex-100 layout-column">
     <DetailListItem @label="Datum">
       <DetailListSubitem @label="Factuurdatum">
-        {{fmt-date model.invoiceDate}}
+        {{fmt-date this.model.invoiceDate}}
       </DetailListSubitem>
       <DetailListSubitem @label="Vervaldag">
-        {{fmt-date model.dueDate}}
+        {{fmt-date this.model.dueDate}}
       </DetailListSubitem>
       <DetailListSubitem @label="Geboekt">
-        {{fmt-date model.bookingDate}}
+        {{fmt-date this.model.bookingDate}}
       </DetailListSubitem>
       <DetailListSubitem @label="Betaald">
-        {{fmt-date model.paymentDate}}
+        {{fmt-date this.model.paymentDate}}
       </DetailListSubitem>
     </DetailListItem>
     <DetailListItem @label="Techniekers" @click={{action "openWorkingHoursDialog"}} @class="clickable">
-      {{#if model.workingHours}}
-        {{join ", " employeeFirstNames}} {{paper-icon "info" size=18}}
+      {{#if this.model.workingHours}}
+        {{join ", " this.employeeFirstNames}} {{paper-icon "info" size=18}}
       {{else}}
         - {{paper-icon "add circle" size=18}}
       {{/if}}
     </DetailListItem>
     <DetailListItem @label="Referentie">
-      {{model.reference}}
+      {{this.model.reference}}
     </DetailListItem>
     <DetailListItem @label="Opmerking">
-      <span class="html-body">{{model.comment}}</span>
+      <span class="html-body">{{this.model.comment}}</span>
     </DetailListItem>
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
-    {{#if model.certificateRequired}}
+    {{#if this.model.certificateRequired}}
       <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
         <CertificateDocumentButtons @model={{model}} />
       </DetailListItem>
     {{/if}}
-    {{#unless model.isIsolated}}
+    {{#unless this.model.isIsolated}}
       <DetailListItem @label="Productiebon">
-        {{paper-icon (if model.hasProductionTicket "check_box" "check_box_outline_blank")}}
-        {{#if model.hasProductionTicket}}
+        {{paper-icon (if this.model.hasProductionTicket "check_box" "check_box_outline_blank")}}
+        {{#if this.model.hasProductionTicket}}
           <span {{action "downloadProductionTicket"}}>
             {{paper-icon "find in page"}}
             <PaperTooltip>Productiebon bekijken</PaperTooltip>
@@ -46,11 +46,11 @@
       </DetailListItem>
     {{/unless}}
     <DetailListItem @label="Creditnota">
-      {{paper-icon (if model.isCreditNote "check_box" "check_box_outline_blank")}}
+      {{paper-icon (if this.model.isCreditNote "check_box" "check_box_outline_blank")}}
     </DetailListItem>
-    {{#unless model.isCreditNote}}
+    {{#unless this.model.isCreditNote}}
       <DetailListItem @label="Betaalref.">
-        {{format-bank-reference model.bankReference}}
+        {{format-bank-reference this.model.bankReference}}
       </DetailListItem>
     {{/unless}}
   </div>
@@ -67,13 +67,13 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="flex-100 layout-column">
     <DetailListItem @label="Mededeling">
-      {{{model.documentOutro}}}
+      {{{this.model.documentOutro}}}
     </DetailListItem>
   </div>
 </div>
 
-<WorkingHoursDialog @show={{showWorkingHoursDialog}} @model={{model}} />
+<WorkingHoursDialog @show={{this.showWorkingHoursDialog}} @model={{model}} />
 
-<DocumentNotFoundDialog @show={{showProductionTicketNotFoundDialog}}>
+<DocumentNotFoundDialog @show={{this.showProductionTicketNotFoundDialog}}>
   <p>Er is nog geen productiebon opgeladen.</p>
 </DocumentNotFoundDialog>

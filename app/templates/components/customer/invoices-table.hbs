@@ -2,22 +2,22 @@
   <div class="data-table-filters--title">{{paper-icon "search"}}</div>
   <PaperInput @label="Nummer" @value={{number}} @onChange={{action "setFilter" "number"}} @class="small" />
   <PaperInput @label="Referentie" @value={{reference}} @onChange={{action "setFilter" "reference"}} @class="small" />
-  <PaperInput @label="Gebouw" @value={{name}} @onChange={{action "setFilter" "name"}} />
-  <PaperInput @label="Straat" @value={{street}} @onChange={{action "setFilter" "street"}} @class="large" />
-  <PaperInput @label="Postcode" @value={{postalCode}} @onChange={{action "setFilter" "postalCode"}} @class="small" />
-  <PaperInput @label="Gemeente" @value={{city}} @onChange={{action "setFilter" "city"}} />
+  <PaperInput @label="Gebouw" @value={{this.name}} @onChange={{action "setFilter" "name"}} />
+  <PaperInput @label="Straat" @value={{this.street}} @onChange={{action "setFilter" "street"}} @class="large" />
+  <PaperInput @label="Postcode" @value={{this.postalCode}} @onChange={{action "setFilter" "postalCode"}} @class="small" />
+  <PaperInput @label="Gemeente" @value={{this.city}} @onChange={{action "setFilter" "city"}} />
   <PaperButton @iconButton={{true}} @onClick={{action "resetFilters"}}>
     {{paper-icon "close"}}
     <PaperTooltip>Wis filters</PaperTooltip>
   </PaperButton>
 </div>
 
-<DataTable @content={{invoices}} @isLoading={{not search.isIdle}} @noDataMessage="Geen facturen" @onClickRow={{action "clickRow"}} @page={{page}} @size={{size}} @sort={{sort}} as |t|>
+<DataTable @content={{this.invoices}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen facturen" @onClickRow={{action "clickRow"}} @page={{this.page}} @size={{this.size}} @sort={{this.sort}} as |t|>
   <t.content as |c|>
     <c.header>
-      <ThSortable @field="number" @currentSorting={{sort}} @label="Nr" />
-      <ThSortable @field="reference" @currentSorting={{sort}} @label="Referentie" />
-      <ThSortable @field="invoice-date" @currentSorting={{sort}} @label="Datum" />
+      <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
+      <ThSortable @field="reference" @currentSorting={{this.sort}} @label="Referentie" />
+      <ThSortable @field="invoice-date" @currentSorting={{this.sort}} @label="Datum" />
       <th>Gebouw</th>
       <th>Straat</th>
       <th>Postcode</th>
@@ -42,4 +42,4 @@
   </PaperButton>
 </div>
 
-{{liquid-yield}}
+{{this.liquid-yield}}

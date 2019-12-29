@@ -1,11 +1,11 @@
-{{#if task.isRunning}}
+{{#if this.task.isRunning}}
   {{paper-icon "sync" class="running"}}
   <PaperTooltip>Aan het opslaan</PaperTooltip>
 {{else}}
-  {{#if model.validations.isInvalid}}
+  {{#if this.model.validations.isInvalid}}
     {{paper-icon "error outline" class="error"}}
     <PaperTooltip>Ongeldig</PaperTooltip>
-  {{else if (or model.isError task.last.isError)}}
+  {{else if (or this.model.isError this.task.last.isError)}}
       {{paper-icon "error outline" class="error"}}
       <PaperTooltip>Fout bij opslaan</PaperTooltip>
   {{else}}

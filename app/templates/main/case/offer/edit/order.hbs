@@ -1,7 +1,7 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      Selecteer producten voor bestelling AD{{model.requestNumber}} {{visitorPromise.initials}} - {{model.number}}
+      Selecteer producten voor bestelling AD{{this.model.requestNumber}} {{this.visitorPromise.initials}} - {{this.model.number}}
     </h2>
   </div>
   <div>
@@ -9,21 +9,21 @@
   </div>
 </div>
 
-{{#if (or updateOfferVatRate.isRunning createOrder.isRunning)}}
+{{#if (or this.updateOfferVatRate.isRunning this.createOrder.isRunning)}}
   <div>
     <PaperProgressLinear />
     <p>Bestelling aanmaken...</p>
   </div>
 {{else}}
-  {{#if model.offerlines}}
-    {{#if hasMixedVatRates}}
+  {{#if this.model.offerlines}}
+    {{#if this.hasMixedVatRates}}
       <div class="u-margin-top-small">
         <WarningMessage @message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
       </div>
     {{/if}}
     <p>Klik op 1 of meer lijnen om toe te voegen aan de bestelling</p>
     <div class="case--order--offerlines-selection">
-      {{#each model.offerlines as |offerline|}}
+      {{#each this.model.offerlines as |offerline|}}
         <div class="case--order--offerlines-selection--offerline layout-row layout-align-start-center
           {{if offerline.isOrdered "case--order--offerlines-selection--offerline--ordered"}}"
           {{action (toggle "isOrdered" offerline)}}>
@@ -41,7 +41,7 @@
       {{/each}}
       <div class="case--order--offerlines-selection--total layout-row layout-align-start-center">
         <div class="col col--label">Totaal bestelling</div>
-        <div class="col col--amount">{{fmt-currency orderedAmount}}</div>
+        <div class="col col--amount">{{fmt-currency this.orderedAmount}}</div>
       </div>
     </div>
   {{else}}
@@ -53,12 +53,12 @@
 
 <div class="layout-row layout-align-end-center">
   <PaperButton @onClick={{action "cancel"}}>Annuleer</PaperButton>
-  <PaperButton @primary={{true}} @raised={{true}} @onClick={{perform createOrder}} @disabled={{isDisabledCreate}}>
+  <PaperButton @primary={{true}} @raised={{true}} @onClick={{perform this.createOrder}} @disabled={{this.isDisabledCreate}}>
     Ga verder
   </PaperButton>
 </div>
 
-{{#if showIncompatibleVatRatesDialog}}
+{{#if this.showIncompatibleVatRatesDialog}}
   <PaperDialog @class="flex-50" @onClose={{action "closeIncompatibleVatRatesDialog"}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
     <PaperToolbar>
       <PaperToolbarTools>
@@ -71,17 +71,17 @@
 
     <PaperDialogContent>
       <p>
-        Het BTW-tarief van de offerte is {{model.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{orderedVatRate.rate}}% hebben.
+        Het BTW-tarief van de offerte is {{this.model.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{this.orderedVatRate.rate}}% hebben.
       </p>
       <p>
-        Mag het BTW-tarief van de offerte aangepast worden naar {{orderedVatRate.rate}}%?
+        Mag het BTW-tarief van de offerte aangepast worden naar {{this.orderedVatRate.rate}}%?
       </p>
     </PaperDialogContent>
 
     <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
       <PaperButton @onClick={{action "closeIncompatibleVatRatesDialog"}}>Terug</PaperButton>
-      <PaperButton @onClick={{perform updateOfferVatRate}}>Pas BTW-tarief aan</PaperButton>
+      <PaperButton @onClick={{perform this.updateOfferVatRate}}>Pas BTW-tarief aan</PaperButton>
     </PaperDialogActions>
   </PaperDialog>
 {{/if}}

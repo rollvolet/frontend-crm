@@ -1,4 +1,4 @@
-{{#if show}}
+{{#if this.show}}
   <PaperDialog @class="flex-50" @onClose={{action "close"}} @parent=".main-outlet" @origin=".main-outlet" @clickOutsideToClose={{true}}>
     <PaperToolbar>
       <PaperToolbarTools>
@@ -11,12 +11,12 @@
 
     <PaperDialogContent>
       <div class="layout-row layout-align-start-center">
-        <PaperInput @label="Datum" @value={{newWorkingHour.dateStr}} @type="date" @required="style" @errors={{v-get newWorkingHour "date" "messages"}} @onChange={{action (mut newWorkingHour.dateStr)}} @class="default" />
-        <InputField::EmployeeSelect @label="Technieker" @value={{newWorkingHour.employee}} @isTechnician={{true}} @isOnRoad={{true}} @isAdministrative={{true}} @optionSort={{array "functionSort:desc"}} @required="style" @errors={{v-get newWorkingHour "employee" "messages"}} @onSelectionChange={{action (mut newWorkingHour.employee)}} @class="md-input-wrapper large u-rel-top-xxsmall" />
-        {{#if save.isRunning}}
+        <PaperInput @label="Datum" @value={{this.newWorkingHour.dateStr}} @type="date" @required="style" @errors={{v-get this.newWorkingHour "date" "messages"}} @onChange={{action (mut this.newWorkingHour.dateStr)}} @class="default" />
+        <InputField::EmployeeSelect @label="Technieker" @value={{this.newWorkingHour.employee}} @isTechnician={{true}} @isOnRoad={{true}} @isAdministrative={{true}} @optionSort={{array "functionSort:desc"}} @required="style" @errors={{v-get this.newWorkingHour "employee" "messages"}} @onSelectionChange={{action (mut this.newWorkingHour.employee)}} @class="md-input-wrapper large u-rel-top-xxsmall" />
+        {{#if this.save.isRunning}}
           <PaperProgressCircular @diameter={{18}} />
         {{else}}
-          <PaperButton @label="Toevoegen" @primary={{true}} @onClick={{perform save}} />
+          <PaperButton @label="Toevoegen" @primary={{true}} @onClick={{perform this.save}} />
         {{/if}}
       </div>
 
@@ -27,7 +27,7 @@
           <th><!-- Delete --></th>
         </thead>
         <tbody>
-          {{#each sortedWorkingHours as |workingHour|}}
+          {{#each this.sortedWorkingHours as |workingHour|}}
             <tr>
               <td>{{fmt-date workingHour.date}}</td>
               <td>{{workingHour.employee.firstName}}</td>

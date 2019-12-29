@@ -1,9 +1,9 @@
 <div class="certificate-document-buttons layout-row layout-align-start-center">
-  {{#if (or generateTemplate.isRunning upload.isRunning)}}
+  {{#if (or this.generateTemplate.isRunning this.upload.isRunning)}}
     <PaperProgressCircular @diameter={{20}} />
   {{else}}
     <div class="certificate--status">
-      {{#if model.certificateReceived}}
+      {{#if this.model.certificateReceived}}
         <span>
           <PaperIcon @class="success" @icon="done" @size={{32}} />
           <PaperTooltip>In orde</PaperTooltip>
@@ -17,8 +17,8 @@
     </div>
 
     <div class="certificate--buttons">
-      <PaperButton @onClick={{perform generateTemplate}} @iconButton={{iconButton}} @raised={{not iconButton}} @primary={{not iconButton}}>
-        {{#if iconButton}}
+      <PaperButton @onClick={{perform this.generateTemplate}} @iconButton={{this.iconButton}} @raised={{not this.iconButton}} @primary={{not this.iconButton}}>
+        {{#if this.iconButton}}
           {{paper-icon "restore page"}}
           <PaperTooltip>Maak nieuw attest</PaperTooltip>
         {{else}}
@@ -26,17 +26,17 @@
         {{/if}}
       </PaperButton>
 
-      {{#if model.certificateReceived}}
-        <PaperButton @onClick={{action "download"}} @iconButton={{iconButton}} @raised={{not iconButton}} @primary={{not iconButton}}>
-          {{#if iconButton}}
+      {{#if this.model.certificateReceived}}
+        <PaperButton @onClick={{action "download"}} @iconButton={{this.iconButton}} @raised={{not this.iconButton}} @primary={{not this.iconButton}}>
+          {{#if this.iconButton}}
             {{paper-icon "find in page"}}
             <PaperTooltip>BTW-attest bekijken</PaperTooltip>
           {{else}}
             BTW-attest bekijken
           {{/if}}
         </PaperButton>
-        <PaperButton @onClick={{action "delete"}} @iconButton={{iconButton}} @raised={{not iconButton}} @primary={{not iconButton}}>
-          {{#if iconButton}}
+        <PaperButton @onClick={{action "delete"}} @iconButton={{this.iconButton}} @raised={{not this.iconButton}} @primary={{not this.iconButton}}>
+          {{#if this.iconButton}}
             {{paper-icon "delete"}}
             <PaperTooltip>BTW-attest verwijderen</PaperTooltip>
           {{else}}
@@ -44,15 +44,15 @@
           {{/if}}
         </PaperButton>
       {{else}}
-        <FileUpload @name="certificates" @accept="application/pdf" @class="certificate-upload" @onfileadd={{perform upload}} as |queue|>
-          {{#if hasUploadError}}
+        <FileUpload @name="certificates" @accept="application/pdf" @class="certificate-upload" @onfileadd={{perform this.upload}} as |queue|>
+          {{#if this.hasUploadError}}
             {{paper-icon "error" primary=true}}
             <PaperTooltip>Bestand niet correct opgeladen</PaperTooltip>
           {{/if}}
           {{#if queue.files.length}}
             <PaperProgressCircular @diameter={{25}} />
           {{else}}
-            {{#if iconButton}}
+            {{#if this.iconButton}}
               <i class="material-icons md-18">cloud_upload</i>
               <PaperTooltip>BTW-attest opladen</PaperTooltip>
             {{else}}

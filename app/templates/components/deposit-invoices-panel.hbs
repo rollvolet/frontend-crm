@@ -1,16 +1,16 @@
 <div class="layout-row layout-align-space-between-center">
   <h2>Voorschotfacturen</h2>
-  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{action "createNew"}} @disabled={{or isDisabledEdit selected}}>
+  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{action "createNew"}} @disabled={{or this.isDisabledEdit this.selected}}>
     {{paper-icon "add"}}
     <PaperTooltip>Maak nieuwe voorschotfactuur</PaperTooltip>
   </PaperButton>
 </div>
 
-{{#liquid-if editMode class="data-table-selection"}}
+{{#liquid-if this.editMode class="data-table-selection"}}
   <div class="layout-row layout-align-space-between-center">
     <div class="layout-row layout-align-start-center">
-      <h2>Factuur {{format-invoice-number selected.number}}</h2>
-      <SaveStatusIcon @model={{selected}} @task={{save}} />
+      <h2>Factuur {{format-invoice-number this.selected.number}}</h2>
+      <SaveStatusIcon @model={{selected}} @task={{this.save}} />
     </div>
     <div>
       <PaperButton @onClick={{action "closeEdit"}} @iconButton={{true}}>
@@ -19,42 +19,42 @@
       </PaperButton>
     </div>
   </div>
-  <DepositInvoiceEditForm @model={{selected}} @save={{save}} />
+  <DepositInvoiceEditForm @model={{selected}} @save={{this.save}} />
 {{else}}
   <div class="layout-row layout-xs-column layout-align-space-between">
     <div class="case--deposit-invoices--summary flex-100 layout-column">
       <DetailListItem @label="Totaal" @displayRow={{true}}>
         <DetailListSubitem @label="Netto">
-          {{fmt-currency totalAmount}}
+          {{fmt-currency this.totalAmount}}
         </DetailListSubitem>
-        <DetailListSubitem @label={{concat (get vatRate "rate") "% BTW"}}>
-          {{fmt-currency (await totalVat)}}
+        <DetailListSubitem @label={{concat (get this.vatRate "rate") "% BTW"}}>
+          {{fmt-currency (await this.totalVat)}}
         </DetailListSubitem>
       </DetailListItem>
     </div>
   </div>
 
-  {{#each model as |invoice|}}
+  {{#each this.model as |invoice|}}
     <div class="case--deposit-invoices--detail-panel">
       <PaperDivider />
       <div class="layout-row layout-align-space-between-center">
         <h3>Voorschotfactuur {{format-invoice-number invoice.number}}</h3>
         <div>
-          {{#if generateInvoiceDocument.isRunning}}
+          {{#if this.generateInvoiceDocument.isRunning}}
             <PaperProgressCircular @diameter={{18}} />
           {{else}}
             <PaperButton @onClick={{action "downloadInvoiceDocument" invoice}} @iconButton={{true}}>
               {{paper-icon "find in page"}}
               <PaperTooltip>Voorschotfactuur bekijken</PaperTooltip>
             </PaperButton>
-            {{#unless (or isDisabledEdit invoice.isBooked)}}
-              <PaperButton @onClick={{perform generateInvoiceDocument invoice}} @iconButton={{true}}>
+            {{#unless (or this.isDisabledEdit invoice.isBooked)}}
+              <PaperButton @onClick={{perform this.generateInvoiceDocument invoice}} @iconButton={{true}}>
                 {{paper-icon "restore page"}}
                 <PaperTooltip>Voorschotfactuur maken</PaperTooltip>
               </PaperButton>
             {{/unless}}
           {{/if}}
-          {{#unless (or isDisabledEdit invoice.isBooked)}}
+          {{#unless (or this.isDisabledEdit invoice.isBooked)}}
             <PaperButton @onClick={{action "openEdit" invoice}} @iconButton={{true}}>
               {{paper-icon "edit mode"}}
               <PaperTooltip>Bewerken</PaperTooltip>
@@ -112,4 +112,4 @@
   {{/each}}
 {{/liquid-if}}
 
-<UnsavedChangesDialog @show={{showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />

@@ -1,25 +1,25 @@
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  <PaperInput @label="Aanvraag" @value={{requestNumber}} @onChange={{action "setFilter" "requestNumber"}} @class="small" />
+  <PaperInput @label="Aanvraag" @value={{this.requestNumber}} @onChange={{action "setFilter" "requestNumber"}} @class="small" />
   <PaperInput @label="Nummer" @value={{number}} @onChange={{action "setFilter" "number"}} @class="small" />
   <PaperInput @label="Referentie" @value={{reference}} @onChange={{action "setFilter" "reference"}} @class="small" />
-  <PaperInput @label="Gebouw" @value={{name}} @onChange={{action "setFilter" "name"}} />
-  <PaperInput @label="Straat" @value={{street}} @onChange={{action "setFilter" "street"}} @class="large" />
-  <PaperInput @label="Postcode" @value={{postalCode}} @onChange={{action "setFilter" "postalCode"}} @class="small" />
-  <PaperInput @label="Gemeente" @value={{city}} @onChange={{action "setFilter" "city"}} />
+  <PaperInput @label="Gebouw" @value={{this.name}} @onChange={{action "setFilter" "name"}} />
+  <PaperInput @label="Straat" @value={{this.street}} @onChange={{action "setFilter" "street"}} @class="large" />
+  <PaperInput @label="Postcode" @value={{this.postalCode}} @onChange={{action "setFilter" "postalCode"}} @class="small" />
+  <PaperInput @label="Gemeente" @value={{this.city}} @onChange={{action "setFilter" "city"}} />
   <PaperButton @iconButton={{true}} @onClick={{action "resetFilters"}}>
     {{paper-icon "close"}}
     <PaperTooltip>Wis filters</PaperTooltip>
   </PaperButton>
 </div>
 
-<DataTable @content={{offers}} @isLoading={{not search.isIdle}} @noDataMessage="Geen offertes" @onClickRow={{action "clickRow"}} @page={{page}} @size={{size}} @sort={{sort}} as |t|>
+<DataTable @content={{this.offers}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen offertes" @onClickRow={{action "clickRow"}} @page={{this.page}} @size={{this.size}} @sort={{this.sort}} as |t|>
   <t.content as |c|>
     <c.header>
       <th>Aanvraag</th>
-      <ThSortable @field="number" @currentSorting={{sort}} @label="Nr" />
-      <ThSortable @field="reference" @currentSorting={{sort}} @label="Referentie" />
-      <ThSortable @field="offer-date" @currentSorting={{sort}} @label="Datum" />
+      <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
+      <ThSortable @field="reference" @currentSorting={{this.sort}} @label="Referentie" />
+      <ThSortable @field="offer-date" @currentSorting={{this.sort}} @label="Datum" />
       <th>Bezoeker</th>
       <th>Gebouw</th>
       <th>Straat</th>
@@ -40,4 +40,4 @@
   </t.content>
 </DataTable>
 
-{{liquid-yield}}
+{{this.liquid-yield}}
