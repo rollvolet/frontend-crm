@@ -1,4 +1,5 @@
 import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 import DS from 'ember-data';
 import HasManyQuery from 'ember-data-has-many-query';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
@@ -6,11 +7,14 @@ import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 export default DS.JSONAPIAdapter.extend(HasManyQuery.RESTAdapterMixin, DataAdapterMixin, {
   namespace: 'api',
   session: service(),
-  authorize(xhr) {
-    const { access_token } = this.get('session.data.authenticated');
-    xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
-  },
 
+  headers: computed('session.data.authenticated.access_token', function() {
+    const headers = {};
+    if (this.session.isAuthenticated) {
+      headers['Authorization'] = `Bearer ${this.session.data.authenticated.access_token}`;
+    }
+    return headers;
+  }),
 
   handleResponse(status, headers, payload/*, requestData*/) {
     if (!this.isSuccess(status, headers, payload)) {
@@ -28,5 +32,4 @@ export default DS.JSONAPIAdapter.extend(HasManyQuery.RESTAdapterMixin, DataAdapt
 
     return this._super(...arguments);
   }
-
 });
