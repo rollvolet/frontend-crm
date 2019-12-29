@@ -20,6 +20,7 @@
   "devDependencies": {
     "@ember/optional-features": "^1.1.0",
     "@glimmer/component": "^1.0.0",
+    "angular-material-styles": "https://github.com/angular/material.git#4acef530a40c54e9c80caf64d6d53299ada5a081",
     "babel-eslint": "^10.0.3",
     "broccoli-asset-rev": "^3.0.0",
     "ember-auto-import": "^1.5.3",

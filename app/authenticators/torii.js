@@ -1,7 +1,6 @@
 import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
 import { debug, warn } from '@ember/debug';
 import fetch, { Headers } from 'fetch';
-import { Promise, resolve } from 'rsvp';
 import { run, later, cancel } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import { inject } from '@ember/service';

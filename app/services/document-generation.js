@@ -116,7 +116,7 @@ export default Service.extend({
 
 
   // Core helpers
-  async _generate(url,  method = 'POST') {
+  async _generate(url) {
     const { access_token } = this.get('session.data.authenticated');
     const result = await fetch(url, {
       method: 'POST',
