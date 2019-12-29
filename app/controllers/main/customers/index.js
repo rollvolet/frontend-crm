@@ -1,16 +1,20 @@
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import Controller from '@ember/controller';
 import DefaultQueryParams from 'ember-data-table/mixins/default-query-params';
 import applyFilterParams from '../../../utils/apply-filter-params';
 
-export default Controller.extend(DefaultQueryParams, {
-  size: 25,
+@classic
+export default class IndexController extends Controller.extend(DefaultQueryParams) {
+  size = 25;
 
-  actions: {
-    clickRow(row) {
-      this.transitionToRoute('main.customers.edit', row);
-    },
-    applyFilter(filter) {
-      applyFilterParams.bind(this)(filter);
-    }
+  @action
+  clickRow(row) {
+    this.transitionToRoute('main.customers.edit', row);
   }
-});
+
+  @action
+  applyFilter(filter) {
+    applyFilterParams.bind(this)(filter);
+  }
+}

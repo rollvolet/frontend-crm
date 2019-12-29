@@ -1,7 +1,10 @@
+import classic from 'ember-classic-decorator';
+import { classNames, tagName } from '@ember-decorators/component';
 import Component from '@ember/component';
 
-export default Component.extend({
-  tagName: 'p',
-  classNames: ['info-message'],
-  message: null
-});
+@classic
+@tagName('p')
+@classNames('info-message')
+export default class InfoMessage extends Component {
+  message = null;
+}

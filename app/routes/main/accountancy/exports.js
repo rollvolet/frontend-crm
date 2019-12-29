@@ -1,18 +1,20 @@
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import Route from '@ember/routing/route';
 import DataTableRouteMixin from 'ember-data-table/mixins/route';
 
-export default Route.extend(DataTableRouteMixin, {
-  modelName: 'accountancy-export',
+@classic
+export default class ExportsRoute extends Route.extend(DataTableRouteMixin) {
+  modelName = 'accountancy-export';
 
   setupController(controller, model) {
-    this._super(controller, model);
+    super.setupController(controller, model);
     controller.set('isInvoicesExpanded', false);
     controller.set('isHistoryExpanded', true);
-  },
-
-  actions: {
-    refreshModel() {
-      this.refresh();
-    }
   }
-});
+
+  @action
+  refreshModel() {
+    this.refresh();
+  }
+}

@@ -1,18 +1,21 @@
-import Controller from '@ember/controller';
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 
-export default Controller.extend({
-  appState: service(),
+@classic
+export default class OopsController extends Controller {
+  @service
+  appState;
 
-  actions: {
-    goBack() {
-      const url = this.appState.lastSuccessUrl;
+  @action
+  goBack() {
+    const url = this.appState.lastSuccessUrl;
 
-      if (url) {
-        window.location = url;
-      } else {
-        window.location = '/';
-      }
+    if (url) {
+      window.location = url;
+    } else {
+      window.location = '/';
     }
   }
-});
+}

@@ -1,26 +1,30 @@
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
+import { observes } from '@ember-decorators/object';
+import { action } from '@ember/object';
 import Component from '@ember/component';
 import DebouncedSearch from '../../mixins/debounced-search-task';
-import { observer } from '@ember/object';
 import { task } from 'ember-concurrency';
 
-export default Component.extend(DebouncedSearch, {
-  classNames: ['buildings-table'],
-
+@classic
+@classNames('buildings-table')
+export default class BuildingsTable extends Component.extend(DebouncedSearch) {
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.search.perform();
-  },
+  }
 
-  page: 0,
-  size: 10,
-  sort: 'name',
+  page = 0;
+  size = 10;
+  sort = 'name';
+  onClickRow = null;
 
-  onClickRow: null,
-
-  dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
+  @observes('page', 'size', 'sort')
+  dataTableParamChanged() { // eslint-disable-line ember/no-observers
     this.search.perform();
-  }),
-  search: task(function * () {
+  }
+
+  @task(function * () {
     const buildings = yield this.customer.query('buildings', {
       page: {
         size: this.size,
@@ -38,24 +42,28 @@ export default Component.extend(DebouncedSearch, {
       }
     });
     this.set('buildings', buildings);
-  }),
+  })
+  search;
 
-  actions: {
-    setFilter(key, value) {
-      this.set(key, value);
-      this.debounceSearch.perform(this.search);
-    },
-    resetFilters() {
-      this.set('number', undefined);
-      this.set('name', undefined);
-      this.set('postalCode', undefined);
-      this.set('city', undefined);
-      this.set('street', undefined);
-      this.set('telephone', undefined);
-      this.search.perform();
-    },
-    edit(building) {
-      this.onEdit(building);
-    }
+  @action
+  setFilter(key, value) {
+    this.set(key, value);
+    this.debounceSearch.perform(this.search);
   }
-});
+
+  @action
+  resetFilters() {
+    this.set('number', undefined);
+    this.set('name', undefined);
+    this.set('postalCode', undefined);
+    this.set('city', undefined);
+    this.set('street', undefined);
+    this.set('telephone', undefined);
+    this.search.perform();
+  }
+
+  @action
+  edit(building) {
+    this.onEdit(building);
+  }
+}

@@ -1,42 +1,66 @@
-import Controller from '@ember/controller';
+import classic from 'ember-classic-decorator';
+import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { mapBy, filterBy, notEmpty } from '@ember/object/computed';
+import Controller from '@ember/controller';
 import { task, all } from 'ember-concurrency';
-import { computed } from '@ember/object';
-import { notEmpty, filterBy, mapBy } from '@ember/object/computed';
 import { first, uniqBy, length } from 'ember-awesome-macros/array';
 import { gt, or, not, raw, sum } from 'ember-awesome-macros';
 import DS from 'ember-data';
 import { debug } from '@ember/debug';
 
-export default Controller.extend({
-  case: service(),
-  store: service(),
+@classic
+export default class OrderController extends Controller {
+  @service
+  case;
 
-  showIncompatibleVatRatesDialog: false,
+  @service
+  store;
 
-  visitorPromise: computed('model.request.visitor', function() {
+  showIncompatibleVatRatesDialog = false;
+
+  @computed('model.request.visitor')
+  get visitorPromise() {
     return DS.PromiseObject.create({
       promise: this.model.request.then((request) => {
         return this.store.peekAll('employee').find(e => e.firstName == request.visitor);
       })
     });
-  }),
-  orderedOfferlines: filterBy('model.offerlines', 'isOrdered'),
-  hasSelectedLines: notEmpty('orderedOfferlines'),
-  vatRates: mapBy('orderedOfferlines', 'vatRate'),
-  hasMixedVatRates: gt(length(uniqBy('vatRates', raw('code'))), raw(1)),
-  isDisabledCreate: or(not('hasSelectedLines'), 'hasMixedVatRates'),
-  orderedVatRate: first('vatRates'),
-  arithmeticOrderedAmounts: mapBy('orderedOfferlines', 'arithmeticAmount'),
-  orderedAmount: sum('arithmeticOrderedAmounts'),
+  }
 
-  updateOfferVatRate: task(function * () {
+  @filterBy('model.offerlines', 'isOrdered')
+  orderedOfferlines;
+
+  @notEmpty('orderedOfferlines')
+  hasSelectedLines;
+
+  @mapBy('orderedOfferlines', 'vatRate')
+  vatRates;
+
+  @gt(length(uniqBy('vatRates', raw('code'))), raw(1))
+  hasMixedVatRates;
+
+  @or(not('hasSelectedLines'), 'hasMixedVatRates')
+  isDisabledCreate;
+
+  @first('vatRates')
+  orderedVatRate;
+
+  @mapBy('orderedOfferlines', 'arithmeticAmount')
+  arithmeticOrderedAmounts;
+
+  @sum('arithmeticOrderedAmounts')
+  orderedAmount;
+
+  @task(function * () {
     this.set('showIncompatibleVatRatesDialog', false);
     this.model.set('vatRate', this.orderedVatRate);
     yield this.model.save();
     yield this.createOrder.perform();
-  }),
-  createOrder: task(function * () {
+  })
+  updateOfferVatRate;
+
+  @task(function * () {
     let vatRate = yield this.model.get('vatRate');
 
     if (vatRate && this.orderedVatRate && this.orderedVatRate.get('id') != vatRate.get('id')) {
@@ -86,17 +110,19 @@ export default Controller.extend({
       // update case to display the new order tab
       this.case.updateRecord('order', this.model);
     }
-  }),
+  })
+  createOrder;
 
-  actions: {
-    async cancel() {
-      const offerlines = await this.model.get('offerlines');
-      offerlines.forEach(o => o.set('isOrdered', false));
-      const customer = await this.model.get('customer');
-      this.transitionToRoute('main.case.offer.edit', customer, this.model);
-    },
-    closeIncompatibleVatRatesDialog() {
-      this.set('showIncompatibleVatRatesDialog', false);
-    }
+  @action
+  async cancel() {
+    const offerlines = await this.model.get('offerlines');
+    offerlines.forEach(o => o.set('isOrdered', false));
+    const customer = await this.model.get('customer');
+    this.transitionToRoute('main.case.offer.edit', customer, this.model);
   }
-});
+
+  @action
+  closeIncompatibleVatRatesDialog() {
+    this.set('showIncompatibleVatRatesDialog', false);
+  }
+}

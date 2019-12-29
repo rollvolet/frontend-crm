@@ -1,27 +1,31 @@
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
+import { observes } from '@ember-decorators/object';
+import { action } from '@ember/object';
 import Component from '@ember/component';
 import DebouncedSearch from '../../mixins/debounced-search-task';
 import { task } from 'ember-concurrency';
-import { observer } from '@ember/object';
 
-export default Component.extend(DebouncedSearch, {
-  classNames: ['contacts-table'],
-
+@classic
+@classNames('contacts-table')
+export default class ContactsTable extends Component.extend(DebouncedSearch) {
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.search.perform();
-  },
+  }
 
-  page: 0,
-  size: 10,
-  sort: 'name',
+  page = 0;
+  size = 10;
+  sort = 'name';
+  onClickRow = null;
+  onEdit = null;
 
-  onClickRow: null,
-  onEdit: null,
-
-  dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
+  @observes('page', 'size', 'sort')
+  dataTableParamChanged() { // eslint-disable-line ember/no-observers
     this.search.perform();
-  }),
-  search: task(function * () {
+  }
+
+  @task(function * () {
     const contacts = yield this.customer.query('contacts', {
       page: {
         size: this.size,
@@ -39,24 +43,28 @@ export default Component.extend(DebouncedSearch, {
       }
     });
     this.set('contacts', contacts);
-  }),
+  })
+  search;
 
-  actions: {
-    setFilter(key, value) {
-      this.set(key, value);
-      this.debounceSearch.perform(this.search);
-    },
-    resetFilters() {
-      this.set('number', undefined);
-      this.set('name', undefined);
-      this.set('postalCode', undefined);
-      this.set('city', undefined);
-      this.set('street', undefined);
-      this.set('telephone', undefined);
-      this.search.perform();
-    },
-    edit(contact) {
-      this.onEdit(contact);
-    }
+  @action
+  setFilter(key, value) {
+    this.set(key, value);
+    this.debounceSearch.perform(this.search);
   }
-});
+
+  @action
+  resetFilters() {
+    this.set('number', undefined);
+    this.set('name', undefined);
+    this.set('postalCode', undefined);
+    this.set('city', undefined);
+    this.set('street', undefined);
+    this.set('telephone', undefined);
+    this.search.perform();
+  }
+
+  @action
+  edit(contact) {
+    this.onEdit(contact);
+  }
+}

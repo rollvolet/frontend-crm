@@ -1,8 +1,11 @@
-import BaseValidator from 'ember-cp-validations/validators/base';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
+import BaseValidator from 'ember-cp-validations/validators/base';
 
-const UniqueVatNumber = BaseValidator.extend({
-  store: service(),
+@classic
+class UniqueVatNumber extends BaseValidator {
+  @service
+  store;
 
   async validate(value, options, model/*, attribute*/) {
     if (value && model.changedAttributes().vatNumber) {
@@ -21,7 +24,7 @@ const UniqueVatNumber = BaseValidator.extend({
 
     return true;
   }
-});
+}
 
 UniqueVatNumber.reopenClass({
   /**

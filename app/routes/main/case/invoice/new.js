@@ -1,7 +1,9 @@
+import classic from 'ember-classic-decorator';
 import Route from '@ember/routing/route';
 import moment from 'moment';
 
-export default Route.extend({
+@classic
+export default class NewRoute extends Route {
   async model() {
     const customer = this.modelFor('main.case');
     const vatRate = this.store.peekAll('vat-rate').find(v => v.rate == 21);
@@ -22,7 +24,8 @@ export default Route.extend({
     });
 
     return invoice.save();
-  },
+  }
+
   afterModel(model) {
     const customer = this.modelFor('main.case');
     this.transitionTo('main.case.invoice.edit', customer, model, {
@@ -31,4 +34,4 @@ export default Route.extend({
       }
     });
   }
-});
+}

@@ -1,8 +1,10 @@
+import classic from 'ember-classic-decorator';
+import { tagName } from '@ember-decorators/component';
 import Component from '@ember/component';
 
-const FmtCurrencyComponent = Component.extend({
-  tagName: ''
-});
+@classic
+@tagName('')
+class FmtCurrencyComponent extends Component {}
 
 FmtCurrencyComponent.reopenClass({
   positionalParams: ['value']

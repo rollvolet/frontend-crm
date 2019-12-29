@@ -1,16 +1,19 @@
-import Route from '@ember/routing/route';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import moment from 'moment';
 
-export default Route.extend({
-  case: service(),
+@classic
+export default class InvoiceRoute extends Route {
+  @service
+  case;
 
   beforeModel(transition) {
     const order = this.modelFor('main.case.order.edit');
 
     if (order.isMasteredByAccess)
       transition.abort();
-  },
+  }
 
   async model() {
     const order = this.modelFor('main.case.order.edit');
@@ -46,7 +49,7 @@ export default Route.extend({
     });
 
     return invoice.save();
-  },
+  }
 
   afterModel(model) {
     const customer = this.modelFor('main.case');
@@ -55,5 +58,4 @@ export default Route.extend({
     // update case to display the new invoice tab
     this.case.updateRecord('invoice', model);
   }
-
-});
+}

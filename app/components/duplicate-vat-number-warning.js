@@ -1,20 +1,26 @@
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
 import { inject as service } from '@ember/service';
 import { reads } from '@ember/object/computed';
+import Component from '@ember/component';
 
-export default Component.extend({
-  store: service(),
-  router: service(),
+@classic
+@classNames('clickable')
+export default class DuplicateVatNumberWarning extends Component {
+  @service
+  store;
 
-  classNames: ['clickable'],
+  @service
+  router;
 
-  customer: null,
-  duplicate: null,
+  customer = null;
+  duplicate = null;
 
-  vatNumber: reads('customer.vatNumber'),
+  @reads('customer.vatNumber')
+  vatNumber;
 
   async init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     const duplicate = this.store.peekAll('customer').find(c => c.id != this.customer.id && c.vatNumber == this.vatNumber);
 
@@ -31,10 +37,10 @@ export default Component.extend({
       if (duplicates.length)
         this.set('duplicate', duplicates.firstObject);
     }
-  },
+  }
 
   click() {
     if (this.duplicate)
       this.router.transitionTo('main.customers.edit', this.duplicate.id);
   }
-});
+}

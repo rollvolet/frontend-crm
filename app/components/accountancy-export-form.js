@@ -1,28 +1,34 @@
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
+import { action, computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { task } from 'ember-concurrency';
-import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
 import { deformatInvoiceNumber, formatInvoiceNumber } from '../helpers/format-invoice-number';
 
-export default Component.extend({
-  store: service(),
+@classic
+@classNames('export-panel')
+export default class AccountancyExportForm extends Component {
+  @service
+  store;
 
-  classNames: ['export-panel'],
+  onExport = null;
+  multipleExportEnabled = true;
 
-  onExport: null,
-  multipleExportEnabled: true,
-
-  formattedFromNumber: computed('model.fromNumber', function() {
+  @computed('model.fromNumber')
+  get formattedFromNumber() {
     return formatInvoiceNumber(this.model.fromNumber);
-  }),
-  formattedUntilNumber: computed('model.untilNumber', function() {
+  }
+
+  @computed('model.untilNumber')
+  get formattedUntilNumber() {
     return formatInvoiceNumber(this.model.untilNumber);
-  }),
+  }
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.initModel();
-  },
+  }
 
   initModel() {
     const model = this.store.createRecord('accountancy-export', {
@@ -30,30 +36,34 @@ export default Component.extend({
       isDryRun: true
     });
     this.set('model', model);
-  },
+  }
 
-  startExport: task(function * () {
+  @task(function * () {
     yield this.onExport(this.model);
     this.initModel();
-  }),
+  })
+  startExport;
 
-  actions: {
-    setFromNumber(formattedNumber) {
-      const number = deformatInvoiceNumber(formattedNumber);
-      this.model.set('fromNumber', number);
+  @action
+  setFromNumber(formattedNumber) {
+    const number = deformatInvoiceNumber(formattedNumber);
+    this.model.set('fromNumber', number);
 
-      if (!this.multipleExportEnabled)
-        this.model.set('untilNumber', number);
-    },
-    setUntilNumber(formattedNumber) {
-      const number = deformatInvoiceNumber(formattedNumber);
+    if (!this.multipleExportEnabled)
       this.model.set('untilNumber', number);
-    },
-    toggleMultipleExportEnabled() {
-      this.set('multipleExportEnabled', !this.multipleExportEnabled);
-
-      if (!this.multipleExportEnabled)
-        this.model.set('untilNumber', this.model.fromNumber);
-    }
   }
-});
+
+  @action
+  setUntilNumber(formattedNumber) {
+    const number = deformatInvoiceNumber(formattedNumber);
+    this.model.set('untilNumber', number);
+  }
+
+  @action
+  toggleMultipleExportEnabled() {
+    this.set('multipleExportEnabled', !this.multipleExportEnabled);
+
+    if (!this.multipleExportEnabled)
+      this.model.set('untilNumber', this.model.fromNumber);
+  }
+}

@@ -1,27 +1,37 @@
+import classic from 'ember-classic-decorator';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import { next } from '@ember/runloop';
 import Component from '@ember/component';
-import { inject as service } from '@ember/service';
-import { computed } from '@ember/object';
 import { composeId } from '../../models/honorific-prefix';
 import { proxyAware } from '../../utils/proxy-aware';
 
-export default Component.extend({
-  store: service(),
+@classic
+export default class HonorificPrefixSelect extends Component {
+  @service
+  store;
 
-  selected: proxyAware('value'),
+  @proxyAware('value')
+  selected;
 
   async init() {
-    this._super(...arguments);
+    super.init(...arguments);
     const prefixes = this.store.peekAll('honorific-prefix');
     this.set('honorificPrefixes', prefixes);
-  },
+  }
 
-  label: 'Aanspreektitel',
-  value: null,
-  language: null,
-  onSelectionChange: null,
+  label = 'Aanspreektitel';
+  value = null;
+  language = null;
+  onSelectionChange = null;
 
-  options: computed('honorificPrefixes', 'honorificPrefixes.[]', 'language', 'language.content', function() {
+  @computed(
+    'honorificPrefixes',
+    'honorificPrefixes.[]',
+    'language',
+    'language.content'
+  )
+  get options() {
     if (this.honorificPrefixes && this.get('language.id')) {
       return this.honorificPrefixes.filter(p => {
         return p.name && p.languageId == this.get('language.id');
@@ -29,10 +39,10 @@ export default Component.extend({
     } else {
       return this.honorificPrefixes.filter(p => p.name);
     }
-  }),
+  }
 
   didUpdateAttrs() {
-    this._super(...arguments);
+    super.didUpdateAttrs(...arguments);
 
     if (this.get('value.entityId') && this.get('language.id') && this.get('value.languageId') != this.get('language.id')) { // the language changed while a prefix has already been selected
       const honorificPrefix = this.honorificPrefixes.find(p => {
@@ -44,4 +54,4 @@ export default Component.extend({
       });
     }
   }
-});
+}

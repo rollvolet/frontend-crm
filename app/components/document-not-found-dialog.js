@@ -1,11 +1,13 @@
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import Component from '@ember/component';
 
-export default Component.extend({
-  show: false,
+@classic
+export default class DocumentNotFoundDialog extends Component {
+  show = false;
 
-  actions: {
-    close() {
-      this.set('show', false);
-    }
+  @action
+  close() {
+    this.set('show', false);
   }
-});
+}

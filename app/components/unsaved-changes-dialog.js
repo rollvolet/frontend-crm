@@ -1,18 +1,22 @@
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
+import { tagName } from '@ember-decorators/component';
 import Component from '@ember/component';
 
-export default Component.extend({
-  tagName: '',
+@classic
+@tagName('')
+export default class UnsavedChangesDialog extends Component {
+  show = false;
+  onConfirm = null;
 
-  show: false,
-  onConfirm: null,
-
-  actions: {
-    cancelClose() {
-      this.set('show', false);
-    },
-    confirmClose() {
-      this.set('show', false);
-      this.onConfirm();
-    }
+  @action
+  cancelClose() {
+    this.set('show', false);
   }
-});
+
+  @action
+  confirmClose() {
+    this.set('show', false);
+    this.onConfirm();
+  }
+}

@@ -1,12 +1,14 @@
+import classic from 'ember-classic-decorator';
 import Component from '@ember/component';
 import DecimalInputFormatting from '../mixins/decimal-input-formatting';
 
-export default Component.extend(DecimalInputFormatting, {
-  model: null,
-  save: null,
+@classic
+export default class DepositInvoiceEditForm extends Component.extend(DecimalInputFormatting) {
+  model = null;
+  save = null;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.initDecimalInput('baseAmount');
   }
-});
+}

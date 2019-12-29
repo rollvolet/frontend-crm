@@ -1,14 +1,17 @@
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
 import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import { debug } from '@ember/debug';
 
-export default Component.extend({
-  configuration: service(),
-
-  classNames: ['data-preloader'],
+@classic
+@classNames('data-preloader')
+export default class DataPreloader extends Component {
+  @service
+  configuration;
 
   didInsertElement() {
     debug('Preloading static lists');
     this.configuration.preloadStaticLists.perform();
   }
-});
+}

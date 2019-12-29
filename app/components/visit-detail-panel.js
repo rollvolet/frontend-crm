@@ -1,19 +1,25 @@
-import Component from '@ember/component';
-import fetch, { Headers } from 'fetch';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import { reads } from '@ember/object/computed';
+import Component from '@ember/component';
+import fetch, { Headers } from 'fetch';
 import { task } from 'ember-concurrency';
 import { and, isEmpty } from 'ember-awesome-macros';
 
-export default Component.extend({
-  session: service(),
+@classic
+export default class VisitDetailPanel extends Component {
+  @service
+  session;
 
-  model: null,
+  model = null;
 
-  calendarEvent: reads('model.calendarEvent'),
-  isNotAvailableInCalendar: and('calendarEvent.id', isEmpty('calendarEvent.calendarSubject')),
+  @reads('model.calendarEvent')
+  calendarEvent;
 
-  synchronize: task(function * () {
+  @and('calendarEvent.id', isEmpty('calendarEvent.calendarSubject'))
+  isNotAvailableInCalendar;
+
+  @(task(function * () {
     const { access_token } = this.get('session.data.authenticated');
     yield fetch(`/api/orders/${this.model.id}/planning-event`, {
       method: 'PUT',
@@ -22,5 +28,6 @@ export default Component.extend({
       })
     });
     yield this.model.belongsTo('calendarEvent').reload();
-  }).keepLatest()
-});
+  }).keepLatest())
+  synchronize;
+}

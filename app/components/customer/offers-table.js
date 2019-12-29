@@ -1,26 +1,33 @@
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
+import { observes } from '@ember-decorators/object';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import DebouncedSearch from '../../mixins/debounced-search-task';
-import { observer } from '@ember/object';
 import { task } from 'ember-concurrency';
-import { inject as service } from '@ember/service';
 
-export default Component.extend(DebouncedSearch, {
-  classNames: ['offers-table'],
-
-  router: service(),
+@classic
+@classNames('offers-table')
+export default class OffersTable extends Component.extend(DebouncedSearch) {
+  @service
+  router;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.search.perform();
-  },
+  }
 
-  page: 0,
-  size: 10,
-  sort: '-offer-date',
-  dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
+  page = 0;
+  size = 10;
+  sort = '-offer-date';
+
+  @observes('page', 'size', 'sort')
+  dataTableParamChanged() { // eslint-disable-line ember/no-observers
     this.search.perform();
-  }),
-  search: task(function * () {
+  }
+
+  @task(function * () {
     const offers = yield this.customer.query('offers', {
       page: {
         size: this.size,
@@ -41,25 +48,30 @@ export default Component.extend(DebouncedSearch, {
       }
     });
     this.set('offers', offers);
-  }),
-  actions: {
-    setFilter(key, value) {
-      this.set(key, value);
-      this.debounceSearch.perform(this.search);
-    },
-    resetFilters() {
-      this.set('requestNumber', undefined);
-      this.set('number', undefined);
-      this.set('reference', undefined);
-      this.set('name', undefined);
-      this.set('postalCode', undefined);
-      this.set('city', undefined);
-      this.set('street', undefined);
-      this.search.perform();
-    },
-    clickRow(row) {
-      const offerId = row.get('id');
-      this.router.transitionTo('main.case.offer.edit', this.customer, offerId);
-    }
+  })
+  search;
+
+  @action
+  setFilter(key, value) {
+    this.set(key, value);
+    this.debounceSearch.perform(this.search);
   }
-});
+
+  @action
+  resetFilters() {
+    this.set('requestNumber', undefined);
+    this.set('number', undefined);
+    this.set('reference', undefined);
+    this.set('name', undefined);
+    this.set('postalCode', undefined);
+    this.set('city', undefined);
+    this.set('street', undefined);
+    this.search.perform();
+  }
+
+  @action
+  clickRow(row) {
+    const offerId = row.get('id');
+    this.router.transitionTo('main.case.offer.edit', this.customer, offerId);
+  }
+}

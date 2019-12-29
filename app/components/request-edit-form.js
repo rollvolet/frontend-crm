@@ -1,19 +1,22 @@
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { notEmpty, bool } from '@ember/object/computed';
+import Component from '@ember/component';
 import { task } from 'ember-concurrency';
 import { warn, debug } from '@ember/debug';
-import { bool, notEmpty } from '@ember/object/computed';
 
-export default Component.extend({
-  store: service(),
+@classic
+export default class RequestEditForm extends Component {
+  @service
+  store;
 
-  model: null,
-  save: null,
-
-  employee: null,
+  model = null;
+  save = null;
+  employee = null;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     if (this.model.employee) {
       const employee = this.store.peekAll('employee').find(e => e.firstName == this.model.employee);
       this.set('employee', employee);
@@ -22,12 +25,15 @@ export default Component.extend({
       const visitor = this.store.peekAll('employee').find(e => e.firstName == this.model.visitor);
       this.set('visitor', visitor);
     }
-  },
+  }
 
-  hasVisitMasteredByAccess: bool('model.calendarEvent.isMasteredByAccess'),
-  isLinkedToCustomer: notEmpty('model.customer.id'),
+  @bool('model.calendarEvent.isMasteredByAccess')
+  hasVisitMasteredByAccess;
 
-  removeVisit: task(function * () {
+  @notEmpty('model.customer.id')
+  isLinkedToCustomer;
+
+  @task(function * () {
     const calendarEvent = yield this.model.calendarEvent;
     try {
       yield calendarEvent.destroyRecord();
@@ -39,42 +45,50 @@ export default Component.extend({
       warn(`Something went wrong while destroying calendar event ${calendarEvent.id}`, { id: 'destroy-failure' });
       debug(e);
     }
-  }),
-  createVisit: task(function * () {
+  })
+  removeVisit;
+
+  @task(function * () {
     this.store.createRecord('calendar-event', {
       request: this.model,
       visitDate: new Date(),
       period: 'GD'
     });
     yield this.saveCalendarEvent.perform();
-  }),
-  saveCalendarEvent: task(function * () {
+  })
+  createVisit;
+
+  @task(function * () {
     const calendarEvent = yield this.model.calendarEvent;
     const { validations } = yield calendarEvent.validate();
     if (validations.isValid)
       yield calendarEvent.save();
-  }),
+  })
+  saveCalendarEvent;
 
-  actions: {
-    setRequiresVisit(value) {
-      this.model.set('requiresVisit', value);
-      this.save.perform();
+  @action
+  setRequiresVisit(value) {
+    this.model.set('requiresVisit', value);
+    this.save.perform();
 
-      if (value) {
-        this.createVisit.perform();
-      } else {
-        this.removeVisit.perform();
-      }
-    },
-    setEmployee(employee) {
-      this.set('employee', employee);
-      const firstName = employee ? employee.firstName : null;
-      this.model.set('employee', firstName);
-    },
-    setVisitor(visitor) {
-      this.set('visitor', visitor);
-      const firstName = visitor ? visitor.firstName : null;
-      this.model.set('visitor', firstName);
+    if (value) {
+      this.createVisit.perform();
+    } else {
+      this.removeVisit.perform();
     }
   }
-});
+
+  @action
+  setEmployee(employee) {
+    this.set('employee', employee);
+    const firstName = employee ? employee.firstName : null;
+    this.model.set('employee', firstName);
+  }
+
+  @action
+  setVisitor(visitor) {
+    this.set('visitor', visitor);
+    const firstName = visitor ? visitor.firstName : null;
+    this.model.set('visitor', firstName);
+  }
+}

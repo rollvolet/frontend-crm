@@ -1,21 +1,25 @@
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import { proxyAware } from '../../utils/proxy-aware';
 
-export default Component.extend({
-  store: service(),
+@classic
+export default class ProductUnitSelect extends Component {
+  @service
+  store;
 
-  selected: proxyAware('value'),
+  @proxyAware('value')
+  selected;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     const units = this.store.peekAll('product-unit');
     this.set('options', units);
-  },
+  }
 
-  label: 'Eenheid',
-  value: null,
-  errors: null,
-  required: false,
-  onSelectionChange: null
-});
+  label = 'Eenheid';
+  value = null;
+  errors = null;
+  required = false;
+  onSelectionChange = null;
+}

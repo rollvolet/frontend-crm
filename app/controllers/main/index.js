@@ -1,6 +1,9 @@
-import Controller from '@ember/controller';
+import classic from 'ember-classic-decorator';
 import { inject } from '@ember/service';
+import Controller from '@ember/controller';
 
-export default Controller.extend({
-  session: inject()
-});
+@classic
+export default class IndexController extends Controller {
+  @inject()
+  session;
+}

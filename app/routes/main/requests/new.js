@@ -1,8 +1,11 @@
-import Route from '@ember/routing/route';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
-export default Route.extend({
-  currentSession: service(),
+@classic
+export default class NewRoute extends Route {
+  @service
+  currentSession;
 
   async model() {
     const employee = await this.currentSession.getCurrentEmployee();
@@ -14,10 +17,11 @@ export default Route.extend({
     });
 
     return request.save();
-  },
+  }
+
   afterModel(model) {
     this.transitionTo('main.requests.edit', model, {
       queryParams: { editMode: true }
     });
   }
-});
+}

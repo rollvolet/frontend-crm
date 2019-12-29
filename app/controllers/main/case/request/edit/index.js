@@ -1,6 +1,8 @@
+import classic from 'ember-classic-decorator';
 import Controller from '@ember/controller';
 
-export default Controller.extend({
-  queryParams: ['editMode'],
-  editMode: false
-});
+@classic
+export default class IndexController extends Controller {
+  queryParams = ['editMode'];
+  editMode = false;
+}

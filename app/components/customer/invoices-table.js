@@ -1,26 +1,33 @@
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
+import { observes } from '@ember-decorators/object';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import DebouncedSearch from '../../mixins/debounced-search-task';
-import { observer } from '@ember/object';
 import { task } from 'ember-concurrency';
-import { inject as service } from '@ember/service';
 
-export default Component.extend(DebouncedSearch, {
-  classNames: ['invoices-table'],
-
-  router: service(),
+@classic
+@classNames('invoices-table')
+export default class InvoicesTable extends Component.extend(DebouncedSearch) {
+  @service
+  router;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.search.perform();
-  },
+  }
 
-  page: 0,
-  size: 10,
-  sort: '-number',
-  dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
+  page = 0;
+  size = 10;
+  sort = '-number';
+
+  @observes('page', 'size', 'sort')
+  dataTableParamChanged() { // eslint-disable-line ember/no-observers
     this.search.perform();
-  }),
-  search: task(function * () {
+  }
+
+  @task(function * () {
     const invoices = yield this.customer.query('invoices', {
       page: {
         size: this.size,
@@ -40,27 +47,34 @@ export default Component.extend(DebouncedSearch, {
       }
     });
     this.set('invoices', invoices);
-  }),
-  actions: {
-    setFilter(key, value) {
-      this.set(key, value);
-      this.debounceSearch.perform(this.search);
-    },
-    resetFilters() {
-      this.set('number', undefined);
-      this.set('reference', undefined);
-      this.set('name', undefined);
-      this.set('postalCode', undefined);
-      this.set('city', undefined);
-      this.set('street', undefined);
-      this.search.perform();
-    },
-    clickRow(row) {
-      const invoiceId = row.get('id');
-      this.router.transitionTo('main.case.invoice.edit', this.customer, invoiceId);
-    },
-    openNewInvoice() {
-      this.router.transitionTo('main.case.invoice.new', this.customer);
-    }
+  })
+  search;
+
+  @action
+  setFilter(key, value) {
+    this.set(key, value);
+    this.debounceSearch.perform(this.search);
   }
-});
+
+  @action
+  resetFilters() {
+    this.set('number', undefined);
+    this.set('reference', undefined);
+    this.set('name', undefined);
+    this.set('postalCode', undefined);
+    this.set('city', undefined);
+    this.set('street', undefined);
+    this.search.perform();
+  }
+
+  @action
+  clickRow(row) {
+    const invoiceId = row.get('id');
+    this.router.transitionTo('main.case.invoice.edit', this.customer, invoiceId);
+  }
+
+  @action
+  openNewInvoice() {
+    this.router.transitionTo('main.case.invoice.new', this.customer);
+  }
+}

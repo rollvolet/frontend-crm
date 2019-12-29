@@ -1,22 +1,28 @@
-import Controller from '@ember/controller';
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import { inject } from '@ember/service';
+import Controller from '@ember/controller';
 import { task } from 'ember-concurrency';
 
-export default Controller.extend({
-  session: inject(),
+@classic
+export default class LoginController extends Controller {
+  @inject()
+  session;
 
-  login: task(function * () {
+  @(task(function * () {
     yield this.session.authenticate('authenticator:torii', 'azure-ad2-oauth2').catch((reason) => {
       this.set('errorMessage', reason.error || reason);
     });
-  }).restartable(),
+  }).restartable())
+  login;
 
-  actions: {
-    logout() {
-      this.session.invalidate();
-    },
-    resetError() {
-      this.set('errorMessage', null);
-    }
+  @action
+  logout() {
+    this.session.invalidate();
   }
-});
+
+  @action
+  resetError() {
+    this.set('errorMessage', null);
+  }
+}

@@ -1,12 +1,15 @@
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
+import { tagName } from '@ember-decorators/component';
 import { computed } from '@ember/object';
+import Component from '@ember/component';
 
-export default Component.extend({
-  tagName: '',
+@classic
+@tagName('')
+export default class FmtEmail extends Component {
+  value = null;
 
-  value: null,
-
-  href: computed('value', function() {
+  @computed('value')
+  get href() {
     return `mailto:${this.value}`;
-  })
-});
+  }
+}

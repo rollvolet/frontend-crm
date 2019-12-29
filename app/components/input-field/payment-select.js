@@ -1,19 +1,23 @@
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import { proxyAware } from '../../utils/proxy-aware';
 
-export default Component.extend({
-  store: service(),
+@classic
+export default class PaymentSelect extends Component {
+  @service
+  store;
 
-  selected: proxyAware('value'),
+  @proxyAware('value')
+  selected;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     const payments = this.store.peekAll('payment');
     this.set('options', payments);
-  },
+  }
 
-  label: 'Bank',
-  value: null,
-  onSelectionChange: null
-});
+  label = 'Bank';
+  value = null;
+  onSelectionChange = null;
+}

@@ -1,6 +1,8 @@
+import classic from 'ember-classic-decorator';
 import Component from '@ember/component';
 
-export default Component.extend({
-  model: null,
-  isDisabledEdit: true
-});
+@classic
+export default class InvoiceSupplementsTable extends Component {
+  model = null;
+  isDisabledEdit = true;
+}

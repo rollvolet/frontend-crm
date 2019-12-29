@@ -1,14 +1,19 @@
+import classic from 'ember-classic-decorator';
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import fetch from 'fetch';
 import config from '../config/environment';
 
-export default Service.extend({
-  router: service(),
-  session: service(),
+@classic
+export default class AppStateService extends Service {
+  @service
+  router;
 
-  lastError: null,
-  lastSuccessUrl: null,
+  @service
+  session;
+
+  lastError = null;
+  lastSuccessUrl = null;
 
   reportError(error) {
     this.set('lastError', error);
@@ -39,4 +44,4 @@ export default Service.extend({
       })
     });
   }
-});
+}

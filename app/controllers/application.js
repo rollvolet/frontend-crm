@@ -1,17 +1,20 @@
+import classic from 'ember-classic-decorator';
+import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import Ember from 'ember';
-import { inject as service } from '@ember/service';
 import { debug } from '@ember/debug';
 
-export default Controller.extend({
-  appState: service(),
+@classic
+export default class ApplicationController extends Controller {
+  @service
+  appState;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     Ember.onerror = (error) => {
       this.handleApplicationError(error);
     };
-  },
+  }
 
   handleApplicationError(error) {
     const shouldBeIgnored = function(error) {
@@ -28,4 +31,4 @@ export default Controller.extend({
       this.transitionToRoute('oops');
     }
   }
-});
+}

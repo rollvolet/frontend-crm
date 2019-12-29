@@ -1,9 +1,12 @@
+import classic from 'ember-classic-decorator';
 import Route from '@ember/routing/route';
 import DataTableRouteMixin from 'ember-data-table/mixins/route';
 
-export default Route.extend(DataTableRouteMixin, {
-  modelName: 'customer',
-  queryParams: {
+@classic
+export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
+  modelName = 'customer';
+
+  queryParams = {
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
@@ -14,7 +17,8 @@ export default Route.extend(DataTableRouteMixin, {
     city: { refreshModel: true },
     street: { refreshModel: true },
     telephone: { refreshModel: true }
-  },
+  };
+
   mergeQueryOptions(params) {
     return {
       include: 'honorific-prefix',
@@ -28,4 +32,4 @@ export default Route.extend(DataTableRouteMixin, {
       }
     };
   }
-});
+}
