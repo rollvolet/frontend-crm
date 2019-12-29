@@ -1,17 +1,14 @@
-import { warn } from '@ember/debug';
 import Service, { inject } from '@ember/service';
-import FileSaverMixin from 'ember-cli-file-saver/mixins/file-saver';
-import $ from 'jquery';
 
-export default Service.extend(FileSaverMixin, {
+export default Service.extend({
   ajax: inject(),
   session: inject(),
 
   // Document generation
 
-  visitReport(request) {
-    const fileName = this._visitReportName(request);
-    return this._generateAndDownload(`/api/requests/${request.id}/reports`, fileName, 'application/pdf');
+  async visitReport(request) {
+    await this._generate(`/api/requests/${request.get('id')}/reports`);
+    this.downloadVisitReport(request);
   },
   async offerDocument(offer) {
     await this._generate(`/api/offers/${offer.get('id')}/documents`);
@@ -84,6 +81,9 @@ export default Service.extend(FileSaverMixin, {
 
   // Document downloads
 
+  downloadVisitReport(request) {
+    this._openInNewTab(`/api/files/requests/${request.get('id')}`);
+  },
   downloadOfferDocument(offer) {
     this._openInNewTab(`/api/files/offers/${offer.get('id')}`);
   },
@@ -113,12 +113,6 @@ export default Service.extend(FileSaverMixin, {
   },
 
 
-  // Document names
-
-  _visitReportName(request) {
-    return `AD${request.id}_bezoekrapport.pdf`;
-  },
-
   // Core helpers
   _generate(url,  method = 'POST') {
     const { access_token } = this.get('session.data.authenticated');
@@ -134,31 +128,5 @@ export default Service.extend(FileSaverMixin, {
       target: '_blank',
       href,
     }).click();
-  },
-
-  // TODO replace with _generate() and _openInNewTab()
-  _generateAndDownload(url, fileName, contentType) {
-    return this._download(url, fileName, contentType, 'POST');
-  },
-  _download(url, fileName, contentType, method = 'GET') {
-    const { access_token } = this.get('session.data.authenticated');
-    return this.ajax.request(url, {
-      method: method,
-      dataType: 'binary',
-      xhr: () => { // hack to prevent ember-ajax tries to parse the response as JSON. See https://github.com/ember-cli/ember-ajax/issues/321
-        const myXhr = $.ajaxSettings.xhr();
-        myXhr.responseType = 'arraybuffer';
-        return myXhr;
-      },
-      headers: {
-        Authorization: `Bearer ${access_token}`
-      }
-    }).then((content) => {
-      this.saveFileAs(fileName, content, contentType);
-      return fileName;
-    }).catch(function(e) {
-      warn(`Download ${url} failed: ${e.message || JSON.stringify(e)}`, { id: 'download.failure' });
-      return null;
-    });
   }
 });

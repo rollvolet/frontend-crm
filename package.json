@@ -29,7 +29,6 @@
     "ember-cli-dependency-checker": "^3.2.0",
     "ember-cli-eslint": "^5.1.0",
     "ember-cli-favicon": "^2.2.0",
-    "ember-cli-file-saver": "^2.0.0",
     "ember-cli-htmlbars": "^3.1.0",
     "ember-cli-htmlbars-inline-precompile": "^2.1.0",
     "ember-cli-inject-live-reload": "^2.0.1",
