@@ -1,32 +1,21 @@
 {{#if (is-pending model)}}
   <div class="case--right-panel case--request--visit skeleton flex-noshrink layout-column layout-align-center-center">
-    {{paper-progress-circular diameter=25}}
+    <PaperProgressCircular @diameter={{25}} />
   </div>
 {{else if model}}
   <section class="case--request--visit">
     <div class="layout-row layout-align-start-center">
       <h3>{{paper-icon "event"}} Bezoek</h3>
-      {{save-status-icon model=model task=save}}
+      <SaveStatusIcon @model={{model}} @task={{save}} />
     </div>
-    {{paper-input label="Datum" value=model.visitDateStr type="date"
-        required="style" errors=(v-get model 'visitDate' 'messages')
-        onChange=(queue (action (mut model.visitDateStr)) (perform save))
-        class="default"}}
-    {{input-field/calendar-period-select value=model.period errors=(v-get model 'period' 'messages') required=true
-        onSelectionChange=(action "changePeriod")
-        class="md-input-wrapper large"}}
+    <PaperInput @label="Datum" @value={{model.visitDateStr}} @type="date" @required="style" @errors={{v-get model "visitDate" "messages"}} @onChange={{queue (action (mut model.visitDateStr)) (perform save)}} @class="default" />
+    <InputField::CalendarPeriodSelect @value={{model.period}} @errors={{v-get model "period" "messages"}} @required={{true}} @onSelectionChange={{action "changePeriod"}} @class="md-input-wrapper large" />
     {{#if requiresSingleTime}}
-      {{paper-input label="Tijdstip" value=model.fromHour errors=(v-get model 'fromHour' 'messages')
-          onChange=(action (mut model.fromHour))  onBlur=(perform save)
-          required="style" class="small"}} uur
+      <PaperInput @label="Tijdstip" @value={{model.fromHour}} @errors={{v-get model "fromHour" "messages"}} @onChange={{action (mut model.fromHour)}} @onBlur={{perform save}} @required="style" @class="small" /> uur
     {{/if}}
     {{#if requiresTimeRange}}
-      {{paper-input label="Van" value=model.fromHour errors=(v-get model 'fromHour' 'messages')
-          onChange=(action (mut model.fromHour))  onBlur=(perform save)
-          required="style" class="small"}} -
-      {{paper-input label="Tot" value=model.untilHour errors=(v-get model 'untilHour' 'messages')
-          onChange=(action (mut model.untilHour))  onBlur=(perform save)
-          required="style" class="small"}} uur
+      <PaperInput @label="Van" @value={{model.fromHour}} @errors={{v-get model "fromHour" "messages"}} @onChange={{action (mut model.fromHour)}} @onBlur={{perform save}} @required="style" @class="small" /> -
+      <PaperInput @label="Tot" @value={{model.untilHour}} @errors={{v-get model "untilHour" "messages"}} @onChange={{action (mut model.untilHour)}} @onBlur={{perform save}} @required="style" @class="small" /> uur
     {{/if}}
   </section>
 {{/if}}

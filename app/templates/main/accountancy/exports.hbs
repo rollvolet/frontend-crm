@@ -5,7 +5,7 @@
   </h1>
 </div>
 
-{{accountancy-export-form onExport=(perform onExport)}}
+<AccountancyExportForm @onExport={{perform onExport}} />
 
 <h2 {{action (toggle "isInvoicesExpanded" this)}}>
   Bekijk facturen
@@ -17,7 +17,7 @@
   {{/if}}
 </h2>
 {{#liquid-if isInvoicesExpanded class="expand-more"}}
-  {{invoices-table size=50}}
+  <InvoicesTable @size={{50}} />
 {{/liquid-if}}
 
 <div class="u-spacer-large"></div>
@@ -32,16 +32,15 @@
   {{/if}}
 </h2>
 {{#liquid-if isHistoryExpanded class="expand-more"}}
-  {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
-       sort=sort page=page size=size as |t|}}
-    {{#t.content as |c|}}
-      {{#c.header}}
-        {{th-sortable field='date' currentSorting=sort label='Datum export'}}
+  <DataTable @content={{model}} @isLoading={{isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{sort}} @page={{page}} @size={{size}} as |t|>
+    <t.content as |c|>
+      <c.header>
+        <ThSortable @field="date" @currentSorting={{sort}} @label="Datum export" />
         <th>Van</th>
         <th>Tot</th>
         <th>Test</th>
-      {{/c.header}}
-      {{#c.body as |row|}}
+      </c.header>
+      <c.body as |row|>
         <td>{{fmt-date row.date}}</td>
         <td>
           {{#if row.fromNumber}}
@@ -62,7 +61,7 @@
             {{paper-icon "done"}}
           {{/if}}
         </td>
-      {{/c.body}}
-    {{/t.content}}
-  {{/data-table}}
+      </c.body>
+    </t.content>
+  </DataTable>
 {{/liquid-if}}

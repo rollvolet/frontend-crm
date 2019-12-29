@@ -1,5 +1,3 @@
-{{order-panel model=model editMode=editMode
-    onOpenEdit=(action (mut editMode) true)
-    onCloseEdit=(action (mut editMode) false)}}
+<OrderPanel @model={{model}} @editMode={{editMode}} @onOpenEdit={{action (mut editMode) true}} @onCloseEdit={{action (mut editMode) false}} />
 
 {{liquid-outlet}}

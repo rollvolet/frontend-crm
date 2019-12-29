@@ -1,86 +1,59 @@
 <div class="layout-row layout-align-start-start">
   <section class="layout-column">
     <div class="layout-row">
-      {{paper-input label="Datum" value=model.orderDateStr type="date"
-          required="style" errors=(v-get model 'orderDate' 'messages')
-          onChange=(queue (action (mut model.orderDateStr)) (perform save))
-          class="default"}}
+      <PaperInput @label="Datum" @value={{model.orderDateStr}} @type="date" @required="style" @errors={{v-get model "orderDate" "messages"}} @onChange={{queue (action (mut model.orderDateStr)) (perform save)}} @class="default" />
     </div>
     <div class="layout-row">
-      {{paper-input label="Verwacht" value=model.expectedDateStr type="date"
-          onChange=(queue (action (mut model.expectedDateStr)) (perform save))
-          class="default"}}
-      {{paper-input label="Vereist" value=model.requiredDateStr type="date"
-          onChange=(queue (action (mut model.requiredDateStr)) (perform save))
-          class="default"}}
+      <PaperInput @label="Verwacht" @value={{model.expectedDateStr}} @type="date" @onChange={{queue (action (mut model.expectedDateStr)) (perform save)}} @class="default" />
+      <PaperInput @label="Vereist" @value={{model.requiredDateStr}} @type="date" @onChange={{queue (action (mut model.requiredDateStr)) (perform save)}} @class="default" />
     </div>
     <div class="layout-row">
-      {{input-field/employee-select label="Bezoeker" value=visitor isOnRoad=true isTechnician=true
-          onSelectionChange=(queue (action "setVisitor") (perform save))
-          class="md-input-wrapper large"}}
+      <InputField::EmployeeSelect @label="Bezoeker" @value={{visitor}} @isOnRoad={{true}} @isTechnician={{true}} @onSelectionChange={{queue (action "setVisitor") (perform save)}} @class="md-input-wrapper large" />
     </div>
     <div class="layout-row">
-      {{paper-input label="Referentie klant" value=model.reference
-          onChange=(action (mut model.reference)) onBlur=(perform save)
-          class="large"}}
+      <PaperInput @label="Referentie klant" @value={{model.reference}} @onChange={{action (mut model.reference)}} @onBlur={{perform save}} @class="large" />
     </div>
     <div class="u-bold">Geplande uren</div>
     <div class="layout-row layout-align-start-end">
-      {{paper-input label="Werkuren" value=scheduledHoursInput
-          errors=(v-get model 'scheduledHours' 'messages')
-          onChange=(action (mut scheduledHoursInput)) onBlur=(queue (action "formatDecimal" "scheduledHours") (perform save))
-          class="small"}}<span class="input-postfix"> uur x</span>
-      {{paper-input label="Personen" value=scheduledNbOfPersonsInput
-          errors=(v-get model 'scheduledNbOfPersons' 'messages')
-          onChange=(action (mut scheduledNbOfPersonsInput)) onBlur=(queue (action "formatDecimal" "scheduledNbOfPersons") (perform save))
-          class="small"}}<span class="input-postfix"> man = {{model.scheduledTotal}} uur</span>
+      <PaperInput @label="Werkuren" @value={{scheduledHoursInput}} @errors={{v-get model "scheduledHours" "messages"}} @onChange={{action (mut scheduledHoursInput)}} @onBlur={{queue (action "formatDecimal" "scheduledHours") (perform save)}} @class="small" /><span class="input-postfix"> uur x</span>
+      <PaperInput @label="Personen" @value={{scheduledNbOfPersonsInput}} @errors={{v-get model "scheduledNbOfPersons" "messages"}} @onChange={{action (mut scheduledNbOfPersonsInput)}} @onBlur={{queue (action "formatDecimal" "scheduledNbOfPersons") (perform save)}} @class="small" /><span class="input-postfix"> man = {{model.scheduledTotal}} uur</span>
     </div>
     <div class="layout-row layout-align-start-center">
-      {{paper-checkbox label="Voorschot nodig" value=model.depositRequired
-          onChange=(queue (action (mut model.depositRequired)) (perform save))}}
+      <PaperCheckbox @label="Voorschot nodig" @value={{model.depositRequired}} @onChange={{queue (action (mut model.depositRequired)) (perform save)}} />
     </div>
   </section>
   <section class="case--right-panel flex-noshrink layout-column">
     <div class="u-bold">Uitvoering</div>
     <div class="note note--info">De planning in de agenda kan in een volgende stap ingevuld worden</div>
     <div class="layout-row">
-      {{#paper-radio-group groupValue=(readonly model.execution)
-           onChange=(queue (action "setExecution") (perform save)) as |group|}}
-        {{#group.radio value='installation'}}{{order-execution 'installation'}}{{/group.radio}}
-        {{#group.radio value='delivery'}}{{order-execution 'delivery'}}{{/group.radio}}
-        {{#group.radio value='pickup'}}{{order-execution 'pickup'}}{{/group.radio}}
-      {{/paper-radio-group}}
+      <PaperRadioGroup @groupValue={{readonly model.execution}} @onChange={{queue (action "setExecution") (perform save)}} as |group|>
+        <group.radio @value="installation">{{order-execution 'installation'}}</group.radio>
+        <group.radio @value="delivery">{{order-execution 'delivery'}}</group.radio>
+        <group.radio @value="pickup">{{order-execution 'pickup'}}</group.radio>
+      </PaperRadioGroup>
     </div>
     <div class="u-bold">Status</div>
     <div class="layout-row layout-align-start-center">
-      {{paper-checkbox label="Productiebon" value=model.hasProductionTicket
-          onChange=(queue (action (mut model.hasProductionTicket)) (perform save))}}
-      {{production-ticket-buttons model=model}}
+      <PaperCheckbox @label="Productiebon" @value={{model.hasProductionTicket}} @onChange={{queue (action (mut model.hasProductionTicket)) (perform save)}} />
+      <ProductionTicketButtons @model={{model}} />
     </div>
     <div class="layout-row layout-align-start-center">
-      {{paper-checkbox label="Product klaar" value=model.isReady
-          onChange=(queue (action (mut model.isReady)) (perform save))}}
+      <PaperCheckbox @label="Product klaar" @value={{model.isReady}} @onChange={{queue (action (mut model.isReady)) (perform save)}} />
     </div>
     <div class="layout-row layout-align-start-center">
-      {{paper-checkbox label="Afgesloten" value=model.canceled
-          onChange=(queue (action "setCanceled") (perform save))}}
+      <PaperCheckbox @label="Afgesloten" @value={{model.canceled}} @onChange={{queue (action "setCanceled") (perform save)}} />
     </div>
     {{#liquid-if model.canceled class="expand-more"}}
       <div class="layout-row">
-        {{paper-input label="Reden" value=model.cancellationReason
-            errors=(v-get model 'cancellationReason' 'messages')
-            onChange=(action (mut model.cancellationReason)) onBlur=(perform save)
-            textarea=true passThru=(hash rows=3) class="xxlarge"}}
+        <PaperInput @label="Reden" @value={{model.cancellationReason}} @errors={{v-get model "cancellationReason" "messages"}} @onChange={{action (mut model.cancellationReason)}} @onBlur={{perform save}} @textarea={{true}} @passThru={{hash rows=3}} @class="xxlarge" />
       </div>
     {{/liquid-if}}
     <div class="layout-row">
-      {{paper-input label="Opmerking" value=model.comment
-          onChange=(action (mut model.comment)) onBlur=(perform save)
-          textarea=true passThru=(hash rows=3) class="xxlarge"}}
+      <PaperInput @label="Opmerking" @value={{model.comment}} @onChange={{action (mut model.comment)}} @onBlur={{perform save}} @textarea={{true}} @passThru={{hash rows=3}} @class="xxlarge" />
     </div>
   </section>
 </div>
 
-{{#document-not-found-dialog show=showProductionTicketNotFoundDialog}}
+<DocumentNotFoundDialog @show={{showProductionTicketNotFoundDialog}}>
   <p>Er is nog geen productiebon opgeladen.</p>
-{{/document-not-found-dialog}}
+</DocumentNotFoundDialog>

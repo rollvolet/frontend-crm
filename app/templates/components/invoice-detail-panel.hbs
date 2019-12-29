@@ -1,79 +1,79 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--invoice--entry flex-100 layout-column">
-    {{#detail-list-item label="Datum"}}
-      {{#detail-list-subitem label="Factuurdatum"}}
+    <DetailListItem @label="Datum">
+      <DetailListSubitem @label="Factuurdatum">
         {{fmt-date model.invoiceDate}}
-      {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Vervaldag"}}
+      </DetailListSubitem>
+      <DetailListSubitem @label="Vervaldag">
         {{fmt-date model.dueDate}}
-      {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Geboekt"}}
+      </DetailListSubitem>
+      <DetailListSubitem @label="Geboekt">
         {{fmt-date model.bookingDate}}
-      {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Betaald"}}
+      </DetailListSubitem>
+      <DetailListSubitem @label="Betaald">
         {{fmt-date model.paymentDate}}
-      {{/detail-list-subitem}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Techniekers" click=(action "openWorkingHoursDialog") class="clickable"}}
+      </DetailListSubitem>
+    </DetailListItem>
+    <DetailListItem @label="Techniekers" @click={{action "openWorkingHoursDialog"}} @class="clickable">
       {{#if model.workingHours}}
         {{join ", " employeeFirstNames}} {{paper-icon "info" size=18}}
       {{else}}
         - {{paper-icon "add circle" size=18}}
       {{/if}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Referentie"}}
+    </DetailListItem>
+    <DetailListItem @label="Referentie">
       {{model.reference}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Opmerking"}}
+    </DetailListItem>
+    <DetailListItem @label="Opmerking">
       <span class="html-body">{{model.comment}}</span>
-    {{/detail-list-item}}
+    </DetailListItem>
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
     {{#if model.certificateRequired}}
-      {{#detail-list-item label="BTW-attest" class="layout-align-start-center"}}
-        {{certificate-document-buttons model=model}}
-      {{/detail-list-item}}
+      <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
+        <CertificateDocumentButtons @model={{model}} />
+      </DetailListItem>
     {{/if}}
     {{#unless model.isIsolated}}
-      {{#detail-list-item label="Productiebon"}}
+      <DetailListItem @label="Productiebon">
         {{paper-icon (if model.hasProductionTicket "check_box" "check_box_outline_blank")}}
         {{#if model.hasProductionTicket}}
           <span {{action "downloadProductionTicket"}}>
             {{paper-icon "find in page"}}
-            {{#paper-tooltip}}Productiebon bekijken{{/paper-tooltip}}
+            <PaperTooltip>Productiebon bekijken</PaperTooltip>
           </span>
         {{/if}}
-      {{/detail-list-item}}
+      </DetailListItem>
     {{/unless}}
-    {{#detail-list-item label="Creditnota"}}
+    <DetailListItem @label="Creditnota">
       {{paper-icon (if model.isCreditNote "check_box" "check_box_outline_blank")}}
-    {{/detail-list-item}}
+    </DetailListItem>
     {{#unless model.isCreditNote}}
-      {{#detail-list-item label="Betaalref."}}
+      <DetailListItem @label="Betaalref.">
         {{format-bank-reference model.bankReference}}
-      {{/detail-list-item}}
+      </DetailListItem>
     {{/unless}}
   </div>
 </div>
 
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="flex-100 layout-column">
-    {{#detail-list-item label="Bedrag"}}
-      {{invoice-calculation-table model=model}}
-    {{/detail-list-item}}
+    <DetailListItem @label="Bedrag">
+      <InvoiceCalculationTable @model={{model}} />
+    </DetailListItem>
   </div>
 </div>
 
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="flex-100 layout-column">
-    {{#detail-list-item label="Mededeling"}}
+    <DetailListItem @label="Mededeling">
       {{{model.documentOutro}}}
-    {{/detail-list-item}}
+    </DetailListItem>
   </div>
 </div>
 
-{{working-hours-dialog show=showWorkingHoursDialog model=model}}
+<WorkingHoursDialog @show={{showWorkingHoursDialog}} @model={{model}} />
 
-{{#document-not-found-dialog show=showProductionTicketNotFoundDialog}}
+<DocumentNotFoundDialog @show={{showProductionTicketNotFoundDialog}}>
   <p>Er is nog geen productiebon opgeladen.</p>
-{{/document-not-found-dialog}}
+</DocumentNotFoundDialog>

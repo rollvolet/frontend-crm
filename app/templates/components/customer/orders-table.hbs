@@ -1,32 +1,31 @@
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  {{paper-input label="Aanvraag" value=requestNumber onChange=(action "setFilter" "requestNumber") class="small"}}
-  {{paper-input label="Offerte" value=offerNumber onChange=(action "setFilter" "offerNumber") class="small"}}
-  {{paper-input label="Referentie" value=reference onChange=(action "setFilter" "reference") class="small"}}
-  {{paper-input label="Gebouw" value=name onChange=(action "setFilter" "name")}}
-  {{paper-input label="Straat" value=street onChange=(action "setFilter" "street") class="large"}}
-  {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small"}}
-  {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
-  {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+  <PaperInput @label="Aanvraag" @value={{requestNumber}} @onChange={{action "setFilter" "requestNumber"}} @class="small" />
+  <PaperInput @label="Offerte" @value={{offerNumber}} @onChange={{action "setFilter" "offerNumber"}} @class="small" />
+  <PaperInput @label="Referentie" @value={{reference}} @onChange={{action "setFilter" "reference"}} @class="small" />
+  <PaperInput @label="Gebouw" @value={{name}} @onChange={{action "setFilter" "name"}} />
+  <PaperInput @label="Straat" @value={{street}} @onChange={{action "setFilter" "street"}} @class="large" />
+  <PaperInput @label="Postcode" @value={{postalCode}} @onChange={{action "setFilter" "postalCode"}} @class="small" />
+  <PaperInput @label="Gemeente" @value={{city}} @onChange={{action "setFilter" "city"}} />
+  <PaperButton @iconButton={{true}} @onClick={{action "resetFilters"}}>
     {{paper-icon "close"}}
-    {{#paper-tooltip}}Wis filters{{/paper-tooltip}}
-  {{/paper-button}}
+    <PaperTooltip>Wis filters</PaperTooltip>
+  </PaperButton>
 </div>
 
-{{#data-table content=orders isLoading=(not search.isIdle) noDataMessage="Geen bestellingen"
-     onClickRow=(action "clickRow") page=page size=size sort=sort as |t|}}
-  {{#t.content as |c|}}
-    {{#c.header}}
+<DataTable @content={{orders}} @isLoading={{not search.isIdle}} @noDataMessage="Geen bestellingen" @onClickRow={{action "clickRow"}} @page={{page}} @size={{size}} @sort={{sort}} as |t|>
+  <t.content as |c|>
+    <c.header>
       <th>Aanvraag</th>
-      {{th-sortable field='offer-number' currentSorting=sort label='Offerte'}}
-      {{th-sortable field='reference' currentSorting=sort label='Referentie'}}
-      {{th-sortable field='offer-date' currentSorting=sort label='Datum'}}
+      <ThSortable @field="offer-number" @currentSorting={{sort}} @label="Offerte" />
+      <ThSortable @field="reference" @currentSorting={{sort}} @label="Referentie" />
+      <ThSortable @field="offer-date" @currentSorting={{sort}} @label="Datum" />
       <th>Gebouw</th>
       <th>Straat</th>
       <th>Postcode</th>
       <th>Gemeente</th>
-    {{/c.header}}
-    {{#c.body as |row|}}
+    </c.header>
+    <c.body as |row|>
       <td>{{row.requestNumber}}</td>
       <td>{{row.offerNumber}}</td>
       <td>{{row.offer.reference}}</td>
@@ -35,8 +34,8 @@
       <td>{{row.building.address1}}</td>
       <td>{{row.building.postalCode}}</td>
       <td>{{row.building.city}}</td>
-    {{/c.body}}
-  {{/t.content}}
-{{/data-table}}
+    </c.body>
+  </t.content>
+</DataTable>
 
 {{liquid-yield}}

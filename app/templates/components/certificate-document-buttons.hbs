@@ -1,68 +1,67 @@
 <div class="certificate-document-buttons layout-row layout-align-start-center">
   {{#if (or generateTemplate.isRunning upload.isRunning)}}
-    {{paper-progress-circular diameter=20}}
+    <PaperProgressCircular @diameter={{20}} />
   {{else}}
     <div class="certificate--status">
       {{#if model.certificateReceived}}
         <span>
-          {{paper-icon class="success" icon="done" size=32}}
-          {{#paper-tooltip}}In orde{{/paper-tooltip}}
+          <PaperIcon @class="success" @icon="done" @size={{32}} />
+          <PaperTooltip>In orde</PaperTooltip>
         </span>
       {{else}}
         <span>
-          {{paper-icon class="error" icon="error outline" size=28}}
-          {{#paper-tooltip}}BTW-attest ontbreekt{{/paper-tooltip}}
+          <PaperIcon @class="error" @icon="error outline" @size={{28}} />
+          <PaperTooltip>BTW-attest ontbreekt</PaperTooltip>
         </span>
       {{/if}}
     </div>
 
     <div class="certificate--buttons">
-      {{#paper-button onClick=(perform generateTemplate) iconButton=iconButton raised=(not iconButton) primary=(not iconButton)}}
+      <PaperButton @onClick={{perform generateTemplate}} @iconButton={{iconButton}} @raised={{not iconButton}} @primary={{not iconButton}}>
         {{#if iconButton}}
           {{paper-icon "restore page"}}
-          {{#paper-tooltip}}Maak nieuw attest{{/paper-tooltip}}
+          <PaperTooltip>Maak nieuw attest</PaperTooltip>
         {{else}}
           Maak nieuw attest
         {{/if}}
-      {{/paper-button}}
+      </PaperButton>
 
       {{#if model.certificateReceived}}
-        {{#paper-button onClick=(action "download") iconButton=iconButton raised=(not iconButton) primary=(not iconButton)}}
+        <PaperButton @onClick={{action "download"}} @iconButton={{iconButton}} @raised={{not iconButton}} @primary={{not iconButton}}>
           {{#if iconButton}}
             {{paper-icon "find in page"}}
-            {{#paper-tooltip}}BTW-attest bekijken{{/paper-tooltip}}
+            <PaperTooltip>BTW-attest bekijken</PaperTooltip>
           {{else}}
             BTW-attest bekijken
           {{/if}}
-        {{/paper-button}}
-        {{#paper-button onClick=(action "delete") iconButton=iconButton raised=(not iconButton) primary=(not iconButton)}}
+        </PaperButton>
+        <PaperButton @onClick={{action "delete"}} @iconButton={{iconButton}} @raised={{not iconButton}} @primary={{not iconButton}}>
           {{#if iconButton}}
             {{paper-icon "delete"}}
-            {{#paper-tooltip}}BTW-attest verwijderen{{/paper-tooltip}}
+            <PaperTooltip>BTW-attest verwijderen</PaperTooltip>
           {{else}}
             BTW-attest verwijderen
           {{/if}}
-        {{/paper-button}}
+        </PaperButton>
       {{else}}
-        {{#file-upload name="certificates" accept="application/pdf" class="certificate-upload"
-             onfileadd=(perform upload) as |queue|}}
+        <FileUpload @name="certificates" @accept="application/pdf" @class="certificate-upload" @onfileadd={{perform upload}} as |queue|>
           {{#if hasUploadError}}
             {{paper-icon "error" primary=true}}
-            {{#paper-tooltip}}Bestand niet correct opgeladen{{/paper-tooltip}}
+            <PaperTooltip>Bestand niet correct opgeladen</PaperTooltip>
           {{/if}}
           {{#if queue.files.length}}
-            {{paper-progress-circular diameter=25}}
+            <PaperProgressCircular @diameter={{25}} />
           {{else}}
             {{#if iconButton}}
               <i class="material-icons md-18">cloud_upload</i>
-              {{#paper-tooltip}}BTW-attest opladen{{/paper-tooltip}}
+              <PaperTooltip>BTW-attest opladen</PaperTooltip>
             {{else}}
               <span class="md-default-theme md-button md-primary md-raised">
                 BTW-attest opladen
               </span>
             {{/if}}
           {{/if}}
-        {{/file-upload}}
+        </FileUpload>
       {{/if}}
     </div>
   {{/if}}

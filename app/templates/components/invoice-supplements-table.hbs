@@ -18,14 +18,14 @@
         {{#unless isDisabledEdit}}
           <td>
             <div class="layout-row">
-              {{#paper-button onClick=(action onOpenEdit supplement) iconButton=true}}
+              <PaperButton @onClick={{action onOpenEdit supplement}} @iconButton={{true}}>
                 {{paper-icon "edit mode"}}
-                {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
-              {{/paper-button}}
-              {{#paper-button onClick=(action onDelete supplement) iconButton=true}}
+                <PaperTooltip>Bewerken</PaperTooltip>
+              </PaperButton>
+              <PaperButton @onClick={{action onDelete supplement}} @iconButton={{true}}>
                 {{paper-icon "delete"}}
-                {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-              {{/paper-button}}
+                <PaperTooltip>Verwijderen</PaperTooltip>
+              </PaperButton>
             </div>
           </td>
         {{/unless}}

@@ -21,11 +21,11 @@
         <td>{{fmt-currency totalOrderAmount}}</td>
         <td>{{fmt-currency totalOrderVat}}</td>
       </tr>
-      {{#link-to 'main.case.order.edit.deposit-invoices' model.order tagName='tr' class="clickable"}}
+      <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{model.order}} @tagName="tr" class="clickable">
         <td>Voorschotfacturen {{paper-icon "info" size=18}}</td>
         <td>&minus; {{fmt-currency depositInvoicesAmount}}</td>
         <td>&minus; {{fmt-currency depositInvoicesVat}}</td>
-      {{/link-to}}
+      </LinkTo>
     {{/unless}}
     <tr class="subtotal">
       <td>Subtotaal</td>
@@ -58,4 +58,4 @@
 <div>
 </div>
 
-{{invoice-supplements-dialog show=showSupplementsDialog model=model}}
+<InvoiceSupplementsDialog @show={{showSupplementsDialog}} @model={{model}} />

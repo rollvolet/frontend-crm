@@ -4,58 +4,58 @@
       {{#if editMode}}Bewerk details{{else}}Overzicht{{/if}} offerte {{model.number}}
     </h2>
     {{#if editMode}}
-      {{save-status-icon model=model task=save}}
+      <SaveStatusIcon @model={{model}} @task={{save}} />
     {{/if}}
   </div>
   <div>
     {{#if editMode}}
       {{#if isEnabledDelete}}
-        {{#paper-button onClick=(perform remove) iconButton=true}}
+        <PaperButton @onClick={{perform remove}} @iconButton={{true}}>
           {{paper-icon "delete"}}
-          {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-        {{/paper-button}}
+          <PaperTooltip>Verwijderen</PaperTooltip>
+        </PaperButton>
       {{/if}}
-      {{#paper-button onClick=(action "closeEdit") iconButton=true}}
+      <PaperButton @onClick={{action "closeEdit"}} @iconButton={{true}}>
         {{paper-icon "exit to app"}}
-        {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
-      {{/paper-button}}
+        <PaperTooltip>Sluiten</PaperTooltip>
+      </PaperButton>
     {{else}}
-      {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
+      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{isDisabledEdit}}>
         {{paper-icon "edit mode"}}
-        {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
-      {{/paper-button}}
+        <PaperTooltip>Aanpassen</PaperTooltip>
+      </PaperButton>
     {{/if}}
   </div>
 </div>
 
 {{#if hasOrder}}
-  {{warning-message message="Reeds besteld. Geen wijzigingen meer mogelijk."}}
+  <WarningMessage @message="Reeds besteld. Geen wijzigingen meer mogelijk." />
 {{else if model.isMasteredByAccess}}
-  {{warning-message message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden."}}
+  <WarningMessage @message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden." />
 {{else if hasMixedVatRates}}
-  {{info-message message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden."}}
+  <InfoMessage @message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
 {{/if}}
 
 {{#if remove.isRunning}}
   <div>
-    {{paper-progress-linear}}
+    <PaperProgressLinear />
     <p>Aan het verwijderen...</p>
   </div>
 {{else if rollbackTree.isRunning}}
   <div>
-    {{paper-progress-linear}}
+    <PaperProgressLinear />
     <p>Aan het herstellen...</p>
   </div>
 {{else if (and (not model.id) model.isSavivg)}}
   <div>
-    {{paper-progress-linear}}
+    <PaperProgressLinear />
     <p>Aan het aanmaken...</p>
   </div>
 {{else}}
   {{#if editMode}}
-    {{offer-edit-form model=model save=save}}
+    <OfferEditForm @model={{model}} @save={{save}} />
   {{else}}
-    {{offer-detail-panel model=model}}
+    <OfferDetailPanel @model={{model}} />
   {{/if}}
 
   {{#if model.isMasteredByAccess}}
@@ -66,15 +66,10 @@
       <h2>Offerte
         <span class="small-text-fade">[
           {{#if editMode}}
-            {{input
-                value=model.documentVersion
-                key-up=(action (mut model.documentVersion))
-                focus-out=(perform save)
-                class="xsmall"
-            }}
-            {{#paper-tooltip}}
+            <Input @value={{model.documentVersion}} @key-up={{action (mut model.documentVersion)}} @focus-out={{perform save}} class="xsmall" />
+            <PaperTooltip>
               Pas het versienummer aan om een nieuwe versie van het document te maken; anders wordt het vorige document overschreven.
-            {{/paper-tooltip}}
+            </PaperTooltip>
           {{else}}
             {{model.documentVersion}}
           {{/if}}
@@ -83,19 +78,19 @@
       </h2>
       <div>
         {{#if generateOfferDocument.isRunning}}
-          {{paper-progress-circular diameter=18}}
+          <PaperProgressCircular @diameter={{18}} />
         {{else}}
           {{#unless editMode}}
-            {{#paper-button onClick=(action "downloadOfferDocument") iconButton=true}}
+            <PaperButton @onClick={{action "downloadOfferDocument"}} @iconButton={{true}}>
               {{paper-icon "find in page"}}
-              {{#paper-tooltip}}Offerte bekijken{{/paper-tooltip}}
-            {{/paper-button}}
+              <PaperTooltip>Offerte bekijken</PaperTooltip>
+            </PaperButton>
           {{/unless}}
           {{#unless isDisabledEdit}}
-            {{#paper-button onClick=(perform generateOfferDocument) iconButton=true}}
+            <PaperButton @onClick={{perform generateOfferDocument}} @iconButton={{true}}>
               {{paper-icon "restore page"}}
-              {{#paper-tooltip}}Offerte maken{{/paper-tooltip}}
-            {{/paper-button}}
+              <PaperTooltip>Offerte maken</PaperTooltip>
+            </PaperButton>
           {{/unless}}
         {{/if}}
       </div>
@@ -105,15 +100,14 @@
       <div class="offer-document-form layout-column">
         <section>
           <label>Introductie</label>
-          {{pell-editor class="pell-editor offer-intro" value=model.documentIntro pellOptions=pellOptions
-              onChange=(action (mut model.documentIntro)) focusOut=(perform save)}}
+          <PellEditor @class="pell-editor offer-intro" @value={{model.documentIntro}} @pellOptions={{pellOptions}} @onChange={{action (mut model.documentIntro)}} @focusOut={{perform save}} />
         </section>
         <section>
           <div class="layout-row layout-align-start-center">
             <label>Producten</label>
           </div>
           {{#each sortedOfferlines as |offerline|}}
-            {{offerline-edit-form model=offerline onDelete=(action "deleteOfferline")}}
+            <OfferlineEditForm @model={{offerline}} @onDelete={{action "deleteOfferline"}} />
           {{else}}
             <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{action "addOfferline"}}>hier</span> om producten toe te voegen aan de offerte.</div>
           {{/each}}
@@ -123,18 +117,17 @@
         </section>
         <section>
           <label>Voorwaarden</label>
-          {{pell-editor class="pell-editor offer-outro" value=model.documentOutro pellOptions=pellOptions
-              onChange=(action (mut model.documentOutro)) focusOut=(perform save)}}
+          <PellEditor @class="pell-editor offer-outro" @value={{model.documentOutro}} @pellOptions={{pellOptions}} @onChange={{action (mut model.documentOutro)}} @focusOut={{perform save}} />
         </section>
       </div>
   {{else}}
       <div class="offer-document layout-column">
         <section>{{{model.documentIntro}}}</section>
-        <section>{{offerlines-detail-panel model=model.offerlines}}</section>
+        <section><OfferlinesDetailPanel @model={{model.offerlines}} /></section>
         <section>{{{model.documentOutro}}}</section>
       </div>
     {{/if}}
   {{/if}}
 {{/if}}
 
-{{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
+<UnsavedChangesDialog @show={{showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />

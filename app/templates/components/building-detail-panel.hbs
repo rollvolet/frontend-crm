@@ -2,8 +2,8 @@
   <div class="layout-row layout-align-space-between-center">
     <h4><span class="small-text-fade">[{{model.number}}]</span> {{model.printName}}</h4>
     <div>
-      {{#paper-button onClick=(action "toggleEdit") iconButton=true}}{{paper-icon "edit mode"}}{{/paper-button}}
-      {{#paper-button onClick=onClose iconButton=true}}{{paper-icon "exit to app"}}{{/paper-button}}
+      <PaperButton @onClick={{action "toggleEdit"}} @iconButton={{true}}>{{paper-icon "edit mode"}}</PaperButton>
+      <PaperButton @onClick={{onClose}} @iconButton={{true}}>{{paper-icon "exit to app"}}</PaperButton>
     </div>
   </div>
   <div class="layout-row">
@@ -49,8 +49,8 @@
       <div class="resource-details--section resource-details--section-contact layout-row">
         <div class="category-icon">{{paper-icon "mail outline"}}</div>
         <div>
-          <div>{{fmt-email value=model.email}}</div>
-          <div>{{fmt-email value=model.email2}}</div>
+          <div><FmtEmail @value={{model.email}} /></div>
+          <div><FmtEmail @value={{model.email2}} /></div>
           <div>{{model.url}}</div>
         </div>
       </div>

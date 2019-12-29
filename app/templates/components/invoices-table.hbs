@@ -1,17 +1,16 @@
-{{#data-table content=invoices isLoading=(not search.isIdle) noDataMessage="Geen facturen"
-     onClickRow=onClickRow page=page size=size sort=sort as |t|}}
-  {{#t.content as |c|}}
-    {{#c.header}}
-      {{th-sortable field='number' currentSorting=sort label='Nr'}}
+<DataTable @content={{invoices}} @isLoading={{not search.isIdle}} @noDataMessage="Geen facturen" @onClickRow={{onClickRow}} @page={{page}} @size={{size}} @sort={{sort}} as |t|>
+  <t.content as |c|>
+    <c.header>
+      <ThSortable @field="number" @currentSorting={{sort}} @label="Nr" />
       <th>Aanvraag</th>
-      {{th-sortable field='invoice-date' currentSorting=sort label='Datum'}}
+      <ThSortable @field="invoice-date" @currentSorting={{sort}} @label="Datum" />
       <th><!-- customer / building --></th>
       <th>Naam</th>
       <th>Straat</th>
       <th>Postcode</th>
       <th>Gemeente</th>
-    {{/c.header}}
-    {{#c.body as |row|}}
+    </c.header>
+    <c.body as |row|>
       <td>{{format-invoice-number row.number}}</td>
       <td>{{row.order.requestNumber}}</td>
       <td>{{fmt-date row.invoiceDate}}</td>
@@ -19,20 +18,20 @@
         <td>{{paper-icon "home"}}</td>
         <td>
           {{row.building.printName}}
-          <span class="text-fade">({{print-name model=row.customer}})</span>
+          <span class="text-fade">(<PrintName @model={{row.customer}} />)</span>
         </td>
         <td>{{row.building.address1}}</td>
         <td>{{row.building.postalCode}}</td>
         <td>{{row.building.city}}</td>
       {{else}}
         <td>{{paper-icon "person"}}</td>
-        <td>{{print-name model=row.customer}}</td>
+        <td><PrintName @model={{row.customer}} /></td>
         <td>{{row.customer.address1}}</td>
         <td>{{row.customer.postalCode}}</td>
         <td>{{row.customer.city}}</td>
       {{/if}}
-    {{/c.body}}
-  {{/t.content}}
-{{/data-table}}
+    </c.body>
+  </t.content>
+</DataTable>
 
 {{liquid-yield}}

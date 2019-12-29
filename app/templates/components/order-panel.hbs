@@ -4,56 +4,56 @@
       {{#if editMode}}Bewerk details{{else}}Overzicht{{/if}} bestelling {{model.offerNumber}}
     </h2>
     {{#if editMode}}
-      {{save-status-icon model=model task=save}}
+      <SaveStatusIcon @model={{model}} @task={{save}} />
     {{/if}}
   </div>
   <div>
     {{#if editMode}}
       {{#if isEnabledDelete}}
-        {{#paper-button onClick=(perform remove) iconButton=true}}
+        <PaperButton @onClick={{perform remove}} @iconButton={{true}}>
           {{paper-icon "delete"}}
-          {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-        {{/paper-button}}
+          <PaperTooltip>Verwijderen</PaperTooltip>
+        </PaperButton>
       {{/if}}
-      {{#paper-button onClick=(action "closeEdit") iconButton=true}}
+      <PaperButton @onClick={{action "closeEdit"}} @iconButton={{true}}>
         {{paper-icon "exit to app"}}
-        {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
-      {{/paper-button}}
+        <PaperTooltip>Sluiten</PaperTooltip>
+      </PaperButton>
     {{else}}
-      {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
+      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{isDisabledEdit}}>
         {{paper-icon "edit mode"}}
-        {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
-      {{/paper-button}}
+        <PaperTooltip>Aanpassen</PaperTooltip>
+      </PaperButton>
     {{/if}}
   </div>
 </div>
 
 {{#if hasInvoice}}
-  {{warning-message message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk."}}
+  <WarningMessage @message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk." />
 {{else if model.isMasteredByAccess}}
-  {{warning-message message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."}}
+  <WarningMessage @message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden." />
 {{/if}}
 
 {{#if remove.isRunning}}
   <div>
-    {{paper-progress-linear}}
+    <PaperProgressLinear />
     <p>Aan het verwijderen...</p>
   </div>
 {{else if rollbackTree.isRunning}}
   <div>
-    {{paper-progress-linear}}
+    <PaperProgressLinear />
     <p>Aan het herstellen...</p>
   </div>
 {{else if (and (not model.id) model.isSavivg)}}
   <div>
-    {{paper-progress-linear}}
+    <PaperProgressLinear />
     <p>Aan het aanmaken...</p>
   </div>
 {{else}}
   {{#if editMode}}
-    {{order-edit-form model=model save=save}}
+    <OrderEditForm @model={{model}} @save={{save}} />
   {{else}}
-    {{order-detail-panel model=model}}
+    <OrderDetailPanel @model={{model}} />
   {{/if}}
 
   {{#if model.isMasteredByAccess}}
@@ -67,16 +67,16 @@
           <span class="text-fade-dark u-margin-right-small">Orderbevestiging</span>
           <div class="layout-row document-buttons">
             {{#if generateOrderDocument.isRunning}}
-              {{paper-progress-circular diameter=18}}
+              <PaperProgressCircular @diameter={{18}} />
             {{else}}
               <div {{action "downloadOrderDocument"}}>
                 {{paper-icon "find in page"}}
-                {{#paper-tooltip}}Orderbevestiging bekijken{{/paper-tooltip}}
+                <PaperTooltip>Orderbevestiging bekijken</PaperTooltip>
               </div>
               {{#unless isDisabledEdit}}
                 <div {{action (perform generateOrderDocument)}}>
                   {{paper-icon "restore page"}}
-                  {{#paper-tooltip}}Orderbevestiging maken{{/paper-tooltip}}
+                  <PaperTooltip>Orderbevestiging maken</PaperTooltip>
                 </div>
               {{/unless}}
             {{/if}}
@@ -86,16 +86,16 @@
           <span class="text-fade-dark u-margin-right-small">Leveringsbon</span>
           <div class="layout-row document-buttons">
             {{#if generateDeliveryNote.isRunning}}
-              {{paper-progress-circular diameter=18}}
+              <PaperProgressCircular @diameter={{18}} />
             {{else}}
               <div {{action "downloadDeliveryNote"}}>
                 {{paper-icon "find in page"}}
-                {{#paper-tooltip}}Leveringsbon bekijken{{/paper-tooltip}}
+                <PaperTooltip>Leveringsbon bekijken</PaperTooltip>
               </div>
               {{#unless isDisabledEdit}}
                 <div {{action (perform generateDeliveryNote)}}>
                   {{paper-icon "restore page"}}
-                  {{#paper-tooltip}}Leveringsbon maken{{/paper-tooltip}}
+                  <PaperTooltip>Leveringsbon maken</PaperTooltip>
                 </div>
               {{/unless}}
             {{/if}}
@@ -105,20 +105,20 @@
     </div>
     <div class="layout-row layout-xs-column layout-align-space-between">
       <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
-        {{#detail-list-item label="Totaal" displayRow=true}}
-          {{#detail-list-subitem label="Netto"}}
+        <DetailListItem @label="Totaal" @displayRow={{true}}>
+          <DetailListSubitem @label="Netto">
             {{fmt-currency totalAmount}}
-          {{/detail-list-subitem}}
-          {{#detail-list-subitem label=(concat (get (await model.vatRate) 'rate') "% BTW")}}
+          </DetailListSubitem>
+          <DetailListSubitem @label={{concat (get (await model.vatRate) "rate") "% BTW"}}>
             {{fmt-currency (await totalVat)}}
-          {{/detail-list-subitem}}
-        {{/detail-list-item}}
+          </DetailListSubitem>
+        </DetailListItem>
       </div>
     </div>
     <div class="offer-document layout-column">
-      <section>{{offerlines-detail-panel model=orderedOfferlines}}</section>
+      <section><OfferlinesDetailPanel @model={{orderedOfferlines}} /></section>
     </div>
   {{/if}}
 {{/if}}
 
-{{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
+<UnsavedChangesDialog @show={{showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />

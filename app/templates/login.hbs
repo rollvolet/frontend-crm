@@ -3,7 +3,7 @@
     <img src="/assets/images/logo.jpg" alt="Rollvolet" class="logo">
     <h1 class="header">Klantenbeheer</h1>
     {{#if session.isAuthenticated}}
-      <p>U bent reeds ingelogd. <a href="#" {{action "logout"}}>Log uit</a> of ga naar de {{link-to 'applicatie' 'main.index'}}.</p>
+      <p>U bent reeds ingelogd. <a href="#" {{action "logout"}}>Log uit</a> of ga naar de <LinkTo @route="main.index">applicatie</LinkTo>.</p>
     {{else}}
       {{#if errorMessage}}
         <div class="error--message">
@@ -12,12 +12,12 @@
         <div class="error--tech-description">{{errorMessage}}</div>
       {{/if}}
       {{#if login.isRunning}}
-        {{#paper-button disabled=true raised=true primary=true onClick=null}}Bezig met aanmelden...{{/paper-button}}
+        <PaperButton @disabled={{true}} @raised={{true}} @primary={{true}} @onClick={{null}}>Bezig met aanmelden...</PaperButton>
         <div class="error--tech-description">
           Het aanmelden gebeurt in een pop-up; zorg dat de instellingen van uw browser correct staan indien deze niet verschijnt.
         </div>
       {{else}}
-        {{#paper-button disabled=errorMessage raised=true primary=true onClick=(perform login)}}Login{{/paper-button}}
+        <PaperButton @disabled={{errorMessage}} @raised={{true}} @primary={{true}} @onClick={{perform login}}>Login</PaperButton>
       {{/if}}
     {{/if}}
   </div>

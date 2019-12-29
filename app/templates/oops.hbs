@@ -14,12 +14,7 @@
     </div>
 
     <div class="layout-row layout-align-end-center">
-      {{paper-button
-          label="Ga terug"
-          onClick=(action "goBack")
-          primary=true
-          raised=true
-      }}
+      <PaperButton @label="Ga terug" @onClick={{action "goBack"}} @primary={{true}} @raised={{true}} />
     </div>
   </div>
 </div>

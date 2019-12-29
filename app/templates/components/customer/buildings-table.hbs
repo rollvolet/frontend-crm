@@ -1,33 +1,32 @@
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number") class="small"}}
-  {{paper-input label="Naam" value=name onChange=(action "setFilter" "name")}}
-  {{paper-input label="Straat" value=street onChange=(action "setFilter" "street") class="large"}}
-  {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small"}}
-  {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
-  {{paper-input label="Telefoon" value=telephone onChange=(action "setFilter" "telephone")}}
-  {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+  <PaperInput @label="Nummer" @value={{number}} @onChange={{action "setFilter" "number"}} @class="small" />
+  <PaperInput @label="Naam" @value={{name}} @onChange={{action "setFilter" "name"}} />
+  <PaperInput @label="Straat" @value={{street}} @onChange={{action "setFilter" "street"}} @class="large" />
+  <PaperInput @label="Postcode" @value={{postalCode}} @onChange={{action "setFilter" "postalCode"}} @class="small" />
+  <PaperInput @label="Gemeente" @value={{city}} @onChange={{action "setFilter" "city"}} />
+  <PaperInput @label="Telefoon" @value={{telephone}} @onChange={{action "setFilter" "telephone"}} />
+  <PaperButton @iconButton={{true}} @onClick={{action "resetFilters"}}>
     {{paper-icon "close"}}
-    {{#paper-tooltip}}Wis filters{{/paper-tooltip}}
-  {{/paper-button}}
+    <PaperTooltip>Wis filters</PaperTooltip>
+  </PaperButton>
 </div>
 
-{{#data-table content=buildings isLoading=(not search.isIdle) noDataMessage="Geen gebouwen"
-     onClickRow=onClickRow page=page size=size sort=sort as |t|}}
-  {{#t.content as |c|}}
-    {{#c.header}}
-      {{th-sortable field='number' currentSorting=sort label='Nr'}}
+<DataTable @content={{buildings}} @isLoading={{not search.isIdle}} @noDataMessage="Geen gebouwen" @onClickRow={{onClickRow}} @page={{page}} @size={{size}} @sort={{sort}} as |t|>
+  <t.content as |c|>
+    <c.header>
+      <ThSortable @field="number" @currentSorting={{sort}} @label="Nr" />
       <th>Aanspreking</th>
       <th>Prefix</th>
-      {{th-sortable field='name' currentSorting=sort label='Naam'}}
-      {{th-sortable field='address' currentSorting=sort label='Straat'}}
-      {{th-sortable field='postal-code' currentSorting=sort label='Postcode'}}
-      {{th-sortable field='city' currentSorting=sort label='Gemeente'}}
+      <ThSortable @field="name" @currentSorting={{sort}} @label="Naam" />
+      <ThSortable @field="address" @currentSorting={{sort}} @label="Straat" />
+      <ThSortable @field="postal-code" @currentSorting={{sort}} @label="Postcode" />
+      <ThSortable @field="city" @currentSorting={{sort}} @label="Gemeente" />
       <th>Land</th>
       <th>Taal</th>
       <th></th>
-    {{/c.header}}
-    {{#c.body as |row|}}
+    </c.header>
+    <c.body as |row|>
       <td>{{row.number}}</td>
       <td>{{row.honorificPrefix.name}}</td>
       <td>{{row.prefix}}</td>
@@ -38,6 +37,6 @@
       <td>{{row.country.name}}</td>
       <td>{{row.language.name}}</td>
       <td {{action "edit" row}}>{{paper-icon "mode edit"}}</td>
-    {{/c.body}}
-  {{/t.content}}
-{{/data-table}}
+    </c.body>
+  </t.content>
+</DataTable>

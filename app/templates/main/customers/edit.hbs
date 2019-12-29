@@ -1,47 +1,46 @@
 {{#if editMode}}
-  {{#customer-entity-edit-form scope='customer' model=model
-       onClose=(action "closeEdit") onRemove=(action "onRemove")}}
+  <CustomerEntityEditForm @scope="customer" @model={{model}} @onClose={{action "closeEdit"}} @onRemove={{action "onRemove"}}>
     <h1>Bewerk klant <span class="small-text-fade">[{{model.number}}]</span></h1>
-  {{/customer-entity-edit-form}}
+  </CustomerEntityEditForm>
 {{else}}
   <div class="layout-row layout-align-start-center">
-    <h1>{{print-name model=model}} <span class="small-text-fade">[{{model.number}}]</span></h1>
+    <h1><PrintName @model={{model}} /> <span class="small-text-fade">[{{model.number}}]</span></h1>
     <div>
-      {{#paper-button onClick=(action "openEdit") iconButton=true}}
+      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}}>
         {{paper-icon "edit mode"}}
-        {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
-      {{/paper-button}}
+        <PaperTooltip>Aanpassen</PaperTooltip>
+      </PaperButton>
     </div>
   </div>
 
-  {{customer-detail-card model=model}}
+  <CustomerDetailCard @model={{model}} />
 
   <div class="related-resources">
-    {{#paper-tabs selected=selectedTab onChange=(action (mut selectedTab)) borderBottom=true as |tabs|}}
-      {{#tabs.tab}}Contacten{{/tabs.tab}}
-      {{#tabs.tab}}Gebouwen{{/tabs.tab}}
-      {{#tabs.tab}}Aanvragen{{/tabs.tab}}
-      {{#tabs.tab}}Offertes{{/tabs.tab}}
-      {{#tabs.tab}}Bestellingen{{/tabs.tab}}
-      {{#tabs.tab}}Voorschotfact.{{/tabs.tab}}
-      {{#tabs.tab}}Facturen{{/tabs.tab}}
-    {{/paper-tabs}}
+    <PaperTabs @selected={{selectedTab}} @onChange={{action (mut selectedTab)}} @borderBottom={{true}} as |tabs|>
+      <tabs.tab>Contacten</tabs.tab>
+      <tabs.tab>Gebouwen</tabs.tab>
+      <tabs.tab>Aanvragen</tabs.tab>
+      <tabs.tab>Offertes</tabs.tab>
+      <tabs.tab>Bestellingen</tabs.tab>
+      <tabs.tab>Voorschotfact.</tabs.tab>
+      <tabs.tab>Facturen</tabs.tab>
+    </PaperTabs>
 
     {{#liquid-bind (hash tab=selectedTab) use="toRight" as |current|}}
       {{#if (eq current.tab 0)}}
-        {{customer/contacts-panel customer=model}}
+        <Customer::ContactsPanel @customer={{model}} />
       {{else if (eq current.tab 1)}}
-        {{customer/buildings-panel customer=model}}
+        <Customer::BuildingsPanel @customer={{model}} />
       {{else if (eq current.tab 2)}}
-        {{customer/requests-table customer=model}}
+        <Customer::RequestsTable @customer={{model}} />
       {{else if (eq current.tab 3)}}
-        {{customer/offers-table customer=model}}
+        <Customer::OffersTable @customer={{model}} />
       {{else if (eq current.tab 4)}}
-        {{customer/orders-table customer=model}}
+        <Customer::OrdersTable @customer={{model}} />
       {{else if (eq current.tab 5)}}
-        {{customer/deposit-invoices-table customer=model}}
+        <Customer::DepositInvoicesTable @customer={{model}} />
       {{else if (eq current.tab 6)}}
-        {{customer/invoices-table customer=model}}
+        <Customer::InvoicesTable @customer={{model}} />
       {{/if}}
     {{/liquid-bind}}
   </div>

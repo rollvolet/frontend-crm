@@ -1,44 +1,43 @@
 {{#if show}}
-  {{#paper-dialog class="flex-50" onClose=(action "close") parent=".main-outlet" origin=".main-outlet" clickOutsideToClose=true}}
-    {{#paper-toolbar}}
-      {{#paper-toolbar-tools}}
+  <PaperDialog @class="flex-50" @onClose={{action "close"}} @parent=".main-outlet" @origin=".main-outlet" @clickOutsideToClose={{true}}>
+    <PaperToolbar>
+      <PaperToolbarTools>
         <h2>Extra's</h2><span class="flex"></span>
-        {{#paper-button iconButton=true onClick=(action "close")}}{{paper-icon icon="close"}}{{/paper-button}}
-      {{/paper-toolbar-tools}}
-    {{/paper-toolbar}}
+        <PaperButton @iconButton={{true}} @onClick={{action "close"}}><PaperIcon @icon="close" /></PaperButton>
+      </PaperToolbarTools>
+    </PaperToolbar>
 
-    {{#paper-dialog-content}}
+    <PaperDialogContent>
       {{#liquid-if selected class="data-table-selection"}}
         {{#if showUnsavedChangesWarning}}
           <p>Bent u zeker dat u deze pagina wil verlaten? Mogelijk zijn niet alle wijzigingen correct opgeslagen.</p>
         {{else}}
-          {{invoice-supplement-edit-form model=selected save=save}}
+          <InvoiceSupplementEditForm @model={{selected}} @save={{save}} />
         {{/if}}
 {{else}}
-        {{invoice-supplements-table model=model.supplements isDisabledEdit=isDisabledEdit
-            onOpenEdit=(action "openEdit") onDelete=(action "deleteSupplement")}}
+        <InvoiceSupplementsTable @model={{model.supplements}} @isDisabledEdit={{isDisabledEdit}} @onOpenEdit={{action "openEdit"}} @onDelete={{action "deleteSupplement"}} />
       {{/liquid-if}}
       {{#if model.isMasteredByAccess}}
         <p class="note-message">De factuur is aangemaakt in Access. De extra's kunnen hier niet aangepast worden.</p>
       {{/if}}
-    {{/paper-dialog-content}}
+    </PaperDialogContent>
 
-    {{#paper-dialog-actions class="layout-row invoice-supplements--dialog--actions"}}
+    <PaperDialogActions @class="layout-row invoice-supplements--dialog--actions">
       <span class="flex"></span>
       {{#if showUnsavedChangesWarning}}
-        {{#paper-button onClick=(action "cancelCloseEdit")}}Terug{{/paper-button}}
-        {{#paper-button onClick=(action "confirmCloseEdit")}}Ga toch verder{{/paper-button}}
+        <PaperButton @onClick={{action "cancelCloseEdit"}}>Terug</PaperButton>
+        <PaperButton @onClick={{action "confirmCloseEdit"}}>Ga toch verder</PaperButton>
       {{else}}
         {{#if selected}}
-          {{save-status-icon model=selected task=save}}
-          {{#paper-button class="close-edit-btn" onClick=(action "closeEdit")}}Klaar{{/paper-button}}
+          <SaveStatusIcon @model={{selected}} @task={{save}} />
+          <PaperButton @class="close-edit-btn" @onClick={{action "closeEdit"}}>Klaar</PaperButton>
         {{else}}
-          {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "createNew") disabled=isDisabledNew}}
+          <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{action "createNew"}} @disabled={{isDisabledNew}}>
             {{paper-icon "add"}}
-            {{#paper-tooltip}}Voeg nieuwe extra toe{{/paper-tooltip}}
-          {{/paper-button}}
+            <PaperTooltip>Voeg nieuwe extra toe</PaperTooltip>
+          </PaperButton>
         {{/if}}
       {{/if}}
-    {{/paper-dialog-actions}}
-  {{/paper-dialog}}
+    </PaperDialogActions>
+  </PaperDialog>
 {{/if}}

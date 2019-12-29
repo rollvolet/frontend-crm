@@ -1,11 +1,9 @@
-{{#paper-tabs selected="main.requests.edit" borderBottom=true as |tabs|}}
-  {{#tabs.tab value="main.requests.edit" href=(href-to "main.requests.edit" model)}}
+<PaperTabs @selected="main.requests.edit" @borderBottom={{true}} as |tabs|>
+  <tabs.tab @value="main.requests.edit" @href={{href-to "main.requests.edit" model}}>
     Aanvraag
-  {{/tabs.tab}}
-{{/paper-tabs}}
+  </tabs.tab>
+</PaperTabs>
 
-{{request-panel model=model editMode=editMode
-    onOpenEdit=(action (mut editMode) true)
-    onCloseEdit=(action (mut editMode) false)}}
+<RequestPanel @model={{model}} @editMode={{editMode}} @onOpenEdit={{action (mut editMode) true}} @onCloseEdit={{action (mut editMode) false}} />
 
 {{liquid-outlet}}

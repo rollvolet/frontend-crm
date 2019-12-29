@@ -4,75 +4,75 @@
       {{#if editMode}}Bewerk details{{else}}Overzicht{{/if}} aanvraag {{model.id}} {{visitor.initials}}
     </h2>
     {{#if editMode}}
-      {{save-status-icon model=model task=save}}
+      <SaveStatusIcon @model={{model}} @task={{save}} />
     {{/if}}
   </div>
   <div>
     {{#if editMode}}
       {{#if isEnabledDelete}}
-        {{#paper-button onClick=(perform remove) iconButton=true}}
+        <PaperButton @onClick={{perform remove}} @iconButton={{true}}>
           {{paper-icon "delete"}}
-          {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-        {{/paper-button}}
+          <PaperTooltip>Verwijderen</PaperTooltip>
+        </PaperButton>
       {{/if}}
-      {{#paper-button onClick=(action "closeEdit") iconButton=true}}
+      <PaperButton @onClick={{action "closeEdit"}} @iconButton={{true}}>
         {{paper-icon "exit to app"}}
-        {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
-      {{/paper-button}}
+        <PaperTooltip>Sluiten</PaperTooltip>
+      </PaperButton>
     {{else}}
-      {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
+      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{isDisabledEdit}}>
         {{paper-icon "edit mode"}}
-        {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
-      {{/paper-button}}
+        <PaperTooltip>Aanpassen</PaperTooltip>
+      </PaperButton>
       {{#if isLinkedToCustomer}}
-        {{#paper-button onClick=(perform unlinkCustomer) iconButton=true disabled=isDisabledUnlinkCustomer}}
+        <PaperButton @onClick={{perform unlinkCustomer}} @iconButton={{true}} @disabled={{isDisabledUnlinkCustomer}}>
           {{paper-icon "link off"}}
-          {{#paper-tooltip}}Ontkoppel klant{{/paper-tooltip}}
-        {{/paper-button}}
-        {{#paper-button onClick=(action "generateVisitReport") iconButton=true}}
+          <PaperTooltip>Ontkoppel klant</PaperTooltip>
+        </PaperButton>
+        <PaperButton @onClick={{action "generateVisitReport"}} @iconButton={{true}}>
           {{paper-icon "description"}}
-          {{#paper-tooltip}}Bezoekrapport{{/paper-tooltip}}
-        {{/paper-button}}
+          <PaperTooltip>Bezoekrapport</PaperTooltip>
+        </PaperButton>
       {{else}}
-        {{#paper-button onClick=(action "linkCustomer") iconButton=true}}
+        <PaperButton @onClick={{action "linkCustomer"}} @iconButton={{true}}>
           {{paper-icon "link"}}
-          {{#paper-tooltip}}Koppel klant{{/paper-tooltip}}
-        {{/paper-button}}
+          <PaperTooltip>Koppel klant</PaperTooltip>
+        </PaperButton>
       {{/if}}
     {{/if}}
   </div>
 </div>
 
 {{#if isDisabledEdit}}
-  {{warning-message message="Offerte reeds opgemaakt. Geen wijzigingen meer mogelijk."}}
+  <WarningMessage @message="Offerte reeds opgemaakt. Geen wijzigingen meer mogelijk." />
 {{/if}}
 
 {{#if editMode}}
   {{#if remove.isRunning}}
     <div>
-      {{paper-progress-linear}}
+      <PaperProgressLinear />
       <p>Aan het verwijderen...</p>
     </div>
   {{else if rollbackTree.isRunning}}
     <div>
-      {{paper-progress-linear}}
+      <PaperProgressLinear />
       <p>Aan het herstellen...</p>
     </div>
   {{else if (and (not model.id) model.isSavivg)}}
     <div>
-      {{paper-progress-linear}}
+      <PaperProgressLinear />
       <p>Aan het aanmaken...</p>
     </div>
   {{else if unlinkCustomer.isRunning}}
     <div>
-      {{paper-progress-linear}}
+      <PaperProgressLinear />
       <p>Aanvraag aan het loskoppelen van klant...</p>
     </div>
   {{else}}
-    {{request-edit-form model=model save=save}}
+    <RequestEditForm @model={{model}} @save={{save}} />
   {{/if}}
 {{else}}
-  {{request-detail-panel model=model}}
+  <RequestDetailPanel @model={{model}} />
 {{/if}}
 
-{{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
+<UnsavedChangesDialog @show={{showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />

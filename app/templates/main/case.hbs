@@ -1,43 +1,41 @@
-{{case-tabs model=case}}
+<CaseTabs @model={{case}} />
 
 {{liquid-outlet}}
 
 {{#if model}}
   <h2>
-    Klant: {{print-name model=model}} <span class="small-text-fade">[{{model.number}}]</span>
+    Klant: <PrintName @model={{model}} /> <span class="small-text-fade">[{{model.number}}]</span>
     {{#paper-link 'main.customers.edit' model iconButton=true}}
       {{paper-icon "open in new"}}
-      {{#paper-tooltip}}Open klant{{/paper-tooltip}}
+      <PaperTooltip>Open klant</PaperTooltip>
     {{/paper-link}}
   </h2>
 
   <div class="resource-details">
     <div class="layout-row layout-xs-column">
       <div class="left-column">
-        {{#detail-icon-list-item icon=(if model.isCompany "business" "person")
-             label=(if model.isCompany "Bedrijf" "Naam")
-             class="resource-details--section-name"}}
+        <DetailIconListItem @icon={{if model.isCompany "business" "person"}} @label={{if model.isCompany "Bedrijf" "Naam"}} @class="resource-details--section-name">
           <div>
             {{#if model.printInFront}}{{model.honorificPrefix.name}}{{/if}}
             {{model.prefix}} {{model.name}} {{model.suffix}}
             {{#if (not model.printInFront)}}{{model.honorificPrefix.name}}{{/if}}
           </div>
           <div>{{format-vat-number model.vatNumber}}</div>
-        {{/detail-icon-list-item}}
+        </DetailIconListItem>
 
-        {{#detail-icon-list-item icon="location on" label="Adres" class="resource-details--section-address"}}
+        <DetailIconListItem @icon="location on" @label="Adres" @class="resource-details--section-address">
           <div>{{model.address1}}</div>
           <div>{{model.address2}}</div>
           <div>{{model.address3}}</div>
           <div>{{model.postalCode}} {{model.city}}</div>
           <div>{{model.country.name}}</div>
-        {{/detail-icon-list-item}}
+        </DetailIconListItem>
 
-        {{#detail-icon-list-item icon="language" label="Taal" class="resource-details--section-language"}}
+        <DetailIconListItem @icon="language" @label="Taal" @class="resource-details--section-language">
           {{model.language.name}}
-        {{/detail-icon-list-item}}
+        </DetailIconListItem>
 
-        {{#detail-icon-list-item icon="phone" label="Telefoon" class="resource-details--section-telephone"}}
+        <DetailIconListItem @icon="phone" @label="Telefoon" @class="resource-details--section-telephone">
           {{#each model.telephones as |tel|}}
             <div>
               {{tel.telephoneType.name}}:
@@ -45,15 +43,15 @@
               {{#if tel.memo}}({{tel.memo}}){{/if}}
             </div>
           {{/each}}
-        {{/detail-icon-list-item}}
+        </DetailIconListItem>
 
-        {{#detail-icon-list-item icon="mail outline" label="E-mail" class="resource-details--section-contact"}}
-          <div>{{fmt-email value=model.email}}</div>
-          <div>{{fmt-email value=model.email2}}</div>
+        <DetailIconListItem @icon="mail outline" @label="E-mail" @class="resource-details--section-contact">
+          <div><FmtEmail @value={{model.email}} /></div>
+          <div><FmtEmail @value={{model.email2}} /></div>
           <div>{{model.url}}</div>
-        {{/detail-icon-list-item}}
+        </DetailIconListItem>
 
-        {{#detail-icon-list-item icon="assignment" label="Memo" class="resource-details--section-memo"}}
+        <DetailIconListItem @icon="assignment" @label="Memo" @class="resource-details--section-memo">
           <div {{action (toggle "memoExpanded" this)}}>
             {{#if model.memo}}
               {{#if memoExpanded}}
@@ -68,61 +66,61 @@
               Geen memo
             {{/if}}
           </div>
-        {{/detail-icon-list-item}}
+        </DetailIconListItem>
       </div>
       <div class="right-column layout-column">
         <div>
           <div class="layout-row layout-align-space-between-center">
             <h3>Gebouw</h3>
             {{#if isEnabledEditBuilding}}
-              {{#paper-button onClick=(action "toggleBuildingEdit") iconButton=true}}
+              <PaperButton @onClick={{action "toggleBuildingEdit"}} @iconButton={{true}}>
                 {{paper-icon "exit to app"}}
-                {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
-              {{/paper-button}}
+                <PaperTooltip>Sluiten</PaperTooltip>
+              </PaperButton>
             {{else if isUpdatingBuilding}}
-              {{paper-progress-circular diameter=18}}
+              <PaperProgressCircular @diameter={{18}} />
             {{else}}
-              {{#paper-button onClick=(action "toggleBuildingEdit") iconButton=true}}
+              <PaperButton @onClick={{action "toggleBuildingEdit"}} @iconButton={{true}}>
                 {{paper-icon "edit mode"}}
-                {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
-              {{/paper-button}}
+                <PaperTooltip>Aanpassen</PaperTooltip>
+              </PaperButton>
             {{/if}}
           </div>
           {{#unless isEnabledEditBuilding}}
             {{#if building}}
-              {{building-detail-card model=building}}
+              <BuildingDetailCard @model={{building}} />
             {{else}}
               <p>n.v.t.</p>
             {{/if}}
           {{else}}
-            {{input-field/building-select value=building customer=model onSelectionChange=(action "updateBuilding") class="md-input-wrapper xxxxlarge"}}
+            <InputField::BuildingSelect @value={{building}} @customer={{model}} @onSelectionChange={{action "updateBuilding"}} @class="md-input-wrapper xxxxlarge" />
           {{/unless}}
         </div>
         <div>
           <div class="layout-row layout-align-space-between-center">
             <h3>Contact</h3>
             {{#if isEnabledEditContact}}
-              {{#paper-button onClick=(action "toggleContactEdit") iconButton=true}}
+              <PaperButton @onClick={{action "toggleContactEdit"}} @iconButton={{true}}>
                 {{paper-icon "exit to app"}}
-                {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
-              {{/paper-button}}
+                <PaperTooltip>Sluiten</PaperTooltip>
+              </PaperButton>
             {{else if isUpdatingContact}}
-              {{paper-progress-circular diameter=18}}
+              <PaperProgressCircular @diameter={{18}} />
             {{else}}
-              {{#paper-button onClick=(action "toggleContactEdit") iconButton=true}}
+              <PaperButton @onClick={{action "toggleContactEdit"}} @iconButton={{true}}>
                 {{paper-icon "edit mode"}}
-                {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
-              {{/paper-button}}
+                <PaperTooltip>Aanpassen</PaperTooltip>
+              </PaperButton>
             {{/if}}
           </div>
           {{#unless isEnabledEditContact}}
             {{#if contact}}
-              {{contact-detail-card model=contact}}
+              <ContactDetailCard @model={{contact}} />
             {{else}}
               <p>n.v.t.</p>
             {{/if}}
           {{else}}
-            {{input-field/contact-select value=contact customer=model onSelectionChange=(action "updateContact") class="md-input-wrapper xxxxlarge"}}
+            <InputField::ContactSelect @value={{contact}} @customer={{model}} @onSelectionChange={{action "updateContact"}} @class="md-input-wrapper xxxxlarge" />
           {{/unless}}
         </div>
       </div>
@@ -132,5 +130,5 @@
     </div>
   </div>
 {{else}}
-  {{#paper-button onClick=null}}Koppel klant{{/paper-button}}
+  <PaperButton @onClick={{null}}>Koppel klant</PaperButton>
 {{/if}}

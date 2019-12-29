@@ -1,85 +1,85 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--order--entry flex-100 layout-column">
-    {{#detail-list-item label="Datum"}}
-      {{#detail-list-subitem label="Bestelling"}}
+    <DetailListItem @label="Datum">
+      <DetailListSubitem @label="Bestelling">
         {{fmt-date model.orderDate}}
-      {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Verwacht"}}
+      </DetailListSubitem>
+      <DetailListSubitem @label="Verwacht">
         {{fmt-date model.expectedDate}}
-      {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Vereist"}}
+      </DetailListSubitem>
+      <DetailListSubitem @label="Vereist">
         {{fmt-date model.requiredDate}}
-      {{/detail-list-subitem}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Bezoeker"}}
+      </DetailListSubitem>
+    </DetailListItem>
+    <DetailListItem @label="Bezoeker">
       {{model.offer.request.visitor}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Referentie"}}
+    </DetailListItem>
+    <DetailListItem @label="Referentie">
       {{model.reference}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Werkuren"}}
+    </DetailListItem>
+    <DetailListItem @label="Werkuren">
       {{fmt-decimal model.scheduledHours}} uur x
       <span class="{{if isNbOfPersonsWarning "warning-inline"}}">{{model.scheduledNbOfPersons}} man</span>
       = {{model.scheduledTotal}} uur
-    {{/detail-list-item}}
+    </DetailListItem>
     {{#if model.isMasteredByAccess}}
-      {{#detail-list-item label="Bedrag"}}
+      <DetailListItem @label="Bedrag">
         {{fmt-currency model.amount}}
-      {{/detail-list-item}}
+      </DetailListItem>
     {{/if}}
-    {{#detail-list-item label="BTW tarief"}}
+    <DetailListItem @label="BTW tarief">
       {{model.vatRate.name}} BTW
-    {{/detail-list-item}}
-    {{#detail-list-item label="Voorschotten"}}
+    </DetailListItem>
+    <DetailListItem @label="Voorschotten">
       {{paper-icon (if model.depositRequired "check_box" "check_box_outline_blank")}} Nodig
-      {{#detail-list-subitem label="Bedrag" click=(action "goToDepositInvoices") class="clickable"}}
+      <DetailListSubitem @label="Bedrag" @click={{action "goToDepositInvoices"}} @class="clickable">
         {{fmt-currency depositsAmount}} {{paper-icon "info" size=18}}
-      {{/detail-list-subitem}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Voorschot facturen"}}
-      {{#detail-list-subitem label="Bedrag" click=(action "goToDepositInvoices") class="clickable"}}
+      </DetailListSubitem>
+    </DetailListItem>
+    <DetailListItem @label="Voorschot facturen">
+      <DetailListSubitem @label="Bedrag" @click={{action "goToDepositInvoices"}} @class="clickable">
         {{fmt-currency depositInvoicesAmount}} {{paper-icon "info" size=18}}
-      {{/detail-list-subitem}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Opmerking"}}
+      </DetailListSubitem>
+    </DetailListItem>
+    <DetailListItem @label="Opmerking">
       <span class="html-body">{{model.comment}}</span>
-    {{/detail-list-item}}
+    </DetailListItem>
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
-    {{planning-detail-panel model=model}}
-    {{#detail-list-item label="Uitvoering"}}
-      {{#paper-radio-group groupValue=(readonly model.execution) onChange=null as |group|}}
-        {{#group.radio value='installation'}}{{order-execution 'installation'}}{{/group.radio}}
-        {{#group.radio value='delivery'}}{{order-execution 'delivery'}}{{/group.radio}}
-        {{#group.radio value='pickup'}}{{order-execution 'pickup'}}{{/group.radio}}
-      {{/paper-radio-group}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Productiebon"}}
+    <PlanningDetailPanel @model={{model}} />
+    <DetailListItem @label="Uitvoering">
+      <PaperRadioGroup @groupValue={{readonly model.execution}} @onChange={{null}} as |group|>
+        <group.radio @value="installation">{{order-execution 'installation'}}</group.radio>
+        <group.radio @value="delivery">{{order-execution 'delivery'}}</group.radio>
+        <group.radio @value="pickup">{{order-execution 'pickup'}}</group.radio>
+      </PaperRadioGroup>
+    </DetailListItem>
+    <DetailListItem @label="Productiebon">
       <div class="layout-row layout-align-start-center">
         <div>{{paper-icon (if model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
-        {{production-ticket-buttons model=model}}
+        <ProductionTicketButtons @model={{model}} />
       </div>
-    {{/detail-list-item}}
-    {{#detail-list-item label="Product klaar"}}
+    </DetailListItem>
+    <DetailListItem @label="Product klaar">
       {{paper-icon (if model.isReady "check_box" "check_box_outline_blank")}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Afgesloten"}}
+    </DetailListItem>
+    <DetailListItem @label="Afgesloten">
       {{paper-icon (if model.canceled "check_box" "check_box_outline_blank")}}
       {{#if model.canceled}}
-        {{#detail-list-subitem label="Reden"}}
+        <DetailListSubitem @label="Reden">
           {{#if model.cancellationReason}}
             <span class="html-body">{{model.cancellationReason}}</span>
           {{else}}
             -
           {{/if}}
-        {{/detail-list-subitem}}
+        </DetailListSubitem>
       {{/if}}
-    {{/detail-list-item}}
+    </DetailListItem>
   </div>
 </div>
 
 {{yield}}
 
-{{#document-not-found-dialog show=showProductionTicketNotFoundDialog}}
+<DocumentNotFoundDialog @show={{showProductionTicketNotFoundDialog}}>
   <p>Er is nog geen productiebon opgeladen.</p>
-{{/document-not-found-dialog}}
+</DocumentNotFoundDialog>

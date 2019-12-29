@@ -1,17 +1,16 @@
 {{#if show}}
-  {{#paper-dialog class="flex-50" onClose=(action "close") clickOutsideToClose=true
-       parent=".main-outlet" origin=".main-outlet"}}
-    {{#paper-toolbar}}
-      {{#paper-toolbar-tools}}<h2>Document niet gevonden</h2>{{/paper-toolbar-tools}}
-    {{/paper-toolbar}}
+  <PaperDialog @class="flex-50" @onClose={{action "close"}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
+    <PaperToolbar>
+      <PaperToolbarTools><h2>Document niet gevonden</h2></PaperToolbarTools>
+    </PaperToolbar>
 
-    {{#paper-dialog-content}}
+    <PaperDialogContent>
       {{yield}}
-    {{/paper-dialog-content}}
+    </PaperDialogContent>
 
-    {{#paper-dialog-actions class="layout-row"}}
+    <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
-      {{#paper-button onClick=(action "close")}}OK{{/paper-button}}
-    {{/paper-dialog-actions}}
-  {{/paper-dialog}}
+      <PaperButton @onClick={{action "close"}}>OK</PaperButton>
+    </PaperDialogActions>
+  </PaperDialog>
 {{/if}}
