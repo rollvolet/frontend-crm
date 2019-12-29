@@ -1,7 +1,7 @@
 import Service, { inject } from '@ember/service';
+import fetch, { Headers } from 'fetch';
 
 export default Service.extend({
-  ajax: inject(),
   session: inject(),
 
   // Document generation
@@ -62,20 +62,22 @@ export default Service.extend({
 
   deleteProductionTicket(order) {
     const { access_token } = this.get('session.data.authenticated');
-    return this.ajax.delete(`/api/orders/${order.id}/production-ticket`, {
-      headers: {
+    return fetch(`/api/orders/${order.id}/production-ticket`, {
+      method: 'DELETE',
+      headers: new Headers({
         Authorization: `Bearer ${access_token}`
-      }
+      })
     });
   },
 
   deleteCertificate(invoice) {
     const { access_token } = this.get('session.data.authenticated');
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    return this.ajax.delete(`/api/${resource}/${invoice.id}/certificate`, {
-      headers: {
+    return fetch(`/api/${resource}/${invoice.id}/certificate`, {
+      method: 'DELETE',
+      headers: new Headers({
         Authorization: `Bearer ${access_token}`
-      }
+      })
     });
   },
 
@@ -114,14 +116,19 @@ export default Service.extend({
 
 
   // Core helpers
-  _generate(url,  method = 'POST') {
+  async _generate(url,  method = 'POST') {
     const { access_token } = this.get('session.data.authenticated');
-    return this.ajax.request(url, {
-      method: method,
-      headers: {
+    const result = await fetch(url, {
+      method: 'POST',
+      headers: new Headers({
         Authorization: `Bearer ${access_token}`
-      }
+      })
     });
+
+    if (result.ok)
+      return result;
+    else
+      throw result;
   },
   _openInNewTab(href) {
     Object.assign(document.createElement('a'), {

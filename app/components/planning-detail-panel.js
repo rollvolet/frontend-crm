@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import fetch, { Headers } from 'fetch';
 import { task } from 'ember-concurrency';
 import { notEmpty, reads } from '@ember/object/computed';
 import { not, and, isEmpty } from 'ember-awesome-macros';
@@ -6,7 +7,6 @@ import { inject as service } from '@ember/service';
 import { next } from '@ember/runloop';
 
 export default Component.extend({
-  ajax: service(),
   case: service(),
   session: service(),
 
@@ -36,10 +36,19 @@ export default Component.extend({
   loadCalendarEvent: task(function * () {
     if (this.model.planningMsObjectId) {
       const { access_token } = this.get('session.data.authenticated');
-      const headers = { 'Authorization': `Bearer ${access_token}` };
-      const url = `/api/calendars/planning/${this.model.planningMsObjectId}/subject`;
-      const { subject } = yield this.ajax.request(url, { headers });
-      this.set('calendarSubject', subject);
+      const result = yield fetch(`/api/calendars/planning/${this.model.planningMsObjectId}/subject`, {
+        method: 'GET',
+        headers: new Headers({
+          Authorization: `Bearer ${access_token}`
+        })
+      });
+
+      if (result.ok) {
+        const { subject } = yield result.json();
+        this.set('calendarSubject', subject);
+      } else {
+        this.set('calendarSubject', null);
+      }
     } else {
       this.set('calendarSubject', null);
     }
@@ -57,8 +66,12 @@ export default Component.extend({
 
   synchronize: task(function * () {
     const { access_token } = this.get('session.data.authenticated');
-    const headers = { 'Authorization': `Bearer ${access_token}` };
-    yield this.ajax.put(`/api/orders/${this.model.id}/planning-event`, { headers });
+    yield fetch(`/api/orders/${this.model.id}/planning-event`, {
+      method: 'PUT',
+      headers: new Headers({
+        Authorization: `Bearer ${access_token}`
+      })
+    });
 
     if (this.isNotAvailableInCalendar)
       yield this.model.reload(); // order.planningMsObjectId will be updated

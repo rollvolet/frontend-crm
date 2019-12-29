@@ -1,4 +1,5 @@
 import Service, { inject as service } from '@ember/service';
+import fetch, { Headers } from 'fetch';
 import { assert } from '@ember/debug';
 import Case from '../models/case';
 import { task } from 'ember-concurrency';
@@ -24,7 +25,6 @@ export default Service.extend(Evented, {
   router: service(),
   session: service(),
   store: service(),
-  ajax: service(),
 
   init() {
     this._super(...arguments);
@@ -76,15 +76,25 @@ export default Service.extend(Evented, {
       queryParam = calcQueryParam(currentUrl, 'invoiceId');
 
     const { access_token } = this.get('session.data.authenticated');
-    const headers = { 'Authorization': `Bearer ${access_token}` };
-    const response = yield this.ajax.request(`/api/cases?${queryParam}`, { headers });
-    return Case.create({
-      customerId: response.customerId,
-      requestId: response.requestId,
-      offerId: response.offerId,
-      orderId: response.orderId,
-      invoiceId: response.invoiceId
+    const response = yield fetch(`/api/cases?${queryParam}`, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${access_token}`
+      })
     });
+
+    if (response.ok) {
+      const responseBody = yield response.json();
+      return Case.create({
+        customerId: responseBody.customerId,
+        requestId: responseBody.requestId,
+        offerId: responseBody.offerId,
+        orderId: responseBody.orderId,
+        invoiceId: responseBody.invoiceId
+      });
+    } else {
+      throw response;
+    }
   }),
 
   updateContact: task(function * (contact, building) {
@@ -141,19 +151,20 @@ export default Service.extend(Evented, {
 
   _updateContactAndBuilding: task(function * (contact, building) {
     const { access_token } = this.get('session.data.authenticated');
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${access_token}`
-    };
-    const data = {
-      contactId: contact && contact.get('id'),
-      buildingId: building && building.get('id'),
-      requestId: this.current.requestId,
-      offerId: this.current.offerId,
-      orderId: this.current.orderId,
-      invoiceId: this.current.invoiceId
-    };
-    const options = { headers, data };
-    yield this.ajax.post(`/api/cases/contact-and-building`, options);
+    yield fetch(`/api/cases/contact-and-building`, {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${access_token}`
+      }),
+      body: JSON.stringify({
+        contactId: contact && contact.get('id'),
+        buildingId: building && building.get('id'),
+        requestId: this.current.requestId,
+        offerId: this.current.offerId,
+        orderId: this.current.orderId,
+        invoiceId: this.current.invoiceId
+      })
+    });
   })
 });
