@@ -42,7 +42,7 @@
     </div>
 
     <div class="data-table-filters--reset">
-      <PaperButton @iconButton={{true}} @onClick={{action "resetFilters"}}>
+      <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
         {{paper-icon "close"}}
         <PaperTooltip>Wis filters</PaperTooltip>
       </PaperButton>

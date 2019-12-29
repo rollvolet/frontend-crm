@@ -7,9 +7,9 @@
 </div>
 
 <div class="requests-data-table">
-  <Request::DataTableFilter @number={{number}} @visitor={{this.visitor}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutOffer={{this.withoutOffer}} @onChange={{action "applyFilter"}} />
+  <Request::DataTableFilter @number={{number}} @visitor={{this.visitor}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutOffer={{this.withoutOffer}} @onChange={{fn this.applyFilter}} />
 
-  <DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{action "clickRow"}} as |t|>
+  <DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
     <t.content as |c|>
       <c.header>
         <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />

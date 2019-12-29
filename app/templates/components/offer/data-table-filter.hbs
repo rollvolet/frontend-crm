@@ -41,7 +41,7 @@
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title"></div>
           <div class="layout-row data-table-filters--group-fields">
-            <PaperSwitch @value={{this.withoutOrderFilter}} @primary={{true}} @onChange={{action "setFilter" "withoutOrder"}}>
+            <PaperSwitch @value={{this.withoutOrderFilter}} @primary={{true}} @onChange={{fn this.setFilter "withoutOrder"}}>
               Zonder bestelling
             </PaperSwitch>
           </div>
@@ -50,7 +50,7 @@
     </div>
 
     <div class="data-table-filters--reset">
-      <PaperButton @iconButton={{true}} @onClick={{action "resetFilters"}}>
+      <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
         {{paper-icon "close"}}
         <PaperTooltip>Wis filters</PaperTooltip>
       </PaperButton>

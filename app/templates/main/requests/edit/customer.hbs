@@ -6,7 +6,7 @@
     <p>Klant koppelen aan aanvraag...</p>
   </div>
 {{else}}
-  <Customer::DataTableFilter @number={{number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{action "applyFilter"}} />
+  <Customer::DataTableFilter @number={{number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{fn this.applyFilter}} />
 
   <DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{perform this.linkCustomerToRequest}} as |t|>
     <t.content as |c|>

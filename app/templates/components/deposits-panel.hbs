@@ -1,6 +1,6 @@
 <div class="layout-row layout-align-space-between-center">
   <h2>Voorschotten</h2>
-  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{action "createNew"}} @disabled={{or this.isDisabledEdit this.selected}}>
+  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.createNew}} @disabled={{or this.isDisabledEdit this.selected}}>
     {{paper-icon "add"}}
     <PaperTooltip>Voeg nieuw voorschot toe</PaperTooltip>
   </PaperButton>
@@ -26,7 +26,7 @@
   <div class="layout-row layout-align-start-center case--deposits-form">
     <DepositEditForm @model={{selected}} @save={{this.save}} />
     <SaveStatusIcon @model={{selected}} @task={{this.save}} />
-    <PaperButton @primary={{true}} @onClick={{action "closeEdit"}}>Klaar</PaperButton>
+    <PaperButton @primary={{true}} @onClick={{fn this.closeEdit}}>Klaar</PaperButton>
   </div>
 {{else}}
   <table class="case--deposits-table">
@@ -44,11 +44,11 @@
           <td>{{deposit.payment.name}}</td>
           <td>
             {{#unless this.isDisabledEdit}}
-              <PaperButton @onClick={{action "openEdit" deposit}} @iconButton={{true}}>
+              <PaperButton @onClick={{fn this.openEdit deposit}} @iconButton={{true}}>
                 {{paper-icon "edit mode"}}
                 <PaperTooltip>Bewerken</PaperTooltip>
               </PaperButton>
-              <PaperButton @onClick={{action "deleteDeposit" deposit}} @iconButton={{true}}>
+              <PaperButton @onClick={{fn this.deleteDeposit deposit}} @iconButton={{true}}>
                 {{paper-icon "delete"}}
                 <PaperTooltip>Verwijderen</PaperTooltip>
               </PaperButton>
@@ -62,4 +62,4 @@
   </table>
 {{/liquid-if}}
 
-<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

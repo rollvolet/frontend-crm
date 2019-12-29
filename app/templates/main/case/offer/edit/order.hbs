@@ -25,8 +25,8 @@
     <div class="case--order--offerlines-selection">
       {{#each this.model.offerlines as |offerline|}}
         <div class="case--order--offerlines-selection--offerline layout-row layout-align-start-center
-          {{if offerline.isOrdered "case--order--offerlines-selection--offerline--ordered"}}"
-          {{action (toggle "isOrdered" offerline)}}>
+          {{on "click" (toggle "isOrdered" offerline)}}
+          {{if offerline.isOrdered "case--order--offerlines-selection--offerline--ordered"}}">
           <div class="col col--is-ordered">
             {{#liquid-if offerline.isOrdered class="move-up"}}
               {{paper-icon "check" size=28}}
@@ -52,18 +52,18 @@
 {{/if}}
 
 <div class="layout-row layout-align-end-center">
-  <PaperButton @onClick={{action "cancel"}}>Annuleer</PaperButton>
+  <PaperButton @onClick={{fn this.cancel}}>Annuleer</PaperButton>
   <PaperButton @primary={{true}} @raised={{true}} @onClick={{perform this.createOrder}} @disabled={{this.isDisabledCreate}}>
     Ga verder
   </PaperButton>
 </div>
 
 {{#if this.showIncompatibleVatRatesDialog}}
-  <PaperDialog @class="flex-50" @onClose={{action "closeIncompatibleVatRatesDialog"}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
+  <PaperDialog @class="flex-50" @onClose={{fn this.closeIncompatibleVatRatesDialog}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
     <PaperToolbar>
       <PaperToolbarTools>
         <h2>Opgelet</h2><span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{action "closeIncompatibleVatRatesDialog"}}>
+        <PaperButton @iconButton={{true}} @onClick={{fn this.closeIncompatibleVatRatesDialog}}>
           <PaperIcon @icon="close" />
         </PaperButton>
       </PaperToolbarTools>
@@ -80,7 +80,7 @@
 
     <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
-      <PaperButton @onClick={{action "closeIncompatibleVatRatesDialog"}}>Terug</PaperButton>
+      <PaperButton @onClick={{fn this.closeIncompatibleVatRatesDialog}}>Terug</PaperButton>
       <PaperButton @onClick={{perform this.updateOfferVatRate}}>Pas BTW-tarief aan</PaperButton>
     </PaperDialogActions>
   </PaperDialog>

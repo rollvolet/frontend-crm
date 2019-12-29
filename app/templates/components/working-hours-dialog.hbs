@@ -1,9 +1,9 @@
 {{#if this.show}}
-  <PaperDialog @class="flex-50" @onClose={{action "close"}} @parent=".main-outlet" @origin=".main-outlet" @clickOutsideToClose={{true}}>
+  <PaperDialog @class="flex-50" @onClose={{fn this.close}} @parent=".main-outlet" @origin=".main-outlet" @clickOutsideToClose={{true}}>
     <PaperToolbar>
       <PaperToolbarTools>
         <h2>Werkuren</h2><span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{action "close"}}>
+        <PaperButton @iconButton={{true}} @onClick={{fn this.close}}>
           <PaperIcon @icon="close" />
         </PaperButton>
       </PaperToolbarTools>
@@ -11,8 +11,8 @@
 
     <PaperDialogContent>
       <div class="layout-row layout-align-start-center">
-        <PaperInput @label="Datum" @value={{this.newWorkingHour.dateStr}} @type="date" @required="style" @errors={{v-get this.newWorkingHour "date" "messages"}} @onChange={{action (mut this.newWorkingHour.dateStr)}} @class="default" />
-        <InputField::EmployeeSelect @label="Technieker" @value={{this.newWorkingHour.employee}} @isTechnician={{true}} @isOnRoad={{true}} @isAdministrative={{true}} @optionSort={{array "functionSort:desc"}} @required="style" @errors={{v-get this.newWorkingHour "employee" "messages"}} @onSelectionChange={{action (mut this.newWorkingHour.employee)}} @class="md-input-wrapper large u-rel-top-xxsmall" />
+        <PaperInput @label="Datum" @value={{this.newWorkingHour.dateStr}} @type="date" @required="style" @errors={{v-get this.newWorkingHour "date" "messages"}} @onChange={{fn (mut this.newWorkingHour.dateStr)}} @class="default" />
+        <InputField::EmployeeSelect @label="Technieker" @value={{this.newWorkingHour.employee}} @isTechnician={{true}} @isOnRoad={{true}} @isAdministrative={{true}} @optionSort={{array "functionSort:desc"}} @required="style" @errors={{v-get this.newWorkingHour "employee" "messages"}} @onSelectionChange={{fn (mut this.newWorkingHour.employee)}} @class="md-input-wrapper large u-rel-top-xxsmall" />
         {{#if this.save.isRunning}}
           <PaperProgressCircular @diameter={{18}} />
         {{else}}
@@ -32,7 +32,7 @@
               <td>{{fmt-date workingHour.date}}</td>
               <td>{{workingHour.employee.firstName}}</td>
               <td>
-                <PaperButton @onClick={{action "remove" workingHour}} @iconButton={{true}}>
+                <PaperButton @onClick={{fn this.remove workingHour}} @iconButton={{true}}>
                   {{paper-icon "delete"}}
                   <PaperTooltip>Verwijderen</PaperTooltip>
                 </PaperButton>
@@ -47,7 +47,7 @@
 
     <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
-      <PaperButton @onClick={{action "close"}}>Sluit</PaperButton>
+      <PaperButton @onClick={{fn this.close}}>Sluit</PaperButton>
     </PaperDialogActions>
   </PaperDialog>
 {{/if}}

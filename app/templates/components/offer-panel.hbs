@@ -15,12 +15,12 @@
           <PaperTooltip>Verwijderen</PaperTooltip>
         </PaperButton>
       {{/if}}
-      <PaperButton @onClick={{action "closeEdit"}} @iconButton={{true}}>
+      <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
         {{paper-icon "exit to app"}}
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
     {{else}}
-      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+      <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>
       </PaperButton>
@@ -66,7 +66,7 @@
       <h2>Offerte
         <span class="small-text-fade">[
           {{#if this.editMode}}
-            <Input @value={{this.model.documentVersion}} @key-up={{action (mut this.model.documentVersion)}} @focus-out={{perform this.save}} class="xsmall" />
+            <Input @value={{this.model.documentVersion}} @key-up={{fn (mut this.model.documentVersion)}} @focus-out={{perform this.save}} class="xsmall" />
             <PaperTooltip>
               Pas het versienummer aan om een nieuwe versie van het document te maken; anders wordt het vorige document overschreven.
             </PaperTooltip>
@@ -81,7 +81,7 @@
           <PaperProgressCircular @diameter={{18}} />
         {{else}}
           {{#unless this.editMode}}
-            <PaperButton @onClick={{action "downloadOfferDocument"}} @iconButton={{true}}>
+            <PaperButton @onClick={{fn this.downloadOfferDocument}} @iconButton={{true}}>
               {{paper-icon "find in page"}}
               <PaperTooltip>Offerte bekijken</PaperTooltip>
             </PaperButton>
@@ -100,24 +100,24 @@
       <div class="offer-document-form layout-column">
         <section>
           <label>Introductie</label>
-          <PellEditor @class="pell-editor offer-intro" @value={{this.model.documentIntro}} @pellOptions={{this.pellOptions}} @onChange={{action (mut this.model.documentIntro)}} @focusOut={{perform this.save}} />
+          <PellEditor @class="pell-editor offer-intro" @value={{this.model.documentIntro}} @pellOptions={{this.pellOptions}} @onChange={{fn (mut this.model.documentIntro)}} @focusOut={{perform this.save}} />
         </section>
         <section>
           <div class="layout-row layout-align-start-center">
             <label>Producten</label>
           </div>
           {{#each this.sortedOfferlines as |offerline|}}
-            <OfferlineEditForm @model={{offerline}} @onDelete={{action "deleteOfferline"}} />
+            <OfferlineEditForm @model={{offerline}} @onDelete={{fn this.deleteOfferline}} />
           {{else}}
-            <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{action "addOfferline"}}>hier</span> om producten toe te voegen aan de offerte.</div>
+            <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{on "click" this.addOfferline}}>hier</span> om producten toe te voegen aan de offerte.</div>
           {{/each}}
           <div class="layout-row layout-align-end-center">
-            <div class="link-action" {{action "addOfferline"}}>{{paper-icon "add"}} Lijn toevoegen</div>
+            <div class="link-action" {{on "click" this.addOfferline}}>{{paper-icon "add"}} Lijn toevoegen</div>
           </div>
         </section>
         <section>
           <label>Voorwaarden</label>
-          <PellEditor @class="pell-editor offer-outro" @value={{this.model.documentOutro}} @pellOptions={{this.pellOptions}} @onChange={{action (mut this.model.documentOutro)}} @focusOut={{perform this.save}} />
+          <PellEditor @class="pell-editor offer-outro" @value={{this.model.documentOutro}} @pellOptions={{this.pellOptions}} @onChange={{fn (mut this.model.documentOutro)}} @focusOut={{perform this.save}} />
         </section>
       </div>
   {{else}}
@@ -130,4 +130,4 @@
   {{/if}}
 {{/if}}
 
-<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

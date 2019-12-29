@@ -15,7 +15,7 @@
         <h3>{{paper-icon "event"}} Planning</h3>
         {{#if this.editMode}}
           <div>
-          <PaperButton @onClick={{action "remove"}} @iconButton={{true}}>
+          <PaperButton @onClick={{fn this.remove}} @iconButton={{true}}>
             {{paper-icon "delete"}}
             <PaperTooltip>Verwijderen</PaperTooltip>
           </PaperButton>
@@ -33,7 +33,7 @@
               </PaperButton>
             {{/if}}
             {{#unless this.isNotAvailableInCalendar}}
-              <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+              <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
                 {{paper-icon "edit mode"}}
                 <PaperTooltip>Aanpassen</PaperTooltip>
               </PaperButton>
@@ -46,7 +46,7 @@
           {{#if this.planEvent.isRunning}}
             <PaperProgressCircular @diameter={{25}} />
           {{else}}
-            <PaperInput @label="Datum" @value={{this.inputDateStr}} @type="date" @onChange={{action (mut this.inputDateStr)}} @class="default" />
+            <PaperInput @label="Datum" @value={{this.inputDateStr}} @type="date" @onChange={{fn (mut this.inputDateStr)}} @class="default" />
           {{/if}}
         {{else}}
           {{#if this.model.planningDate}}{{fmt-date this.model.planningDate}}{{else}}Niet ingepland{{/if}}

@@ -30,17 +30,17 @@
     </tabs.tab>
   {{/if}}
   {{#if this.canCreateNewOffer}}
-    <tabs.tab @value="main.case.request.edit.offer" @onClick={{action "openNewOffer"}}>
+    <tabs.tab @value="main.case.request.edit.offer" @onClick={{fn this.openNewOffer}}>
       {{paper-icon "add box"}} <PaperTooltip>Maak offerte</PaperTooltip>
     </tabs.tab>
   {{/if}}
   {{#if this.canCreateNewOrder}}
-    <tabs.tab @value="main.case.offer.edit.order" @onClick={{action "openNewOrder"}}>
+    <tabs.tab @value="main.case.offer.edit.order" @onClick={{fn this.openNewOrder}}>
       {{paper-icon "add box"}} <PaperTooltip>Maak bestelling</PaperTooltip>
     </tabs.tab>
   {{/if}}
   {{#if this.canCreateNewInvoice}}
-    <tabs.tab @value="main.case.order.edit.invoice" @onClick={{action "openNewInvoice"}}>
+    <tabs.tab @value="main.case.order.edit.invoice" @onClick={{fn this.openNewInvoice}}>
       {{paper-icon "add box"}} <PaperTooltip>Maak factuur</PaperTooltip>
     </tabs.tab>
   {{/if}}

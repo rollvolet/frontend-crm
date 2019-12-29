@@ -7,7 +7,7 @@
     <PaperInput @label="Postcode" @value={{this.postalCodeFilter}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
     <PaperInput @label="Gemeente" @value={{this.cityFilter}} @onChange={{perform this.debounceFilter "city"}} />
     <PaperInput @label="Telefoon" @value={{this.telephoneFilter}} @onChange={{perform this.debounceFilter "telephone"}} />
-    <PaperButton @iconButton={{true}} @onClick={{action "resetFilters"}}>
+    <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
       {{paper-icon "close"}}
       <PaperTooltip>Wis filters</PaperTooltip>
     </PaperButton>

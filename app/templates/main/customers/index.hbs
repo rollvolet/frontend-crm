@@ -6,9 +6,9 @@
   </PaperButton>
 </div>
 
-<Customer::DataTableFilter @number={{number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{action "applyFilter"}} />
+<Customer::DataTableFilter @number={{number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{fn this.applyFilter}} />
 
-<DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{action "clickRow"}} as |t|>
+<DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
   <t.content as |c|>
     <c.header>
       <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />

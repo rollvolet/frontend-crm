@@ -52,7 +52,7 @@
         </DetailIconListItem>
 
         <DetailIconListItem @icon="assignment" @label="Memo" @class="resource-details--section-memo">
-          <div {{action (toggle "memoExpanded" this)}}>
+          <div {{on "click" (toggle "memoExpanded" this)}}>
             {{#if this.model.memo}}
               {{#if this.memoExpanded}}
                 Memo {{paper-icon "expand less"}}
@@ -73,14 +73,14 @@
           <div class="layout-row layout-align-space-between-center">
             <h3>Gebouw</h3>
             {{#if this.isEnabledEditBuilding}}
-              <PaperButton @onClick={{action "toggleBuildingEdit"}} @iconButton={{true}}>
+              <PaperButton @onClick={{fn this.toggleBuildingEdit}} @iconButton={{true}}>
                 {{paper-icon "exit to app"}}
                 <PaperTooltip>Sluiten</PaperTooltip>
               </PaperButton>
             {{else if this.isUpdatingBuilding}}
               <PaperProgressCircular @diameter={{18}} />
             {{else}}
-              <PaperButton @onClick={{action "toggleBuildingEdit"}} @iconButton={{true}}>
+              <PaperButton @onClick={{fn this.toggleBuildingEdit}} @iconButton={{true}}>
                 {{paper-icon "edit mode"}}
                 <PaperTooltip>Aanpassen</PaperTooltip>
               </PaperButton>
@@ -93,21 +93,21 @@
               <p>n.v.t.</p>
             {{/if}}
           {{else}}
-            <InputField::BuildingSelect @value={{this.building}} @customer={{model}} @onSelectionChange={{action "updateBuilding"}} @class="md-input-wrapper xxxxlarge" />
+            <InputField::BuildingSelect @value={{this.building}} @customer={{model}} @onSelectionChange={{fn this.updateBuilding}} @class="md-input-wrapper xxxxlarge" />
           {{/unless}}
         </div>
         <div>
           <div class="layout-row layout-align-space-between-center">
             <h3>Contact</h3>
             {{#if this.isEnabledEditContact}}
-              <PaperButton @onClick={{action "toggleContactEdit"}} @iconButton={{true}}>
+              <PaperButton @onClick={{fn this.toggleContactEdit}} @iconButton={{true}}>
                 {{paper-icon "exit to app"}}
                 <PaperTooltip>Sluiten</PaperTooltip>
               </PaperButton>
             {{else if this.isUpdatingContact}}
               <PaperProgressCircular @diameter={{18}} />
             {{else}}
-              <PaperButton @onClick={{action "toggleContactEdit"}} @iconButton={{true}}>
+              <PaperButton @onClick={{fn this.toggleContactEdit}} @iconButton={{true}}>
                 {{paper-icon "edit mode"}}
                 <PaperTooltip>Aanpassen</PaperTooltip>
               </PaperButton>
@@ -120,7 +120,7 @@
               <p>n.v.t.</p>
             {{/if}}
           {{else}}
-            <InputField::ContactSelect @value={{this.contact}} @customer={{model}} @onSelectionChange={{action "updateContact"}} @class="md-input-wrapper xxxxlarge" />
+            <InputField::ContactSelect @value={{this.contact}} @customer={{model}} @onSelectionChange={{fn this.updateContact}} @class="md-input-wrapper xxxxlarge" />
           {{/unless}}
         </div>
       </div>

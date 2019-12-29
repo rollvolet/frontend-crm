@@ -1,6 +1,6 @@
 <PaperForm @onSubmit={{perform this.startExport}} as |form|>
   <div class="layout-row layout-align-start-center">
-    <PaperCheckbox @value={{this.multipleExportEnabled}} @onChange={{action "toggleMultipleExportEnabled"}}>
+    <PaperCheckbox @value={{this.multipleExportEnabled}} @onChange={{fn this.toggleMultipleExportEnabled}}>
       Exporteer meerdere facturen
     </PaperCheckbox>
   </div>
@@ -9,18 +9,18 @@
     <div class="layout-row">
       {{#if this.multipleExportEnabled}}
         <p>Exporteer facturen van</p>
-        <form.input @placeholder="29/0001" @value={{this.formattedFromNumber}} @onChange={{action "setFromNumber"}} @class="small input-export-number" />
+        <form.input @placeholder="29/0001" @value={{this.formattedFromNumber}} @onChange={{fn this.setFromNumber}} @class="small input-export-number" />
         <p>t.e.m.</p>
-        <form.input @placeholder="29/0439" @value={{this.formattedUntilNumber}} @onChange={{action "setUntilNumber"}} @class="small input-export-number" />
+        <form.input @placeholder="29/0439" @value={{this.formattedUntilNumber}} @onChange={{fn this.setUntilNumber}} @class="small input-export-number" />
       {{else}}
         <p>Exporteer factuur met nummer</p>
-        <form.input @placeholder="29/0001" @value={{this.formattedFromNumber}} @onChange={{action "setFromNumber"}} @class="small input-export-number" />
+        <form.input @placeholder="29/0001" @value={{this.formattedFromNumber}} @onChange={{fn this.setFromNumber}} @class="small input-export-number" />
       {{/if}}
     </div>
   </div>
 
   <div class="layout-row layout-align-space-between-center">
-    <PaperCheckbox @value={{this.model.isDryRun}} @onChange={{action (mut this.model.isDryRun)}}>
+    <PaperCheckbox @value={{this.model.isDryRun}} @onChange={{fn (mut this.model.isDryRun)}}>
       Om te testen
       <div class="checkbox-tooltip">Facturen worden niet gemarkeerd als 'geboekt' in de databank</div>
     </PaperCheckbox>

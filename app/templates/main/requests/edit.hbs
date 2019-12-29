@@ -4,6 +4,6 @@
   </tabs.tab>
 </PaperTabs>
 
-<RequestPanel @model={{model}} @editMode={{this.editMode}} @onOpenEdit={{action (mut this.editMode) true}} @onCloseEdit={{action (mut this.editMode) false}} />
+<RequestPanel @model={{model}} @editMode={{this.editMode}} @onOpenEdit={{fn (mut this.editMode) true}} @onCloseEdit={{fn (mut this.editMode) false}} />
 
 {{liquid-outlet}}

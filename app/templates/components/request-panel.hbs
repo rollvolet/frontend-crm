@@ -15,12 +15,12 @@
           <PaperTooltip>Verwijderen</PaperTooltip>
         </PaperButton>
       {{/if}}
-      <PaperButton @onClick={{action "closeEdit"}} @iconButton={{true}}>
+      <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
         {{paper-icon "exit to app"}}
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
     {{else}}
-      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+      <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>
       </PaperButton>
@@ -29,12 +29,12 @@
           {{paper-icon "link off"}}
           <PaperTooltip>Ontkoppel klant</PaperTooltip>
         </PaperButton>
-        <PaperButton @onClick={{action "generateVisitReport"}} @iconButton={{true}}>
+        <PaperButton @onClick={{fn this.generateVisitReport}} @iconButton={{true}}>
           {{paper-icon "description"}}
           <PaperTooltip>Bezoekrapport</PaperTooltip>
         </PaperButton>
       {{else}}
-        <PaperButton @onClick={{action "linkCustomer"}} @iconButton={{true}}>
+        <PaperButton @onClick={{fn this.linkCustomer}} @iconButton={{true}}>
           {{paper-icon "link"}}
           <PaperTooltip>Koppel klant</PaperTooltip>
         </PaperButton>
@@ -75,4 +75,4 @@
   <RequestDetailPanel @model={{model}} />
 {{/if}}
 
-<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

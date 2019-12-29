@@ -7,7 +7,7 @@
 
 <AccountancyExportForm @onExport={{perform this.onExport}} />
 
-<h2 {{action (toggle "isInvoicesExpanded" this)}}>
+<h2 {{on "click" (toggle "isInvoicesExpanded" this)}}>
   Bekijk facturen
   {{#if this.isInvoicesExpanded}}
     {{paper-icon "expand_less"}}
@@ -22,7 +22,7 @@
 
 <div class="u-spacer-large"></div>
 
-<h2 {{action (toggle "isHistoryExpanded" this)}}>
+<h2 {{on "click" (toggle "isHistoryExpanded" this)}}>
   Export historiek
   {{#if this.isHistoryExpanded}}
     {{paper-icon "expand_less"}}

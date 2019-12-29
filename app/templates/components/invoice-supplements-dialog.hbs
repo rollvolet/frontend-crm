@@ -1,9 +1,9 @@
 {{#if this.show}}
-  <PaperDialog @class="flex-50" @onClose={{action "close"}} @parent=".main-outlet" @origin=".main-outlet" @clickOutsideToClose={{true}}>
+  <PaperDialog @class="flex-50" @onClose={{fn this.close}} @parent=".main-outlet" @origin=".main-outlet" @clickOutsideToClose={{true}}>
     <PaperToolbar>
       <PaperToolbarTools>
         <h2>Extra's</h2><span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{action "close"}}><PaperIcon @icon="close" /></PaperButton>
+        <PaperButton @iconButton={{true}} @onClick={{fn this.close}}><PaperIcon @icon="close" /></PaperButton>
       </PaperToolbarTools>
     </PaperToolbar>
 
@@ -15,7 +15,7 @@
           <InvoiceSupplementEditForm @model={{selected}} @save={{this.save}} />
         {{/if}}
 {{else}}
-        <InvoiceSupplementsTable @model={{this.model.supplements}} @isDisabledEdit={{this.isDisabledEdit}} @onOpenEdit={{action "openEdit"}} @onDelete={{action "deleteSupplement"}} />
+        <InvoiceSupplementsTable @model={{this.model.supplements}} @isDisabledEdit={{this.isDisabledEdit}} @onOpenEdit={{fn this.openEdit}} @onDelete={{fn this.deleteSupplement}} />
       {{/liquid-if}}
       {{#if this.model.isMasteredByAccess}}
         <p class="note-message">De factuur is aangemaakt in Access. De extra's kunnen hier niet aangepast worden.</p>
@@ -25,14 +25,14 @@
     <PaperDialogActions @class="layout-row invoice-supplements--dialog--actions">
       <span class="flex"></span>
       {{#if this.showUnsavedChangesWarning}}
-        <PaperButton @onClick={{action "cancelCloseEdit"}}>Terug</PaperButton>
-        <PaperButton @onClick={{action "confirmCloseEdit"}}>Ga toch verder</PaperButton>
+        <PaperButton @onClick={{fn this.cancelCloseEdit}}>Terug</PaperButton>
+        <PaperButton @onClick={{fn this.confirmCloseEdit}}>Ga toch verder</PaperButton>
       {{else}}
         {{#if this.selected}}
           <SaveStatusIcon @model={{selected}} @task={{this.save}} />
-          <PaperButton @class="close-edit-btn" @onClick={{action "closeEdit"}}>Klaar</PaperButton>
+          <PaperButton @class="close-edit-btn" @onClick={{fn this.closeEdit}}>Klaar</PaperButton>
         {{else}}
-          <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{action "createNew"}} @disabled={{this.isDisabledNew}}>
+          <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.createNew}} @disabled={{this.isDisabledNew}}>
             {{paper-icon "add"}}
             <PaperTooltip>Voeg nieuwe extra toe</PaperTooltip>
           </PaperButton>

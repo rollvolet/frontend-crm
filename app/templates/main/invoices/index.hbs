@@ -1,9 +1,9 @@
 <h1>Facturen</h1>
 
 <div class="invoices-data-table">
-  <Invoice::DataTableFilter @number={{number}} @offerNumber={{this.offerNumber}} @reference={{reference}} @requestNumber={{this.requestNumber}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @onChange={{action "applyFilter"}} />
+  <Invoice::DataTableFilter @number={{number}} @offerNumber={{this.offerNumber}} @reference={{reference}} @requestNumber={{this.requestNumber}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @onChange={{fn this.applyFilter}} />
 
-  <DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{action "clickRow"}} as |t|>
+  <DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
     <t.content as |c|>
       <c.header>
         <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />

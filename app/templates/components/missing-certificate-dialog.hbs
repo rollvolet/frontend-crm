@@ -1,9 +1,9 @@
 {{#if this.show}}
-  <PaperDialog @class="flex-50 invoice-document-dialog" @onClose={{action "close"}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
+  <PaperDialog @class="flex-50 invoice-document-dialog" @onClose={{fn this.close}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
     <PaperToolbar>
       <PaperToolbarTools>
         <h2>BTW-attest ontbreekt</h2><span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{action "close"}}>
+        <PaperButton @iconButton={{true}} @onClick={{fn this.close}}>
           <PaperIcon @icon="close" />
         </PaperButton>
       </PaperToolbarTools>
@@ -20,7 +20,7 @@
 
     <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
-      <PaperButton @onClick={{action "close"}}>Factuur maken</PaperButton>
+      <PaperButton @onClick={{fn this.close}}>Factuur maken</PaperButton>
     </PaperDialogActions>
   </PaperDialog>
 {{/if}}

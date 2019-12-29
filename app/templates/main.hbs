@@ -2,22 +2,22 @@
 
 <PaperToolbar @class="top-toolbar" as |toolbar|>
   <toolbar.tools>
-    <PaperButton @iconButton={{true}} @onClick={{action (mut this.isMainMenuOpen)}}>
+    <PaperButton @iconButton={{true}} @onClick={{fn (mut this.isMainMenuOpen)}}>
       {{paper-icon "menu"}}
     </PaperButton>
     <h1>Rollvolet Klantenbeheer</h1>
     <DataPreloader />
     <span class="flex"></span>
-    <PaperButton @onClick={{action "openMail"}} @iconButton={{true}}>
+    <PaperButton @onClick={{fn this.openMail}} @iconButton={{true}}>
       {{paper-icon "help"}}
       <PaperTooltip>Help</PaperTooltip>
     </PaperButton>
-    <PaperButton @onClick={{action "goToProfile"}} @iconButton={{true}}>
+    <PaperButton @onClick={{fn this.goToProfile}} @iconButton={{true}}>
       {{paper-icon "account circle"}}
       <PaperTooltip>Profiel</PaperTooltip>
     </PaperButton>
     {{this.session.data.authenticated.user.account}}
-    <PaperButton @onClick={{action "logout"}} @iconButton={{true}}>
+    <PaperButton @onClick={{fn this.logout}} @iconButton={{true}}>
       {{paper-icon "exit to app"}}
       <PaperTooltip>Log uit</PaperTooltip>
     </PaperButton>
@@ -25,7 +25,7 @@
 </PaperToolbar>
 
 <PaperSidenavContainer @class="main-side-nav-container">
-  <PaperSidenav @class="main-side-nav" @open={{this.isMainMenuOpen}} @lockedOpen={{false}} @onToggle={{action (mut this.isMainMenuOpen)}}>
+  <PaperSidenav @class="main-side-nav" @open={{this.isMainMenuOpen}} @lockedOpen={{false}} @onToggle={{fn (mut this.isMainMenuOpen)}}>
     <PaperToolbar as |toolbar|>
       <toolbar.tools>
         Menu <span class="version">v{{app-version versionOnly=true}}</span>
@@ -93,7 +93,7 @@
         <PaperDivider />
         <!-- {{#paper-item}}Profiel{{/paper-item}}
              {{paper-divider}} -->
-        <PaperItem @onClick={{action "logout"}}>Log out</PaperItem>
+        <PaperItem @onClick={{fn this.logout}}>Log out</PaperItem>
       </PaperList>
 
     </PaperContent>

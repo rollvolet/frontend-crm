@@ -14,7 +14,7 @@
         {{fmt-date this.model.paymentDate}}
       </DetailListSubitem>
     </DetailListItem>
-    <DetailListItem @label="Techniekers" @click={{action "openWorkingHoursDialog"}} @class="clickable">
+    <DetailListItem @label="Techniekers" @click={{fn this.openWorkingHoursDialog}} @class="clickable">
       {{#if this.model.workingHours}}
         {{join ", " this.employeeFirstNames}} {{paper-icon "info" size=18}}
       {{else}}
@@ -38,7 +38,7 @@
       <DetailListItem @label="Productiebon">
         {{paper-icon (if this.model.hasProductionTicket "check_box" "check_box_outline_blank")}}
         {{#if this.model.hasProductionTicket}}
-          <span {{action "downloadProductionTicket"}}>
+          <span {{on "click" this.downloadProductionTicket}}>
             {{paper-icon "find in page"}}
             <PaperTooltip>Productiebon bekijken</PaperTooltip>
           </span>

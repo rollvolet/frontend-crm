@@ -27,7 +27,7 @@
       </PaperButton>
 
       {{#if this.model.certificateReceived}}
-        <PaperButton @onClick={{action "download"}} @iconButton={{this.iconButton}} @raised={{not this.iconButton}} @primary={{not this.iconButton}}>
+        <PaperButton @onClick={{fn this.download}} @iconButton={{this.iconButton}} @raised={{not this.iconButton}} @primary={{not this.iconButton}}>
           {{#if this.iconButton}}
             {{paper-icon "find in page"}}
             <PaperTooltip>BTW-attest bekijken</PaperTooltip>
@@ -35,7 +35,7 @@
             BTW-attest bekijken
           {{/if}}
         </PaperButton>
-        <PaperButton @onClick={{action "delete"}} @iconButton={{this.iconButton}} @raised={{not this.iconButton}} @primary={{not this.iconButton}}>
+        <PaperButton @onClick={{fn this.delete}} @iconButton={{this.iconButton}} @raised={{not this.iconButton}} @primary={{not this.iconButton}}>
           {{#if this.iconButton}}
             {{paper-icon "delete"}}
             <PaperTooltip>BTW-attest verwijderen</PaperTooltip>

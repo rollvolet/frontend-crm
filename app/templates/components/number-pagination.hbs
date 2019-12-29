@@ -3,26 +3,26 @@
     Toon {{this.startItem}}-{{this.endItem}}
     {{#if this.total}} van {{this.total}}{{/if}}
     {{#if this.sizeOptions}} |
-      <PowerSelect @options={{this.sizeOptions}} @selected={{size}} @onchange={{action (mut size)}} @searchEnabled={{false}} @verticalPosition="above" as |size|>
+      <PowerSelect @options={{this.sizeOptions}} @selected={{size}} @onchange={{fn (mut size)}} @searchEnabled={{false}} @verticalPosition="above" as |size|>
         {{size}}
       </PowerSelect> per pagina
     {{/if}}
   </div>
   {{#if this.hasMultiplePages}}
     <div class="layout-row layout-align-end-center data-table-pagination-right">
-      <PaperButton @disabled={{this.isFirstPage}} @onClick={{action "changePage" this.links.first}} @iconButton={{true}}>
+      <PaperButton @disabled={{this.isFirstPage}} @onClick={{fn this.changePage this.links.first}} @iconButton={{true}}>
         {{paper-icon "first page"}}
       </PaperButton>
-      <PaperButton @disabled={{this.isFirstPage}} @onClick={{action "changePage" this.links.prev}} @iconButton={{true}}>
+      <PaperButton @disabled={{this.isFirstPage}} @onClick={{fn this.changePage this.links.prev}} @iconButton={{true}}>
         {{paper-icon "chevron left"}}
       </PaperButton>
-      <PowerSelect @options={{this.pageOptions}} @selected={{this.currentPage}} @onchange={{action (mut this.currentPage)}} @searchEnabled={{false}} @verticalPosition="above" as |page|>
+      <PowerSelect @options={{this.pageOptions}} @selected={{this.currentPage}} @onchange={{fn (mut this.currentPage)}} @searchEnabled={{false}} @verticalPosition="above" as |page|>
         {{page}}
       </PowerSelect>
-      <PaperButton @disabled={{this.isLastPage}} @onClick={{action "changePage" this.links.next}} @iconButton={{true}}>
+      <PaperButton @disabled={{this.isLastPage}} @onClick={{fn this.changePage this.links.next}} @iconButton={{true}}>
         {{paper-icon "chevron right"}}
       </PaperButton>
-      <PaperButton @disabled={{this.isLastPage}} @onClick={{action "changePage" this.links.last}} @iconButton={{true}}>
+      <PaperButton @disabled={{this.isLastPage}} @onClick={{fn this.changePage this.links.last}} @iconButton={{true}}>
         {{paper-icon "last page"}}
       </PaperButton>
     </div>

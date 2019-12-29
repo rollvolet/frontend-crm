@@ -51,7 +51,7 @@
   </DetailIconListItem>
 
   <DetailIconListItem @icon="assignment" @label="Memo" @class="resource-details--section-memo">
-    <div {{action (toggle "memoExpanded" this)}}>
+    <div {{on "click" (toggle "memoExpanded" this)}}>
       {{#if this.model.memo}}
         {{#if this.memoExpanded}}
           Memo {{paper-icon "expand less"}}

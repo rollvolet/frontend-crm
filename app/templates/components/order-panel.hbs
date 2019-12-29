@@ -15,12 +15,12 @@
           <PaperTooltip>Verwijderen</PaperTooltip>
         </PaperButton>
       {{/if}}
-      <PaperButton @onClick={{action "closeEdit"}} @iconButton={{true}}>
+      <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
         {{paper-icon "exit to app"}}
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
     {{else}}
-      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+      <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>
       </PaperButton>
@@ -69,12 +69,12 @@
             {{#if this.generateOrderDocument.isRunning}}
               <PaperProgressCircular @diameter={{18}} />
             {{else}}
-              <div {{action "downloadOrderDocument"}}>
+              <div {{on "click" this.downloadOrderDocument}}>
                 {{paper-icon "find in page"}}
                 <PaperTooltip>Orderbevestiging bekijken</PaperTooltip>
               </div>
               {{#unless this.isDisabledEdit}}
-                <div {{action (perform this.generateOrderDocument)}}>
+                <div {{on "click" (perform this.generateOrderDocument)}}>
                   {{paper-icon "restore page"}}
                   <PaperTooltip>Orderbevestiging maken</PaperTooltip>
                 </div>
@@ -88,12 +88,12 @@
             {{#if this.generateDeliveryNote.isRunning}}
               <PaperProgressCircular @diameter={{18}} />
             {{else}}
-              <div {{action "downloadDeliveryNote"}}>
+              <div {{on "click" this.downloadDeliveryNote}}>
                 {{paper-icon "find in page"}}
                 <PaperTooltip>Leveringsbon bekijken</PaperTooltip>
               </div>
               {{#unless this.isDisabledEdit}}
-                <div {{action (perform this.generateDeliveryNote)}}>
+                <div {{on "click" (perform this.generateDeliveryNote)}}>
                   {{paper-icon "restore page"}}
                   <PaperTooltip>Leveringsbon maken</PaperTooltip>
                 </div>
@@ -121,4 +121,4 @@
   {{/if}}
 {{/if}}
 
-<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

@@ -1,12 +1,12 @@
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  <PaperInput @label="Nummer" @value={{number}} @onChange={{action "setFilter" "number"}} @class="small" />
-  <PaperInput @label="Naam" @value={{this.name}} @onChange={{action "setFilter" "name"}} />
-  <PaperInput @label="Straat" @value={{this.street}} @onChange={{action "setFilter" "street"}} @class="large" />
-  <PaperInput @label="Postcode" @value={{this.postalCode}} @onChange={{action "setFilter" "postalCode"}} @class="small" />
-  <PaperInput @label="Gemeente" @value={{this.city}} @onChange={{action "setFilter" "city"}} />
-  <PaperInput @label="Telefoon" @value={{this.telephone}} @onChange={{action "setFilter" "telephone"}} />
-  <PaperButton @iconButton={{true}} @onClick={{action "resetFilters"}}>
+  <PaperInput @label="Nummer" @value={{number}} @onChange={{fn this.setFilter "number"}} @class="small" />
+  <PaperInput @label="Naam" @value={{this.name}} @onChange={{fn this.setFilter "name"}} />
+  <PaperInput @label="Straat" @value={{this.street}} @onChange={{fn this.setFilter "street"}} @class="large" />
+  <PaperInput @label="Postcode" @value={{this.postalCode}} @onChange={{fn this.setFilter "postalCode"}} @class="small" />
+  <PaperInput @label="Gemeente" @value={{this.city}} @onChange={{fn this.setFilter "city"}} />
+  <PaperInput @label="Telefoon" @value={{this.telephone}} @onChange={{fn this.setFilter "telephone"}} />
+  <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
     {{paper-icon "close"}}
     <PaperTooltip>Wis filters</PaperTooltip>
   </PaperButton>
@@ -36,7 +36,7 @@
       <td>{{row.city}}</td>
       <td>{{row.country.name}}</td>
       <td>{{row.language.name}}</td>
-      <td {{action "edit" row}}>{{paper-icon "mode edit"}}</td>
+      <td {{on "click" this.edit row}}>{{paper-icon "mode edit"}}</td>
     </c.body>
   </t.content>
 </DataTable>

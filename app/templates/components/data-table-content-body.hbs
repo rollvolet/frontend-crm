@@ -4,10 +4,10 @@
 {{else}}
   {{#if this.content}}
     {{#each this.wrappedItems as |wrapper index|}}
-      <tr class="{{if (contains wrapper.item this.data-table.selection) 'selected'}} {{if this.onClickRow 'clickable'}}" onclick={{action (optional this.onClickRow) wrapper.item}}>
+      <tr class="{{if (contains wrapper.item this.data-table.selection) 'selected'}} {{if this.onClickRow 'clickable'}}" onclick={{fn (optional this.onClickRow) wrapper.item}}>
         {{#if this.enableSelection}}
           <td class="center">
-            <Input @type="checkbox" @checked={{wrapper.isSelected}} @click={{action "updateSelection" wrapper}} />
+            <Input @type="checkbox" @checked={{wrapper.isSelected}} @click={{fn this.updateSelection wrapper}} />
           </td>
         {{/if}}
         {{#if this.enableLineNumbers}}

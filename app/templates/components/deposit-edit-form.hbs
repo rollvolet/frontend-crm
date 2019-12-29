@@ -1,6 +1,6 @@
 <div class="layout-row">
-  <PaperInput @label="Datum" @value={{this.model.paymentDateStr}} @type="date" @required="style" @errors={{v-get this.model "paymentDate" "messages"}} @onChange={{action (mut this.model.paymentDateStr)}} @onBlur={{perform this.save}} @class="default" />
-  <PaperInput @label="Bedrag (€)" @value={{this.amountInput}} @required="style" @errors={{v-get this.model "amount" "messages"}} @onChange={{action (mut this.amountInput)}} @onBlur={{queue (action "formatDecimal" "amount") (perform this.save)}} @class="small" />
-  <InputField::PaymentSelect @value={{this.model.payment}} @onSelectionChange={{queue (action (mut this.model.payment)) (perform this.save)}} @class="md-input-wrapper large u-rel-top-small" />
+  <PaperInput @label="Datum" @value={{this.model.paymentDateStr}} @type="date" @required="style" @errors={{v-get this.model "paymentDate" "messages"}} @onChange={{fn (mut this.model.paymentDateStr)}} @onBlur={{perform this.save}} @class="default" />
+  <PaperInput @label="Bedrag (€)" @value={{this.amountInput}} @required="style" @errors={{v-get this.model "amount" "messages"}} @onChange={{fn (mut this.amountInput)}} @onBlur={{queue (fn this.formatDecimal "amount") (perform this.save)}} @class="small" />
+  <InputField::PaymentSelect @value={{this.model.payment}} @onSelectionChange={{queue (fn (mut this.model.payment)) (perform this.save)}} @class="md-input-wrapper large u-rel-top-small" />
 </div>
 {{yield}}

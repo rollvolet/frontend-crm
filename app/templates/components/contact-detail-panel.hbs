@@ -2,7 +2,7 @@
   <div class="layout-row layout-align-space-between-center">
     <h4><span class="small-text-fade">[{{this.model.number}}]</span> {{this.model.printName}}</h4>
     <div>
-      <PaperButton @onClick={{action "toggleEdit"}} @iconButton={{true}}>{{paper-icon "edit mode"}}</PaperButton>
+      <PaperButton @onClick={{fn this.toggleEdit}} @iconButton={{true}}>{{paper-icon "edit mode"}}</PaperButton>
       <PaperButton @onClick={{this.onClose}} @iconButton={{true}}>{{paper-icon "exit to app"}}</PaperButton>
     </div>
   </div>

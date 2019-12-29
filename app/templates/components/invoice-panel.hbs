@@ -17,7 +17,7 @@
           <PaperTooltip>Verwijderen</PaperTooltip>
         </PaperButton>
       {{/if}}
-      <PaperButton @onClick={{action "closeEdit"}} @iconButton={{true}}>
+      <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
         {{paper-icon "exit to app"}}
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
@@ -25,7 +25,7 @@
       {{#if this.generateInvoiceDocument.isRunning}}
         <PaperProgressCircular @diameter={{18}} />
       {{else}}
-        <PaperButton @onClick={{action "downloadInvoiceDocument"}} @iconButton={{true}}>
+        <PaperButton @onClick={{fn this.downloadInvoiceDocument}} @iconButton={{true}}>
           {{paper-icon "find in page"}}
           <PaperTooltip>Factuur bekijken</PaperTooltip>
         </PaperButton>
@@ -36,7 +36,7 @@
           </PaperButton>
         {{/unless}}
       {{/if}}
-      <PaperButton @onClick={{action "openEdit"}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+      <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>
       </PaperButton>
@@ -79,5 +79,5 @@
   </div>
 {{/if}}
 
-<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{action "confirmCloseEdit"}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />
 <MissingCertificateDialog @show={{this.showMissingCertificateDialog}} @model={{model}} @onClose={{perform this.generateInvoiceDocument}} />

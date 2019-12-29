@@ -9,11 +9,11 @@
       </PaperButton>
 
       {{#if this.model.hasProductionTicket}}
-        <PaperButton @onClick={{action "download"}} @iconButton={{true}}>
+        <PaperButton @onClick={{fn this.download}} @iconButton={{true}}>
           {{paper-icon "find in page"}}
           <PaperTooltip>Productiebon bekijken</PaperTooltip>
         </PaperButton>
-        <PaperButton @onClick={{action "delete"}} @iconButton={{true}}>
+        <PaperButton @onClick={{fn this.delete}} @iconButton={{true}}>
           {{paper-icon "delete"}}
           <PaperTooltip>Productiebon verwijderen</PaperTooltip>
         </PaperButton>

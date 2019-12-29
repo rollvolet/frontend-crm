@@ -1,10 +1,10 @@
 <div class="layout-row">
-  <PaperInput @label="Aantal" @value={{this.nbOfPiecesInput}} @errors={{v-get this.model "nbOfPieces" "messages"}} @onChange={{action (mut this.nbOfPiecesInput)}} @onBlur={{queue (action "formatDecimal" "nbOfPieces") (perform this.save)}} @class="small" />
-  <InputField::ProductUnitSelect @value={{this.model.unit}} @errors={{v-get this.model "unit" "messages"}} @onSelectionChange={{queue (action (mut this.model.unit)) (perform this.save)}} @class="md-input-wrapper default u-rel-top-small" />
+  <PaperInput @label="Aantal" @value={{this.nbOfPiecesInput}} @errors={{v-get this.model "nbOfPieces" "messages"}} @onChange={{fn (mut this.nbOfPiecesInput)}} @onBlur={{queue (fn this.formatDecimal "nbOfPieces") (perform this.save)}} @class="small" />
+  <InputField::ProductUnitSelect @value={{this.model.unit}} @errors={{v-get this.model "unit" "messages"}} @onSelectionChange={{queue (fn (mut this.model.unit)) (perform this.save)}} @class="md-input-wrapper default u-rel-top-small" />
   <div>
-    <PaperInput @label="Netto totaal (€)" @value={{this.amountInput}} @errors={{v-get this.model "amount" "messages"}} @onChange={{action (mut this.amountInput)}} @onBlur={{queue (action "formatDecimal" "amount") (perform this.save)}} @class="default" />
+    <PaperInput @label="Netto totaal (€)" @value={{this.amountInput}} @errors={{v-get this.model "amount" "messages"}} @onChange={{fn (mut this.amountInput)}} @onBlur={{queue (fn this.formatDecimal "amount") (perform this.save)}} @class="default" />
   </div>
 </div>
 <div class="layout-row">
-  <PaperInput @label="Beschrijving" @value={{this.model.description}} @errors={{v-get this.model "description" "messages"}} @onChange={{action (mut this.model.description)}} @onBlur={{perform this.save}} @textarea={{true}} @passThru={{hash rows=3}} @class="xxlarge" />
+  <PaperInput @label="Beschrijving" @value={{this.model.description}} @errors={{v-get this.model "description" "messages"}} @onChange={{fn (mut this.model.description)}} @onBlur={{perform this.save}} @textarea={{true}} @passThru={{hash rows=3}} @class="xxlarge" />
 </div>

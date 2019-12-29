@@ -1,5 +1,5 @@
 {{#if this.show}}
-  <PaperDialog @class="flex-50" @onClose={{action "close"}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
+  <PaperDialog @class="flex-50" @onClose={{fn this.close}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
     <PaperToolbar>
       <PaperToolbarTools><h2>Document niet gevonden</h2></PaperToolbarTools>
     </PaperToolbar>
@@ -10,7 +10,7 @@
 
     <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
-      <PaperButton @onClick={{action "close"}}>OK</PaperButton>
+      <PaperButton @onClick={{fn this.close}}>OK</PaperButton>
     </PaperDialogActions>
   </PaperDialog>
 {{/if}}

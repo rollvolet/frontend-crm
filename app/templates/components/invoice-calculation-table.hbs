@@ -10,7 +10,7 @@
       <td>{{fmt-currency this.baseAmount}}</td>
       <td>{{#if this.baseAmount}}{{fmt-currency this.baseAmountVat}}{{/if}}</td>
     </tr>
-    <tr {{action "openSupplementsDialog"}}>
+    <tr {{on "click" this.openSupplementsDialog}}>
       <td>Extra's {{paper-icon "info" size=18}}</td>
       <td>{{fmt-currency this.supplementsAmount}}</td>
       <td>{{fmt-currency this.supplementsVat}}</td>
