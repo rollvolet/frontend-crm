@@ -24,8 +24,8 @@
 
 {{#liquid-if this.selected class="data-table-selection"}}
   <div class="layout-row layout-align-start-center case--deposits-form">
-    <DepositEditForm @model={{selected}} @save={{this.save}} />
-    <SaveStatusIcon @model={{selected}} @task={{this.save}} />
+    <DepositEditForm @model={{this.selected}} @save={{this.save}} />
+    <SaveStatusIcon @model={{this.selected}} @task={{this.save}} />
     <PaperButton @primary={{true}} @onClick={{fn this.closeEdit}}>Klaar</PaperButton>
   </div>
 {{else}}
@@ -34,7 +34,7 @@
       <th>Datum</th>
       <th>Bedrag</th>
       <th>Bank</th>
-      <th><!-- Edit/Delete --></th>
+      <th></th>
     </thead>
     <tbody>
       {{#each this.model as |deposit|}}

@@ -6,7 +6,7 @@
   <section class="case--request--visit">
     <div class="layout-row layout-align-start-center">
       <h3>{{paper-icon "event"}} Bezoek</h3>
-      <SaveStatusIcon @model={{model}} @task={{this.save}} />
+      <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
     </div>
     <PaperInput @label="Datum" @value={{this.model.visitDateStr}} @type="date" @required="style" @errors={{v-get this.model "visitDate" "messages"}} @onChange={{queue (fn (mut this.model.visitDateStr)) (perform this.save)}} @class="default" />
     <InputField::CalendarPeriodSelect @value={{this.model.period}} @errors={{v-get this.model "period" "messages"}} @required={{true}} @onSelectionChange={{fn this.changePeriod}} @class="md-input-wrapper large" />

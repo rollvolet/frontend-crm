@@ -1,6 +1,6 @@
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  <PaperInput @label="Nummer" @value={{number}} @onChange={{fn this.setFilter "number"}} @class="small" />
+  <PaperInput @label="Nummer" @value={{this.number}} @onChange={{fn this.setFilter "number"}} @class="small" />
   <PaperInput @label="Gebouw" @value={{this.name}} @onChange={{fn this.setFilter "name"}} />
   <PaperInput @label="Straat" @value={{this.street}} @onChange={{fn this.setFilter "street"}} @class="large" />
   <PaperInput @label="Postcode" @value={{this.postalCode}} @onChange={{fn this.setFilter "postalCode"}} @class="small" />
@@ -38,5 +38,3 @@
     <PaperTooltip>Maak nieuwe aanvraag</PaperTooltip>
   </PaperButton>
 </div>
-
-{{yield}}

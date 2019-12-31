@@ -6,7 +6,7 @@
       </h2>
     </div>
     {{#if this.editMode}}
-      <SaveStatusIcon @model={{model}} @task={{this.save}} />
+      <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
     {{/if}}
   </div>
   <div class="layout-row layout-align-start-center">
@@ -66,10 +66,10 @@
       <p>Aan het aanmaken...</p>
     </div>
   {{else}}
-    <InvoiceEditForm @model={{model}} @save={{this.save}} />
+    <InvoiceEditForm @model={{this.model}} @save={{this.save}} />
   {{/if}}
 {{else}}
-  <InvoiceDetailPanel @model={{model}} />
+  <InvoiceDetailPanel @model={{this.model}} />
 {{/if}}
 
 {{#if this.model.isMasteredByAccess}}
@@ -80,4 +80,4 @@
 {{/if}}
 
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />
-<MissingCertificateDialog @show={{this.showMissingCertificateDialog}} @model={{model}} @onClose={{perform this.generateInvoiceDocument}} />
+<MissingCertificateDialog @show={{this.showMissingCertificateDialog}} @model={{this.model}} @onClose={{perform this.generateInvoiceDocument}} />

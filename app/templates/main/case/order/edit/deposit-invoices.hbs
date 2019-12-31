@@ -12,6 +12,6 @@
 
 <div class="u-margin-bottom-large"></div>
 
-<DepositInvoicesPanel @model={{model}} @vatRate={{this.order.vatRate}} @isDisabledEdit={{this.isDisabledEdit}} @onCreate={{fn this.createNewDepositInvoice}} />
+<DepositInvoicesPanel @model={{@model}} @vatRate={{this.order.vatRate}} @isDisabledEdit={{this.isDisabledEdit}} @onCreate={{fn this.createNewDepositInvoice}} />
 
 <LiquidOutlet />

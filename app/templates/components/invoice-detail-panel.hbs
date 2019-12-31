@@ -31,14 +31,14 @@
   <div class="case--right-panel flex-noshrink layout-column">
     {{#if this.model.certificateRequired}}
       <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
-        <CertificateDocumentButtons @model={{model}} />
+        <CertificateDocumentButtons @model={{this.model}} />
       </DetailListItem>
     {{/if}}
     {{#unless this.model.isIsolated}}
       <DetailListItem @label="Productiebon">
         {{paper-icon (if this.model.hasProductionTicket "check_box" "check_box_outline_blank")}}
         {{#if this.model.hasProductionTicket}}
-          <span {{on "click" this.downloadProductionTicket}}>
+          <span {{on "click" this.downloadProductionTicket}} role="button">
             {{paper-icon "find in page"}}
             <PaperTooltip>Productiebon bekijken</PaperTooltip>
           </span>
@@ -59,7 +59,7 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="flex-100 layout-column">
     <DetailListItem @label="Bedrag">
-      <InvoiceCalculationTable @model={{model}} />
+      <InvoiceCalculationTable @model={{this.model}} />
     </DetailListItem>
   </div>
 </div>
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-<WorkingHoursDialog @show={{this.showWorkingHoursDialog}} @model={{model}} />
+<WorkingHoursDialog @show={{this.showWorkingHoursDialog}} @model={{this.model}} />
 
 <DocumentNotFoundDialog @show={{this.showProductionTicketNotFoundDialog}}>
   <p>Er is nog geen productiebon opgeladen.</p>

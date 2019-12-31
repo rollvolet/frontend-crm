@@ -12,7 +12,7 @@
         {{#if this.showUnsavedChangesWarning}}
           <p>Bent u zeker dat u deze pagina wil verlaten? Mogelijk zijn niet alle wijzigingen correct opgeslagen.</p>
         {{else}}
-          <InvoiceSupplementEditForm @model={{selected}} @save={{this.save}} />
+          <InvoiceSupplementEditForm @model={{this.selected}} @save={{this.save}} />
         {{/if}}
 {{else}}
         <InvoiceSupplementsTable @model={{this.model.supplements}} @isDisabledEdit={{this.isDisabledEdit}} @onOpenEdit={{fn this.openEdit}} @onDelete={{fn this.deleteSupplement}} />
@@ -29,7 +29,7 @@
         <PaperButton @onClick={{fn this.confirmCloseEdit}}>Ga toch verder</PaperButton>
       {{else}}
         {{#if this.selected}}
-          <SaveStatusIcon @model={{selected}} @task={{this.save}} />
+          <SaveStatusIcon @model={{this.selected}} @task={{this.save}} />
           <PaperButton @class="close-edit-btn" @onClick={{fn this.closeEdit}}>Klaar</PaperButton>
         {{else}}
           <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.createNew}} @disabled={{this.isDisabledNew}}>

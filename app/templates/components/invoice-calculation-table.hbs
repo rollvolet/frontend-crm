@@ -10,7 +10,7 @@
       <td>{{fmt-currency this.baseAmount}}</td>
       <td>{{#if this.baseAmount}}{{fmt-currency this.baseAmountVat}}{{/if}}</td>
     </tr>
-    <tr {{on "click" this.openSupplementsDialog}}>
+    <tr {{on "click" this.openSupplementsDialog}} role="button">
       <td>Extra's {{paper-icon "info" size=18}}</td>
       <td>{{fmt-currency this.supplementsAmount}}</td>
       <td>{{fmt-currency this.supplementsVat}}</td>
@@ -58,4 +58,4 @@
 <div>
 </div>
 
-<InvoiceSupplementsDialog @show={{this.showSupplementsDialog}} @model={{model}} />
+<InvoiceSupplementsDialog @show={{this.showSupplementsDialog}} @model={{this.model}} />

@@ -2,7 +2,7 @@
 <PellEditor @class="pell-editor offerline" @value={{this.model.description}} @pellOptions={{this.pellOptions}} @onChange={{fn (mut this.model.description)}} @focusOut={{perform this.save}} />
 <div class="layout-column">
   <div class="layout-row layout-align-space-between-start">
-    <SaveStatusIcon @model={{model}} @task={{this.save}} />
+    <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
     <PaperButton @onClick={{fn this.delete}} @iconButton={{true}}>
       {{paper-icon "delete"}}
       <PaperTooltip>Lijn verwijderen</PaperTooltip>

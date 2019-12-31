@@ -35,7 +35,7 @@
     <div class="u-bold">Status</div>
     <div class="layout-row layout-align-start-center">
       <PaperCheckbox @label="Productiebon" @value={{this.model.hasProductionTicket}} @onChange={{queue (fn (mut this.model.hasProductionTicket)) (perform this.save)}} />
-      <ProductionTicketButtons @model={{model}} />
+      <ProductionTicketButtons @model={{this.model}} />
     </div>
     <div class="layout-row layout-align-start-center">
       <PaperCheckbox @label="Product klaar" @value={{this.model.isReady}} @onChange={{queue (fn (mut this.model.isReady)) (perform this.save)}} />

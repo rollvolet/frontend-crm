@@ -9,7 +9,6 @@ export default class CaseController extends Controller {
   @service('case')
   caseService;
 
-  case = null;
   isEnabledEditBuilding = false;
   isEnabledEditContact = false;
 

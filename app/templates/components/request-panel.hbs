@@ -4,7 +4,7 @@
       {{#if this.editMode}}Bewerk details{{else}}Overzicht{{/if}} aanvraag {{this.model.id}} {{this.visitor.initials}}
     </h2>
     {{#if this.editMode}}
-      <SaveStatusIcon @model={{model}} @task={{this.save}} />
+      <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
     {{/if}}
   </div>
   <div>
@@ -69,10 +69,10 @@
       <p>Aanvraag aan het loskoppelen van klant...</p>
     </div>
   {{else}}
-    <RequestEditForm @model={{model}} @save={{this.save}} />
+    <RequestEditForm @model={{this.model}} @save={{this.save}} />
   {{/if}}
 {{else}}
-  <RequestDetailPanel @model={{model}} />
+  <RequestDetailPanel @model={{this.model}} />
 {{/if}}
 
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

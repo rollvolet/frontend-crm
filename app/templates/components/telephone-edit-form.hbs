@@ -1,6 +1,6 @@
 <table class="telephone-edit-table">
   <thead>
-    <th><!-- Buttons --></th>
+    <th></th>
     <th>Type</th>
     <th>Land</th>
     <th>Zone</th>
@@ -13,7 +13,7 @@
     {{else}}
       {{#each (sort-by "order" "id" this.displayTelephones) as |telephone|}}
         <tr>
-          <td onclick={{perform this.removeTelephone telephone}}>
+          <td onclick={{perform this.removeTelephone telephone}} role="button">
             {{paper-icon "delete"}}
             <PaperTooltip>Verwijder nummer</PaperTooltip>
           </td>

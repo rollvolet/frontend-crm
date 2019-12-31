@@ -1,16 +1,16 @@
 <h1>Offertes</h1>
 
 <div class="offers-data-table">
-  <Offer::DataTableFilter @number={{number}} @reference={{reference}} @requestNumber={{this.requestNumber}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutOrder={{this.withoutOrder}} @onChange={{fn this.applyFilter}} />
+  <Offer::DataTableFilter @number={{this.number}} @reference={{this.reference}} @requestNumber={{this.requestNumber}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutOrder={{this.withoutOrder}} @onChange={{fn this.applyFilter}} />
 
-  <DataTable @content={{model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
+  <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
     <t.content as |c|>
       <c.header>
         <th>Aanvraag</th>
         <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
         <ThSortable @field="offer-date" @currentSorting={{this.sort}} @label="Datum" />
         <th>Bezoeker</th>
-        <th><!-- customer / building --></th>
+        <th></th>
         <th>Naam</th>
         <th>Straat</th>
         <th>Postcode</th>

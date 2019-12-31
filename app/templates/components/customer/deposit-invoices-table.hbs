@@ -1,7 +1,7 @@
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  <PaperInput @label="Nummer" @value={{number}} @onChange={{fn this.setFilter "number"}} @class="small" />
-  <PaperInput @label="Referentie" @value={{reference}} @onChange={{fn this.setFilter "reference"}} @class="small" />
+  <PaperInput @label="Nummer" @value={{this.number}} @onChange={{fn this.setFilter "number"}} @class="small" />
+  <PaperInput @label="Referentie" @value={{this.reference}} @onChange={{fn this.setFilter "reference"}} @class="small" />
   <PaperInput @label="Gebouw" @value={{this.name}} @onChange={{fn this.setFilter "name"}} />
   <PaperInput @label="Straat" @value={{this.street}} @onChange={{fn this.setFilter "street"}} @class="large" />
   <PaperInput @label="Postcode" @value={{this.postalCode}} @onChange={{fn this.setFilter "postalCode"}} @class="small" />
@@ -34,5 +34,3 @@
     </c.body>
   </t.content>
 </DataTable>
-
-{{this.liquid-yield}}

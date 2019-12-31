@@ -1,4 +1,4 @@
-<td onclick={{perform this.remove}}>
+<td onclick={{perform this.remove}} role="button">
   {{paper-icon "delete"}}
 </td>
 <td>
@@ -17,5 +17,5 @@
   <PaperInput @value={{this.model.memo}} @onChange={{fn (mut this.model.memo)}} @onBlur={{perform this.save}} @class="large" />
 </td>
 <td>
-  <SaveStatusIcon @model={{model}} @task={{this.save}} />
+  <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
 </td>

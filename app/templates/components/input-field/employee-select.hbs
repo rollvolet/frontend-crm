@@ -1,4 +1,4 @@
-<PowerSelect @placeholder={{this.placeholder}} @searchPlaceholder="Typ om te zoeken" @options={{this.options}} @selected={{selected}} @searchField="firstName" @onchange={{this.onSelectionChange}} @noMatchesMessage="Geen resultaten" @allowClear={{true}} as |option select|>
+<PowerSelect @placeholder={{this.placeholder}} @searchPlaceholder="Typ om te zoeken" @options={{this.options}} @selected={{@selected}} @searchField="firstName" @onchange={{this.onSelectionChange}} @noMatchesMessage="Geen resultaten" @allowClear={{true}} as |option select|>
   {{highlight-substr option.firstName select.lastSearchedText}}
 </PowerSelect>
 

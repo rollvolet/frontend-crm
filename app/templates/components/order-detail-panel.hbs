@@ -46,7 +46,7 @@
     </DetailListItem>
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
-    <PlanningDetailPanel @model={{model}} />
+    <PlanningDetailPanel @model={{this.model}} />
     <DetailListItem @label="Uitvoering">
       <PaperRadioGroup @groupValue={{readonly this.model.execution}} @onChange={{null}} as |group|>
         <group.radio @value="installation">{{order-execution 'installation'}}</group.radio>
@@ -57,7 +57,7 @@
     <DetailListItem @label="Productiebon">
       <div class="layout-row layout-align-start-center">
         <div>{{paper-icon (if this.model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
-        <ProductionTicketButtons @model={{model}} />
+        <ProductionTicketButtons @model={{this.model}} />
       </div>
     </DetailListItem>
     <DetailListItem @label="Product klaar">

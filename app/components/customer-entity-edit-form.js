@@ -13,7 +13,6 @@ export default class CustomerEntityEditForm extends Component {
   @service
   router;
 
-  model = null;
   onClose = null;
   onRemove = null;
   scope = 'customer'; // one of 'customer', 'contact', 'building'

@@ -28,7 +28,7 @@
   <PaperSidenav @class="main-side-nav" @open={{this.isMainMenuOpen}} @lockedOpen={{false}} @onToggle={{fn (mut this.isMainMenuOpen)}}>
     <PaperToolbar as |toolbar|>
       <toolbar.tools>
-        Menu <span class="version">v{{app-version versionOnly=true}}</span>
+        Menu <span class="version">v<AppVersion @versionOnly={{true}} /></span>
         <span class="flex"></span>
         <PaperButton @iconButton={{true}}>{{paper-icon "close"}}</PaperButton>
       </toolbar.tools>
@@ -72,7 +72,7 @@
         {{#paper-link-item 'main.accountancy.exports' (query-params page=0)}}Exports{{/paper-link-item}}
       </PaperList>
 
-      <!-- {{#paper-list}}
+      {{!-- {{#paper-list}}
            {{#paper-subheader}}Rapporten{{/paper-subheader}}
            {{paper-divider}}
            {{#paper-item}}Offertes{{/paper-item}}
@@ -87,12 +87,12 @@
            {{paper-divider}}
            {{#paper-item}}Lijsten{{/paper-item}}
            {{/paper-list}}
-         -->
+         --}}
       <PaperList>
         <PaperSubheader>Gebruiker</PaperSubheader>
         <PaperDivider />
-        <!-- {{#paper-item}}Profiel{{/paper-item}}
-             {{paper-divider}} -->
+        {{!-- {{#paper-item}}Profiel{{/paper-item}}
+                                {{paper-divider}}  --}}
         <PaperItem @onClick={{fn this.logout}}>Log out</PaperItem>
       </PaperList>
 

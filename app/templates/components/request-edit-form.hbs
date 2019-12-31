@@ -21,7 +21,7 @@
   </section>
   {{#if this.isLinkedToCustomer}}
     {{#if this.hasVisitMasteredByAccess}}
-      <VisitDetailPanel @model={{model}} />
+      <VisitDetailPanel @model={{this.model}} />
     {{else if this.model.requiresVisit}}
       <VisitEditForm @model={{this.model.calendarEvent}} @save={{this.saveCalendarEvent}} />
     {{/if}}

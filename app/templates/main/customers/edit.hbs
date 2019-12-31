@@ -1,10 +1,10 @@
 {{#if this.editMode}}
-  <CustomerEntityEditForm @scope="customer" @model={{model}} @onClose={{fn this.closeEdit}} @onRemove={{fn this.onRemove}}>
-    <h1>Bewerk klant <span class="small-text-fade">[{{this.model.number}}]</span></h1>
+  <CustomerEntityEditForm @scope="customer" @model={{@model}} @onClose={{fn this.closeEdit}} @onRemove={{fn this.onRemove}}>
+    <h1>Bewerk klant <span class="small-text-fade">[{{@model.number}}]</span></h1>
   </CustomerEntityEditForm>
 {{else}}
   <div class="layout-row layout-align-start-center">
-    <h1><PrintName @model={{model}} /> <span class="small-text-fade">[{{this.model.number}}]</span></h1>
+    <h1><PrintName @model={{@model}} /> <span class="small-text-fade">[{{@model.number}}]</span></h1>
     <div>
       <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}}>
         {{paper-icon "edit mode"}}
@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <CustomerDetailCard @model={{model}} />
+  <CustomerDetailCard @model={{@model}} />
 
   <div class="related-resources">
     <PaperTabs @selected={{this.selectedTab}} @onChange={{fn (mut this.selectedTab)}} @borderBottom={{true}} as |tabs|>
@@ -28,19 +28,19 @@
 
     {{#liquid-bind (hash tab=this.selectedTab) use="toRight" as |current|}}
       {{#if (eq current.tab 0)}}
-        <Customer::ContactsPanel @customer={{model}} />
+        <Customer::ContactsPanel @customer={{@model}} />
       {{else if (eq current.tab 1)}}
-        <Customer::BuildingsPanel @customer={{model}} />
+        <Customer::BuildingsPanel @customer={{@model}} />
       {{else if (eq current.tab 2)}}
-        <Customer::RequestsTable @customer={{model}} />
+        <Customer::RequestsTable @customer={{@model}} />
       {{else if (eq current.tab 3)}}
-        <Customer::OffersTable @customer={{model}} />
+        <Customer::OffersTable @customer={{@model}} />
       {{else if (eq current.tab 4)}}
-        <Customer::OrdersTable @customer={{model}} />
+        <Customer::OrdersTable @customer={{@model}} />
       {{else if (eq current.tab 5)}}
-        <Customer::DepositInvoicesTable @customer={{model}} />
+        <Customer::DepositInvoicesTable @customer={{@model}} />
       {{else if (eq current.tab 6)}}
-        <Customer::InvoicesTable @customer={{model}} />
+        <Customer::InvoicesTable @customer={{@model}} />
       {{/if}}
     {{/liquid-bind}}
   </div>

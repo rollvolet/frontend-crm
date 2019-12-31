@@ -3,8 +3,8 @@
     Toon {{this.startItem}}-{{this.endItem}}
     {{#if this.total}} van {{this.total}}{{/if}}
     {{#if this.sizeOptions}} |
-      <PowerSelect @options={{this.sizeOptions}} @selected={{size}} @onchange={{fn (mut size)}} @searchEnabled={{false}} @verticalPosition="above" as |size|>
-        {{size}}
+      <PowerSelect @options={{this.sizeOptions}} @selected={{@size}} @onchange={{fn (mut @size)}} @searchEnabled={{false}} @verticalPosition="above" as |option|>
+        {{option}}
       </PowerSelect> per pagina
     {{/if}}
   </div>

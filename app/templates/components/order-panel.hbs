@@ -4,7 +4,7 @@
       {{#if this.editMode}}Bewerk details{{else}}Overzicht{{/if}} bestelling {{this.model.offerNumber}}
     </h2>
     {{#if this.editMode}}
-      <SaveStatusIcon @model={{model}} @task={{this.save}} />
+      <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
     {{/if}}
   </div>
   <div>
@@ -51,9 +51,9 @@
   </div>
 {{else}}
   {{#if this.editMode}}
-    <OrderEditForm @model={{model}} @save={{this.save}} />
+    <OrderEditForm @model={{this.model}} @save={{this.save}} />
   {{else}}
-    <OrderDetailPanel @model={{model}} />
+    <OrderDetailPanel @model={{this.model}} />
   {{/if}}
 
   {{#if this.model.isMasteredByAccess}}
@@ -69,12 +69,12 @@
             {{#if this.generateOrderDocument.isRunning}}
               <PaperProgressCircular @diameter={{18}} />
             {{else}}
-              <div {{on "click" this.downloadOrderDocument}}>
+              <div {{on "click" this.downloadOrderDocument}} role="button">
                 {{paper-icon "find in page"}}
                 <PaperTooltip>Orderbevestiging bekijken</PaperTooltip>
               </div>
               {{#unless this.isDisabledEdit}}
-                <div {{on "click" (perform this.generateOrderDocument)}}>
+                <div {{on "click" (perform this.generateOrderDocument)}} role="button">
                   {{paper-icon "restore page"}}
                   <PaperTooltip>Orderbevestiging maken</PaperTooltip>
                 </div>
@@ -88,12 +88,12 @@
             {{#if this.generateDeliveryNote.isRunning}}
               <PaperProgressCircular @diameter={{18}} />
             {{else}}
-              <div {{on "click" this.downloadDeliveryNote}}>
+              <div {{on "click" this.downloadDeliveryNote}} role="button">
                 {{paper-icon "find in page"}}
                 <PaperTooltip>Leveringsbon bekijken</PaperTooltip>
               </div>
               {{#unless this.isDisabledEdit}}
-                <div {{on "click" (perform this.generateDeliveryNote)}}>
+                <div {{on "click" (perform this.generateDeliveryNote)}} role="button">
                   {{paper-icon "restore page"}}
                   <PaperTooltip>Leveringsbon maken</PaperTooltip>
                 </div>

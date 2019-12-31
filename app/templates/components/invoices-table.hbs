@@ -4,7 +4,7 @@
       <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
       <th>Aanvraag</th>
       <ThSortable @field="invoice-date" @currentSorting={{this.sort}} @label="Datum" />
-      <th><!-- customer / building --></th>
+      <th></th>
       <th>Naam</th>
       <th>Straat</th>
       <th>Postcode</th>
@@ -33,5 +33,3 @@
     </c.body>
   </t.content>
 </DataTable>
-
-{{this.liquid-yield}}

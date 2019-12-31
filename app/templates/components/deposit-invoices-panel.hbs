@@ -10,7 +10,7 @@
   <div class="layout-row layout-align-space-between-center">
     <div class="layout-row layout-align-start-center">
       <h2>Factuur {{format-invoice-number this.selected.number}}</h2>
-      <SaveStatusIcon @model={{selected}} @task={{this.save}} />
+      <SaveStatusIcon @model={{this.selected}} @task={{this.save}} />
     </div>
     <div>
       <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
@@ -19,7 +19,7 @@
       </PaperButton>
     </div>
   </div>
-  <DepositInvoiceEditForm @model={{selected}} @save={{this.save}} />
+  <DepositInvoiceEditForm @model={{this.selected}} @save={{this.save}} />
 {{else}}
   <div class="layout-row layout-xs-column layout-align-space-between">
     <div class="case--deposit-invoices--summary flex-100 layout-column">
@@ -47,14 +47,14 @@
               {{paper-icon "find in page"}}
               <PaperTooltip>Voorschotfactuur bekijken</PaperTooltip>
             </PaperButton>
-            {{#unless (or this.isDisabledEdit invoice.isBooked)}}
+            {{#if (and (not this.isDisabledEdit) (not invoice.isBooked))}}
               <PaperButton @onClick={{perform this.generateInvoiceDocument invoice}} @iconButton={{true}}>
                 {{paper-icon "restore page"}}
                 <PaperTooltip>Voorschotfactuur maken</PaperTooltip>
               </PaperButton>
-            {{/unless}}
+            {{/if}}
           {{/if}}
-          {{#unless (or this.isDisabledEdit invoice.isBooked)}}
+          {{#if (and (not this.isDisabledEdit) (not invoice.isBooked))}}
             <PaperButton @onClick={{fn this.openEdit invoice}} @iconButton={{true}}>
               {{paper-icon "edit mode"}}
               <PaperTooltip>Bewerken</PaperTooltip>
@@ -63,7 +63,7 @@
               {{paper-icon "delete"}}
               <PaperTooltip>Verwijderen</PaperTooltip>
             </PaperButton>
-          {{/unless}}
+          {{/if}}
           {{#if invoice.isBooked}}
             {{paper-icon "lock"}}
             <PaperTooltip>Geboekt in boekhouding</PaperTooltip>

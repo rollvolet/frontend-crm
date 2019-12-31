@@ -4,7 +4,7 @@
       {{#if this.editMode}}Bewerk details{{else}}Overzicht{{/if}} offerte {{this.model.number}}
     </h2>
     {{#if this.editMode}}
-      <SaveStatusIcon @model={{model}} @task={{this.save}} />
+      <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
     {{/if}}
   </div>
   <div>
@@ -53,9 +53,9 @@
   </div>
 {{else}}
   {{#if this.editMode}}
-    <OfferEditForm @model={{model}} @save={{this.save}} />
+    <OfferEditForm @model={{this.model}} @save={{this.save}} />
   {{else}}
-    <OfferDetailPanel @model={{model}} />
+    <OfferDetailPanel @model={{this.model}} />
   {{/if}}
 
   {{#if this.model.isMasteredByAccess}}
@@ -109,10 +109,10 @@
           {{#each this.sortedOfferlines as |offerline|}}
             <OfferlineEditForm @model={{offerline}} @onDelete={{fn this.deleteOfferline}} />
           {{else}}
-            <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{on "click" this.addOfferline}}>hier</span> om producten toe te voegen aan de offerte.</div>
+            <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{on "click" this.addOfferline}} role="button">hier</span> om producten toe te voegen aan de offerte.</div>
           {{/each}}
           <div class="layout-row layout-align-end-center">
-            <div class="link-action" {{on "click" this.addOfferline}}>{{paper-icon "add"}} Lijn toevoegen</div>
+            <div class="link-action" {{on "click" this.addOfferline}} role="button">{{paper-icon "add"}} Lijn toevoegen</div>
           </div>
         </section>
         <section>
