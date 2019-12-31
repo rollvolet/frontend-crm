@@ -28,7 +28,7 @@
   <PaperSidenav @class="main-side-nav" @open={{this.isMainMenuOpen}} @lockedOpen={{false}} @onToggle={{fn (mut this.isMainMenuOpen)}}>
     <PaperToolbar as |toolbar|>
       <toolbar.tools>
-        Menu <span class="version">v<AppVersion @versionOnly={{true}} /></span>
+        Menu <span class="version">v{{app-version versionOnly=true}}</span>
         <span class="flex"></span>
         <PaperButton @iconButton={{true}}>{{paper-icon "close"}}</PaperButton>
       </toolbar.tools>

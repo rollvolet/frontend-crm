@@ -3,7 +3,7 @@
     Toon {{this.startItem}}-{{this.endItem}}
     {{#if this.total}} van {{this.total}}{{/if}}
     {{#if this.sizeOptions}} |
-      <PowerSelect @options={{this.sizeOptions}} @selected={{@size}} @onchange={{fn (mut @size)}} @searchEnabled={{false}} @verticalPosition="above" as |option|>
+      <PowerSelect @options={{this.sizeOptions}} @selected={{@size}} @onchange={{fn this.setSize}} @searchEnabled={{false}} @verticalPosition="above" as |option|>
         {{option}}
       </PowerSelect> per pagina
     {{/if}}
@@ -16,7 +16,7 @@
       <PaperButton @disabled={{this.isFirstPage}} @onClick={{fn this.changePage this.links.prev}} @iconButton={{true}}>
         {{paper-icon "chevron left"}}
       </PaperButton>
-      <PowerSelect @options={{this.pageOptions}} @selected={{this.currentPage}} @onchange={{fn (mut this.currentPage)}} @searchEnabled={{false}} @verticalPosition="above" as |page|>
+      <PowerSelect @options={{this.pageOptions}} @selected={{this.currentPage}} @onchange={{fn this.setCurrentPage}} @searchEnabled={{false}} @verticalPosition="above" as |page|>
         {{page}}
       </PowerSelect>
       <PaperButton @disabled={{this.isLastPage}} @onClick={{fn this.changePage this.links.next}} @iconButton={{true}}>

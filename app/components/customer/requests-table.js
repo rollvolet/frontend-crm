@@ -3,32 +3,39 @@ import { classNames } from '@ember-decorators/component';
 import { observes } from '@ember-decorators/object';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
-import DebouncedSearch from '../../mixins/debounced-search-task';
+import FilterComponent from '../data-table-filter';
 import { task } from 'ember-concurrency';
 
 @classic
 @classNames('requests-table')
-export default class RequestsTable extends Component.extend(DebouncedSearch) {
+export default class RequestsTable extends FilterComponent {
   @service
   router;
 
-  init() {
-    super.init(...arguments);
-    this.search.perform();
-  }
+  @service
+  store;
 
   page = 0;
   size = 10;
   sort = '-request-date';
+  filterKeys = Object.freeze(['number', 'name', 'postalCode', 'city', 'street'])
+
+  init() {
+    super.init(...arguments);
+    this.search.perform(this.getFilter());
+  }
+
+  async onChange(filter) {
+    await this.search.perform(filter);
+  }
 
   @observes('page', 'size', 'sort')
   dataTableParamChanged() { // eslint-disable-line ember/no-observers
-    this.search.perform();
+    this.search.perform(this.getFilter());
   }
 
-  @task(function * () {
-    const requests = yield this.customer.query('requests', {
+  @task(function * (filter) {
+    const requests = yield this.store.query('request', {
       page: {
         size: this.size,
         number: this.page
@@ -36,30 +43,21 @@ export default class RequestsTable extends Component.extend(DebouncedSearch) {
       sort: this.sort,
       include: 'way-of-entry,building',
       filter: {
-        number: this.getFilterValue('number'),
+        customer: {
+          number: this.customer.number
+        },
+        number: filter.number,
         building: {
-          name: this.getFilterValue('name'),
-          'postal-code': this.getFilterValue('postalCode'),
-          city: this.getFilterValue('city'),
-          street: this.getFilterValue('street')
+          name: filter.name,
+          'postal-code': filter.postalCode,
+          city: filter.city,
+          street: filter.street
         }
       }
     });
     this.set('requests', requests);
   })
   search;
-
-  @action
-  setFilter(key, value) {
-    this.set(key, value);
-    this.debounceSearch.perform(this.search);
-  }
-
-  @action
-  resetFilters() {
-    ['number', 'name', 'postalCode', 'city', 'street'].forEach(f => this.set(f, undefined));
-    this.search.perform();
-  }
 
   @action
   clickRow(row) {

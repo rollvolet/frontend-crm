@@ -3,13 +3,11 @@ import { classNames } from '@ember-decorators/component';
 import { observes } from '@ember-decorators/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
-import DebouncedSearch from '../mixins/debounced-search-task';
-import '@ember/object';
 import { task } from 'ember-concurrency';
 
 @classic
 @classNames('invoices-table')
-export default class InvoicesTable extends Component.extend(DebouncedSearch) {
+export default class InvoicesTable extends Component {
   @service
   store;
 
@@ -28,7 +26,7 @@ export default class InvoicesTable extends Component.extend(DebouncedSearch) {
   onClickRow = null;
 
   @observes('page', 'size', 'sort')
-  dataTableParamChanged() { // eslint-disable-line ember/no-observers
+  dataTableParamChanged() {
     this.search.perform();
   }
 

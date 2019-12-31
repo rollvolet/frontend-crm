@@ -3,32 +3,39 @@ import { classNames } from '@ember-decorators/component';
 import { observes } from '@ember-decorators/object';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
-import DebouncedSearch from '../../mixins/debounced-search-task';
+import FilterComponent from '../data-table-filter';
 import { task } from 'ember-concurrency';
 
 @classic
 @classNames('orders-table')
-export default class OrdersTable extends Component.extend(DebouncedSearch) {
+export default class OrdersTable extends FilterComponent {
   @service
   router;
 
-  init() {
-    super.init(...arguments);
-    this.search.perform();
-  }
+  @service
+  store;
 
   page = 0;
   size = 10;
   sort = '-order-date';
+  filterKeys = Object.freeze(['requestNumber', 'offerNumber', 'reference', 'name', 'postalCode', 'city', 'street'])
+
+  init() {
+    super.init(...arguments);
+    this.search.perform(this.getFilter());
+  }
+
+  async onChange(filter) {
+    await this.search.perform(filter);
+  }
 
   @observes('page', 'size', 'sort')
   dataTableParamChanged() { // eslint-disable-line ember/no-observers
-    this.search.perform();
+    this.search.perform(this.getFilter());
   }
 
-  @task(function * () {
-    const orders = yield this.customer.query('orders', {
+  @task(function * (filter) {
+    const orders = yield this.store.query('order', {
       page: {
         size: this.size,
         number: this.page
@@ -36,38 +43,23 @@ export default class OrdersTable extends Component.extend(DebouncedSearch) {
       sort: this.sort,
       include: 'building,offer',
       filter: {
-        'request-number': this.getFilterValue('requestNumber'),
-        'offer-number': this.getFilterValue('offerNumber'),
-        reference: this.getFilterValue('reference'),
+        customer: {
+          number: this.customer.number
+        },
+        'request-number': filter.requestNumber,
+        'offer-number': filter.offerNumber,
+        reference: filter.reference,
         building: {
-          name: this.getFilterValue('name'),
-          'postal-code': this.getFilterValue('postalCode'),
-          city: this.getFilterValue('city'),
-          street: this.getFilterValue('street')
+          name: filter.name,
+          'postal-code': filter.postalCode,
+          city: filter.city,
+          street: filter.street
         }
       }
     });
     this.set('orders', orders);
   })
   search;
-
-  @action
-  setFilter(key, value) {
-    this.set(key, value);
-    this.debounceSearch.perform(this.search);
-  }
-
-  @action
-  resetFilters() {
-    this.set('requestNumber', undefined);
-    this.set('offerNumber', undefined);
-    this.set('reference', undefined);
-    this.set('name', undefined);
-    this.set('postalCode', undefined);
-    this.set('city', undefined);
-    this.set('street', undefined);
-    this.search.perform();
-  }
 
   @action
   clickRow(row) {

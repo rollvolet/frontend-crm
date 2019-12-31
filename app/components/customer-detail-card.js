@@ -6,4 +6,11 @@ import Component from '@ember/component';
 @classNames('resource-details')
 export default class CustomerDetailCard extends Component {
   memoExpanded = false;
+
+  get joinedTagNamesPromise() {
+    return ( async () => {
+      const tags = await this.model.tags;
+      return tags.map(t => t.name).join(', ');
+    })();
+  }
 }

@@ -16,7 +16,7 @@
   <CustomerDetailCard @model={{@model}} />
 
   <div class="related-resources">
-    <PaperTabs @selected={{this.selectedTab}} @onChange={{fn (mut this.selectedTab)}} @borderBottom={{true}} as |tabs|>
+    <PaperTabs @selected={{this.selectedTab}} @onChange={{fn this.setTab}} @borderBottom={{true}} as |tabs|>
       <tabs.tab>Contacten</tabs.tab>
       <tabs.tab>Gebouwen</tabs.tab>
       <tabs.tab>Aanvragen</tabs.tab>

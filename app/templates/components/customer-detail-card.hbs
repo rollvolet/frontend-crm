@@ -43,7 +43,7 @@
   </div>
 
   <DetailIconListItem @icon="label" @label="Tags" @class="resource-details--section-tags">
-    {{join ", " (map-by "name" this.model.tags)}}
+    {{await this.joinedTagNamesPromise}}
   </DetailIconListItem>
 
   <DetailIconListItem @icon="comment" @label="Opmerking" @class="resource-details--section-comment">

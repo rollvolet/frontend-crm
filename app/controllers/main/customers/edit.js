@@ -9,6 +9,11 @@ export default class EditController extends Controller {
   selectedTab = 2; // requests tab
 
   @action
+  setTab(tab) {
+    this.set('selectedTab', tab);
+  }
+
+  @action
   openEdit() {
     this.set('editMode', true);
   }
