@@ -1,45 +1,49 @@
+import classic from 'ember-classic-decorator';
 import Component from '@ember/component';
+import { action } from '@ember/object';
+import { on } from '@ember-decorators/object';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import { computed } from '@ember/object';
 import { and, or, bool, not, notEmpty, raw, sum, array } from 'ember-awesome-macros';
 
-export default Component.extend(EKMixin, {
-  case: service(),
-  documentGeneration: service(),
-  router: service(),
-  store: service(),
+@classic
+export default class OrderPanel extends Component.extend(EKMixin) {
+  @service case;
+  @service documentGeneration;
+  @service router;
+  @service store;
 
-  model: null,
-  editMode: false,
-  onOpenEdit: null,
-  onCloseEdit: null,
-  showUnsavedChangesDialog: false,
+  model = null;
+  editMode = false;
+  onOpenEdit = null;
+  onCloseEdit = null;
+  showUnsavedChangesDialog = false;
 
-  orderedOfferlines: array.filterBy('model.offer.offerlines.@each.isOrdered', raw('isOrdered')),
-  hasInvoice: notEmpty('model.invoice.id'),
-  hasDepositInvoice: bool('model.depositInvoices.length'),
-  hasDeposit: bool('model.deposits.length'),
-  isDisabledEdit: or('model.isMasteredByAccess', 'hasInvoice'),
-  isEnabledDelete: and(not('isDisabledEdit'), not('hasDepositInvoice'), not('hasDeposit')),
-  arithmeticAmounts: array.mapBy('orderedOfferlines', raw('arithmeticAmount')),
-  arithmeticVats: array.mapBy('orderedOfferlines', raw('arithmeticVat')),
-  totalAmount: sum('arithmeticAmounts'),
-  totalVat: computed('arithmeticVats', function() {
+  @array.filterBy('model.offer.offerlines.@each.isOrdered', raw('isOrdered')) orderedOfferlines
+  @notEmpty('model.invoice.id') hasInvoice
+  @bool('model.depositInvoices.length') hasDepositInvoice
+  @bool('model.deposits.length') hasDeposit
+  @or('model.isMasteredByAccess', 'hasInvoice') isDisabledEdit
+  @and(not('isDisabledEdit'), not('hasDepositInvoice'), not('hasDeposit')) isEnabledDelete
+  @array.mapBy('orderedOfferlines', raw('arithmeticAmount')) arithmeticAmounts
+  @array.mapBy('orderedOfferlines', raw('arithmeticVat')) arithmeticVats
+  @sum('arithmeticAmounts') totalAmount
+  @computed('arithmeticVats')
+  get totalVat() {
     return Promise.all(this.arithmeticVats).then(values => {
       return values.reduce((a, b) => a + b, 0);
     });
-  }),
+  }
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.set('keyboardActivated', true); // required for ember-keyboard
-  },
+  }
 
-  remove: task(function * () {
+  @task(function * () {
     const offer = yield this.model.offer;
     try {
       // unorder offerlines
@@ -64,8 +68,10 @@ export default Component.extend(EKMixin, {
       this.case.set('current.orderId', this.model.id);
       yield this.model.rollbackAttributes(); // undo delete-state
     }
-  }),
-  rollbackTree: task(function * () {
+  })
+  remove;
+
+  @task(function * () {
     this.model.rollbackAttributes();
     const rollbackPromises = [];
     rollbackPromises.push(this.model.belongsTo('vatRate').reload());
@@ -73,8 +79,10 @@ export default Component.extend(EKMixin, {
     rollbackPromises.push(this.model.belongsTo('building').reload());
     yield all(rollbackPromises);
     yield this.save.perform(null, { forceSuccess: true });
-  }),
-  save: task(function * (_, { forceSuccess = false } = {} ) {
+  })
+  rollbackTree;
+
+  @task(function * (_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;
 
     const { validations } = yield this.model.validate();
@@ -104,48 +112,61 @@ export default Component.extend(EKMixin, {
     const offer = yield this.model.offer;
     const request = yield offer.request;
     yield request.save();
-  }).keepLatest(),
-  generateOrderDocument: task(function * () {
+  }).keepLatest()
+  save;
+
+  @task(function * () {
     try {
       yield this.documentGeneration.orderDocument(this.model);
     } catch(e) {
       warn(`Something went wrong while generating the order document`, { id: 'document-generation-failure' });
     }
-  }),
-  generateDeliveryNote: task(function * () {
+  })
+  generateOrderDocument;
+
+  @task(function * () {
     try {
       yield this.documentGeneration.deliveryNote(this.model);
     } catch(e) {
       warn(`Something went wrong while generating the delivery note`, { id: 'document-generation-failure' });
     }
-  }),
+  })
+  generateDeliveryNote;
 
   // eslint-disable-next-line ember/no-on-calls-in-components
-  openEditByShortcut: on(keyUp('ctrl+alt+KeyU'), function() {
+  @on(keyUp('ctrl+alt+KeyU'))
+  openEditByShortcut() {
     this.onOpenEdit();
-  }),
+  }
 
-  actions: {
-    openEdit() {
-      this.onOpenEdit();
-    },
-    closeEdit() {
-      if (this.model.isNew || this.model.validations.isInvalid || this.model.isError
-          || (this.save.last && this.save.last.isError)) {
-        this.set('showUnsavedChangesDialog', true);
-      } else {
-        this.onCloseEdit();
-      }
-    },
-    confirmCloseEdit() {
-      this.rollbackTree.perform();
+  @action
+  openEdit() {
+    this.onOpenEdit();
+  }
+
+  @action
+  async closeEdit() {
+    if (this.model.isNew || this.model.validations.isInvalid || this.model.isError
+        || (this.save.last && this.save.last.isError)) {
+      this.set('showUnsavedChangesDialog', true);
+    } else {
       this.onCloseEdit();
-    },
-    downloadOrderDocument() {
-      this.documentGeneration.downloadOrderDocument(this.model);
-    },
-    downloadDeliveryNote() {
-      this.documentGeneration.downloadDeliveryNote(this.model);
     }
   }
-});
+
+  @action
+  confirmCloseEdit() {
+    this.rollbackTree.perform();
+    this.onCloseEdit();
+  }
+
+  @action
+  downloadOrderDocument() {
+    this.documentGeneration.downloadOrderDocument(this.model);
+  }
+
+  @action
+  downloadDeliveryNote() {
+    this.documentGeneration.downloadDeliveryNote(this.model);
+  }
+}

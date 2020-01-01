@@ -21,7 +21,8 @@ export default class VisitDetailPanel extends Component {
   isNotAvailableInCalendar;
 
   @(task(function * () {
-    yield this.model.calendarEvent;
+    // TODO fix loading state of calendar-event retrieval
+    yield this.model.get('calendarEvent');
   }).keepLatest())
   loadCalendarEvent;
 

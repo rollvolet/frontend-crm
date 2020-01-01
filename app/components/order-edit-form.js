@@ -1,13 +1,12 @@
 import classic from 'ember-classic-decorator';
+import Component from '@ember/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
-import Component from '@ember/component';
-import DecimalInputFormatting from '../mixins/decimal-input-formatting';
 import { task } from 'ember-concurrency';
 
 @classic
-export default class OrderEditForm extends Component.extend(DecimalInputFormatting) {
+export default class OrderEditForm extends Component {
   @service
   store;
 
@@ -21,8 +20,6 @@ export default class OrderEditForm extends Component.extend(DecimalInputFormatti
 
   init() {
     super.init(...arguments);
-    this.initDecimalInput('scheduledHours');
-    this.initDecimalInput('scheduledNbOfPersons');
     this.initVisitor.perform();
   }
 
@@ -35,18 +32,6 @@ export default class OrderEditForm extends Component.extend(DecimalInputFormatti
     }
   }).keepLatest())
   initVisitor;
-
-  @(task(function * (file) {
-    try {
-      this.set('hasProductionTicketUploadError', false);
-      yield this.documentGeneration.uploadProductionTicket(this.model, file);
-    } catch (e) {
-      warn(`Error while uploading production ticket: ${e.message || JSON.stringify(e)}`, { id: 'failure.upload' } );
-      file.queue.remove(file);
-      this.set('hasProductionTicketUploadError', true);
-    }
-  }).enqueue())
-  uploadProductionTicket;
 
   @action
   setCanceled(value) {
@@ -76,18 +61,5 @@ export default class OrderEditForm extends Component.extend(DecimalInputFormatti
     const offer = await this.model.offer;
     const request = await offer.request;
     request.set('visitor', firstName);
-  }
-
-  @action
-  uploadProductionTicket(file) {
-    this.uploadProductionTicket.perform(file);
-  }
-
-  @action
-  async downloadProductionTicket() {
-    const document = await this.documentGeneration.downloadProductionTicket(this.model);
-
-    if (!document)
-      this.set('showProductionTicketNotFoundDialog', true);
   }
 }

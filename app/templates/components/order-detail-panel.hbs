@@ -2,36 +2,36 @@
   <div class="case--left-panel case--order--entry flex-100 layout-column">
     <DetailListItem @label="Datum">
       <DetailListSubitem @label="Bestelling">
-        {{fmt-date this.model.orderDate}}
+        {{fmt-date @model.orderDate}}
       </DetailListSubitem>
       <DetailListSubitem @label="Verwacht">
-        {{fmt-date this.model.expectedDate}}
+        {{fmt-date @model.expectedDate}}
       </DetailListSubitem>
       <DetailListSubitem @label="Vereist">
-        {{fmt-date this.model.requiredDate}}
+        {{fmt-date @model.requiredDate}}
       </DetailListSubitem>
     </DetailListItem>
     <DetailListItem @label="Bezoeker">
-      {{this.model.offer.request.visitor}}
+      {{@model.offer.request.visitor}}
     </DetailListItem>
     <DetailListItem @label="Referentie">
-      {{this.model.reference}}
+      {{@model.reference}}
     </DetailListItem>
     <DetailListItem @label="Werkuren">
-      {{fmt-decimal this.model.scheduledHours}} uur x
-      <span class="{{if this.isNbOfPersonsWarning "warning-inline"}}">{{this.model.scheduledNbOfPersons}} man</span>
-      = {{this.model.scheduledTotal}} uur
+      {{fmt-decimal @model.scheduledHours}} uur x
+      <span class="{{if this.isNbOfPersonsWarning "warning-inline"}}">{{@model.scheduledNbOfPersons}} man</span>
+      = {{@model.scheduledTotal}} uur
     </DetailListItem>
-    {{#if this.model.isMasteredByAccess}}
+    {{#if @model.isMasteredByAccess}}
       <DetailListItem @label="Bedrag">
-        {{fmt-currency this.model.amount}}
+        {{fmt-currency @model.amount}}
       </DetailListItem>
     {{/if}}
     <DetailListItem @label="BTW tarief">
-      {{this.model.vatRate.name}} BTW
+      {{@model.vatRate.name}} BTW
     </DetailListItem>
     <DetailListItem @label="Voorschotten">
-      {{paper-icon (if this.model.depositRequired "check_box" "check_box_outline_blank")}} Nodig
+      {{paper-icon (if @model.depositRequired "check_box" "check_box_outline_blank")}} Nodig
       <DetailListSubitem @label="Bedrag" @click={{fn this.goToDepositInvoices}} @class="clickable">
         {{fmt-currency this.depositsAmount}} {{paper-icon "info" size=18}}
       </DetailListSubitem>
@@ -42,13 +42,13 @@
       </DetailListSubitem>
     </DetailListItem>
     <DetailListItem @label="Opmerking">
-      <span class="html-body">{{this.model.comment}}</span>
+      <span class="html-body">{{@model.comment}}</span>
     </DetailListItem>
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
-    <PlanningDetailPanel @model={{this.model}} />
+    <PlanningDetailPanel @model={{@model}} />
     <DetailListItem @label="Uitvoering">
-      <PaperRadioGroup @groupValue={{readonly this.model.execution}} @onChange={{null}} as |group|>
+      <PaperRadioGroup @groupValue={{readonly @model.execution}} @onChange={{null}} as |group|>
         <group.radio @value="installation">{{order-execution 'installation'}}</group.radio>
         <group.radio @value="delivery">{{order-execution 'delivery'}}</group.radio>
         <group.radio @value="pickup">{{order-execution 'pickup'}}</group.radio>
@@ -56,19 +56,19 @@
     </DetailListItem>
     <DetailListItem @label="Productiebon">
       <div class="layout-row layout-align-start-center">
-        <div>{{paper-icon (if this.model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
-        <ProductionTicketButtons @model={{this.model}} />
+        <div>{{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
+        <ProductionTicketButtons @model={{@model}} />
       </div>
     </DetailListItem>
     <DetailListItem @label="Product klaar">
-      {{paper-icon (if this.model.isReady "check_box" "check_box_outline_blank")}}
+      {{paper-icon (if @model.isReady "check_box" "check_box_outline_blank")}}
     </DetailListItem>
     <DetailListItem @label="Afgesloten">
-      {{paper-icon (if this.model.canceled "check_box" "check_box_outline_blank")}}
-      {{#if this.model.canceled}}
+      {{paper-icon (if @model.canceled "check_box" "check_box_outline_blank")}}
+      {{#if @model.canceled}}
         <DetailListSubitem @label="Reden">
-          {{#if this.model.cancellationReason}}
-            <span class="html-body">{{this.model.cancellationReason}}</span>
+          {{#if @model.cancellationReason}}
+            <span class="html-body">{{@model.cancellationReason}}</span>
           {{else}}
             -
           {{/if}}
@@ -79,7 +79,3 @@
 </div>
 
 {{yield}}
-
-<DocumentNotFoundDialog @show={{this.showProductionTicketNotFoundDialog}}>
-  <p>Er is nog geen productiebon opgeladen.</p>
-</DocumentNotFoundDialog>

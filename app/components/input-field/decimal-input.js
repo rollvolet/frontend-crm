@@ -7,9 +7,16 @@ import deformatDecimalInput from '../../utils/deformat-decimal-input';
 export default class DecimalInputComponent extends Component {
   @tracked formattedValue
 
+  class = 'default'
+  isRequired = false
+
   constructor() {
     super(...arguments);
     this.formattedValue = formatDecimalInput(this.args.value);
+  }
+
+  get requiredStyle() {
+    return this.isRequired ? "style" : null;
   }
 
   @action

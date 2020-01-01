@@ -1,14 +1,14 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      {{#if this.editMode}}Bewerk details{{else}}Overzicht{{/if}} bestelling {{this.model.offerNumber}}
+      {{#if @editMode}}Bewerk details{{else}}Overzicht{{/if}} bestelling {{@model.offerNumber}}
     </h2>
-    {{#if this.editMode}}
-      <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
+    {{#if @editMode}}
+      <SaveStatusIcon @model={{@model}} @task={{this.save}} />
     {{/if}}
   </div>
   <div>
-    {{#if this.editMode}}
+    {{#if @editMode}}
       {{#if this.isEnabledDelete}}
         <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
           {{paper-icon "delete"}}
@@ -30,7 +30,7 @@
 
 {{#if this.hasInvoice}}
   <WarningMessage @message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk." />
-{{else if this.model.isMasteredByAccess}}
+{{else if @model.isMasteredByAccess}}
   <WarningMessage @message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden." />
 {{/if}}
 
@@ -44,19 +44,19 @@
     <PaperProgressLinear />
     <p>Aan het herstellen...</p>
   </div>
-{{else if (and (not this.model.id) this.model.isSavivg)}}
+{{else if (and (not @model.id) @model.isSavivg)}}
   <div>
     <PaperProgressLinear />
     <p>Aan het aanmaken...</p>
   </div>
 {{else}}
-  {{#if this.editMode}}
-    <OrderEditForm @model={{this.model}} @save={{this.save}} />
+  {{#if @editMode}}
+    <OrderEditForm @model={{@model}} @save={{this.save}} />
   {{else}}
-    <OrderDetailPanel @model={{this.model}} />
+    <OrderDetailPanel @model={{@model}} />
   {{/if}}
 
-  {{#if this.model.isMasteredByAccess}}
+  {{#if @model.isMasteredByAccess}}
     <h2>Bestelde producten</h2>
     <p class="note-message">De bestelling is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
   {{else}}
@@ -109,7 +109,7 @@
           <DetailListSubitem @label="Netto">
             {{fmt-currency this.totalAmount}}
           </DetailListSubitem>
-          <DetailListSubitem @label={{concat (get (await this.model.vatRate) "rate") "% BTW"}}>
+          <DetailListSubitem @label={{concat (get (await @model.vatRate) "rate") "% BTW"}}>
             {{fmt-currency (await this.totalVat)}}
           </DetailListSubitem>
         </DetailListItem>
