@@ -1,4 +1,4 @@
-{{#if this.show}}
+{{#if @show}}
   <PaperDialog @class="flex-50" @onClose={{fn this.close}} @parent=".main-outlet" @origin=".main-outlet" @clickOutsideToClose={{true}}>
     <PaperToolbar>
       <PaperToolbarTools>
@@ -15,9 +15,9 @@
           <InvoiceSupplementEditForm @model={{this.selected}} @save={{this.save}} />
         {{/if}}
 {{else}}
-        <InvoiceSupplementsTable @model={{this.model.supplements}} @isDisabledEdit={{this.isDisabledEdit}} @onOpenEdit={{fn this.openEdit}} @onDelete={{fn this.deleteSupplement}} />
+        <InvoiceSupplementsTable @model={{@model.supplements}} @isDisabledEdit={{this.isDisabledEdit}} @onOpenEdit={{fn this.openEdit}} @onDelete={{fn this.deleteSupplement}} />
       {{/liquid-if}}
-      {{#if this.model.isMasteredByAccess}}
+      {{#if @model.isMasteredByAccess}}
         <p class="note-message">De factuur is aangemaakt in Access. De extra's kunnen hier niet aangepast worden.</p>
       {{/if}}
     </PaperDialogContent>

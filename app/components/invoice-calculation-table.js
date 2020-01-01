@@ -2,7 +2,7 @@ import classic from 'ember-classic-decorator';
 import { action } from '@ember/object';
 import { oneWay } from '@ember/object/computed';
 import Component from '@ember/component';
-import { add, product, quotient, subtract, sum, raw, array } from 'ember-awesome-macros';
+import { add, product, quotient, subtract, sum, raw, array, promise } from 'ember-awesome-macros';
 
 @classic
 export default class InvoiceCalculationTable extends Component {
@@ -17,7 +17,13 @@ export default class InvoiceCalculationTable extends Component {
   @product('baseAmount', 'vatRate')
   baseAmountVat;
 
-  @sum(array.mapBy('model.supplements', raw('amount')))
+  @oneWay('model.supplements')
+  supplementsPromise
+
+  @promise.array('supplementsPromise')
+  supplements
+
+  @sum(array.mapBy('supplements', raw('amount')))
   supplementsAmount;
 
   @product('supplementsAmount', 'vatRate')
@@ -29,7 +35,13 @@ export default class InvoiceCalculationTable extends Component {
   @product('totalOrderAmount', 'vatRate')
   totalOrderVat;
 
-  @sum(array.mapBy('model.depositInvoices', raw('arithmeticAmount')))
+  @oneWay('model.depositInvoices')
+  depositInvoicesPromise
+
+  @promise.array('depositInvoicesPromise')
+  depositInvoices
+
+  @sum(array.mapBy('depositInvoices', raw('arithmeticAmount')))
   depositInvoicesAmount;
 
   // assumption that all deposit invoices have the same vat rate as the parent invoice
@@ -45,7 +57,13 @@ export default class InvoiceCalculationTable extends Component {
   @sum('totalNetAmount', 'totalVat')
   totalGrossAmount;
 
-  @sum(array.mapBy('model.deposits', raw('amount')))
+  @oneWay('model.deposits')
+  depositsPromise
+
+  @promise.array('depositsPromise')
+  deposits
+
+  @sum(array.mapBy('deposits', raw('amount')))
   depositsAmount;
 
   @subtract('totalGrossAmount', 'depositsAmount')

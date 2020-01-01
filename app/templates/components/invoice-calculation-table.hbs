@@ -2,7 +2,7 @@
   <thead>
     <th></th>
     <th>Netto</th>
-    <th>{{this.model.vatRate.rate}}% BTW</th>
+    <th>{{@model.vatRate.rate}}% BTW</th>
   </thead>
   <tbody>
     <tr>
@@ -15,13 +15,13 @@
       <td>{{fmt-currency this.supplementsAmount}}</td>
       <td>{{fmt-currency this.supplementsVat}}</td>
     </tr>
-    {{#unless this.model.isIsolated}}
+    {{#unless @model.isIsolated}}
       <tr class="subtotal">
         <td>Totaal bestelling</td>
         <td>{{fmt-currency this.totalOrderAmount}}</td>
         <td>{{fmt-currency this.totalOrderVat}}</td>
       </tr>
-      <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{this.model.order}} @tagName="tr" class="clickable">
+      <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model.order}} @tagName="tr" class="clickable">
         <td>Voorschotfacturen {{paper-icon "info" size=18}}</td>
         <td>&minus; {{fmt-currency this.depositInvoicesAmount}}</td>
         <td>&minus; {{fmt-currency this.depositInvoicesVat}}</td>
@@ -58,4 +58,4 @@
 <div>
 </div>
 
-<InvoiceSupplementsDialog @show={{this.showSupplementsDialog}} @model={{this.model}} />
+<InvoiceSupplementsDialog @show={{this.showSupplementsDialog}} @model={{@model}} />

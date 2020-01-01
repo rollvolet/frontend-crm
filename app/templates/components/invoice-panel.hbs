@@ -2,15 +2,15 @@
   <div class="layout-row layout-align-start-center">
     <div>
       <h2>
-        {{#if this.editMode}}Bewerk details{{else}}Overzicht{{/if}} factuur {{format-invoice-number this.model.number}}
+        {{#if @editMode}}Bewerk details{{else}}Overzicht{{/if}} factuur {{format-invoice-number @model.number}}
       </h2>
     </div>
-    {{#if this.editMode}}
-      <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
+    {{#if @editMode}}
+      <SaveStatusIcon @model={{@model}} @task={{this.save}} />
     {{/if}}
   </div>
   <div class="layout-row layout-align-start-center">
-    {{#if this.editMode}}
+    {{#if @editMode}}
       {{#if this.isEnabledDelete}}
         <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
           {{paper-icon "delete"}}
@@ -44,12 +44,12 @@
   </div>
 </div>
 
-{{#if this.model.isBooked}}
+{{#if @model.isBooked}}
   <WarningMessage @message="Factuur reeds geboekt. Geen wijzigingen meer mogelijk." />
 {{/if}}
 
 
-{{#if this.editMode}}
+{{#if @editMode}}
   {{#if this.remove.isRunning}}
     <div>
       <PaperProgressLinear />
@@ -60,19 +60,19 @@
       <PaperProgressLinear />
       <p>Aan het herstellen...</p>
     </div>
-  {{else if (and (not this.model.id) this.model.isSavivg)}}
+  {{else if (and (not @model.id) @model.isSavivg)}}
     <div>
       <PaperProgressLinear />
       <p>Aan het aanmaken...</p>
     </div>
   {{else}}
-    <InvoiceEditForm @model={{this.model}} @save={{this.save}} />
+    <InvoiceEditForm @model={{@model}} @save={{this.save}} />
   {{/if}}
 {{else}}
-  <InvoiceDetailPanel @model={{this.model}} />
+  <InvoiceDetailPanel @model={{@model}} />
 {{/if}}
 
-{{#if this.model.isMasteredByAccess}}
+{{#if @model.isMasteredByAccess}}
   <div class="layout-row">
     <span class="flex"></span>
     <p class="note note--info">Beheerd in Access</p>
@@ -80,4 +80,4 @@
 {{/if}}
 
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />
-<MissingCertificateDialog @show={{this.showMissingCertificateDialog}} @model={{this.model}} @onClose={{perform this.generateInvoiceDocument}} />
+<MissingCertificateDialog @show={{this.showMissingCertificateDialog}} @model={{@model}} @onClose={{perform this.generateInvoiceDocument}} />

@@ -4,25 +4,25 @@
     <th>Eenheid</th>
     <th>Omschrijving</th>
     <th>Netto totaal (&euro;)</th>
-    {{#unless this.isDisabledEdit}}
+    {{#unless @isDisabledEdit}}
       <th></th>
     {{/unless}}
   </thead>
   <tbody>
-    {{#each this.model as |supplement|}}
+    {{#each @model as |supplement|}}
       <tr>
         <td>{{supplement.nbOfPieces}}</td>
         <td>{{supplement.unit.name}}</td>
         <td>{{{supplement.description}}}</td>
         <td>{{fmt-currency supplement.amount}}</td>
-        {{#unless this.isDisabledEdit}}
+        {{#unless @isDisabledEdit}}
           <td>
             <div class="layout-row">
-              <PaperButton @onClick={{fn this.onOpenEdit supplement}} @iconButton={{true}}>
+              <PaperButton @onClick={{fn @onOpenEdit supplement}} @iconButton={{true}}>
                 {{paper-icon "edit mode"}}
                 <PaperTooltip>Bewerken</PaperTooltip>
               </PaperButton>
-              <PaperButton @onClick={{fn this.onDelete supplement}} @iconButton={{true}}>
+              <PaperButton @onClick={{fn @onDelete supplement}} @iconButton={{true}}>
                 {{paper-icon "delete"}}
                 <PaperTooltip>Verwijderen</PaperTooltip>
               </PaperButton>

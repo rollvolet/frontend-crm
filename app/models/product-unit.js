@@ -1,13 +1,13 @@
 import classic from 'ember-classic-decorator';
 import { reads } from '@ember/object/computed';
 import DS from 'ember-data';
-const { Model } = DS;
+const { Model, attr } = DS;
 
 @classic
 export default class ProductUnit extends Model {
-  code;
-  nameNed;
-  nameFra;
+  @attr code;
+  @attr nameNed;
+  @attr nameFra;
 
   @reads('nameNed')
   name;
