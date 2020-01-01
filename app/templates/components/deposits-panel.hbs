@@ -1,15 +1,15 @@
 <div class="layout-row layout-align-space-between-center">
   <h2>Voorschotten</h2>
-  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.createNew}} @disabled={{or this.isDisabledEdit this.selected}}>
+  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.createNew}} @disabled={{or @isDisabledEdit this.selected}}>
     {{paper-icon "add"}}
     <PaperTooltip>Voeg nieuw voorschot toe</PaperTooltip>
   </PaperButton>
 </div>
 
-{{#if this.model}}
-  {{#if (and this.depositRequired (not this.hasDeposits))}}
+{{#if @model}}
+  {{#if (and @depositRequired (not this.hasDeposits))}}
     <WarningMessage @message="Er is een voorschot gevraagd bij bestelling" />
-  {{else if (and (not this.depositRequired) this.hasDeposits)}}
+  {{else if (and (not @depositRequired) this.hasDeposits)}}
     <InfoMessage @message="Er is geen voorschot gevraagd bij bestelling" />
   {{/if}}
 {{/if}}
@@ -37,13 +37,13 @@
       <th></th>
     </thead>
     <tbody>
-      {{#each this.model as |deposit|}}
+      {{#each @model as |deposit|}}
         <tr>
           <td>{{fmt-date deposit.paymentDate}}</td>
           <td>{{fmt-currency deposit.amount}}</td>
           <td>{{deposit.payment.name}}</td>
           <td>
-            {{#unless this.isDisabledEdit}}
+            {{#unless @isDisabledEdit}}
               <PaperButton @onClick={{fn this.openEdit deposit}} @iconButton={{true}}>
                 {{paper-icon "edit mode"}}
                 <PaperTooltip>Bewerken</PaperTooltip>

@@ -3,7 +3,7 @@
     <PaperProgressCircular @diameter={{20}} />
   {{else}}
     <div class="certificate--status">
-      {{#if this.model.certificateReceived}}
+      {{#if @model.certificateReceived}}
         <span>
           <PaperIcon @class="success" @icon="done" @size={{32}} />
           <PaperTooltip>In orde</PaperTooltip>
@@ -26,7 +26,7 @@
         {{/if}}
       </PaperButton>
 
-      {{#if this.model.certificateReceived}}
+      {{#if @model.certificateReceived}}
         <PaperButton @onClick={{fn this.download}} @iconButton={{this.iconButton}} @raised={{not this.iconButton}} @primary={{not this.iconButton}}>
           {{#if this.iconButton}}
             {{paper-icon "find in page"}}

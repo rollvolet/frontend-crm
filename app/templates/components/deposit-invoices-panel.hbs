@@ -1,6 +1,6 @@
 <div class="layout-row layout-align-space-between-center">
   <h2>Voorschotfacturen</h2>
-  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.createNew}} @disabled={{or this.isDisabledEdit this.selected}}>
+  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.createNew}} @disabled={{or @isDisabledEdit this.selected}}>
     {{paper-icon "add"}}
     <PaperTooltip>Maak nieuwe voorschotfactuur</PaperTooltip>
   </PaperButton>
@@ -27,14 +27,15 @@
         <DetailListSubitem @label="Netto">
           {{fmt-currency this.totalAmount}}
         </DetailListSubitem>
-        <DetailListSubitem @label={{concat (get this.vatRate "rate") "% BTW"}}>
+        <DetailListSubitem @label={{concat (get @vatRate "rate") "% BTW"}}>
           {{fmt-currency (await this.totalVat)}}
         </DetailListSubitem>
       </DetailListItem>
     </div>
   </div>
 
-  {{#each this.model as |invoice|}}
+  {{#each @model as |invoice|}}
+    {{!-- TODO: create separate component for deposit-invoice--detail-panel --}}
     <div class="case--deposit-invoices--detail-panel">
       <PaperDivider />
       <div class="layout-row layout-align-space-between-center">
@@ -47,14 +48,14 @@
               {{paper-icon "find in page"}}
               <PaperTooltip>Voorschotfactuur bekijken</PaperTooltip>
             </PaperButton>
-            {{#if (and (not this.isDisabledEdit) (not invoice.isBooked))}}
+            {{#if (and (not @isDisabledEdit) (not invoice.isBooked))}}
               <PaperButton @onClick={{perform this.generateInvoiceDocument invoice}} @iconButton={{true}}>
                 {{paper-icon "restore page"}}
                 <PaperTooltip>Voorschotfactuur maken</PaperTooltip>
               </PaperButton>
             {{/if}}
           {{/if}}
-          {{#if (and (not this.isDisabledEdit) (not invoice.isBooked))}}
+          {{#if (and (not @isDisabledEdit) (not invoice.isBooked))}}
             <PaperButton @onClick={{fn this.openEdit invoice}} @iconButton={{true}}>
               {{paper-icon "edit mode"}}
               <PaperTooltip>Bewerken</PaperTooltip>

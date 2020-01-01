@@ -1,14 +1,5 @@
-import classic from 'ember-classic-decorator';
-import Component from '@ember/component';
-import DecimalInputFormatting from '../mixins/decimal-input-formatting';
+import Component from '@glimmer/component';
 
-@classic
-export default class DepositInvoiceEditForm extends Component.extend(DecimalInputFormatting) {
-  model = null;
-  save = null;
+export default class DepositInvoiceEditForm extends Component {
 
-  init() {
-    super.init(...arguments);
-    this.initDecimalInput('baseAmount');
-  }
 }

@@ -1,4 +1,6 @@
+import classic from 'ember-classic-decorator';
 import Component from '@ember/component';
+import { action } from '@ember/object';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
@@ -6,27 +8,30 @@ import { bool } from '@ember/object/computed';
 import { sum, array, raw } from 'ember-awesome-macros';
 import { warn } from '@ember/debug';
 
-export default Component.extend({
-  documentGeneration: service(),
+@classic
+export default class DepositInvoicesPanel extends Component {
+  @service documentGeneration;
 
-  model: null,
-  onCreate: null,
-  order: null,
-  selected: null,
-  showUnsavedChangesDialog: false,
-  isDisabledEdit: false,  // passed as argument
+  model = null;
+  onCreate = false;
+  order = null;
+  selected = null;
+  showUnsavedChangesDialog = false;
+  isDisabledEdit = false // passed as argument
 
-  arithmeticAmounts: array.mapBy('model', raw('arithmeticAmount')),
-  arithmeticVats: array.mapBy('model', raw('arithmeticVat')),
-  totalAmount: sum('arithmeticAmounts'),
-  totalVat: computed('arithmeticVats', function() {
-    return Promise.all(this.arithmeticVats).then(values => {
+  @bool('selected') editMode
+  @computed('model.@each.arithmeticAmount')
+  get totalAmount() {
+    return this.model.mapBy('arithmeticAmount').reduce((a, b) => a + b, 0);
+  }
+  @computed('model.@each.arithmeticVat')
+  get totalVat() {
+    return Promise.all(this.model.mapBy('arithmeticVat')).then(values => {
       return values.reduce((a, b) => a + b, 0);
     });
-  }),
-  editMode: bool('selected'),
+  }
 
-  rollbackTree: task(function * () {
+  @task(function * () {
     const rollbackPromises = [];
 
     this.selected.rollbackAttributes();
@@ -36,17 +41,20 @@ export default Component.extend({
     yield all(rollbackPromises);
 
     yield this.save.perform(null, { forceSucces: true });
-  }),
-  save: task(function * (_, { forceSuccess = false } = {} ) {
+  })
+  rollbackTree;
+
+  @task(function * (_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;
 
     const { validations } = yield this.selected.validate();
     if (validations.isValid) {
       yield this.selected.save();
     }
-  }).keepLatest(),
+  }).keepLatest()
+  save;
 
-  generateInvoiceDocument: task(function * (invoice) {
+  @task(function * (invoice) {
     const oldInvoiceDate = invoice.invoiceDate;
     try {
       invoice.set('invoiceDate', new Date());
@@ -57,37 +65,43 @@ export default Component.extend({
       invoice.set('invoiceDate', oldInvoiceDate);
       yield invoice.save();
     }
-  }),
+  })
+  generateInvoiceDocument;
 
-  actions: {
-    async createNew() {
-      const invoice = await this.onCreate();
-      this.set('selected', invoice);
-    },
-    openEdit(invoice) {
-      if (this.selected && this.selected.isNew)
-        this.selected.destroyRecord();
-      this.set('selected', invoice);
-    },
-    closeEdit() {
-      if (this.selected.isNew || this.selected.validations.isInvalid || this.selected.isError
-          || (this.save.last && this.save.last.isError)) {
-        this.set('showUnsavedChangesDialog', true);
-      } else {
-        this.set('selected', null);
-      }
-    },
-    async confirmCloseEdit() {
-      await this.rollbackTree.perform();
+  @action
+  async createNew() {
+    const invoice = await this.onCreate();
+    this.set('selected', invoice);
+  }
+  @action
+  openEdit(invoice) {
+    if (this.selected && this.selected.isNew)
+      this.selected.destroyRecord();
+    this.set('selected', invoice);
+  }
+  @action
+  closeEdit() {
+    if (this.selected.isNew || this.selected.validations.isInvalid || this.selected.isError
+        || (this.save.last && this.save.last.isError)) {
+      this.set('showUnsavedChangesDialog', true);
+    } else {
+      this.onUpdateList();
       this.set('selected', null);
-    },
-    async remove(invoice) {
-      this.model.removeObject(invoice);
-      invoice.destroyRecord();
-    },
-    downloadInvoiceDocument(invoice) {
-      this.documentGeneration.downloadInvoiceDocument(invoice);
     }
   }
-
-});
+  @action
+  async confirmCloseEdit() {
+    await this.rollbackTree.perform();
+    this.onUpdateList();
+    this.set('selected', null);
+  }
+  @action
+  async remove(invoice) {
+    await invoice.destroyRecord();
+    this.onUpdateList();
+  }
+  @action
+  downloadInvoiceDocument(invoice) {
+    this.documentGeneration.downloadInvoiceDocument(invoice);
+  }
+}

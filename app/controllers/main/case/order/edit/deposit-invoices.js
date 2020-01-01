@@ -56,11 +56,15 @@ export default class DepositInvoicesController extends Controller {
       building
     });
 
-    this.model.pushObject(depositInvoice);
     const { validations } = await depositInvoice.validate();
     if (validations.isValid)
       return depositInvoice.save();
     else
       return depositInvoice;
+  }
+
+  @action
+  updateList() {
+    this.send('refreshModel');
   }
 }
