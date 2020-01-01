@@ -10,14 +10,9 @@ import { EKMixin, keyUp } from 'ember-keyboard';
 
 @classic
 export default class RequestPanel extends Component.extend(EKMixin) {
-  @service
-  documentGeneration;
-
-  @service
-  router;
-
-  @service
-  store;
+  @service documentGeneration;
+  @service router;
+  @service store;
 
   model = null;
   editMode = false;

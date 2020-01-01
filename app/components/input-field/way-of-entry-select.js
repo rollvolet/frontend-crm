@@ -1,5 +1,4 @@
 import classic from 'ember-classic-decorator';
-import { computed } from '@ember/object';
 import { sort } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';

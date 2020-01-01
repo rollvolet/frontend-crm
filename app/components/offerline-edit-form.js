@@ -9,9 +9,6 @@ import PellOptions from '../mixins/pell-options';
 @classic
 @classNames('layout-row', 'layout-align-start-center')
 export default class OfferlineEditForm extends Component.extend(DecimalInputFormatting, PellOptions) {
-  model = null;
-  onDelete = null;
-
   init() {
     super.init(...arguments);
     this.initDecimalInput('amount');
@@ -23,9 +20,4 @@ export default class OfferlineEditForm extends Component.extend(DecimalInputForm
       yield this.model.save();
   })
   save;
-
-  @action
-  delete() {
-    this.onDelete(this.model);
-  }
 }

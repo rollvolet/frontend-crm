@@ -1,47 +1,51 @@
+import classic from 'ember-classic-decorator';
 import Component from '@ember/component';
+import { action } from '@ember/object';
+import { on } from '@ember-decorators/object';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { length } from 'ember-awesome-macros/array';
 import { not, notEmpty, or, gt, raw, array } from 'ember-awesome-macros';
-import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import PellOptions from '../mixins/pell-options';
 import { sort } from '@ember/object/computed';
 
-export default Component.extend(EKMixin, PellOptions, {
-  case: service(),
-  documentGeneration: service(),
-  router: service(),
-  store: service(),
+@classic
+export default class OfferPanel extends Component.extend(EKMixin, PellOptions) {
+  @service case;
+  @service documentGeneration;
+  @service router;
+  @service store;
 
-  model: null,
-  editMode: false,
-  onOpenEdit: null,
-  onCloseEdit: null,
-  showUnsavedChangesDialog: false,
+  model = null;
+  editMode = false;
+  onOpenEdit = null;
+  onCloseEdit = null;
+  showUnsavedChangesDialog = false;
 
-  offerlineSorting: Object.freeze(['sequenceNumber']),
-  sortedOfferlines: sort('model.offerlines', 'offerlineSorting'),
-  hasOrder: notEmpty('model.order.id'),
-  isDisabledEdit: or('model.isMasteredByAccess', 'hasOrder'),
-  isEnabledDelete: not('isDisabledEdit'),
-  vatRates: array.mapBy('model.offerlines', raw('vatRate')),
-  hasMixedVatRates: gt(length(array.uniqBy('vatRates', raw('code'))), raw(1)),
-  hasUnsavedChanges: async function() {
+  offerlineSorting = Object.freeze(['sequenceNumber']);
+  @sort('model.offerlines', 'offerlineSorting') sortedOfferlines;
+  @notEmpty('model.order.id') hasOrder;
+  @or('model.isMasteredByAccess', 'hasOrder') isDisabledEdit;
+  @not('isDisabledEdit') isEnabledDelete;
+  @array.mapBy('model.offerlines', raw('vatRate')) vatRates;
+  @gt(length(array.uniqBy('vatRates', raw('code'))), raw(1)) hasMixedVatRates;
+
+  async hasUnsavedChanges() {
     const offerlines = await this.model.offerlines;
     const offerlineWithUnsavedChanges = offerlines.find(o => o.isNew || o.validations.isInvalid || o.isError);
     return offerlineWithUnsavedChanges != null
-      || this.model.isNew || this.model.validations.isInvalid || this.model.isError
-      || (this.save.last && this.save.last.isError);
-  },
+        || this.model.isNew || this.model.validations.isInvalid || this.model.isError
+        || (this.save.last && this.save.last.isError);
+  }
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.set('keyboardActivated', true); // required for ember-keyboard
-  },
+  }
 
-  remove: task(function * () {
+  @task(function * () {
     const request = yield this.model.request;
     try {
       this.case.updateRecord('offer', null);
@@ -53,8 +57,10 @@ export default Component.extend(EKMixin, PellOptions, {
     } finally {
       this.router.transitionTo('main.case.request.edit', request);
     }
-  }),
-  rollbackTree: task(function * () {
+  })
+  remove;
+
+  @task(function * () {
     const rollbackPromises = [];
 
     const offerlines = yield this.model.offerlines;
@@ -70,8 +76,10 @@ export default Component.extend(EKMixin, PellOptions, {
 
     yield all(rollbackPromises);
     yield this.save.perform(null, { forceSuccess: true });
-  }),
-  save: task(function * (_, { forceSuccess = false } = {} ) {
+  })
+  rollbackTree;
+
+  @task(function * (_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;
 
     const { validations } = yield this.model.validate();
@@ -102,8 +110,10 @@ export default Component.extend(EKMixin, PellOptions, {
     // Save change of visitor
     const request = yield this.model.request;
     yield request.save();
-  }),
-  generateOfferDocument: task(function * () {
+  })
+  save;
+
+  @task(function * () {
     const oldOfferDate = this.model.offerDate;
     try {
       this.model.set('offerDate', new Date());
@@ -114,55 +124,67 @@ export default Component.extend(EKMixin, PellOptions, {
       this.model.set('offerDate', oldOfferDate);
       yield this.save.perform();
     }
-  }),
+  })
+  generateOfferDocument;
 
   // eslint-disable-next-line ember/no-on-calls-in-components
-  openEditByShortcut: on(keyUp('ctrl+alt+KeyU'), function() {
+  @on(keyUp('ctrl+alt+KeyU'))
+  openEditByShortcut() {
     this.onOpenEdit();
-  }),
+  }
 
-  actions: {
-    openEdit() {
-      this.onOpenEdit();
-    },
-    async closeEdit() {
-      const hasUnsavedChanges = await this.hasUnsavedChanges();
-      if (hasUnsavedChanges) {
-        this.set('showUnsavedChangesDialog', true);
-      } else {
-        this.onCloseEdit();
-      }
-    },
-    confirmCloseEdit() {
-      this.rollbackTree.perform();
+  @action
+  openEdit() {
+    this.onOpenEdit();
+  }
+
+  @action
+  async closeEdit() {
+    const hasUnsavedChanges = await this.hasUnsavedChanges();
+    if (hasUnsavedChanges) {
+      this.set('showUnsavedChangesDialog', true);
+    } else {
       this.onCloseEdit();
-    },
-    async addOfferline() {
-      const offerlines = await this.model.offerlines;
-      const number = offerlines.length ? Math.max(...offerlines.map(o => o.sequenceNumber)) : 0;
-      const vatRate = await this.model.vatRate;
-      const offerline = this.store.createRecord('offerline', {
-        sequenceNumber: number + 1,
-        isOrdered: false,
-        offer: this.model,
-        vatRate
-      });
-      if (this.model.isMasteredByAccess) {
-        this.model.set('amount', 0); // make sure offer is no longer mastered by Access
-        this.model.save();
-      }
-      const { validations } = await offerline.validate();
-      if (validations.isValid)
-        offerline.save();
-
-      this.onOpenEdit();
-    },
-    deleteOfferline(offerline) {
-      this.model.offerlines.removeObject(offerline);
-      offerline.destroyRecord();
-    },
-    downloadOfferDocument() {
-      this.documentGeneration.downloadOfferDocument(this.model);
     }
   }
-});
+
+  @action
+  confirmCloseEdit() {
+    this.rollbackTree.perform();
+    this.onCloseEdit();
+  }
+
+
+  @action
+  async addOfferline() {
+    const offerlines = await this.model.offerlines;
+    const number = offerlines.length ? Math.max(...offerlines.map(o => o.sequenceNumber)) : 0;
+    const vatRate = await this.model.vatRate;
+    const offerline = this.store.createRecord('offerline', {
+      sequenceNumber: number + 1,
+      isOrdered: false,
+      offer: this.model,
+      vatRate
+    });
+    if (this.model.isMasteredByAccess) {
+      this.model.set('amount', 0); // make sure offer is no longer mastered by Access
+      this.model.save();
+    }
+    const { validations } = await offerline.validate();
+    if (validations.isValid)
+      offerline.save();
+
+    this.onOpenEdit();
+  }
+
+  @action
+  deleteOfferline(offerline) {
+    this.model.offerlines.removeObject(offerline);
+    offerline.destroyRecord();
+  }
+
+  @action
+  downloadOfferDocument() {
+    this.documentGeneration.downloadOfferDocument(this.model);
+  }
+}

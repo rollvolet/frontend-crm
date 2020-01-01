@@ -1,6 +1,5 @@
 import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
-import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 import fetch, { Headers } from 'fetch';
 import { task } from 'ember-concurrency';
@@ -13,11 +12,18 @@ export default class VisitDetailPanel extends Component {
 
   model = null;
 
-  @reads('model.calendarEvent')
-  calendarEvent;
+  init() {
+    super.init(...arguments);
+    this.loadCalendarEvent.perform();
+  }
 
-  @and('calendarEvent.id', isEmpty('calendarEvent.calendarSubject'))
+  @and('model.calendarEvent.id', isEmpty('model.calendarEvent.calendarSubject'))
   isNotAvailableInCalendar;
+
+  @(task(function * () {
+    yield this.model.calendarEvent;
+  }).keepLatest())
+  loadCalendarEvent;
 
   @(task(function * () {
     const { access_token } = this.get('session.data.authenticated');

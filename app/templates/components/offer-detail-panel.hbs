@@ -1,27 +1,27 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--offer--entry flex-100 layout-column">
     <DetailListItem @label="Datum">
-      {{fmt-date this.model.offerDate}}
+      {{fmt-date @model.offerDate}}
     </DetailListItem>
-    {{#if this.model.isMasteredByAccess}}
+    {{#if @model.isMasteredByAccess}}
       <DetailListItem @label="Bedrag">
-        {{fmt-currency this.model.amount}}
+        {{fmt-currency @model.amount}}
       </DetailListItem>
     {{/if}}
     <DetailListItem @label="BTW tarief">
-      {{this.model.vatRate.name}} BTW
+      {{@model.vatRate.name}} BTW
     </DetailListItem>
     <DetailListItem @label="Bezoeker">
-      {{this.model.request.visitor}}
+      {{@model.request.visitor}}
     </DetailListItem>
     <DetailListItem @label="Referentie">
-      {{this.model.reference}}
+      {{@model.reference}}
     </DetailListItem>
     <DetailListItem @label="Opmerking">
-      <span class="html-body">{{this.model.comment}}</span>
+      <span class="html-body">{{@model.comment}}</span>
     </DetailListItem>
   </div>
-  <VisitDetailPanel @model={{this.model.request}} />
+  <VisitDetailPanel @model={{@model.request}} />
 </div>
 
 {{yield}}

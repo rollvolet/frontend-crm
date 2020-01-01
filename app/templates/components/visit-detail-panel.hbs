@@ -1,14 +1,14 @@
-{{#if (is-pending this.calendarEvent)}}
+{{#if this.loadCalendarEvent.isRunning}}
   <div class="case--right-panel case--request--visit skeleton flex-noshrink layout-column layout-align-center-center">
     <PaperProgressCircular @diameter={{25}} />
   </div>
 {{else}}
   <div class="case--right-panel flex-noshrink layout-column">
     <div class="case--request--visit {{if this.isNotAvailableInCalendar "not-found"}}">
-      {{#if this.calendarEvent}}
+      {{#if @model.calendarEvent}}
         <div class="layout-row layout-align-space-between-center">
           <h3>{{paper-icon "event"}} Bezoek</h3>
-          {{#if (not this.calendarEvent.isMasteredByAccess)}}
+          {{#if (not @model.calendarEvent.isMasteredByAccess)}}
             <PaperButton @iconButton={{true}} @onClick={{perform this.synchronize}}>
               {{paper-icon "sync"}}
               <PaperTooltip>Stuur wijzigingen naar agenda</PaperTooltip>
@@ -17,16 +17,16 @@
         </div>
         <div class="case--request--visit--description">
           <DetailListItem @label="Datum">
-            {{fmt-date this.calendarEvent.visitDate}}
+            {{fmt-date @model.calendarEvent.visitDate}}
           </DetailListItem>
           <DetailListItem @label="Agenda">
             {{#if this.isNotAvailableInCalendar}}
               Niet gevonden
             {{else}}
-              {{this.calendarEvent.calendarSubject}}
+              {{@model.calendarEvent.calendarSubject}}
             {{/if}}
           </DetailListItem>
-          {{#if this.calendarEvent.isMasteredByAccess}}
+          {{#if @model.calendarEvent.isMasteredByAccess}}
             <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
           {{/if}}
         </div>

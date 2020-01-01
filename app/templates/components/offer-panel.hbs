@@ -1,14 +1,14 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      {{#if this.editMode}}Bewerk details{{else}}Overzicht{{/if}} offerte {{this.model.number}}
+      {{#if @editMode}}Bewerk details{{else}}Overzicht{{/if}} offerte {{@model.number}}
     </h2>
-    {{#if this.editMode}}
-      <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
+    {{#if @editMode}}
+      <SaveStatusIcon @model={{@model}} @task={{this.save}} />
     {{/if}}
   </div>
   <div>
-    {{#if this.editMode}}
+    {{#if @editMode}}
       {{#if this.isEnabledDelete}}
         <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
           {{paper-icon "delete"}}
@@ -30,7 +30,7 @@
 
 {{#if this.hasOrder}}
   <WarningMessage @message="Reeds besteld. Geen wijzigingen meer mogelijk." />
-{{else if this.model.isMasteredByAccess}}
+{{else if @model.isMasteredByAccess}}
   <WarningMessage @message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden." />
 {{else if this.hasMixedVatRates}}
   <InfoMessage @message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
@@ -46,32 +46,32 @@
     <PaperProgressLinear />
     <p>Aan het herstellen...</p>
   </div>
-{{else if (and (not this.model.id) this.model.isSavivg)}}
+{{else if (and (not @model.id) @model.isSavivg)}}
   <div>
     <PaperProgressLinear />
     <p>Aan het aanmaken...</p>
   </div>
 {{else}}
-  {{#if this.editMode}}
-    <OfferEditForm @model={{this.model}} @save={{this.save}} />
+  {{#if @editMode}}
+    <OfferEditForm @model={{@model}} @save={{this.save}} />
   {{else}}
-    <OfferDetailPanel @model={{this.model}} />
+    <OfferDetailPanel @model={{@model}} />
   {{/if}}
 
-  {{#if this.model.isMasteredByAccess}}
+  {{#if @model.isMasteredByAccess}}
     <h2>Offerte</h2>
     <p class="note-message">De offerte is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
   {{else}}
     <div class="layout-row layout-align-space-between-center">
       <h2>Offerte
         <span class="small-text-fade">[
-          {{#if this.editMode}}
-            <Input @value={{this.model.documentVersion}} @key-up={{fn (mut this.model.documentVersion)}} @focus-out={{perform this.save}} class="xsmall" />
+          {{#if @editMode}}
+            <Input @value={{@model.documentVersion}} @key-up={{fn (mut @model.documentVersion)}} @focus-out={{perform this.save}} class="xsmall" />
             <PaperTooltip>
               Pas het versienummer aan om een nieuwe versie van het document te maken; anders wordt het vorige document overschreven.
             </PaperTooltip>
           {{else}}
-            {{this.model.documentVersion}}
+            {{@model.documentVersion}}
           {{/if}}
           ]
         </span>
@@ -80,7 +80,7 @@
         {{#if this.generateOfferDocument.isRunning}}
           <PaperProgressCircular @diameter={{18}} />
         {{else}}
-          {{#unless this.editMode}}
+          {{#unless @editMode}}
             <PaperButton @onClick={{fn this.downloadOfferDocument}} @iconButton={{true}}>
               {{paper-icon "find in page"}}
               <PaperTooltip>Offerte bekijken</PaperTooltip>
@@ -96,11 +96,11 @@
       </div>
     </div>
 
-    {{#if this.editMode}}
+    {{#if @editMode}}
       <div class="offer-document-form layout-column">
         <section>
           <label>Introductie</label>
-          <PellEditor @class="pell-editor offer-intro" @value={{this.model.documentIntro}} @pellOptions={{this.pellOptions}} @onChange={{fn (mut this.model.documentIntro)}} @focusOut={{perform this.save}} />
+          <PellEditor @class="pell-editor offer-intro" @value={{@model.documentIntro}} @pellOptions={{this.pellOptions}} @onChange={{fn (mut @model.documentIntro)}} @focusOut={{perform this.save}} />
         </section>
         <section>
           <div class="layout-row layout-align-start-center">
@@ -117,14 +117,14 @@
         </section>
         <section>
           <label>Voorwaarden</label>
-          <PellEditor @class="pell-editor offer-outro" @value={{this.model.documentOutro}} @pellOptions={{this.pellOptions}} @onChange={{fn (mut this.model.documentOutro)}} @focusOut={{perform this.save}} />
+          <PellEditor @class="pell-editor offer-outro" @value={{@model.documentOutro}} @pellOptions={{this.pellOptions}} @onChange={{fn (mut @model.documentOutro)}} @focusOut={{perform this.save}} />
         </section>
       </div>
   {{else}}
       <div class="offer-document layout-column">
-        <section>{{{this.model.documentIntro}}}</section>
-        <section><OfferlinesDetailPanel @model={{this.model.offerlines}} /></section>
-        <section>{{{this.model.documentOutro}}}</section>
+        <section>{{{@model.documentIntro}}}</section>
+        <section><OfferlinesDetailPanel @model={{@model.offerlines}} /></section>
+        <section>{{{@model.documentOutro}}}</section>
       </div>
     {{/if}}
   {{/if}}
