@@ -5,8 +5,7 @@ import { proxyAware } from '../../utils/proxy-aware';
 
 @classic
 export default class BuildingSelect extends Component {
-  @service
-  store;
+  @service store;
 
   @proxyAware('value')
   selected;

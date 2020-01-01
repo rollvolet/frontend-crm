@@ -6,11 +6,10 @@ import { proxyAware } from '../../utils/proxy-aware';
 
 @classic
 export default class LanguageSelect extends Component {
-  @service
-  store;
+  @service store
 
   @proxyAware('value')
-  selected;
+  selected
 
   init() {
     super.init(...arguments);

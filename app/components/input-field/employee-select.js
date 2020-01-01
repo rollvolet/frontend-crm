@@ -1,3 +1,4 @@
+import classic from 'ember-classic-decorator';
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
@@ -6,11 +7,15 @@ import { proxyAware } from '../../utils/proxy-aware';
 
 const filterKeys = ['isTechnician', 'isAdministrative', 'isOnRoad'];
 
-export default Component.extend({
-  store: service(),
+@classic
+export default class EmployeeSelect extends Component {
+  @service store
 
-  selected: proxyAware('value'),
-  employees: computed('isActive', 'isTechnician', 'isAdministrative', 'isOnRoad', function() {
+  @proxyAware('value')
+  selected
+
+  @computed('isActive', 'isTechnician', 'isAdministrative', 'isOnRoad')
+  get employees() {
     let employees = this.store.peekAll('employee');
 
     if (this.isActive)
@@ -29,22 +34,26 @@ export default Component.extend({
     }
 
     return employees;
-  }),
-  optionSort: Object.freeze(['functionSort:asc']),
-  options: sort('employees', 'optionSort'),
-  placeholder: computed('label', 'required', function() {
-    return this.required ? `${this.label} *` : this.label;
-  }),
-  label: 'Werknemer',
-  type: null,
-  function: null,
-  value: null,
-  errors: null,
-  required: false,
-  onSelectionChange: null,
+  }
 
-  isActive: true,
-  isTechnician: false,
-  isAdministrative: false,
-  isOnRoad: false
-});
+  optionSort = Object.freeze(['functionSort:asc'])
+  @sort('employees', 'optionSort') options
+
+  @computed('label', 'required')
+  get placeholder() {
+    return this.required ? `${this.label} *` : this.label;
+  }
+
+  label = 'Werknemer'
+  type = null
+  function = null
+  value = null
+  errors = null
+  required = false
+  onSelectionChange = null
+
+  isActive = true
+  isTechnician = false
+  isAdministrative = false
+  isOnRoad = false
+}

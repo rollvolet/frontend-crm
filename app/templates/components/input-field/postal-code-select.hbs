@@ -1,4 +1,4 @@
-<PowerSelect @placeholder={{this.label}} @selected={{this.value}} @onchange={{fn this.selectValue}} @options={{this.options}} @searchEnabled={{true}} @search={{perform this.search}} @searchPlaceholder="Typ om te zoeken" @noMatchesMessage="Geen resultaten" @allowClear={{true}} @afterOptionsComponent={{component "input-field/postal-code-select/create-new" onCreate=(fn (mut this.showCreateModal) true)}} as |option select|>
+<PowerSelect @placeholder={{@label}} @selected={{this.value}} @onchange={{fn this.selectValue}} @options={{this.options}} @searchEnabled={{true}} @search={{perform this.search}} @searchPlaceholder="Typ om te zoeken" @noMatchesMessage="Geen resultaten" @allowClear={{true}} @afterOptionsComponent={{component "input-field/postal-code-select/create-new" onCreate=(fn (mut this.showCreateModal) true)}} as |option select|>
   {{#if this.titleize}}
     {{highlight-substr (titleize-extended (lowercase option.search)) select.lastSearchedText}}
   {{else}}

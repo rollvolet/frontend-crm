@@ -6,8 +6,7 @@ import { proxyAware } from '../../utils/proxy-aware';
 
 @classic
 export default class CountrySelect extends Component {
-  @service
-  store;
+  @service store;
 
   @proxyAware('value')
   selected;
