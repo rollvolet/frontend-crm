@@ -1,42 +1,44 @@
-<div class="data-table-filters">
-  <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  <PaperInput @label="Nummer" @value={{this.numberFilter}} @onChange={{perform this.debounceFilter "number"}} @class="small" />
-  <PaperInput @label="Naam" @value={{this.nameFilter}} @onChange={{perform this.debounceFilter "name"}} />
-  <PaperInput @label="Straat" @value={{this.streetFilter}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
-  <PaperInput @label="Postcode" @value={{this.postalCodeFilter}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
-  <PaperInput @label="Gemeente" @value={{this.cityFilter}} @onChange={{perform this.debounceFilter "city"}} />
-  <PaperInput @label="Telefoon" @value={{this.telephoneFilter}} @onChange={{perform this.debounceFilter "telephone"}} />
-  <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
-    {{paper-icon "close"}}
-    <PaperTooltip>Wis filters</PaperTooltip>
-  </PaperButton>
-</div>
+<div class="buildings-table">
+  <div class="data-table-filters">
+    <div class="data-table-filters--title">{{paper-icon "search"}}</div>
+    <PaperInput @label="Nummer" @value={{this.numberFilter}} @onChange={{perform this.debounceFilter "number"}} @class="small" />
+    <PaperInput @label="Naam" @value={{this.nameFilter}} @onChange={{perform this.debounceFilter "name"}} />
+    <PaperInput @label="Straat" @value={{this.streetFilter}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
+    <PaperInput @label="Postcode" @value={{this.postalCodeFilter}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
+    <PaperInput @label="Gemeente" @value={{this.cityFilter}} @onChange={{perform this.debounceFilter "city"}} />
+    <PaperInput @label="Telefoon" @value={{this.telephoneFilter}} @onChange={{perform this.debounceFilter "telephone"}} />
+    <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
+      {{paper-icon "close"}}
+      <PaperTooltip>Wis filters</PaperTooltip>
+    </PaperButton>
+  </div>
 
-<DataTable @content={{this.buildings}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen gebouwen" @onClickRow={{this.onClickRow}} @page={{this.page}} @size={{this.size}} @sort={{this.sort}} as |t|>
-  <t.content as |c|>
-    <c.header>
-      <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
-      <th>Aanspreking</th>
-      <th>Prefix</th>
-      <ThSortable @field="name" @currentSorting={{this.sort}} @label="Naam" />
-      <ThSortable @field="address" @currentSorting={{this.sort}} @label="Straat" />
-      <ThSortable @field="postal-code" @currentSorting={{this.sort}} @label="Postcode" />
-      <ThSortable @field="city" @currentSorting={{this.sort}} @label="Gemeente" />
-      <th>Land</th>
-      <th>Taal</th>
-      <th></th>
-    </c.header>
-    <c.body as |row|>
-      <td>{{row.number}}</td>
-      <td>{{row.honorificPrefix.name}}</td>
-      <td>{{row.prefix}}</td>
-      <td>{{row.name}}</td>
-      <td>{{row.address}}</td>
-      <td>{{row.postalCode}}</td>
-      <td>{{row.city}}</td>
-      <td>{{row.country.name}}</td>
-      <td>{{row.language.name}}</td>
-      <td {{on "click" (fn this.edit row)}} role="button">{{paper-icon "mode edit"}}</td>
-    </c.body>
-  </t.content>
-</DataTable>
+  <DataTable @content={{this.buildings}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen gebouwen" @onClickRow={{this.onClickRow}} @page={{this.page}} @size={{this.size}} @sort={{this.sort}} as |t|>
+    <t.content as |c|>
+      <c.header>
+        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
+        <th>Aanspreking</th>
+        <th>Prefix</th>
+        <ThSortable @field="name" @currentSorting={{this.sort}} @label="Naam" />
+        <ThSortable @field="address" @currentSorting={{this.sort}} @label="Straat" />
+        <ThSortable @field="postal-code" @currentSorting={{this.sort}} @label="Postcode" />
+        <ThSortable @field="city" @currentSorting={{this.sort}} @label="Gemeente" />
+        <th>Land</th>
+        <th>Taal</th>
+        <th></th>
+      </c.header>
+      <c.body as |row|>
+        <td>{{row.number}}</td>
+        <td>{{row.honorificPrefix.name}}</td>
+        <td>{{row.prefix}}</td>
+        <td>{{row.name}}</td>
+        <td>{{row.address}}</td>
+        <td>{{row.postalCode}}</td>
+        <td>{{row.city}}</td>
+        <td>{{row.country.name}}</td>
+        <td>{{row.language.name}}</td>
+        <td {{on "click" (fn this.edit row)}} role="button">{{paper-icon "mode edit"}}</td>
+      </c.body>
+    </t.content>
+  </DataTable>
+</div>

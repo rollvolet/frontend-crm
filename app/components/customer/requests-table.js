@@ -1,5 +1,4 @@
 import classic from 'ember-classic-decorator';
-import { classNames } from '@ember-decorators/component';
 import { observes } from '@ember-decorators/object';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
@@ -7,13 +6,10 @@ import FilterComponent from '../data-table-filter';
 import { task } from 'ember-concurrency';
 
 @classic
-@classNames('requests-table')
 export default class RequestsTable extends FilterComponent {
-  @service
-  router;
+  @service router;
 
-  @service
-  store;
+  @service store;
 
   page = 0;
   size = 10;

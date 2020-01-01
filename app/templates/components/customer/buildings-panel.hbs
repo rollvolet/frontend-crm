@@ -1,5 +1,5 @@
 {{#liquid-if this.displayList class="data-table-selection"}}
-  <Customer::BuildingsTable @customer={{this.customer}} @onClickRow={{fn this.openDetail}} @onEdit={{fn this.openEdit}} />
+  <Customer::BuildingsTable @customer={{@customer}} @onClickRow={{fn this.openDetail}} @onEdit={{fn this.openEdit}} />
   <div class="layout-row layout-align-end">
     <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.openCreate}}>
       {{paper-icon "add"}}

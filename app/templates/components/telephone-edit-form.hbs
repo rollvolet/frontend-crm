@@ -8,10 +8,10 @@
     <th>Memo</th>
   </thead>
   <tbody>
-    {{#if (is-pending this.model.telephones)}}
+    {{#if this.initCopiedTelephones.isRunning}}
       <tr><td colspan="6">Aan het laden...</td></tr>
     {{else}}
-      {{#each (sort-by "order" "id" this.displayTelephones) as |telephone|}}
+      {{#each this.sortedTelephones as |telephone|}}
         <tr>
           <td onclick={{perform this.removeTelephone telephone}} role="button">
             {{paper-icon "delete"}}

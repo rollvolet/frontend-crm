@@ -1,30 +1,30 @@
-import classic from 'ember-classic-decorator';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
 import { warn } from '@ember/debug';
 import { raw, equal, and, isEmpty, not } from 'ember-awesome-macros';
 
 const digitsOnly = /\D/g;
 
-@classic
 export default class CustomerEntityEditForm extends Component {
   @service
   router;
 
-  onClose = null;
-  onRemove = null;
+  @tracked
+  showWarningOnLeaveDialog = false;
+
+  @tracked
   scope = 'customer'; // one of 'customer', 'contact', 'building'
 
-  @equal('scope', raw('customer'))
-  isScopeCustomer;
-
-  showWarningOnLeaveDialog = false;
+  get isScopeCustomer() {
+    return this.scope == 'customer';
+  }
 
   @computed('model.telephones.[]')
   get hasFailedTelephone() {
-    return this.model.telephones.find(t => t.isNew || t.validations.isInvalid || t.isError) != null;
+    return this.args.model.telephones.find(t => t.isNew || t.validations.isInvalid || t.isError) != null;
   }
 
   @and(isEmpty('model.requests'), isEmpty('model.invoices'))
@@ -44,7 +44,7 @@ export default class CustomerEntityEditForm extends Component {
 
   @computed('model.vatNumber')
   get formattedVatNumber() {
-    const vatNumber = this.model.vatNumber;
+    const vatNumber = this.args.model.vatNumber;
 
     if (vatNumber) {
       if (vatNumber.length >= 2) {
@@ -71,86 +71,80 @@ export default class CustomerEntityEditForm extends Component {
     }
   }
 
-  set formattedVatNumber(value) {
-    return value;
-  }
-
   @task(function * () {
     try {
-      const telephones = yield this.model.telephones;
+      const telephones = yield this.args.model.telephones;
       yield all(telephones.map(t => t.destroyRecord()));
-      yield this.model.destroyRecord();
+      yield this.args.model.destroyRecord();
     } catch (e) {
-      warn(`Something went wrong while destroying ${this.scope} ${this.model.id}`, { id: 'destroy-failure' });
+      warn(`Something went wrong while destroying ${this.scope} ${this.args.model.id}`, { id: 'destroy-failure' });
     } finally {
-      this.onRemove();
+      this.args.onRemove();
     }
   })
   remove;
 
   @task(function * () {
-    this.model.rollbackAttributes();
+    this.args.model.rollbackAttributes();
     const rollbackPromises = [];
-    const telephones = yield this.model.get('telephones');
+    const telephones = yield this.args.model.get('telephones');
     telephones.forEach( (telephone) => {
       telephone.rollbackAttributes();
       rollbackPromises.push(telephone.belongsTo('country').reload());
       rollbackPromises.push(telephone.belongsTo('telephoneType').reload());
     });
-    rollbackPromises.push(this.model.belongsTo('country').reload());
-    rollbackPromises.push(this.model.belongsTo('language').reload());
-    rollbackPromises.push(this.model.belongsTo('honorificPrefix').reload());
+    rollbackPromises.push(this.args.model.belongsTo('country').reload());
+    rollbackPromises.push(this.args.model.belongsTo('language').reload());
+    rollbackPromises.push(this.args.model.belongsTo('honorificPrefix').reload());
     yield all(rollbackPromises);
   })
   rollbackTree;
 
   @(task(function * () {
-    const { validations } = yield this.model.validate();
+    const { validations } = yield this.args.model.validate();
     if (validations.isValid)
-      yield this.model.save();
+      yield this.args.model.save();
   }).keepLatest())
   save;
 
   @action
   close() {
-    if (this.model.isNew || this.model.validations.isInvalid || this.model.isError
+    if (this.args.model.isNew || this.args.model.validations.isInvalid || this.args.model.isError
         || (this.save.last && this.save.last.isError)
         || this.hasFailedTelephone) {
-      this.set('showUnsavedChangesDialog', true);
+      this.showUnsavedChangesDialog = true;
     } else {
-      this.onClose();
+      this.args.onClose();
     }
   }
 
   @action
   confirmClose() {
     this.rollbackTree.perform();
-    this.onClose();
+    this.args.onClose();
   }
 
   @action
   setPostalCode(code, city) {
-    this.model.set('postalCode', code);
-    this.model.set('city', city);
+    this.args.model.set('postalCode', code);
+    this.args.model.set('city', city);
   }
 
   @action
   setIsCompany(isCompany) {
     if (!isCompany)
-      this.model.set('vatNumber', null);
-    else
-      this.set('formattedVatNumber', 'BE 0');
+      this.args.model.set('vatNumber', null);
 
-    this.model.set('isCompany', isCompany);
+    this.args.model.set('isCompany', isCompany);
     this.save.perform();
   }
 
   @action
   setName(name) {
     if (this.scope == 'customer' && name)
-      this.model.set('name', name.toUpperCase());
+      this.args.model.set('name', name.toUpperCase());
     else
-      this.model.set('name', name);
+      this.args.model.set('name', name);
   }
 
   @action
@@ -164,6 +158,6 @@ export default class CustomerEntityEditForm extends Component {
       vatNumber = `${country}${number}`;
     }
 
-    this.model.set('vatNumber', vatNumber);
+    this.args.model.set('vatNumber', vatNumber);
   }
 }

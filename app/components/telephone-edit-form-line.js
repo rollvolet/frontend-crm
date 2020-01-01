@@ -1,21 +1,18 @@
 import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
+import { tagName } from '@ember-decorators/component';
 import { inject as service } from '@ember/service';
-import { A } from '@ember/array';
-import { computed } from '@ember/object';
+import { action, computed } from '@ember/object';
 
 const digitsOnly = /\D/g;
 
-export default Component.extend({
-  tagName: 'tr',
+@classic
+@tagName('tr')
+export default class TelephoneEditFormLine extends Component {
+  @service store
 
-  store: service(),
-
-  model: null,
-  remove: null,
-  save: null,
-  errorMessages: A(),
-
-  formattedNumber: computed('model.number', function() {
+  @computed('model.number')
+  get formattedNumber() {
     if (this.model.number) {
       const number = this.model.number.replace(digitsOnly, '');
       if (number.length > 6) {
@@ -30,18 +27,19 @@ export default Component.extend({
     } else {
       return this.model.number;
     }
-  }),
-
-  actions: {
-    setArea(area) {
-      if (area)
-        area = area.replace(digitsOnly, '');
-      this.model.set('area', area);
-    },
-    setNumber(number) {
-      if (number)
-        number = number.replace(digitsOnly, '');
-      this.model.set('number', number);
-    }
   }
-});
+
+  @action
+  setArea(area) {
+    if (area)
+      area = area.replace(digitsOnly, '');
+    this.model.set('area', area);
+  }
+
+  @action
+  setNumber(number) {
+    if (number)
+      number = number.replace(digitsOnly, '');
+    this.model.set('number', number);
+  }
+}

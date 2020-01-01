@@ -1,28 +1,28 @@
-import classic from 'ember-classic-decorator';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { equal } from '@ember/object/computed';
-import Component from '@ember/component';
 
-@classic
 export default class BuildingsPanel extends Component {
-  @service
-  store;
+  @service store;
 
-  @service
-  configuration;
+  @service configuration;
 
-  customer = null;
-  state = 'list'; // one of 'list', 'detail', 'edit'
+  @tracked state = 'list'; // one of 'list', 'detail', 'edit'
 
-  @equal('state', 'list')
-  displayList;
+  @tracked selectedBuilding = null;
 
-  @equal('state', 'detail')
-  displayDetail;
+  get displayList() {
+    return this.state == 'list';
+  }
 
-  @equal('state', 'edit')
-  displayEdit;
+  get displayDetail() {
+    return this.state == 'detail';
+  }
+
+  get displayEdit() {
+    return this.state == 'edit';
+  }
 
   createNewBuilding() {
     return this.store.createRecord('building', {
@@ -31,39 +31,39 @@ export default class BuildingsPanel extends Component {
       printSuffix: true,
       language: this.configuration.defaultLanguage(),
       country: this.configuration.defaultCountry(),
-      customer: this.customer
+      customer: this.args.customer
     });
   }
 
   @action
   openDetail(building) {
-    this.set('selectedBuilding', building);
-    this.set('state', 'detail');
+    this.selectedBuilding = building;
+    this.state = 'detail';
   }
 
   @action
   closeDetail() {
-    this.set('state', 'list');
-    this.set('selectedBuilding', null);
+    this.state = 'list';
+    this.selectedBuilding = null;
   }
 
   @action
   async openCreate() {
     const building = this.createNewBuilding();
-    this.set('state', 'edit');
-    this.set('selectedBuilding', building);
+    this.state = 'edit';
+    this.selectedBuilding = building;
     try { await building.save(); } catch(e) {} // eslint-disable-line no-empty
   }
 
   @action
   openEdit(building) {
-    this.set('selectedBuilding', building);
-    this.set('state', 'edit');
+    this.selectedBuilding = building;
+    this.state = 'edit';
   }
 
   @action
   closeEdit() {
-    this.set('state', 'list');
-    this.set('selectedBuilding', null);
+    this.state = 'list';
+    this.selectedBuilding = null;
   }
 }

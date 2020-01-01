@@ -1,16 +1,12 @@
 import classic from 'ember-classic-decorator';
-import { classNames } from '@ember-decorators/component';
 import { observes } from '@ember-decorators/object';
-import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import FilterComponent from '../data-table-filter';
 import { task } from 'ember-concurrency';
 
 @classic
-@classNames('contacts-table')
 export default class ContactsTable extends FilterComponent {
-  @service
-  store;
+  @service store;
 
   page = 0;
   size = 10;
@@ -54,9 +50,4 @@ export default class ContactsTable extends FilterComponent {
     this.set('contacts', contacts);
   })
   search;
-
-  @action
-  edit(contact) {
-    this.onEdit(contact);
-  }
 }
