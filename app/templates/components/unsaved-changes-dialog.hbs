@@ -1,9 +1,9 @@
-{{#if this.show}}
-  <PaperDialog @class="flex-50" @onClose={{fn this.cancelClose}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
+{{#if @show}}
+  <PaperDialog @class="flex-50" @onClose={{fn @onCancel}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
     <PaperToolbar>
       <PaperToolbarTools>
         <h2>Opgelet</h2><span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{fn this.cancelClose}}>
+        <PaperButton @iconButton={{true}} @onClick={{fn @onCancel}}>
           <PaperIcon @icon="close" />
         </PaperButton>
       </PaperToolbarTools>
@@ -15,8 +15,8 @@
 
     <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
-      <PaperButton @onClick={{fn this.cancelClose}}>Terug</PaperButton>
-      <PaperButton @onClick={{fn this.confirmClose}}>Ga toch verder</PaperButton>
+      <PaperButton @onClick={{fn @onCancel}}>Terug</PaperButton>
+      <PaperButton @onClick={{fn @onConfirm}}>Ga toch verder</PaperButton>
     </PaperDialogActions>
   </PaperDialog>
 {{/if}}

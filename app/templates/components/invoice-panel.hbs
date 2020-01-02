@@ -79,5 +79,5 @@
   </div>
 {{/if}}
 
-<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />
 <MissingCertificateDialog @show={{this.showMissingCertificateDialog}} @model={{@model}} @onClose={{perform this.generateInvoiceDocument}} />

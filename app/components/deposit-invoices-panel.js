@@ -5,7 +5,6 @@ import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import { bool } from '@ember/object/computed';
-import { sum, array, raw } from 'ember-awesome-macros';
 import { warn } from '@ember/debug';
 
 @classic
@@ -90,7 +89,12 @@ export default class DepositInvoicesPanel extends Component {
     }
   }
   @action
+  closeUnsavedChangesDialog() {
+    this.set('showUnsavedChangesDialog', false);
+  }
+  @action
   async confirmCloseEdit() {
+    this.closeUnsavedChangesDialog();
     await this.rollbackTree.perform();
     this.onUpdateList();
     this.set('selected', null);

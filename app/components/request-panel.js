@@ -156,7 +156,13 @@ export default class RequestPanel extends Component.extend(EKMixin) {
   }
 
   @action
+  closeUnsavedChangesDialog() {
+    this.set('showUnsavedChangesDialog', false);
+  }
+
+  @action
   async confirmCloseEdit() {
+    this.closeUnsavedChangesDialog();
     await this.rollbackTree.perform();
     this.onCloseEdit();
   }

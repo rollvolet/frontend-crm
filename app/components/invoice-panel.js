@@ -123,7 +123,13 @@ export default class InvoicePanel extends Component {
   }
 
   @action
-  confirmCloseEdit() {
+  closeUnsavedChangesDialog() {
+    this.set('showUnsavedChangesDialog', false);
+  }
+
+  @action
+  async confirmCloseEdit() {
+    this.closeUnsavedChangesDialog();
     this.rollbackTree.perform();
     this.onCloseEdit();
   }

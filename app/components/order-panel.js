@@ -155,7 +155,13 @@ export default class OrderPanel extends Component.extend(EKMixin) {
   }
 
   @action
-  confirmCloseEdit() {
+  closeUnsavedChangesDialog() {
+    this.set('showUnsavedChangesDialog', false);
+  }
+
+  @action
+  async confirmCloseEdit() {
+    this.closeUnsavedChangesDialog();
     this.rollbackTree.perform();
     this.onCloseEdit();
   }

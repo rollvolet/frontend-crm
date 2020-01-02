@@ -59,7 +59,13 @@ export default class DepositsPanel extends Component {
   }
 
   @action
+  closeUnsavedChangesDialog() {
+    this.set('showUnsavedChangesDialog', false);
+  }
+
+  @action
   async confirmCloseEdit() {
+    this.closeUnsavedChangesDialog();
     await this.rollbackTree.perform();
     this.set('selected', null);
   }
