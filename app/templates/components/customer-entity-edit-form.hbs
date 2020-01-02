@@ -39,7 +39,7 @@
           <group.radio @value={{true}}>Bedrijf</group.radio>
         </PaperRadioGroup>
         {{#if @model.isCompany}}
-          <PaperInput @label="BTW nummer" @value={{this.formattedVatNumber}} @errors={{v-get @model "vatNumber" "messages"}} @onChange={{fn this.setVatNumber}} @onBlur={{perform this.save}} @class="flex-50 spacer-left" />
+          <InputField::VatNumberInput @value={{@model.vatNumber}} @errors={{v-get @model "vatNumber" "messages"}} @onChange={{fn (mut @model.vatNumber)}} @onBlur={{perform this.save}}  @class="flex-50 spacer-left" />
         {{/if}}
       </div>
       {{#if this.isDuplicateVatNumber}}
@@ -97,4 +97,4 @@
   </section>
 {{/if}}
 
-<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onConfirm={{fn this.confirmClose}} />
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

@@ -7,7 +7,7 @@
           {{this.model.prefix}} {{this.model.name}} {{this.model.suffix}}
           {{#if (not this.model.printInFront)}}{{this.model.honorificPrefix.name}}{{/if}}
         </div>
-        <div>{{format-vat-number this.model.vatNumber}}</div>
+        <div><FmtVatNumber @value={{this.model.vatNumber}} /></div>
       </DetailIconListItem>
 
       <DetailIconListItem @icon="location on" @label="Adres" @class="resource-details--section-address">
