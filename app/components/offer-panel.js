@@ -6,9 +6,9 @@ import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { length } from 'ember-awesome-macros/array';
-import { not, notEmpty, or, gt, raw, array } from 'ember-awesome-macros';
+import { not, notEmpty, or, gt, raw, array, promise } from 'ember-awesome-macros';
 import { EKMixin, keyUp } from 'ember-keyboard';
-import { sort } from '@ember/object/computed';
+import { oneWay } from '@ember/object/computed';
 
 @classic
 export default class OfferPanel extends Component.extend(EKMixin) {
@@ -22,14 +22,16 @@ export default class OfferPanel extends Component.extend(EKMixin) {
   onOpenEdit = null;
   onCloseEdit = null;
   showUnsavedChangesDialog = false;
-
   offerlineSorting = Object.freeze(['sequenceNumber']);
-  @sort('model.offerlines', 'offerlineSorting') sortedOfferlines;
+
+  @oneWay('model.offerlines') offerlinesPromise;
+  @promise.array('offerlinesPromise') offerlines;
+  @array.sort('offerlines', 'offerlineSorting') sortedOfferlines;
+  @array.mapBy('offerlines', raw('vatRate')) vatRates;
+  @gt(length(array.uniqBy('vatRates', raw('code'))), raw(1)) hasMixedVatRates;
   @notEmpty('model.order.id') hasOrder;
   @or('model.isMasteredByAccess', 'hasOrder') isDisabledEdit;
   @not('isDisabledEdit') isEnabledDelete;
-  @array.mapBy('model.offerlines', raw('vatRate')) vatRates;
-  @gt(length(array.uniqBy('vatRates', raw('code'))), raw(1)) hasMixedVatRates;
 
   async hasUnsavedChanges() {
     const offerlines = await this.model.offerlines;

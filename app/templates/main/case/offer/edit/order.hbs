@@ -1,7 +1,7 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      Selecteer producten voor bestelling AD{{this.model.requestNumber}} {{this.visitorPromise.initials}} - {{this.model.number}}
+      Selecteer producten voor bestelling AD{{@model.requestNumber}} {{this.visitorPromise.initials}} - {{@model.number}}
     </h2>
   </div>
 </div>
@@ -12,7 +12,7 @@
     <p>Bestelling aanmaken...</p>
   </div>
 {{else}}
-  {{#if this.model.offerlines}}
+  {{#if @model.offerlines}}
     {{#if this.hasMixedVatRates}}
       <div class="u-margin-top-small">
         <WarningMessage @message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
@@ -20,14 +20,15 @@
     {{/if}}
     <p>Klik op 1 of meer lijnen om toe te voegen aan de bestelling</p>
     <div class="case--order--offerlines-selection">
-      {{#each this.model.offerlines as |offerline|}}
-        <div class="case--order--offerlines-selection--offerline layout-row layout-align-start-center
+      {{#each @model.offerlines as |offerline|}}
+        <div role="button" class="case--order--offerlines-selection--offerline layout-row layout-align-start-center
+          {{if offerline.isOrdered "case--order--offerlines-selection--offerline--ordered"}}"
           {{on "click" (toggle "isOrdered" offerline)}}
-          {{if offerline.isOrdered "case--order--offerlines-selection--offerline--ordered"}}">
+        >
           <div class="col col--is-ordered">
             {{#liquid-if offerline.isOrdered class="move-up"}}
               {{paper-icon "check" size=28}}
-      {{else}}
+            {{else}}
               {{paper-icon "close" size=28}}
             {{/liquid-if}}
           </div>
@@ -68,7 +69,7 @@
 
     <PaperDialogContent>
       <p>
-        Het BTW-tarief van de offerte is {{this.model.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{this.orderedVatRate.rate}}% hebben.
+        Het BTW-tarief van de offerte is {{@model.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{this.orderedVatRate.rate}}% hebben.
       </p>
       <p>
         Mag het BTW-tarief van de offerte aangepast worden naar {{this.orderedVatRate.rate}}%?
