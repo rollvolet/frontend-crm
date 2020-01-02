@@ -17,7 +17,7 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--deposits--entry flex-100 layout-column">
     <DetailListItem @label="Totaal">
-      {{fmt-currency this.totalAmount}}
+      <FmtCurrency @value={{this.totalAmount}} />
     </DetailListItem>
   </div>
 </div>
@@ -39,8 +39,8 @@
     <tbody>
       {{#each @model as |deposit|}}
         <tr>
-          <td>{{fmt-date deposit.paymentDate}}</td>
-          <td>{{fmt-currency deposit.amount}}</td>
+          <td><FmtDate @value={{deposit.paymentDate}} /></td>
+          <td><FmtCurrency @value={{deposit.amount}} /></td>
           <td>{{deposit.payment.name}}</td>
           <td>
             {{#unless @isDisabledEdit}}

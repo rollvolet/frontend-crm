@@ -17,7 +17,7 @@
         </div>
         <div class="case--request--visit--description">
           <DetailListItem @label="Datum">
-            {{fmt-date @model.calendarEvent.visitDate}}
+            <FmtDate @value={{@model.calendarEvent.visitDate}} />
           </DetailListItem>
           <DetailListItem @label="Agenda">
             {{#if this.isNotAvailableInCalendar}}

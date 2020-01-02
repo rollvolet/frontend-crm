@@ -24,7 +24,7 @@
       </c.header>
       <c.body as |row|>
         <td>{{row.id}}</td>
-        <td>{{fmt-date row.requestDate}}</td>
+        <td><FmtDate @value={{row.requestDate}} /></td>
         <td>{{row.building.printName}}</td>
         <td>{{row.building.address1}}</td>
         <td>{{row.building.postalCode}}</td>

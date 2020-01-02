@@ -41,19 +41,19 @@
         <th>Test</th>
       </c.header>
       <c.body as |row|>
-        <td>{{fmt-date row.date}}</td>
+        <td><FmtDate @value={{row.date}} /></td>
         <td>
           {{#if row.fromNumber}}
             {{format-invoice-number row.fromNumber}}
           {{else}}
-            {{fmt-date row.fromDate}}
+            <FmtDate @value={{row.fromDate}} />
           {{/if}}
         </td>
         <td>
           {{#if row.untilNumber}}
             {{format-invoice-number row.untilNumber}}
           {{else}}
-            {{fmt-date row.untilDate}}
+            <FmtDate @value={{row.untilDate}} />
           {{/if}}
         </td>
         <td>

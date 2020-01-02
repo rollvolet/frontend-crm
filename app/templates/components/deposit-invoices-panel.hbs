@@ -25,10 +25,10 @@
     <div class="case--deposit-invoices--summary flex-100 layout-column">
       <DetailListItem @label="Totaal" @displayRow={{true}}>
         <DetailListSubitem @label="Netto">
-          {{fmt-currency this.totalAmount}}
+          <FmtCurrency @value={{this.totalAmount}} />
         </DetailListSubitem>
         <DetailListSubitem @label={{concat (get @vatRate "rate") "% BTW"}}>
-          {{fmt-currency (await this.totalVat)}}
+          <FmtCurrency @value={{await this.totalVat}} />
         </DetailListSubitem>
       </DetailListItem>
     </div>
@@ -74,16 +74,16 @@
       <div class="layout-row layout-xs-column layout-align-space-between">
         <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
           <DetailListItem @label="Factuurdatum">
-            {{fmt-date invoice.invoiceDate}}
+            <FmtDate @value={{invoice.invoiceDate}} />
           </DetailListItem>
           <DetailListItem @label="Vervaldag">
-            {{fmt-date invoice.dueDate}}
+            <FmtDate @value={{invoice.dueDate}} />
           </DetailListItem>
           <DetailListItem @label="Geboekt">
-            {{fmt-date invoice.bookingDate}}
+            <FmtDate @value={{invoice.bookingDate}} />
           </DetailListItem>
           <DetailListItem @label="Betaald">
-            {{fmt-date invoice.paymentDate}}
+            <FmtDate @value={{invoice.paymentDate}} />
           </DetailListItem>
           <DetailListItem @label="Referentie">
             {{invoice.reference}}
@@ -94,10 +94,10 @@
         </div>
         <div class="case--right-panel flex-noshrink layout-column">
           <DetailListItem @label="Nettobedrag">
-            {{fmt-currency invoice.arithmeticAmount}}
+            <FmtCurrency @value={{invoice.arithmeticAmount}} />
           </DetailListItem>
           <DetailListItem @label="BTW">
-            {{fmt-currency (await invoice.arithmeticVat)}}
+            <FmtCurrency @value={{await invoice.arithmeticVat}} />
           </DetailListItem>
           <DetailListItem @label="Betaalref.">
             {{format-bank-reference invoice.bankReference}}

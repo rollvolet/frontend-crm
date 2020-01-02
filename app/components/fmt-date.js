@@ -1,15 +1,7 @@
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-@classic
-@tagName('')
-class FmtDateComponent extends Component {
-  emptyValue = '-';
+export default class FmtDateComponent extends Component {
+  get fallback() {
+    return this.args.fallback || '-';
+  }
 }
-
-FmtDateComponent.reopenClass({
-  positionalParams: ['value']
-});
-
-export default FmtDateComponent;

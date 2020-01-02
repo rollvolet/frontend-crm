@@ -10,7 +10,7 @@
       <tr class="{{if offerline.isOrdered "is-ordered"}}">
         <td>{{offerline.sequenceNumber}}</td>
         <td>{{{offerline.description}}}</td>
-        <td>{{fmt-currency offerline.amount}}</td>
+        <td><FmtCurrency @value={{offerline.amount}} /></td>
         <td>{{offerline.vatRate.rate}}%</td>
       </tr>
     {{else}}

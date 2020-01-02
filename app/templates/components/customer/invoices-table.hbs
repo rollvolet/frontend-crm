@@ -27,7 +27,7 @@
       <c.body as |row|>
         <td>{{format-invoice-number row.number}}</td>
         <td>{{row.reference}}</td>
-        <td>{{fmt-date row.invoiceDate}}</td>
+        <td><FmtDate @value={{row.invoiceDate}} /></td>
         <td>{{row.building.printName}}</td>
         <td>{{row.building.address1}}</td>
         <td>{{row.building.postalCode}}</td>

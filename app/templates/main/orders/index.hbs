@@ -19,7 +19,7 @@
       <c.body as |row|>
         <td>{{row.requestNumber}}</td>
         <td>{{row.offerNumber}}</td>
-        <td>{{fmt-date row.orderDate}}</td>
+        <td><FmtDate @value={{row.orderDate}} /></td>
         <td>{{row.offer.request.visitor}}</td>
         {{#if row.building}}
           <td>{{paper-icon "home"}}</td>

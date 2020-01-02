@@ -1,13 +1,5 @@
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-@classic
-@tagName('')
-class FmtCurrencyComponent extends Component {}
+export default class FmtCurrencyComponent extends Component {
 
-FmtCurrencyComponent.reopenClass({
-  positionalParams: ['value']
-});
-
-export default FmtCurrencyComponent;
+}

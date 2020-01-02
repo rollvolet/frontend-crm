@@ -2,16 +2,16 @@
   <div class="case--left-panel case--invoice--entry flex-100 layout-column">
     <DetailListItem @label="Datum">
       <DetailListSubitem @label="Factuurdatum">
-        {{fmt-date @model.invoiceDate}}
+        <FmtDate @value={{@model.invoiceDate}} />
       </DetailListSubitem>
       <DetailListSubitem @label="Vervaldag">
-        {{fmt-date @model.dueDate}}
+        <FmtDate @value={{@model.dueDate}} />
       </DetailListSubitem>
       <DetailListSubitem @label="Geboekt">
-        {{fmt-date @model.bookingDate}}
+        <FmtDate @value={{@model.bookingDate}} />
       </DetailListSubitem>
       <DetailListSubitem @label="Betaald">
-        {{fmt-date @model.paymentDate}}
+        <FmtDate @value={{@model.paymentDate}} />
       </DetailListSubitem>
     </DetailListItem>
     <DetailListItem @label="Techniekers" @click={{fn this.openWorkingHoursDialog}} @class="clickable">

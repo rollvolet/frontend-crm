@@ -1,7 +1,7 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--request--entry flex-100 layout-column">
     <DetailListItem @label="Datum">
-      {{fmt-date this.model.requestDate}}
+      <FmtDate @value={{this.model.requestDate}} />
     </DetailListItem>
     <DetailListItem @label="Aanmelding">
       {{this.model.wayOfEntry.name}}

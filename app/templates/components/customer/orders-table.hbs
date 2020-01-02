@@ -30,7 +30,7 @@
         <td>{{row.requestNumber}}</td>
         <td>{{row.offerNumber}}</td>
         <td>{{row.offer.reference}}</td>
-        <td>{{fmt-date row.orderDate}}</td>
+        <td><FmtDate @value={{row.orderDate}} /></td>
         <td>{{row.building.printName}}</td>
         <td>{{row.building.address1}}</td>
         <td>{{row.building.postalCode}}</td>

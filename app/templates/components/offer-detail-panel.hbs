@@ -1,11 +1,11 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--offer--entry flex-100 layout-column">
     <DetailListItem @label="Datum">
-      {{fmt-date @model.offerDate}}
+      <FmtDate @value={{@model.offerDate}} />
     </DetailListItem>
     {{#if @model.isMasteredByAccess}}
       <DetailListItem @label="Bedrag">
-        {{fmt-currency @model.amount}}
+        <FmtCurrency @value={{@model.amount}} />
       </DetailListItem>
     {{/if}}
     <DetailListItem @label="BTW tarief">

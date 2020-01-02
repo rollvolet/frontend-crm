@@ -1,5 +1,5 @@
-{{#if this.value}}
-  {{format-currency this.value decimals=2 sign="" separator="&nbsp;" decimalSeparator=","}}
-{{else if (eq this.value 0)}}
+{{#if @value}}
+  {{format-currency @value decimals=2 sign="" separator="&nbsp;" decimalSeparator=","}}
+{{else if (eq @value 0)}}
   0
 {{/if}}

@@ -33,13 +33,13 @@
             {{/liquid-if}}
           </div>
           <div class="col col--description">{{{offerline.description}}}</div>
-          <div class="col col--amount">{{fmt-currency offerline.amount}}</div>
+          <div class="col col--amount"><FmtCurrency @value={{offerline.amount}} /></div>
           <div class="col col--rate">{{offerline.vatRate.rate}}%</div>
         </div>
       {{/each}}
       <div class="case--order--offerlines-selection--total layout-row layout-align-start-center">
         <div class="col col--label">Totaal bestelling</div>
-        <div class="col col--amount">{{fmt-currency this.orderedAmount}}</div>
+        <div class="col col--amount"><FmtCurrency @value={{this.orderedAmount}} /></div>
       </div>
     </div>
   {{else}}

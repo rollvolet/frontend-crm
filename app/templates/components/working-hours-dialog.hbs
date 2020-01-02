@@ -29,7 +29,7 @@
         <tbody>
           {{#each this.sortedWorkingHours as |workingHour|}}
             <tr>
-              <td>{{fmt-date workingHour.date}}</td>
+              <td><FmtDate @value={{workingHour.date}} /></td>
               <td>{{workingHour.employee.firstName}}</td>
               <td>
                 <PaperButton @onClick={{fn this.remove workingHour}} @iconButton={{true}}>

@@ -1,5 +1,5 @@
-{{#if this.value}}
-  {{moment-format this.value 'L'}}
+{{#if @value}}
+  {{moment-format @value 'L'}}
 {{else}}
-  {{this.emptyValue}}
+  {{this.fallback}}
 {{/if}}

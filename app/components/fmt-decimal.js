@@ -1,13 +1,5 @@
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-@classic
-@tagName('')
-class FmtDecimalComponent extends Component {}
+export default class FmtDecimalComponent extends Component {
 
-FmtDecimalComponent.reopenClass({
-  positionalParams: ['value']
-});
-
-export default FmtDecimalComponent;
+}

@@ -1,15 +1,7 @@
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import { computed } from '@ember/object';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-@classic
-@tagName('')
 export default class FmtEmail extends Component {
-  value = null;
-
-  @computed('value')
   get href() {
-    return `mailto:${this.value}`;
+    return `mailto:${this.args.value}`;
   }
 }
