@@ -18,13 +18,14 @@ export default DS.JSONAPIAdapter.extend(HasManyQuery.RESTAdapterMixin, DataAdapt
 
   handleResponse(status, headers, payload/*, requestData*/) {
     if (!this.isSuccess(status, headers, payload)) {
+      const { code, title, detail } = payload ? payload : {};
       payload = {
         errors: [
           {
             status: `${status}`,
-            code: `${payload.code}`,
-            title: `${payload.title}`,
-            detail: `${payload.detail}`
+            code: `${code}`,
+            title: `${title}`,
+            detail: `${detail}`
           },
         ]
       };
