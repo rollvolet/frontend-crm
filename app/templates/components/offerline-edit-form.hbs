@@ -1,5 +1,5 @@
 <div>{{@model.sequenceNumber}}</div>
-<PellEditor @class="pell-editor offerline" @value={{@model.description}} @pellOptions={{this.pellOptions}} @onChange={{fn (mut @model.description)}} @focusOut={{perform this.save}} />
+<RichTextArea @class="offerline" @value={{@model.description}} @onChange={{fn (mut @model.description)}} @focusOut={{perform this.save}} />
 <div class="layout-column">
   <div class="layout-row layout-align-space-between-start">
     <SaveStatusIcon @model={{@model}} @task={{this.save}} />

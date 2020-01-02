@@ -8,11 +8,10 @@ import { debug, warn } from '@ember/debug';
 import { length } from 'ember-awesome-macros/array';
 import { not, notEmpty, or, gt, raw, array } from 'ember-awesome-macros';
 import { EKMixin, keyUp } from 'ember-keyboard';
-import PellOptions from '../mixins/pell-options';
 import { sort } from '@ember/object/computed';
 
 @classic
-export default class OfferPanel extends Component.extend(EKMixin, PellOptions) {
+export default class OfferPanel extends Component.extend(EKMixin) {
   @service case;
   @service documentGeneration;
   @service router;

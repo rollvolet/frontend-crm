@@ -100,7 +100,7 @@
       <div class="offer-document-form layout-column">
         <section>
           <label>Introductie</label>
-          <PellEditor @class="pell-editor offer-intro" @value={{@model.documentIntro}} @pellOptions={{this.pellOptions}} @onChange={{fn (mut @model.documentIntro)}} @focusOut={{perform this.save}} />
+          <RichTextArea @class="offer-intro" @value={{@model.documentIntro}} @onChange={{fn (mut @model.documentIntro)}} @focusOut={{perform this.save}} />
         </section>
         <section>
           <div class="layout-row layout-align-start-center">
@@ -117,7 +117,7 @@
         </section>
         <section>
           <label>Voorwaarden</label>
-          <PellEditor @class="pell-editor offer-outro" @value={{@model.documentOutro}} @pellOptions={{this.pellOptions}} @onChange={{fn (mut @model.documentOutro)}} @focusOut={{perform this.save}} />
+          <RichTextArea @class="offer-outro" @value={{@model.documentOutro}} @onChange={{fn (mut @model.documentOutro)}} @focusOut={{perform this.save}} />
         </section>
       </div>
   {{else}}
