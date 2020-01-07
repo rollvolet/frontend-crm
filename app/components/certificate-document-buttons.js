@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
+import { computed } from '@ember/object';
 
 export default Component.extend({
   tagName: '',
@@ -10,6 +11,9 @@ export default Component.extend({
 
   iconButton: true,
   hasUploadError: false,
+  fileUploadField: computed('model.id', function() {
+    return `certificates-${this.model.id}`;
+  }),
 
   generateTemplate: task(function * () {
     yield this.documentGeneration.certificateTemplate(this.model);

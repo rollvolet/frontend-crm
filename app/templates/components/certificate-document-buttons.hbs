@@ -44,7 +44,7 @@
           {{/if}}
         {{/paper-button}}
       {{else}}
-        {{#file-upload name="certificates" accept="application/pdf" class="certificate-upload"
+        {{#file-upload name=fileUploadField accept="application/pdf" class="certificate-upload"
              onfileadd=(perform upload) as |queue|}}
           {{#if hasUploadError}}
             {{paper-icon "error" primary=true}}

@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
+import { computed } from '@ember/object';
 
 export default Component.extend({
   tagName: '',
@@ -9,6 +10,9 @@ export default Component.extend({
   documentGeneration: service(),
 
   hasUploadError: false,
+  fileUploadField: computed('model.id', function() {
+    return `production-tickets-${this.model.id}`;
+  }),
 
   generateTemplate: task(function * () {
     yield this.documentGeneration.productionTicketTemplate(this.model);

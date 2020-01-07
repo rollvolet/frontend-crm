@@ -18,7 +18,7 @@
           {{#paper-tooltip}}Productiebon verwijderen{{/paper-tooltip}}
         {{/paper-button}}
       {{else}}
-        {{#file-upload name="production-tickets" accept="application/pdf" class="production-ticket-upload"
+        {{#file-upload name=fileUploadField accept="application/pdf" class="production-ticket-upload"
              onfileadd=(perform upload) as |queue|}}
           {{#if hasUploadError}}
             {{paper-icon "error" primary=true}}
