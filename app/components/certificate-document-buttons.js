@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
+import { computed } from '@ember/object';
 
 @classic
 @tagName('')
@@ -14,6 +15,11 @@ export default class CertificateDocumentButtons extends Component {
 
   iconButton = true;
   hasUploadError = false;
+
+  @computed('model.id')
+  get fileUploadField() {
+    return `certificates-${this.model.id}`;
+  }
 
   @task(function * () {
     yield this.documentGeneration.certificateTemplate(this.model);

@@ -44,7 +44,7 @@
           {{/if}}
         </PaperButton>
       {{else}}
-        <FileUpload @name="certificates" @accept="application/pdf" @class="certificate-upload" @onfileadd={{perform this.upload}} as |queue|>
+        <FileUpload @name={{this.fileUploadField}} @accept="application/pdf" @class="certificate-upload" @onfileadd={{perform this.upload}} as |queue|>
           {{#if this.hasUploadError}}
             {{paper-icon "error" primary=true}}
             <PaperTooltip>Bestand niet correct opgeladen</PaperTooltip>
