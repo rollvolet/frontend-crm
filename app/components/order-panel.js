@@ -7,7 +7,7 @@ import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { EKMixin, keyUp } from 'ember-keyboard';
 import { computed } from '@ember/object';
-import { and, or, bool, not, notEmpty, raw, sum, array } from 'ember-awesome-macros';
+import { and, or, bool, not, notEmpty, raw, sum, array, promise } from 'ember-awesome-macros';
 
 @classic
 export default class OrderPanel extends Component.extend(EKMixin) {
@@ -22,7 +22,8 @@ export default class OrderPanel extends Component.extend(EKMixin) {
   onCloseEdit = null;
   showUnsavedChangesDialog = false;
 
-  @array.filterBy('model.offer.offerlines.@each.isOrdered', raw('isOrdered')) orderedOfferlines
+  @promise.array('model.offer.offerlines') offerlines
+  @array.filterBy('offerlines.@each.isOrdered', raw('isOrdered')) orderedOfferlines
   @notEmpty('model.invoice.id') hasInvoice
   @bool('model.depositInvoices.length') hasDepositInvoice
   @bool('model.deposits.length') hasDeposit
@@ -31,12 +32,7 @@ export default class OrderPanel extends Component.extend(EKMixin) {
   @array.mapBy('orderedOfferlines', raw('arithmeticAmount')) arithmeticAmounts
   @array.mapBy('orderedOfferlines', raw('arithmeticVat')) arithmeticVats
   @sum('arithmeticAmounts') totalAmount
-  @computed('arithmeticVats')
-  get totalVat() {
-    return Promise.all(this.arithmeticVats).then(values => {
-      return values.reduce((a, b) => a + b, 0);
-    });
-  }
+  @sum('arithmeticVats') totalVat
 
   init() {
     super.init(...arguments);

@@ -2,23 +2,19 @@ import classic from 'ember-classic-decorator';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
-import { neq, sum, array, raw } from 'ember-awesome-macros';
+import { neq, sum, array, raw, promise } from 'ember-awesome-macros';
 
 @classic
 export default class OrderDetailPanel extends Component {
-  @service
-  router;
+  @service router;
 
-  model = null;
+  model = null
 
-  @sum(array.mapBy('model.deposits', raw('amount')))
-  depositsAmount;
-
-  @sum(array.mapBy('model.depositInvoices', raw('arithmeticAmount')))
-  depositInvoicesAmount;
-
-  @neq('model.scheduledNbOfPersons', raw(2))
-  isNbOfPersonsWarning;
+  @promise.array('model.deposits') deposits
+  @sum(array.mapBy('deposits', raw('amount'))) depositsAmount;
+  @promise.array('model.depositInvoices') depositInvoices
+  @sum(array.mapBy('depositInvoices', raw('arithmeticAmount'))) depositInvoicesAmount
+  @neq('model.scheduledNbOfPersons', raw(2)) isNbOfPersonsWarning
 
   @action
   goToDepositInvoices() {
