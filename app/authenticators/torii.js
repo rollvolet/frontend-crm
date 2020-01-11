@@ -1,9 +1,10 @@
+import classic from 'ember-classic-decorator';
+import { inject } from '@ember/service';
 import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
 import { debug, warn } from '@ember/debug';
 import fetch, { Headers } from 'fetch';
 import { run, later, cancel } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
-import { inject } from '@ember/service';
 import config from '../config/environment';
 import decodeAuthToken from '../utils/decode-auth-token';
 
@@ -12,18 +13,19 @@ import decodeAuthToken from '../utils/decode-auth-token';
  *
  * Inspired by the JWT authenticator of ember-simple-auth-token
 */
-export default ToriiAuthenticator.extend({
-  torii: inject(),
+@classic
+export default class Torii extends ToriiAuthenticator {
+  @inject()
+  torii;
 
-  tokenEndpoint: '/api/authentication/token',
-  refreshTokenEndpoint: '/api/authentication/refresh-token',
-  refreshLeeway: 60, // in seconds
-  refreshTokenTimeout: null,
-
-  toriiProvider: 'azure-ad2-oauth2',
+  tokenEndpoint = '/api/authentication/token';
+  refreshTokenEndpoint = '/api/authentication/refresh-token';
+  refreshLeeway = 60; // in seconds
+  refreshTokenTimeout = null;
+  toriiProvider = 'azure-ad2-oauth2';
 
   async authenticate() {
-    const data = await this._super(...arguments); // get authorization code through Torii
+    const data = await super.authenticate(...arguments); // get authorization code through Torii
 
     // exchange authorization code for access token/refresh token
     const response = await fetch(this.tokenEndpoint, {
@@ -45,17 +47,17 @@ export default ToriiAuthenticator.extend({
       throw response;
     }
 
-  },
+  }
 
   async invalidate() {
-    const response = await this._super(...arguments);
+    const response = await super.invalidate(...arguments);
     cancel(this.refreshTokenTimeout);
     delete this.refreshTokenTimeout;
     return response;
-  },
+  }
 
   async restore() {
-    const data = await this._super(...arguments);
+    const data = await super.restore(...arguments);
     const refreshToken = data.refresh_token;
 
     if (!this.refreshTokenTimeout) {
@@ -66,7 +68,7 @@ export default ToriiAuthenticator.extend({
       this.scheduleAccessTokenRefresh(data);
       return data;
     }
-  },
+  }
 
   async refreshAccessToken(refreshToken) {
     debug(`Attempt to refresh access token at ${new Date()}`);
@@ -99,7 +101,7 @@ export default ToriiAuthenticator.extend({
     } else {
       throw response;
     }
-  },
+  }
 
   handleAuthResponse(response) {
     const expiresAt = this.scheduleAccessTokenRefresh(response);
@@ -116,7 +118,7 @@ export default ToriiAuthenticator.extend({
         name: jwt.name
       }
     };
-  },
+  }
 
   scheduleAccessTokenRefresh({ expires_in, expires_at, refresh_token }) {
     if (expires_in) {
@@ -134,4 +136,4 @@ export default ToriiAuthenticator.extend({
 
     return expires_at;
   }
-});
+}

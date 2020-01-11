@@ -1,79 +1,75 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--invoice--entry flex-100 layout-column">
-    {{#detail-list-item label="Datum"}}
-      {{#detail-list-subitem label="Factuurdatum"}}
-        {{fmt-date model.invoiceDate}}
-      {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Vervaldag"}}
-        {{fmt-date model.dueDate}}
-      {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Geboekt"}}
-        {{fmt-date model.bookingDate}}
-      {{/detail-list-subitem}}
-      {{#detail-list-subitem label="Betaald"}}
-        {{fmt-date model.paymentDate}}
-      {{/detail-list-subitem}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Techniekers" click=(action "openWorkingHoursDialog") class="clickable"}}
-      {{#if model.workingHours}}
-        {{join ", " employeeFirstNames}} {{paper-icon "info" size=18}}
+    <DetailListItem @label="Datum">
+      <DetailListSubitem @label="Factuurdatum">
+        <FmtDate @value={{@model.invoiceDate}} />
+      </DetailListSubitem>
+      <DetailListSubitem @label="Vervaldag">
+        <FmtDate @value={{@model.dueDate}} />
+      </DetailListSubitem>
+      <DetailListSubitem @label="Geboekt">
+        <FmtDate @value={{@model.bookingDate}} />
+      </DetailListSubitem>
+      <DetailListSubitem @label="Betaald">
+        <FmtDate @value={{@model.paymentDate}} />
+      </DetailListSubitem>
+    </DetailListItem>
+    <DetailListItem @label="Techniekers" @click={{fn this.openWorkingHoursDialog}} @class="clickable">
+      {{#if @model.workingHours}}
+        {{join ", " this.employeeFirstNames}} {{paper-icon "info" size=18}}
       {{else}}
         - {{paper-icon "add circle" size=18}}
       {{/if}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Referentie"}}
-      {{model.reference}}
-    {{/detail-list-item}}
-    {{#detail-list-item label="Opmerking"}}
-      <span class="html-body">{{model.comment}}</span>
-    {{/detail-list-item}}
+    </DetailListItem>
+    <DetailListItem @label="Referentie">
+      {{@model.reference}}
+    </DetailListItem>
+    <DetailListItem @label="Opmerking">
+      <span class="html-body">{{@model.comment}}</span>
+    </DetailListItem>
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
-    {{#if model.certificateRequired}}
-      {{#detail-list-item label="BTW-attest" class="layout-align-start-center"}}
-        {{certificate-document-buttons model=model}}
-      {{/detail-list-item}}
+    {{#if @model.certificateRequired}}
+      <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
+        <CertificateDocumentButtons @model={{@model}} />
+      </DetailListItem>
     {{/if}}
-    {{#unless model.isIsolated}}
-      {{#detail-list-item label="Productiebon"}}
-        {{paper-icon (if model.hasProductionTicket "check_box" "check_box_outline_blank")}}
-        {{#if model.hasProductionTicket}}
-          <span {{action "downloadProductionTicket"}}>
+    {{#unless @model.isIsolated}}
+      <DetailListItem @label="Productiebon">
+        {{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}
+        {{#if @model.hasProductionTicket}}
+          <span {{on "click" this.downloadProductionTicket}} role="button">
             {{paper-icon "find in page"}}
-            {{#paper-tooltip}}Productiebon bekijken{{/paper-tooltip}}
+            <PaperTooltip>Productiebon bekijken</PaperTooltip>
           </span>
         {{/if}}
-      {{/detail-list-item}}
+      </DetailListItem>
     {{/unless}}
-    {{#detail-list-item label="Creditnota"}}
-      {{paper-icon (if model.isCreditNote "check_box" "check_box_outline_blank")}}
-    {{/detail-list-item}}
-    {{#unless model.isCreditNote}}
-      {{#detail-list-item label="Betaalref."}}
-        {{format-bank-reference model.bankReference}}
-      {{/detail-list-item}}
+    <DetailListItem @label="Creditnota">
+      {{paper-icon (if @model.isCreditNote "check_box" "check_box_outline_blank")}}
+    </DetailListItem>
+    {{#unless @model.isCreditNote}}
+      <DetailListItem @label="Betaalref.">
+        {{format-bank-reference @model.bankReference}}
+      </DetailListItem>
     {{/unless}}
   </div>
 </div>
 
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="flex-100 layout-column">
-    {{#detail-list-item label="Bedrag"}}
-      {{invoice-calculation-table model=model}}
-    {{/detail-list-item}}
+    <DetailListItem @label="Bedrag">
+      <InvoiceCalculationTable @model={{@model}} />
+    </DetailListItem>
   </div>
 </div>
 
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="flex-100 layout-column">
-    {{#detail-list-item label="Mededeling"}}
-      {{{model.documentOutro}}}
-    {{/detail-list-item}}
+    <DetailListItem @label="Mededeling">
+      {{{@model.documentOutro}}}
+    </DetailListItem>
   </div>
 </div>
 
-{{working-hours-dialog show=showWorkingHoursDialog model=model}}
-
-{{#document-not-found-dialog show=showProductionTicketNotFoundDialog}}
-  <p>Er is nog geen productiebon opgeladen.</p>
-{{/document-not-found-dialog}}
+<WorkingHoursDialog @show={{this.showWorkingHoursDialog}} @model={{@model}} />

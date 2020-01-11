@@ -1,13 +1,5 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-export default Component.extend({
-  model: null,
-  onClose: null,
-  onEdit: null,
+export default class ContactDetailPanel extends Component {
 
-  actions: {
-    toggleEdit() {
-      this.onEdit(this.model);
-    }
-  }
-});
+}

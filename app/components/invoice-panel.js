@@ -1,25 +1,36 @@
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
-import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { or, not } from 'ember-awesome-macros';
 
-export default Component.extend({
-  case: service(),
-  documentGeneration: service(),
-  router: service(),
+@classic
+export default class InvoicePanel extends Component {
+  @service
+  case;
 
-  model: null,
-  editMode: false,
-  onOpenEdit: null,
-  onCloseEdit: null,
-  showUnsavedChangesDialog: false,
-  showMissingCertificateDialog: false,
+  @service
+  documentGeneration;
 
-  isDisabledEdit: or('model.isMasteredByAccess', 'model.isBooked'),
-  isEnabledDelete: not('isDisabledEdit'),
+  @service
+  router;
 
-  remove: task(function * () {
+  model = null;
+  editMode = false;
+  onOpenEdit = null;
+  onCloseEdit = null;
+  showUnsavedChangesDialog = false;
+  showMissingCertificateDialog = false;
+
+  @or('model.isMasteredByAccess', 'model.isBooked')
+  isDisabledEdit;
+
+  @not('isDisabledEdit')
+  isEnabledDelete;
+
+  @task(function * () {
     const customer = yield this.model.customer;
     const order = yield this.model.order;
 
@@ -37,8 +48,10 @@ export default Component.extend({
     } catch (e) {
       warn(`Something went wrong while destroying invoice ${this.model.id}`, { id: 'destroy-failure' });
     }
-  }),
-  rollbackTree: task( function * () {
+  })
+  remove;
+
+  @task(function * () {
     const rollbackPromises = [];
 
     this.model.rollbackAttributes();
@@ -47,8 +60,10 @@ export default Component.extend({
 
     yield all(rollbackPromises);
     yield this.save.perform(null, { forceSuccess: true });
-  }),
-  save: task(function * (_, { forceSuccess = false } = {} ) {
+  })
+  rollbackTree;
+
+  @(task(function * (_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;
 
     const { validations } = yield this.model.validate();
@@ -69,9 +84,10 @@ export default Component.extend({
 
       yield this.model.save();
     }
-  }).keepLatest(),
+  }).keepLatest())
+  save;
 
-  generateInvoiceDocument: task(function * () {
+  @task(function * () {
     if (!this.showMissingCertificateDialog && this.model.certificateRequired && !this.model.certificateReceived) {
       this.set('showMissingCertificateDialog', true);
     } else {
@@ -87,27 +103,39 @@ export default Component.extend({
         yield this.save.perform();
       }
     }
-  }),
+  })
+  generateInvoiceDocument;
 
-  actions: {
-    openEdit() {
-      this.onOpenEdit();
-    },
-    closeEdit() {
-      if (this.model.isNew || this.model.validations.isInvalid || this.model.isError
-          || (this.save.last && this.save.last.isError)
-          || this.hasFailedVisit) {
-        this.set('showUnsavedChangesDialog', true);
-      } else {
-        this.onCloseEdit();
-      }
-    },
-    confirmCloseEdit() {
-      this.rollbackTree.perform();
+  @action
+  openEdit() {
+    this.onOpenEdit();
+  }
+
+  @action
+  closeEdit() {
+    if (this.model.isNew || this.model.validations.isInvalid || this.model.isError
+        || (this.save.last && this.save.last.isError)
+        || this.hasFailedVisit) {
+      this.set('showUnsavedChangesDialog', true);
+    } else {
       this.onCloseEdit();
-    },
-    downloadInvoiceDocument() {
-      this.documentGeneration.downloadInvoiceDocument(this.model);
     }
   }
-});
+
+  @action
+  closeUnsavedChangesDialog() {
+    this.set('showUnsavedChangesDialog', false);
+  }
+
+  @action
+  async confirmCloseEdit() {
+    this.closeUnsavedChangesDialog();
+    this.rollbackTree.perform();
+    this.onCloseEdit();
+  }
+
+  @action
+  downloadInvoiceDocument() {
+    this.documentGeneration.downloadInvoiceDocument(this.model);
+  }
+}

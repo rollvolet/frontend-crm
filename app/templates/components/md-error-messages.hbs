@@ -1,7 +1,8 @@
-{{#each errors as |error index|}}
-  <div id="error-{{inputElementId}}-{{index}}"
-       class="paper-input-error ng-enter ng-enter-active md-input-message-animation"
-       style="opacity: 1; margin-top: 0">
+{{! template-lint-disable no-inline-styles }}
+{{#each this.errors as |error index|}}
+  <div id="error-{{this.inputElementId}}-{{index}}"
+    class="paper-input-error ng-enter ng-enter-active md-input-message-animation"
+    style="opacity: 1; margin-top: 0">
     {{error}}
   </div>
 {{/each}}

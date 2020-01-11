@@ -1,3 +1,4 @@
+import classic from 'ember-classic-decorator';
 import Service, { inject as service } from '@ember/service';
 import fetch, { Headers } from 'fetch';
 import { assert } from '@ember/debug';
@@ -19,30 +20,36 @@ const calcQueryParam = function(routeUrl, key) {
   return `${key}=${matches[1]}`;
 };
 
-export default Service.extend(Evented, {
-  current: null,
+@classic
+export default class CaseService extends Service.extend(Evented) {
+  current = null;
 
-  router: service(),
-  session: service(),
-  store: service(),
+  @service
+  router;
+
+  @service
+  session;
+
+  @service
+  store;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.initCase();
-  },
+  }
 
   async initCase() {
     const currentCase = await this.loadCaseForCurrentRoute.perform();
     this.set('current', currentCase);
     await this.loadRecords.perform();
-  },
+  }
 
   updateRecord(type, record) {
     this.set(`current.${type}`, record);
     this.set(`current.${type}Id`, record && record.get('id'));
-  },
+  }
 
-  loadRecords: task(function * () {
+  @(task(function * () {
     const promises = ['request', 'offer', 'order', 'invoice'].map(async (type) => {
       const idProp = `${type}Id`;
       const currentId = this.current.get(idProp);
@@ -59,9 +66,10 @@ export default Service.extend(Evented, {
     });
 
     yield Promise.all(promises);
-  }).keepLatest(),
+  }).keepLatest())
+  loadRecords;
 
-  loadCaseForCurrentRoute: task(function * () {
+  @task(function * () {
     const currentRoute = this.get('router.currentRouteName');
     const currentUrl = this.get('router.currentURL');
 
@@ -95,9 +103,10 @@ export default Service.extend(Evented, {
     } else {
       throw response;
     }
-  }),
+  })
+  loadCaseForCurrentRoute;
 
-  updateContact: task(function * (contact, building) {
+  @task(function * (contact, building) {
     yield this._updateContactAndBuilding.perform(contact, building);
 
     const reloadPromises = [];
@@ -121,9 +130,10 @@ export default Service.extend(Evented, {
     }
 
     yield Promise.all(reloadPromises);
-  }),
+  })
+  updateContact;
 
-  updateBuilding: task(function * (contact, building) {
+  @(task(function * (contact, building) {
     yield this._updateContactAndBuilding.perform(contact, building);
 
     const reloadPromises = [];
@@ -147,9 +157,10 @@ export default Service.extend(Evented, {
     }
 
     yield Promise.all(reloadPromises);
-  }).evented(),
+  }).evented())
+  updateBuilding;
 
-  _updateContactAndBuilding: task(function * (contact, building) {
+  @task(function * (contact, building) {
     const { access_token } = this.get('session.data.authenticated');
     yield fetch(`/api/cases/contact-and-building`, {
       method: 'POST',
@@ -167,4 +178,5 @@ export default Service.extend(Evented, {
       })
     });
   })
-});
+  _updateContactAndBuilding;
+}

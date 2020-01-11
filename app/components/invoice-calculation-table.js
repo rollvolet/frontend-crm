@@ -1,27 +1,76 @@
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import { oneWay } from '@ember/object/computed';
-import { add, product, quotient, subtract, sum, raw, array } from 'ember-awesome-macros';
+import Component from '@ember/component';
+import { add, product, quotient, subtract, sum, raw, array, promise } from 'ember-awesome-macros';
 
-export default Component.extend({
-  showSupplementsDialog: false,
-  vatRate: quotient('model.vatRate.rate', 100),
-  baseAmount: oneWay('model.baseAmount'),
-  baseAmountVat: product('baseAmount', 'vatRate'),
-  supplementsAmount: sum(array.mapBy('model.supplements', raw('amount'))),
-  supplementsVat: product('supplementsAmount', 'vatRate'),
-  totalOrderAmount: add('model.baseAmount', 'supplementsAmount'),
-  totalOrderVat: product('totalOrderAmount', 'vatRate'),
-  depositInvoicesAmount: sum(array.mapBy('model.depositInvoices', raw('arithmeticAmount'))),
+@classic
+export default class InvoiceCalculationTable extends Component {
+  showSupplementsDialog = false;
+
+  @quotient('model.vatRate.rate', 100)
+  vatRate;
+
+  @oneWay('model.baseAmount')
+  baseAmount;
+
+  @product('baseAmount', 'vatRate')
+  baseAmountVat;
+
+  @oneWay('model.supplements')
+  supplementsPromise
+
+  @promise.array('supplementsPromise')
+  supplements
+
+  @sum(array.mapBy('supplements', raw('amount')))
+  supplementsAmount;
+
+  @product('supplementsAmount', 'vatRate')
+  supplementsVat;
+
+  @add('model.baseAmount', 'supplementsAmount')
+  totalOrderAmount;
+
+  @product('totalOrderAmount', 'vatRate')
+  totalOrderVat;
+
+  @oneWay('model.depositInvoices')
+  depositInvoicesPromise
+
+  @promise.array('depositInvoicesPromise')
+  depositInvoices
+
+  @sum(array.mapBy('depositInvoices', raw('arithmeticAmount')))
+  depositInvoicesAmount;
+
   // assumption that all deposit invoices have the same vat rate as the parent invoice
-  depositInvoicesVat: product('depositInvoicesAmount', 'vatRate'),
-  totalNetAmount: subtract('totalOrderAmount', 'depositInvoicesAmount'),
-  totalVat: subtract('totalOrderVat', 'depositInvoicesVat'),
-  totalGrossAmount: sum('totalNetAmount', 'totalVat'),
-  depositsAmount: sum(array.mapBy('model.deposits', raw('amount'))),
-  totalToPay: subtract('totalGrossAmount', 'depositsAmount'),
-  actions: {
-    openSupplementsDialog() {
-      this.set('showSupplementsDialog', true);
-    }
+  @product('depositInvoicesAmount', 'vatRate')
+  depositInvoicesVat;
+
+  @subtract('totalOrderAmount', 'depositInvoicesAmount')
+  totalNetAmount;
+
+  @subtract('totalOrderVat', 'depositInvoicesVat')
+  totalVat;
+
+  @sum('totalNetAmount', 'totalVat')
+  totalGrossAmount;
+
+  @oneWay('model.deposits')
+  depositsPromise
+
+  @promise.array('depositsPromise')
+  deposits
+
+  @sum(array.mapBy('deposits', raw('amount')))
+  depositsAmount;
+
+  @subtract('totalGrossAmount', 'depositsAmount')
+  totalToPay;
+
+  @action
+  openSupplementsDialog() {
+    this.set('showSupplementsDialog', true);
   }
-});
+}

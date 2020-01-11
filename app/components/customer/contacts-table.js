@@ -1,28 +1,34 @@
-import Component from '@ember/component';
-import DebouncedSearch from '../../mixins/debounced-search-task';
+import classic from 'ember-classic-decorator';
+import { observes } from '@ember-decorators/object';
+import { inject as service } from '@ember/service';
+import FilterComponent from '../data-table-filter';
 import { task } from 'ember-concurrency';
-import { observer } from '@ember/object';
 
-export default Component.extend(DebouncedSearch, {
-  classNames: ['contacts-table'],
+@classic
+export default class ContactsTable extends FilterComponent {
+  @service store;
+
+  page = 0;
+  size = 10;
+  sort = 'name';
+  filterKeys = Object.freeze(['number', 'name', 'postalCode', 'city', 'street', 'telephone'])
 
   init() {
-    this._super(...arguments);
-    this.search.perform();
-  },
+    super.init(...arguments);
+    this.search.perform(this.getFilter());
+  }
 
-  page: 0,
-  size: 10,
-  sort: 'name',
+  async onChange(filter) {
+    await this.search.perform(filter);
+  }
 
-  onClickRow: null,
-  onEdit: null,
+  @observes('page', 'size', 'sort')
+  dataTableParamChanged() { // eslint-disable-line ember/no-observers
+    this.search.perform(this.getFilter());
+  }
 
-  dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
-    this.search.perform();
-  }),
-  search: task(function * () {
-    const contacts = yield this.customer.query('contacts', {
+  @task(function * (filter) {
+    const contacts = yield this.store.query('contact', {
       page: {
         size: this.size,
         number: this.page
@@ -30,33 +36,18 @@ export default Component.extend(DebouncedSearch, {
       sort: this.sort,
       include: 'country,language,honorific-prefix',
       filter: {
-        number: this.getFilterValue('number'),
-        name: this.getFilterValue('name'),
-        'postal-code': this.getFilterValue('postalCode'),
-        city: this.getFilterValue('city'),
-        street: this.getFilterValue('street'),
-        telephone: this.getFilterValue('telephone')
+        customer: {
+          number: this.customer.number
+        },
+        number: filter.number,
+        name: filter.name,
+        'postal-code': filter.postalCode,
+        city: filter.city,
+        street: filter.street,
+        telephone: filter.telephone
       }
     });
     this.set('contacts', contacts);
-  }),
-
-  actions: {
-    setFilter(key, value) {
-      this.set(key, value);
-      this.debounceSearch.perform(this.search);
-    },
-    resetFilters() {
-      this.set('number', undefined);
-      this.set('name', undefined);
-      this.set('postalCode', undefined);
-      this.set('city', undefined);
-      this.set('street', undefined);
-      this.set('telephone', undefined);
-      this.search.perform();
-    },
-    edit(contact) {
-      this.onEdit(contact);
-    }
-  }
-});
+  })
+  search;
+}

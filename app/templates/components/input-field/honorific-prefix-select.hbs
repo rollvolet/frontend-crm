@@ -1,5 +1,3 @@
-{{#power-select placeholder=label searchPlaceholder="Typ om te zoeken" options=options selected=selected
-     searchField="name" onchange=onSelectionChange
-     noMatchesMessage="Geen resultaten" allowClear=true as |option select|}}
+<PowerSelect @placeholder={{@label}} @searchPlaceholder="Typ om te zoeken" @options={{this.options}} @selected={{this.selected}} @searchField="name" @onchange={{@onSelectionChange}} @noMatchesMessage="Geen resultaten" @allowClear={{true}} as |option select|>
   {{highlight-substr option.name select.lastSearchedText}}
-{{/power-select}}
+</PowerSelect>

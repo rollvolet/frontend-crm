@@ -1,7 +1,9 @@
 import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
+import { sort } from '@ember/object/computed';
 import { task, hash } from 'ember-concurrency';
 
 const _copyTelephone = function(telephone) {
@@ -16,15 +18,18 @@ const _copyTelephone = function(telephone) {
   });
 };
 
-export default Component.extend({
-  store: service(),
-  configuration: service(),
+@classic
+export default class TelephoneEditForm extends Component {
+  @service store
 
-  model: null,
-  displayTelephones: null,
-  errorMessages: A(),
+  @service configuration
 
-  isDisabledCreateNew: computed('newTelephone', 'updateNewTelephone', function() {
+  displayTelephones = null
+  telephonesSort = Object.freeze(['order', 'id'])
+  errorMessages = A()
+
+  @computed('newTelephone', 'updatedNewTelephone')
+  get isDisabledCreateNew() {
     if (this.newTelephone) {
       return this.newTelephone.validations.isInvalid
         || this.newTelephone.isError
@@ -33,32 +38,39 @@ export default Component.extend({
     }
 
     return false;
-  }),
+  }
 
-  async init() {
-    this._super(...arguments);
+  @sort('displayTelephones', 'telephonesSort') sortedTelephones
 
-    // creating a copy of the telephone ManyArray so the interface doesn't get rerendered
-    // on each update (= delete and create) of a telephone
-    const telephones = await this.model.telephones;
-    const copiedTelephones = telephones.map(_copyTelephone);
-    this.set('displayTelephones', A(copiedTelephones));
-  },
+  didReceiveAttrs() {
+    super.didReceiveAttrs(...arguments);
+    this.initCopiedTelephones.perform();
+  }
 
   willDestroyElement() {
     if (!this.model.isDeleted)
       this.model.hasMany('telephones').reload();
-    this._super(...arguments);
-  },
+    super.willDestroyElement(...arguments);
+  }
 
-  removeTelephone: task(function * (telephone) {
+  // creating a copy of the telephone ManyArray so the interface doesn't get rerendered
+  // on each update (= delete and create) of a telephone
+  @task(function * () {
+    const telephones = yield this.model.telephones;
+    const copiedTelephones = telephones.map(_copyTelephone);
+    this.set('displayTelephones', A(copiedTelephones));
+  })
+  initCopiedTelephones;
+
+  @task(function * (telephone) {
     const telephoneRecord = this.store.peekRecord('telephone', telephone.id);
     if (telephoneRecord)
       yield telephoneRecord.destroyRecord();
     this.displayTelephones.removeObject(telephone);
-  }),
+  })
+  removeTelephone;
 
-  removeNewTelephone: task(function * () {
+  @task(function * () {
     if (this.newTelephone) {
       yield this.newTelephone.destroyRecord();
       // TODO: Fix when Ember Data allows creation of already deleted ID
@@ -67,9 +79,10 @@ export default Component.extend({
       // this.store._removeFromIdMap(this.model._internalModel);
       this.set('newTelephone', null);
     }
-  }),
+  })
+  removeNewTelephone;
 
-  createNewTelephone: task(function * () {
+  @task(function * () {
     if (this.newTelephone) {
       // check if it's saved an valid
       const copiedTelephone = _copyTelephone(this.newTelephone);
@@ -91,9 +104,10 @@ export default Component.extend({
     const telephone = this.store.createRecord('telephone', attributes);
     this.set('newTelephone', telephone);
     yield telephone.save();
-  }),
+  })
+  createNewTelephone;
 
-  updateNewTelephone: task(function * () { // cannot patch phone. Create new and remove old phone.
+  @task(function * () {
     const { validations } = yield this.newTelephone.validate();
 
     if (!validations.isValid) {
@@ -138,4 +152,5 @@ export default Component.extend({
       throw e; // save task must fail
     }
   }).keepLatest()
-});
+  updateNewTelephone; // cannot patch phone. Create new and remove old phone.
+}

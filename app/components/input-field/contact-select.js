@@ -1,11 +1,14 @@
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import { proxyAware } from '../../utils/proxy-aware';
 
-export default Component.extend({
-  store: service(),
+@classic
+export default class ContactSelect extends Component {
+  @service store;
 
-  selected: proxyAware('value'),
+  @proxyAware('value')
+  selected;
 
   didReceiveAttrs() {
     if (this.customer) {
@@ -16,10 +19,10 @@ export default Component.extend({
         page: { size: 1000 }
       }).then((contacts) => this.set('options', contacts));
     }
-  },
+  }
 
-  customer: null,
-  label: 'Contact',
-  value: null,
-  onSelectionChange: null
-});
+  customer = null;
+  label = 'Contact';
+  value = null;
+  onSelectionChange = null;
+}

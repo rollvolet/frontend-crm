@@ -1,6 +1,5 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-export default Component.extend({
-  model: null,
-  isDisabledEdit: true
-});
+export default class InvoiceSupplementsTable extends Component {
+
+}

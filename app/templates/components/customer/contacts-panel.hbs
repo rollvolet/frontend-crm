@@ -1,16 +1,15 @@
-{{#liquid-if displayList class="data-table-selection"}}
-  {{customer/contacts-table customer=customer onClickRow=(action "openDetail") onEdit=(action "openEdit")}}
+{{#liquid-if this.displayList class="data-table-selection"}}
+  <Customer::ContactsTable @customer={{@customer}} @onClickRow={{fn this.openDetail}} @onEdit={{fn this.openEdit}} />
   <div class="layout-row layout-align-end">
-    {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "openCreate")}}
+    <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.openCreate}}>
       {{paper-icon "add"}}
-      {{#paper-tooltip}}Voeg nieuw contact toe{{/paper-tooltip}}
-    {{/paper-button}}
+      <PaperTooltip>Voeg nieuw contact toe</PaperTooltip>
+    </PaperButton>
   </div>
-{{else if displayDetail}}
-  {{contact-detail-panel model=selectedContact onClose=(action "closeDetail") onEdit=(action "openEdit")}}
-{{else if displayEdit}}
-  {{#customer-entity-edit-form scope='contact' model=selectedContact
-       onClose=(action "closeEdit") onRemove=(action "closeEdit")}}
+{{else if this.displayDetail}}
+  <ContactDetailPanel @model={{this.selectedContact}} @onClose={{fn this.closeDetail}} @onEdit={{fn this.openEdit}} />
+{{else if this.displayEdit}}
+  <CustomerEntityEditForm @scope="contact" @model={{this.selectedContact}} @onClose={{fn this.closeEdit}} @onRemove={{fn this.closeEdit}}>
     <h3>Contact</h3>
-  {{/customer-entity-edit-form}}
+  </CustomerEntityEditForm>
 {{/liquid-if}}

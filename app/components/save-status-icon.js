@@ -1,8 +1,5 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-export default Component.extend({
-  tagName: 'span',
-  classNames: ['save-status'],
-  task: null,
-  model: null
-});
+export default class SaveStatusIcon extends Component {
+
+}

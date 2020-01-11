@@ -6,18 +6,18 @@
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title"></div>
           <div class="layout-row data-table-filters--group-fields">
-            {{paper-input label="Aanvraag" value=requestNumberFilter onChange=(perform debounceFilter "requestNumber") class="small search-autofocus"}}
-            {{paper-input label="Bezoeker" value=visitorFilter onChange=(perform debounceFilter "visitor") class="small"}}
+            <PaperInput @label="Aanvraag" @value={{this.requestNumberFilter}} @onChange={{perform this.debounceFilter "requestNumber"}} @class="small search-autofocus" />
+            <PaperInput @label="Bezoeker" @value={{this.visitorFilter}} @onChange={{perform this.debounceFilter "visitor"}} @class="small" />
           </div>
         </div>
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title">Klant</div>
           <div class="layout-row data-table-filters--group-fields">
-            {{paper-input label="Naam" value=cNameFilter onChange=(perform debounceFilter "cName")}}
-            {{paper-input label="Straat" value=cStreetFilter onChange=(perform debounceFilter "cStreet") class="large"}}
-            {{paper-input label="Postcode" value=cPostalCodeFilter onChange=(perform debounceFilter "cPostalCode") class="small"}}
-            {{paper-input label="Gemeente" value=cCityFilter onChange=(perform debounceFilter "cCity")}}
-            {{paper-input label="Telefoon" value=cTelephoneFilter onChange=(perform debounceFilter "cTelephone")}}
+            <PaperInput @label="Naam" @value={{this.cNameFilter}} @onChange={{perform this.debounceFilter "cName"}} />
+            <PaperInput @label="Straat" @value={{this.cStreetFilter}} @onChange={{perform this.debounceFilter "cStreet"}} @class="large" />
+            <PaperInput @label="Postcode" @value={{this.cPostalCodeFilter}} @onChange={{perform this.debounceFilter "cPostalCode"}} @class="small" />
+            <PaperInput @label="Gemeente" @value={{this.cCityFilter}} @onChange={{perform this.debounceFilter "cCity"}} />
+            <PaperInput @label="Telefoon" @value={{this.cTelephoneFilter}} @onChange={{perform this.debounceFilter "cTelephone"}} />
           </div>
         </div>
       </div>
@@ -25,35 +25,35 @@
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title"></div>
           <div class="layout-row data-table-filters--group-fields">
-            {{paper-input label="Nummer" value=numberFilter onChange=(perform debounceFilter "number") class="small"}}
-            {{paper-input label="Referentie" value=referenceFilter onChange=(perform debounceFilter "reference") class="small"}}
+            <PaperInput @label="Nummer" @value={{this.numberFilter}} @onChange={{perform this.debounceFilter "number"}} @class="small" />
+            <PaperInput @label="Referentie" @value={{this.referenceFilter}} @onChange={{perform this.debounceFilter "reference"}} @class="small" />
           </div>
         </div>
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title">Gebouw</div>
           <div class="layout-row data-table-filters--group-fields">
-            {{paper-input label="Naam" value=bNameFilter onChange=(perform debounceFilter "bName")}}
-            {{paper-input label="Straat" value=bStreetFilter onChange=(perform debounceFilter "bStreet") class="large"}}
-            {{paper-input label="Postcode" value=bPostalCodeFilter onChange=(perform debounceFilter "bPostalCode") class="small"}}
-            {{paper-input label="Gemeente" value=bCityFilter onChange=(perform debounceFilter "bCity")}}
+            <PaperInput @label="Naam" @value={{this.bNameFilter}} @onChange={{perform this.debounceFilter "bName"}} />
+            <PaperInput @label="Straat" @value={{this.bStreetFilter}} @onChange={{perform this.debounceFilter "bStreet"}} @class="large" />
+            <PaperInput @label="Postcode" @value={{this.bPostalCodeFilter}} @onChange={{perform this.debounceFilter "bPostalCode"}} @class="small" />
+            <PaperInput @label="Gemeente" @value={{this.bCityFilter}} @onChange={{perform this.debounceFilter "bCity"}} />
           </div>
         </div>
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title"></div>
           <div class="layout-row data-table-filters--group-fields">
-            {{#paper-switch value=withoutOrderFilter primary=true onChange=(action "setFilter" "withoutOrder")}}
+            <PaperSwitch @value={{this.withoutOrderFilter}} @primary={{true}} @onChange={{fn this.setFilter "withoutOrder"}}>
               Zonder bestelling
-            {{/paper-switch}}
+            </PaperSwitch>
           </div>
         </div>
       </div>
     </div>
 
     <div class="data-table-filters--reset">
-      {{#paper-button iconButton=true onClick=(action "resetFilters")}}
+      <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
         {{paper-icon "close"}}
-        {{#paper-tooltip}}Wis filters{{/paper-tooltip}}
-      {{/paper-button}}
+        <PaperTooltip>Wis filters</PaperTooltip>
+      </PaperButton>
     </div>
   </div>
 </div>

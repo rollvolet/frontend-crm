@@ -1,35 +1,44 @@
-import Controller from '@ember/controller';
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
+import Controller from '@ember/controller';
 
-export default Controller.extend({
-  caseService: service('case'),
+@classic
+export default class CaseController extends Controller {
+  @service('case')
+  caseService;
 
-  case: null,
-  isEnabledEditBuilding: false,
-  isEnabledEditContact: false,
+  isEnabledEditBuilding = false;
+  isEnabledEditContact = false;
 
-  isUpdatingContact: alias('caseService.updateContact.isRunning'),
-  isUpdatingBuilding: alias('caseService.updateBuilding.isRunning'),
+  @alias('caseService.updateContact.isRunning')
+  isUpdatingContact;
 
-  // properties 'contact' and 'building' are set by the afterModel hooks of subroutes
+  @alias('caseService.updateBuilding.isRunning')
+  isUpdatingBuilding;
 
-  actions: {
-    toggleContactEdit() {
-      this.set('isEnabledEditContact', !this.isEnabledEditContact);
-    },
-    toggleBuildingEdit() {
-      this.set('isEnabledEditBuilding', !this.isEnabledEditBuilding);
-    },
-    async updateContact(contact) {
-      this.set('contact', contact);
-      this.set('isEnabledEditContact', false);
-      await this.caseService.updateContact.perform(contact, this.building);
-    },
-    async updateBuilding(building) {
-      this.set('building', building);
-      this.set('isEnabledEditBuilding', false);
-      await this.caseService.updateBuilding.perform(this.contact, building);
-    }
+  @action
+  toggleContactEdit() {
+    this.set('isEnabledEditContact', !this.isEnabledEditContact);
   }
-});
+
+  @action
+  toggleBuildingEdit() {
+    this.set('isEnabledEditBuilding', !this.isEnabledEditBuilding);
+  }
+
+  @action
+  async updateContact(contact) {
+    this.set('contact', contact);
+    this.set('isEnabledEditContact', false);
+    await this.caseService.updateContact.perform(contact, this.building);
+  }
+
+  @action
+  async updateBuilding(building) {
+    this.set('building', building);
+    this.set('isEnabledEditBuilding', false);
+    await this.caseService.updateBuilding.perform(this.contact, building);
+  }
+}

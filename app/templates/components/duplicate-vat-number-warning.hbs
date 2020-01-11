@@ -1,12 +1,12 @@
-{{#warning-message}}
+<WarningMessage>
   <div class="layout-row layout-align-space-between-center">
     <div>
       {{paper-icon "error"}}
-      Klant {{#if duplicate.printPrefix}}{{duplicate.prefix}}{{/if}} {{duplicate.name}} {{#if duplicate.printSuffix}}{{duplicate.suffix}} {{/if}}[{{duplicate.number}}] heeft dit BTW-nummer al.
+      Klant {{#if this.duplicate.printPrefix}}{{this.duplicate.prefix}}{{/if}} {{this.duplicate.name}} {{#if this.duplicate.printSuffix}}{{this.duplicate.suffix}} {{/if}}[{{this.duplicate.number}}] heeft dit BTW-nummer al.
     </div>
     <div>
       {{paper-icon "forward"}}
     </div>
-    {{#paper-tooltip}}Ga naar klant{{/paper-tooltip}}
+    <PaperTooltip>Ga naar klant</PaperTooltip>
   </div>
-{{/warning-message}}
+</WarningMessage>

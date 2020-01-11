@@ -1,9 +1,9 @@
 import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
 import { sort } from '@ember/object/computed';
 
-export default Component.extend({
-  model: null,
-
-  sorting: Object.freeze(['sequenceNumber']),
-  sortedOfferlines: sort('model', 'sorting')
-});
+@classic
+export default class OfferlinesDetailPanel extends Component {
+  sorting = Object.freeze(['sequenceNumber']);
+  @sort('model', 'sorting') sortedOfferlines;
+}

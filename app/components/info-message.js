@@ -1,7 +1,5 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-export default Component.extend({
-  tagName: 'p',
-  classNames: ['info-message'],
-  message: null
-});
+export default class InfoMessage extends Component {
+
+}

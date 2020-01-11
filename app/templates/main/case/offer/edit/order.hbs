@@ -1,88 +1,85 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      Selecteer producten voor bestelling AD{{model.requestNumber}} {{visitorPromise.initials}} - {{model.number}}
+      Selecteer producten voor bestelling AD{{@model.requestNumber}} {{this.visitorPromise.initials}} - {{@model.number}}
     </h2>
-  </div>
-  <div>
-    <!-- Buttons on right side of title -->
   </div>
 </div>
 
-{{#if (or updateOfferVatRate.isRunning createOrder.isRunning)}}
+{{#if (or this.updateOfferVatRate.isRunning this.createOrder.isRunning)}}
   <div>
-    {{paper-progress-linear}}
+    <PaperProgressLinear />
     <p>Bestelling aanmaken...</p>
   </div>
 {{else}}
-  {{#if model.offerlines}}
-    {{#if hasMixedVatRates}}
+  {{#if @model.offerlines}}
+    {{#if this.hasMixedVatRates}}
       <div class="u-margin-top-small">
-        {{warning-message message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden."}}
+        <WarningMessage @message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
       </div>
     {{/if}}
     <p>Klik op 1 of meer lijnen om toe te voegen aan de bestelling</p>
     <div class="case--order--offerlines-selection">
-      {{#each model.offerlines as |offerline|}}
-        <div class="case--order--offerlines-selection--offerline layout-row layout-align-start-center
+      {{#each @model.offerlines as |offerline|}}
+        <div role="button" class="case--order--offerlines-selection--offerline layout-row layout-align-start-center
           {{if offerline.isOrdered "case--order--offerlines-selection--offerline--ordered"}}"
-          {{action (toggle "isOrdered" offerline)}}>
+          {{on "click" (toggle "isOrdered" offerline)}}
+        >
           <div class="col col--is-ordered">
             {{#liquid-if offerline.isOrdered class="move-up"}}
               {{paper-icon "check" size=28}}
-      {{else}}
+            {{else}}
               {{paper-icon "close" size=28}}
             {{/liquid-if}}
           </div>
           <div class="col col--description">{{{offerline.description}}}</div>
-          <div class="col col--amount">{{fmt-currency offerline.amount}}</div>
+          <div class="col col--amount"><FmtCurrency @value={{offerline.amount}} /></div>
           <div class="col col--rate">{{offerline.vatRate.rate}}%</div>
         </div>
       {{/each}}
       <div class="case--order--offerlines-selection--total layout-row layout-align-start-center">
         <div class="col col--label">Totaal bestelling</div>
-        <div class="col col--amount">{{fmt-currency orderedAmount}}</div>
+        <div class="col col--amount"><FmtCurrency @value={{this.orderedAmount}} /></div>
       </div>
     </div>
   {{else}}
     <div class="u-margin-top-small">
-      {{warning-message message="Voeg producten toe aan de offerte alvorens u een bestelling kan opstellen."}}
+      <WarningMessage @message="Voeg producten toe aan de offerte alvorens u een bestelling kan opstellen." />
     </div>
   {{/if}}
 {{/if}}
 
 <div class="layout-row layout-align-end-center">
-  {{#paper-button onClick=(action "cancel")}}Annuleer{{/paper-button}}
-  {{#paper-button primary=true raised=true onClick=(perform createOrder) disabled=isDisabledCreate}}
+  <PaperButton @onClick={{fn this.cancel}}>Annuleer</PaperButton>
+  <PaperButton @primary={{true}} @raised={{true}} @onClick={{perform this.createOrder}} @disabled={{this.isDisabledCreate}}>
     Ga verder
-  {{/paper-button}}
+  </PaperButton>
 </div>
 
-{{#if showIncompatibleVatRatesDialog}}
-  {{#paper-dialog class="flex-50" onClose=(action "closeIncompatibleVatRatesDialog")
-       clickOutsideToClose=true parent=".main-outlet" origin=".main-outlet"}}
-    {{#paper-toolbar}}
-      {{#paper-toolbar-tools}}
+{{#if this.showIncompatibleVatRatesDialog}}
+  <PaperDialog @class="flex-50" @onClose={{fn this.closeIncompatibleVatRatesDialog}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
+    <PaperToolbar>
+      <PaperToolbarTools>
         <h2>Opgelet</h2><span class="flex"></span>
-        {{#paper-button iconButton=true onClick=(action "closeIncompatibleVatRatesDialog")}}
-          {{paper-icon icon="close"}}
-        {{/paper-button}}
-      {{/paper-toolbar-tools}}
-    {{/paper-toolbar}}
+        <PaperButton @iconButton={{true}} @onClick={{fn this.closeIncompatibleVatRatesDialog}}>
+          <PaperIcon @icon="close" />
+        </PaperButton>
+      </PaperToolbarTools>
+    </PaperToolbar>
 
-    {{#paper-dialog-content}}
+    <PaperDialogContent>
       <p>
-        Het BTW-tarief van de offerte is {{model.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{orderedVatRate.rate}}% hebben.
+        Het BTW-tarief van de offerte is {{@model.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{this.orderedVatRate.rate}}% hebben.
       </p>
       <p>
-        Mag het BTW-tarief van de offerte aangepast worden naar {{orderedVatRate.rate}}%?
+        Mag het BTW-tarief van de offerte aangepast worden naar {{this.orderedVatRate.rate}}%?
       </p>
-    {{/paper-dialog-content}}
+    </PaperDialogContent>
 
-    {{#paper-dialog-actions class="layout-row"}}
+    <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
-      {{#paper-button onClick=(action "closeIncompatibleVatRatesDialog")}}Terug{{/paper-button}}
-      {{#paper-button onClick=(perform updateOfferVatRate)}}Pas BTW-tarief aan{{/paper-button}}
-    {{/paper-dialog-actions}}
-  {{/paper-dialog}}
+      <PaperButton @onClick={{fn this.closeIncompatibleVatRatesDialog}}>Terug</PaperButton>
+      <PaperButton @onClick={{perform this.updateOfferVatRate}}>Pas BTW-tarief aan</PaperButton>
+    </PaperDialogActions>
+  </PaperDialog>
 {{/if}}

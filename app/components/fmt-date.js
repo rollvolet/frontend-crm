@@ -1,12 +1,7 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-const FmtDateComponent = Component.extend({
-  tagName: '',
-  emptyValue: '-'
-});
-
-FmtDateComponent.reopenClass({
-  positionalParams: ['value']
-});
-
-export default FmtDateComponent;
+export default class FmtDateComponent extends Component {
+  get fallback() {
+    return this.args.fallback || '-';
+  }
+}

@@ -1,32 +1,32 @@
-{{#if (is-pending calendarEvent)}}
+{{#if this.loadCalendarEvent.isRunning}}
   <div class="case--right-panel case--request--visit skeleton flex-noshrink layout-column layout-align-center-center">
-    {{paper-progress-circular diameter=25}}
+    <PaperProgressCircular @diameter={{25}} />
   </div>
 {{else}}
   <div class="case--right-panel flex-noshrink layout-column">
-    <div class="case--request--visit {{if isNotAvailableInCalendar "not-found"}}">
-      {{#if calendarEvent}}
+    <div class="case--request--visit {{if this.isNotAvailableInCalendar "not-found"}}">
+      {{#if @model.calendarEvent}}
         <div class="layout-row layout-align-space-between-center">
           <h3>{{paper-icon "event"}} Bezoek</h3>
-          {{#if (not calendarEvent.isMasteredByAccess)}}
-            {{#paper-button iconButton=true onClick=(perform synchronize)}}
+          {{#if (not @model.calendarEvent.isMasteredByAccess)}}
+            <PaperButton @iconButton={{true}} @onClick={{perform this.synchronize}}>
               {{paper-icon "sync"}}
-              {{#paper-tooltip}}Stuur wijzigingen naar agenda{{/paper-tooltip}}
-            {{/paper-button}}
+              <PaperTooltip>Stuur wijzigingen naar agenda</PaperTooltip>
+            </PaperButton>
           {{/if}}
         </div>
         <div class="case--request--visit--description">
-          {{#detail-list-item label="Datum"}}
-            {{fmt-date calendarEvent.visitDate}}
-          {{/detail-list-item}}
-          {{#detail-list-item label="Agenda"}}
-            {{#if isNotAvailableInCalendar}}
+          <DetailListItem @label="Datum">
+            <FmtDate @value={{@model.calendarEvent.visitDate}} />
+          </DetailListItem>
+          <DetailListItem @label="Agenda">
+            {{#if this.isNotAvailableInCalendar}}
               Niet gevonden
             {{else}}
-              {{calendarEvent.calendarSubject}}
+              {{@model.calendarEvent.calendarSubject}}
             {{/if}}
-          {{/detail-list-item}}
-          {{#if calendarEvent.isMasteredByAccess}}
+          </DetailListItem>
+          {{#if @model.calendarEvent.isMasteredByAccess}}
             <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
           {{/if}}
         </div>

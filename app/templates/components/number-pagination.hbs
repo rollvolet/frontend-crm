@@ -1,32 +1,30 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center data-table-pagination-left">
-    Toon {{startItem}}-{{endItem}}
-    {{#if total}} van {{total}}{{/if}}
-    {{#if sizeOptions}} |
-      {{#power-select options=sizeOptions selected=size onchange=(action (mut size))
-           searchEnabled=false verticalPosition="above" as |size|}}
-        {{size}}
-      {{/power-select}} per pagina
+    Toon {{this.startItem}}-{{this.endItem}}
+    {{#if this.total}} van {{this.total}}{{/if}}
+    {{#if this.sizeOptions}} |
+      <PowerSelect @options={{this.sizeOptions}} @selected={{@size}} @onchange={{fn this.setSize}} @searchEnabled={{false}} @verticalPosition="above" as |option|>
+        {{option}}
+      </PowerSelect> per pagina
     {{/if}}
   </div>
-  {{#if hasMultiplePages}}
+  {{#if this.hasMultiplePages}}
     <div class="layout-row layout-align-end-center data-table-pagination-right">
-      {{#paper-button disabled=isFirstPage onClick=(action "changePage" links.first) iconButton=true}}
+      <PaperButton @disabled={{this.isFirstPage}} @onClick={{fn this.changePage this.links.first}} @iconButton={{true}}>
         {{paper-icon "first page"}}
-      {{/paper-button}}
-      {{#paper-button disabled=isFirstPage onClick=(action "changePage" links.prev) iconButton=true}}
+      </PaperButton>
+      <PaperButton @disabled={{this.isFirstPage}} @onClick={{fn this.changePage this.links.prev}} @iconButton={{true}}>
         {{paper-icon "chevron left"}}
-      {{/paper-button}}
-      {{#power-select options=pageOptions selected=currentPage onchange=(action (mut currentPage))
-           searchEnabled=false verticalPosition="above" as |page|}}
+      </PaperButton>
+      <PowerSelect @options={{this.pageOptions}} @selected={{this.currentPage}} @onchange={{fn this.setCurrentPage}} @searchEnabled={{false}} @verticalPosition="above" as |page|>
         {{page}}
-      {{/power-select}}
-      {{#paper-button disabled=isLastPage onClick=(action "changePage" links.next) iconButton=true}}
+      </PowerSelect>
+      <PaperButton @disabled={{this.isLastPage}} @onClick={{fn this.changePage this.links.next}} @iconButton={{true}}>
         {{paper-icon "chevron right"}}
-      {{/paper-button}}
-      {{#paper-button disabled=isLastPage onClick=(action "changePage" links.last) iconButton=true}}
+      </PaperButton>
+      <PaperButton @disabled={{this.isLastPage}} @onClick={{fn this.changePage this.links.last}} @iconButton={{true}}>
         {{paper-icon "last page"}}
-      {{/paper-button}}
+      </PaperButton>
     </div>
   {{/if}}
 </div>

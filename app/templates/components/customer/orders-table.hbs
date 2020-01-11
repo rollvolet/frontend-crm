@@ -1,42 +1,41 @@
-<div class="data-table-filters">
-  <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  {{paper-input label="Aanvraag" value=requestNumber onChange=(action "setFilter" "requestNumber") class="small"}}
-  {{paper-input label="Offerte" value=offerNumber onChange=(action "setFilter" "offerNumber") class="small"}}
-  {{paper-input label="Referentie" value=reference onChange=(action "setFilter" "reference") class="small"}}
-  {{paper-input label="Gebouw" value=name onChange=(action "setFilter" "name")}}
-  {{paper-input label="Straat" value=street onChange=(action "setFilter" "street") class="large"}}
-  {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small"}}
-  {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
-  {{#paper-button iconButton=true onClick=(action "resetFilters")}}
-    {{paper-icon "close"}}
-    {{#paper-tooltip}}Wis filters{{/paper-tooltip}}
-  {{/paper-button}}
+<div class="orders-table">
+  <div class="data-table-filters">
+    <div class="data-table-filters--title">{{paper-icon "search"}}</div>
+    <PaperInput @label="Aanvraag" @value={{this.requestNumberFilter}} @onChange={{perform this.debounceFilter "requestNumber"}} @class="small" />
+    <PaperInput @label="Offerte" @value={{this.offerNumberFilter}} @onChange={{perform this.debounceFilter "offerNumber"}} @class="small" />
+    <PaperInput @label="Referentie" @value={{this.referenceFilter}} @onChange={{perform this.debounceFilter "reference"}} @class="small" />
+    <PaperInput @label="Gebouw" @value={{this.nameFilter}} @onChange={{perform this.debounceFilter "name"}} />
+    <PaperInput @label="Straat" @value={{this.streetFilter}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
+    <PaperInput @label="Postcode" @value={{this.postalCodeFilter}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
+    <PaperInput @label="Gemeente" @value={{this.cityFilter}} @onChange={{perform this.debounceFilter "city"}} />
+    <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
+      {{paper-icon "close"}}
+      <PaperTooltip>Wis filters</PaperTooltip>
+    </PaperButton>
+  </div>
+
+  <DataTable @content={{this.orders}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen bestellingen" @onClickRow={{fn this.clickRow}} @page={{this.page}} @size={{this.size}} @sort={{this.sort}} as |t|>
+    <t.content as |c|>
+      <c.header>
+        <th>Aanvraag</th>
+        <ThSortable @field="offer-number" @currentSorting={{this.sort}} @label="Offerte" />
+        <ThSortable @field="reference" @currentSorting={{this.sort}} @label="Referentie" />
+        <ThSortable @field="offer-date" @currentSorting={{this.sort}} @label="Datum" />
+        <th>Gebouw</th>
+        <th>Straat</th>
+        <th>Postcode</th>
+        <th>Gemeente</th>
+      </c.header>
+      <c.body as |row|>
+        <td>{{row.requestNumber}}</td>
+        <td>{{row.offerNumber}}</td>
+        <td>{{row.offer.reference}}</td>
+        <td><FmtDate @value={{row.orderDate}} /></td>
+        <td>{{row.building.printName}}</td>
+        <td>{{row.building.address1}}</td>
+        <td>{{row.building.postalCode}}</td>
+        <td>{{row.building.city}}</td>
+      </c.body>
+    </t.content>
+  </DataTable>
 </div>
-
-{{#data-table content=orders isLoading=(not search.isIdle) noDataMessage="Geen bestellingen"
-     onClickRow=(action "clickRow") page=page size=size sort=sort as |t|}}
-  {{#t.content as |c|}}
-    {{#c.header}}
-      <th>Aanvraag</th>
-      {{th-sortable field='offer-number' currentSorting=sort label='Offerte'}}
-      {{th-sortable field='reference' currentSorting=sort label='Referentie'}}
-      {{th-sortable field='offer-date' currentSorting=sort label='Datum'}}
-      <th>Gebouw</th>
-      <th>Straat</th>
-      <th>Postcode</th>
-      <th>Gemeente</th>
-    {{/c.header}}
-    {{#c.body as |row|}}
-      <td>{{row.requestNumber}}</td>
-      <td>{{row.offerNumber}}</td>
-      <td>{{row.offer.reference}}</td>
-      <td>{{fmt-date row.orderDate}}</td>
-      <td>{{row.building.printName}}</td>
-      <td>{{row.building.address1}}</td>
-      <td>{{row.building.postalCode}}</td>
-      <td>{{row.building.city}}</td>
-    {{/c.body}}
-  {{/t.content}}
-{{/data-table}}
-
-{{liquid-yield}}

@@ -1,6 +1,8 @@
+import classic from 'ember-classic-decorator';
 import Route from '@ember/routing/route';
 
-export default Route.extend({
+@classic
+export default class EditRoute extends Route {
   model(params) {
     return this.store.findRecord('customer', params.customer_id, {
       // don't include telephones here. Telephones need to be retrieved in a separate request
@@ -8,4 +10,4 @@ export default Route.extend({
       include: 'honorific-prefix'
     });
   }
-});
+}

@@ -1,8 +1,12 @@
-import Route from '@ember/routing/route';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
-export default Route.extend({
-  configuration: service(),
+@classic
+export default class NewRoute extends Route {
+  @service
+  configuration;
+
   model() {
     const customer = this.store.createRecord('customer', {
       isCompany: false,
@@ -14,10 +18,11 @@ export default Route.extend({
     });
 
     return customer.save();
-  },
+  }
+
   afterModel(model) {
     this.transitionTo('main.customers.edit', model, {
       queryParams: { editMode: true }
     });
   }
-});
+}

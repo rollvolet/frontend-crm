@@ -1,11 +1,5 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-const FmtDecimalComponent = Component.extend({
-  tagName: ''
-});
+export default class FmtDecimalComponent extends Component {
 
-FmtDecimalComponent.reopenClass({
-  positionalParams: ['value']
-});
-
-export default FmtDecimalComponent;
+}

@@ -1,9 +1,11 @@
+import classic from 'ember-classic-decorator';
+import { action, computed } from '@ember/object';
 import Component from '@ember/component';
-import { computed } from '@ember/object';
 
-export default Component.extend({
+@classic
+export default class CalendarPeriodSelect extends Component {
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     const periods = [
       { name: 'Gehele dag', value: 'GD' },
@@ -16,30 +18,30 @@ export default Component.extend({
       { name: 'Rond uur', value: 'benaderend uur' }
     ];
     this.set('options', periods);
-  },
+  }
 
   didReceiveAttrs() {
-    this._super(...arguments);
+    super.didReceiveAttrs(...arguments);
 
     const selectedOption = this.options.find(o => o.value == this.value);
     this.set('selectedOption', selectedOption);
-  },
-
-  label: 'Periode',
-  value: null,
-  errors: null,
-  required: false,
-  onSelectionChange: null,
-
-  placeholder: computed('label', 'required', function() {
-    return this.required ? `${this.label} *` : this.label;
-  }),
-
-  actions: {
-    changeSelection(option) {
-      this.set('selectedOption', option);
-      const value = option ? option.value : null;
-      this.onSelectionChange(value);
-    }
   }
-});
+
+  label = 'Periode';
+  value = null;
+  errors = null;
+  required = false;
+  onSelectionChange = null;
+
+  @computed('label', 'required')
+  get placeholder() {
+    return this.required ? `${this.label} *` : this.label;
+  }
+
+  @action
+  changeSelection(option) {
+    this.set('selectedOption', option);
+    const value = option ? option.value : null;
+    this.onSelectionChange(value);
+  }
+}

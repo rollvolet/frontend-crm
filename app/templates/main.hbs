@@ -1,79 +1,78 @@
-{{paper-toaster}}
+<PaperToaster />
 
-{{#paper-toolbar class="top-toolbar" as |toolbar|}}
-  {{#toolbar.tools}}
-    {{#paper-button iconButton=true onClick=(action (mut isMainMenuOpen))}}
+<PaperToolbar @class="top-toolbar" as |toolbar|>
+  <toolbar.tools>
+    <PaperButton @iconButton={{true}} @onClick={{fn (mut this.isMainMenuOpen)}}>
       {{paper-icon "menu"}}
-    {{/paper-button}}
+    </PaperButton>
     <h1>Rollvolet Klantenbeheer</h1>
-    {{data-preloader}}
+    <DataPreloader />
     <span class="flex"></span>
-    {{#paper-button onClick=(action "openMail") iconButton=true}}
+    <PaperButton @onClick={{fn this.openMail}} @iconButton={{true}}>
       {{paper-icon "help"}}
-      {{#paper-tooltip}}Help{{/paper-tooltip}}
-    {{/paper-button}}
-    {{#paper-button onClick=(action "goToProfile") iconButton=true}}
+      <PaperTooltip>Help</PaperTooltip>
+    </PaperButton>
+    <PaperButton @onClick={{fn this.goToProfile}} @iconButton={{true}}>
       {{paper-icon "account circle"}}
-      {{#paper-tooltip}}Profiel{{/paper-tooltip}}
-    {{/paper-button}}
-    {{session.data.authenticated.user.account}}
-    {{#paper-button onClick=(action "logout") iconButton=true}}
+      <PaperTooltip>Profiel</PaperTooltip>
+    </PaperButton>
+    {{this.session.data.authenticated.user.account}}
+    <PaperButton @onClick={{fn this.logout}} @iconButton={{true}}>
       {{paper-icon "exit to app"}}
-      {{#paper-tooltip}}Log uit{{/paper-tooltip}}
-    {{/paper-button}}
-  {{/toolbar.tools}}
-{{/paper-toolbar}}
+      <PaperTooltip>Log uit</PaperTooltip>
+    </PaperButton>
+  </toolbar.tools>
+</PaperToolbar>
 
-{{#paper-sidenav-container class="main-side-nav-container"}}
-  {{#paper-sidenav class="main-side-nav" open=isMainMenuOpen
-       lockedOpen=false onToggle=(action (mut isMainMenuOpen))}}
-    {{#paper-toolbar as |toolbar|}}
-      {{#toolbar.tools}}
+<PaperSidenavContainer @class="main-side-nav-container">
+  <PaperSidenav @class="main-side-nav" @open={{this.isMainMenuOpen}} @lockedOpen={{false}} @onToggle={{fn (mut this.isMainMenuOpen)}}>
+    <PaperToolbar as |toolbar|>
+      <toolbar.tools>
         Menu <span class="version">v{{app-version versionOnly=true}}</span>
         <span class="flex"></span>
-        {{#paper-button iconButton=true}}{{paper-icon "close"}}{{/paper-button}}
-      {{/toolbar.tools}}
-    {{/paper-toolbar}}
+        <PaperButton @iconButton={{true}}>{{paper-icon "close"}}</PaperButton>
+      </toolbar.tools>
+    </PaperToolbar>
 
-    {{#paper-content}}
+    <PaperContent>
 
-      {{#paper-list}}
+      <PaperList>
         {{#paper-link-item 'main.index'}}
           Home
         {{/paper-link-item}}
-        {{paper-divider}}
+        <PaperDivider />
         {{#paper-link-item 'main.customers.index' (query-params page=0 number=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined)}}
           Klanten
         {{/paper-link-item}}
-        {{paper-divider}}
+        <PaperDivider />
         {{#paper-link-item 'main.requests.index' (query-params page=0 number=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutOffer=undefined)}}
           Aanvragen
         {{/paper-link-item}}
-        {{paper-divider}}
+        <PaperDivider />
         {{#paper-link-item 'main.offers.index' (query-params page=0 number=undefined reference=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutOrder=undefined)}}
           Offertes
         {{/paper-link-item}}
-        {{paper-divider}}
+        <PaperDivider />
         {{#paper-link-item 'main.orders.index' (query-params page=0 reference=undefined offerNumber=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutInvoice=undefined)}}
           Bestellingen
         {{/paper-link-item}}
-        {{paper-divider}}
+        <PaperDivider />
         {{#paper-link-item 'main.deposit-invoices.index' (query-params page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined)}}
           Voorschotfacturen
         {{/paper-link-item}}
-        {{paper-divider}}
+        <PaperDivider />
         {{#paper-link-item 'main.invoices.index' (query-params page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined)}}
           Facturen
         {{/paper-link-item}}
-      {{/paper-list}}
+      </PaperList>
 
-      {{#paper-list}}
-        {{#paper-subheader}}Boekhouding{{/paper-subheader}}
-        {{paper-divider}}
+      <PaperList>
+        <PaperSubheader>Boekhouding</PaperSubheader>
+        <PaperDivider />
         {{#paper-link-item 'main.accountancy.exports' (query-params page=0)}}Exports{{/paper-link-item}}
-      {{/paper-list}}
+      </PaperList>
 
-      <!-- {{#paper-list}}
+      {{!-- {{#paper-list}}
            {{#paper-subheader}}Rapporten{{/paper-subheader}}
            {{paper-divider}}
            {{#paper-item}}Offertes{{/paper-item}}
@@ -88,24 +87,24 @@
            {{paper-divider}}
            {{#paper-item}}Lijsten{{/paper-item}}
            {{/paper-list}}
-         -->
-      {{#paper-list}}
-        {{#paper-subheader}}Gebruiker{{/paper-subheader}}
-        {{paper-divider}}
-        <!-- {{#paper-item}}Profiel{{/paper-item}}
-             {{paper-divider}} -->
-        {{#paper-item onClick=(action "logout")}}Log out{{/paper-item}}
-      {{/paper-list}}
+         --}}
+      <PaperList>
+        <PaperSubheader>Gebruiker</PaperSubheader>
+        <PaperDivider />
+        {{!-- {{#paper-item}}Profiel{{/paper-item}}
+                                {{paper-divider}}  --}}
+        <PaperItem @onClick={{fn this.logout}}>Log out</PaperItem>
+      </PaperList>
 
-    {{/paper-content}}
-  {{/paper-sidenav}}
+    </PaperContent>
+  </PaperSidenav>
 
   <div class="layout-row flex">
     <div class="main-outlet">
-      {{#unless configuration.preloadStaticLists.isRunning}}
-        {{liquid-outlet}}
+      {{#unless this.configuration.preloadStaticLists.isRunning}}
+        <LiquidOutlet />
       {{/unless}}
     </div>
   </div>
 
-{{/paper-sidenav-container}}
+</PaperSidenavContainer>

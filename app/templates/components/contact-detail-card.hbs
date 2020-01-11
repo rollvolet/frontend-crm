@@ -1,25 +1,25 @@
-{{#detail-icon-list-item icon="person" label="Naam" class="resource-details--section-name"}}
-  {{model.printName}}
-{{/detail-icon-list-item}}
+<DetailIconListItem @icon="person" @label="Naam" @class="resource-details--section-name">
+  {{this.model.printName}}
+</DetailIconListItem>
 
-{{#detail-icon-list-item icon="location on" label="Adres" class="resource-details--section-address"}}
-  <div>{{model.address1}}</div>
-  <div>{{model.address2}}</div>
-  <div>{{model.address3}}</div>
-  <div>{{model.postalCode}} {{model.city}}</div>
-{{/detail-icon-list-item}}
+<DetailIconListItem @icon="location on" @label="Adres" @class="resource-details--section-address">
+  <div>{{this.model.address1}}</div>
+  <div>{{this.model.address2}}</div>
+  <div>{{this.model.address3}}</div>
+  <div>{{this.model.postalCode}} {{this.model.city}}</div>
+</DetailIconListItem>
 
-{{#detail-icon-list-item icon="mail outline" label="E-mail" class="resource-details--section-contact"}}
-  <div>{{fmt-email value=model.email}}</div>
-  <div>{{fmt-email value=model.email2}}</div>
-{{/detail-icon-list-item}}
+<DetailIconListItem @icon="mail outline" @label="E-mail" @class="resource-details--section-contact">
+  <div><FmtEmail @value={{this.model.email}} /></div>
+  <div><FmtEmail @value={{this.model.email2}} /></div>
+</DetailIconListItem>
 
-{{#detail-icon-list-item icon="phone" label="Telefoon" class="resource-details--section-telephone"}}
-  {{#each model.telephones as |tel|}}
+<DetailIconListItem @icon="phone" @label="Telefoon" @class="resource-details--section-telephone">
+  {{#each this.model.telephones as |tel|}}
     <div>
       {{tel.telephoneType.name}}:
       {{format-phone tel.country.telephonePrefix tel.area tel.number}}
       {{#if tel.memo}}({{tel.memo}}){{/if}}
     </div>
   {{/each}}
-{{/detail-icon-list-item}}
+</DetailIconListItem>

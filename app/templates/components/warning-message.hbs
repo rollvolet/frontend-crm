@@ -1,5 +1,7 @@
-{{#if hasBlock}}
-  {{yield}}
-{{else}}
-  {{paper-icon "error"}} {{message}}
-{{/if}}
+<div class="warning-message">
+  {{#if hasBlock}}
+    {{yield}}
+  {{else}}
+    {{paper-icon "error"}} {{@message}}
+  {{/if}}
+</div>

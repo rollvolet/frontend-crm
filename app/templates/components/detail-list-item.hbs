@@ -1,6 +1,6 @@
 <div class="flex-none detail-key">
-  {{label}}
+  {{@label}}
 </div>
-<div class="flex detail-value {{if displayRow "layout-row"}}">
+<div class="flex detail-value {{if this.displayRow "layout-row"}}">
   {{yield}}
 </div>

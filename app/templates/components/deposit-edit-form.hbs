@@ -1,14 +1,6 @@
 <div class="layout-row">
-  {{paper-input label="Datum" value=model.paymentDateStr type="date"
-      required="style" errors=(v-get model 'paymentDate' 'messages')
-      onChange=(action (mut model.paymentDateStr)) onBlur=(perform save)
-      class="default"}}
-  {{paper-input label="Bedrag (€)" value=amountInput
-      required="style" errors=(v-get model 'amount' 'messages')
-      onChange=(action (mut amountInput)) onBlur=(queue (action "formatDecimal" "amount") (perform save))
-      class="small"}}
-  {{input-field/payment-select value=model.payment
-      onSelectionChange=(queue (action (mut model.payment)) (perform save))
-      class="md-input-wrapper large u-rel-top-small"}}
+  <PaperInput @label="Datum" @value={{@model.paymentDateStr}} @type="date" @required="style" @errors={{v-get @model "paymentDate" "messages"}} @onChange={{fn (mut @model.paymentDateStr)}} @onBlur={{perform @save}} @class="default" />
+  <InputField::DecimalInput @label="Bedrag (€)" @value={{@model.amount}} @errors={{v-get @model "amount" "messages"}} @onChange={{queue (fn (mut @model.amount)) (perform @save)}} @isRequired={{true}} />
+  <InputField::PaymentSelect @value={{@model.payment}} @onSelectionChange={{queue (fn (mut @model.payment)) (perform @save)}} @class="md-input-wrapper large u-rel-top-small" />
 </div>
 {{yield}}

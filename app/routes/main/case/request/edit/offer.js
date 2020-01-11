@@ -1,11 +1,16 @@
-import Route from '@ember/routing/route';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import snippets from '../../../../../config/snippets';
 import getDocumentLanguageCode from '../../../../../utils/get-document-language-code';
 
-export default Route.extend({
-  case: service(),
-  store: service(),
+@classic
+export default class OfferRoute extends Route {
+  @service
+  case;
+
+  @service
+  store;
 
   async model() {
     const customer = this.modelFor('main.case');
@@ -28,7 +33,8 @@ export default Route.extend({
     });
 
     return offer.save();
-  },
+  }
+
   afterModel(model) {
     const customer = this.modelFor('main.case');
     this.transitionTo('main.case.offer.edit', customer, model, {
@@ -38,4 +44,4 @@ export default Route.extend({
     // update case to display the new offer tab
     this.case.updateRecord('offer', model);
   }
-});
+}

@@ -1,9 +1,12 @@
+import classic from 'ember-classic-decorator';
 import Route from '@ember/routing/route';
 import DataTableRouteMixin from 'ember-data-table/mixins/route';
 
-export default Route.extend(DataTableRouteMixin, {
-  modelName: 'deposit-invoice',
-  queryParams: {
+@classic
+export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
+  modelName = 'deposit-invoice';
+
+  queryParams = {
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
@@ -21,7 +24,8 @@ export default Route.extend(DataTableRouteMixin, {
     bPostalCode: { refreshModel: true },
     bCity: { refreshModel: true },
     bStreet: { refreshModel: true }
-  },
+  };
+
   mergeQueryOptions(params) {
     return {
       // Building and contact must already be included
@@ -50,4 +54,4 @@ export default Route.extend(DataTableRouteMixin, {
       }
     };
   }
-});
+}

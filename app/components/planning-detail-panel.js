@@ -1,39 +1,55 @@
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { reads, notEmpty } from '@ember/object/computed';
 import Component from '@ember/component';
 import fetch, { Headers } from 'fetch';
 import { task } from 'ember-concurrency';
-import { notEmpty, reads } from '@ember/object/computed';
 import { not, and, isEmpty } from 'ember-awesome-macros';
-import { inject as service } from '@ember/service';
 import { next } from '@ember/runloop';
 
-export default Component.extend({
-  case: service(),
-  session: service(),
+@classic
+export default class PlanningDetailPanel extends Component {
+  @service
+  case;
 
-  calendarSubject: null,
-  editMode: false,
-  model: null,
+  @service
+  session;
 
-  isDisabledEdit: notEmpty('model.invoice.id'),
-  inputDateStr: reads('model.planningDateStr'),
-  isNotAvailableInCalendar: and('loadCalendarEvent.lastSuccessful', not('model.isPlanningMasteredByAccess'), 'model.planningMsObjectId', isEmpty('calendarSubject')),
+  calendarSubject = null;
+  editMode = false;
+  model = null;
+
+  @notEmpty('model.invoice.id')
+  isDisabledEdit;
+
+  @reads('model.planningDateStr')
+  inputDateStr;
+
+  @and(
+    'loadCalendarEvent.lastSuccessful',
+    not('model.isPlanningMasteredByAccess'),
+    'model.planningMsObjectId',
+    isEmpty('calendarSubject')
+  )
+  isNotAvailableInCalendar;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.loadCalendarEvent.perform();
     this.case.on('updateBuilding:succeeded', this, this.handleBuildingUpdatedEvent);
-  },
+  }
 
   willDestroyElement() {
     this.case.off('updateBuilding:succeeded', this, this.handleBuildingUpdatedEvent);
-    this._super(...arguments);
-  },
+    super.willDestroyElement(...arguments);
+  }
 
   handleBuildingUpdatedEvent() {
     this.loadCalendarEvent.perform();
-  },
+  }
 
-  loadCalendarEvent: task(function * () {
+  @task(function * () {
     if (this.model.planningMsObjectId) {
       const { access_token } = this.get('session.data.authenticated');
       const result = yield fetch(`/api/calendars/planning/${this.model.planningMsObjectId}/subject`, {
@@ -52,9 +68,10 @@ export default Component.extend({
     } else {
       this.set('calendarSubject', null);
     }
-  }),
+  })
+  loadCalendarEvent;
 
-  planEvent: task(function * () {
+  @task(function * () {
     if (this.model.planningDateStr != this.inputDateStr) {
       this.model.set('planningDateStr', this.inputDateStr);
       yield this.model.save();
@@ -62,9 +79,10 @@ export default Component.extend({
     }
 
     this.set('editMode', false);
-  }),
+  })
+  planEvent;
 
-  synchronize: task(function * () {
+  @(task(function * () {
     const { access_token } = this.get('session.data.authenticated');
     yield fetch(`/api/orders/${this.model.id}/planning-event`, {
       method: 'PUT',
@@ -77,16 +95,18 @@ export default Component.extend({
       yield this.model.reload(); // order.planningMsObjectId will be updated
 
     yield this.loadCalendarEvent.perform();
-  }).keepLatest(),
+  }).keepLatest())
+  synchronize;
 
-  actions: {
-    openEdit() {
-      this.set('editMode', true);
-      next(this, function() { this.element.querySelector('input').focus(); });
-    },
-    async remove() {
-      this.set('inputDateStr', null);
-      await this.planEvent.perform();
-    }
+  @action
+  openEdit() {
+    this.set('editMode', true);
+    next(this, function() { this.element.querySelector('input').focus(); });
   }
-});
+
+  @action
+  async remove() {
+    this.set('inputDateStr', null);
+    await this.planEvent.perform();
+  }
+}

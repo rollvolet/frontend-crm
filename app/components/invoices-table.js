@@ -1,31 +1,36 @@
-import Component from '@ember/component';
-import DebouncedSearch from '../mixins/debounced-search-task';
-import { observer } from '@ember/object';
-import { task } from 'ember-concurrency';
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
+import { observes } from '@ember-decorators/object';
 import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import { task } from 'ember-concurrency';
 
-export default Component.extend(DebouncedSearch, {
-  classNames: ['invoices-table'],
-
-  store: service(),
+@classic
+@classNames('invoices-table')
+export default class InvoicesTable extends Component {
+  @service
+  store;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.set('invoices', []);
-  },
+  }
 
   didReceiveAttrs() {
     this.search.perform();
-  },
+  }
 
-  page: 0,
-  size: 10,
-  sort: '-number',
-  onClickRow: null,
-  dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
+  page = 0;
+  size = 10;
+  sort = '-number';
+  onClickRow = null;
+
+  @observes('page', 'size', 'sort')
+  dataTableParamChanged() {
     this.search.perform();
-  }),
-  search: task(function * () {
+  }
+
+  @task(function * () {
     const invoices = yield this.store.query('invoice', {
       page: {
         size: this.size,
@@ -36,4 +41,5 @@ export default Component.extend(DebouncedSearch, {
     });
     this.set('invoices', invoices);
   })
-});
+  search;
+}

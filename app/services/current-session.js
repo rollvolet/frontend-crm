@@ -1,10 +1,15 @@
+import classic from 'ember-classic-decorator';
 import Service, { inject } from '@ember/service';
 
-export default Service.extend({
-  session: inject(),
-  store: inject(),
+@classic
+export default class CurrentSessionService extends Service {
+  @inject()
+  session;
 
-  employee: undefined,
+  @inject()
+  store;
+
+  employee = undefined;
 
   async getCurrentEmployee() {
     if (this.employee === undefined) {
@@ -20,4 +25,4 @@ export default Service.extend({
     }
     return this.employee;
   }
-});
+}

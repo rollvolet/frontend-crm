@@ -1,27 +1,37 @@
-import Component from '@ember/component';
-import DebouncedSearch from '../../mixins/debounced-search-task';
-import { observer } from '@ember/object';
-import { task } from 'ember-concurrency';
+import classic from 'ember-classic-decorator';
+import { observes } from '@ember-decorators/object';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import FilterComponent from '../data-table-filter';
+import { task } from 'ember-concurrency';
 
-export default Component.extend(DebouncedSearch, {
-  classNames: ['offers-table'],
+@classic
+export default class OffersTable extends FilterComponent {
+  @service router;
 
-  router: service(),
+  @service store;
+
+  page = 0;
+  size = 10;
+  sort = '-offer-date';
+  filterKeys = Object.freeze(['requestNumber', 'number', 'reference', 'name', 'postalCode', 'city', 'street'])
 
   init() {
-    this._super(...arguments);
-    this.search.perform();
-  },
+    super.init(...arguments);
+    this.search.perform(this.getFilter());
+  }
 
-  page: 0,
-  size: 10,
-  sort: '-offer-date',
-  dataTableParamChanged: observer('page', 'size', 'sort', function() { // eslint-disable-line ember/no-observers
-    this.search.perform();
-  }),
-  search: task(function * () {
-    const offers = yield this.customer.query('offers', {
+  async onChange(filter) {
+    await this.search.perform(filter);
+  }
+
+  @observes('page', 'size', 'sort')
+  dataTableParamChanged() { // eslint-disable-line ember/no-observers
+    this.search.perform(this.getFilter());
+  }
+
+  @task(function * (filter) {
+    const offers = yield this.store.query('offer', {
       page: {
         size: this.size,
         number: this.page
@@ -29,37 +39,27 @@ export default Component.extend(DebouncedSearch, {
       sort: this.sort,
       include: 'building,request',
       filter: {
-        'request-number': this.getFilterValue('requestNumber'),
-        number: this.getFilterValue('number'),
-        reference: this.getFilterValue('reference'),
+        customer: {
+          number: this.customer.number
+        },
+        'request-number': filter.requestNumber,
+        number: filter.number,
+        reference: filter.reference,
         building: {
-          name: this.getFilterValue('name'),
-          'postal-code': this.getFilterValue('postalCode'),
-          city: this.getFilterValue('city'),
-          street: this.getFilterValue('street')
+          name: filter.name,
+          'postal-code': filter.postalCode,
+          city: filter.city,
+          street: filter.street
         }
       }
     });
     this.set('offers', offers);
-  }),
-  actions: {
-    setFilter(key, value) {
-      this.set(key, value);
-      this.debounceSearch.perform(this.search);
-    },
-    resetFilters() {
-      this.set('requestNumber', undefined);
-      this.set('number', undefined);
-      this.set('reference', undefined);
-      this.set('name', undefined);
-      this.set('postalCode', undefined);
-      this.set('city', undefined);
-      this.set('street', undefined);
-      this.search.perform();
-    },
-    clickRow(row) {
-      const offerId = row.get('id');
-      this.router.transitionTo('main.case.offer.edit', this.customer, offerId);
-    }
+  })
+  search;
+
+  @action
+  clickRow(row) {
+    const offerId = row.get('id');
+    this.router.transitionTo('main.case.offer.edit', this.customer, offerId);
   }
-});
+}

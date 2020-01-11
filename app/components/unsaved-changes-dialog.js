@@ -1,18 +1,5 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-export default Component.extend({
-  tagName: '',
+export default class UnsavedChangesDialog extends Component {
 
-  show: false,
-  onConfirm: null,
-
-  actions: {
-    cancelClose() {
-      this.set('show', false);
-    },
-    confirmClose() {
-      this.set('show', false);
-      this.onConfirm();
-    }
-  }
-});
+}

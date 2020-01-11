@@ -1,47 +1,64 @@
+import classic from 'ember-classic-decorator';
+import { action, computed } from '@ember/object';
+import { on } from '@ember-decorators/object';
+import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { task, all } from 'ember-concurrency';
-import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
-import { computed } from '@ember/object';
 import { not, or, notEmpty } from 'ember-awesome-macros';
-import { on } from '@ember/object/evented';
 import { EKMixin, keyUp } from 'ember-keyboard';
 
-export default Component.extend(EKMixin, {
-  documentGeneration: service(),
-  router: service(),
-  store: service(),
+@classic
+export default class RequestPanel extends Component.extend(EKMixin) {
+  @service documentGeneration;
+  @service router;
+  @service store;
 
-  model: null,
-  editMode: false,
-  onOpenEdit: null,
-  onCloseEdit: null,
-  showUnsavedChangesDialog: false,
+  model = null;
+  editMode = false;
+  onOpenEdit = null;
+  onCloseEdit = null;
+  showUnsavedChangesDialog = false;
 
-  isDisabledEdit: notEmpty('model.offer.id'),
-  isEnabledDelete: not('isDisabledEdit'),
-  isLinkedToCustomer: notEmpty('model.customer.id'),
-  isDisabledUnlinkCustomer: or('isDisabledEdit', notEmpty('model.building.id'), notEmpty('model.contact.id')),
+  @notEmpty('model.offer.id')
+  isDisabledEdit;
 
-  hasFailedCalendarEvent: computed('model.calendarEvent.{content,isMasteredByAccess,validations.isIsvalid,isError}', function() {
+  @not('isDisabledEdit')
+  isEnabledDelete;
+
+  @notEmpty('model.customer.id')
+  isLinkedToCustomer;
+
+  @or(
+    'isDisabledEdit',
+    notEmpty('model.building.id'),
+    notEmpty('model.contact.id')
+  )
+  isDisabledUnlinkCustomer;
+
+  @computed(
+    'model.calendarEvent.{content,isMasteredByAccess,validations.isIsvalid,isError}'
+  )
+  get hasFailedCalendarEvent() {
     const calendarEvent = this.model.get('calendarEvent');
     const isUpdatableCalendarEvent = calendarEvent && !calendarEvent.get('isMasteredByAccess');
     return isUpdatableCalendarEvent && (
       calendarEvent.get('isNew')
         || calendarEvent.get('validations.isInvalid')
         || calendarEvent.get('isError'));
-  }),
+  }
 
-  visitor: computed('model.visitor', function() {
+  @computed('model.visitor')
+  get visitor() {
     return this.store.peekAll('employee').find(e => e.firstName == this.model.visitor);
-  }),
+  }
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.set('keyboardActivated', true); // required for ember-keyboard
-  },
+  }
 
-  remove: task(function * () {
+  @task(function * () {
     const customer = yield this.model.customer;
     try {
       const calendarEvent = yield this.model.calendarEvent;
@@ -57,8 +74,10 @@ export default Component.extend(EKMixin, {
       else
         this.router.transitionTo('main.requests.index');
     }
-  }),
-  rollbackTree: task( function * () {
+  })
+  remove;
+
+  @task(function * () {
     this.model.rollbackAttributes();
     const calendarEvent = yield this.model.calendarEvent;
     if (calendarEvent)
@@ -70,8 +89,10 @@ export default Component.extend(EKMixin, {
     // rollbackPromises.push(this.model.belongsTo('calendarEvent').reload());
     yield all(rollbackPromises);
     yield this.save.perform(null, { forceSuccess: true });
-  }),
-  save: task(function * (_, { forceSuccess = false } = {} ) {
+  })
+  rollbackTree;
+
+  @(task(function * (_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;
 
     const { validations } = yield this.model.validate();
@@ -84,8 +105,10 @@ export default Component.extend(EKMixin, {
         yield this.model.save();
       }
     }
-  }).keepLatest(),
-  isValidForClosure: task( function * () {
+  }).keepLatest())
+  save;
+
+  @task(function * () {
     if (this.model.isNew || this.model.validations.isInvalid || this.model.isError) {
       return false;
     } else if (this.save.last && this.save.last.isError) {
@@ -99,41 +122,58 @@ export default Component.extend(EKMixin, {
       }
     }
     return true;
-  }),
-  unlinkCustomer: task(function * () {
+  })
+  isValidForClosure;
+
+  @task(function * () {
     this.model.set('customer', null);
     this.model.set('contact', null);
     this.model.set('building', null);
     yield this.save.perform();
     this.router.transitionTo('main.requests.edit', this.model);
-  }),
+  })
+  unlinkCustomer;
 
   // eslint-disable-next-line ember/no-on-calls-in-components
-  openEditByShortcut: on(keyUp('ctrl+alt+KeyU'), function() {
+  @on(keyUp('ctrl+alt+KeyU'))
+  openEditByShortcut() {
     this.onOpenEdit();
-  }),
+  }
 
-  actions: {
-    openEdit() {
-      this.onOpenEdit();
-    },
-    async closeEdit() {
-      const isValidForClosure = await this.isValidForClosure.perform();
-      if (isValidForClosure) {
-        this.onCloseEdit();
-      } else {
-        this.set('showUnsavedChangesDialog', true);
-      }
-    },
-    async confirmCloseEdit() {
-      await this.rollbackTree.perform();
+  @action
+  openEdit() {
+    this.onOpenEdit();
+  }
+
+  @action
+  async closeEdit() {
+    const isValidForClosure = await this.isValidForClosure.perform();
+    if (isValidForClosure) {
       this.onCloseEdit();
-    },
-    generateVisitReport() {
-      return this.documentGeneration.visitReport(this.model);
-    },
-    linkCustomer() {
-      this.router.transitionTo('main.requests.edit.customer', this.model);
+    } else {
+      this.set('showUnsavedChangesDialog', true);
     }
   }
-});
+
+  @action
+  closeUnsavedChangesDialog() {
+    this.set('showUnsavedChangesDialog', false);
+  }
+
+  @action
+  async confirmCloseEdit() {
+    this.closeUnsavedChangesDialog();
+    await this.rollbackTree.perform();
+    this.onCloseEdit();
+  }
+
+  @action
+  generateVisitReport() {
+    return this.documentGeneration.visitReport(this.model);
+  }
+
+  @action
+  linkCustomer() {
+    this.router.transitionTo('main.requests.edit.customer', this.model);
+  }
+}

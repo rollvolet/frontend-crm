@@ -1,19 +1,13 @@
-<div>{{model.sequenceNumber}}</div>
-{{pell-editor class="pell-editor offerline" value=model.description pellOptions=pellOptions
-    onChange=(action (mut model.description)) focusOut=(perform save)}}
+<div>{{@model.sequenceNumber}}</div>
+<RichTextArea @class="offerline" @value={{@model.description}} @onChange={{fn (mut @model.description)}} @focusOut={{perform this.save}} />
 <div class="layout-column">
   <div class="layout-row layout-align-space-between-start">
-    {{save-status-icon model=model task=save}}
-    {{#paper-button onClick=(action "delete") iconButton=true}}
+    <SaveStatusIcon @model={{@model}} @task={{this.save}} />
+    <PaperButton @onClick={{fn @onDelete @model}} @iconButton={{true}}>
       {{paper-icon "delete"}}
-      {{#paper-tooltip}}Lijn verwijderen{{/paper-tooltip}}
-    {{/paper-button}}
+      <PaperTooltip>Lijn verwijderen</PaperTooltip>
+    </PaperButton>
   </div>
-  {{paper-input label="Bedrag (€)" value=amountInput
-      errors=(v-get model 'amount' 'messages')
-      onChange=(action (mut amountInput)) onBlur=(queue (action "formatDecimal" "amount") (perform save))
-      class="default" required="style"}}
-  {{input-field/vat-rate-select value=model.vatRate
-      onSelectionChange=(queue (action (mut model.vatRate)) (perform save))
-      class="md-input-wrapper large" required="style"}}
+  <InputField::DecimalInput @label="Bedrag (€)" @value={{@model.amount}} @errors={{v-get @model "amount" "messages"}} @onChange={{queue (fn (mut @model.amount)) (perform this.save)}} @isRequired={{true}} />
+  <InputField::VatRateSelect @value={{@model.vatRate}} @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save)}} @class="md-input-wrapper large" @required="style" />
 </div>

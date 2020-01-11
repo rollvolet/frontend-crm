@@ -1,18 +1,17 @@
-{{#if hasInvoice}}
+{{#if this.hasInvoice}}
   <div class="u-margin-top-small">
-    {{warning-message message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk."}}
+    <WarningMessage @message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk." />
   </div>
-{{else if order.isMasteredByAccess}}
+{{else if this.order.isMasteredByAccess}}
   <div class="u-margin-top-small">
-    {{warning-message message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."}}
+    <WarningMessage @message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden." />
   </div>
 {{/if}}
 
-{{deposits-panel model=order.deposits depositRequired=order.depositRequired isDisabledEdit=isDisabledEdit
-    onCreate=(action "createNewDeposit")}}
+<DepositsPanel @model={{this.order.deposits}} @depositRequired={{this.order.depositRequired}} @isDisabledEdit={{this.isDisabledEdit}} @onCreate={{fn this.createNewDeposit}} />
 
 <div class="u-margin-bottom-large"></div>
 
-{{deposit-invoices-panel model=model vatRate=order.vatRate isDisabledEdit=isDisabledEdit onCreate=(action "createNewDepositInvoice")}}
+<DepositInvoicesPanel @model={{@model}} @vatRate={{this.order.vatRate}} @isDisabledEdit={{this.isDisabledEdit}} @onCreate={{fn this.createNewDepositInvoice}} @onUpdateList={{fn this.updateList}} />
 
-{{liquid-outlet}}
+<LiquidOutlet />

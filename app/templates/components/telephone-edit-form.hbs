@@ -1,6 +1,6 @@
 <table class="telephone-edit-table">
   <thead>
-    <th><!-- Buttons --></th>
+    <th></th>
     <th>Type</th>
     <th>Land</th>
     <th>Zone</th>
@@ -8,14 +8,14 @@
     <th>Memo</th>
   </thead>
   <tbody>
-    {{#if (is-pending model.telephones)}}
+    {{#if this.initCopiedTelephones.isRunning}}
       <tr><td colspan="6">Aan het laden...</td></tr>
     {{else}}
-      {{#each (sort-by "order" "id" displayTelephones) as |telephone|}}
+      {{#each this.sortedTelephones as |telephone|}}
         <tr>
-          <td onclick={{perform removeTelephone telephone}}>
+          <td onclick={{perform this.removeTelephone telephone}} role="button">
             {{paper-icon "delete"}}
-            {{#paper-tooltip}}Verwijder nummer{{/paper-tooltip}}
+            <PaperTooltip>Verwijder nummer</PaperTooltip>
           </td>
           <td>{{telephone.telephoneType.name}}</td>
           <td>{{telephone.country.telephonePrefix}}</td>
@@ -24,22 +24,19 @@
           <td>{{telephone.memo}}</td>
         </tr>
       {{else}}
-        {{#unless newTelephone}}
+        {{#unless this.newTelephone}}
           <tr><td colspan="6">Geen telefoonnummers</td></tr>
         {{/unless}}
       {{/each}}
     {{/if}}
-    {{#if newTelephone}}
-      {{telephone-edit-form-line model=newTelephone
-          save=updateNewTelephone remove=removeNewTelephone
-          errorMessages=errorMessages}}
+    {{#if this.newTelephone}}
+      <TelephoneEditFormLine @model={{this.newTelephone}} @save={{this.updateNewTelephone}} @remove={{this.removeNewTelephone}} @errorMessages={{this.errorMessages}} />
     {{/if}}
   </tbody>
 </table>
 <div class="layout-row layout-align-end-center">
-  {{#paper-button primary=true fab=true mini=true raised=true disabled=isDisabledCreateNew
-       onClick=(perform createNewTelephone)}}
+  <PaperButton @primary={{true}} @fab={{true}} @mini={{true}} @raised={{true}} @disabled={{this.isDisabledCreateNew}} @onClick={{perform this.createNewTelephone}}>
     {{paper-icon "add"}}
-    {{#paper-tooltip}}Voeg nieuw nummer toe{{/paper-tooltip}}
-  {{/paper-button}}
+    <PaperTooltip>Voeg nieuw nummer toe</PaperTooltip>
+  </PaperButton>
 </div>

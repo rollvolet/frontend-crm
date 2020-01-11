@@ -1,8 +1,11 @@
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
 import { notEmpty } from '@ember/object/computed';
+import Component from '@ember/component';
 
-export default Component.extend({
-  model: null,
+@classic
+export default class RequestDetailPanel extends Component {
+  model = null;
 
-  isLinkedToCustomer: notEmpty('model.customer.id'),
-});
+  @notEmpty('model.customer.id')
+  isLinkedToCustomer;
+}

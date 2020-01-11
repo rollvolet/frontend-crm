@@ -1,12 +1,7 @@
-import Component from '@ember/component';
-import { computed } from '@ember/object';
+import Component from '@glimmer/component';
 
-export default Component.extend({
-  tagName: '',
-
-  value: null,
-
-  href: computed('value', function() {
-    return `mailto:${this.value}`;
-  })
-});
+export default class FmtEmail extends Component {
+  get href() {
+    return `mailto:${this.args.value}`;
+  }
+}

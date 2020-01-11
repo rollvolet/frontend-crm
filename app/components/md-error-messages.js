@@ -1,7 +1,9 @@
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
 import Component from '@ember/component';
 
-export default Component.extend({
-  classNames: ['md-input-messages-animation', 'md-auto-hide'],
-
-  errors: null
-});
+@classic
+@classNames('md-input-messages-animation', 'md-auto-hide')
+export default class MdErrorMessages extends Component {
+  errors = null;
+}

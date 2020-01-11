@@ -1,43 +1,42 @@
-<div class="data-table-filters">
-  <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-  {{paper-input label="Nummer" value=number onChange=(action "setFilter" "number") class="small"}}
-  {{paper-input label="Gebouw" value=name onChange=(action "setFilter" "name")}}
-  {{paper-input label="Straat" value=street onChange=(action "setFilter" "street") class="large"}}
-  {{paper-input label="Postcode" value=postalCode onChange=(action "setFilter" "postalCode") class="small"}}
-  {{paper-input label="Gemeente" value=city onChange=(action "setFilter" "city")}}
-  {{#paper-button iconButton=true onClick=(action "resetFilters")}}
-    {{paper-icon "close"}}
-    {{#paper-tooltip}}Wis filters{{/paper-tooltip}}
-  {{/paper-button}}
+<div class="requests-table">
+  <div class="data-table-filters">
+    <div class="data-table-filters--title">{{paper-icon "search"}}</div>
+    <PaperInput @label="Nummer" @value={{this.numberFilter}} @onChange={{perform this.debounceFilter "number"}} @class="small" />
+    <PaperInput @label="Gebouw" @value={{this.nameFilter}} @onChange={{perform this.debounceFilter "name"}} />
+    <PaperInput @label="Straat" @value={{this.streetFilter}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
+    <PaperInput @label="Postcode" @value={{this.postalCodeFilter}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
+    <PaperInput @label="Gemeente" @value={{this.cityFilter}} @onChange={{perform this.debounceFilter "city"}} />
+    <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
+      {{paper-icon "close"}}
+      <PaperTooltip>Wis filters</PaperTooltip>
+    </PaperButton>
+  </div>
+
+  <DataTable @content={{this.requests}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen aanvragen" @onClickRow={{fn this.clickRow}} @page={{this.page}} @size={{this.size}} @sort={{this.sort}} as |t|>
+    <t.content as |c|>
+      <c.header>
+        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
+        <ThSortable @field="request-date" @currentSorting={{this.sort}} @label="Datum" />
+        <th>Gebouw</th>
+        <th>Straat</th>
+        <th>Postcode</th>
+        <th>Gemeente</th>
+      </c.header>
+      <c.body as |row|>
+        <td>{{row.id}}</td>
+        <td><FmtDate @value={{row.requestDate}} /></td>
+        <td>{{row.building.printName}}</td>
+        <td>{{row.building.address1}}</td>
+        <td>{{row.building.postalCode}}</td>
+        <td>{{row.building.city}}</td>
+      </c.body>
+    </t.content>
+  </DataTable>
+
+  <div class="layout-row layout-align-end">
+    <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.openNewRequest}}>
+      {{paper-icon "add"}}
+      <PaperTooltip>Maak nieuwe aanvraag</PaperTooltip>
+    </PaperButton>
+  </div>
 </div>
-
-{{#data-table content=requests isLoading=(not search.isIdle) noDataMessage="Geen aanvragen"
-     onClickRow=(action "clickRow") page=page size=size sort=sort as |t|}}
-  {{#t.content as |c|}}
-    {{#c.header}}
-      {{th-sortable field='number' currentSorting=sort label='Nr'}}
-      {{th-sortable field='request-date' currentSorting=sort label='Datum'}}
-      <th>Gebouw</th>
-      <th>Straat</th>
-      <th>Postcode</th>
-      <th>Gemeente</th>
-    {{/c.header}}
-    {{#c.body as |row|}}
-      <td>{{row.id}}</td>
-      <td>{{fmt-date row.requestDate}}</td>
-      <td>{{row.building.printName}}</td>
-      <td>{{row.building.address1}}</td>
-      <td>{{row.building.postalCode}}</td>
-      <td>{{row.building.city}}</td>
-    {{/c.body}}
-  {{/t.content}}
-{{/data-table}}
-
-<div class="layout-row layout-align-end">
-  {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "openNewRequest")}}
-    {{paper-icon "add"}}
-    {{#paper-tooltip}}Maak nieuwe aanvraag{{/paper-tooltip}}
-  {{/paper-button}}
-</div>
-
-{{yield}}

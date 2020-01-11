@@ -1,6 +1,6 @@
-{{#if configuration.preloadStaticLists.isError}}
+{{#if this.configuration.preloadStaticLists.isError}}
   {{paper-icon "error"}}
-  {{#paper-tooltip}}Fout bij ophalen data{{/paper-tooltip}}
-{{else if configuration.preloadStaticLists.isRunning}}
-  {{paper-progress-circular class="md-progress-white" diameter=25}}
+  <PaperTooltip>Fout bij ophalen data</PaperTooltip>
+{{else if this.configuration.preloadStaticLists.isRunning}}
+  <PaperProgressCircular @class="md-progress-white" @diameter={{25}} />
 {{/if}}

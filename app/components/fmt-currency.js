@@ -1,11 +1,5 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
-const FmtCurrencyComponent = Component.extend({
-  tagName: ''
-});
+export default class FmtCurrencyComponent extends Component {
 
-FmtCurrencyComponent.reopenClass({
-  positionalParams: ['value']
-});
-
-export default FmtCurrencyComponent;
+}

@@ -1,6 +1,9 @@
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
 import Component from '@ember/component';
 
-export default Component.extend({
-  classNames: ['detail-list--item', 'layout-row'],
-  displayRow: false
-});
+@classic
+@classNames('detail-list--item', 'layout-row')
+export default class DetailListItem extends Component {
+  displayRow = false;
+}

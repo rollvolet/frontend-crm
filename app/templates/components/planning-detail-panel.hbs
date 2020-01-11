@@ -1,62 +1,61 @@
-{{#if model.isPlanningMasteredByAccess}}
+{{#if this.model.isPlanningMasteredByAccess}}
   <div class="case--right-panel flex-noshrink layout-column">
     <div class="case--order--planning">
       <h3>{{paper-icon "event"}} Planning</h3>
       <div class="case--order--planning--description">
-        {{#if model.planningDate}}{{fmt-date model.planningDate}}{{else}}Niet ingepland{{/if}}
+        {{#if this.model.planningDate}}<FmtDate @value={{this.model.planningDate}} />{{else}}Niet ingepland{{/if}}
       </div>
       <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
     </div>
   </div>
 {{else}}
   <div class="case--right-panel flex-noshrink layout-column">
-    <div class="case--order--planning {{if isNotAvailableInCalendar "not-found"}}">
+    <div class="case--order--planning {{if this.isNotAvailableInCalendar "not-found"}}">
       <div class="layout-row layout-align-space-between-center">
         <h3>{{paper-icon "event"}} Planning</h3>
-        {{#if editMode}}
+        {{#if this.editMode}}
           <div>
-          {{#paper-button onClick=(action "remove") iconButton=true}}
+          <PaperButton @onClick={{fn this.remove}} @iconButton={{true}}>
             {{paper-icon "delete"}}
-            {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-          {{/paper-button}}
-          {{#paper-button onClick=(perform planEvent) iconButton=true}}
+            <PaperTooltip>Verwijderen</PaperTooltip>
+          </PaperButton>
+          <PaperButton @onClick={{perform this.planEvent}} @iconButton={{true}}>
             {{paper-icon "exit to app"}}
-            {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
-          {{/paper-button}}
+            <PaperTooltip>Sluiten</PaperTooltip>
+          </PaperButton>
           </div>
         {{else}}
           <div>
-            {{#if model.planningDate}}
-              {{#paper-button iconButton=true onClick=(perform synchronize)}}
+            {{#if this.model.planningDate}}
+              <PaperButton @iconButton={{true}} @onClick={{perform this.synchronize}}>
                 {{paper-icon "sync"}}
-                {{#paper-tooltip}}Stuur wijzigingen naar agenda{{/paper-tooltip}}
-              {{/paper-button}}
+                <PaperTooltip>Stuur wijzigingen naar agenda</PaperTooltip>
+              </PaperButton>
             {{/if}}
-            {{#unless isNotAvailableInCalendar}}
-              {{#paper-button onClick=(action "openEdit") iconButton=true disabled=isDisabledEdit}}
+            {{#unless this.isNotAvailableInCalendar}}
+              <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
                 {{paper-icon "edit mode"}}
-                {{#paper-tooltip}}Aanpassen{{/paper-tooltip}}
-              {{/paper-button}}
+                <PaperTooltip>Aanpassen</PaperTooltip>
+              </PaperButton>
             {{/unless}}
           </div>
         {{/if}}
       </div>
       <div class="case--order--planning--description">
-        {{#if editMode}}
-          {{#if planEvent.isRunning}}
-            {{paper-progress-circular diameter=25}}
+        {{#if this.editMode}}
+          {{#if this.planEvent.isRunning}}
+            <PaperProgressCircular @diameter={{25}} />
           {{else}}
-            {{paper-input label="Datum" value=inputDateStr type="date"
-                onChange=(action (mut inputDateStr)) class="default"}}
+            <PaperInput @label="Datum" @value={{this.inputDateStr}} @type="date" @onChange={{fn (mut this.inputDateStr)}} @class="default" />
           {{/if}}
         {{else}}
-          {{#if model.planningDate}}{{fmt-date model.planningDate}}{{else}}Niet ingepland{{/if}}
+          {{#if this.model.planningDate}}<FmtDate @value={{this.model.planningDate}} />{{else}}Niet ingepland{{/if}}
         {{/if}}
         <div class="col--subject">
-          {{#if loadCalendarEvent.isRunning}}
-            {{paper-progress-circular diameter=25}}
+          {{#if this.loadCalendarEvent.isRunning}}
+            <PaperProgressCircular @diameter={{25}} />
           {{else}}
-            {{calendarSubject}}
+            {{this.calendarSubject}}
           {{/if}}
         </div>
       </div>

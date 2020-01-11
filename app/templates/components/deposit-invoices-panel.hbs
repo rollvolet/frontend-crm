@@ -1,110 +1,111 @@
 <div class="layout-row layout-align-space-between-center">
   <h2>Voorschotfacturen</h2>
-  {{#paper-button primary=true fab=true raised=true mini=true onClick=(action "createNew") disabled=(or isDisabledEdit selected)}}
+  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.createNew}} @disabled={{or @isDisabledEdit this.selected}}>
     {{paper-icon "add"}}
-    {{#paper-tooltip}}Maak nieuwe voorschotfactuur{{/paper-tooltip}}
-  {{/paper-button}}
+    <PaperTooltip>Maak nieuwe voorschotfactuur</PaperTooltip>
+  </PaperButton>
 </div>
 
-{{#liquid-if editMode class="data-table-selection"}}
+{{#liquid-if this.editMode class="data-table-selection"}}
   <div class="layout-row layout-align-space-between-center">
     <div class="layout-row layout-align-start-center">
-      <h2>Factuur {{format-invoice-number selected.number}}</h2>
-      {{save-status-icon model=selected task=save}}
+      <h2>Factuur {{format-invoice-number this.selected.number}}</h2>
+      <SaveStatusIcon @model={{this.selected}} @task={{this.save}} />
     </div>
     <div>
-      {{#paper-button onClick=(action "closeEdit") iconButton=true}}
+      <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
         {{paper-icon "exit to app"}}
-        {{#paper-tooltip}}Sluiten{{/paper-tooltip}}
-      {{/paper-button}}
+        <PaperTooltip>Sluiten</PaperTooltip>
+      </PaperButton>
     </div>
   </div>
-  {{deposit-invoice-edit-form model=selected save=save}}
+  <DepositInvoiceEditForm @model={{this.selected}} @save={{this.save}} />
 {{else}}
   <div class="layout-row layout-xs-column layout-align-space-between">
     <div class="case--deposit-invoices--summary flex-100 layout-column">
-      {{#detail-list-item label="Totaal" displayRow=true}}
-        {{#detail-list-subitem label="Netto"}}
-          {{fmt-currency totalAmount}}
-        {{/detail-list-subitem}}
-        {{#detail-list-subitem label=(concat (get vatRate 'rate') "% BTW")}}
-          {{fmt-currency (await totalVat)}}
-        {{/detail-list-subitem}}
-      {{/detail-list-item}}
+      <DetailListItem @label="Totaal" @displayRow={{true}}>
+        <DetailListSubitem @label="Netto">
+          <FmtCurrency @value={{this.totalAmount}} />
+        </DetailListSubitem>
+        <DetailListSubitem @label={{concat (get @vatRate "rate") "% BTW"}}>
+          <FmtCurrency @value={{await this.totalVat}} />
+        </DetailListSubitem>
+      </DetailListItem>
     </div>
   </div>
 
-  {{#each model as |invoice|}}
+  {{#each @model as |invoice|}}
+    {{!-- TODO: create separate component for deposit-invoice--detail-panel --}}
     <div class="case--deposit-invoices--detail-panel">
-      {{paper-divider}}
+      <PaperDivider />
       <div class="layout-row layout-align-space-between-center">
         <h3>Voorschotfactuur {{format-invoice-number invoice.number}}</h3>
         <div>
-          {{#if generateInvoiceDocument.isRunning}}
-            {{paper-progress-circular diameter=18}}
+          {{#if this.generateInvoiceDocument.isRunning}}
+            <PaperProgressCircular @diameter={{18}} />
           {{else}}
-            {{#paper-button onClick=(action "downloadInvoiceDocument" invoice) iconButton=true}}
+            <PaperButton @onClick={{fn this.downloadInvoiceDocument invoice}} @iconButton={{true}}>
               {{paper-icon "find in page"}}
-              {{#paper-tooltip}}Voorschotfactuur bekijken{{/paper-tooltip}}
-            {{/paper-button}}
-            {{#unless (or isDisabledEdit invoice.isBooked)}}
-              {{#paper-button onClick=(perform generateInvoiceDocument invoice) iconButton=true}}
+              <PaperTooltip>Voorschotfactuur bekijken</PaperTooltip>
+            </PaperButton>
+            {{#if (and (not @isDisabledEdit) (not invoice.isBooked))}}
+              <PaperButton @onClick={{perform this.generateInvoiceDocument invoice}} @iconButton={{true}}>
                 {{paper-icon "restore page"}}
-                {{#paper-tooltip}}Voorschotfactuur maken{{/paper-tooltip}}
-              {{/paper-button}}
-            {{/unless}}
+                <PaperTooltip>Voorschotfactuur maken</PaperTooltip>
+              </PaperButton>
+            {{/if}}
           {{/if}}
-          {{#unless (or isDisabledEdit invoice.isBooked)}}
-            {{#paper-button onClick=(action "openEdit" invoice) iconButton=true}}
+          {{#if (and (not @isDisabledEdit) (not invoice.isBooked))}}
+            <PaperButton @onClick={{fn this.openEdit invoice}} @iconButton={{true}}>
               {{paper-icon "edit mode"}}
-              {{#paper-tooltip}}Bewerken{{/paper-tooltip}}
-            {{/paper-button}}
-            {{#paper-button onClick=(action "remove" invoice) iconButton=true}}
+              <PaperTooltip>Bewerken</PaperTooltip>
+            </PaperButton>
+            <PaperButton @onClick={{fn this.remove invoice}} @iconButton={{true}}>
               {{paper-icon "delete"}}
-              {{#paper-tooltip}}Verwijderen{{/paper-tooltip}}
-            {{/paper-button}}
-          {{/unless}}
+              <PaperTooltip>Verwijderen</PaperTooltip>
+            </PaperButton>
+          {{/if}}
           {{#if invoice.isBooked}}
             {{paper-icon "lock"}}
-            {{#paper-tooltip}}Geboekt in boekhouding{{/paper-tooltip}}
+            <PaperTooltip>Geboekt in boekhouding</PaperTooltip>
           {{/if}}
         </div>
       </div>
       <div class="layout-row layout-xs-column layout-align-space-between">
         <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
-          {{#detail-list-item label="Factuurdatum"}}
-            {{fmt-date invoice.invoiceDate}}
-          {{/detail-list-item}}
-          {{#detail-list-item label="Vervaldag"}}
-            {{fmt-date invoice.dueDate}}
-          {{/detail-list-item}}
-          {{#detail-list-item label="Geboekt"}}
-            {{fmt-date invoice.bookingDate}}
-          {{/detail-list-item}}
-          {{#detail-list-item label="Betaald"}}
-            {{fmt-date invoice.paymentDate}}
-          {{/detail-list-item}}
-          {{#detail-list-item label="Referentie"}}
+          <DetailListItem @label="Factuurdatum">
+            <FmtDate @value={{invoice.invoiceDate}} />
+          </DetailListItem>
+          <DetailListItem @label="Vervaldag">
+            <FmtDate @value={{invoice.dueDate}} />
+          </DetailListItem>
+          <DetailListItem @label="Geboekt">
+            <FmtDate @value={{invoice.bookingDate}} />
+          </DetailListItem>
+          <DetailListItem @label="Betaald">
+            <FmtDate @value={{invoice.paymentDate}} />
+          </DetailListItem>
+          <DetailListItem @label="Referentie">
             {{invoice.reference}}
-          {{/detail-list-item}}
-          {{#detail-list-item label="Opmerking"}}
+          </DetailListItem>
+          <DetailListItem @label="Opmerking">
             <span class="html-body">{{invoice.comment}}</span>
-          {{/detail-list-item}}
+          </DetailListItem>
         </div>
         <div class="case--right-panel flex-noshrink layout-column">
-          {{#detail-list-item label="Nettobedrag"}}
-            {{fmt-currency invoice.arithmeticAmount}}
-          {{/detail-list-item}}
-          {{#detail-list-item label="BTW"}}
-            {{fmt-currency (await invoice.arithmeticVat)}}
-          {{/detail-list-item}}
-          {{#detail-list-item label="Betaalref."}}
+          <DetailListItem @label="Nettobedrag">
+            <FmtCurrency @value={{invoice.arithmeticAmount}} />
+          </DetailListItem>
+          <DetailListItem @label="BTW">
+            <FmtCurrency @value={{await invoice.arithmeticVat}} />
+          </DetailListItem>
+          <DetailListItem @label="Betaalref.">
             {{format-bank-reference invoice.bankReference}}
-          {{/detail-list-item}}
+          </DetailListItem>
           {{#if invoice.certificateRequired}}
-            {{#detail-list-item label="BTW-attest" class="layout-align-start-center"}}
-              {{certificate-document-buttons model=invoice}}
-            {{/detail-list-item}}
+            <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
+              <CertificateDocumentButtons @model={{invoice}} />
+            </DetailListItem>
           {{/if}}
         </div>
       </div>
@@ -112,4 +113,4 @@
   {{/each}}
 {{/liquid-if}}
 
-{{unsaved-changes-dialog show=showUnsavedChangesDialog onConfirm=(action "confirmCloseEdit")}}
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

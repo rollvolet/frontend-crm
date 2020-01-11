@@ -1,20 +1,22 @@
+import classic from 'ember-classic-decorator';
+import { tagName } from '@ember-decorators/component';
 import Component from '@ember/component';
 
-export default Component.extend({
-  tagName: '',
-
-  didInsertHook() {},
-  willDestroyHook() {},
+@classic
+@tagName('')
+export default class UiHooks extends Component {
+  didInsertHook() {}
+  willDestroyHook() {}
 
   didInsertElement() {
-    this._super(...arguments);
+    super.didInsertElement(...arguments);
 
     this.didInsertHook();
-  },
+  }
 
   willDestroyElement() {
-    this._super(...arguments);
+    super.willDestroyElement(...arguments);
 
     this.willDestroyHook();
   }
-});
+}

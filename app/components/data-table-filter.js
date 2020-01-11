@@ -1,25 +1,28 @@
+import classic from 'ember-classic-decorator';
+import { tagName } from '@ember-decorators/component';
+import { action } from '@ember/object';
 import Component from '@ember/component';
 import { task, timeout } from 'ember-concurrency';
 
-export default Component.extend({
-  tagName: '',
-
-  filterKeys: Object.freeze([]),
-
-  onChange: null,
+@classic
+@tagName('')
+export default class DataTableFilter extends Component {
+  filterKeys = Object.freeze([])
 
   didReceiveAttrs() {
-    this._super(...arguments);
+    super.didReceiveAttrs(...arguments);
     for (let key of this.filterKeys) {
       const value = this.get(key);
       this.set(`${key}Filter`, value);
     }
-  },
+  }
 
   didInsertElement() {
-    this._super(...arguments);
-    document.querySelector('.search-autofocus input').focus();
-  },
+    super.didInsertElement(...arguments);
+    const el = document.querySelector('.search-autofocus input');  // TODO replace with autofocus modifier
+    if (el)
+      el.focus();
+  }
 
   getFilter() {
     const filter = {};
@@ -27,22 +30,24 @@ export default Component.extend({
       filter[key] = this.get(`${key}Filter`);
     }
     return filter;
-  },
+  }
 
-  debounceFilter: task(function * (key, value) {
+  @(task(function * (key, value) {
     this.set(`${key}Filter`, value);
     yield timeout(500);
     this.onChange(this.getFilter());
-  }).restartable(),
+  }).restartable())
+  debounceFilter;
 
-  actions: {
-    resetFilters() {
-      this.filterKeys.forEach(key => this.set(`${key}Filter`, undefined));
-      this.onChange(this.getFilter());
-    },
-    setFilter(key, value) {
-      this.set(`${key}Filter`, value);
-      this.onChange(this.getFilter());
-    }
+  @action
+  resetFilters() {
+    this.filterKeys.forEach(key => this.set(`${key}Filter`, undefined));
+    this.onChange(this.getFilter());
   }
-});
+
+  @action
+  setFilter(key, value) {
+    this.set(`${key}Filter`, value);
+    this.onChange(this.getFilter());
+  }
+}

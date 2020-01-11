@@ -1,59 +1,43 @@
 <h1>Voorschotfacturen</h1>
 
 <div class="deposit-invoices-data-table">
-  {{invoice/data-table-filter
-      number=number
-      offerNumber=offerNumber
-      reference=reference
-      requestNumber=requestNumber
-      cName=cName
-      cStreet=cStreet
-      cPostalCode=cPostalCode
-      cCity=cCity
-      cTelephone=cTelephone
-      bName=bName
-      bPostalCode=bPostalCode
-      bCity=bCity
-      bStreet=bStreet
-      onChange=(action "applyFilter")
-  }}
+  <Invoice::DataTableFilter @number={{this.number}} @offerNumber={{this.offerNumber}} @reference={{this.reference}} @requestNumber={{this.requestNumber}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @onChange={{fn this.applyFilter}} />
 
-  {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
-       sort=sort page=page size=size onClickRow=(action 'clickRow') as |t|}}
-    {{#t.content as |c|}}
-      {{#c.header}}
-        {{th-sortable field='number' currentSorting=sort label='Nr'}}
+  <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
+    <t.content as |c|>
+      <c.header>
+        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
         <th>Aanvraag</th>
-        {{th-sortable field='invoice-date' currentSorting=sort label='Datum'}}
-        <th><!-- customer / building --></th>
+        <ThSortable @field="invoice-date" @currentSorting={{this.sort}} @label="Datum" />
+        <th></th>
         <th>Naam</th>
         <th>Straat</th>
         <th>Postcode</th>
         <th>Gemeente</th>
-      {{/c.header}}
-      {{#c.body as |row|}}
+      </c.header>
+      <c.body as |row|>
         <td>{{format-invoice-number row.number}}</td>
         <td>{{row.order.requestNumber}}</td>
-        <td>{{fmt-date row.invoiceDate}}</td>
+        <td><FmtDate @value={{row.invoiceDate}} /></td>
         {{#if row.building}}
           <td>{{paper-icon "home"}}</td>
           <td>
             {{row.building.printName}}
-            <span class="text-fade">({{print-name model=row.customer}})</span>
+            <span class="text-fade">(<PrintName @model={{row.customer}} />)</span>
           </td>
           <td>{{row.building.address1}}</td>
           <td>{{row.building.postalCode}}</td>
           <td>{{row.building.city}}</td>
         {{else}}
           <td>{{paper-icon "person"}}</td>
-          <td>{{print-name model=row.customer}}</td>
+          <td><PrintName @model={{row.customer}} /></td>
           <td>{{row.customer.address1}}</td>
           <td>{{row.customer.postalCode}}</td>
           <td>{{row.customer.city}}</td>
         {{/if}}
-      {{/c.body}}
-    {{/t.content}}
-  {{/data-table}}
+      </c.body>
+    </t.content>
+  </DataTable>
 </div>
 
-{{liquid-outlet}}
+<LiquidOutlet />

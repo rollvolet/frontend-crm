@@ -1,49 +1,33 @@
 <div class="layout-row layout-align-start-start">
   <section class="layout-column">
     <div class="layout-row">
-      {{paper-input label="Datum" value=model.invoiceDateStr type="date"
-          required="style" errors=(v-get model 'invoiceDate' 'messages')
-          onChange=(queue (action (mut model.invoiceDateStr)) (perform save))
-          class="default"}}
+      <PaperInput @label="Datum" @value={{@model.invoiceDateStr}} @type="date" @required="style" @errors={{v-get @model "invoiceDate" "messages"}} @onChange={{queue (fn (mut @model.invoiceDateStr)) (perform @save)}} @class="default" />
     </div>
     <div class="layout-row">
-      {{paper-input label="Vervaldag" value=model.dueDateStr type="date"
-          onChange=(queue (action (mut model.dueDateStr)) (perform save))
-          class="default"}}
-      {{paper-input label="Betaald" value=model.paymentDateStr type="date"
-          onChange=(queue (action (mut model.paymentDateStr)) (perform save))
-          class="default"}}
+      <PaperInput @label="Vervaldag" @value={{@model.dueDateStr}} @type="date" @onChange={{queue (fn (mut @model.dueDateStr)) (perform @save)}} @class="default" />
+      <PaperInput @label="Betaald" @value={{@model.paymentDateStr}} @type="date" @onChange={{queue (fn (mut @model.paymentDateStr)) (perform @save)}} @class="default" />
     </div>
     <div class="layout-row">
-      {{paper-input label="Referentie klant" value=model.reference
-          onChange=(action (mut model.reference)) onBlur=(perform save)
-          class="xlarge"}}
+      <PaperInput @label="Referentie klant" @value={{@model.reference}} @onChange={{fn (mut @model.reference)}} @onBlur={{perform @save}} @class="xlarge" />
     </div>
     <div class="layout-row">
-      {{paper-input label="Opmerking (niet zichtbaar in document)" value=model.comment
-          onChange=(action (mut model.comment)) onBlur=(perform save)
-          textarea=true passThru=(hash rows=3) class="xxlarge"}}
+      <PaperInput @label="Opmerking (niet zichtbaar in document)" @value={{@model.comment}} @onChange={{fn (mut @model.comment)}} @onBlur={{perform @save}} @textarea={{true}} @passThru={{hash rows=3}} @class="xxlarge" />
     </div>
   </section>
   <section class="case--right-panel flex-noshrink layout-column">
     <div class="layout-row layout-align-start-center">
-      {{paper-checkbox label="Creditnota" value=model.isCreditNote
-          onChange=(queue (action (mut model.isCreditNote)) (perform save))}}
+      <PaperCheckbox @label="Creditnota" @value={{@model.isCreditNote}} @onChange={{queue (fn (mut @model.isCreditNote)) (perform @save)}} />
     </div>
-    {{#if model.isIsolated}}
+    {{#if @model.isIsolated}}
       <div class="layout-row">
-        {{input-field/vat-rate-select value=model.vatRate
-            required="style" errors=(v-get model 'vatRate' 'messages')
-            onSelectionChange=(queue (action "setVatRate") (perform save))
-            class="md-input-wrapper large"}}
+        <InputField::VatRateSelect @value={{@model.vatRate}} @required="style" @errors={{v-get @model "vatRate" "messages"}} @onSelectionChange={{queue (fn this.setVatRate) (perform @save)}} @class="md-input-wrapper large" />
       </div>
     {{/if}}
   </section>
 </div>
 <div>
   <label>Mededeling (zichtbaar onderaan in document)</label>
-  {{pell-editor class="pell-editor invoice-outro" value=model.documentOutro pellOptions=pellOptions
-      onChange=(action (mut model.documentOutro)) focusOut=(perform save)}}
+  <RichTextArea @class="invoice-outro" @value={{@model.documentOutro}} @onChange={{fn (mut @model.documentOutro)}} @focusOut={{perform @save}} />
 </div>
 
 {{yield}}

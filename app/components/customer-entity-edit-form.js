@@ -1,141 +1,124 @@
-import { computed } from '@ember/object';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { action, computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import { task, all } from 'ember-concurrency';
 import { warn } from '@ember/debug';
-import { inject as service } from '@ember/service';
 import { raw, equal, and, isEmpty, not } from 'ember-awesome-macros';
 
-const digitsOnly = /\D/g;
+export default class CustomerEntityEditForm extends Component {
+  @service
+  router;
 
-export default Component.extend({
-  router: service(),
+  @tracked
+  showUnsavedChangesDialog = false;
 
-  model: null,
-  onClose: null,
-  onRemove: null,
+  @tracked
+  scope = 'customer'; // one of 'customer', 'contact', 'building'
 
-  scope: 'customer', // one of 'customer', 'contact', 'building'
-  isScopeCustomer: equal('scope', raw('customer')),
-  showWarningOnLeaveDialog: false,
+  get isScopeCustomer() {
+    return this.scope == 'customer';
+  }
 
-  hasFailedTelephone: computed('model.telephones.[]', function() {
-    return this.model.telephones.find(t => t.isNew || t.validations.isInvalid || t.isError) != null;
-  }),
+  @computed('args.model.telephones.[]')
+  get hasFailedTelephone() {
+    return this.args.model.telephones.find(t => t.isNew || t.validations.isInvalid || t.isError) != null;
+  }
 
-  hasNoRequestsOrInvoices: and(isEmpty('model.requests'), isEmpty('model.invoices')),
-  hasNoContactsOrBuildings: and(isEmpty('model.contacts'), isEmpty('model.buildings')),
-  isEnabledDelete: and('hasNoRequestsOrInvoices', 'hasNoContactsOrBuildings'),
-  isDisabledDelete: not('isEnabledDelete'),
-  isDuplicateVatNumber: equal('model.validations.attrs.vatNumber.error.type', raw('unique-vat-number')),
+  @and(isEmpty('args.model.requests'), isEmpty('args.model.invoices'))
+  hasNoRequestsOrInvoices;
 
-  formattedVatNumber: computed('model.vatNumber', {
-    get() {
-      const vatNumber = this.model.vatNumber;
+  @and(isEmpty('args.model.contacts'), isEmpty('args.model.buildings'))
+  hasNoContactsOrBuildings;
 
-      if (vatNumber) {
-        if (vatNumber.length >= 2) {
-          const country = vatNumber.substr(0, 2).toUpperCase();
-          let number = vatNumber.substr(2);
+  @and('hasNoRequestsOrInvoices', 'hasNoContactsOrBuildings')
+  isEnabledDelete;
 
-          if (country == 'BE') {
-            if (!number.startsWith('0'))
-              number = `0${number}`;
+  @not('isEnabledDelete')
+  isDisabledDelete;
 
-            if (number.length >= 4)
-              number = `${number.substr(0,4)}.${number.substr(4)}`;
+  @equal('args.model.validations.attrs.vatNumber.error.type', raw('unique-vat-number'))
+  isDuplicateVatNumber;
 
-            if (number.length >= 8)
-              number = `${number.substr(0,8)}.${number.substr(8)}`;
-          }
-
-          return `${country} ${number}`;
-        } else {
-          return vatNumber.toUpperCase();
-        }
-      } else {
-        return null;
-      }
-    },
-    set(key, value) {
-      return value;
-    }
-  }),
-
-  remove: task(function * () {
+  @task(function * () {
     try {
-      const telephones = yield this.model.telephones;
+      const telephones = yield this.args.model.telephones;
       yield all(telephones.map(t => t.destroyRecord()));
-      yield this.model.destroyRecord();
+      yield this.args.model.destroyRecord();
     } catch (e) {
-      warn(`Something went wrong while destroying ${this.scope} ${this.model.id}`, { id: 'destroy-failure' });
+      warn(`Something went wrong while destroying ${this.scope} ${this.args.model.id}`, { id: 'destroy-failure' });
     } finally {
-      this.onRemove();
+      this.args.onRemove();
     }
-  }),
-  rollbackTree: task( function * () {
-    this.model.rollbackAttributes();
+  })
+  remove;
+
+  @task(function * () {
+    this.args.model.rollbackAttributes();
     const rollbackPromises = [];
-    const telephones = yield this.model.get('telephones');
+    const telephones = yield this.args.model.get('telephones');
     telephones.forEach( (telephone) => {
       telephone.rollbackAttributes();
       rollbackPromises.push(telephone.belongsTo('country').reload());
       rollbackPromises.push(telephone.belongsTo('telephoneType').reload());
     });
-    rollbackPromises.push(this.model.belongsTo('country').reload());
-    rollbackPromises.push(this.model.belongsTo('language').reload());
-    rollbackPromises.push(this.model.belongsTo('honorificPrefix').reload());
+    rollbackPromises.push(this.args.model.belongsTo('country').reload());
+    rollbackPromises.push(this.args.model.belongsTo('language').reload());
+    rollbackPromises.push(this.args.model.belongsTo('honorificPrefix').reload());
     yield all(rollbackPromises);
-  }),
-  save: task(function * () {
-    const { validations } = yield this.model.validate();
+  })
+  rollbackTree;
+
+  @(task(function * () {
+    const { validations } = yield this.args.model.validate();
     if (validations.isValid)
-      yield this.model.save();
-  }).keepLatest(),
+      yield this.args.model.save();
+  }).keepLatest())
+  save;
 
-  actions: {
-    close() {
-      if (this.model.isNew || this.model.validations.isInvalid || this.model.isError
-          || (this.save.last && this.save.last.isError)
-          || this.hasFailedTelephone) {
-        this.set('showUnsavedChangesDialog', true);
-      } else {
-        this.onClose();
-      }
-    },
-    confirmClose() {
-      this.rollbackTree.perform();
-      this.onClose();
-    },
-    setPostalCode(code, city) {
-      this.model.set('postalCode', code);
-      this.model.set('city', city);
-    },
-    setIsCompany(isCompany) {
-      if (!isCompany)
-        this.model.set('vatNumber', null);
-      else
-        this.set('formattedVatNumber', 'BE 0');
-
-      this.model.set('isCompany', isCompany);
-      this.save.perform();
-    },
-    setName(name) {
-      if (this.scope == 'customer' && name)
-        this.model.set('name', name.toUpperCase());
-      else
-        this.model.set('name', name);
-    },
-    setVatNumber(formattedVatNumber) {
-      let vatNumber = formattedVatNumber;
-
-      if (formattedVatNumber && formattedVatNumber.length >= 2) {
-        const country = formattedVatNumber.substr(0, 2);
-        const formattedNumber = formattedVatNumber.substr(2);
-        const number = formattedNumber.replace(digitsOnly, '');
-        vatNumber = `${country}${number}`;
-      }
-
-      this.model.set('vatNumber', vatNumber);
+  @action
+  close() {
+    if (this.args.model.isNew || this.args.model.validations.isInvalid || this.args.model.isError
+        || (this.save.last && this.save.last.isError)
+        || this.hasFailedTelephone) {
+      this.showUnsavedChangesDialog = true;
+    } else {
+      this.args.onClose();
     }
   }
-});
+
+  @action
+  closeUnsavedChangesDialog() {
+    this.showUnsavedChangesDialog = false
+  }
+
+  @action
+  async confirmCloseEdit() {
+    this.closeUnsavedChangesDialog();
+    this.rollbackTree.perform();
+    this.args.onClose();
+  }
+
+  @action
+  setPostalCode(code, city) {
+    this.args.model.set('postalCode', code);
+    this.args.model.set('city', city);
+  }
+
+  @action
+  setIsCompany(isCompany) {
+    if (!isCompany)
+      this.args.model.set('vatNumber', null);
+
+    this.args.model.set('isCompany', isCompany);
+    this.save.perform();
+  }
+
+  @action
+  setName(name) {
+    if (this.scope == 'customer' && name)
+      this.args.model.set('name', name.toUpperCase());
+    else
+      this.args.model.set('name', name);
+  }
+}

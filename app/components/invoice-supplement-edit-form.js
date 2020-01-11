@@ -1,15 +1,5 @@
-import Component from '@ember/component';
-import DecimalInputFormatting from '../mixins/decimal-input-formatting';
+import Component from '@glimmer/component';
 
-export default Component.extend(DecimalInputFormatting, {
-  model: null,
+export default class InvoiceSupplementEditForm extends Component {
 
-  didReceiveAttrs() {
-    this._super(...arguments);
-
-    if (this.model) {
-      this.initDecimalInput('amount');
-      this.initDecimalInput('nbOfPieces');
-    }
-  }
-});
+}

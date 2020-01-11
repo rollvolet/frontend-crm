@@ -1,41 +1,29 @@
 <div class="layout-row layout-align-start-start">
   <section class="layout-column">
     <div class="layout-row">
-      {{paper-input label="Datum" value=model.requestDateStr type="date"
-          required="style" errors=(v-get model 'requestDate' 'messages')
-          onChange=(queue (action (mut model.requestDateStr)) (perform save))
-          class="default"}}
+      <PaperInput @label="Datum" @value={{this.model.requestDateStr}} @type="date" @required="style" @errors={{v-get this.model "requestDate" "messages"}} @onChange={{queue (fn (mut this.model.requestDateStr)) (perform this.save)}} @class="default" />
     </div>
     <div class="layout-row">
-      {{input-field/employee-select label="Bediende" value=employee isAdministrative=true
-          onSelectionChange=(queue (action "setEmployee") (perform save))
-          class="md-input-wrapper large"}}
-      {{input-field/way-of-entry-select value=model.wayOfEntry
-          onSelectionChange=(queue (action (mut model.wayOfEntry)) (perform save))
-          class="md-input-wrapper default"}}
+      <InputField::EmployeeSelect @label="Bediende" @value={{this.employee}} @isAdministrative={{true}} @onSelectionChange={{queue (fn this.setEmployee) (perform this.save)}} @class="md-input-wrapper large" />
+      <InputField::WayOfEntrySelect @value={{this.model.wayOfEntry}} @onSelectionChange={{queue (fn (mut this.model.wayOfEntry)) (perform this.save)}} @class="md-input-wrapper default" />
     </div>
-    {{#if isLinkedToCustomer}}
+    {{#if this.isLinkedToCustomer}}
       <div class="layout-row layout-align-start-center">
-        {{paper-checkbox label="Bezoek nodig" value=model.requiresVisit
-            disabled=hasVisitMasteredByAccess onChange=(action "setRequiresVisit")}}
+        <PaperCheckbox @label="Bezoek nodig" @value={{this.model.requiresVisit}} @disabled={{this.hasVisitMasteredByAccess}} @onChange={{fn this.setRequiresVisit}} />
       </div>
     {{/if}}
     <div class="layout-row">
-      {{input-field/employee-select label="Bezoeker" value=visitor isOnRoad=true isTechnician=true
-          onSelectionChange=(queue (action "setVisitor") (perform save))
-          class="md-input-wrapper large"}}
+      <InputField::EmployeeSelect @label="Bezoeker" @value={{this.visitor}} @isOnRoad={{true}} @isTechnician={{true}} @onSelectionChange={{queue (fn this.setVisitor) (perform this.save)}} @class="md-input-wrapper large" />
     </div>
     <div class="layout-row">
-      {{paper-input label="Opmerking" value=model.comment
-          onChange=(action (mut model.comment)) onBlur=(perform save)
-          textarea=true passThru=(hash rows=3) class="xxlarge"}}
+      <PaperInput @label="Opmerking" @value={{this.model.comment}} @onChange={{fn (mut this.model.comment)}} @onBlur={{perform this.save}} @textarea={{true}} @passThru={{hash rows=3}} @class="xxlarge" />
     </div>
   </section>
-  {{#if isLinkedToCustomer}}
-    {{#if hasVisitMasteredByAccess}}
-      {{visit-detail-panel model=model}}
-    {{else if model.requiresVisit}}
-      {{visit-edit-form model=model.calendarEvent save=saveCalendarEvent}}
+  {{#if this.isLinkedToCustomer}}
+    {{#if this.hasVisitMasteredByAccess}}
+      <VisitDetailPanel @model={{this.model}} />
+    {{else if this.model.requiresVisit}}
+      <VisitEditForm @model={{this.model.calendarEvent}} @save={{this.saveCalendarEvent}} />
     {{/if}}
   {{/if}}
 </div>

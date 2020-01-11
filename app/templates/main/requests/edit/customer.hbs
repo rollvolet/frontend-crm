@@ -1,40 +1,31 @@
 <h2>Koppel klant aan aanvraag</h2>
 
-{{#if linkCustomerToRequest.isRunning}}
+{{#if this.linkCustomerToRequest.isRunning}}
   <div>
-    {{paper-progress-linear}}
+    <PaperProgressLinear />
     <p>Klant koppelen aan aanvraag...</p>
   </div>
 {{else}}
-  {{customer/data-table-filter
-      number=number
-      name=name
-      street=street
-      postalCode=postalCode
-      city=city
-      telephone=telephone
-      onChange=(action "applyFilter")
-  }}
+  <Customer::DataTableFilter @number={{this.number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{fn this.applyFilter}} />
 
-  {{#data-table content=model isLoading=isLoadingModel noDataMessage="Geen resultaten"
-       sort=sort page=page size=size onClickRow=(perform linkCustomerToRequest) as |t|}}
-    {{#t.content as |c|}}
-      {{#c.header}}
-        {{th-sortable field='number' currentSorting=sort label='Nr'}}
-        {{th-sortable field='name' currentSorting=sort label='Naam'}}
-        {{th-sortable field='address' currentSorting=sort label='Straat'}}
-        {{th-sortable field='postal-code' currentSorting=sort label='Postcode'}}
-        {{th-sortable field='city' currentSorting=sort label='Gemeente'}}
-      {{/c.header}}
-      {{#c.body as |row|}}
+  <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{perform this.linkCustomerToRequest}} as |t|>
+    <t.content as |c|>
+      <c.header>
+        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
+        <ThSortable @field="name" @currentSorting={{this.sort}} @label="Naam" />
+        <ThSortable @field="address" @currentSorting={{this.sort}} @label="Straat" />
+        <ThSortable @field="postal-code" @currentSorting={{this.sort}} @label="Postcode" />
+        <ThSortable @field="city" @currentSorting={{this.sort}} @label="Gemeente" />
+      </c.header>
+      <c.body as |row|>
         <td>{{row.number}}</td>
-        <td>{{print-name model=row}}</td>
+        <td><PrintName @model={{row}} /></td>
         <td>{{row.address1}}</td>
         <td>{{row.postalCode}}</td>
         <td>{{row.city}}</td>
-      {{/c.body}}
-    {{/t.content}}
-  {{/data-table}}
+      </c.body>
+    </t.content>
+  </DataTable>
 {{/if}}
 
-{{liquid-outlet}}
+<LiquidOutlet />

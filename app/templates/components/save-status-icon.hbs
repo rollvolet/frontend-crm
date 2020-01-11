@@ -1,15 +1,17 @@
-{{#if task.isRunning}}
-  {{paper-icon "sync" class="running"}}
-  {{#paper-tooltip}}Aan het opslaan{{/paper-tooltip}}
-{{else}}
-  {{#if model.validations.isInvalid}}
-    {{paper-icon "error outline" class="error"}}
-    {{#paper-tooltip}}Ongeldig{{/paper-tooltip}}
-  {{else if (or model.isError task.last.isError)}}
-      {{paper-icon "error outline" class="error"}}
-      {{#paper-tooltip}}Fout bij opslaan{{/paper-tooltip}}
+<span class="save-status">
+  {{#if @task.isRunning}}
+    {{paper-icon "sync" class="running"}}
+    <PaperTooltip>Aan het opslaan</PaperTooltip>
   {{else}}
-    {{paper-icon "check circle outline" class="success"}}
-    {{#paper-tooltip}}Opgeslagen{{/paper-tooltip}}
+    {{#if @model.validations.isInvalid}}
+      {{paper-icon "error outline" class="error"}}
+      <PaperTooltip>Ongeldig</PaperTooltip>
+    {{else if (or @model.isError @task.last.isError)}}
+      {{paper-icon "error outline" class="error"}}
+      <PaperTooltip>Fout bij opslaan</PaperTooltip>
+    {{else}}
+      {{paper-icon "check circle outline" class="success"}}
+      <PaperTooltip>Opgeslagen</PaperTooltip>
+    {{/if}}
   {{/if}}
-{{/if}}
+</span>
