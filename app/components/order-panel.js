@@ -1,13 +1,13 @@
 import classic from 'ember-classic-decorator';
 import Component from '@ember/component';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { on } from '@ember-decorators/object';
 import { task, all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { EKMixin, keyUp } from 'ember-keyboard';
-import { computed } from '@ember/object';
 import { and, or, bool, not, notEmpty, raw, sum, array, promise } from 'ember-awesome-macros';
+import { add } from 'ember-math-helpers/helpers/add';
 
 @classic
 export default class OrderPanel extends Component.extend(EKMixin) {
@@ -22,17 +22,21 @@ export default class OrderPanel extends Component.extend(EKMixin) {
   onCloseEdit = null;
   showUnsavedChangesDialog = false;
 
-  @promise.array('model.offer.offerlines') offerlines
-  @array.filterBy('offerlines.@each.isOrdered', raw('isOrdered')) orderedOfferlines
   @notEmpty('model.invoice.id') hasInvoice
   @bool('model.depositInvoices.length') hasDepositInvoice
   @bool('model.deposits.length') hasDeposit
   @or('model.isMasteredByAccess', 'hasInvoice') isDisabledEdit
   @and(not('isDisabledEdit'), not('hasDepositInvoice'), not('hasDeposit')) isEnabledDelete
-  @array.mapBy('orderedOfferlines', raw('arithmeticAmount')) arithmeticAmounts
-  @array.mapBy('orderedOfferlines', raw('arithmeticVat')) arithmeticVats
-  @sum('arithmeticAmounts') totalAmount
-  @sum('arithmeticVats') totalVat
+  @promise.array('model.invoicelines') invoicelines
+  @sum(array.mapBy('invoicelines', raw('arithmeticAmount'))) totalAmount
+
+  @computed('invoicelines.@each.arithmeticVat')
+  get totalVat() {
+    return (async () => {
+      const vats = await Promise.all(this.invoicelines.map(i => i.arithmeticVat))
+      return add(vats);
+    })();
+  }
 
   init() {
     super.init(...arguments);
@@ -42,9 +46,8 @@ export default class OrderPanel extends Component.extend(EKMixin) {
   @task(function * () {
     const offer = yield this.model.offer;
     try {
-      // unorder offerlines
-      this.orderedOfferlines.forEach(o => o.set('isOrdered', false));
-      yield all(offer.offerlines.map(o => o.save()));
+      // remove invoicelines
+      yield all(this.invoicelines.map(l => l.destroyRecord()));
 
       // update case-tabs
       this.case.updateRecord('order', null);

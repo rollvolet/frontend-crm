@@ -133,13 +133,6 @@
   }
 }
 
-.case--offer .offerlines-data-table {
-  tr.is-ordered {
-    background-color: paper-color('light-green', '100');
-    border-bottom: 5px #FFF solid;
-  }
-}
-
 .case--order--offerlines-selection {
   .case--order--offerlines-selection--offerline {
     transition: background-color 0.5s ease;

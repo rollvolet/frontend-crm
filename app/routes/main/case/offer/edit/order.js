@@ -1,8 +1,6 @@
-import classic from 'ember-classic-decorator';
 import Route from '@ember/routing/route';
 import { debug } from '@ember/debug';
 
-@classic
 export default class OrderRoute extends Route {
   async beforeModel() {
     const offer = this.modelFor('main.case.offer.edit');

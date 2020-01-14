@@ -46,6 +46,7 @@ export default DS.Model.extend(HasManyQuery.ModelMixin, Validations, {
   vatRate: DS.belongsTo('vat-rate'),
   deposits: DS.hasMany('deposit'),
   depositInvoices: DS.hasMany('deposit-invoices'),
+  invoicelines: DS.hasMany('invoiceline'),
 
   scheduledTotal: computed('scheduledHours', 'scheduledNbOfPersons', function() {
     return this.scheduledHours * this.scheduledNbOfPersons;

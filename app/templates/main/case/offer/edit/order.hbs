@@ -1,7 +1,7 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      Selecteer producten voor bestelling AD{{@model.requestNumber}} {{this.visitorPromise.initials}} - {{@model.number}}
+      Selecteer producten voor bestelling AD{{@model.requestNumber}} {{this.visitor.initials}} - {{@model.number}}
     </h2>
   </div>
 </div>
@@ -12,7 +12,7 @@
     <p>Bestelling aanmaken...</p>
   </div>
 {{else}}
-  {{#if @model.offerlines}}
+  {{#if this.offerlines}}
     {{#if this.hasMixedVatRates}}
       <div class="u-margin-top-small">
         <WarningMessage @message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
@@ -20,7 +20,7 @@
     {{/if}}
     <p>Klik op 1 of meer lijnen om toe te voegen aan de bestelling</p>
     <div class="case--order--offerlines-selection">
-      {{#each @model.offerlines as |offerline|}}
+      {{#each this.offerlines as |offerline|}}
         <div role="button" class="case--order--offerlines-selection--offerline layout-row layout-align-start-center
           {{if offerline.isOrdered "case--order--offerlines-selection--offerline--ordered"}}"
           {{on "click" (toggle "isOrdered" offerline)}}
@@ -39,7 +39,7 @@
       {{/each}}
       <div class="case--order--offerlines-selection--total layout-row layout-align-start-center">
         <div class="col col--label">Totaal bestelling</div>
-        <div class="col col--amount"><FmtCurrency @value={{this.orderedAmount}} /></div>
+        <div class="col col--amount"><FmtCurrency @value={{this.orderedAmount}} /> + BTW</div>
       </div>
     </div>
   {{else}}

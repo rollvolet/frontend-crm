@@ -1,9 +1,7 @@
-import Component from '@ember/component';
-import classic from 'ember-classic-decorator';
-import { sort } from '@ember/object/computed';
+import Component from '@glimmer/component';
 
-@classic
 export default class OfferlinesDetailPanel extends Component {
-  sorting = Object.freeze(['sequenceNumber']);
-  @sort('model', 'sorting') sortedOfferlines;
+  get sortedLines() {
+    return this.args.model.sortBy('sequenceNumber');
+  }
 }

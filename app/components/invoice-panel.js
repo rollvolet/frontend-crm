@@ -8,14 +8,11 @@ import { or, not } from 'ember-awesome-macros';
 
 @classic
 export default class InvoicePanel extends Component {
-  @service
-  case;
+  @service case
 
-  @service
-  documentGeneration;
+  @service documentGeneration
 
-  @service
-  router;
+  @service router
 
   model = null;
   editMode = false;
@@ -39,6 +36,12 @@ export default class InvoicePanel extends Component {
 
       const supplements = yield this.model.supplements;
       yield all(supplements.map(t => t.destroyRecord()));
+      const invoicelines = yield this.model.invoicelines;
+      const copiedInvoicelines = invoicelines.slice(0);
+      yield all(copiedInvoicelines.map(async (invoiceline) => {
+        invoiceline.invoice = null;
+        await invoiceline.save();
+      }));
       yield this.model.destroyRecord();
 
       if (order)

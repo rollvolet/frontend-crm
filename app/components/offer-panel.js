@@ -168,7 +168,6 @@ export default class OfferPanel extends Component.extend(EKMixin) {
     const vatRate = await this.model.vatRate;
     const offerline = this.store.createRecord('offerline', {
       sequenceNumber: number + 1,
-      isOrdered: false,
       offer: this.model,
       vatRate
     });

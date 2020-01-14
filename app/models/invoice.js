@@ -40,6 +40,7 @@ export default DS.Model.extend(Validations, {
   supplements: DS.hasMany('invoice-supplement'),
   deposits: DS.hasMany('deposit'),
   depositInvoices: DS.hasMany('deposit-invoice'),
+  invoicelines: DS.hasMany('invoiceline'),
   workingHours: DS.hasMany('working-hour'),
 
   invoiceDateStr: dateString('invoiceDate'),

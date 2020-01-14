@@ -13,7 +13,6 @@ export default DS.Model.extend(Validations, {
   sequenceNumber: DS.attr(),
   description: DS.attr(),
   amount: DS.attr('number'),
-  isOrdered: DS.attr('boolean'),
 
   vatRate: DS.belongsTo('vat-rate'),
   offer: DS.belongsTo('offer'),
