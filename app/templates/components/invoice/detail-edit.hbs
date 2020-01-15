@@ -25,9 +25,3 @@
     {{/if}}
   </section>
 </div>
-<div>
-  <label>Mededeling (zichtbaar onderaan in document)</label>
-  <RichTextArea @class="invoice-outro" @value={{@model.documentOutro}} @onChange={{fn (mut @model.documentOutro)}} @focusOut={{perform @save}} />
-</div>
-
-{{yield}}

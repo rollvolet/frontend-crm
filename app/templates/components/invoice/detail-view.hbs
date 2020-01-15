@@ -54,21 +54,15 @@
         - {{paper-icon "add circle" size=18}}
       {{/if}}
     </DetailListItem>
-  </div>
-  <div class="case--right-panel flex-noshrink layout-column">
-    <InvoiceCalculationTable @model={{@model}} />
-  </div>
-</div>
 
-<div class="u-vspacer-small"></div>
-<div class="layout-row layout-xs-column layout-align-space-between">
-  <div class="flex-100 layout-column">
+    <div class="u-vspacer-small"></div>
+
     <DetailListItem @label="Opmerking">
       <span class="html-body">{{@model.comment}}</span>
     </DetailListItem>
-    <DetailListItem @label="Mededeling">
-      {{{@model.documentOutro}}}
-    </DetailListItem>
+  </div>
+  <div class="case--right-panel flex-noshrink layout-column">
+    <Invoice::CalculationTable @model={{@model}} />
   </div>
 </div>
 

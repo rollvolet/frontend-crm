@@ -3,7 +3,8 @@
   margin: 5px;
   background-color: #FFF;
 
-  &.offerline {
+  &.offerline,
+  &.invoiceline {
     width: 800px;
 
     .pell-content {

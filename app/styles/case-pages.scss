@@ -94,14 +94,14 @@
   }
 }
 
+.invoice-document,
 .offer-document {
-  max-width: 800px;
-
   section {
     margin: 10px 0;
   }
 }
 
+.invoice-document-edit,
 .offer-document-form {
   section {
     background-color: paper-color($accent, '50');

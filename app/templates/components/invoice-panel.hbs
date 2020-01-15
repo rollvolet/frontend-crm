@@ -66,10 +66,10 @@
       <p>Aan het aanmaken...</p>
     </div>
   {{else}}
-    <InvoiceEditForm @model={{@model}} @save={{this.save}} />
+    <Invoice::DetailEdit @model={{@model}} @save={{this.save}} />
   {{/if}}
 {{else}}
-  <InvoiceDetailPanel @model={{@model}} />
+  <Invoice::DetailView @model={{@model}} />
 {{/if}}
 
 {{#if @model.isMasteredByAccess}}
@@ -79,9 +79,11 @@
   <div class="case--invoice--invoicelines layout-row layout-align-space-between-center">
     <h2>Gefactureerde producten</h2>
   </div>
-  <div class="offer-document layout-column">
-    <section><OfferlinesDetailPanel @model={{@model.invoicelines}} /></section>
-  </div>
+  {{#if @editMode}}
+    <Invoice::DocumentEdit @model={{@model}} @save={{this.save}} />
+  {{else}}
+    <Invoice::DocumentView @model={{@model}} />
+  {{/if}}
 {{/if}}
 
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

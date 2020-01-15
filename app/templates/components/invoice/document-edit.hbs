@@ -1,0 +1,16 @@
+<div class="invoice-document-edit layout-column">
+  <section>
+    {{#each this.sortedInvoicelines as |invoiceline|}}
+      <Invoiceline::Edit @model={{invoiceline}} @onDelete={{perform this.deleteInvoiceline}} />
+    {{else}}
+      <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{on "click" (perform this.addInvoiceline)}} role="button">hier</span> om producten toe te voegen aan de factuur.</div>
+    {{/each}}
+    <div class="layout-row layout-align-end-center">
+      <div class="link-action" {{on "click" (perform this.addInvoiceline)}} role="button">{{paper-icon "add"}} Lijn toevoegen</div>
+    </div>
+  </section>
+  <section>
+    <label>Mededeling (zichtbaar onderaan in document)</label>
+    <RichTextArea @class="invoice-outro" @value={{@model.documentOutro}} @onChange={{fn (mut @model.documentOutro)}} @focusOut={{perform @save}} />
+  </section>
+</div>
