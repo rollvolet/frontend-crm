@@ -66,7 +66,7 @@
       <p>Aan het aanmaken...</p>
     </div>
   {{else}}
-    <Invoice::DetailEdit @model={{@model}} @save={{this.save}} />
+    <Invoice::DetailEdit @model={{@model}} @save={{this.save}} @onChangeVatRate={{perform this.updateInvoicelinesVatRate}} />
   {{/if}}
 {{else}}
   <Invoice::DetailView @model={{@model}} />

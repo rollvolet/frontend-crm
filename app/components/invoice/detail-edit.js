@@ -4,7 +4,8 @@ import { action } from '@ember/object';
 export default class InvoiceDetailEditComponent extends Component {
   @action
   setVatRate(vatRate) {
-    this.args.set('model.vatRate', vatRate);
-    this.args.set('model.certificateRequired', vatRate.rate == 6);
+    this.args.model.set('vatRate', vatRate);
+    this.args.model.set('certificateRequired', vatRate && vatRate.rate == 6);
+    this.args.onChangeVatRate(vatRate);
   }
 }

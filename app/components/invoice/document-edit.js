@@ -9,6 +9,10 @@ export default class InvoiceDocumentEditComponent extends Component {
     return this.args.model.invoicelines.sortBy('sequenceNumber');
   }
 
+  get isEnabledAddingInvoices() {
+    return this.args.model.vatRate.content != null;
+  }
+
   @task(function * () {
     const invoicelines = yield this.args.model.invoicelines;
     const number = invoicelines.length ? Math.max(...invoicelines.map(l => l.sequenceNumber)) : 0;

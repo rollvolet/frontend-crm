@@ -27,6 +27,15 @@ export default class InvoicePanel extends Component {
   @not('isDisabledEdit')
   isEnabledDelete;
 
+  @task(function * (vatRate) {
+    const invoicelines = yield this.model.invoicelines;
+    yield all(invoicelines.map(async (invoiceline) => {
+      invoiceline.set('vatRate', vatRate);
+      invoiceline.save();
+    }));
+  })
+  updateInvoicelinesVatRate
+
   @task(function * () {
     const customer = yield this.model.customer;
     const order = yield this.model.order;

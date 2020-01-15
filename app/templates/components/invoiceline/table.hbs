@@ -13,6 +13,7 @@
         <tr>
           <td>
             {{line.sequenceNumber}}
+            {{!-- TODO replace with ember store frontend loadable mixin --}}
             {{#if (and (is-fulfilled line.order) (not line.order))}}
               <span>
                 <PaperIcon @icon="add_shopping_cart" />
