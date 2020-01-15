@@ -33,7 +33,7 @@ export default class OrderPanel extends Component.extend(EKMixin) {
   @computed('invoicelines.@each.arithmeticVat')
   get totalVat() {
     return (async () => {
-      const vats = await Promise.all(this.invoicelines.map(i => i.arithmeticVat))
+      const vats = await Promise.all(this.invoicelines.map(i => i.arithmeticVat));
       return add(vats);
     })();
   }

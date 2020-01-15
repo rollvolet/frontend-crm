@@ -1,8 +1,6 @@
-import classic from 'ember-classic-decorator';
 import Route from '@ember/routing/route';
 import moment from 'moment';
 
-@classic
 export default class NewRoute extends Route {
   async model() {
     const customer = this.modelFor('main.case');

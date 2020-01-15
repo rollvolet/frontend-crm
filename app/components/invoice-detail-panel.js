@@ -1,30 +1,30 @@
-import classic from 'ember-classic-decorator';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { filterBy, mapBy, uniqBy, sort } from '@ember/object/computed';
 
-@classic
 export default class InvoiceDetailPanel extends Component {
   @service documentGeneration
 
-  showWorkingHoursDialog = false
-  employeeSort = Object.freeze(['firstName'])
+  @tracked showWorkingHoursDialog = false
 
-  @filterBy('model.workingHours', 'isNew', false) savedWorkingHours
-  @mapBy('savedWorkingHours', 'employee') employees
-  @uniqBy('employees', 'firstName') uniqEmployees
-  @sort('uniqEmployees', 'employeeSort') sortedEmployees
-  @mapBy('sortedEmployees', 'firstName') employeeFirstNames
+  get employeeFirstNames() {
+    return this.args.model.workingHours
+      .filterBy('isNew', false)
+      .mapBy('employee')
+      .uniqBy('firstName')
+      .sortBy('firstName')
+      .mapBy('firstName');
+  }
 
   @action
   openWorkingHoursDialog() {
-    this.set('showWorkingHoursDialog', true);
+    this.showWorkingHoursDialog = true;
   }
 
   @action
   async downloadProductionTicket() {
-    const order = await this.model.order;
+    const order = await this.args.model.order;
     await this.documentGeneration.downloadProductionTicket(order);
   }
 }

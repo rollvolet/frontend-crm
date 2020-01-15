@@ -73,9 +73,14 @@
 {{/if}}
 
 {{#if @model.isMasteredByAccess}}
-  <div class="layout-row">
-    <span class="flex"></span>
-    <p class="note note--info">Beheerd in Access</p>
+  <h2>Gefactureerde producten</h2>
+  <p class="note-message">De factuur is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
+{{else}}
+  <div class="case--invoice--invoicelines layout-row layout-align-space-between-center">
+    <h2>Gefactureerde producten</h2>
+  </div>
+  <div class="offer-document layout-column">
+    <section><OfferlinesDetailPanel @model={{@model.invoicelines}} /></section>
   </div>
 {{/if}}
 

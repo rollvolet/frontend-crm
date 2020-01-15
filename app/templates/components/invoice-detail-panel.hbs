@@ -14,26 +14,28 @@
         <FmtDate @value={{@model.paymentDate}} />
       </DetailListSubitem>
     </DetailListItem>
-    <DetailListItem @label="Techniekers" @click={{fn this.openWorkingHoursDialog}} @class="clickable">
-      {{#if @model.workingHours}}
-        {{join ", " this.employeeFirstNames}} {{paper-icon "info" size=18}}
-      {{else}}
-        - {{paper-icon "add circle" size=18}}
-      {{/if}}
+
+    <div class="u-vspacer-small"></div>
+
+    <DetailListItem @label="Creditnota">
+      {{paper-icon (if @model.isCreditNote "check_box" "check_box_outline_blank")}}
     </DetailListItem>
-    <DetailListItem @label="Referentie">
-      {{@model.reference}}
-    </DetailListItem>
-    <DetailListItem @label="Opmerking">
-      <span class="html-body">{{@model.comment}}</span>
-    </DetailListItem>
-  </div>
-  <div class="case--right-panel flex-noshrink layout-column">
+    {{#unless @model.isCreditNote}}
+      <DetailListItem @label="Betaalref.">
+        {{format-bank-reference @model.bankReference}}
+      </DetailListItem>
+    {{/unless}}
     {{#if @model.certificateRequired}}
       <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
         <CertificateDocumentButtons @model={{@model}} />
       </DetailListItem>
     {{/if}}
+    <DetailListItem @label="Referentie">
+      {{@model.reference}}
+    </DetailListItem>
+
+    <div class="u-vspacer-small"></div>
+
     {{#unless @model.isIsolated}}
       <DetailListItem @label="Productiebon">
         {{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}
@@ -45,27 +47,25 @@
         {{/if}}
       </DetailListItem>
     {{/unless}}
-    <DetailListItem @label="Creditnota">
-      {{paper-icon (if @model.isCreditNote "check_box" "check_box_outline_blank")}}
+    <DetailListItem @label="Techniekers" @click={{fn this.openWorkingHoursDialog}} @class="clickable">
+      {{#if @model.workingHours}}
+        {{join ", " this.employeeFirstNames}} {{paper-icon "info" size=18}}
+      {{else}}
+        - {{paper-icon "add circle" size=18}}
+      {{/if}}
     </DetailListItem>
-    {{#unless @model.isCreditNote}}
-      <DetailListItem @label="Betaalref.">
-        {{format-bank-reference @model.bankReference}}
-      </DetailListItem>
-    {{/unless}}
+  </div>
+  <div class="case--right-panel flex-noshrink layout-column">
+    <InvoiceCalculationTable @model={{@model}} />
   </div>
 </div>
 
+<div class="u-vspacer-small"></div>
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="flex-100 layout-column">
-    <DetailListItem @label="Bedrag">
-      <InvoiceCalculationTable @model={{@model}} />
+    <DetailListItem @label="Opmerking">
+      <span class="html-body">{{@model.comment}}</span>
     </DetailListItem>
-  </div>
-</div>
-
-<div class="layout-row layout-xs-column layout-align-space-between">
-  <div class="flex-100 layout-column">
     <DetailListItem @label="Mededeling">
       {{{@model.documentOutro}}}
     </DetailListItem>
