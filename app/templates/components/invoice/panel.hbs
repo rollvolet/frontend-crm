@@ -36,7 +36,7 @@
           </PaperButton>
         {{/unless}}
       {{/if}}
-      <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+      <PaperButton @onClick={{fn @onOpenEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>
       </PaperButton>
@@ -60,7 +60,7 @@
       <PaperProgressLinear />
       <p>Aan het herstellen...</p>
     </div>
-  {{else if (and (not @model.id) @model.isSavivg)}}
+  {{else if (and (not @model.id) @model.isSaving)}}
     <div>
       <PaperProgressLinear />
       <p>Aan het aanmaken...</p>

@@ -4,8 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceCalculationTableComponent extends Component {
-  @tracked
-  showSupplementsDialog = false;
+  @tracked showSupplementsDialog = false;
 
   get vatPercentage() {
     return this.args.model.vatRate.get('rate') / 100;

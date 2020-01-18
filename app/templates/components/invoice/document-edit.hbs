@@ -3,14 +3,14 @@
     {{#each this.sortedInvoicelines as |invoiceline|}}
       <Invoiceline::Edit @model={{invoiceline}} @onDelete={{perform this.deleteInvoiceline}} />
     {{else}}
-      {{#if isEnabledAddingInvoices}}
+      {{#if this.isEnabledAddingInvoices}}
         <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{on "click" (perform this.addInvoiceline)}} role="button">hier</span> om producten toe te voegen aan de factuur.</div>
       {{else}}
         <div class="note note--info">Selecteer een BTW-tarief voor de factuur alvorens je producten kan toevoegen</div>
       {{/if}}
     {{/each}}
     <div class="layout-row layout-align-end-center">
-      {{#if isEnabledAddingInvoices}}
+      {{#if this.isEnabledAddingInvoices}}
         <div class="link-action" {{on "click" (perform this.addInvoiceline)}} role="button">{{paper-icon "add"}} Lijn toevoegen</div>
       {{/if}}
     </div>

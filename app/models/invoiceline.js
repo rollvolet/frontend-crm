@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import ObjectPromiseProxy from '../utils/object-promise-proxy';
 
 const Validations = buildValidations({
   amount: validator('presence', true),
@@ -28,5 +27,9 @@ export default class InvoicelineModel extends Model.extend(Validations) {
       const vat = this.amount * rate;
       return vat;
     })();
+  }
+
+  get isOrdered() {
+    return this.order.get('id') != null;
   }
 }
