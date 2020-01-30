@@ -55,7 +55,7 @@ export default DS.Model.extend(Validations, {
   isBooked: notEmpty('bookingDate'),
   isMasteredByAccess: alias('order.isMasteredByAccess'),
   bankReference: computed('number', function() {
-    const modulo = this.number % 97;
+    const modulo = `${(this.number % 97)}`.padStart(2, '0');
     return `${this.number}${modulo}`.padStart(12, '0');
   })
 });
