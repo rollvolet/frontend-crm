@@ -27,7 +27,7 @@ export default Component.extend({
   initModel() {
     const model = this.store.createRecord('accountancy-export', {
       date: new Date(),
-      isDryRun: true
+      isDryRun: false
     });
     this.set('model', model);
   },

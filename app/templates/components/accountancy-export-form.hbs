@@ -9,16 +9,16 @@
     <div class="layout-row">
       {{#if multipleExportEnabled}}
         <p>Exporteer facturen van</p>
-        {{form.input placeholder="29/0001" value=formattedFromNumber
+        {{form.input placeholder="30/0001" value=formattedFromNumber
             onChange=(action "setFromNumber")
             class="small input-export-number"}}
         <p>t.e.m.</p>
-        {{form.input placeholder="29/0439" value=formattedUntilNumber
+        {{form.input placeholder="30/0439" value=formattedUntilNumber
             onChange=(action "setUntilNumber")
             class="small input-export-number"}}
       {{else}}
         <p>Exporteer factuur met nummer</p>
-        {{form.input placeholder="29/0001" value=formattedFromNumber
+        {{form.input placeholder="30/0001" value=formattedFromNumber
             onChange=(action "setFromNumber")
             class="small input-export-number"}}
       {{/if}}
