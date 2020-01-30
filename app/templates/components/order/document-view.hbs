@@ -1,0 +1,17 @@
+  <div class="layout-row layout-xs-column layout-align-space-between">
+    <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
+      {{#unless this.loadData.isRunning}}
+        <DetailListItem @label="Totaal" @displayRow={{true}}>
+          <DetailListSubitem @label="Netto">
+            <FmtCurrency @value={{this.totalAmount}} />
+          </DetailListSubitem>
+          <DetailListSubitem @label={{concat this.vatRate.rate "% BTW"}}>
+            <FmtCurrency @value={{this.totalVat}} />
+          </DetailListSubitem>
+        </DetailListItem>
+      {{/unless}}
+    </div>
+  </div>
+  <div class="invoice-document layout-column">
+    <section><Invoiceline::Table @model={{@model.invoicelines}} /></section>
+  </div>

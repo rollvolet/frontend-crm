@@ -8,22 +8,34 @@
   />
 
   <div class="layout-column">
-    <div class="layout-row layout-align-space-between-start">
-      <SaveStatusIcon @model={{@model}} @task={{this.save}} />
-      <PaperButton @onClick={{fn @onDelete @model}} @iconButton={{true}}>
-        {{paper-icon "delete"}}
-        <PaperTooltip>Lijn verwijderen</PaperTooltip>
-      </PaperButton>
-    </div>
+    {{#unless this.loadData.isRunning}}
+      <div class="layout-row layout-align-space-between-start">
+        <SaveStatusIcon @model={{@model}} @task={{this.save}} />
+        {{#if this.isDisabledEditPrice}}
+          <div>
+            {{paper-icon "lock"}}
+            <PaperTooltip>Reeds besteld</PaperTooltip>
+          </div>
+        {{else}}
+          <PaperButton @onClick={{fn @onDelete @model}} @iconButton={{true}}>
+            {{paper-icon "delete"}}
+            <PaperTooltip>Lijn verwijderen</PaperTooltip>
+          </PaperButton>
+        {{/if}}
+      </div>
 
-    <InputField::DecimalInput
-      @label="Bedrag (€)"
-      @value={{@model.amount}}
-      @errors={{v-get @model "amount" "messages"}}
-      @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
-      @isRequired={{true}}
-    />
-
-    <div>{{@model.vatRate.rate}}% BTW</div>
+      {{#if this.isDisabledEditPrice}}
+        <div class="line--price"><FmtCurrency @value={{@model.amount}} /></div>
+      {{else}}
+        <InputField::DecimalInput
+          @label="Bedrag (€)"
+          @value={{@model.amount}}
+          @errors={{v-get @model "amount" "messages"}}
+          @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
+          @isRequired={{true}}
+        />
+      {{/if}}
+      <div class="line--vat-rate">{{@model.vatRate.rate}}% BTW</div>
+    {{/unless}}
   </div>
 </div>

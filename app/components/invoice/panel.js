@@ -10,8 +10,21 @@ export default class InvoicePanelComponent extends Component {
   @service documentGeneration
   @service router
 
-  @tracked showUnsavedChangesDialog = false;
-  @tracked showMissingCertificateDialog = false;
+  @tracked invoicelines = []
+  @tracked showUnsavedChangesDialog = false
+  @tracked showMissingCertificateDialog = false
+
+  constructor() {
+    super(...arguments);
+    this.loadData.perform();
+  }
+
+  @(task(function * () {
+    const model = this.args.model;
+    this.invoicelines = yield model.invoicelines;
+    yield all(this.invoicelines.map(line => line.sideload('order,invoice,vat-rate')));
+  }).keepLatest())
+  loadData
 
   get isDisableEdit() {
     return this.args.model.isMasteredByAccess || this.args.model.isBooked;
@@ -22,8 +35,7 @@ export default class InvoicePanelComponent extends Component {
   }
 
   @task(function*(vatRate) {
-    const invoicelines = yield this.args.model.invoicelines;
-    yield all(invoicelines.map(async (invoiceline) => {
+    yield all(this.invoicelines.map(async (invoiceline) => {
       invoiceline.vatRate = vatRate;
       invoiceline.save();
     }));
@@ -37,10 +49,9 @@ export default class InvoicePanelComponent extends Component {
     try {
       this.case.updateRecord('invoice', null);
 
-      const supplements = yield this.model.supplements;
+      const supplements = yield this.args.model.supplements;
       yield all(supplements.map(t => t.destroyRecord()));
-      const invoicelines = yield this.args.model.invoicelines;
-      const copiedInvoicelines = invoicelines.slice(0);
+      const copiedInvoicelines = this.invoicelines.slice(0);
       yield all(copiedInvoicelines.map(async (invoiceline) => {
         invoiceline.invoice = null;
         invoiceline.save();
@@ -81,7 +92,7 @@ export default class InvoicePanelComponent extends Component {
           const order = yield this.args.model.order;
           if (order) {
             debug(`Syncing ${field} of offer/order with updated ${field} of invoice`);
-            order.set(field, this.args.model.get(field));
+            order[field] = this.args.model[field];
             yield order.save();
             yield order.belongsTo('offer').reload();
           }

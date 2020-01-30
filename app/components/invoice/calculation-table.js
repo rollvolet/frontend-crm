@@ -1,13 +1,45 @@
 import Component from '@glimmer/component';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { all, task } from 'ember-concurrency';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceCalculationTableComponent extends Component {
-  @tracked showSupplementsDialog = false;
+  @tracked showSupplementsDialog = false
+  @tracked vatRate
+  @tracked invoicelines = [];
+  @tracked supplements = [];
+  @tracked depositInvoices = [];
+  @tracked deposits = [];
+
+  constructor() {
+    super(...arguments);
+    this.loadData.perform();
+  }
+
+  @(task(function * () {
+    const model = yield this.args.model;
+
+    // Load data that is already included in the main/case/invoice/edit route's model hook
+    this.vatRate = yield model.load('vatRate', { backgroundReload: false });
+
+    // Load data that is already loaded by the invoice/panel component
+    this.invoicelines = yield model.load('invoicelines', { backgroundReload: false });
+    yield all(this.invoicelines.map(async (line) => {
+      await line.load('order');
+      await line.load('invoice');
+      await line.load('vatRate');
+    }));
+
+    // Load data that is not yet loaded
+    this.supplements = yield model.load('supplements');
+    this.depositInvoices = yield model.load('depositInvoices');
+    this.deposits = yield model.load('deposits');
+  }).keepLatest())
+  loadData
 
   get vatPercentage() {
-    return this.args.model.vatRate.get('rate') / 100;
+    return this.vatRate && this.vatRate.rate / 100;
   }
 
   get baseAmount() {
@@ -18,16 +50,13 @@ export default class InvoiceCalculationTableComponent extends Component {
     return this.baseAmount * this.vatPercentage;
   }
 
-  // TODO replace with Loadable mixin of Ember Data storefront
-  // See https://emberigniter.com/guide-promises-computed-properties/
-  @computed('args.model.invoicelines.@each.order.content')
   get supplementaryInvoicelines() {
-    return this.args.model.invoicelines.filterBy('order.content', null);
+    return this.invoicelines.filter(line => line.order && line.order.get('id') == null);
   }
 
   get supplementsAmount() {
     const invoicelines = sum(this.supplementaryInvoicelines.mapBy('arithmeticAmount'));
-    const supplements = sum(this.args.model.supplements.mapBy('amount'));
+    const supplements = sum(this.supplements.mapBy('amount'));
     return invoicelines + supplements;
   }
 
@@ -44,7 +73,7 @@ export default class InvoiceCalculationTableComponent extends Component {
   }
 
   get depositInvoicesAmount() {
-    return sum(this.args.model.depositInvoices.mapBy('arithmeticAmount'));
+    return sum(this.depositInvoices.mapBy('arithmeticAmount'));
   }
 
   get depositInvoicesVat() {
@@ -65,7 +94,7 @@ export default class InvoiceCalculationTableComponent extends Component {
   }
 
   get depositsAmount() {
-    return sum(this.args.model.deposits.mapBy('amount'));
+    return sum(this.deposits.mapBy('amount'));
   }
 
   get totalToPay() {

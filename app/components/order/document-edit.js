@@ -38,7 +38,7 @@ export default class InvoiceDocumentEditComponent extends Component {
     const number = this.invoicelines.length ? Math.max(...this.invoicelines.map(l => l.sequenceNumber)) : 0;
     const invoiceline = this.store.createRecord('invoiceline', {
       sequenceNumber: number + 1,
-      invoice: this.args.model,
+      order: this.args.model,
       vatRate: this.vatRate
     });
     const { validations } = yield invoiceline.validate();

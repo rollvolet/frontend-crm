@@ -101,6 +101,7 @@
   }
 }
 
+.order-document-edit,
 .invoice-document-edit,
 .offer-document-form {
   section {
@@ -129,6 +130,14 @@
 
     .pell-editor {
       background-color: #FFF;
+    }
+
+    div.line--price {
+      margin: 18px 5px;
+    }
+
+    div.line--vat-rate {
+      margin-left: 5px;
     }
   }
 }

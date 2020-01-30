@@ -5,57 +5,63 @@
     <th>{{@model.vatRate.rate}}% BTW</th>
   </thead>
   <tbody>
-    <tr>
-      <td>Basis</td>
-      <td><FmtCurrency @value={{this.baseAmount}} /></td>
-      <td>{{#if this.baseAmount}}<FmtCurrency @value={{this.baseAmountVat}} />{{/if}}</td>
-    </tr>
-    <tr {{on "click" this.openSupplementsDialog}} role="button">
-      <td>Extra's {{paper-icon "info" size=18}}</td>
-      <td><FmtCurrency @value={{this.supplementsAmount}} /></td>
-      <td><FmtCurrency @value={{this.supplementsVat}} /></td>
-    </tr>
-    {{#unless @model.isIsolated}}
-      <tr class="subtotal">
-        <td>Totaal bestelling</td>
-        <td><FmtCurrency @value={{this.totalOrderAmount}} /></td>
-        <td><FmtCurrency @value={{this.totalOrderVat}} /></td>
+    {{#if this.loadData.isRunning}}
+      <tr>
+        <td colspan="3">Aan het berekenen...</td>
       </tr>
-      <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model.order}} @tagName="tr" class="clickable">
-        <td>Voorschotfacturen {{paper-icon "info" size=18}}</td>
-        <td>&minus; <FmtCurrency @value={{this.depositInvoicesAmount}} /></td>
-        <td>&minus; <FmtCurrency @value={{this.depositInvoicesVat}} /></td>
-      </LinkTo>
-    {{/unless}}
-    <tr class="subtotal">
-      <td>Subtotaal</td>
-      <td><FmtCurrency @value={{this.totalNetAmount}} /></td>
-      <td><FmtCurrency @value={{this.totalVat}} /></td>
-    </tr>
+    {{else}}
+      <tr>
+        <td>Basis</td>
+        <td><FmtCurrency @value={{this.baseAmount}} /></td>
+        <td>{{#if this.baseAmount}}<FmtCurrency @value={{this.baseAmountVat}} />{{/if}}</td>
+      </tr>
+      <tr {{on "click" this.openSupplementsDialog}} role="button">
+        <td>Extra's {{paper-icon "info" size=18}}</td>
+        <td><FmtCurrency @value={{this.supplementsAmount}} /></td>
+        <td><FmtCurrency @value={{this.supplementsVat}} /></td>
+      </tr>
+      {{#unless @model.isIsolated}}
+        <tr class="subtotal">
+          <td>Totaal bestelling</td>
+          <td><FmtCurrency @value={{this.totalOrderAmount}} /></td>
+          <td><FmtCurrency @value={{this.totalOrderVat}} /></td>
+        </tr>
+        <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model.order}} @tagName="tr" class="clickable">
+          <td>Voorschotfacturen {{paper-icon "info" size=18}}</td>
+          <td>&minus; <FmtCurrency @value={{this.depositInvoicesAmount}} /></td>
+          <td>&minus; <FmtCurrency @value={{this.depositInvoicesVat}} /></td>
+        </LinkTo>
+      {{/unless}}
+      <tr class="subtotal">
+        <td>Subtotaal</td>
+        <td><FmtCurrency @value={{this.totalNetAmount}} /></td>
+        <td><FmtCurrency @value={{this.totalVat}} /></td>
+      </tr>
+    {{/if}}
   </tbody>
 </table>
 
-<table class="invoice-calculation-table">
-  <thead>
-    <th></th>
-    <th>Bruto</th>
-  </thead>
-  <tbody>
-    <tr class="subtotal">
-      <td>Totaal</td>
-      <td><FmtCurrency @value={{this.totalGrossAmount}} /></td>
-    </tr>
-    <tr>
-      <td>Betaalde voorschotten</td>
-      <td>&minus; <FmtCurrency @value={{this.depositsAmount}} /></td>
-    </tr>
-    <tr class="total">
-      <td>Totaal te betalen</td>
-      <td><FmtCurrency @value={{this.totalToPay}} /></td>
-    </tr>
-  </tbody>
-</table>
-<div>
-</div>
+{{#unless this.loadData.isRunning}}
+  <table class="invoice-calculation-table">
+    <thead>
+      <th></th>
+      <th>Bruto</th>
+    </thead>
+    <tbody>
+      <tr class="subtotal">
+        <td>Totaal</td>
+        <td><FmtCurrency @value={{this.totalGrossAmount}} /></td>
+      </tr>
+      <tr>
+        <td>Betaalde voorschotten</td>
+        <td>&minus; <FmtCurrency @value={{this.depositsAmount}} /></td>
+      </tr>
+      <tr class="total">
+        <td>Totaal te betalen</td>
+        <td><FmtCurrency @value={{this.totalToPay}} /></td>
+      </tr>
+    </tbody>
+  </table>
+{{/unless}}
 
 <InvoiceSupplementsDialog @show={{this.showSupplementsDialog}} @model={{@model}} />

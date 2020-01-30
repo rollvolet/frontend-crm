@@ -1,4 +1,4 @@
-<div class="invoice-document-edit layout-column">
+<div class="order-document-edit layout-column">
   <section>
     {{#if this.loadData.isRunning}}
       <div class="note note--info">Inhoud ophalen...</div>
@@ -7,9 +7,7 @@
         <Invoiceline::Edit @model={{invoiceline}} @onDelete={{perform this.deleteInvoiceline}} />
       {{else}}
         {{#if this.isEnabledAddingInvoicelines}}
-          <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{on "click" (perform this.addInvoiceline)}} role="button">hier</span> om producten toe te voegen aan de factuur.</div>
-        {{else}}
-          <div class="note note--info">Selecteer een BTW-tarief voor de factuur alvorens je producten kan toevoegen</div>
+          <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{on "click" (perform this.addInvoiceline)}} role="button">hier</span> om producten toe te voegen aan de bestelling.</div>
         {{/if}}
       {{/each}}
       <div class="layout-row layout-align-end-center">
@@ -18,9 +16,5 @@
         {{/if}}
       </div>
     {{/if}}
-  </section>
-  <section>
-    <label>Mededeling</label>
-    <RichTextArea @class="invoice-outro" @value={{@model.documentOutro}} @onChange={{fn (mut @model.documentOutro)}} @focusOut={{perform @save}} />
   </section>
 </div>

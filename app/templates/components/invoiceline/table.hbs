@@ -6,15 +6,14 @@
     <th>BTW</th>
   </thead>
   <tbody>
-    {{#if (is-pending @model)}}
+    {{#if this.loadData.isRunning}}
       <tr><td colspan="5">Aan het laden...</td></tr>
     {{else}}
       {{#each this.sortedInvoicelines as |line|}}
         <tr>
           <td>
             {{line.sequenceNumber}}
-            {{!-- TODO replace with ember store frontend loadable mixin --}}
-            {{#if (and (is-fulfilled line.order) (not line.order))}}
+            {{#if (and (not this.invoice.isIsolated) (not line.order))}}
               <span>
                 <PaperIcon @icon="add_shopping_cart" />
                 <PaperTooltip>Toegevoegd als extra</PaperTooltip>

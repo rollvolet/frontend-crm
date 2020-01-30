@@ -8,23 +8,25 @@
     {{/if}}
   </div>
   <div>
-    {{#if @editMode}}
-      {{#if this.isEnabledDelete}}
-        <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
-          {{paper-icon "delete"}}
-          <PaperTooltip>Verwijderen</PaperTooltip>
+    {{#unless this.loadData.isRunning}}
+      {{#if @editMode}}
+        {{#if this.isEnabledDelete}}
+          <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
+            {{paper-icon "delete"}}
+            <PaperTooltip>Verwijderen</PaperTooltip>
+          </PaperButton>
+        {{/if}}
+        <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
+          {{paper-icon "exit to app"}}
+          <PaperTooltip>Sluiten</PaperTooltip>
+        </PaperButton>
+      {{else}}
+        <PaperButton @onClick={{@onOpenEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+          {{paper-icon "edit mode"}}
+          <PaperTooltip>Aanpassen</PaperTooltip>
         </PaperButton>
       {{/if}}
-      <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
-        {{paper-icon "exit to app"}}
-        <PaperTooltip>Sluiten</PaperTooltip>
-      </PaperButton>
-    {{else}}
-      <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
-        {{paper-icon "edit mode"}}
-        <PaperTooltip>Aanpassen</PaperTooltip>
-      </PaperButton>
-    {{/if}}
+    {{/unless}}
   </div>
 </div>
 
@@ -51,9 +53,9 @@
   </div>
 {{else}}
   {{#if @editMode}}
-    <OrderEditForm @model={{@model}} @save={{this.save}} />
+    <Order::DetailEdit @model={{@model}} @save={{this.save}} />
   {{else}}
-    <OrderDetailPanel @model={{@model}} />
+    <Order::DetailView @model={{@model}} />
   {{/if}}
 
   {{#if @model.isMasteredByAccess}}
@@ -103,21 +105,11 @@
         </div>
       </div>
     </div>
-    <div class="layout-row layout-xs-column layout-align-space-between">
-      <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
-        <DetailListItem @label="Totaal" @displayRow={{true}}>
-          <DetailListSubitem @label="Netto">
-            <FmtCurrency @value={{this.totalAmount}} />
-          </DetailListSubitem>
-          <DetailListSubitem @label={{concat (get (await @model.vatRate) "rate") "% BTW"}}>
-            <FmtCurrency @value={{await this.totalVat}} />
-          </DetailListSubitem>
-        </DetailListItem>
-      </div>
-    </div>
-    <div class="offer-document layout-column">
-      <section><OfferlinesDetailPanel @model={{@model.invoicelines}} /></section>
-    </div>
+    {{#if @editMode}}
+      <Order::DocumentEdit @model={{@model}} @save={{this.save}} />
+    {{else}}
+      <Order::DocumentView @model={{@model}} />
+    {{/if}}
   {{/if}}
 {{/if}}
 

@@ -30,17 +30,19 @@
     <DetailListItem @label="BTW tarief">
       {{@model.vatRate.name}} BTW
     </DetailListItem>
-    <DetailListItem @label="Voorschotten">
-      {{paper-icon (if @model.depositRequired "check_box" "check_box_outline_blank")}} Nodig
-      <DetailListSubitem @label="Bedrag" @click={{fn this.goToDepositInvoices}} @class="clickable">
-        <FmtCurrency @value={{this.depositsAmount}} /> {{paper-icon "info" size=18}}
-      </DetailListSubitem>
-    </DetailListItem>
-    <DetailListItem @label="Voorschot facturen">
-      <DetailListSubitem @label="Bedrag" @click={{fn this.goToDepositInvoices}} @class="clickable">
-        <FmtCurrency @value={{this.depositInvoicesAmount}} /> {{paper-icon "info" size=18}}
-      </DetailListSubitem>
-    </DetailListItem>
+    {{#unless this.loadData.isRunning}}
+      <DetailListItem @label="Voorschotten">
+        {{paper-icon (if @model.depositRequired "check_box" "check_box_outline_blank")}} Nodig
+        <DetailListSubitem @label="Bedrag" @click={{fn this.goToDepositInvoices}} @class="clickable">
+          <FmtCurrency @value={{this.depositsAmount}} /> {{paper-icon "info" size=18}}
+        </DetailListSubitem>
+      </DetailListItem>
+      <DetailListItem @label="Voorschot facturen">
+        <DetailListSubitem @label="Bedrag" @click={{fn this.goToDepositInvoices}} @class="clickable">
+          <FmtCurrency @value={{this.depositInvoicesAmount}} /> {{paper-icon "info" size=18}}
+        </DetailListSubitem>
+      </DetailListItem>
+    {{/unless}}
     <DetailListItem @label="Opmerking">
       <span class="html-body">{{@model.comment}}</span>
     </DetailListItem>
