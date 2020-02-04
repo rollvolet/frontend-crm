@@ -9,12 +9,24 @@
     <div class="layout-row">
       {{#if this.multipleExportEnabled}}
         <p>Exporteer facturen van</p>
-        <form.input @placeholder="29/0001" @value={{this.formattedFromNumber}} @onChange={{fn this.setFromNumber}} @class="small input-export-number" />
+        <form.input @placeholder="30/0001"
+          @value={{this.formattedFromNumber}}
+          @onChange={{fn this.setFromNumber}}
+          @class="small input-export-number"
+        />
         <p>t.e.m.</p>
-        <form.input @placeholder="29/0439" @value={{this.formattedUntilNumber}} @onChange={{fn this.setUntilNumber}} @class="small input-export-number" />
+        <form.input @placeholder="30/0439"
+          @value={{this.formattedUntilNumber}}
+          @onChange={{fn this.setUntilNumber}}
+          @class="small input-export-number"
+        />
       {{else}}
         <p>Exporteer factuur met nummer</p>
-        <form.input @placeholder="29/0001" @value={{this.formattedFromNumber}} @onChange={{fn this.setFromNumber}} @class="small input-export-number" />
+        <form.input @placeholder="30/0001"
+          @value={{this.formattedFromNumber}}
+          @onChange={{fn this.setFromNumber}}
+          @class="small input-export-number"
+        />
       {{/if}}
     </div>
   </div>

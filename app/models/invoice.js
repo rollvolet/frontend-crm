@@ -58,7 +58,7 @@ export default class InvoiceModel extends Model.extend(Validations, LoadableMode
   }
 
   get bankReference() {
-    const modulo = this.number % 97;
+    const modulo = `${(this.number % 97)}`.padStart(2, '0');
     return `${this.number}${modulo}`.padStart(12, '0');
   }
 
