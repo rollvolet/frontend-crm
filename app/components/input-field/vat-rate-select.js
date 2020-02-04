@@ -24,6 +24,10 @@ export default class VatRateSelect extends Component {
   required = false;
   onSelectionChange = null;
 
+  get allowClearWithDefault() {
+    return this.allowClear != null ? this.allowClear : true;
+  }
+
   @computed('label', 'required')
   get placeholder() {
     return this.required ? `${this.label} *` : this.label;

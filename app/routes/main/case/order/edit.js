@@ -1,11 +1,13 @@
-import classic from 'ember-classic-decorator';
 import Route from '@ember/routing/route';
 
-@classic
 export default class EditRoute extends Route {
   model(params) {
-    return this.store.findRecord('order', params.order_id, {
-      include: 'building,contact,vat-rate'
+    return this.store.loadRecord('order', params.order_id, {
+      include: [
+        'building',
+        'contact',
+        'vat-rate'
+      ].join(',')
     });
   }
 

@@ -1,8 +1,7 @@
-import DS from 'ember-data';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
-import { computed } from '@ember/object';
-import { and, bool, not, or, isEmpty, notEmpty } from 'ember-awesome-macros';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 const Validations = buildValidations({
   invoiceDate: validator('presence', true),
@@ -14,48 +13,58 @@ const Validations = buildValidations({
   // vatRate: validator('presence', true)
 });
 
-export default DS.Model.extend(Validations, {
-  number: DS.attr(),
-  invoiceDate: DS.attr('date-midnight'),
-  dueDate: DS.attr('date-midnight'),
-  bookingDate: DS.attr('date-midnight'),
-  paymentDate: DS.attr('date-midnight'),
-  cancellationDate: DS.attr('date-midnight'),
-  baseAmount: DS.attr(),
-  certificateRequired: DS.attr('boolean'),
-  certificateReceived: DS.attr('boolean'),
-  certificateClosed: DS.attr('boolean'),
-  isCreditNote: DS.attr('boolean'),
-  hasProductionTicket: DS.attr('boolean'),
-  comment: DS.attr(),
-  qualification: DS.attr(),
-  documentOutro: DS.attr(),
-  reference: DS.attr(),
+export default class InvoiceModel extends Model.extend(Validations, LoadableModel) {
+  @attr number
+  @attr('date-midnight') invoiceDate
+  @attr('date-midnight') dueDate
+  @attr('date-midnight') bookingDate
+  @attr('date-midnight') paymentDate
+  @attr('date-midnight') cancellationDate
+  @attr baseAmount
+  @attr('boolean') certificateRequired
+  @attr('boolean') certificateReceived
+  @attr('boolean') certificateClosed
+  @attr('boolean') isCreditNote
+  @attr('boolean') hasProductionTicket
+  @attr comment
+  @attr qualification
+  @attr documentOutro
+  @attr reference
 
-  order: DS.belongsTo('order'),
-  customer: DS.belongsTo('customer'),
-  contact: DS.belongsTo('contact'),
-  building: DS.belongsTo('building'),
-  vatRate: DS.belongsTo('vat-rate'),
-  supplements: DS.hasMany('invoice-supplement'),
-  deposits: DS.hasMany('deposit'),
-  depositInvoices: DS.hasMany('deposit-invoice'),
-  workingHours: DS.hasMany('working-hour'),
+  @belongsTo('order') order
+  @belongsTo('customer') customer
+  @belongsTo('contact') contact
+  @belongsTo('building') building
+  @belongsTo('vat-rate') vatRate
+  @hasMany('invoice-supplement') supplements
+  @hasMany('deposit') deposits
+  @hasMany('deposit-invoice') depositInvoices
+  @hasMany('invoiceline') invoicelines
+  @hasMany('working-hour') workingHours
 
-  invoiceDateStr: dateString('invoiceDate'),
-  dueDateStr: dateString('dueDate'),
-  bookingDateStr: dateString('bookingDate'),
-  paymentDateStr: dateString('paymentDate'),
-  cancellationDateStr: dateString('cancellationDate'),
+  @dateString('invoiceDate') invoiceDateStr
+  @dateString('dueDate') dueDateStr
+  @dateString('bookingDate') bookingDateStr
+  @dateString('paymentDate') paymentDateStr
+  @dateString('cancellationDate') cancellationDateStr
 
-  isBooked: notEmpty('bookingDate'),
-  isIsolated: isEmpty('order.id'),
-  isMasteredByAccess: or(
-    and(not('isIsolated'), 'order.isMasteredByAccess'),
-    and('isIsolated', bool('baseAmount'))
-  ),
-  bankReference: computed('number', function() {
+  get isIsolated() {
+    // TODO can the getter be removed once order is a native ES6 class?
+    return this.order.get('id') == null;
+  }
+
+  get isBooked() {
+    return this.bookingDate != null;
+  }
+
+  get bankReference() {
     const modulo = this.number % 97;
     return `${this.number}${modulo}`.padStart(12, '0');
-  })
-});
+  }
+
+  get isMasteredByAccess() {
+    // TODO can the getter be removed once order is a native ES6 class?
+    return (!this.isIsolated && this.order.get('isMasteredByAccess'))
+      || (this.isIsolated && this.baseAmount);
+  }
+}

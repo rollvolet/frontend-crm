@@ -1,3 +1,8 @@
-<InvoicePanel @model={{@model}} @editMode={{this.editMode}} @onOpenEdit={{fn (mut this.editMode) true}} @onCloseEdit={{fn (mut this.editMode) false}} />
+<Invoice::Panel
+  @model={{@model}}
+  @editMode={{this.editMode}}
+  @onOpenEdit={{fn (mut this.editMode) true}}
+  @onCloseEdit={{fn (mut this.editMode) false}}
+/>
 
 <LiquidOutlet />

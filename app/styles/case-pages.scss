@@ -94,14 +94,15 @@
   }
 }
 
+.invoice-document,
 .offer-document {
-  max-width: 800px;
-
   section {
     margin: 10px 0;
   }
 }
 
+.order-document-edit,
+.invoice-document-edit,
 .offer-document-form {
   section {
     background-color: paper-color($accent, '50');
@@ -130,13 +131,14 @@
     .pell-editor {
       background-color: #FFF;
     }
-  }
-}
 
-.case--offer .offerlines-data-table {
-  tr.is-ordered {
-    background-color: paper-color('light-green', '100');
-    border-bottom: 5px #FFF solid;
+    div.line--price {
+      margin: 18px 5px;
+    }
+
+    div.line--vat-rate {
+      margin-left: 5px;
+    }
   }
 }
 

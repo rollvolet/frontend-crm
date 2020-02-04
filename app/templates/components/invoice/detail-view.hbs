@@ -1,0 +1,69 @@
+<div class="layout-row layout-xs-column layout-align-space-between">
+  <div class="case--left-panel case--invoice--entry flex-100 layout-column">
+    <DetailListItem @label="Datum">
+      <DetailListSubitem @label="Factuurdatum">
+        <FmtDate @value={{@model.invoiceDate}} />
+      </DetailListSubitem>
+      <DetailListSubitem @label="Vervaldag">
+        <FmtDate @value={{@model.dueDate}} />
+      </DetailListSubitem>
+      <DetailListSubitem @label="Geboekt">
+        <FmtDate @value={{@model.bookingDate}} />
+      </DetailListSubitem>
+      <DetailListSubitem @label="Betaald">
+        <FmtDate @value={{@model.paymentDate}} />
+      </DetailListSubitem>
+    </DetailListItem>
+
+    <div class="u-vspacer-small"></div>
+
+    <DetailListItem @label="Creditnota">
+      {{paper-icon (if @model.isCreditNote "check_box" "check_box_outline_blank")}}
+    </DetailListItem>
+    {{#unless @model.isCreditNote}}
+      <DetailListItem @label="Betaalref.">
+        {{format-bank-reference @model.bankReference}}
+      </DetailListItem>
+    {{/unless}}
+    {{#if @model.certificateRequired}}
+      <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
+        <CertificateDocumentButtons @model={{@model}} />
+      </DetailListItem>
+    {{/if}}
+    <DetailListItem @label="Referentie">
+      {{@model.reference}}
+    </DetailListItem>
+
+    <div class="u-vspacer-small"></div>
+
+    {{#unless @model.isIsolated}}
+      <DetailListItem @label="Productiebon">
+        {{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}
+        {{#if @model.hasProductionTicket}}
+          <span {{on "click" this.downloadProductionTicket}} role="button">
+            {{paper-icon "find in page"}}
+            <PaperTooltip>Productiebon bekijken</PaperTooltip>
+          </span>
+        {{/if}}
+      </DetailListItem>
+    {{/unless}}
+    <DetailListItem @label="Techniekers" @click={{fn this.openWorkingHoursDialog}} @class="clickable">
+      {{#if @model.workingHours}}
+        {{join ", " this.employeeFirstNames}} {{paper-icon "info" size=18}}
+      {{else}}
+        - {{paper-icon "add circle" size=18}}
+      {{/if}}
+    </DetailListItem>
+
+    <div class="u-vspacer-small"></div>
+
+    <DetailListItem @label="Opmerking">
+      <span class="html-body">{{@model.comment}}</span>
+    </DetailListItem>
+  </div>
+  <div class="case--right-panel flex-noshrink layout-column">
+    <Invoice::CalculationTable @model={{@model}} />
+  </div>
+</div>
+
+<WorkingHoursDialog @show={{this.showWorkingHoursDialog}} @model={{@model}} />

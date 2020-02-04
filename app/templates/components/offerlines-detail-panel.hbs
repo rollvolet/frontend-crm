@@ -6,15 +6,19 @@
     <th>BTW</th>
   </thead>
   <tbody>
-    {{#each this.sortedOfferlines as |offerline|}}
-      <tr class="{{if offerline.isOrdered "is-ordered"}}">
-        <td>{{offerline.sequenceNumber}}</td>
-        <td>{{{offerline.description}}}</td>
-        <td><FmtCurrency @value={{offerline.amount}} /></td>
-        <td>{{offerline.vatRate.rate}}%</td>
-      </tr>
+    {{#if (is-pending @model)}}
+      <tr><td colspan="4">Aan het laden...</td></tr>
     {{else}}
-      <tr><td colspan="4">Geen inhoud</td></tr>
-    {{/each}}
+      {{#each this.sortedLines as |line|}}
+        <tr>
+          <td>{{line.sequenceNumber}}</td>
+          <td>{{{line.description}}}</td>
+          <td><FmtCurrency @value={{line.amount}} /></td>
+          <td>{{line.vatRate.rate}}%</td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4">Geen inhoud</td></tr>
+      {{/each}}
+    {{/if}}
   </tbody>
 </table>

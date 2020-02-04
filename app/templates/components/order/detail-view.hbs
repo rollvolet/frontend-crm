@@ -1,0 +1,83 @@
+<div class="layout-row layout-xs-column layout-align-space-between">
+  <div class="case--left-panel case--order--entry flex-100 layout-column">
+    <DetailListItem @label="Datum">
+      <DetailListSubitem @label="Bestelling">
+        <FmtDate @value={{@model.orderDate}} />
+      </DetailListSubitem>
+      <DetailListSubitem @label="Verwacht">
+        <FmtDate @value={{@model.expectedDate}} />
+      </DetailListSubitem>
+      <DetailListSubitem @label="Vereist">
+        <FmtDate @value={{@model.requiredDate}} />
+      </DetailListSubitem>
+    </DetailListItem>
+    <DetailListItem @label="Bezoeker">
+      {{@model.offer.request.visitor}}
+    </DetailListItem>
+    <DetailListItem @label="Referentie">
+      {{@model.reference}}
+    </DetailListItem>
+    <DetailListItem @label="Werkuren">
+      <FmtDecimal @value={{@model.scheduledHours}} /> uur x
+      <span class="{{if this.isNbOfPersonsWarning "warning-inline"}}">{{@model.scheduledNbOfPersons}} man</span>
+      = {{@model.scheduledTotal}} uur
+    </DetailListItem>
+    {{#if @model.isMasteredByAccess}}
+      <DetailListItem @label="Bedrag">
+        <FmtCurrency @value={{@model.amount}} />
+      </DetailListItem>
+    {{/if}}
+    <DetailListItem @label="BTW tarief">
+      {{@model.vatRate.name}} BTW
+    </DetailListItem>
+    {{#unless this.loadData.isRunning}}
+      <DetailListItem @label="Voorschotten">
+        {{paper-icon (if @model.depositRequired "check_box" "check_box_outline_blank")}} Nodig
+        <DetailListSubitem @label="Bedrag" @click={{fn this.goToDepositInvoices}} @class="clickable">
+          <FmtCurrency @value={{this.depositsAmount}} /> {{paper-icon "info" size=18}}
+        </DetailListSubitem>
+      </DetailListItem>
+      <DetailListItem @label="Voorschot facturen">
+        <DetailListSubitem @label="Bedrag" @click={{fn this.goToDepositInvoices}} @class="clickable">
+          <FmtCurrency @value={{this.depositInvoicesAmount}} /> {{paper-icon "info" size=18}}
+        </DetailListSubitem>
+      </DetailListItem>
+    {{/unless}}
+    <DetailListItem @label="Opmerking">
+      <span class="html-body">{{@model.comment}}</span>
+    </DetailListItem>
+  </div>
+  <div class="case--right-panel flex-noshrink layout-column">
+    <PlanningDetailPanel @model={{@model}} />
+    <DetailListItem @label="Uitvoering">
+      <PaperRadioGroup @groupValue={{readonly @model.execution}} @onChange={{null}} as |group|>
+        <group.radio @value="installation">{{order-execution 'installation'}}</group.radio>
+        <group.radio @value="delivery">{{order-execution 'delivery'}}</group.radio>
+        <group.radio @value="pickup">{{order-execution 'pickup'}}</group.radio>
+      </PaperRadioGroup>
+    </DetailListItem>
+    <DetailListItem @label="Productiebon">
+      <div class="layout-row layout-align-start-center">
+        <div>{{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
+        <ProductionTicketButtons @model={{@model}} />
+      </div>
+    </DetailListItem>
+    <DetailListItem @label="Product klaar">
+      {{paper-icon (if @model.isReady "check_box" "check_box_outline_blank")}}
+    </DetailListItem>
+    <DetailListItem @label="Afgesloten">
+      {{paper-icon (if @model.canceled "check_box" "check_box_outline_blank")}}
+      {{#if @model.canceled}}
+        <DetailListSubitem @label="Reden">
+          {{#if @model.cancellationReason}}
+            <span class="html-body">{{@model.cancellationReason}}</span>
+          {{else}}
+            -
+          {{/if}}
+        </DetailListSubitem>
+      {{/if}}
+    </DetailListItem>
+  </div>
+</div>
+
+{{yield}}

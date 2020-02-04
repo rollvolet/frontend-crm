@@ -1,12 +1,10 @@
-import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import moment from 'moment';
+import { add } from 'ember-math-helpers/helpers/add';
 
-@classic
 export default class InvoiceRoute extends Route {
-  @service
-  case;
+  @service case;
 
   beforeModel(transition) {
     const order = this.modelFor('main.case.order.edit');
@@ -17,15 +15,13 @@ export default class InvoiceRoute extends Route {
 
   async model() {
     const order = this.modelFor('main.case.order.edit');
+    const invoicelines = await order.invoicelines;
     const vatRate = await order.vatRate;
-    const offer = await order.offer;
-    const offerlines = await offer.offerlines;
     const customer = await order.customer;
     const contact = await order.contact;
     const building = await order.building;
 
-    const orderedOfferlines = offerlines.filterBy('isOrdered');
-    const amount = orderedOfferlines.mapBy('amount').reduce((a, b) => a + b, 0);
+    const amount = add(invoicelines.mapBy('amount'));
 
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
@@ -48,7 +44,14 @@ export default class InvoiceRoute extends Route {
       vatRate
     });
 
-    return invoice.save();
+    await invoice.save();
+
+    await Promise.all(invoicelines.map(invoiceline => {
+      invoiceline.invoice = invoice;
+      invoiceline.save();
+    }));
+
+    return invoice;
   }
 
   afterModel(model) {

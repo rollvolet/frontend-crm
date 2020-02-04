@@ -20,8 +20,8 @@ export default class ApplicationController extends Controller {
     const shouldBeIgnored = function(error) {
       return error.isInternalError ||
         (error.isAdapterError
-         && error.errors.length
-         && Math.floor(error.errors[0].status / 100) == 4);
+          && error.errors.length
+          && Math.floor(error.errors[0].status / 100) == 4);
     };
 
     if (shouldBeIgnored(error)) {
