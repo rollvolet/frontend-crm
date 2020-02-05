@@ -1,7 +1,8 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { all, task } from 'ember-concurrency';
+import { keepLatestTask } from 'ember-concurrency-decorators';
+import { all } from 'ember-concurrency';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceCalculationTableComponent extends Component {
@@ -17,7 +18,8 @@ export default class InvoiceCalculationTableComponent extends Component {
     this.loadData.perform();
   }
 
-  @(task(function * () {
+  @keepLatestTask
+  *loadData() {
     const model = yield this.args.model;
 
     // Load data that is already included in the main/case/invoice/edit route's model hook
@@ -35,8 +37,7 @@ export default class InvoiceCalculationTableComponent extends Component {
     this.supplements = yield model.load('supplements');
     this.depositInvoices = yield model.load('depositInvoices');
     this.deposits = yield model.load('deposits');
-  }).keepLatest())
-  loadData
+  }
 
   get vatPercentage() {
     return this.vatRate && this.vatRate.rate / 100;

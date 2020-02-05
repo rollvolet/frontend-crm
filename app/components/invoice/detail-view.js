@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { task } from 'ember-concurrency';
+import { keepLatestTask } from 'ember-concurrency-decorators';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
@@ -15,10 +15,10 @@ export default class InvoiceDetailViewComponent extends Component {
     this.loadData.perform();
   }
 
-  @(task(function * () {
+  @keepLatestTask
+  *loadData() {
     this.workingHours = yield this.args.model.load('workingHours');
-  }).keepLatest())
-  loadData
+  }
 
   get employeeFirstNames() {
     return this.workingHours

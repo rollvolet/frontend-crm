@@ -4,13 +4,11 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default class ContactsPanel extends Component {
-  @service store;
+  @service store
+  @service configuration
 
-  @service configuration;
-
-  @tracked state = 'list'; // one of 'list', 'detail', 'edit'
-
-  @tracked selectedContact = null;
+  @tracked state = 'list' // one of 'list', 'detail', 'edit'
+  @tracked selectedContact = null
 
   get displayList() {
     return this.state == 'list';

@@ -1,7 +1,8 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { task, all } from 'ember-concurrency';
+import { keepLatestTask, task } from 'ember-concurrency-decorators';
+import { all } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { debug, warn } from '@ember/debug';
 
@@ -23,15 +24,15 @@ export default class OrderPanelComponent extends Component {
     this.loadData.perform();
   }
 
-  @(task(function * () {
+  @keepLatestTask
+  *loadData() {
     const model = this.args.model;
     this.vatRate = yield model.load('vatRate', { backgroundReload: false }); // included in route's model hook
     this.deposits = yield model.load('deposits');
     this.depositInvoices = yield model.load('depositInvoices');
     this.invoice = yield model.load('invoice');
     this.invoicelines = yield model.load('invoicelines');
-  }).keepLatest())
-  loadData
+  }
 
   get hasInvoice() {
     return this.invoice != null;
@@ -53,7 +54,8 @@ export default class OrderPanelComponent extends Component {
     return !this.isDisableEdit && !this.hasDepositInvoice && !this.hasDeposit;
   }
 
-  @task(function * () {
+  @task
+  *remove() {
     const offer = yield this.args.model.offer;
     try {
       // remove invoicelines
@@ -77,10 +79,10 @@ export default class OrderPanelComponent extends Component {
       this.case.set('current.orderId', this.args.model.id);
       yield this.args.model.rollbackAttributes(); // undo delete-state
     }
-  })
-  remove;
+  }
 
-  @task(function * () {
+  @task
+  *rollbackTree() {
     this.args.model.rollbackAttributes();
     const rollbackPromises = [];
     rollbackPromises.push(this.args.model.belongsTo('vatRate').reload());
@@ -88,10 +90,10 @@ export default class OrderPanelComponent extends Component {
     rollbackPromises.push(this.args.model.belongsTo('building').reload());
     yield all(rollbackPromises);
     yield this.save.perform(null, { forceSuccess: true });
-  })
-  rollbackTree;
+  }
 
-  @task(function * (_, { forceSuccess = false } = {} ) {
+  @keepLatestTask
+  *save(_, { forceSuccess = false } = {} ) {
     if (forceSuccess) return;
 
     const { validations } = yield this.args.model.validate();
@@ -121,29 +123,28 @@ export default class OrderPanelComponent extends Component {
     const offer = yield this.args.model.offer;
     const request = yield offer.request;
     yield request.save();
-  }).keepLatest()
-  save;
+  }
 
-  @task(function * () {
+  @task
+  *generateOrderDocument() {
     try {
       yield this.documentGeneration.orderDocument(this.args.model);
     } catch(e) {
       warn(`Something went wrong while generating the order document`, { id: 'document-generation-failure' });
     }
-  })
-  generateOrderDocument;
+  }
 
-  @task(function * () {
+  @task
+  *generateDeliveryNote() {
     try {
       yield this.documentGeneration.deliveryNote(this.args.model);
     } catch(e) {
       warn(`Something went wrong while generating the delivery note`, { id: 'document-generation-failure' });
     }
-  })
-  generateDeliveryNote;
+  }
 
   @action
-  async closeEdit() {
+  closeEdit() {
     if (this.args.model.isNew || this.args.model.validations.isInvalid || this.args.model.isError
         || (this.save.last && this.save.last.isError)) {
       this.showUnsavedChangesDialog = true;

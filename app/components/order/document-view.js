@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { task } from 'ember-concurrency';
+import { keepLatestTask } from 'ember-concurrency-decorators';
 import sum from '../../utils/math/sum';
 import { tracked } from '@glimmer/tracking';
 
@@ -12,13 +12,13 @@ export default class OrderDocumentViewComponent extends Component {
     this.loadData.perform();
   }
 
-  @(task(function * () {
+  @keepLatestTask
+  *loadData() {
     const model = this.args.model;
     // load data that is already loaded by the order/panel component
     this.vatRate = yield model.load('vatRate', { backgroundReload: false });
     this.invoicelines = yield model.load('invoicelines', { backgroundReload: false });
-  }).keepLatest())
-  loadData
+  }
 
   get totalAmount() {
     return sum(this.invoicelines.map(line => line.arithmeticAmount));

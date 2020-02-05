@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { task } from 'ember-concurrency';
+import { keepLatestTask } from 'ember-concurrency-decorators';
 import { action } from '@ember/object';
 import sum from '../../utils/math/sum';
 
@@ -14,15 +14,15 @@ export default class OrderDetailViewComponent extends Component {
     this.loadData.perform();
   }
 
-  @(task(function * () {
+  @keepLatestTask
+  *loadData() {
     const model = yield this.args.model;
     // TODO also load model.offer.request.visitor?
     // load data that is already loaded by the order/panel component
     this.vatRate = yield model.load('vatRate', { backgroundReload: false });
     this.deposits = yield model.load('deposits', { backgroundReload: false });
     this.depositInvoices = yield model.load('depositInvoices', { backgroundReload: false });
-  }).keepLatest())
-  loadData
+  }
 
   get depositsAmount() {
     return sum(this.deposits.map(deposit => deposit.amount));

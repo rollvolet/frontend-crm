@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { task } from 'ember-concurrency';
+import { task, keepLatestTask } from 'ember-concurrency-decorators';
 import { tracked } from '@glimmer/tracking';
 
 export default class InvoicelineEditComponent extends Component {
@@ -15,19 +15,19 @@ export default class InvoicelineEditComponent extends Component {
     return this.order != null && this.invoice != null;
   }
 
-  @(task(function * () {
+  @keepLatestTask
+  *loadData() {
     const model = this.args.model;
     // load data that is already loaded by the invoice/document-edit component
     yield model.load('vatRate', { backgroundReload: false });
     this.order = yield model.load('order', { backgroundReload: false });
     this.invoice = yield model.load('invoice', { backgroundReload: false });
-  }).keepLatest())
-  loadData
+  }
 
-  @task(function * () {
+  @task
+  *save() {
     const { validations } = yield this.args.model.validate();
     if (validations.isValid)
       yield this.args.model.save();
-  })
-  save;
+  }
 }

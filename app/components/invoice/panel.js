@@ -2,7 +2,8 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { task, all } from 'ember-concurrency';
+import { keepLatestTask, task } from 'ember-concurrency-decorators';
+import { all } from 'ember-concurrency';
 import { debug, warn } from '@ember/debug';
 
 export default class InvoicePanelComponent extends Component {
@@ -19,12 +20,12 @@ export default class InvoicePanelComponent extends Component {
     this.loadData.perform();
   }
 
-  @(task(function * () {
+  @keepLatestTask
+  *loadData() {
     const model = this.args.model;
     this.invoicelines = yield model.invoicelines;
     yield all(this.invoicelines.map(line => line.sideload('order,invoice,vat-rate')));
-  }).keepLatest())
-  loadData
+  }
 
   get isDisableEdit() {
     return this.args.model.isMasteredByAccess || this.args.model.isBooked;
@@ -34,15 +35,16 @@ export default class InvoicePanelComponent extends Component {
     return !this.isDisableEdit;
   }
 
-  @task(function*(vatRate) {
+  @task
+  *updateInvoicelinesVatRate(vatRate) {
     yield all(this.invoicelines.map(async (invoiceline) => {
       invoiceline.vatRate = vatRate;
       invoiceline.save();
     }));
-  })
-  updateInvoicelinesVatRate
+  }
 
-  @task(function*() {
+  @task
+  *remove() {
     const customer = yield this.args.model.customer;
     const order = yield this.args.model.order;
 
@@ -65,10 +67,10 @@ export default class InvoicePanelComponent extends Component {
     } catch (e) {
       warn(`Something went wrong while destroying invoice ${this.args.model.id}`, { id: 'destroy-failure' });
     }
-  })
-  remove
+  }
 
-  @task(function*() {
+  @task
+  *rollabckTree() {
     const rollbackPromises = [];
 
     this.args.model.rollbackAttributes();
@@ -77,10 +79,10 @@ export default class InvoicePanelComponent extends Component {
 
     yield all(rollbackPromises);
     yield this.save.perform(null, { forceSuccess: true });
-  })
-  rollbackTree
+  }
 
-  @(task(function*(_, { forceSuccess = false } = {}) {
+  @keepLatestTask
+  *save(_, { forceSuccess = false } = {}) {
     if (forceSuccess) return;
 
     const { validations } = yield this.args.model.validate();
@@ -101,10 +103,10 @@ export default class InvoicePanelComponent extends Component {
 
       yield this.args.model.save();
     }
-  }).keepLatest())
-  save
+  }
 
-  @task(function*() {
+  @task
+  *generateInvoiceDocument() {
     if (!this.showMissingCertificateDialog && this.args.model.certificateRequired && !this.args.model.certificateReceived) {
       this.showMissingCertificateDialog = true;
     } else {
@@ -120,8 +122,7 @@ export default class InvoicePanelComponent extends Component {
         yield this.save.perform();
       }
     }
-  })
-  generateInvoiceDocument
+  }
 
   @action
   closeEdit() {

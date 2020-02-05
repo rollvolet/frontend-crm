@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { task, all } from 'ember-concurrency';
+import { keepLatestTask, task } from 'ember-concurrency-decorators';
+import { all } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 
 export default class InvoiceDocumentEditComponent extends Component {
@@ -25,16 +26,17 @@ export default class InvoiceDocumentEditComponent extends Component {
     return this.args.model.vatRate;
   }
 
-  @(task(function * () {
+  @keepLatestTask
+  *loadData() {
     const model = this.args.model;
     // load data that is already loaded by the invoice/panel component
     yield model.load('vatRate', { backgroundReload: false });
     this.invoicelines = yield model.load('invoicelines', { backgroundReload: false });
     yield all(this.invoicelines.map(line => line.sideload('order,invoice,vat-rate')));
-  }).keepLatest())
-  loadData
+  }
 
-  @task(function * () {
+  @task
+  *addInvoiceline() {
     const number = this.invoicelines.length ? Math.max(...this.invoicelines.map(l => l.sequenceNumber)) : 0;
     const invoiceline = this.store.createRecord('invoiceline', {
       sequenceNumber: number + 1,
@@ -45,13 +47,12 @@ export default class InvoiceDocumentEditComponent extends Component {
     if (validations.isValid)
       invoiceline.save();
     this.invoicelines.pushObject(invoiceline);
-  })
-  addInvoiceline;
+  }
 
-  @task(function * (invoiceline) {
+  @task
+  *deleteInvoiceline(invoiceline) {
     invoiceline.rollbackAttributes();
     this.invoicelines.removeObject(invoiceline);
     yield invoiceline.destroyRecord();
-  })
-  deleteInvoiceline
+  }
 }
