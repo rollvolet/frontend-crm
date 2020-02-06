@@ -28,11 +28,6 @@ export default class CaseService extends Service.extend(Evented) {
 
   @tracked current = null
 
-  constructor() {
-    super(...arguments);
-    this.initCase();
-  }
-
   async initCase() {
     this.current = await this.loadCaseForCurrentRoute.perform();
     await this.loadRecords.perform();
@@ -70,6 +65,8 @@ export default class CaseService extends Service.extend(Evented) {
       const responseBody = yield response.json();
       return new Case({
         customerId: responseBody.customerId,
+        contactId: responseBody.contactId,
+        buildingId: responseBody.buildingId,
         requestId: responseBody.requestId,
         offerId: responseBody.offerId,
         orderId: responseBody.orderId,
@@ -82,18 +79,26 @@ export default class CaseService extends Service.extend(Evented) {
 
   @keepLatestTask
   *loadRecords() {
-    const promises = ['request', 'offer', 'order', 'invoice'].map(async (type) => {
+    const isRecordLoaded = function(currentId, currentResource) {
+      return currentId && currentResource && currentId == currentResource.id;
+    };
+
+    const promises = ['customer', 'contact', 'building', 'request', 'offer', 'order', 'invoice'].map(async (type) => {
       const idProp = `${type}Id`;
       const currentId = this.current[idProp];
       const currentResource = this.current[type];
-      if ( (currentId && !currentResource)
-           || (currentId && currentResource && currentId != currentResource.get('id'))) {
-        let record = this.store.peekRecord(type, currentId);
 
-        if (!record) // TODO replace with ember datastorefront's loadRecord
-          record = await this.store.findRecord(type, currentId);
+      if (currentId) {
+        if (!isRecordLoaded(currentId, currentResource)) {
+          let record = this.store.peekRecord(type, currentId);
 
-        this.current[type] = record;
+          if (!record)
+            record = await this.store.loadRecord(type, currentId);
+
+          this.current[type] = record;
+        }
+      } else {
+        this.current[type] = null;
       }
     });
 
@@ -101,8 +106,9 @@ export default class CaseService extends Service.extend(Evented) {
   }
 
   @task
-  *updateContact(contact, building) {
-    yield this._updateContactAndBuilding.perform(contact, building);
+  *updateContact(contact) {
+    this.updateRecord('contact', contact);
+    yield this._updateContactAndBuilding.perform(contact, this.current.building);
 
     const reloadPromises = [];
     if (this.current.request) {
@@ -128,8 +134,9 @@ export default class CaseService extends Service.extend(Evented) {
   }
 
   @task({ evented: true })
-  *updateBuilding(contact, building) {
-    yield this._updateContactAndBuilding.perform(contact, building);
+  *updateBuilding(building) {
+    this.updateRecord('building', building);
+    yield this._updateContactAndBuilding.perform(this.current.contact, building);
 
     const reloadPromises = [];
     if (this.current.request) {

@@ -1,0 +1,130 @@
+{{#if @model}}
+  <h2>
+    Klant: <PrintName @model={{@model}} /> <span class="small-text-fade">[{{@model.number}}]</span>
+    {{#paper-link 'main.customers.edit' @model iconButton=true}}
+      {{paper-icon "open in new"}}
+      <PaperTooltip>Open klant</PaperTooltip>
+    {{/paper-link}}
+  </h2>
+
+  <div class="resource-details">
+    <div class="layout-row layout-xs-column">
+      <div class="left-column">
+        <DetailIconListItem @icon={{if @model.isCompany "business" "person"}} @label={{if @model.isCompany "Bedrijf" "Naam"}} @class="resource-details--section-name">
+          <div>
+            {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
+            {{@model.prefix}} {{@model.name}} {{@model.suffix}}
+            {{#if (not @model.printInFront)}}{{@model.honorificPrefix.name}}{{/if}}
+          </div>
+          <div><FmtVatNumber @value={{@model.vatNumber}} /></div>
+        </DetailIconListItem>
+
+        <DetailIconListItem @icon="location on" @label="Adres" @class="resource-details--section-address">
+          <div>{{@model.address1}}</div>
+          <div>{{@model.address2}}</div>
+          <div>{{@model.address3}}</div>
+          <div>{{@model.postalCode}} {{@model.city}}</div>
+          <div>{{@model.country.name}}</div>
+        </DetailIconListItem>
+
+        <DetailIconListItem @icon="language" @label="Taal" @class="resource-details--section-language">
+          {{@model.language.name}}
+        </DetailIconListItem>
+
+        <DetailIconListItem @icon="phone" @label="Telefoon" @class="resource-details--section-telephone">
+          {{#each @model.telephones as |tel|}}
+            <div>
+              {{tel.telephoneType.name}}:
+              {{format-phone tel.country.telephonePrefix tel.area tel.number}}
+              {{#if tel.memo}}({{tel.memo}}){{/if}}
+            </div>
+          {{/each}}
+        </DetailIconListItem>
+
+        <DetailIconListItem @icon="mail outline" @label="E-mail" @class="resource-details--section-contact">
+          <div><FmtEmail @value={{@model.email}} /></div>
+          <div><FmtEmail @value={{@model.email2}} /></div>
+          <div>{{@model.url}}</div>
+        </DetailIconListItem>
+
+        <DetailIconListItem @icon="assignment" @label="Memo" @class="resource-details--section-memo">
+          <div {{on "click" (toggle "isMemoExpanded" this)}} role="button">
+            {{#if @model.memo}}
+              {{#if this.isMemoExpanded}}
+                Memo {{paper-icon "expand less"}}
+              {{else}}
+                Memo {{paper-icon "expand more"}}
+              {{/if}}
+              {{#liquid-if this.isMemoExpanded class="expand-more"}}
+                <span class="html-body">{{@model.memo}}</span>
+              {{/liquid-if}}
+            {{else}}
+              Geen memo
+            {{/if}}
+          </div>
+        </DetailIconListItem>
+      </div>
+      <div class="right-column layout-column">
+        <div>
+          <div class="layout-row layout-align-space-between-center">
+            <h3>Gebouw</h3>
+            {{#if this.isEnabledEditBuilding}}
+              <PaperButton @onClick={{fn this.toggleBuildingEdit}} @iconButton={{true}}>
+                {{paper-icon "exit to app"}}
+                <PaperTooltip>Sluiten</PaperTooltip>
+              </PaperButton>
+            {{else if this.isUpdatingBuilding}}
+              <PaperProgressCircular @diameter={{18}} />
+            {{else}}
+              <PaperButton @onClick={{fn this.toggleBuildingEdit}} @iconButton={{true}}>
+                {{paper-icon "edit mode"}}
+                <PaperTooltip>Aanpassen</PaperTooltip>
+              </PaperButton>
+            {{/if}}
+          </div>
+          {{#if this.isEnabledEditBuilding}}
+            <InputField::BuildingSelect @value={{this.building}} @customer={{@model}} @onSelectionChange={{fn this.updateBuilding}} @class="md-input-wrapper xxxxlarge" />
+          {{else}}
+            {{#if this.building}}
+              <BuildingDetailCard @model={{this.building}} />
+            {{else}}
+              <p>n.v.t.</p>
+            {{/if}}
+          {{/if}}
+        </div>
+        <div>
+          <div class="layout-row layout-align-space-between-center">
+            <h3>Contact</h3>
+            {{#if this.isEnabledEditContact}}
+              <PaperButton @onClick={{fn this.toggleContactEdit}} @iconButton={{true}}>
+                {{paper-icon "exit to app"}}
+                <PaperTooltip>Sluiten</PaperTooltip>
+              </PaperButton>
+            {{else if this.isUpdatingContact}}
+              <PaperProgressCircular @diameter={{18}} />
+            {{else}}
+              <PaperButton @onClick={{fn this.toggleContactEdit}} @iconButton={{true}}>
+                {{paper-icon "edit mode"}}
+                <PaperTooltip>Aanpassen</PaperTooltip>
+              </PaperButton>
+            {{/if}}
+          </div>
+          {{#if this.isEnabledEditContact}}
+            <InputField::ContactSelect @value={{this.contact}} @customer={{@model}} @onSelectionChange={{fn this.updateContact}} @class="md-input-wrapper xxxxlarge" />
+          {{else}}
+            {{#if this.contact}}
+              <ContactDetailCard @model={{this.contact}} />
+            {{else}}
+              <p>n.v.t.</p>
+            {{/if}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    <div class="resource-details--section resource-details--section-audit layout-row">
+      Aangemaakt: {{moment-format @model.created}}
+    </div>
+  </div>
+{{else}}
+  <PaperButton @onClick={{null}}>Koppel klant</PaperButton>
+{{/if}}

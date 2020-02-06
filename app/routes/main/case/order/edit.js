@@ -11,9 +11,9 @@ export default class EditRoute extends Route {
     });
   }
 
-  afterModel(model) {
-    const controller = this.controllerFor('main.case');
-    controller.set('building', model.get('building'));
-    controller.set('contact', model.get('contact'));
-  }
+  // afterModel(model) {
+  //   const controller = this.controllerFor('main.case');
+  //   controller.set('building', model.get('building'));
+  //   controller.set('contact', model.get('contact'));
+  // }
 }
