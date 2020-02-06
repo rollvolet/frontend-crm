@@ -1,20 +1,23 @@
-import classic from 'ember-classic-decorator';
+import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Controller from '@ember/controller';
+import { tracked } from '@glimmer/tracking';
 import moment from 'moment';
-import { or, notEmpty } from 'ember-awesome-macros';
 
-@classic
 export default class DepositInvoicesController extends Controller {
-  @service
-  store;
+  @service store
+  @service case
 
-  @notEmpty('order.invoice.id')
-  hasInvoice;
+  @tracked customer
+  @tracked order
 
-  @or('order.isMasteredByAccess', 'hasInvoice')
-  isDisabledEdit;
+  get hasInvoice() {
+    return this.case.invoice != null;
+  }
+
+  get isDisabledEdit() {
+    return this.order.isMasteredByAccess || this.hasInvoice;
+  }
 
   @action
   async createNewDeposit() {

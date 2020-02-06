@@ -1,4 +1,5 @@
-import DS from 'ember-data';
+import Model, { attr, belongsTo } from '@ember-data/model';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
 
@@ -12,14 +13,15 @@ const Validations = buildValidations({
   ]
 });
 
-export default DS.Model.extend(Validations, {
-  sequenceNumber: DS.attr(),
-  amount: DS.attr('number'),
-  paymentDate: DS.attr('date-midnight'),
-  customer: DS.belongsTo('customer'),
-  order: DS.belongsTo('order'),
-  invoice: DS.belongsTo('invoice'),
-  payment: DS.belongsTo('payment'),
+export default class DepositModel extends Model.extend(Validations, LoadableModel) {
+  @attr sequenceNumber
+  @attr('number') amount
+  @attr('date-midnight') paymentDate
 
-  paymentDateStr: dateString('paymentDate')
-});
+  @belongsTo('customer') customer
+  @belongsTo('order') order
+  @belongsTo('invoice') invoice
+  @belongsTo('payment') payment
+
+  @dateString('paymentDate') paymentDateStr
+}

@@ -1,8 +1,7 @@
-import DS from 'ember-data';
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
-import { computed } from '@ember/object';
-import { alias, notEmpty } from '@ember/object/computed';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 const Validations = buildValidations({
   invoiceDate: validator('presence', true),
@@ -16,46 +15,59 @@ const Validations = buildValidations({
   // vatRate: validator('presence', true)
 });
 
-export default DS.Model.extend(Validations, {
-  number: DS.attr(),
-  invoiceDate: DS.attr('date-midnight'),
-  dueDate: DS.attr('date-midnight'),
-  bookingDate: DS.attr('date-midnight'),
-  paymentDate: DS.attr('date-midnight'),
-  cancellationDate: DS.attr('date-midnight'),
-  baseAmount: DS.attr(),
-  certificateRequired: DS.attr('boolean'),
-  certificateReceived: DS.attr('boolean'),
-  certificateClosed: DS.attr('boolean'),
-  comment: DS.attr(),
-  qualification: DS.attr(),
-  documentOutro: DS.attr(),
-  reference: DS.attr(),
+export default class InvoiceModel extends Model.extend(Validations, LoadableModel) {
+  @attr number
+  @attr('date-midnight') invoiceDate
+  @attr('date-midnight') dueDate
+  @attr('date-midnight') bookingDate
+  @attr('date-midnight') paymentDate
+  @attr('date-midnight') cancellationDate
+  @attr baseAmount
+  @attr('boolean') certificateRequired
+  @attr('boolean') certificateReceived
+  @attr('boolean') certificateClosed
+  @attr('boolean') isCreditNote
+  @attr comment
+  @attr qualification
+  @attr documentOutro
+  @attr reference
 
-  order: DS.belongsTo('order'),
-  invoice: DS.belongsTo('invoice'),
-  customer: DS.belongsTo('customer'),
-  contact: DS.belongsTo('contact'),
-  building: DS.belongsTo('building'),
-  vatRate: DS.belongsTo('vat-rate'),
+  @belongsTo('order') order
+  @belongsTo('invoice') invoice
+  @belongsTo('customer') customer
+  @belongsTo('contact') contact
+  @belongsTo('building') building
+  @belongsTo('vat-rate') vatRate
 
-  invoiceDateStr: dateString('invoiceDate'),
-  dueDateStr: dateString('dueDate'),
-  bookingDateStr: dateString('bookingDate'),
-  paymentDateStr: dateString('paymentDate'),
-  cancellationDateStr: dateString('cancellationDate'),
-  arithmeticAmount: alias('baseAmount'),
-  arithmeticVat: computed('baseAmount', 'vatRate', async function() {
-    const vatRate = await this.vatRate;
-    const rate = vatRate.rate / 100;
-    const vat = this.baseAmount * rate;
-    return vat;
-  }),
+  @dateString('invoiceDate') invoiceDateStr
+  @dateString('dueDate') dueDateStr
+  @dateString('bookingDate') bookingDateStr
+  @dateString('paymentDate') paymentDateStr
+  @dateString('cancellationDate') cancellationDateStr
 
-  isBooked: notEmpty('bookingDate'),
-  isMasteredByAccess: alias('order.isMasteredByAccess'),
-  bankReference: computed('number', function() {
+  get arithmeticAmount() {
+    return this.baseAmount;
+  }
+
+  get arithmeticVat() {
+    return (async () => {
+      const vatRate = await this.vatRate;
+      const rate = vatRate.rate / 100;
+      const vat = this.baseAmount * rate;
+      return vat;
+    })();
+  }
+
+  get isBooked() {
+    return this.bookingDate != null;
+  }
+
+  get bankReference() {
     const modulo = `${(this.number % 97)}`.padStart(2, '0');
     return `${this.number}${modulo}`.padStart(12, '0');
-  })
-});
+  }
+
+  get isMasteredByAccess() {
+    return this.order.get('isMasteredByAccess');
+  }
+}

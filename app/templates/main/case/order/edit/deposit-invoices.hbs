@@ -8,10 +8,21 @@
   </div>
 {{/if}}
 
-<DepositsPanel @model={{this.order.deposits}} @depositRequired={{this.order.depositRequired}} @isDisabledEdit={{this.isDisabledEdit}} @onCreate={{fn this.createNewDeposit}} />
+<DepositsPanel
+  @model={{this.order.deposits}}
+  @depositRequired={{this.order.depositRequired}}
+  @isDisabledEdit={{this.isDisabledEdit}}
+  @onCreate={{fn this.createNewDeposit}}
+/>
 
 <div class="u-margin-bottom-large"></div>
 
-<DepositInvoicesPanel @model={{@model}} @vatRate={{this.order.vatRate}} @isDisabledEdit={{this.isDisabledEdit}} @onCreate={{fn this.createNewDepositInvoice}} @onUpdateList={{fn this.updateList}} />
+<DepositInvoicesPanel
+  @model={{@model}}
+  @vatRate={{this.order.vatRate}}
+  @isDisabledEdit={{this.isDisabledEdit}}
+  @onCreate={{fn this.createNewDepositInvoice}}
+  @onUpdateList={{fn this.updateList}}
+/>
 
 <LiquidOutlet />

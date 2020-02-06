@@ -1,10 +1,11 @@
-import classic from 'ember-classic-decorator';
 import Service, { inject as service } from '@ember/service';
 import fetch, { Headers } from 'fetch';
 import { assert } from '@ember/debug';
 import Case from '../models/case';
-import { task } from 'ember-concurrency';
+import { keepLatestTask, task } from 'ember-concurrency-decorators';
+import { all } from 'ember-concurrency';
 import Evented from '@ember/object/evented';
+import { tracked } from '@glimmer/tracking';
 
 const regexMap = {
   requestId: /case\/\d+\/request\/(\d+)/i,
@@ -20,58 +21,32 @@ const calcQueryParam = function(routeUrl, key) {
   return `${key}=${matches[1]}`;
 };
 
-@classic
 export default class CaseService extends Service.extend(Evented) {
-  current = null;
+  @service router
+  @service session
+  @service store
 
-  @service
-  router;
+  @tracked current = null
 
-  @service
-  session;
-
-  @service
-  store;
-
-  init() {
-    super.init(...arguments);
+  constructor() {
+    super(...arguments);
     this.initCase();
   }
 
   async initCase() {
-    const currentCase = await this.loadCaseForCurrentRoute.perform();
-    this.set('current', currentCase);
+    this.current = await this.loadCaseForCurrentRoute.perform();
     await this.loadRecords.perform();
   }
 
   updateRecord(type, record) {
-    this.set(`current.${type}`, record);
-    this.set(`current.${type}Id`, record && record.get('id'));
+    this.current[type] = record;
+    this.current[`${type}Id`] = record && record.get('id');
   }
 
-  @(task(function * () {
-    const promises = ['request', 'offer', 'order', 'invoice'].map(async (type) => {
-      const idProp = `${type}Id`;
-      const currentId = this.current.get(idProp);
-      const currentResource = this.current.get(type);
-      if ( (currentId && !currentResource)
-           || (currentId && currentResource && currentId != currentResource.get('id'))) {
-        let record = this.store.peekRecord(type, currentId);
-
-        if (!record)
-          record = await this.store.findRecord(type, currentId);
-
-        this.set(`current.${type}`, record);
-      }
-    });
-
-    yield Promise.all(promises);
-  }).keepLatest())
-  loadRecords;
-
-  @task(function * () {
-    const currentRoute = this.get('router.currentRouteName');
-    const currentUrl = this.get('router.currentURL');
+  @keepLatestTask
+  *loadCaseForCurrentRoute() {
+    const currentRoute = this.router.currentRouteName;
+    const currentUrl = this.router.currentURL;
 
     let queryParam;
     if (currentRoute.includes('case.request'))
@@ -93,7 +68,7 @@ export default class CaseService extends Service.extend(Evented) {
 
     if (response.ok) {
       const responseBody = yield response.json();
-      return Case.create({
+      return new Case({
         customerId: responseBody.customerId,
         requestId: responseBody.requestId,
         offerId: responseBody.offerId,
@@ -103,10 +78,30 @@ export default class CaseService extends Service.extend(Evented) {
     } else {
       throw response;
     }
-  })
-  loadCaseForCurrentRoute;
+  }
 
-  @task(function * (contact, building) {
+  @keepLatestTask
+  *loadRecords() {
+    const promises = ['request', 'offer', 'order', 'invoice'].map(async (type) => {
+      const idProp = `${type}Id`;
+      const currentId = this.current[idProp];
+      const currentResource = this.current[type];
+      if ( (currentId && !currentResource)
+           || (currentId && currentResource && currentId != currentResource.get('id'))) {
+        let record = this.store.peekRecord(type, currentId);
+
+        if (!record) // TODO replace with ember datastorefront's loadRecord
+          record = await this.store.findRecord(type, currentId);
+
+        this.current[type] = record;
+      }
+    });
+
+    yield all(promises);
+  }
+
+  @task
+  *updateContact(contact, building) {
     yield this._updateContactAndBuilding.perform(contact, building);
 
     const reloadPromises = [];
@@ -130,10 +125,10 @@ export default class CaseService extends Service.extend(Evented) {
     }
 
     yield Promise.all(reloadPromises);
-  })
-  updateContact;
+  }
 
-  @(task(function * (contact, building) {
+  @task({ evented: true })
+  *updateBuilding(contact, building) {
     yield this._updateContactAndBuilding.perform(contact, building);
 
     const reloadPromises = [];
@@ -157,10 +152,10 @@ export default class CaseService extends Service.extend(Evented) {
     }
 
     yield Promise.all(reloadPromises);
-  }).evented())
-  updateBuilding;
+  }
 
-  @task(function * (contact, building) {
+  @task
+  *_updateContactAndBuilding(contact, building) {
     const { access_token } = this.get('session.data.authenticated');
     yield fetch(`/api/cases/contact-and-building`, {
       method: 'POST',
@@ -177,6 +172,5 @@ export default class CaseService extends Service.extend(Evented) {
         invoiceId: this.current.invoiceId
       })
     });
-  })
-  _updateContactAndBuilding;
+  }
 }
