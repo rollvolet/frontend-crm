@@ -1,6 +1,6 @@
-import DS from 'ember-data';
-import HasManyQuery from 'ember-data-has-many-query';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 const Validations = buildValidations({
   email: validator('format', { type: 'email', allowBlank: true }),
@@ -40,41 +40,42 @@ const Validations = buildValidations({
   ]
 });
 
-export default DS.Model.extend(Validations, HasManyQuery.ModelMixin, {
-  dataId: DS.attr(),
-  number: DS.attr(),
-  name: DS.attr(),
-  address1: DS.attr(),
-  address2: DS.attr(),
-  address3: DS.attr(),
-  postalCode: DS.attr(),
-  city: DS.attr(),
-  isCompany: DS.attr(),
-  vatNumber: DS.attr(),
-  prefix: DS.attr(),
-  suffix: DS.attr(),
-  email: DS.attr(),
-  email2: DS.attr(),
-  url: DS.attr(),
-  printPrefix: DS.attr(),
-  printSuffix: DS.attr(),
-  printInFront: DS.attr(),
-  comment: DS.attr(),
-  memo: DS.attr(),
-  created: DS.attr('date', {
+export default class CustomerModel extends Model.extend(Validations, LoadableModel) {
+  @attr() dataId
+  @attr() number
+  @attr() name
+  @attr() address1
+  @attr() address2
+  @attr() address3
+  @attr() postalCode
+  @attr() city
+  @attr() isCompany
+  @attr() vatNumber
+  @attr() prefix
+  @attr() suffix
+  @attr() email
+  @attr() email2
+  @attr() url
+  @attr() printPrefix
+  @attr() printSuffix
+  @attr() printInFront
+  @attr() comment
+  @attr() memo
+  @attr('date', {
     defaultValue() { return new Date(); }
-  }),
-  contacts: DS.hasMany('contact'),
-  buildings: DS.hasMany('building'),
-  country: DS.belongsTo('country'),
-  language: DS.belongsTo('language'),
-  honorificPrefix: DS.belongsTo('honorific-prefix'),
-  telephones: DS.hasMany('telephone'),
-  requests: DS.hasMany('request'),
-  offers: DS.hasMany('offer'),
-  orders: DS.hasMany('order'),
-  deposits: DS.hasMany('deposit'),
-  depositInvoices: DS.hasMany('deposit-invoice'),
-  invoices: DS.hasMany('invoice'),
-  tags: DS.hasMany('tag')
-});
+  }) created
+
+  @hasMany('contact') contacts
+  @hasMany('building') buildings
+  @belongsTo('country') country
+  @belongsTo('language') language
+  @belongsTo('honorific-prefix') honorificPrefix
+  @hasMany('telephone') telephones
+  @hasMany('request') requests
+  @hasMany('offer') offers
+  @hasMany('order') orders
+  @hasMany('deposit') deposits
+  @hasMany('deposit-invoice') depositInvoices
+  @hasMany('invoice') invoices
+  @hasMany('tag') tags
+}

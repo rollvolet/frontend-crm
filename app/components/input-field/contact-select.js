@@ -15,8 +15,13 @@ export default class ContactSelect extends Component {
       // TODO replace ember-data-has-many-query with ember-storefront
       // By using query we force ember-data to reload the relationship.
       // Ember data may otherwise assume it has already loaded the relation when it only fetched 1 page
-      this.customer.query('contacts', {
-        page: { size: 1000 }
+      this.store.query('contact', {
+        page: { size: 1000 },
+        filter: {
+          customer: {
+            number: this.customer.number
+          }
+        }
       }).then((contacts) => this.set('options', contacts));
     }
   }

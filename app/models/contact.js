@@ -1,5 +1,5 @@
-import DS from 'ember-data';
-import { computed } from '@ember/object';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
@@ -10,51 +10,54 @@ const Validations = buildValidations({
   country: validator('presence', true)
 });
 
-export default DS.Model.extend(Validations, {
-  name: DS.attr(),
-  address1: DS.attr(),
-  address2: DS.attr(),
-  address3: DS.attr(),
-  postalCode: DS.attr(),
-  city: DS.attr(),
-  prefix: DS.attr(),
-  suffix: DS.attr(),
-  email: DS.attr(),
-  email2: DS.attr(),
-  url: DS.attr(),
-  printPrefix: DS.attr(),
-  printSuffix: DS.attr(),
-  printInFront: DS.attr(),
-  comment: DS.attr(),
-  number: DS.attr(),
-  created: DS.attr('date', {
+export default class ContactModel extends Model.extend(Validations, LoadableModel) {
+  @attr() name
+  @attr() address1
+  @attr() address2
+  @attr() address3
+  @attr() postalCode
+  @attr() city
+  @attr() prefix
+  @attr() suffix
+  @attr() email
+  @attr() email2
+  @attr() url
+  @attr() printPrefix
+  @attr() printSuffix
+  @attr() printInFront
+  @attr() comment
+  @attr() number
+  @attr('date', {
     defaultValue() { return new Date(); }
-  }),
-  customer: DS.belongsTo('customer'),
-  country: DS.belongsTo('country'),
-  language: DS.belongsTo('language'),
-  honorificPrefix: DS.belongsTo('honorific-prefix'),
-  telephones: DS.hasMany('telephone'),
-  requests: DS.hasMany('request', { inverse: null }),
-  offers: DS.hasMany('offer', { inverse: null }),
-  orders: DS.hasMany('order', { inverse: null }),
-  invoices: DS.hasMany('invoice', { inverse: null }),
+  }) created
 
-  printName: computed('printPrefix', 'prefix', 'printSuffix', 'suffix', 'name', function() {
+  @belongsTo('customer') customer
+  @belongsTo('country') country
+  @belongsTo('language') language
+  @belongsTo('honorific-prefix') honorificPrefix
+  @hasMany('telephone') telephones
+  @hasMany('request') requests
+  @hasMany('offer') offers
+  @hasMany('order') orders
+  @hasMany('invoice') invoices
+
+  get printName() {
     let name = '';
     if (this.printPrefix && this.prefix) { name += this.prefix + ' '; }
     name += this.name || '';
     if (this.printSuffix && this.suffix) { name += ' ' + this.suffix; }
     return name.trim();
-  }),
-  searchName: computed('printName', 'number', function() {
+  }
+
+  get searchName() {
     return `[${this.number}] ${this.printName}`;
-  }),
-  address: computed('address1', 'address2', 'address3', function() {
-    var address = '';
+  }
+
+  get address() {
+    let address = '';
     if (this.address1) { address += this.address1 + ' '; }
     if (this.address2) { address += this.address2 + ' '; }
     if (this.address3) { address += this.address3 + ' '; }
     return address.trim();
-  })
-});
+  }
+}
