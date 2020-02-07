@@ -37,16 +37,12 @@ export default class CaseTabsComponent extends Component {
     return this.case.current;
   }
 
-  get visitorName() {
-    return this.model.request && this.model.request.visitor;
-  }
-
   get visitor() {
-    return this.store.peekAll('employee').find(e => e.firstName == this.visitorName);
+    return this.case.visitor;
   }
 
   get canCreateNewOffer() {
-    return !this.isEditRoute && this.model && this.model.requestId && this.model.offerId == null;
+    return !this.isEditRoute && this.model && this.model.customerId && this.model.requestId && this.model.offerId == null;
   }
 
   get canCreateNewOrder() {

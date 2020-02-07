@@ -1,25 +1,25 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--request--entry flex-100 layout-column">
     <DetailListItem @label="Datum">
-      <FmtDate @value={{this.model.requestDate}} />
+      <FmtDate @value={{@model.requestDate}} />
     </DetailListItem>
     <DetailListItem @label="Aanmelding">
-      {{this.model.wayOfEntry.name}}
+      {{@model.wayOfEntry.name}}
     </DetailListItem>
     <DetailListItem @label="Bediende">
-      {{this.model.employee}}
+      {{@model.employee}}
     </DetailListItem>
     <DetailListItem @label="Bezoek nodig">
-      {{paper-icon (if this.model.requiresVisit "check_box" "check_box_outline_blank")}}
+      {{paper-icon (if @model.requiresVisit "check_box" "check_box_outline_blank")}}
     </DetailListItem>
     <DetailListItem @label="Bezoeker">
-      {{this.model.visitor}}
+      {{@model.visitor}}
     </DetailListItem>
     <DetailListItem @label="Opmerking">
-      <span class="html-body">{{this.model.comment}}</span>
+      <span class="html-body">{{@model.comment}}</span>
     </DetailListItem>
   </div>
   {{#if this.isLinkedToCustomer}}
-    <VisitDetailPanel @model={{this.model}} />
+    <Visit::DetailView @model={{@model}} />
   {{/if}}
 </div>

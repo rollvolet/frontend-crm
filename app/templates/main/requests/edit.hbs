@@ -1,9 +1,18 @@
-<PaperTabs @selected="main.requests.edit" @borderBottom={{true}} as |tabs|>
-  <tabs.tab @value="main.requests.edit" @href={{href-to "main.requests.edit" @model}}>
-    Aanvraag
-  </tabs.tab>
-</PaperTabs>
+<Case::Tabs />
 
-<RequestPanel @model={{@model}} @editMode={{this.editMode}} @onOpenEdit={{fn (mut this.editMode) true}} @onCloseEdit={{fn (mut this.editMode) false}} />
+{{#if this.case.isLoadingCurrentCase}}
+  <div class="case--main-panel skeleton">
+    <PaperProgressCircular @diameter={{25}} />
+  </div>
+{{else}}
+  <div class="case--main-panel">
+    <Request::Panel
+      @model={{@model}}
+      @editMode={{this.editMode}}
+      @onOpenEdit={{fn (mut this.editMode) true}}
+      @onCloseEdit={{fn (mut this.editMode) false}}
+    />
+  </div>
+{{/if}}
 
 <LiquidOutlet />

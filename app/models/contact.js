@@ -11,22 +11,22 @@ const Validations = buildValidations({
 });
 
 export default class ContactModel extends Model.extend(Validations, LoadableModel) {
-  @attr() name
-  @attr() address1
-  @attr() address2
-  @attr() address3
-  @attr() postalCode
-  @attr() city
-  @attr() prefix
-  @attr() suffix
-  @attr() email
-  @attr() email2
-  @attr() url
-  @attr() printPrefix
-  @attr() printSuffix
-  @attr() printInFront
-  @attr() comment
-  @attr() number
+  @attr name
+  @attr address1
+  @attr address2
+  @attr address3
+  @attr postalCode
+  @attr city
+  @attr prefix
+  @attr suffix
+  @attr email
+  @attr email2
+  @attr url
+  @attr printPrefix
+  @attr printSuffix
+  @attr printInFront
+  @attr comment
+  @attr number
   @attr('date', {
     defaultValue() { return new Date(); }
   }) created

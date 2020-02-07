@@ -1,3 +1,8 @@
-<RequestPanel @model={{@model}} @editMode={{this.editMode}} @onOpenEdit={{fn (mut this.editMode) true}} @onCloseEdit={{fn (mut this.editMode) false}} />
+<Request::Panel
+  @model={{@model}}
+  @editMode={{this.editMode}}
+  @onOpenEdit={{fn (mut this.editMode) true}}
+  @onCloseEdit={{fn (mut this.editMode) false}}
+/>
 
 <LiquidOutlet />

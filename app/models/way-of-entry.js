@@ -1,7 +1,8 @@
-import DS from 'ember-data';
+import Model, { attr, hasMany } from '@ember-data/model';
 
-export default DS.Model.extend({
-  name: DS.attr(),
-  position: DS.attr(),
-  requests: DS.hasMany('request')
-});
+export default class WayOfEntryModel extends Model {
+  @attr name
+  @attr position
+
+  @hasMany('request') requests
+}

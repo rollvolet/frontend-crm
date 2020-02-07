@@ -1,17 +1,11 @@
-import classic from 'ember-classic-decorator';
 import Route from '@ember/routing/route';
 
-@classic
 export default class EditRoute extends Route {
   model(params) {
-    return this.store.findRecord('request', params.request_id, {
-      include: 'building,contact,offer'
+    return this.store.loadRecord('request', params.request_id, {
+      // We must include customer such that it is also included in PATCH requests to /request/:id.
+      // Otherwise the customer will be unlinked from the request after a PATCH request
+      include: 'customer'
     });
   }
-
-  // afterModel(model) {
-  //   const controller = this.controllerFor('main.case');
-  //   controller.set('building', model.get('building'));
-  //   controller.set('contact', model.get('contact'));
-  // }
 }

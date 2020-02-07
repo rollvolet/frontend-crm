@@ -1,47 +1,49 @@
-{{#if this.model.requestId}}
-  <div class="layout-row case--tabs">
-    <div class="case--tabs--number">AD {{this.model.requestId}} {{this.visitor.initials}}</div>
-    <div class="flex"></div>
-  </div>
-{{/if}}
-
-<PaperTabs @selected={{this.currentRouteName}} @borderBottom={{true}} as |tabs|>
-  {{#if this.model.requestId}}
-    <tabs.tab @value="main.case.request.edit.index" @href={{href-to "main.case.request.edit.index" this.model.customerId this.model.requestId (query-params editMode=false)}}>
-      Aanvraag
-    </tabs.tab>
-  {{/if}}
-  {{#if this.model.offerId}}
-    <tabs.tab @value="main.case.offer.edit.index" @href={{href-to "main.case.offer.edit.index" this.model.customerId this.model.offerId (query-params editMode=false)}}>
-      Offerte
-    </tabs.tab>
-  {{/if}}
-  {{#if this.model.orderId}}
-    <tabs.tab @value="main.case.order.edit.index" @href={{href-to "main.case.order.edit.index" this.model.customerId this.model.orderId (query-params editMode=false)}}>
-      Bestelling
-    </tabs.tab>
-    <tabs.tab @value="main.case.order.edit.deposit-invoices" @href={{href-to "main.case.order.edit.deposit-invoices" this.model.customerId this.model.orderId (query-params editMode=false)}}>
-      Voorschotten
-    </tabs.tab>
-  {{/if}}
-  {{#if this.model.invoiceId}}
-    <tabs.tab @value="main.case.invoice.edit.index" @href={{href-to "main.case.invoice.edit.index" this.model.customerId this.model.invoiceId (query-params editMode=false)}}>
-      Factuur
-    </tabs.tab>
-  {{/if}}
-  {{#if this.canCreateNewOffer}}
-    <tabs.tab @value="main.case.request.edit.offer" @onClick={{fn this.openNewOffer}}>
-      {{paper-icon "add box"}} <PaperTooltip>Maak offerte</PaperTooltip>
-    </tabs.tab>
-  {{/if}}
-  {{#if this.canCreateNewOrder}}
-    <tabs.tab @value="main.case.offer.edit.order" @onClick={{fn this.openNewOrder}}>
-      {{paper-icon "add box"}} <PaperTooltip>Maak bestelling</PaperTooltip>
-    </tabs.tab>
-  {{/if}}
-  {{#if this.canCreateNewInvoice}}
-    <tabs.tab @value="main.case.order.edit.invoice" @onClick={{fn this.openNewInvoice}}>
-      {{paper-icon "add box"}} <PaperTooltip>Maak factuur</PaperTooltip>
-    </tabs.tab>
-  {{/if}}
-</PaperTabs>
+<div class="case--tabs">
+  <PaperTabs @selected={{this.currentRouteName}} @borderBottom={{true}} as |tabs|>
+    {{#if this.model.requestId}}
+      <div class="case--tabs--number">AD {{this.model.requestId}} {{this.visitor.initials}}</div>
+      {{#if this.model.customerId}}
+        <tabs.tab @value="main.case.request.edit.index" @href={{href-to "main.case.request.edit.index" this.model.customerId this.model.requestId (query-params editMode=false)}}>
+        Aanvraag
+        </tabs.tab>
+      {{else}}
+        <tabs.tab @value="main.requests.edit" @href={{href-to "main.requests.edit" this.model.requestId (query-params editMode=false)}}>
+          Aanvraag
+        </tabs.tab>
+      {{/if}}
+    {{/if}}
+    {{#if this.model.offerId}}
+      <tabs.tab @value="main.case.offer.edit.index" @href={{href-to "main.case.offer.edit.index" this.model.customerId this.model.offerId (query-params editMode=false)}}>
+        Offerte
+      </tabs.tab>
+    {{/if}}
+    {{#if this.model.orderId}}
+      <tabs.tab @value="main.case.order.edit.index" @href={{href-to "main.case.order.edit.index" this.model.customerId this.model.orderId (query-params editMode=false)}}>
+        Bestelling
+      </tabs.tab>
+      <tabs.tab @value="main.case.order.edit.deposit-invoices" @href={{href-to "main.case.order.edit.deposit-invoices" this.model.customerId this.model.orderId (query-params editMode=false)}}>
+        Voorschotten
+      </tabs.tab>
+    {{/if}}
+    {{#if this.model.invoiceId}}
+      <tabs.tab @value="main.case.invoice.edit.index" @href={{href-to "main.case.invoice.edit.index" this.model.customerId this.model.invoiceId (query-params editMode=false)}}>
+        Factuur
+      </tabs.tab>
+    {{/if}}
+    {{#if this.canCreateNewOffer}}
+      <tabs.tab @value="main.case.request.edit.offer" @onClick={{fn this.openNewOffer}}>
+        {{paper-icon "add box"}} <PaperTooltip>Maak offerte</PaperTooltip>
+      </tabs.tab>
+    {{/if}}
+    {{#if this.canCreateNewOrder}}
+      <tabs.tab @value="main.case.offer.edit.order" @onClick={{fn this.openNewOrder}}>
+        {{paper-icon "add box"}} <PaperTooltip>Maak bestelling</PaperTooltip>
+      </tabs.tab>
+    {{/if}}
+    {{#if this.canCreateNewInvoice}}
+      <tabs.tab @value="main.case.order.edit.invoice" @onClick={{fn this.openNewInvoice}}>
+        {{paper-icon "add box"}} <PaperTooltip>Maak factuur</PaperTooltip>
+      </tabs.tab>
+    {{/if}}
+  </PaperTabs>
+</div>

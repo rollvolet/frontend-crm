@@ -1,16 +1,18 @@
-import DS from 'ember-data';
-import { computed } from '@ember/object';
+import Model, { attr, hasMany } from '@ember-data/model';
 
-export default DS.Model.extend({
-  name: DS.attr(),
-  customers: DS.hasMany('customer'),
-  entityId: computed('id', function() {
+export default class HonorificPrefixModel extends Model {
+  @attr name
+
+  @hasMany('customer') customers
+
+  get entitiyId() {
     return this.id.substring(0, this.id.indexOf('-'));
-  }),
-  languageId: computed('id', function() {
+  }
+
+  get languageId() {
     return this.id.substring(this.id.indexOf('-') + 1);
-  })
-});
+  }
+}
 
 const composeId = function(entityId, languageId) {
   return `${entityId}-${languageId}`;

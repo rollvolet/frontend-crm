@@ -1,5 +1,13 @@
 <Case::Tabs />
 
-<LiquidOutlet />
+{{#if this.case.isLoadingCurrentCase}}
+  <div class="case--main-panel skeleton">
+    <PaperProgressCircular @diameter={{25}} />
+  </div>
+{{else}}
+  <div class="case--main-panel">
+    <LiquidOutlet />
+  </div>
+{{/if}}
 
 <Case::CustomerPanel @model={{@model}} />

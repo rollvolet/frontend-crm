@@ -41,26 +41,26 @@ const Validations = buildValidations({
 });
 
 export default class CustomerModel extends Model.extend(Validations, LoadableModel) {
-  @attr() dataId
-  @attr() number
-  @attr() name
-  @attr() address1
-  @attr() address2
-  @attr() address3
-  @attr() postalCode
-  @attr() city
-  @attr() isCompany
-  @attr() vatNumber
-  @attr() prefix
-  @attr() suffix
-  @attr() email
-  @attr() email2
-  @attr() url
-  @attr() printPrefix
-  @attr() printSuffix
-  @attr() printInFront
-  @attr() comment
-  @attr() memo
+  @attr dataId
+  @attr number
+  @attr name
+  @attr address1
+  @attr address2
+  @attr address3
+  @attr postalCode
+  @attr city
+  @attr isCompany
+  @attr vatNumber
+  @attr prefix
+  @attr suffix
+  @attr email
+  @attr email2
+  @attr url
+  @attr printPrefix
+  @attr printSuffix
+  @attr printInFront
+  @attr comment
+  @attr memo
   @attr('date', {
     defaultValue() { return new Date(); }
   }) created

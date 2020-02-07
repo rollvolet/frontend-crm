@@ -1,14 +1,14 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      {{#if this.editMode}}Bewerk details{{else}}Overzicht{{/if}} aanvraag {{this.model.id}} {{this.visitor.initials}}
+      {{#if @editMode}}Bewerk details{{else}}Overzicht{{/if}} aanvraag {{@model.id}} {{this.visitor.initials}}
     </h2>
-    {{#if this.editMode}}
-      <SaveStatusIcon @model={{this.model}} @task={{this.save}} />
+    {{#if @editMode}}
+      <SaveStatusIcon @model={{@model}} @task={{this.save}} />
     {{/if}}
   </div>
   <div>
-    {{#if this.editMode}}
+    {{#if @editMode}}
       {{#if this.isEnabledDelete}}
         <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
           {{paper-icon "delete"}}
@@ -47,7 +47,7 @@
   <WarningMessage @message="Offerte reeds opgemaakt. Geen wijzigingen meer mogelijk." />
 {{/if}}
 
-{{#if this.editMode}}
+{{#if @editMode}}
   {{#if this.remove.isRunning}}
     <div>
       <PaperProgressLinear />
@@ -58,7 +58,7 @@
       <PaperProgressLinear />
       <p>Aan het herstellen...</p>
     </div>
-  {{else if (and (not this.model.id) this.model.isSavivg)}}
+  {{else if (and (not @model.id) @model.isSavivg)}}
     <div>
       <PaperProgressLinear />
       <p>Aan het aanmaken...</p>
@@ -69,10 +69,10 @@
       <p>Aanvraag aan het loskoppelen van klant...</p>
     </div>
   {{else}}
-    <RequestEditForm @model={{this.model}} @save={{this.save}} />
+    <Request::DetailEdit @model={{@model}} @save={{this.save}} />
   {{/if}}
 {{else}}
-  <RequestDetailPanel @model={{this.model}} />
+  <Request::DetailView @model={{@model}} />
 {{/if}}
 
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

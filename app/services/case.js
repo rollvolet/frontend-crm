@@ -1,6 +1,6 @@
 import Service, { inject as service } from '@ember/service';
 import fetch, { Headers } from 'fetch';
-import { assert } from '@ember/debug';
+import { assert, warn } from '@ember/debug';
 import Case from '../models/case';
 import { keepLatestTask, task } from 'ember-concurrency-decorators';
 import { all } from 'ember-concurrency';
@@ -8,14 +8,16 @@ import Evented from '@ember/object/evented';
 import { tracked } from '@glimmer/tracking';
 
 const regexMap = {
+  unlinkedRequestId: /requests\/(\d+)/i,
   requestId: /case\/\d+\/request\/(\d+)/i,
   offerId: /case\/\d+\/offer\/(\d+)/i,
   orderId: /case\/\d+\/order\/(\d+)/i,
   invoiceId: /case\/\d+\/invoice\/(\d+)/i
 };
 
-const calcQueryParam = function(routeUrl, key) {
-  const regex = regexMap[key];
+const calcQueryParam = function(routeUrl, key, regexKey) {
+  if (!regexKey) regexKey = key;
+  const regex = regexMap[regexKey];
   const matches = routeUrl.match(regex);
   assert("Expected 1 full match and 1 group capture", matches && matches.length == 2);
   return `${key}=${matches[1]}`;
@@ -28,6 +30,18 @@ export default class CaseService extends Service.extend(Evented) {
 
   @tracked current = null
 
+  get visitorName() {
+    return this.current.request && this.current.request.visitor;
+  }
+
+  get visitor() {
+    return this.store.peekAll('employee').find(e => e.firstName == this.visitorName);
+  }
+
+  get isLoadingCurrentCase() {
+    return this.loadCaseForCurrentRoute.isRunning || this.loadRecords.isRunning;
+  }
+
   async initCase() {
     this.current = await this.loadCaseForCurrentRoute.perform();
     await this.loadRecords.perform();
@@ -38,13 +52,15 @@ export default class CaseService extends Service.extend(Evented) {
     this.current[`${type}Id`] = record && record.get('id');
   }
 
-  @keepLatestTask
+  @keepLatestTask()
   *loadCaseForCurrentRoute() {
     const currentRoute = this.router.currentRouteName;
     const currentUrl = this.router.currentURL;
 
     let queryParam;
-    if (currentRoute.includes('case.request'))
+    if (currentRoute.includes('requests.edit'))
+      queryParam = calcQueryParam(currentUrl, 'requestId', 'unlinkedRequestId');
+    else if (currentRoute.includes('case.request'))
       queryParam = calcQueryParam(currentUrl, 'requestId');
     else if (currentRoute.includes('case.offer'))
       queryParam = calcQueryParam(currentUrl, 'offerId');
@@ -77,7 +93,7 @@ export default class CaseService extends Service.extend(Evented) {
     }
   }
 
-  @keepLatestTask
+  @keepLatestTask()
   *loadRecords() {
     const isRecordLoaded = function(currentId, currentResource) {
       return currentId && currentResource && currentId == currentResource.id;
@@ -103,6 +119,23 @@ export default class CaseService extends Service.extend(Evented) {
     });
 
     yield all(promises);
+  }
+
+  @task
+  *unlinkCustomer() {
+    if (this.current.offer) {
+      warn(`Unable to unlink customer. Case has an offer already`);
+    } else if (this.current.request) {
+      if (this.current.contact || this.current.building) {
+        yield this._updateContactAndBuilding.perform(null, null);
+        this.current.contact = null;
+        this.current.building = null;
+      }
+
+      this.current.request.customer = null;
+      yield this.current.request.save();
+      this.current.customer = null;
+    }
   }
 
   @task

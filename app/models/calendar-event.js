@@ -1,5 +1,5 @@
-import DS from 'ember-data';
-import { bool } from '@ember/object/computed';
+import Model, { attr, belongsTo } from '@ember-data/model';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
 
@@ -25,19 +25,25 @@ const Validations = buildValidations({
   })
 });
 
-export default DS.Model.extend(Validations, {
-  visitDate: DS.attr('date-midnight'),
-  period: DS.attr(),
-  fromHour: DS.attr(),
-  untilHour: DS.attr(),
-  comment: DS.attr(),
-  calendarSubject: DS.attr(),
-  calendarId: DS.attr(),
-  msObjectId: DS.attr(),
+export default class CalendarEventModel extends Model.extend(Validations, LoadableModel) {
+  @attr('date-midnight') visitDate
+  @attr period
+  @attr fromHour
+  @attr untilHour
+  @attr comment
+  @attr calendarSubject
+  @attr calendarId
+  @attr msObjectId
 
-  request: DS.belongsTo('request'),
+  @belongsTo('request') request
 
-  visitDateStr: dateString('visitDate'),
-  isMastered: bool('msObjectId'),
-  isMasteredByAccess: bool('calendarId')
-});
+  @dateString('visitDate') visitDateStr
+
+  get isMastered() {
+    return this.msObjectId != null;
+  }
+
+  get isMasteredByAccess() {
+    return this.calendarId != null;
+  }
+}
