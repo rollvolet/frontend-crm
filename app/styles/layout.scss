@@ -1,7 +1,11 @@
-.main-outlet {
-  margin-top: 64px; /* height of the fixed toolbar on top */
-  padding: 25px;
-  min-width: 1000px;
+.main-container {
+  overflow: auto;
+
+  .main-outlet {
+    margin-top: 64px; /* height of the fixed toolbar on top */
+    padding: 25px;
+    min-width: 1024px;
+  }
 }
 
 /* Top toolbar */
@@ -18,6 +22,10 @@
     font-size: 1.75em;
     letter-spacing: 1.5px;
     word-spacing: 3px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 
