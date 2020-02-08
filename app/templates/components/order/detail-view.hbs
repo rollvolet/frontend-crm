@@ -26,10 +26,10 @@
       <DetailListItem @label="Bedrag">
         <FmtCurrency @value={{@model.amount}} />
       </DetailListItem>
+      <DetailListItem @label="BTW tarief">
+        {{@model.vatRate.name}} BTW
+      </DetailListItem>
     {{/if}}
-    <DetailListItem @label="BTW tarief">
-      {{@model.vatRate.name}} BTW
-    </DetailListItem>
     {{#unless this.loadData.isRunning}}
       <DetailListItem @label="Voorschotten">
         {{paper-icon (if @model.depositRequired "check_box" "check_box_outline_blank")}} Nodig

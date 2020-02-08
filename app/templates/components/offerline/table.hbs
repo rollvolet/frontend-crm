@@ -1,0 +1,24 @@
+<table class="offerlines-data-table">
+  <thead>
+    <th></th>
+    <th>Beschrijving</th>
+    <th>Bedrag</th>
+    <th>BTW</th>
+  </thead>
+  <tbody>
+    {{#if this.loadData.isRunning}}
+      <tr><td colspan="4">Aan het laden...</td></tr>
+    {{else}}
+      {{#each this.sortedOfferlines as |line|}}
+        <tr>
+          <td>{{line.sequenceNumber}}</td>
+          <td>{{{line.description}}}</td>
+          <td><FmtCurrency @value={{line.amount}} /></td>
+          <td>{{line.vatRate.rate}}%</td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4">Geen inhoud</td></tr>
+      {{/each}}
+    {{/if}}
+  </tbody>
+</table>

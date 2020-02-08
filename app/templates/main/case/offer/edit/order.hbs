@@ -1,7 +1,7 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <h2>
-      Selecteer producten voor bestelling AD{{@model.requestNumber}} {{this.visitor.initials}} - {{@model.number}}
+      Selecteer producten voor bestelling AD{{this.offer.requestNumber}} {{this.visitor.initials}} - {{this.offer.number}}
     </h2>
   </div>
 </div>
@@ -12,15 +12,15 @@
     <p>Bestelling aanmaken...</p>
   </div>
 {{else}}
-  {{#if this.offerlines}}
-    {{#if this.hasMixedVatRates}}
-      <div class="u-margin-top-small">
-        <WarningMessage @message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
-      </div>
-    {{/if}}
-    <p>Klik op 1 of meer lijnen om toe te voegen aan de bestelling</p>
+  {{#if this.hasMixedVatRates}}
+    <div class="u-margin-top-small">
+      <WarningMessage @message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
+    </div>
+  {{/if}}
+  <p>Klik op 1 of meer lijnen om toe te voegen aan de bestelling</p>
+  {{#if @model.length}}
     <div class="case--order--offerlines-selection">
-      {{#each this.offerlines as |offerline|}}
+      {{#each @model as |offerline|}}
         <div role="button" class="case--order--offerlines-selection--offerline layout-row layout-align-start-center
           {{if offerline.isOrdered "case--order--offerlines-selection--offerline--ordered"}}"
           {{on "click" (toggle "isOrdered" offerline)}}
@@ -35,7 +35,7 @@
           <div class="col col--description">{{{offerline.description}}}</div>
           <div class="col col--amount"><FmtCurrency @value={{offerline.amount}} /></div>
           <div class="col col--rate">{{offerline.vatRate.rate}}%</div>
-        </div>
+      </div>
       {{/each}}
       <div class="case--order--offerlines-selection--total layout-row layout-align-start-center">
         <div class="col col--label">Totaal bestelling</div>
@@ -69,7 +69,7 @@
 
     <PaperDialogContent>
       <p>
-        Het BTW-tarief van de offerte is {{@model.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{this.orderedVatRate.rate}}% hebben.
+        Het BTW-tarief van de offerte is {{this.offer.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{this.orderedVatRate.rate}}% hebben.
       </p>
       <p>
         Mag het BTW-tarief van de offerte aangepast worden naar {{this.orderedVatRate.rate}}%?

@@ -43,6 +43,7 @@ export default class CaseService extends Service.extend(Evented) {
   }
 
   async initCase() {
+    this.current = null;
     this.current = await this.loadCaseForCurrentRoute.perform();
     await this.loadRecords.perform();
   }

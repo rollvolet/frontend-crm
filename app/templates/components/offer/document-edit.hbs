@@ -1,0 +1,31 @@
+<div class="offer-document-form layout-column">
+  <section>
+    <label>Introductie</label>
+    <RichTextArea @class="offer-intro" @value={{@model.documentIntro}} @onChange={{fn (mut @model.documentIntro)}} @focusOut={{perform @save}} />
+  </section>
+  <section>
+    <div class="layout-row layout-align-start-center">
+      <label>Producten</label>
+    </div>
+    {{#if this.loadData.isRunning}}
+      <div class="note note--info">Inhoud ophalen...</div>
+    {{else}}
+      {{#each this.sortedOfferlines as |offerline|}}
+          <Offerline::Edit @model={{offerline}} @onDelete={{perform this.deleteOfferline}} />
+        {{else}}
+          {{#if this.isEnabledAddingOfferlines}}
+            <div class="note note--info">Nog geen producten toegevoegd. Klik <span class="link-action" {{on "click" (perform this.addOfferline)}} role="button">hier</span> om producten toe te voegen aan de offerte.</div>
+          {{else}}
+            <div class="note note--info">Selecteer een BTW-tarief voor de offerte alvorens je producten kan toevoegen</div>
+        {{/if}}
+      {{/each}}
+      <div class="layout-row layout-align-end-center">
+        <div class="link-action" {{on "click" (perform this.addOfferline)}} role="button">{{paper-icon "add"}} Lijn toevoegen</div>
+      </div>
+    {{/if}}
+  </section>
+  <section>
+    <label>Voorwaarden</label>
+    <RichTextArea @class="offer-outro" @value={{@model.documentOutro}} @onChange={{fn (mut @model.documentOutro)}} @focusOut={{perform @save}} />
+  </section>
+</div>

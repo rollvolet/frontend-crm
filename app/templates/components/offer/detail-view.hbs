@@ -1,0 +1,27 @@
+<div class="layout-row layout-xs-column layout-align-space-between">
+  <div class="case--left-panel case--offer--entry flex-100 layout-column">
+    <DetailListItem @label="Datum">
+      <FmtDate @value={{@model.offerDate}} />
+    </DetailListItem>
+    {{#if @model.isMasteredByAccess}}
+      <DetailListItem @label="Bedrag">
+        <FmtCurrency @value={{@model.amount}} />
+      </DetailListItem>
+    {{/if}}
+    <DetailListItem @label="BTW tarief">
+      {{#if @model.vatRate}}
+        {{@model.vatRate.name}} BTW
+      {{/if}}
+    </DetailListItem>
+    <DetailListItem @label="Bezoeker">
+      {{this.request.visitor}}
+    </DetailListItem>
+    <DetailListItem @label="Referentie">
+      {{@model.reference}}
+    </DetailListItem>
+    <DetailListItem @label="Opmerking">
+      <span class="html-body">{{@model.comment}}</span>
+    </DetailListItem>
+  </div>
+  <Visit::DetailView @model={{this.request}} />
+</div>

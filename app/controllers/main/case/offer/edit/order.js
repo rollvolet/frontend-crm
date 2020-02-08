@@ -1,62 +1,82 @@
 import Controller from '@ember/controller';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { task, all } from 'ember-concurrency';
-import { gt, or, not, raw, sum, notEmpty, array, promise } from 'ember-awesome-macros';
+import { all } from 'ember-concurrency';
+import { task } from 'ember-concurrency-decorators';
 import { debug } from '@ember/debug';
+import sum from '../../../../../utils/math/sum';
 
 export default class OrderController extends Controller {
   @service case
-
   @service store
 
-  showIncompatibleVatRatesDialog = false;
+  @tracked showIncompatibleVatRatesDialog = false;
 
-  @promise.object('model.request') request
-  @computed('request.visitor')
-  get visitor() {
-    return this.store.peekAll('employee').find(e => e.firstName == this.request.get('visitor'));
+  get request() {
+    return this.case.current && this.case.current.request;
   }
-  @promise.array('model.offerlines') offerlines
-  @array.filterBy('offerlines', raw('isOrdered')) orderedOfferlines;
-  @notEmpty('orderedOfferlines') hasSelectedLines;
-  @array.mapBy('orderedOfferlines', raw('vatRate')) vatRates;
-  @gt(array.length(array.uniqBy('vatRates', raw('code'))), raw(1)) hasMixedVatRates;
-  @or(not('hasSelectedLines'), 'hasMixedVatRates') isDisabledCreate;
-  @array.first('vatRates') orderedVatRate;
-  @sum(array.mapBy('orderedOfferlines', raw('arithmeticAmount'))) orderedAmount;
 
-  @task(function * () {
+  get visitor() {
+    return this.case.visitor;
+  }
+
+  get orderedOfferlines() {
+    return this.model.filterBy('isOrdered');
+  }
+
+  get hasSelectedLines() {
+    return this.orderedOfferlines.length > 0;
+  }
+
+  get hasMixedVatRates() {
+    return this.orderedOfferlines.mapBy('vatRate').uniqBy('code').length > 1;
+  }
+
+  get isDisabledCreate() {
+    return !this.hasSelectedLines || this.hasMixedVatRates;
+  }
+
+  get orderedVatRate() {
+    return this.orderedOfferlines.mapBy('vatRate').firstObject;
+  }
+
+  get orderedAmount() {
+    return sum(this.orderedOfferlines.mapBy('arithmeticAmount'));
+  }
+
+  @task
+  *updateOfferVatRate() {
     this.closeIncompatibleVatRatesDialog();
-    this.model.set('vatRate', this.orderedVatRate);
-    yield this.model.save();
+    this.offer.vatRate = this.orderedVatRate;
+    yield this.offer.save();
     yield this.createOrder.perform();
-  })
-  updateOfferVatRate;
+  }
 
-  @task(function * () {
-    let vatRate = yield this.model.get('vatRate');
+  @task
+  *createOrder() {
+    let vatRate = yield this.offer.get('vatRate');
 
     if (vatRate && this.orderedVatRate && this.orderedVatRate.get('id') != vatRate.get('id')) {
-      this.set('showIncompatibleVatRatesDialog', true);
+      this.showIncompatibleVatRatesDialog = true;
     } else {
       if (!vatRate) {
         vatRate = this.orderedVatRate;
         debug(`Offer doesn't have a VAT rate yet. Updating VAT rate to ordered VAT rate ${this.orderedVatRate.get(`code`)}.`);
-        this.model.set('vatRate', vatRate);
-        yield this.model.save();
+        this.offer.vatRate = vatRate;
+        yield this.offer.save();
       }
 
-      const customer = yield this.model.get('customer');
-      const contact = yield this.model.get('contact');
-      const building = yield this.model.get('building');
+      const customer = this.case.current.customer;
+      const contact = this.case.current.contact;
+      const building = this.case.current.building;
 
       const order = this.store.createRecord('order', {
         orderDate: new Date(),
-        requestNumber: this.model.requestNumber,
-        offerNumber: this.model.number,
-        reference: this.model.reference,
-        comment: this.model.comment,
+        requestNumber: this.offer.requestNumber,
+        offerNumber: this.offer.number,
+        reference: this.offer.reference,
+        comment: this.offer.comment,
         scheduledHours: 0,
         scheduledNbOfPersons: 2,
         depositRequired: true,
@@ -65,7 +85,7 @@ export default class OrderController extends Controller {
         mustBeDelivered: false,
         isReady: false,
         canceled: false,
-        offer: this.model,
+        offer: this.offer,
         customer,
         contact,
         building,
@@ -79,8 +99,8 @@ export default class OrderController extends Controller {
           sequenceNumber: offerline.sequenceNumber,
           description: offerline.description,
           amount: offerline.amount,
-          vatRate: vatRate,
-          order: order
+          vatRate,
+          order
         });
         await orderline.save();
       });
@@ -91,21 +111,19 @@ export default class OrderController extends Controller {
       });
 
       // update case to display the new order tab
-      this.case.updateRecord('order', this.model);
+      this.case.updateRecord('order', this.offer);
     }
-  })
-  createOrder;
+  }
 
   @action
   async cancel() {
-    const offerlines = await this.model.get('offerlines');
-    offerlines.forEach(o => o.set('isOrdered', false));
-    const customer = await this.model.get('customer');
-    this.transitionToRoute('main.case.offer.edit', customer, this.model);
+    this.model.forEach(o => o.isOrdered = false);
+    const customer = this.case.current.customer;
+    this.transitionToRoute('main.case.offer.edit', customer, this.offer.id);
   }
 
   @action
   closeIncompatibleVatRatesDialog() {
-    this.set('showIncompatibleVatRatesDialog', false);
+    this.showIncompatibleVatRatesDialog = false;
   }
 }

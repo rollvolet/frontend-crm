@@ -13,6 +13,13 @@ export default class OrderRoute extends Route {
   }
 
   model() {
-    return this.modelFor('main.case.offer.edit');
+    const offer = this.modelFor('main.case.offer.edit');
+    return offer.load('offerlines');
+  }
+
+  setupController(controller) {
+    super.setupController(...arguments);
+    const offer = this.modelFor('main.case.offer.edit');
+    controller.set('offer', offer);
   }
 }
