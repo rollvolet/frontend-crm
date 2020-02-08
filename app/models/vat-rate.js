@@ -1,11 +1,12 @@
-import DS from 'ember-data';
+import Model, { attr, hasMany } from '@ember-data/model';
 
-export default DS.Model.extend({
-  code: DS.attr(),
-  name: DS.attr(),
-  rate: DS.attr(),
-  order: DS.attr(),
-  offers: DS.hasMany('offer'),
-  orders: DS.hasMany('order'),
-  invoices: DS.hasMany('invoice')
-});
+export default class VatRateModel extends Model {
+  @attr code
+  @attr name
+  @attr rate
+  @attr order
+
+  @hasMany('offer') offers
+  @hasMany('order') orders
+  @hasMany('invoice') invoices
+}

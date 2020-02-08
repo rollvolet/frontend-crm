@@ -1,4 +1,4 @@
-import DS from 'ember-data';
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { computed } from '@ember/object';
 import { validator, buildValidations } from 'ember-cp-validations';
 
@@ -26,23 +26,24 @@ const Validations = buildValidations({
   })
 });
 
-export default DS.Model.extend(Validations, {
-  area: DS.attr(),
-  number: DS.attr(),
-  memo: DS.attr(),
-  order: DS.attr(),
-  country: DS.belongsTo('country', { inverse: null }),
-  telephoneType: DS.belongsTo('telephone-type', { inverse: null }),
-  customer: DS.belongsTo('customer'),
-  contact: DS.belongsTo('contact'),
-  building: DS.belongsTo('building'),
+export default class Telephone extends Model.extend(Validations) {
+  @attr area
+  @attr number
+  @attr memo
+  @attr order
 
-  isBlank: computed('area', 'number', 'memo', 'order', 'country', 'telephoneType',  function() {
+  @belongsTo('country') country
+  @belongsTo('telephone-type') telephoneType
+  @belongsTo('customer') customer
+  @belongsTo('contact') contact
+  @belongsTo('building') building
+
+  get isBlank() {
     return !(this.area || this.number || this.memo || this.order || this.get('country.id') || this.get('telephoneType.id'));
-  }),
+  }
 
   hasDirtyRelations() {
     let [_, telephoneTypeId, countryId] = this.id.split('-'); // eslint-disable-line no-unused-vars
     return this.get('telephoneType.id') != telephoneTypeId || this.get('country.id') != countryId;
   }
-});
+}

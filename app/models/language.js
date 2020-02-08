@@ -1,9 +1,10 @@
-import DS from 'ember-data';
+import Model, { attr, hasMany } from '@ember-data/model';
 
-export default DS.Model.extend({
-  code: DS.attr(),
-  name: DS.attr(),
-  contacts: DS.hasMany('contact'),
-  buildings: DS.hasMany('building'),
-  customers: DS.hasMany('customer')
-});
+export default class LanguageModel extends Model {
+  @attr code
+  @attr name
+
+  @hasMany('contact') contacts
+  @hasMany('building') buildings
+  @hasMany('customer') customers
+}

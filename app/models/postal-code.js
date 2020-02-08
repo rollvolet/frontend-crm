@@ -1,5 +1,4 @@
-import DS from 'ember-data';
-import { computed } from '@ember/object';
+import Model, { attr } from '@ember-data/model';
 import titleizeExtended from '../utils/titleize-extended';
 
 const additionalLabelMap = {
@@ -25,10 +24,11 @@ const additionalLabelMap = {
   '1210': { 'nl': 'Sint-Joost-ten-Node', 'fr': 'Saint-Josse-ten-Noode' }
 };
 
-export default DS.Model.extend({
-  code: DS.attr(),
-  name: DS.attr(),
-  search: computed('code', 'name', function() {
+export default class PostalCodeModel extends Model {
+  @attr code
+  @attr name
+
+  get search() {
     let search = `${this.code} ${this.name}`;
 
     const additionalLabel = additionalLabelMap[this.code];
@@ -40,8 +40,9 @@ export default DS.Model.extend({
     }
 
     return search;
-  }),
-  searchTitleized: computed('search', function() {
+  }
+
+  get searchTitleized() {
     return titleizeExtended(this.search);
-  })
-});
+  }
+}

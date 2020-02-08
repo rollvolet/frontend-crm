@@ -1,7 +1,6 @@
-import DS from 'ember-data';
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { computed } from '@ember/object';
-import { alias } from '@ember/object/computed';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 const Validations = buildValidations({
   amount: validator('presence', true),
@@ -9,19 +8,24 @@ const Validations = buildValidations({
   description: validator('presence', true)
 });
 
-export default DS.Model.extend(Validations, {
-  sequenceNumber: DS.attr(),
-  description: DS.attr(),
-  amount: DS.attr('number'),
+export default class OfferlineModel extends Model.extend(Validations, LoadableModel) {
+  @attr sequenceNumber
+  @attr description
+  @attr('number') amount
 
-  vatRate: DS.belongsTo('vat-rate'),
-  offer: DS.belongsTo('offer'),
+  @belongsTo('vat-rate') vatRate
+  @belongsTo('offer') offer
 
-  arithmeticAmount: alias('amount'),
-  arithmeticVat: computed('amount', 'vatRate', async function() {
-    const vatRate = await this.vatRate;
-    const rate = vatRate.rate / 100;
-    const vat = this.amount * rate;
-    return vat;
-  }),
-});
+  get arithmeticAmount() {
+    return this.amount;
+  }
+
+  get arithmeticVat() {
+    return (async () => {
+      const vatRate = await this.vatRate;
+      const rate = vatRate.rate / 100;
+      const vat = this.amount * rate;
+      return vat;
+    })();
+  }
+}

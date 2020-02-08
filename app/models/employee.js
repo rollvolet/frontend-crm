@@ -1,18 +1,28 @@
-import DS from 'ember-data';
-import { and, conditional, eq, or, raw } from 'ember-awesome-macros';
+import Model, { attr, hasMany } from '@ember-data/model';
 
-export default DS.Model.extend({
-  type: DS.attr(),
-  firstName: DS.attr(),
-  lastName: DS.attr(),
-  initials: DS.attr(),
-  comment: DS.attr(),
-  active: DS.attr(),
-  function: DS.attr(),
-  workingHours: DS.hasMany('working-hour'),
+export default class EmployeeClass extends Model {
+  @attr type
+  @attr firstName
+  @attr lastName
+  @attr initials
+  @attr comment
+  @attr active
+  @attr function
+  @hasMany('working-hour') workingHours
 
-  functionSort: conditional('function', 'function', raw('Z')),
-  isTechnician: eq('type', raw(2)),
-  isAdministrative: or(eq('type', raw(0)), eq('type', raw(1))),
-  isOnRoad: and(eq('type', raw(1)), eq('function', raw('B')))
-});
+  get functionSort() {
+    return this.function ? this.function : 'Z';
+  }
+
+  get isTechnician() {
+    return this.type == 2;
+  }
+
+  get isAdministrative() {
+    return this.type == 0 || this.type == 1;
+  }
+
+  get isOnRoad() {
+    return this.type == 1 && this.function == 'B';
+  }
+}

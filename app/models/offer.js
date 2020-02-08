@@ -1,34 +1,36 @@
-import DS from 'ember-data';
-import { bool } from '@ember/object/computed';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 const Validations = buildValidations({
   offerlines: validator('has-many'),
-
   offerDate: validator('presence', true)
 });
 
-export default DS.Model.extend(Validations, {
-  number: DS.attr(),
-  sequenceNumber: DS.attr(),
-  requestNumber: DS.attr(),
-  offerDate: DS.attr('date-midnight'),
-  amount: DS.attr(),
-  reference: DS.attr(),
-  comment: DS.attr(),
-  documentIntro: DS.attr(),
-  documentOutro: DS.attr(),
-  documentVersion: DS.attr(),
+export default class OfferModel extends Model.extend(Validations, LoadableModel) {
+  @attr number
+  @attr sequenceNumber
+  @attr requestNumber
+  @attr('date-midnight') offerDate
+  @attr amount
+  @attr reference
+  @attr comment
+  @attr documentIntro
+  @attr documentOutro
+  @attr documentVersion
 
-  request: DS.belongsTo('request'),
-  order: DS.belongsTo('order'),
-  customer: DS.belongsTo('customer'),
-  contact: DS.belongsTo('contact'),
-  building: DS.belongsTo('building'),
-  vatRate: DS.belongsTo('vat-rate'),
-  offerlines: DS.hasMany('offerline'),
+  @belongsTo('request') request
+  @belongsTo('order') order
+  @belongsTo('customer') customer
+  @belongsTo('contact') contact
+  @belongsTo('building') building
+  @belongsTo('vat-rate') vatRate
+  @hasMany('offerline') offerlines
 
-  offerDateStr: dateString('offerDate'),
-  isMasteredByAccess: bool('amount')
-});
+  @dateString('offerDate') offerDateStr
+
+  get isMasteredByAccess() {
+    return this.amount;
+  }
+}

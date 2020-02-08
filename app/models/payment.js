@@ -1,6 +1,7 @@
-import DS from 'ember-data';
+import Model, { attr, hasMany } from '@ember-data/model';
 
-export default DS.Model.extend({
-  name: DS.attr(),
-  deposits: DS.hasMany('deposit')
-});
+export default class PaymentModel extends Model {
+  @attr name
+
+  @hasMany('deposit') deposits
+}

@@ -1,6 +1,7 @@
-import DS from 'ember-data';
+import Model, { attr, hasMany } from '@ember-data/model';
 
-export default DS.Model.extend({
-  name: DS.attr(),
-  customers: DS.hasMany('customer')
-});
+export default class TelephoneType extends Model {
+  @attr name
+
+  @hasMany('customer') customers
+}

@@ -1,4 +1,4 @@
-import DS from 'ember-data';
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
@@ -7,11 +7,12 @@ const Validations = buildValidations({
   })
 });
 
-export default DS.Model.extend(Validations, {
-  sequenceNumber: DS.attr(),
-  nbOfPieces: DS.attr('number'),
-  amount: DS.attr('number'),
-  description: DS.attr(),
-  invoice: DS.belongsTo('invoice'),
-  unit: DS.belongsTo('product-unit')
-});
+export default class InvoiceSupplementModel extends Model.extend(Validations) {
+  @attr sequenceNumber
+  @attr('number') nbOfPieces
+  @attr('number') amount
+  @attr description
+
+  @belongsTo('invoice') invoice
+  @belongsTo('product-unit') unit
+}
