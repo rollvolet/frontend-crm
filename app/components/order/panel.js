@@ -12,12 +12,10 @@ export default class OrderPanelComponent extends Component {
   @service router
   @service store
 
-  @tracked showUnsavedChangesDialog = false
   @tracked vatRate
-  @tracked invoice
-  @tracked deposits = []
   @tracked depositInvoices = []
   @tracked invoicelines = []
+  @tracked showUnsavedChangesDialog = false
 
   constructor() {
     super(...arguments);
@@ -30,66 +28,68 @@ export default class OrderPanelComponent extends Component {
     this.vatRate = yield model.load('vatRate', { backgroundReload: false }); // included in route's model hook
     this.deposits = yield model.load('deposits');
     this.depositInvoices = yield model.load('depositInvoices');
-    this.invoice = yield model.load('invoice');
     this.invoicelines = yield model.load('invoicelines');
   }
 
-  get hasInvoice() {
-    return this.invoice != null;
-  }
-
-  get hasDeposit() {
-    return this.deposits.length > 0;
-  }
-
-  get hasDepositInvoice() {
-    return this.depositInvoices.length > 0;
-  }
-
   get isDisabledEdit() {
-    return this.args.model.isMasteredByAccess || this.hasInvoice;
+    return this.args.model.isMasteredByAccess || this.invoice;
   }
 
   get isEnabledDelete() {
-    return !this.isDisableEdit && !this.hasDepositInvoice && !this.hasDeposit;
+    return !this.isDisableEdit && !this.depositInvoices.length && !this.deposits.length;
   }
 
-  @task
-  *remove() {
-    const offer = yield this.args.model.offer;
-    try {
-      // remove invoicelines
-      yield all(this.invoicelines.map(l => l.destroyRecord()));
+  get request() {
+    return this.case.current && this.case.current.request;
+  }
 
-      // update case-tabs
-      this.case.updateRecord('order', null);
+  get offer() {
+    return this.case.current && this.case.current.offer;
+  }
 
-      // delete order
-      yield this.args.model.destroyRecord();
-      // TODO: Fix this hack when Ember Data allows creation of already deleted ID
-      // See https://github.com/emberjs/data/issues/5006
-      // this.store._removeFromIdMap(this.args.model._internalModel);
+  get invoice() {
+    return this.case.current && this.case.current.invoice;
+  }
 
-      this.router.transitionTo('main.case.offer.edit', offer);
-    } catch (e) {
-      warn(`Something went wrong while destroying order ${this.args.model.id}`, { id: 'destroy-failure' });
-
-      offer.order = this.args.model;
-      yield offer.save();
-      this.case.set('current.orderId', this.args.model.id);
-      yield this.args.model.rollbackAttributes(); // undo delete-state
-    }
+  get hasUnsavedChanges() {
+    const invoicelineWithUnsavedChanges = this.invoicelines.find(o => o.isNew || o.validations.isInvalid || o.isError);
+    return invoicelineWithUnsavedChanges != null
+        || this.args.model.isNew || this.args.model.validations.isInvalid || this.args.model.isError
+        || (this.save.last && this.save.last.isError);
   }
 
   @task
   *rollbackTree() {
-    this.args.model.rollbackAttributes();
     const rollbackPromises = [];
+
+    this.invoicelines.forEach(invoiceline => {
+      invoiceline.rollbackAttributes();
+      rollbackPromises.push(invoiceline.belongsTo('vatRate').reload());
+    });
+
+    this.args.model.rollbackAttributes();
     rollbackPromises.push(this.args.model.belongsTo('vatRate').reload());
-    rollbackPromises.push(this.args.model.belongsTo('contact').reload());
-    rollbackPromises.push(this.args.model.belongsTo('building').reload());
+
     yield all(rollbackPromises);
     yield this.save.perform(null, { forceSuccess: true });
+  }
+
+  @task
+  *remove() {
+    try {
+      yield all(this.invoicelines.map(l => l.destroyRecord()));
+      yield this.args.model.destroyRecord();
+      // TODO: Fix this hack when Ember Data allows creation of already deleted ID
+      // See https://github.com/emberjs/data/issues/5006
+      // this.store._removeFromIdMap(this.args.model._internalModel);
+      this.case.updateRecord('order', null);
+      this.router.transitionTo('main.case.offer.edit', this.offer);
+    } catch (e) {
+      warn(`Something went wrong while destroying order ${this.args.model.id}`, { id: 'destroy-failure' });
+      this.offer.order = this.args.model;
+      yield this.offer.save();
+      yield this.args.model.rollbackAttributes(); // undo delete-state
+    }
   }
 
   @keepLatestTask
@@ -103,11 +103,10 @@ export default class OrderPanelComponent extends Component {
       const fieldsToSyncWithInvoice = ['reference', 'comment'];
       for (let field of fieldsToSyncWithInvoice) {
         if (changedAttributes[field]) {
-          const invoice = yield this.args.model.invoice;
-          if (invoice) {
+          if (this.invoice) {
             debug(`Syncing ${field} of invoice with updated ${field} of order`);
-            invoice[field] = this.args.model[field];
-            yield invoice.save();
+            this.invoice[field] = this.args.model[field];
+            yield this.invoice.save();
           }
           requiresOfferReload = true;
         }
@@ -119,10 +118,9 @@ export default class OrderPanelComponent extends Component {
         yield this.args.model.belongsTo('offer').reload();
     }
 
-    // Save change of visitor
-    const offer = yield this.args.model.offer;
-    const request = yield offer.request;
-    yield request.save();
+    const changedAttributesOnRequest = this.request.changedAttributes();
+    if (changedAttributesOnRequest['visitor'])
+      yield this.request.save();
   }
 
   @task
@@ -145,8 +143,7 @@ export default class OrderPanelComponent extends Component {
 
   @action
   closeEdit() {
-    if (this.args.model.isNew || this.args.model.validations.isInvalid || this.args.model.isError
-        || (this.save.last && this.save.last.isError)) {
+    if (this.hasUnsavedChanges) {
       this.showUnsavedChangesDialog = true;
     } else {
       this.args.onCloseEdit();
@@ -160,7 +157,7 @@ export default class OrderPanelComponent extends Component {
 
   @action
   async confirmCloseEdit() {
-    this.closeUnsavedChangesDialog();
+    this.showUnsavedChangesDialog = false;
     await this.rollbackTree.perform();
     this.args.onCloseEdit();
   }

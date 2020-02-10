@@ -1,43 +1,14 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
-import { keepLatestTask } from 'ember-concurrency-decorators';
-import { action } from '@ember/object';
-import sum from '../../utils/math/sum';
+import { inject as service } from '@ember/service';
 
 export default class OrderDetailViewComponent extends Component {
-  @tracked vatRate
-  @tracked deposits = []
-  @tracked depositInvoices = []
+  @service case
 
-  constructor() {
-    super(...arguments);
-    this.loadData.perform();
-  }
-
-  @keepLatestTask
-  *loadData() {
-    const model = yield this.args.model;
-    // TODO also load model.offer.request.visitor?
-    // load data that is already loaded by the order/panel component
-    this.vatRate = yield model.load('vatRate', { backgroundReload: false });
-    this.deposits = yield model.load('deposits', { backgroundReload: false });
-    this.depositInvoices = yield model.load('depositInvoices', { backgroundReload: false });
-  }
-
-  get depositsAmount() {
-    return sum(this.deposits.map(deposit => deposit.amount));
-  }
-
-  get depositInvoicesAmount() {
-    return sum(this.depositInvoices.map(depositInvoice => depositInvoice.arithmeticAmount));
+  get request() {
+    return this.case.current && this.case.current.request;
   }
 
   get isNbOfPersonsWarning() {
     return this.args.model.scheduledNbOfPersons == 2;
-  }
-
-  @action
-  goToDepositInvoices() {
-    this.router.transitionTo('main.case.order.edit.deposit-invoices', this.args.model);
   }
 }

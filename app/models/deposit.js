@@ -24,4 +24,8 @@ export default class DepositModel extends Model.extend(Validations, LoadableMode
   @belongsTo('payment') payment
 
   @dateString('paymentDate') paymentDateStr
+
+  get arithmeticAmount() {
+    return this.amount;
+  }
 }

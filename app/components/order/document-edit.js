@@ -14,25 +14,23 @@ export default class InvoiceDocumentEditComponent extends Component {
     this.loadData.perform();
   }
 
+  @keepLatestTask
+  *loadData() {
+    yield this.args.model.sideload('vatRate');
+    this.invoicelines = yield this.args.model.load('invoicelines', { backgroundReload: false });
+    yield all(this.invoicelines.map(line => line.sideload('order,invoice,vat-rate')));
+  }
+
   get sortedInvoicelines() {
     return this.invoicelines.sortBy('sequenceNumber');
   }
 
   get isEnabledAddingInvoicelines() {
-    return this.vatRate != null;
+    return this.vatRate.get('id') != null;
   }
 
   get vatRate() {
     return this.args.model.vatRate;
-  }
-
-  @keepLatestTask
-  *loadData() {
-    const model = this.args.model;
-    // load data that is already loaded by the invoice/panel component
-    yield model.load('vatRate', { backgroundReload: false });
-    this.invoicelines = yield model.load('invoicelines', { backgroundReload: false });
-    yield all(this.invoicelines.map(line => line.sideload('order,invoice,vat-rate')));
   }
 
   @task
@@ -43,15 +41,18 @@ export default class InvoiceDocumentEditComponent extends Component {
       order: this.args.model,
       vatRate: this.vatRate
     });
+
     const { validations } = yield invoiceline.validate();
     if (validations.isValid)
       invoiceline.save();
+
     this.invoicelines.pushObject(invoiceline);
   }
 
   @task
   *deleteInvoiceline(invoiceline) {
-    invoiceline.rollbackAttributes();
+    if (invoiceline.isNew)
+      invoiceline.rollbackAttributes();
     this.invoicelines.removeObject(invoiceline);
     yield invoiceline.destroyRecord();
   }

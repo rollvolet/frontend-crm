@@ -1,28 +1,20 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
-import { keepLatestTask } from 'ember-concurrency-decorators';
 import { action } from '@ember/object';
 
 export default class OrderDetailEditComponent extends Component {
-  @service store
+  @service case
 
-  @tracked visitor
-  @tracked offer
-  @tracked request
-
-  constructor() {
-    super(...arguments);
-    this.loadData.perform();
+  get request() {
+    return this.case.current && this.case.current.request;
   }
 
-  @keepLatestTask
-  *loadData() {
-    this.offer = yield this.args.model.load('offer');
-    this.request = yield this.offer.request; // TODO replace with datastorefront load()
-    if (this.request.visitor) {
-      this.visitor = this.store.peekAll('employee').find(e => e.firstName == this.request.visitor);
-    }
+  get offer() {
+    return this.case.current && this.case.current.offer;
+  }
+
+  get visitor() {
+    return this.case.visitor;
   }
 
   @action
@@ -46,9 +38,6 @@ export default class OrderDetailEditComponent extends Component {
 
   @action
   setVisitor(visitor) {
-    this.visitor = visitor;
-    const firstName = visitor ? visitor.firstName : null;
-    this.request.set('visitor', firstName); // TODO replace with native ES6 assignment
+    this.request.visitor = visitor ? visitor.firstName : null;
   }
-
 }

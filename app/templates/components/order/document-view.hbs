@@ -1,12 +1,20 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
     {{#unless this.loadData.isRunning}}
-      <DetailListItem @label="Totaal" @displayRow={{true}}>
+      <DetailListItem @label="Bedrag" @displayRow={{true}}>
         <DetailListSubitem @label="Netto">
           <FmtCurrency @value={{this.totalAmount}} />
         </DetailListSubitem>
         <DetailListSubitem @label={{concat this.vatRate.rate "% BTW"}}>
           <FmtCurrency @value={{this.totalVat}} />
+        </DetailListSubitem>
+        <DetailListSubitem @label="Voorschotfacturen" @click={{fn this.goToDepositInvoices}} @class="clickable">
+          <FmtCurrency @value={{this.depositInvoicesAmount}} /> {{paper-icon "launch" size=18}}
+        </DetailListSubitem>
+        <DetailListSubitem @label="Voorschotten" @click={{fn this.goToDepositInvoices}} @class="clickable">
+          <FmtCurrency @value={{this.depositsAmount}} />
+          {{paper-icon "launch" size=18}}
+          {{paper-icon (if @model.depositRequired "check_box" "check_box_outline_blank")}} Nodig
         </DetailListSubitem>
       </DetailListItem>
     {{/unless}}
