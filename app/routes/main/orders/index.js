@@ -1,8 +1,6 @@
-import classic from 'ember-classic-decorator';
 import Route from '@ember/routing/route';
 import DataTableRouteMixin from 'ember-data-table/mixins/route';
 
-@classic
 export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
   modelName = 'order';
 
