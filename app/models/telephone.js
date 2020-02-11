@@ -1,5 +1,4 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
-import { computed } from '@ember/object';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({

@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 import { dateString } from '../utils/date-string';
