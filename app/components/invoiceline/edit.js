@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { task, keepLatestTask } from 'ember-concurrency-decorators';
+import { keepLatestTask } from 'ember-concurrency-decorators';
 import { tracked } from '@glimmer/tracking';
 
 export default class InvoicelineEditComponent extends Component {
@@ -24,7 +24,7 @@ export default class InvoicelineEditComponent extends Component {
     this.invoice = yield model.load('invoice', { backgroundReload: false });
   }
 
-  @task
+  @keepLatestTask
   *save() {
     const { validations } = yield this.args.model.validate();
     if (validations.isValid)
