@@ -1,9 +1,9 @@
-{{#if this.model.isPlanningMasteredByAccess}}
+{{#if @model.isPlanningMasteredByAccess}}
   <div class="case--right-panel flex-noshrink layout-column">
     <div class="case--order--planning">
       <h3>{{paper-icon "event"}} Planning</h3>
       <div class="case--order--planning--description">
-        {{#if this.model.planningDate}}<FmtDate @value={{this.model.planningDate}} />{{else}}Niet ingepland{{/if}}
+        {{#if @model.planningDate}}<FmtDate @value={{@model.planningDate}} />{{else}}Niet ingepland{{/if}}
       </div>
       <div class="layout-row layout-align-end note note--info">Beheerd door Access</div>
     </div>
@@ -26,14 +26,14 @@
           </div>
         {{else}}
           <div>
-            {{#if this.model.planningDate}}
+            {{#if @model.planningDate}}
               <PaperButton @iconButton={{true}} @onClick={{perform this.synchronize}}>
                 {{paper-icon "sync"}}
                 <PaperTooltip>Stuur wijzigingen naar agenda</PaperTooltip>
               </PaperButton>
             {{/if}}
             {{#unless this.isNotAvailableInCalendar}}
-              <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+              <PaperButton @onClick={{fn (mut this.editMode) true}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
                 {{paper-icon "edit mode"}}
                 <PaperTooltip>Aanpassen</PaperTooltip>
               </PaperButton>
@@ -49,10 +49,10 @@
             <PaperInput @label="Datum" @value={{this.inputDateStr}} @type="date" @onChange={{fn (mut this.inputDateStr)}} @class="default" />
           {{/if}}
         {{else}}
-          {{#if this.model.planningDate}}<FmtDate @value={{this.model.planningDate}} />{{else}}Niet ingepland{{/if}}
+          {{#if @model.planningDate}}<FmtDate @value={{@model.planningDate}} />{{else}}Niet ingepland{{/if}}
         {{/if}}
         <div class="col--subject">
-          {{#if this.loadCalendarEvent.isRunning}}
+          {{#if (and this.loadCalendarEvent.isRunning (not this.planEvent.isRunning))}}
             <PaperProgressCircular @diameter={{25}} />
           {{else}}
             {{this.calendarSubject}}
