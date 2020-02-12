@@ -72,16 +72,16 @@ export default class InvoicePanelComponent extends Component {
   *remove() {
     try {
       const supplements = yield this.args.model.load('supplements');
-      yield all(supplements.map(t => t.destroyRecord()));
+      yield all(supplements.map(async (t) => await t.destroyRecord()));
 
       const copiedInvoicelines = this.invoicelines.slice(0);
       yield all(copiedInvoicelines.map(async (invoiceline) => {
         invoiceline.invoice = null;
-        invoiceline.save();
+        await invoiceline.save();
       }));
 
-      this.case.updateRecord('invoice', null);
       yield this.args.model.destroyRecord();
+      this.case.updateRecord('invoice', null);
 
       if (this.order)
         this.router.transitionTo('main.case.order.edit', this.order.id);

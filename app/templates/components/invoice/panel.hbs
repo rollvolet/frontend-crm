@@ -44,45 +44,43 @@
   </div>
 </div>
 
-{{#if @model.isBooked}}
-  <WarningMessage @message="Factuur reeds geboekt. Geen wijzigingen meer mogelijk." />
-{{/if}}
-
-
-{{#if @editMode}}
-  {{#if (or this.remove.isRunning @model.isDeleted)}}
-    <div>
-      <PaperProgressLinear />
-      <p>Aan het verwijderen...</p>
-    </div>
-  {{else if this.rollbackTree.isRunning}}
-    <div>
-      <PaperProgressLinear />
-      <p>Aan het herstellen...</p>
-    </div>
-  {{else if (and (not @model.id) @model.isSaving)}}
-    <div>
-      <PaperProgressLinear />
-      <p>Aan het aanmaken...</p>
-    </div>
-  {{else}}
-    <Invoice::DetailEdit @model={{@model}} @save={{this.save}} @onChangeVatRate={{perform this.updateInvoicelinesVatRate}} />
-  {{/if}}
-{{else}}
-  <Invoice::DetailView @model={{@model}} />
-{{/if}}
-
-{{#if @model.isMasteredByAccess}}
-  <h2>Gefactureerde producten</h2>
-  <p class="note-message">De factuur is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
-{{else}}
-  <div class="case--invoice--invoicelines layout-row layout-align-space-between-center">
-    <h2>Gefactureerde producten</h2>
+{{#if (or this.remove.isRunning @model.isDeleted)}}
+  <div>
+    <PaperProgressLinear />
+    <p>Aan het verwijderen...</p>
   </div>
+{{else if this.rollbackTree.isRunning}}
+  <div>
+    <PaperProgressLinear />
+    <p>Aan het herstellen...</p>
+  </div>
+{{else if (and (not @model.id) @model.isSaving)}}
+  <div>
+    <PaperProgressLinear />
+    <p>Aan het aanmaken...</p>
+  </div>
+{{else}}
+  {{#if @model.isBooked}}
+    <WarningMessage @message="Factuur reeds geboekt. Geen wijzigingen meer mogelijk." />
+  {{/if}}
   {{#if @editMode}}
-    <Invoice::DocumentEdit @model={{@model}} @save={{this.save}} />
+    <Invoice::DetailEdit @model={{@model}} @save={{this.save}} @onChangeVatRate={{perform this.updateInvoicelinesVatRate}} />
   {{else}}
-    <Invoice::DocumentView @model={{@model}} />
+    <Invoice::DetailView @model={{@model}} />
+  {{/if}}
+
+  {{#if @model.isMasteredByAccess}}
+    <h2>Gefactureerde producten</h2>
+    <p class="note-message">De factuur is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
+  {{else}}
+    <div class="case--invoice--invoicelines layout-row layout-align-space-between-center">
+      <h2>Gefactureerde producten</h2>
+    </div>
+    {{#if @editMode}}
+      <Invoice::DocumentEdit @model={{@model}} @save={{this.save}} />
+    {{else}}
+      <Invoice::DocumentView @model={{@model}} />
+    {{/if}}
   {{/if}}
 {{/if}}
 
