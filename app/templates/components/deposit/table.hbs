@@ -1,0 +1,31 @@
+<table class="case--deposits-table">
+  <thead>
+    <th>Datum</th>
+    <th>Bedrag</th>
+    <th>Bank</th>
+    <th></th>
+  </thead>
+  <tbody>
+    {{#each this.sortedDeposits as |deposit|}}
+      <tr>
+        <td><FmtDate @value={{deposit.paymentDate}} /></td>
+        <td><FmtCurrency @value={{deposit.amount}} /></td>
+        <td>{{deposit.payment.name}}</td>
+        <td>
+          {{#unless @isDisabledEdit}}
+            <PaperButton @onClick={{fn @edit deposit}} @iconButton={{true}}>
+              {{paper-icon "edit mode"}}
+              <PaperTooltip>Bewerken</PaperTooltip>
+            </PaperButton>
+            <PaperButton @onClick={{perform @remove deposit}} @iconButton={{true}}>
+              {{paper-icon "delete"}}
+              <PaperTooltip>Verwijderen</PaperTooltip>
+            </PaperButton>
+          {{/unless}}
+        </td>
+      </tr>
+    {{else}}
+      <tr><td colspan="4">Geen voorschotten</td></tr>
+    {{/each}}
+  </tbody>
+</table>

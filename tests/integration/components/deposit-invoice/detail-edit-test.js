@@ -1,26 +1,26 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import hbs from 'htmlbars-inline-precompile';
+import { hbs } from 'ember-cli-htmlbars';
 
-module('Integration | Component | deposits-panel', function(hooks) {
+module('Integration | Component | deposit-invoice/detail-edit', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function(assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`{{deposits-panel}}`);
+    await render(hbs`<DepositInvoice::DetailEdit />`);
 
-    assert.dom(this.element).hasText('');
+    assert.equal(this.element.textContent.trim(), '');
 
     // Template block usage:
     await render(hbs`
-      {{#deposits-panel}}
+      <DepositInvoice::DetailEdit>
         template block text
-      {{/deposits-panel}}
+      </DepositInvoice::DetailEdit>
     `);
 
-    assert.dom(this.element).hasText('template block text');
+    assert.equal(this.element.textContent.trim(), 'template block text');
   });
 });

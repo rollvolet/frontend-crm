@@ -26,7 +26,7 @@ export default class OrderPanelComponent extends Component {
   *loadData() {
     const model = this.args.model;
     this.vatRate = yield model.load('vatRate', { backgroundReload: false }); // included in route's model hook
-    this.deposits = yield model.load('deposits');
+    this.deposits = yield model.deposits;
     this.depositInvoices = yield model.load('depositInvoices');
     this.invoicelines = yield model.load('invoicelines');
   }

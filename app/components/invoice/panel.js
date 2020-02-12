@@ -23,9 +23,9 @@ export default class InvoicePanelComponent extends Component {
   @keepLatestTask
   *loadData() {
     const model = this.args.model;
-    this.vatRate = yield model.load('vatRate', { backgroundReload: false }); // included in route's model hook
+    this.vatRate = yield model.vatRate;
     this.invoicelines = yield model.load('invoicelines');
-    yield all(this.invoicelines.map(line => line.sideload('order,invoice,vat-rate')));
+    yield all(this.invoicelines.map(line => line.sideload('order,invoice')));
   }
 
   get isDisableEdit() {

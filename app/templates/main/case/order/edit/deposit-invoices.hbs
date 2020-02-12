@@ -1,4 +1,4 @@
-{{#if this.hasInvoice}}
+{{#if this.invoice}}
   <div class="u-margin-top-small">
     <WarningMessage @message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk." />
   </div>
@@ -8,21 +8,10 @@
   </div>
 {{/if}}
 
-<DepositsPanel
-  @model={{this.order.deposits}}
-  @depositRequired={{this.order.depositRequired}}
-  @isDisabledEdit={{this.isDisabledEdit}}
-  @onCreate={{fn this.createNewDeposit}}
-/>
+<Deposit::CollectionPanel @model={{this.order}} />
 
 <div class="u-margin-bottom-large"></div>
 
-<DepositInvoicesPanel
-  @model={{@model}}
-  @vatRate={{this.order.vatRate}}
-  @isDisabledEdit={{this.isDisabledEdit}}
-  @onCreate={{fn this.createNewDepositInvoice}}
-  @onUpdateList={{fn this.updateList}}
-/>
+<DepositInvoice::CollectionPanel @model={{@model}} />
 
 <LiquidOutlet />

@@ -1,0 +1,10 @@
+{{#each this.sortedDepositInvoices as |invoice|}}
+  <DepositInvoice::ListItem
+    @model={{invoice}}
+    @isDisabledEdit={{@isDisabledEdit}}
+    @edit={{@edit}}
+    @remove={{@remove}}
+  />
+{{else}}
+  <p>Geen voorschotfacturen</p>
+{{/each}}

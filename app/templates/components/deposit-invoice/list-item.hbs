@@ -1,0 +1,73 @@
+<div class="case--deposit-invoices--detail-panel">
+  <PaperDivider />
+  <div class="layout-row layout-align-space-between-center">
+    <h3>Voorschotfactuur {{format-invoice-number @model.number}}</h3>
+    <div>
+      {{#if this.generateInvoiceDocument.isRunning}}
+        <PaperProgressCircular @diameter={{18}} />
+      {{else}}
+        <PaperButton @onClick={{fn this.downloadInvoiceDocument}} @iconButton={{true}}>
+          {{paper-icon "find in page"}}
+          <PaperTooltip>Voorschotfactuur bekijken</PaperTooltip>
+        </PaperButton>
+        {{#if (and (not @isDisabledEdit) (not @model.isBooked))}}
+          <PaperButton @onClick={{perform this.generateInvoiceDocument}} @iconButton={{true}}>
+            {{paper-icon "restore page"}}
+            <PaperTooltip>Voorschotfactuur maken</PaperTooltip>
+          </PaperButton>
+          <PaperButton @onClick={{fn @edit @model}} @iconButton={{true}}>
+            {{paper-icon "edit mode"}}
+            <PaperTooltip>Bewerken</PaperTooltip>
+          </PaperButton>
+          <PaperButton @onClick={{perform @remove @model}} @iconButton={{true}}>
+            {{paper-icon "delete"}}
+            <PaperTooltip>Verwijderen</PaperTooltip>
+          </PaperButton>
+        {{/if}}
+      {{/if}}
+      {{#if @model.isBooked}}
+        {{paper-icon "lock"}}
+        <PaperTooltip>Geboekt in boekhouding</PaperTooltip>
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="layout-row layout-xs-column layout-align-space-between">
+    <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
+      <DetailListItem @label="Factuurdatum">
+        <FmtDate @value={{@model.invoiceDate}} />
+      </DetailListItem>
+      <DetailListItem @label="Vervaldag">
+        <FmtDate @value={{@model.dueDate}} />
+      </DetailListItem>
+      <DetailListItem @label="Geboekt">
+        <FmtDate @value={{@model.bookingDate}} />
+      </DetailListItem>
+      <DetailListItem @label="Betaald">
+        <FmtDate @value={{@model.paymentDate}} />
+      </DetailListItem>
+      <DetailListItem @label="Referentie">
+        {{@model.reference}}
+      </DetailListItem>
+      <DetailListItem @label="Opmerking">
+        <span class="html-body">{{@model.comment}}</span>
+      </DetailListItem>
+    </div>
+    <div class="case--right-panel flex-noshrink layout-column">
+      <DetailListItem @label="Nettobedrag">
+        <FmtCurrency @value={{@model.arithmeticAmount}} />
+      </DetailListItem>
+      <DetailListItem @label="BTW">
+        <FmtCurrency @value={{await @model.arithmeticVat}} />
+      </DetailListItem>
+      <DetailListItem @label="Betaalref.">
+        {{format-bank-reference @model.bankReference}}
+      </DetailListItem>
+      {{#if @model.certificateRequired}}
+        <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
+          <CertificateDocumentButtons @model={{@model}} />
+        </DetailListItem>
+      {{/if}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="layout-row layout-align-space-between-center">
+  <h2>Voorschotfacturen</h2>
+  {{#unless this.editMode}}
+    <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{perform this.createNew}} @disabled={{this.isDisabledEdit}}>
+    {{paper-icon "add"}}
+      <PaperTooltip>Maak nieuwe voorschotfactuur</PaperTooltip>
+    </PaperButton>
+  {{/unless}}
+</div>
+
+{{#unless this.loadData.isRunning}}
+  <div class="layout-row layout-xs-column layout-align-space-between">
+    <div class="case--deposit-invoices--summary flex-100 layout-column">
+      <DetailListItem @label="Totaal" @displayRow={{true}}>
+        <DetailListSubitem @label="Netto">
+          <FmtCurrency @value={{this.totalAmount}} />
+        </DetailListSubitem>
+        <DetailListSubitem @label={{if this.vatRate (concat this.vatRate.rate "% BTW") "BTW"}}>
+          <FmtCurrency @value={{await this.totalVat}} />
+        </DetailListSubitem>
+      </DetailListItem>
+    </div>
+  </div>
+
+  {{#liquid-if this.editMode class="data-table-selection"}}
+    <div class="layout-row layout-align-space-between-center">
+      <div class="layout-row layout-align-start-center">
+        <h2>Factuur {{format-invoice-number this.selected.number}}</h2>
+        <SaveStatusIcon @model={{this.selected}} @task={{this.save}} />
+      </div>
+      <div>
+        <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
+          {{paper-icon "exit to app"}}
+          <PaperTooltip>Sluiten</PaperTooltip>
+        </PaperButton>
+      </div>
+    </div>
+    <DepositInvoice::DetailEdit
+      @model={{this.selected}}
+      @save={{this.save}}
+    />
+  {{else}}
+    <DepositInvoice::List
+      @model={{this.depositInvoices}}
+      @edit={{fn this.openEdit}}
+      @remove={{this.remove}}
+      @isDisabledEdit={{this.isDisabledEdit}}
+    />
+  {{/liquid-if}}
+{{/unless}}
+
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

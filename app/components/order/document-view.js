@@ -1,10 +1,13 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency-decorators';
 import { action } from '@ember/object';
 import sum from '../../utils/math/sum';
 
 export default class OrderDocumentViewComponent extends Component {
+  @service router
+
   @tracked vatRate
   @tracked invoicelines = []
   @tracked deposits = []
@@ -35,7 +38,7 @@ export default class OrderDocumentViewComponent extends Component {
 
   get totalVat() {
     // assumption that all invoicelines have the same vatRate as the order
-    return this.totalAmount * this.vatRatePercentage;
+    return this.totalAmount * this.vatPercentage;
   }
 
   get depositsAmount() {

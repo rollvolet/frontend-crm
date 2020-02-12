@@ -1,0 +1,48 @@
+<div class="layout-row layout-align-space-between-center">
+  <h2>Voorschotten</h2>
+  {{#unless this.editMode}}
+    <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{perform this.createNew}} @disabled={{this.isDisabledEdit}}>
+      {{paper-icon "add"}}
+      <PaperTooltip>Voeg nieuw voorschot toe</PaperTooltip>
+    </PaperButton>
+  {{/unless}}
+</div>
+
+{{#unless this.loadData.isRunning}}
+  {{#unless this.editMode}}
+    {{#if (and @model.depositRequired (not this.deposits.length))}}
+      <WarningMessage @message="Er is een voorschot gevraagd bij bestelling, maar er is nog geen voorschot geregistreerd." />
+    {{else if (and (not @model.depositRequired) this.deposits.length)}}
+      <InfoMessage @message="Er is geen voorschot gevraagd bij bestelling" />
+    {{/if}}
+  {{/unless}}
+
+  <div class="layout-row layout-xs-column layout-align-space-between">
+    <div class="case--left-panel case--deposits--entry flex-100 layout-column">
+      <DetailListItem @label="Totaal">
+        <FmtCurrency @value={{this.totalAmount}} />
+      </DetailListItem>
+    </div>
+  </div>
+
+  {{#liquid-if this.editMode class="data-table-selection"}}
+    <div class="layout-row layout-align-start-center case--deposits-form">
+      <Deposit::DetailEdit
+        @model={{this.selected}}
+        @save={{this.save}}
+        @close={{this.closeEdit}}
+      />
+      <SaveStatusIcon @model={{this.selected}} @task={{this.save}} />
+      <PaperButton @primary={{true}} @onClick={{fn this.closeEdit}}>Klaar</PaperButton>
+    </div>
+  {{else}}
+    <Deposit::Table
+      @model={{this.deposits}}
+      @edit={{fn this.openEdit}}
+      @remove={{this.remove}}
+      @isDisabledEdit={{this.isDisabledEdit}}
+    />
+  {{/liquid-if}}
+{{/unless}}
+
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />
