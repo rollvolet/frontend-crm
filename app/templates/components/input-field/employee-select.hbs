@@ -1,5 +1,29 @@
-<PowerSelect @placeholder={{this.placeholder}} @searchPlaceholder="Typ om te zoeken" @options={{this.options}} @selected={{this.selected}} @searchField="firstName" @onchange={{@onSelectionChange}} @noMatchesMessage="Geen resultaten" @allowClear={{true}} as |option select|>
+<label class="power-select--label">{{this.label}}</label>
+{{#if @multiple}}
+  <PowerSelectMultiple
+    @placeholder={{this.placeholder}}
+    @searchPlaceholder="Typ om te zoeken"
+    @options={{this.options}}
+    @selected={{this.selected}}
+    @searchField="firstName"
+    @onchange={{@onSelectionChange}}
+    @noMatchesMessage="Geen resultaten"
+    @allowClear={{true}}
+    as |option select|>
   {{highlight-substr option.firstName select.lastSearchedText}}
-</PowerSelect>
-
+  </PowerSelectMultiple>
+{{else}}
+  <PowerSelect
+    @placeholder={{this.placeholder}}
+    @searchPlaceholder="Typ om te zoeken"
+    @options={{this.options}}
+    @selected={{this.selected}}
+    @searchField="firstName"
+    @onchange={{@onSelectionChange}}
+    @noMatchesMessage="Geen resultaten"
+    @allowClear={{true}}
+    as |option select|>
+  {{highlight-substr option.firstName select.lastSearchedText}}
+  </PowerSelect>
+{{/if}}
 <MdErrorMessages @errors={{@errors}} />

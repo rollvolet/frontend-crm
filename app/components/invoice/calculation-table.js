@@ -1,4 +1,5 @@
 import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { keepLatestTask } from 'ember-concurrency-decorators';
@@ -6,6 +7,8 @@ import { all } from 'ember-concurrency';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceCalculationTableComponent extends Component {
+  @service case
+
   @tracked showSupplementsDialog = false
   @tracked vatRate
   @tracked invoicelines = [];
@@ -37,6 +40,10 @@ export default class InvoiceCalculationTableComponent extends Component {
     this.supplements = yield model.load('supplements');
     this.depositInvoices = yield model.load('depositInvoices');
     this.deposits = yield model.load('deposits');
+  }
+
+  get intervention() {
+    return this.case.current && this.case.current.intervention;
   }
 
   get vatPercentage() {

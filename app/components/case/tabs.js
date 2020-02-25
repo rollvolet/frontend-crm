@@ -50,7 +50,9 @@ export default class CaseTabsComponent extends Component {
   }
 
   get canCreateNewInvoice() {
-    return !this.isEditRoute && this.model && this.model.orderId && this.model.invoiceId == null && this.model.order && !this.model.order.isMasteredByAccess;
+    const canCreateNewInvoiceForOrder = this.model && this.model.orderId && this.model.invoiceId == null && this.model.order && !this.model.order.isMasteredByAccess;
+    const canCreateNewInvoiceForIntervention = this.model && this.model.interventionId && this.model.invoiceId == null;
+    return !this.isEditRoute && (canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention);
   }
 
   @action
@@ -71,6 +73,11 @@ export default class CaseTabsComponent extends Component {
   openNewInvoice() {
     const customerId = this.model.customerId;
     const orderId = this.model.orderId;
-    this.router.transitionTo('main.case.order.edit.invoice', customerId, orderId);
+    if (orderId) {
+      this.router.transitionTo('main.case.order.edit.invoice', customerId, orderId);
+    } else {
+      const interventionId = this.model.interventionId;
+      this.router.transitionTo('main.case.intervention.edit.invoice', customerId, interventionId);
+    }
   }
 }

@@ -1,0 +1,41 @@
+<h1>Interventies</h1>
+
+<div class="interventions-data-table">
+  <Intervention::DataTableFilter @number={{this.number}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutInvoice={{this.withoutInvoice}} @onChange={{fn this.applyFilter}} />
+
+  <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
+    <t.content as |c|>
+      <c.header>
+        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
+        <ThSortable @field="request-date" @currentSorting={{this.sort}} @label="Datum" />
+        <th></th>
+        <th>Naam</th>
+        <th>Straat</th>
+        <th>Postcode</th>
+        <th>Gemeente</th>
+      </c.header>
+      <c.body as |row|>
+        <td>{{row.id}}</td>
+        <td><FmtDate @value={{row.date}} /></td>
+        {{#if row.building}}
+          <td>{{paper-icon "home"}}</td>
+          <td>
+            {{row.building.printName}}
+            <span class="text-fade">(<PrintName @model={{row.customer}} />)</span>
+          </td>
+          <td>{{row.building.address1}}</td>
+          <td>{{row.building.postalCode}}</td>
+          <td>{{row.building.city}}</td>
+        {{else}}
+          <td>{{#if row.customer}}{{paper-icon "person"}}{{else}}{{paper-icon "link off"}}{{/if}}</td>
+          <td><PrintName @model={{row.customer}} /></td>
+          <td>{{row.customer.address1}}</td>
+          <td>{{row.customer.postalCode}}</td>
+          <td>{{row.customer.city}}</td>
+        {{/if}}
+      </c.body>
+    </t.content>
+  </DataTable>
+</div>
+
+<LiquidOutlet />

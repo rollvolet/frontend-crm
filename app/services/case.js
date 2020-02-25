@@ -10,6 +10,7 @@ import { tracked } from '@glimmer/tracking';
 const regexMap = {
   unlinkedRequestId: /requests\/(\d+)/i,
   requestId: /case\/\d+\/request\/(\d+)/i,
+  interventionId: /case\/\d+\/intervention\/(\d+)/i,
   offerId: /case\/\d+\/offer\/(\d+)/i,
   orderId: /case\/\d+\/order\/(\d+)/i,
   invoiceId: /case\/\d+\/invoice\/(\d+)/i
@@ -63,6 +64,8 @@ export default class CaseService extends Service.extend(Evented) {
       queryParam = calcQueryParam(currentUrl, 'requestId', 'unlinkedRequestId');
     else if (currentRoute.includes('case.request'))
       queryParam = calcQueryParam(currentUrl, 'requestId');
+    else if (currentRoute.includes('case.intervention'))
+      queryParam = calcQueryParam(currentUrl, 'interventionId');
     else if (currentRoute.includes('case.offer'))
       queryParam = calcQueryParam(currentUrl, 'offerId');
     else if (currentRoute.includes('case.order'))
@@ -85,6 +88,7 @@ export default class CaseService extends Service.extend(Evented) {
         contactId: responseBody.contactId,
         buildingId: responseBody.buildingId,
         requestId: responseBody.requestId,
+        interventionId: responseBody.interventionId,
         offerId: responseBody.offerId,
         orderId: responseBody.orderId,
         invoiceId: responseBody.invoiceId
@@ -100,7 +104,7 @@ export default class CaseService extends Service.extend(Evented) {
       return currentId && currentResource && currentId == currentResource.id;
     };
 
-    const promises = ['customer', 'contact', 'building', 'request', 'offer', 'order', 'invoice'].map(async (type) => {
+    const promises = ['customer', 'contact', 'building', 'request', 'intervention', 'offer', 'order', 'invoice'].map(async (type) => {
       const idProp = `${type}Id`;
       const currentId = this.current[idProp];
       const currentResource = this.current[type];

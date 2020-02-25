@@ -9,6 +9,7 @@
 /node_modules/
 
 # misc
+/.log/
 /.env*
 /.pnp*
 /.sass-cache

@@ -72,6 +72,7 @@ export default class CustomerModel extends Model.extend(Validations, LoadableMod
   @belongsTo('honorific-prefix') honorificPrefix
   @hasMany('telephone') telephones
   @hasMany('request') requests
+  @hasMany('intervention') interventions
   @hasMany('offer') offers
   @hasMany('order') orders
   @hasMany('deposit') deposits

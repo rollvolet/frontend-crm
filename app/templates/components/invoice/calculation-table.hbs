@@ -22,7 +22,7 @@
       </tr>
       {{#unless @model.isIsolated}}
         <tr class="subtotal">
-          <td>Totaal bestelling</td>
+          <td>Totaal {{#if this.intervention}}interventie{{else}}bestelling{{/if}}</td>
           <td><FmtCurrency @value={{this.totalOrderAmount}} /></td>
           <td><FmtCurrency @value={{this.totalOrderVat}} /></td>
         </tr>

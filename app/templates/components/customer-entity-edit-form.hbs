@@ -52,7 +52,7 @@
       {{#if (not @model.printInFront)}}{{@model.honorificPrefix.name}}{{/if}}
     </h4>
     <div class="layout-row layout-xs-column">
-      <div class="layout-column u-rel-top-small">
+      <div class="layout-column u-rel-top-neg-normal">
         <InputField::HonorificPrefixSelect @value={{@model.honorificPrefix}} @language={{@model.language}} @onSelectionChange={{queue (fn (mut @model.honorificPrefix)) (perform this.save)}} @class="md-input-wrapper large no-spacer-bottom" />
         <PaperCheckbox @label="Vooraan" @value={{@model.printInFront}} @onChange={{queue (fn (mut @model.printInFront)) (perform this.save)}} />
       </div>

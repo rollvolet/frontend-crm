@@ -32,6 +32,7 @@ export default class InvoiceModel extends Model.extend(Validations, LoadableMode
   @attr reference
 
   @belongsTo('order') order
+  @belongsTo('intervention') intervention
   @belongsTo('customer') customer
   @belongsTo('contact') contact
   @belongsTo('building') building
@@ -49,8 +50,7 @@ export default class InvoiceModel extends Model.extend(Validations, LoadableMode
   @dateString('cancellationDate') cancellationDateStr
 
   get isIsolated() {
-    // TODO can the getter be removed once order is a native ES6 class?
-    return this.order.get('id') == null;
+    return this.order.get('id') == null && this.intervention.get('id') == null;
   }
 
   get isBooked() {
@@ -63,7 +63,6 @@ export default class InvoiceModel extends Model.extend(Validations, LoadableMode
   }
 
   get isMasteredByAccess() {
-    // TODO can the getter be removed once order is a native ES6 class?
     return (!this.isIsolated && this.order.get('isMasteredByAccess'))
       || (this.isIsolated && this.baseAmount);
   }

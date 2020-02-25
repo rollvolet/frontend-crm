@@ -1,6 +1,7 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
+import { tracked } from '@glimmer/tracking';
 
 const Validations = buildValidations({
   amount: validator('presence', true),
@@ -29,4 +30,6 @@ export default class InvoicelineModel extends Model.extend(Validations, Loadable
       return vat;
     })();
   }
+
+  @tracked isSupplement
 }

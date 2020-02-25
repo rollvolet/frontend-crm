@@ -1,0 +1,58 @@
+<div class="layout-row layout-align-space-between-center">
+  <div class="layout-row layout-align-start-center">
+    <h2>
+      {{#if @editMode}}Bewerk details{{else}}Overzicht{{/if}} interventie {{@model.id}}
+    </h2>
+    {{#if @editMode}}
+      <SaveStatusIcon @model={{@model}} @task={{this.save}} />
+    {{/if}}
+  </div>
+  <div>
+    {{#if @editMode}}
+      {{#if this.isEnabledDelete}}
+        <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
+          {{paper-icon "delete"}}
+          <PaperTooltip>Verwijderen</PaperTooltip>
+        </PaperButton>
+      {{/if}}
+      <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
+        {{paper-icon "exit to app"}}
+        <PaperTooltip>Sluiten</PaperTooltip>
+      </PaperButton>
+    {{else}}
+      <PaperButton @onClick={{fn @onOpenEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+        {{paper-icon "edit mode"}}
+        <PaperTooltip>Aanpassen</PaperTooltip>
+      </PaperButton>
+    {{/if}}
+  </div>
+</div>
+
+{{#if this.isDisabledEdit}}
+  <WarningMessage @message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk." />
+{{/if}}
+
+{{#if @editMode}}
+  {{#if this.remove.isRunning}}
+    <div>
+      <PaperProgressLinear />
+      <p>Aan het verwijderen...</p>
+    </div>
+  {{else if this.rollbackTree.isRunning}}
+    <div>
+      <PaperProgressLinear />
+      <p>Aan het herstellen...</p>
+    </div>
+  {{else if (and (not @model.id) @model.isSavivg)}}
+    <div>
+      <PaperProgressLinear />
+      <p>Aan het aanmaken...</p>
+    </div>
+  {{else}}
+    <Intervention::DetailEdit @model={{@model}} @save={{this.save}} />
+  {{/if}}
+{{else}}
+  <Intervention::DetailView @model={{@model}} />
+{{/if}}
+
+<UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

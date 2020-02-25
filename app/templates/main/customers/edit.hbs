@@ -17,13 +17,14 @@
 
   <div class="related-resources">
     <PaperTabs @selected={{this.selectedTab}} @onChange={{fn this.setTab}} @borderBottom={{true}} as |tabs|>
-      <tabs.tab>Contacten</tabs.tab>
-      <tabs.tab>Gebouwen</tabs.tab>
-      <tabs.tab>Aanvragen</tabs.tab>
-      <tabs.tab>Offertes</tabs.tab>
-      <tabs.tab>Bestellingen</tabs.tab>
-      <tabs.tab>Voorschotfact.</tabs.tab>
-      <tabs.tab>Facturen</tabs.tab>
+      <tabs.tab>Contact</tabs.tab>
+      <tabs.tab>Gebouw</tabs.tab>
+      <tabs.tab>Aanvraag</tabs.tab>
+      <tabs.tab>Interventie</tabs.tab>
+      <tabs.tab>Offerte</tabs.tab>
+      <tabs.tab>Bestelling</tabs.tab>
+      <tabs.tab>VFactuur</tabs.tab>
+      <tabs.tab>Factuur</tabs.tab>
     </PaperTabs>
 
     {{#liquid-bind (hash tab=this.selectedTab) use="toRight" as |current|}}
@@ -34,12 +35,14 @@
       {{else if (eq current.tab 2)}}
         <Customer::RequestsTable @customer={{@model}} />
       {{else if (eq current.tab 3)}}
-        <Customer::OffersTable @customer={{@model}} />
+        <Customer::InterventionsTable @customer={{@model}} />
       {{else if (eq current.tab 4)}}
-        <Customer::OrdersTable @customer={{@model}} />
+        <Customer::OffersTable @customer={{@model}} />
       {{else if (eq current.tab 5)}}
-        <Customer::DepositInvoicesTable @customer={{@model}} />
+        <Customer::OrdersTable @customer={{@model}} />
       {{else if (eq current.tab 6)}}
+        <Customer::DepositInvoicesTable @customer={{@model}} />
+      {{else if (eq current.tab 7)}}
         <Customer::InvoicesTable @customer={{@model}} />
       {{/if}}
     {{/liquid-bind}}

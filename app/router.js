@@ -20,6 +20,7 @@ Router.map(function() {
         this.route('customer');
       });
     });
+    this.route('interventions', function() {});
     this.route('offers', function() {});
     this.route('orders', function() {});
     this.route('deposit-invoices', function() {});
@@ -31,6 +32,12 @@ Router.map(function() {
           this.route('offer'); // create new offer
         });
       });
+      this.route('intervention', function() {
+        this.route('new'); // create a new intervention with a customer
+        this.route('edit', { path: '/:intervention_id' }, function() {
+          this.route('invoice'); // create new invoice for intervention
+        });
+      });
       this.route('offer', function() {
         this.route('edit', { path: '/:offer_id' }, function() {
           this.route('order'); // create new order
@@ -39,7 +46,7 @@ Router.map(function() {
       this.route('order', function() {
         this.route('edit', { path: '/:order_id' }, function() {
           this.route('deposit-invoices');
-          this.route('invoice'); // create new invoice
+          this.route('invoice'); // create new invoice for order
         });
       });
       this.route('invoice', function() {

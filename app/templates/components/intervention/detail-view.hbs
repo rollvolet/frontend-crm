@@ -1,0 +1,28 @@
+<div class="layout-row layout-xs-column layout-align-space-between">
+  <div class="case--left-panel case--intervention--entry flex-100 layout-column">
+    <DetailListItem @label="Datum">
+      <FmtDate @value={{@model.date}} />
+    </DetailListItem>
+    <DetailListItem @label="Aanmelding">
+      {{@model.wayOfEntry.name}}
+    </DetailListItem>
+    <DetailListItem @label="Techniekers">
+      {{#if this.technicianNames.length}}
+        {{join ", " this.technicianNames}}
+      {{else}}
+        -
+      {{/if}}
+    </DetailListItem>
+    <DetailListItem @label="Opmerking">
+      <span class="html-body">{{@model.comment}}</span>
+    </DetailListItem>
+  </div>
+  <div class="case--right-panel flex-noshrink layout-column">
+    <DetailListItem @label="Productiebon">
+      <div class="layout-row layout-align-start-center">
+        <div>{{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
+        <ProductionTicketButtons @model={{@model}} />
+      </div>
+    </DetailListItem>
+  </div>
+</div>

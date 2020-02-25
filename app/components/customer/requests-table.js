@@ -7,9 +7,8 @@ import { task } from 'ember-concurrency';
 
 @classic
 export default class RequestsTable extends FilterComponent {
-  @service router;
-
-  @service store;
+  @service router
+  @service store
 
   page = 0;
   size = 10;
@@ -37,7 +36,7 @@ export default class RequestsTable extends FilterComponent {
         number: this.page
       },
       sort: this.sort,
-      include: 'way-of-entry,building',
+      include: 'building',
       filter: {
         customer: {
           number: this.customer.number

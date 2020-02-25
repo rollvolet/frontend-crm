@@ -1,8 +1,9 @@
+import Component from '@ember/component';
 import classic from 'ember-classic-decorator';
 import { tagName } from '@ember-decorators/component';
 import { action } from '@ember/object';
-import Component from '@ember/component';
-import { task, timeout } from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { timeout } from 'ember-concurrency';
 
 @classic
 @tagName('')
@@ -32,12 +33,12 @@ export default class DataTableFilter extends Component {
     return filter;
   }
 
-  @(task(function * (key, value) {
+  @restartableTask
+  *debounceFilter(key, value) {
     this.set(`${key}Filter`, value);
     yield timeout(500);
     this.onChange(this.getFilter());
-  }).restartable())
-  debounceFilter;
+  }
 
   @action
   resetFilters() {

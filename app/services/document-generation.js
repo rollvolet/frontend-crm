@@ -1,11 +1,8 @@
-import classic from 'ember-classic-decorator';
 import Service, { inject } from '@ember/service';
 import fetch, { Headers } from 'fetch';
 
-@classic
 export default class DocumentGenerationService extends Service {
-  @inject()
-  session;
+  @inject session
 
   // Document generation
 
@@ -29,9 +26,10 @@ export default class DocumentGenerationService extends Service {
     this.downloadDeliveryNote(order);
   }
 
-  async productionTicketTemplate(order) {
-    await this._generate(`/api/orders/${order.get('id')}/production-tickets`);
-    this.downloadProductionTicketTemplate(order);
+  async productionTicketTemplate(model) {
+    const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
+    await this._generate(`/api/${resource}/${model.get('id')}/production-tickets`);
+    this.downloadProductionTicketTemplate(model);
   }
 
   async invoiceDocument(invoice) {
@@ -48,9 +46,10 @@ export default class DocumentGenerationService extends Service {
 
   // Document uploads
 
-  uploadProductionTicket(order, file) {
+  uploadProductionTicket(model, file) {
     const { access_token } = this.get('session.data.authenticated');
-    return file.upload(`/api/orders/${order.id}/production-ticket`, {
+    const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
+    return file.upload(`/api/${resource}/${model.id}/production-ticket`, {
       headers: {
         Authorization: `Bearer ${access_token}`
       }
@@ -69,9 +68,10 @@ export default class DocumentGenerationService extends Service {
 
   // Document removal
 
-  deleteProductionTicket(order) {
+  deleteProductionTicket(model) {
     const { access_token } = this.get('session.data.authenticated');
-    return fetch(`/api/orders/${order.id}/production-ticket`, {
+    const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
+    return fetch(`/api/${resource}/${model.id}/production-ticket`, {
       method: 'DELETE',
       headers: new Headers({
         Authorization: `Bearer ${access_token}`
@@ -108,12 +108,14 @@ export default class DocumentGenerationService extends Service {
     this._openInNewTab(`/api/files/delivery-notes/${order.get('id')}`);
   }
 
-  downloadProductionTicketTemplate(order) {
-    this._openInNewTab(`/api/files/production-ticket-templates/${order.get('id')}`);
+  downloadProductionTicketTemplate(model) {
+    const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
+    this._openInNewTab(`/api/files/production-ticket-templates/${resource}/${model.get('id')}`);
   }
 
-  downloadProductionTicket(order) {
-    this._openInNewTab(`/api/files/production-tickets/${order.get('id')}`);
+  downloadProductionTicket(model) {
+    const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
+    this._openInNewTab(`/api/files/production-tickets/${resource}/${model.get('id')}`);
   }
 
   downloadInvoiceDocument(invoice) {

@@ -169,3 +169,19 @@ md-checkbox .checkbox-tooltip {
     }
   }
 }
+
+label.power-select--label {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.54);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  order: 1;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+  padding-left: 3px;
+  padding-right: 0;
+  z-index: 1;
+  max-width: 100%;
+}

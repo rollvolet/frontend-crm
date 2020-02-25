@@ -12,6 +12,18 @@
         </tabs.tab>
       {{/if}}
     {{/if}}
+    {{#if this.model.interventionId}}
+      <div class="case--tabs--number">IR {{this.model.interventionId}}</div>
+      {{#if this.model.customerId}}
+        <tabs.tab @value="main.case.intervention.edit.index" @href={{href-to "main.case.intervention.edit.index" this.model.customerId this.model.interventionId (query-params editMode=false)}}>
+        Interventie
+        </tabs.tab>
+{{!--      {{else}}
+        <tabs.tab @value="main.interventions.edit" @href={{href-to "main.interventions.edit" this.model.interventionId (query-params editMode=false)}}>
+          Interventie
+        </tabs.tab> --}}
+      {{/if}}
+    {{/if}}
     {{#if this.model.offerId}}
       <tabs.tab @value="main.case.offer.edit.index" @href={{href-to "main.case.offer.edit.index" this.model.customerId this.model.offerId (query-params editMode=false)}}>
         Offerte

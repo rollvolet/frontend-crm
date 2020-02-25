@@ -21,6 +21,7 @@ export default class RequestModel extends Model.extend(Validations, LoadableMode
   @belongsTo('way-of-entry') wayOfEntry
   @belongsTo('calendar-event') calendarEvent
   @belongsTo('offer') offer
+  @belongsTo('intervention') origin
 
   @dateString('requestDate') requestDateStr
 }

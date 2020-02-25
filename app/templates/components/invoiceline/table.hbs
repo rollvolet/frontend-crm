@@ -13,7 +13,7 @@
         <tr>
           <td>
             {{line.sequenceNumber}}
-            {{#if (and (not this.invoice.isIsolated) (not line.order))}}
+            {{#if line.isSupplement}}
               <span>
                 <PaperIcon @icon="add_shopping_cart" />
                 <PaperTooltip>Toegevoegd als extra</PaperTooltip>

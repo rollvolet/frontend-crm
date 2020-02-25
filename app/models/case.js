@@ -6,6 +6,7 @@ export default class Case {
   @tracked buildingId = null;
 
   @tracked requestId = null;
+  @tracked interventionId = null;
   @tracked offerId = null;
   @tracked orderId = null;
   @tracked invoiceId = null;
@@ -18,11 +19,12 @@ export default class Case {
   @tracked order = null;
   @tracked invoice = null;
 
-  constructor({ customerId, contactId, buildingId, requestId, offerId, orderId, invoiceId }) {
+  constructor({ customerId, contactId, buildingId, interventionId, requestId, offerId, orderId, invoiceId }) {
     this.customerId = customerId;
     this.contactId = contactId;
     this.buildingId = buildingId;
     this.requestId = requestId;
+    this.interventionId = interventionId;
     this.offerId = offerId;
     this.orderId = orderId;
     this.invoiceId = invoiceId;
