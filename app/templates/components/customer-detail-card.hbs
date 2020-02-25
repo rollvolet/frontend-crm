@@ -27,7 +27,7 @@
       <DetailIconListItem @icon="phone" @label="Telefoon" @class="resource-details--section-telephone">
         {{#each this.model.telephones as |tel|}}
           <div>
-            {{tel.telephoneType.name}}:
+            {{tel.telephoneType.name}}
             {{format-phone (get (await tel.country) 'telephonePrefix') tel.area tel.number}}
             {{#if tel.memo}}({{tel.memo}}){{/if}}
           </div>

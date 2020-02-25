@@ -1,0 +1,10 @@
+<PaperInput
+  @textarea={{true}}
+  @class={{this.size}}
+  @label={{this.label}}
+  @value={{this.value}}
+  @errors={{this.errors}}
+  @passThru={{hash rows=3 maxRows=3}}
+  @onChange={{fn (mut this.value)}}
+  @onBlur={{fn this.blur}}
+/>

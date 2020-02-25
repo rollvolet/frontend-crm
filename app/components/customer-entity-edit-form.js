@@ -98,24 +98,31 @@ export default class CustomerEntityEditForm extends Component {
 
   @action
   setPostalCode(code, city) {
-    this.args.model.set('postalCode', code);
-    this.args.model.set('city', city);
+    this.args.model.postalCode = code;
+    this.args.model.city = city;
   }
 
   @action
   setIsCompany(isCompany) {
     if (!isCompany)
-      this.args.model.set('vatNumber', null);
+      this.args.model.vatNumber = null;
 
-    this.args.model.set('isCompany', isCompany);
+    this.args.model.isCompany = isCompany;
     this.save.perform();
   }
 
   @action
   setName(name) {
     if (this.scope == 'customer' && name)
-      this.args.model.set('name', name.toUpperCase());
+      this.args.model.name = name.toUpperCase();
     else
-      this.args.model.set('name', name);
+      this.args.model.name = name;
+  }
+
+  @action
+  setAddress(lines) {
+    this.args.model.address1 = lines[0];
+    this.args.model.address2 = lines[1];
+    this.args.model.address3 = lines[2];
   }
 }
