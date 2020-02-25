@@ -68,6 +68,9 @@ export default class CustomerEntityEditForm extends Component {
 
   @keepLatestTask
   *save() {
+    if (this.scope == 'customer' && this.args.model.name)
+      this.args.model.name = this.args.model.name.toUpperCase();
+
     const { validations } = yield this.args.model.validate();
     if (validations.isValid)
       yield this.args.model.save();
@@ -109,14 +112,6 @@ export default class CustomerEntityEditForm extends Component {
 
     this.args.model.isCompany = isCompany;
     this.save.perform();
-  }
-
-  @action
-  setName(name) {
-    if (this.scope == 'customer' && name)
-      this.args.model.name = name.toUpperCase();
-    else
-      this.args.model.name = name;
   }
 
   @action

@@ -60,7 +60,7 @@
         <PaperInput @label="Prefix" @value={{@model.prefix}} @onChange={{fn (mut @model.prefix)}} @onBlur={{perform this.save}} @class="small no-spacer-bottom" />
         <PaperCheckbox @label="Print" @value={{@model.printPrefix}} @onChange={{queue (fn (mut @model.printPrefix)) (perform this.save)}} />
       </div>
-      <PaperInput @label="Naam" @value={{@model.name}} @onChange={{fn this.setName}} @onBlur={{perform this.save}} @class="large" />
+      <PaperInput @label="Naam" @value={{@model.name}} @onChange={{fn (mut @model.name)}} @onBlur={{perform this.save}} @class="large" />
       <div class="layout-column">
         <PaperInput @label="Suffix" @value={{@model.suffix}} @onChange={{fn (mut @model.suffix)}} @onBlur={{perform this.save}} @class="small no-spacer-bottom" />
         <PaperCheckbox @label="Print" @value={{@model.printSuffix}} @onChange={{queue (fn (mut @model.printSuffix)) (perform this.save)}} />
