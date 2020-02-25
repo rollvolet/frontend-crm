@@ -2,19 +2,16 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { task, all } from 'ember-concurrency';
+import { all } from 'ember-concurrency';
+import { keepLatestTask, task } from 'ember-concurrency-decorators';
 import { warn } from '@ember/debug';
 import { raw, equal, and, isEmpty, not } from 'ember-awesome-macros';
 
 export default class CustomerEntityEditForm extends Component {
-  @service
-  router;
+  @service router
 
-  @tracked
-  showUnsavedChangesDialog = false;
-
-  @tracked
-  scope = 'customer'; // one of 'customer', 'contact', 'building'
+  @tracked showUnsavedChangesDialog = false
+  @tracked scope = 'customer'; // one of 'customer', 'contact', 'building'
 
   get isScopeCustomer() {
     return this.scope == 'customer';
@@ -40,7 +37,8 @@ export default class CustomerEntityEditForm extends Component {
   @equal('args.model.validations.attrs.vatNumber.error.type', raw('unique-vat-number'))
   isDuplicateVatNumber;
 
-  @task(function * () {
+  @task
+  *remove() {
     try {
       const telephones = yield this.args.model.telephones;
       yield all(telephones.map(t => t.destroyRecord()));
@@ -50,10 +48,10 @@ export default class CustomerEntityEditForm extends Component {
     } finally {
       this.args.onRemove();
     }
-  })
-  remove;
+  }
 
-  @task(function * () {
+  @task
+  *rollbackTree() {
     this.args.model.rollbackAttributes();
     const rollbackPromises = [];
     const telephones = yield this.args.model.get('telephones');
@@ -66,15 +64,14 @@ export default class CustomerEntityEditForm extends Component {
     rollbackPromises.push(this.args.model.belongsTo('language').reload());
     rollbackPromises.push(this.args.model.belongsTo('honorificPrefix').reload());
     yield all(rollbackPromises);
-  })
-  rollbackTree;
+  }
 
-  @(task(function * () {
+  @keepLatestTask
+  *save() {
     const { validations } = yield this.args.model.validate();
     if (validations.isValid)
       yield this.args.model.save();
-  }).keepLatest())
-  save;
+  }
 
   @action
   close() {
@@ -89,11 +86,11 @@ export default class CustomerEntityEditForm extends Component {
 
   @action
   closeUnsavedChangesDialog() {
-    this.showUnsavedChangesDialog = false
+    this.showUnsavedChangesDialog = false;
   }
 
   @action
-  async confirmCloseEdit() {
+  confirmCloseEdit() {
     this.closeUnsavedChangesDialog();
     this.rollbackTree.perform();
     this.args.onClose();
