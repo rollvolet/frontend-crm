@@ -111,7 +111,7 @@ export default class OrderController extends Controller {
       });
 
       // update case to display the new order tab
-      this.case.updateRecord('order', this.offer);
+      this.case.updateRecord('order', order);
     }
   }
 
