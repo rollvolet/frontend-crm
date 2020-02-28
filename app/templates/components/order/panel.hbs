@@ -75,12 +75,10 @@
                 {{paper-icon "find in page"}}
                 <PaperTooltip>Orderbevestiging bekijken</PaperTooltip>
               </div>
-              {{#unless this.isDisabledEdit}}
-                <div {{on "click" (perform this.generateOrderDocument)}} role="button">
-                  {{paper-icon "restore page"}}
-                  <PaperTooltip>Orderbevestiging maken</PaperTooltip>
-                </div>
-              {{/unless}}
+              <div {{on "click" (perform this.generateOrderDocument)}} role="button">
+                {{paper-icon "restore page"}}
+                <PaperTooltip>Orderbevestiging maken</PaperTooltip>
+              </div>
             {{/if}}
           </div>
         </div>
@@ -94,12 +92,10 @@
                 {{paper-icon "find in page"}}
                 <PaperTooltip>Leveringsbon bekijken</PaperTooltip>
               </div>
-              {{#unless this.isDisabledEdit}}
-                <div {{on "click" (perform this.generateDeliveryNote)}} role="button">
-                  {{paper-icon "restore page"}}
-                  <PaperTooltip>Leveringsbon maken</PaperTooltip>
-                </div>
-              {{/unless}}
+              <div {{on "click" (perform this.generateDeliveryNote)}} role="button">
+                {{paper-icon "restore page"}}
+                <PaperTooltip>Leveringsbon maken</PaperTooltip>
+              </div>
             {{/if}}
           </div>
         </div>

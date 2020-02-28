@@ -86,12 +86,10 @@
               <PaperTooltip>Offerte bekijken</PaperTooltip>
             </PaperButton>
           {{/unless}}
-          {{#unless this.isDisabledEdit}}
-            <PaperButton @onClick={{perform this.generateOfferDocument}} @iconButton={{true}}>
-              {{paper-icon "restore page"}}
-              <PaperTooltip>Offerte maken</PaperTooltip>
-            </PaperButton>
-          {{/unless}}
+          <PaperButton @onClick={{perform this.generateOfferDocument}} @iconButton={{true}}>
+            {{paper-icon "restore page"}}
+            <PaperTooltip>Offerte maken</PaperTooltip>
+          </PaperButton>
         {{/if}}
       </div>
     </div>

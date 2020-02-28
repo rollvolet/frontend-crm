@@ -22,20 +22,6 @@
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
     {{else}}
-      {{#if this.generateInvoiceDocument.isRunning}}
-        <PaperProgressCircular @diameter={{18}} />
-      {{else}}
-        <PaperButton @onClick={{fn this.downloadInvoiceDocument}} @iconButton={{true}}>
-          {{paper-icon "find in page"}}
-          <PaperTooltip>Factuur bekijken</PaperTooltip>
-        </PaperButton>
-        {{#unless this.isDisabledEdit}}
-          <PaperButton @onClick={{perform this.generateInvoiceDocument}} @iconButton={{true}}>
-            {{paper-icon "restore page"}}
-            <PaperTooltip>Factuur maken</PaperTooltip>
-          </PaperButton>
-        {{/unless}}
-      {{/if}}
       <PaperButton @onClick={{fn @onOpenEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>
@@ -75,6 +61,18 @@
   {{else}}
     <div class="case--invoice--invoicelines layout-row layout-align-space-between-center">
       <h2>Gefactureerde producten</h2>
+      {{#if this.generateInvoiceDocument.isRunning}}
+        <PaperProgressCircular @diameter={{18}} />
+      {{else}}
+        <PaperButton @onClick={{fn this.downloadInvoiceDocument}} @iconButton={{true}}>
+          {{paper-icon "find in page"}}
+          <PaperTooltip>Factuur bekijken</PaperTooltip>
+        </PaperButton>
+        <PaperButton @onClick={{perform this.generateInvoiceDocument}} @iconButton={{true}}>
+          {{paper-icon "restore page"}}
+          <PaperTooltip>Factuur maken</PaperTooltip>
+        </PaperButton>
+      {{/if}}
     </div>
     {{#if @editMode}}
       <Invoice::DocumentEdit @model={{@model}} @save={{this.save}} />

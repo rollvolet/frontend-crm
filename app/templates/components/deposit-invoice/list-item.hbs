@@ -10,11 +10,11 @@
           {{paper-icon "find in page"}}
           <PaperTooltip>Voorschotfactuur bekijken</PaperTooltip>
         </PaperButton>
+        <PaperButton @onClick={{perform this.generateInvoiceDocument}} @iconButton={{true}}>
+          {{paper-icon "restore page"}}
+          <PaperTooltip>Voorschotfactuur maken</PaperTooltip>
+        </PaperButton>
         {{#if (and (not @isDisabledEdit) (not @model.isBooked))}}
-          <PaperButton @onClick={{perform this.generateInvoiceDocument}} @iconButton={{true}}>
-            {{paper-icon "restore page"}}
-            <PaperTooltip>Voorschotfactuur maken</PaperTooltip>
-          </PaperButton>
           <PaperButton @onClick={{fn @edit @model}} @iconButton={{true}}>
             {{paper-icon "edit mode"}}
             <PaperTooltip>Bewerken</PaperTooltip>
