@@ -130,15 +130,10 @@ export default class InvoicePanelComponent extends Component {
       this.showMissingCertificateDialog = true;
     } else {
       this.showMissingCertificateDialog = false;
-      const oldInvoiceDate = this.args.model.invoiceDate;
       try {
-        this.args.model.invoiceDate = new Date();
-        yield this.save.perform();
         yield this.documentGeneration.invoiceDocument(this.args.model);
       } catch (e) {
         warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
-        this.args.model.invoiceDate = oldInvoiceDate;
-        yield this.save.perform();
       }
     }
   }

@@ -119,15 +119,10 @@ export default class OfferPanelComponent extends Component {
 
   @task
   *generateOfferDocument() {
-    const oldOfferDate = this.args.model.offerDate;
     try {
-      this.args.model.offerDate = new Date();
-      yield this.save.perform();
       yield this.documentGeneration.offerDocument(this.args.model);
     } catch(e) {
       warn(`Something went wrong while generating the offer document`, { id: 'document-generation-failure' });
-      this.args.model.offerDate = oldOfferDate;
-      yield this.save.perform();
     }
   }
 

@@ -9,15 +9,10 @@ export default class DepositInvoiceListItemComponent extends Component {
 
   @task
   *generateInvoiceDocument() {
-    const oldInvoiceDate = this.args.model.invoiceDate;
     try {
-      this.args.model.invoiceDate = new Date();
-      yield this.args.model.save();
       yield this.documentGeneration.invoiceDocument(this.args.model);
     } catch(e) {
       warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
-      this.args.model.invoiceDate = oldInvoiceDate;
-      yield this.args.model.save();
     }
   }
 
