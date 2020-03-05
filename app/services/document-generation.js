@@ -26,10 +26,9 @@ export default class DocumentGenerationService extends Service {
     this.downloadDeliveryNote(order);
   }
 
-  async productionTicketTemplate(model) {
-    const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
-    await this._generate(`/api/${resource}/${model.get('id')}/production-tickets`);
-    this.downloadProductionTicketTemplate(model);
+  async productionTicketTemplate(order) {
+    await this._generate(`/api/orders/${order.get('id')}/production-tickets`);
+    this.downloadProductionTicketTemplate(order);
   }
 
   async invoiceDocument(invoice) {
@@ -108,9 +107,8 @@ export default class DocumentGenerationService extends Service {
     this._openInNewTab(`/api/files/delivery-notes/${order.get('id')}`);
   }
 
-  downloadProductionTicketTemplate(model) {
-    const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
-    this._openInNewTab(`/api/files/production-ticket-templates/${resource}/${model.get('id')}`);
+  downloadProductionTicketTemplate(order) {
+    this._openInNewTab(`/api/files/production-ticket-templates/${order.get('id')}`);
   }
 
   downloadProductionTicket(model) {

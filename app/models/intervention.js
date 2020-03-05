@@ -10,7 +10,6 @@ const Validations = buildValidations({
 export default class InterventionModel extends Model.extend(Validations, LoadableModel) {
   @attr('date-midnight') date
   @attr comment
-  @attr('boolean') hasProductionTicket
   @attr('date-midnight') planningDate
   @attr planningMsObjectId
 
@@ -19,6 +18,7 @@ export default class InterventionModel extends Model.extend(Validations, Loadabl
   @belongsTo('building') building
   @belongsTo('way-of-entry') wayOfEntry
   @belongsTo('invoice') invoice
+  @belongsTo('order') origin
   @belongsTo('request') followUpRequest
   @hasMany('employee') technicians
 

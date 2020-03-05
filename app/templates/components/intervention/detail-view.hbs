@@ -18,11 +18,5 @@
     </DetailListItem>
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
-    <DetailListItem @label="Productiebon">
-      <div class="layout-row layout-align-start-center">
-        <div>{{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
-        <ProductionTicketButtons @model={{@model}} />
-      </div>
-    </DetailListItem>
   </div>
 </div>
