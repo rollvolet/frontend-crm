@@ -25,7 +25,7 @@ export default class InvoicelineTableComponent extends Component {
     this.invoicelines = yield this.args.model;
     // Load data that is already loaded by the invoice/panel component
     yield all(this.invoicelines.map(line => line.sideload('order,invoice,vat-rate', { backgroundReload: false })));
-    const order = this.invoice && (yield this.invoice.order);
+    const order = this.invoice && (yield this.invoice.get('order'));
     this.enrichedInvoicelines = yield all(this.invoicelines.map(async (line) => {
       line.isSupplement = order && !(await line.get('order'));
       return line;
