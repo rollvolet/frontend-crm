@@ -8,7 +8,7 @@ export default class InvoiceRoute extends Route {
 
   async model() {
     const intervention = this.modelFor('main.case.intervention.edit');
-    const vatRate = this.store.peekAll('vat-rate').find(v => v.rate == 21);
+    const vatRate = this.store.peekAll('vat-rate').find(v => v.rate == 6);
     const customer = this.modelFor('main.case');
     const contact = await intervention.contact;
     const building = await intervention.building;
@@ -23,7 +23,7 @@ export default class InvoiceRoute extends Route {
       certificateReceived: false,
       certificateClosed: false,
       isCreditNote: false,
-      hasProductionTicket: intervention.hasProductionTicket,
+      hasProductionTicket: false,
       comment: intervention.comment,
       intervention,
       customer,
