@@ -212,6 +212,7 @@ export default class CaseService extends Service.extend(Evented) {
         contactId: contact && contact.get('id'),
         buildingId: building && building.get('id'),
         requestId: this.current.requestId,
+        interventionId: this.current.interventionId,
         offerId: this.current.offerId,
         orderId: this.current.orderId,
         invoiceId: this.current.invoiceId
