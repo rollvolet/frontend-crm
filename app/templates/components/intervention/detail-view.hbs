@@ -21,5 +21,8 @@
     </DetailListItem>
   </div>
   <div class="case--right-panel flex-noshrink layout-column">
+    {{#if this.planningEvent}}
+      <PlanningEvent::Panel @model={{this.planningEvent}} />
+    {{/if}}
   </div>
 </div>

@@ -23,10 +23,10 @@ export default class VisitDetailEditComponent extends Component {
 
     if (period) {
       if (this.requiresSingleTime) {
-        this.model.untilHour = null;
+        this.args.model.untilHour = null;
       } else if (this.requiresNoTime) {
-        this.model.fromHour = null;
-        this.model.untilHour = null;
+        this.args.model.fromHour = null;
+        this.args.model.untilHour = null;
       }
     }
 

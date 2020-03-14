@@ -58,9 +58,16 @@ export default class InterventionPanelComponent extends Component {
     if (forceSuccess) return;
 
     const { validations } = yield this.args.model.validate();
+    let requiresPlanningEventReload = false;
     if (validations.isValid) {
+      const changedAttributes = this.args.model.changedAttributes();
+      if (changedAttributes['comment'])
+        requiresPlanningEventReload = true;
       yield this.args.model.save();
     }
+
+    if (requiresPlanningEventReload)
+      yield this.args.model.belongsTo('planningEvent').reload();
   }
 
   @action

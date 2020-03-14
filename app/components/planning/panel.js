@@ -86,7 +86,8 @@ export default class PlanningPanelComponent extends Component {
   @keepLatestTask
   *synchronize() {
     const { access_token } = this.session.get('data.authenticated');
-    yield fetch(`/api/orders/${this.args.model.id}/planning-event`, {
+    const resource = this.args.model.constructor.modelName == 'order' ? 'orders' : 'interventions';
+    yield fetch(`/api/${resource}/${this.args.model.id}/planning-event`, {
       method: 'PUT',
       headers: new Headers({
         Authorization: `Bearer ${access_token}`

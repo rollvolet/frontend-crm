@@ -4,14 +4,12 @@ import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
-  date: validator('presence', true)
+  date: validator('presence', true),
 });
 
 export default class InterventionModel extends Model.extend(Validations, LoadableModel) {
   @attr('date-midnight') date
   @attr comment
-  @attr('date-midnight') planningDate
-  @attr planningMsObjectId
   @attr('date-midnight') cancellationDate
 
   @belongsTo('customer') customer
@@ -21,13 +19,10 @@ export default class InterventionModel extends Model.extend(Validations, Loadabl
   @belongsTo('invoice') invoice
   @belongsTo('order') origin
   @belongsTo('request') followUpRequest
+  @belongsTo('planning-event') planningEvent
   @belongsTo('employee', { inverse: null }) employee
   @hasMany('employee', { inverse: null }) technicians
 
   @dateString('date') dateStr
   @dateString('cancellationDate') cancellationDateStr
-
-  get isPlanned() {
-    return this.planningMsObjectId != null;
-  }
 }
