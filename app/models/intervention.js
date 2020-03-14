@@ -12,6 +12,7 @@ export default class InterventionModel extends Model.extend(Validations, Loadabl
   @attr comment
   @attr('date-midnight') planningDate
   @attr planningMsObjectId
+  @attr('date-midnight') cancellationDate
 
   @belongsTo('customer') customer
   @belongsTo('contact') contact
@@ -20,9 +21,11 @@ export default class InterventionModel extends Model.extend(Validations, Loadabl
   @belongsTo('invoice') invoice
   @belongsTo('order') origin
   @belongsTo('request') followUpRequest
-  @hasMany('employee') technicians
+  @belongsTo('employee', { inverse: null }) employee
+  @hasMany('employee', { inverse: null }) technicians
 
   @dateString('date') dateStr
+  @dateString('cancellationDate') cancellationDateStr
 
   get isPlanned() {
     return this.planningMsObjectId != null;

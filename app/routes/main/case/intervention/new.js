@@ -4,11 +4,13 @@ import { inject as service } from '@ember/service';
 export default class NewRoute extends Route {
   @service currentSession
 
-  model() {
+  async model() {
     const customer = this.modelFor('main.case');
+    const employee = await this.currentSession.getCurrentEmployee();
     const intervention = this.store.createRecord('intervention', {
       date: new Date(),
-      customer: customer
+      customer,
+      employee
     });
 
     return intervention.save();

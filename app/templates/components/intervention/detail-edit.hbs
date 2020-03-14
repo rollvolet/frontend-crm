@@ -2,9 +2,10 @@
   <section class="layout-column">
     <div class="layout-row">
       <PaperInput @label="Datum" @value={{@model.dateStr}} @type="date" @required="style" @errors={{v-get @model "date" "messages"}} @onChange={{queue (fn (mut @model.dateStr)) (perform @save)}} @class="default" />
-      <div class="layout-column u-rel-top-neg-normal">
-        <InputField::WayOfEntrySelect @value={{@model.wayOfEntry}} @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform @save)}} @class="md-input-wrapper default" />
-      </div>
+    </div>
+    <div class="layout-row">
+      <InputField::EmployeeSelect @label="Bediende" @value={{@model.employee}} @isAdministrative={{true}} @onSelectionChange={{queue (fn (mut @model.employee)) (perform @save)}} @class="md-input-wrapper large" />
+      <InputField::WayOfEntrySelect @value={{@model.wayOfEntry}} @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform @save)}} @class="md-input-wrapper default" />
     </div>
     <div class="layout-row">
       <InputField::EmployeeSelect @label="Techniekers" @value={{@model.technicians}} @multiple={{true}} @isTechnician={{true}} @isOnRoad={{true}} @isAdministrative={{true}} @optionSort={{array "functionSort:desc"}} @onSelectionChange={{queue (fn this.setTechnicians) (perform @save)}} @class="md-input-wrapper xxlarge" />

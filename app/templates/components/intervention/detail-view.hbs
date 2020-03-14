@@ -6,6 +6,9 @@
     <DetailListItem @label="Aanmelding">
       {{@model.wayOfEntry.name}}
     </DetailListItem>
+    <DetailListItem @label="Bediende">
+      {{@model.employee.firstName}}
+    </DetailListItem>
     <DetailListItem @label="Techniekers">
       {{#if this.technicianNames.length}}
         {{join ", " this.technicianNames}}
