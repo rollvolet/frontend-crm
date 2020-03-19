@@ -42,7 +42,12 @@ export default class InterventionPanelComponent extends Component {
   @task
   *remove() {
     const customer = this.case.current.customer;
+    const planningEvent = yield this.args.model.planningEvent;
     try {
+      if (planningEvent.isPlanned) {
+        planningEvent.date = null;
+        yield planningEvent.save();
+      }
       yield this.args.model.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying intervention ${this.args.model.id}`, { id: 'destroy-failure' });
