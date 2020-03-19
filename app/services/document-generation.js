@@ -11,6 +11,11 @@ export default class DocumentGenerationService extends Service {
     this.downloadVisitReport(request);
   }
 
+  async interventionReport(intervention) {
+    await this._generate(`/api/interventions/${intervention.get('id')}/reports`);
+    this.downloadInterventionReport(intervention);
+  }
+
   async offerDocument(offer) {
     await this._generate(`/api/offers/${offer.get('id')}/documents`);
     this.downloadOfferDocument(offer);
@@ -95,6 +100,10 @@ export default class DocumentGenerationService extends Service {
     this._openInNewTab(`/api/files/requests/${request.get('id')}`);
   }
 
+  downloadInterventionReport(intervention) {
+    this._openInNewTab(`/api/files/interventions/${intervention.get('id')}`);
+  }
+
   downloadOfferDocument(offer) {
     this._openInNewTab(`/api/files/offers/${offer.get('id')}`);
   }
@@ -111,9 +120,8 @@ export default class DocumentGenerationService extends Service {
     this._openInNewTab(`/api/files/production-ticket-templates/${order.get('id')}`);
   }
 
-  downloadProductionTicket(model) {
-    const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
-    this._openInNewTab(`/api/files/production-tickets/${resource}/${model.get('id')}`);
+  downloadProductionTicket(order) {
+    this._openInNewTab(`/api/files/production-tickets}/${order.get('id')}`);
   }
 
   downloadInvoiceDocument(invoice) {

@@ -90,4 +90,9 @@ export default class InterventionPanelComponent extends Component {
     await this.rollbackTree.perform();
     this.args.onCloseEdit();
   }
+
+  @action
+  generateInterventionReport() {
+    return this.documentGeneration.interventionReport(this.args.model);
+  }
 }

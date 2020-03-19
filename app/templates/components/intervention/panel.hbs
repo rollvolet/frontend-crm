@@ -20,6 +20,10 @@
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
     {{else}}
+      <PaperButton @onClick={{fn this.generateInterventionReport}} @iconButton={{true}}>
+          {{paper-icon "description"}}
+        <PaperTooltip>Interventierapport</PaperTooltip>
+      </PaperButton>
       <PaperButton @onClick={{fn @onOpenEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>

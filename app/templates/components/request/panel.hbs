@@ -20,10 +20,6 @@
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
     {{else}}
-      <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
-        {{paper-icon "edit mode"}}
-        <PaperTooltip>Aanpassen</PaperTooltip>
-      </PaperButton>
       {{#if this.isLinkedToCustomer}}
         <PaperButton @onClick={{perform this.unlinkCustomer}} @iconButton={{true}} @disabled={{this.isDisabledUnlinkCustomer}}>
           {{paper-icon "link off"}}
@@ -39,6 +35,10 @@
           <PaperTooltip>Koppel klant</PaperTooltip>
         </PaperButton>
       {{/if}}
+      <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+        {{paper-icon "edit mode"}}
+        <PaperTooltip>Aanpassen</PaperTooltip>
+      </PaperButton>
     {{/if}}
   </div>
 </div>
