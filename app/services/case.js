@@ -6,6 +6,7 @@ import { keepLatestTask, task } from 'ember-concurrency-decorators';
 import { all } from 'ember-concurrency';
 import Evented from '@ember/object/evented';
 import { tracked } from '@glimmer/tracking';
+import updateContactAndBuildingRequest from '../utils/api/update-contact-and-building';
 
 const regexMap = {
   unlinkedRequestId: /requests\/(\d+)/i,
@@ -29,10 +30,11 @@ export default class CaseService extends Service.extend(Evented) {
   @service session
   @service store
 
+  @tracked isInvalid = false
   @tracked current = null
 
   get visitorName() {
-    return this.current.request && this.current.request.visitor;
+    return this.current && this.current.request && this.current.request.visitor;
   }
 
   get visitor() {
@@ -43,15 +45,21 @@ export default class CaseService extends Service.extend(Evented) {
     return this.loadCaseForCurrentRoute.isRunning || this.loadRecords.isRunning;
   }
 
-  async initCase() {
-    this.current = null;
-    this.current = await this.loadCaseForCurrentRoute.perform();
-    await this.loadRecords.perform();
+  unloadCase() {
+    this.isInvalid = true;
   }
 
   updateRecord(type, record) {
     this.current[type] = record;
     this.current[`${type}Id`] = record && record.get('id');
+  }
+
+  @keepLatestTask()
+  *initCase() {
+    this.current = null;
+    this.current = yield this.loadCaseForCurrentRoute.perform();
+    yield this.loadRecords.perform();
+    this.isInvalid = false;
   }
 
   @keepLatestTask()
@@ -202,21 +210,15 @@ export default class CaseService extends Service.extend(Evented) {
   @task
   *_updateContactAndBuilding(contact, building) {
     const { access_token } = this.get('session.data.authenticated');
-    yield fetch(`/api/cases/contact-and-building`, {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${access_token}`
-      }),
-      body: JSON.stringify({
-        contactId: contact && contact.get('id'),
-        buildingId: building && building.get('id'),
-        requestId: this.current.requestId,
-        interventionId: this.current.interventionId,
-        offerId: this.current.offerId,
-        orderId: this.current.orderId,
-        invoiceId: this.current.invoiceId
-      })
-    });
+    const body = {
+      contactId: contact && contact.get('id'),
+      buildingId: building && building.get('id'),
+      requestId: this.current.requestId,
+      interventionId: this.current.interventionId,
+      offerId: this.current.offerId,
+      orderId: this.current.orderId,
+      invoiceId: this.current.invoiceId
+    };
+    yield updateContactAndBuildingRequest(access_token, body);
   }
 }

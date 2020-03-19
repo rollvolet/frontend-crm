@@ -20,7 +20,9 @@ Router.map(function() {
         this.route('customer');
       });
     });
-    this.route('interventions', function() {});
+    this.route('interventions', function() {
+      this.route('edit', { path: '/:intervention_id' });
+    });
     this.route('offers', function() {});
     this.route('orders', function() {});
     this.route('deposit-invoices', function() {});

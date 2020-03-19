@@ -28,12 +28,59 @@
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>
       </PaperButton>
+      <PaperMenu @position={{"target-right target"}} as |menu|>
+        <menu.trigger>
+          <PaperButton @onClick={{null}} @iconButton={{true}}>
+            {{paper-icon "more vert" class="md-menu-origin"}}
+            <PaperTooltip>Meer acties</PaperTooltip>
+          </PaperButton>
+        </menu.trigger>
+        <menu.content @width={{4}} as |content|>
+          {{#if @model.isCancelled}}
+            <content.menu-item @onClick={{fn this.uncancelIntervention}}>
+              <p>Opnieuw openen</p>
+            </content.menu-item>
+          {{else}}
+            <content.menu-item @onClick={{fn this.cancelIntervention}}>
+              <p>Afsluiten</p>
+            </content.menu-item>
+            {{#unless this.isDisabledEdit}}
+              <content.menu-item @onClick={{fn this.createInvoice}}>
+                <p>Factuur opstellen</p>
+              </content.menu-item>
+            {{/unless}}
+            {{#unless @model.followUpRequest.id}}
+              <content.menu-item @onClick={{perform this.createFollowUpRequest}}>
+                <p>Nieuwe aanvraag</p>
+              </content.menu-item>
+            {{/unless}}
+          {{/if}}
+        </menu.content>
+      </PaperMenu>
     {{/if}}
   </div>
 </div>
 
 {{#if this.isDisabledEdit}}
-  <WarningMessage @message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk." />
+  {{#if @model.isCancelled}}
+    <WarningMessage @message="Interventie is afgesloten. Geen wijzigingen meer mogelijk." />
+  {{else}}
+    <WarningMessage @message="Factuur reeds opgemaakt. Geen wijzigingen meer mogelijk." />
+  {{/if}}
+{{/if}}
+
+{{#if @model.followUpRequest.id}}
+  <InfoMessage>
+    <div class="layout-row layout-align-space-between-center" role="button" {{on "click" (fn this.goToFollowUpRequest)}}>
+      <div>
+        Deze interventie heeft geleid tot een nieuwe aanvraag AD{{@model.followUpRequest.id}}
+      </div>
+      <div>
+        {{paper-icon "forward"}}
+      </div>
+      <PaperTooltip>Ga naar de aanvraag</PaperTooltip>
+    </div>
+  </InfoMessage>
 {{/if}}
 
 {{#if @editMode}}
@@ -47,7 +94,7 @@
       <PaperProgressLinear />
       <p>Aan het herstellen...</p>
     </div>
-  {{else if (and (not @model.id) @model.isSavivg)}}
+  {{else if (and (not @model.id) @model.isSaving)}}
     <div>
       <PaperProgressLinear />
       <p>Aan het aanmaken...</p>
@@ -56,7 +103,14 @@
     <Intervention::DetailEdit @model={{@model}} @save={{this.save}} />
   {{/if}}
 {{else}}
-  <Intervention::DetailView @model={{@model}} />
+  {{#if this.createFollowUpRequest.isRunning}}
+    <div>
+      <PaperProgressLinear />
+      <p>Nieuwe aanvraag aan het aanmaken...</p>
+    </div>
+  {{else}}
+    <Intervention::DetailView @model={{@model}} />
+  {{/if}}
 {{/if}}
 
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

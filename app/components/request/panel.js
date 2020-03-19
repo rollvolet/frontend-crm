@@ -19,7 +19,7 @@ export default class RequestPanelComponent extends Component {
   }
 
   get isDisabledEdit() {
-    return this.case.current.offer != null;
+    return this.case.current && this.case.current.offer != null;
   }
 
   get isEnabledDelete() {
@@ -27,11 +27,11 @@ export default class RequestPanelComponent extends Component {
   }
 
   get isLinkedToCustomer() {
-    return this.case.current.customer != null;
+    return this.case.current && this.case.current.customer != null;
   }
 
   get isDisabledUnlinkCustomer() {
-    return this.case.current.offer != null;
+    return this.case.current && this.case.current.offer != null;
   }
 
   @task
@@ -147,5 +147,11 @@ export default class RequestPanelComponent extends Component {
   @action
   linkCustomer() {
     this.router.transitionTo('main.requests.edit.customer', this.args.model);
+  }
+
+  @action
+  async goToOrigin() {
+    const intervention = await this.args.model.origin;
+    this.router.transitionTo('main.interventions.edit', intervention.id);
   }
 }

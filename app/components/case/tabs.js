@@ -13,24 +13,23 @@ export default class CaseTabsComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.case.initCase();
+    this.case.initCase.perform();
+    this.currentRouteName = this.router.currentRoute.name;
+    this.isEditRoute = this.router.currentRoute.queryParams.editMode == "true";
 
-    // computed properties on this.router.currentRoute don't seem to work
-    // hence we observe the currentRoute and derive related values manually
-    this.router.addObserver('currentRoute', this, 'currentRouteChanged');
-    this.currentRouteChanged(this.router, 'currentRoute'); // initialize derived values
-  }
+    this.router.on('routeWillChange', (transition) => {
+      const target = transition.to.name;
+      if (!target.startsWith('main.case'))
+        this.case.unloadCase();
+    });
 
-  willDestroy() {
-    super.willDestroy(...arguments);
-    this.router.removeObserver('currentRoute', this, 'currentRouteChanged');
-  }
-
-  // observation handler
-  currentRouteChanged(sender, key) {
-    const currentRoute = sender[key];
-    this.currentRouteName = currentRoute.name;
-    this.isEditRoute = currentRoute.queryParams.editMode == "true";
+    this.router.on('routeDidChange', (transition) => {
+      const target = transition.to.name;
+      if (target.startsWith('main.case') && this.case.isInvalid)
+        this.case.initCase.perform();
+      this.currentRouteName = this.router.currentRoute.name;
+      this.isEditRoute = this.router.currentRoute.queryParams.editMode == "true";
+    });
   }
 
   get model() {
@@ -51,7 +50,7 @@ export default class CaseTabsComponent extends Component {
 
   get canCreateNewInvoice() {
     const canCreateNewInvoiceForOrder = this.model && this.model.orderId && this.model.invoiceId == null && this.model.order && !this.model.order.isMasteredByAccess;
-    const canCreateNewInvoiceForIntervention = this.model && this.model.interventionId && this.model.invoiceId == null;
+    const canCreateNewInvoiceForIntervention = this.model && this.model.interventionId && this.model.invoiceId == null && !this.model.intervention.isCancelled;
     return !this.isEditRoute && (canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention);
   }
 

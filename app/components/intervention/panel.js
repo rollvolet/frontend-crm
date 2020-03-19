@@ -5,17 +5,19 @@ import { action } from '@ember/object';
 import { task, keepLatestTask } from 'ember-concurrency-decorators';
 import { all } from 'ember-concurrency';
 import { warn } from '@ember/debug';
+import updateContactAndBuildingRequest from '../../utils/api/update-contact-and-building';
 
 export default class InterventionPanelComponent extends Component {
   @service case
   @service documentGeneration
+  @service session
   @service store
   @service router
 
   @tracked showUnsavedChangesDialog = false
 
   get isDisabledEdit() {
-    return this.case.current.invoice != null;
+    return (this.case.current && this.case.current.invoice != null) || this.args.model.isCancelled;
   }
 
   get isEnabledDelete() {
@@ -70,6 +72,35 @@ export default class InterventionPanelComponent extends Component {
       yield this.args.model.belongsTo('planningEvent').reload();
   }
 
+  @task
+  *createFollowUpRequest() {
+    const customer = this.case.current.customer;
+    const contact = this.case.current.contact;
+    const building = this.case.current.building;
+    const employee = yield this.args.model.employee;
+    const firstName = employee ? employee.firstName : null;
+    const request = this.store.createRecord('request', {
+      requestDate: new Date(),
+      requiresVisit: false,
+      employee: firstName,
+      origin: this.args.model,
+      customer
+    });
+    yield request.save();
+
+    const { access_token } = this.session.get('data.authenticated');
+    const body = {
+      contactId: contact && contact.id,
+      buildingId: building && building.id,
+      requestId: request.id
+    };
+    yield updateContactAndBuildingRequest(access_token, body);
+
+    this.router.transitionTo('main.case.request.edit', customer, request.id, {
+      queryParams: { editMode: true }
+    });
+  }
+
   @action
   closeEdit() {
     if (this.hasUnsavedChanges) {
@@ -94,5 +125,29 @@ export default class InterventionPanelComponent extends Component {
   @action
   generateInterventionReport() {
     return this.documentGeneration.interventionReport(this.args.model);
+  }
+
+  @action
+  cancelIntervention() {
+    this.args.model.cancellationDate = new Date();
+    this.save.perform();
+  }
+
+  @action
+  uncancelIntervention() {
+    this.args.model.cancellationDate = null;
+    this.save.perform();
+  }
+
+  @action
+  createInvoice() {
+    const customerId = this.case.current.customerId;
+    this.router.transitionTo('main.case.intervention.edit.invoice', customerId, this.args.model.id);
+  }
+
+  @action
+  async goToFollowUpRequest() {
+    const request = await this.args.model.followUpRequest;
+    this.router.transitionTo('main.requests.edit', request.id);
   }
 }

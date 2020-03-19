@@ -3,6 +3,11 @@
     <DetailListItem @label="Datum">
       <FmtDate @value={{@model.date}} />
     </DetailListItem>
+    {{#if @model.cancellationDate}}
+      <DetailListItem @label="Afgesloten">
+        <FmtDate @value={{@model.cancellationDate}} />
+      </DetailListItem>
+    {{/if}}
     <DetailListItem @label="Aanmelding">
       {{@model.wayOfEntry.name}}
     </DetailListItem>

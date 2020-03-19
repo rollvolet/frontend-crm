@@ -25,4 +25,8 @@ export default class InterventionModel extends Model.extend(Validations, Loadabl
 
   @dateString('date') dateStr
   @dateString('cancellationDate') cancellationDateStr
+
+  get isCancelled() {
+    return this.cancellationDate;
+  }
 }
