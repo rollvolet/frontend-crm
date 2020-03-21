@@ -24,7 +24,9 @@ Router.map(function() {
       this.route('edit', { path: '/:intervention_id' });
     });
     this.route('offers', function() {});
-    this.route('orders', function() {});
+    this.route('orders', function() {
+      this.route('edit', { path: '/:order_id' });
+    });
     this.route('deposit-invoices', function() {});
     this.route('invoices', function() {});
     this.route('case', { path: '/case/:customer_id' }, function() {

@@ -1,0 +1,41 @@
+<div class="orders-table">
+  <div class="data-table-filters">
+    <div class="data-table-filters--title">{{paper-icon "search"}}</div>
+    <PaperInput @label="Aanvraag" @value={{this.requestNumberFilter}} @onChange={{perform this.debounceFilter "requestNumber"}} @class="small" />
+    <PaperInput @label="Offerte" @value={{this.offerNumberFilter}} @onChange={{perform this.debounceFilter "offerNumber"}} @class="small" />
+    <PaperInput @label="Referentie" @value={{this.referenceFilter}} @onChange={{perform this.debounceFilter "reference"}} @class="small" />
+    <PaperInput @label="Naam" @value={{this.nameFilter}} @onChange={{perform this.debounceFilter "name"}} />
+    <PaperInput @label="Straat" @value={{this.streetFilter}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
+    <PaperInput @label="Postcode" @value={{this.postalCodeFilter}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
+    <PaperInput @label="Gemeente" @value={{this.cityFilter}} @onChange={{perform this.debounceFilter "city"}} />
+    <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
+      {{paper-icon "close"}}
+      <PaperTooltip>Wis filters</PaperTooltip>
+    </PaperButton>
+  </div>
+
+  <DataTable @content={{this.orders}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen bestellingen" @onClickRow={{@onSelect}} @page={{this.page}} @size={{this.size}} @sort={{this.sort}} as |t|>
+    <t.content as |c|>
+      <c.header>
+        <th>Aanvraag</th>
+        <ThSortable @field="offer-number" @currentSorting={{this.sort}} @label="Offerte" />
+        <ThSortable @field="reference" @currentSorting={{this.sort}} @label="Referentie" />
+        <ThSortable @field="offer-date" @currentSorting={{this.sort}} @label="Datum" />
+        <th>Klant</th>
+        <th>Straat</th>
+        <th>Postcode</th>
+        <th>Gemeente</th>
+      </c.header>
+      <c.body as |row|>
+        <td>{{row.requestNumber}}</td>
+        <td>{{row.offerNumber}}</td>
+        <td>{{row.offer.reference}}</td>
+        <td><FmtDate @value={{row.orderDate}} /></td>
+        <td>{{row.customer.name}}</td>
+        <td>{{row.customer.address1}}</td>
+        <td>{{row.customer.postalCode}}</td>
+        <td>{{row.customer.city}}</td>
+      </c.body>
+    </t.content>
+  </DataTable>
+</div>

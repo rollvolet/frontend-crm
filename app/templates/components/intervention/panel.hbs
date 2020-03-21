@@ -117,4 +117,6 @@
   {{/if}}
 {{/if}}
 
+<Intervention::Order @model={{@model}} />
+
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />

@@ -120,8 +120,11 @@ export default class DocumentGenerationService extends Service {
     this._openInNewTab(`/api/files/production-ticket-templates/${order.get('id')}`);
   }
 
-  downloadProductionTicket(order) {
-    this._openInNewTab(`/api/files/production-tickets}/${order.get('id')}`);
+  downloadProductionTicket(order, options) {
+    const defaultOptions = { watermark: false };
+    const opts = Object.assign({}, defaultOptions, options);
+    const query = Object.keys(opts).map(k => `${k}=${opts[k]}`).join('&');
+    this._openInNewTab(`/api/files/production-tickets/${order.get('id')}?${query}`);
   }
 
   downloadInvoiceDocument(invoice) {
