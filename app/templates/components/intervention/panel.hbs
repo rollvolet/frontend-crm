@@ -28,35 +28,39 @@
         {{paper-icon "edit mode"}}
         <PaperTooltip>Aanpassen</PaperTooltip>
       </PaperButton>
-      <PaperMenu @position={{"target-right target"}} as |menu|>
-        <menu.trigger>
-          <PaperButton @onClick={{null}} @iconButton={{true}}>
-            {{paper-icon "more vert" class="md-menu-origin"}}
-            <PaperTooltip>Meer acties</PaperTooltip>
-          </PaperButton>
-        </menu.trigger>
-        <menu.content @width={{4}} as |content|>
-          {{#if @model.isCancelled}}
-            <content.menu-item @onClick={{fn this.uncancelIntervention}}>
-              <p>Opnieuw openen</p>
-            </content.menu-item>
-          {{else}}
-            <content.menu-item @onClick={{fn this.cancelIntervention}}>
-              <p>Afsluiten</p>
-            </content.menu-item>
-            {{#unless this.isDisabledEdit}}
-              <content.menu-item @onClick={{fn this.createInvoice}}>
-                <p>Factuur opstellen</p>
+      {{#if (or (not this.hasInvoice) (not this.hasFollowUpRequest))}}
+        <PaperMenu @position={{"target-right target"}} as |menu|>
+          <menu.trigger>
+            <PaperButton @onClick={{null}} @iconButton={{true}}>
+              {{paper-icon "more vert" class="md-menu-origin"}}
+              <PaperTooltip>Meer acties</PaperTooltip>
+            </PaperButton>
+          </menu.trigger>
+          <menu.content @width={{4}} as |content|>
+            {{#if @model.isCancelled}}
+              <content.menu-item @onClick={{fn this.uncancelIntervention}}>
+                <p>Opnieuw openen</p>
               </content.menu-item>
-            {{/unless}}
-            {{#unless @model.followUpRequest.id}}
-              <content.menu-item @onClick={{perform this.createFollowUpRequest}}>
-                <p>Nieuwe aanvraag</p>
-              </content.menu-item>
-            {{/unless}}
-          {{/if}}
-        </menu.content>
-      </PaperMenu>
+            {{else}}
+              {{#unless this.hasInvoice}}
+                <content.menu-item @onClick={{fn this.createInvoice}}>
+                  <p>Factuur opstellen</p>
+                </content.menu-item>
+              {{/unless}}
+              {{#unless this.hasFollowUpRequest}}
+                <content.menu-item @onClick={{perform this.createFollowUpRequest}}>
+                  <p>Nieuwe aanvraag</p>
+                </content.menu-item>
+              {{/unless}}
+              {{#if (and (not this.hasInvoice) (not this.hasFollowUpRequest))}}
+                <content.menu-item @onClick={{fn this.cancelIntervention}}>
+                  <p>Afsluiten</p>
+                </content.menu-item>
+              {{/if}}
+            {{/if}}
+          </menu.content>
+        </PaperMenu>
+      {{/if}}
     {{/if}}
   </div>
 </div>
@@ -69,7 +73,7 @@
   {{/if}}
 {{/if}}
 
-{{#if @model.followUpRequest.id}}
+{{#if this.hasFollowUpRequest}}
   <InfoMessage>
     <div class="layout-row layout-align-space-between-center" role="button" {{on "click" (fn this.goToFollowUpRequest)}}>
       <div>

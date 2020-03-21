@@ -77,13 +77,13 @@ export default class OfferPanelComponent extends Component {
   *remove() {
     try {
       yield all(this.offerlines.map(t => t.destroyRecord()));
-      yield this.args.model.destroyRecord();
       this.case.updateRecord('offer', null);
+      yield this.args.model.destroyRecord();
+      this.router.transitionTo('main.case.request.edit', this.request.id);
     } catch (e) {
       warn(`Something went wrong while destroying offer ${this.args.model.id}`, { id: 'destroy-failure' });
-      // TODO rollback to detail view?
-    } finally {
-      this.router.transitionTo('main.case.request.edit', this.request.id);
+      yield this.args.model.rollbackAttributes(); // undo delete-state
+      this.case.updateRecord('offer', this.args.model);
     }
   }
 

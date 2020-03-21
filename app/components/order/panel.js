@@ -78,17 +78,18 @@ export default class OrderPanelComponent extends Component {
   *remove() {
     try {
       yield all(this.invoicelines.map(l => l.destroyRecord()));
+      this.case.updateRecord('order', null);
       yield this.args.model.destroyRecord();
       // TODO: Fix this hack when Ember Data allows creation of already deleted ID
       // See https://github.com/emberjs/data/issues/5006
       // this.store._removeFromIdMap(this.args.model._internalModel);
-      this.case.updateRecord('order', null);
       this.router.transitionTo('main.case.offer.edit', this.offer);
     } catch (e) {
       warn(`Something went wrong while destroying order ${this.args.model.id}`, { id: 'destroy-failure' });
       this.offer.order = this.args.model;
       yield this.offer.save();
       yield this.args.model.rollbackAttributes(); // undo delete-state
+      this.case.updateRecord('order', this.args.model);
     }
   }
 

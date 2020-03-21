@@ -42,14 +42,14 @@ export default class RequestPanelComponent extends Component {
       if (calendarEvent)
         yield calendarEvent.destroyRecord();
       yield this.args.model.destroyRecord();
-    } catch (e) {
-      warn(`Something went wrong while destroying request ${this.args.model.id}`, { id: 'destroy-failure' });
-      // TODO rollback to detail view?
-    } finally {
+
       if (customer)
         this.router.transitionTo('main.customers.edit', customer);
       else
         this.router.transitionTo('main.requests.index');
+    } catch (e) {
+      warn(`Something went wrong while destroying request ${this.args.model.id}`, { id: 'destroy-failure' });
+      yield this.args.model.rollbackAttributes(); // undo delete-state
     }
   }
 

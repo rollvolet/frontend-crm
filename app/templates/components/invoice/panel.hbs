@@ -61,18 +61,20 @@
   {{else}}
     <div class="case--invoice--invoicelines layout-row layout-align-space-between-center">
       <h2>Gefactureerde producten</h2>
-      {{#if this.generateInvoiceDocument.isRunning}}
-        <PaperProgressCircular @diameter={{18}} />
-      {{else}}
-        <PaperButton @onClick={{fn this.downloadInvoiceDocument}} @iconButton={{true}}>
-          {{paper-icon "find in page"}}
-          <PaperTooltip>Factuur bekijken</PaperTooltip>
-        </PaperButton>
-        <PaperButton @onClick={{perform this.generateInvoiceDocument}} @iconButton={{true}}>
-          {{paper-icon "restore page"}}
-          <PaperTooltip>Factuur maken</PaperTooltip>
-        </PaperButton>
-      {{/if}}
+      <div class="layout-row">
+        {{#if this.generateInvoiceDocument.isRunning}}
+          <PaperProgressCircular @diameter={{18}} />
+        {{else}}
+          <PaperButton @onClick={{fn this.downloadInvoiceDocument}} @iconButton={{true}}>
+            {{paper-icon "find in page"}}
+            <PaperTooltip>Factuur bekijken</PaperTooltip>
+          </PaperButton>
+          <PaperButton @onClick={{perform this.generateInvoiceDocument}} @iconButton={{true}}>
+            {{paper-icon "restore page"}}
+            <PaperTooltip>Factuur maken</PaperTooltip>
+          </PaperButton>
+        {{/if}}
+      </div>
     </div>
     {{#if @editMode}}
       <Invoice::DocumentEdit @model={{@model}} @save={{this.save}} />
