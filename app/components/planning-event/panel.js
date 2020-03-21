@@ -3,7 +3,6 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency-decorators';
-import { isEmpty } from '@ember/utils';
 
 export default class PlanningEventPanelComponent extends Component {
   @service case
@@ -29,8 +28,12 @@ export default class PlanningEventPanelComponent extends Component {
     return this.case.current && this.case.current.invoice;
   }
 
+  get intervention() {
+    return this.case.current && this.case.current.intervention;
+  }
+
   get isDisabledEdit() {
-    return this.invoice;
+    return (this.intervention && this.intervention.isCancelled) || this.invoice;
   }
 
   get requiresTimeRange() {
