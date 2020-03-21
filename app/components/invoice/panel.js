@@ -36,6 +36,10 @@ export default class InvoicePanelComponent extends Component {
     return !this.isDisableEdit;
   }
 
+  get intervention() {
+    return this.case.current && this.case.current.intervention;
+  }
+
   get order() {
     return this.case.current && this.case.current.order;
   }
@@ -80,11 +84,13 @@ export default class InvoicePanelComponent extends Component {
         await invoiceline.save();
       }));
 
-      yield this.args.model.destroyRecord();
       this.case.updateRecord('invoice', null);
+      yield this.args.model.destroyRecord();
 
       if (this.order)
         this.router.transitionTo('main.case.order.edit', this.order.id);
+      else if (this.intervention)
+        this.router.transitionTo('main.case.intervention.edit', this.intervention.id);
       else
         this.router.transitionTo('main.customers.edit', this.customer.id);
     } catch (e) {
@@ -92,8 +98,12 @@ export default class InvoicePanelComponent extends Component {
       if (this.order) {
         this.order.invoice = this.args.model;
         yield this.order.save();
-        yield this.args.model.rollbackAttributes(); // undo delete-state
+      } else if (this.intervention) {
+        this.intervention.invoice = this.args.model;
+        yield this.intervention.save();
       }
+      yield this.args.model.rollbackAttributes(); // undo delete-state
+      this.case.updateRecord('invoice', this.args.model);
     }
   }
 

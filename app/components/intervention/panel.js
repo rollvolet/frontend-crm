@@ -17,11 +17,19 @@ export default class InterventionPanelComponent extends Component {
   @tracked showUnsavedChangesDialog = false
 
   get isDisabledEdit() {
-    return (this.case.current && this.case.current.invoice != null) || this.args.model.isCancelled;
+    return this.hasInvoice || this.args.model.isCancelled;
   }
 
   get isEnabledDelete() {
     return !this.isDisabledEdit;
+  }
+
+  get hasInvoice() {
+    return this.case.current && this.case.current.invoice != null;
+  }
+
+  get hasFollowUpRequest() {
+    return this.args.model.followUpRequest && this.args.model.followUpRequest.get('id');
   }
 
   get hasUnsavedChanges() {
