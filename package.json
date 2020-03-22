@@ -28,7 +28,7 @@
     "ember-classic-decorator": "^1.0.5",
     "ember-cli": "~3.15.1",
     "ember-cli-app-version": "^3.2.0",
-    "ember-cli-babel": "^7.13.0",
+    "ember-cli-babel": "7.17.2",
     "ember-cli-dependency-checker": "^3.2.0",
     "ember-cli-eslint": "^5.1.0",
     "ember-cli-favicon": "^2.2.0",
@@ -81,6 +81,12 @@
     "sass": "^1.22.9",
     "torii": "https://github.com/jmonster/torii.git#bbbd0ba317da193039193e47295224d2290b8443",
     "torii-azure-ad2-provider": "^1.0.5"
+  },
+  "resolutions": {
+    "@babel/core": "7.8.7",
+    "@babel/helpers": "7.8.4",
+    "@babel/plugin-transform-classes": "7.8.6",
+    "@babel/runtime": "7.8.7"
   },
   "engines": {
     "node": "8.* || >= 10.*"

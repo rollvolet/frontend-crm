@@ -4,7 +4,7 @@ LABEL maintainer="Erika Pauwels <erika.pauwels@gmail.com>"
 
 WORKDIR /app
 COPY package.json .
-RUN npm install
+RUN yarn install
 COPY . .
 RUN ember build -prod
 
