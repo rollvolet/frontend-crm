@@ -12,10 +12,10 @@
     <div class="layout-row layout-align-space-between-center">
       <h2>
         Interventie voor bestelling {{this.order.offerNumber}}
-        {{#paper-link 'main.orders.edit' this.order iconButton=true}}
+        <PaperButton @href={{href-to "main.orders.edit" this.order}} @iconButton={{true}}>
           {{paper-icon "open in new"}}
           <PaperTooltip>Open bestelling</PaperTooltip>
-        {{/paper-link}}
+        </PaperButton>
       </h2>
       <PaperButton @onClick={{perform this.unlink}} @iconButton={{true}}>
         {{paper-icon "link off"}}

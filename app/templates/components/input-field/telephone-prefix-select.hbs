@@ -1,4 +1,4 @@
-<PowerSelect @placeholder={{this.placeholder}} @searchPlaceholder="Zoeken" @options={{this.options}} @selected={{this.selected}} @searchField="telephonePrefix" @onchange={{@onSelectionChange}} @noMatchesMessage="Geen resultaten" @allowClear={{true}} as |option select|>
+<PowerSelect @placeholder={{this.placeholder}} @searchPlaceholder="Zoeken" @options={{this.options}} @selected={{this.selected}} @searchEnabled={{true}} @searchField="telephonePrefix" @onChange={{@onSelectionChange}} @noMatchesMessage="Geen resultaten" @allowClear={{true}} as |option select|>
   {{highlight-substr option.telephonePrefix select.lastSearchedText}}
 </PowerSelect>
 

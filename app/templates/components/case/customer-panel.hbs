@@ -1,10 +1,10 @@
 {{#if @model}}
   <h2>
     Klant: <PrintName @model={{@model}} /> <span class="small-text-fade">[{{@model.number}}]</span>
-    {{#paper-link 'main.customers.edit' @model iconButton=true}}
+    <PaperButton @href={{href-to "main.customers.edit" @model }} @iconButton={{true}}>
       {{paper-icon "open in new"}}
       <PaperTooltip>Open klant</PaperTooltip>
-    {{/paper-link}}
+    </PaperButton>
   </h2>
 
   <div class="resource-details">

@@ -2,7 +2,6 @@
 $primary: "red";
 $accent: "blue-grey";
 
-/* ember-paper-link requires this SCSS variable which was defined by ember-paper until v1.0.0-beta.8 */
 $base-color: rgba(0, 0, 0, 0.87) !default;
 
 @import 'color-palette';
@@ -17,7 +16,6 @@ html, body {
 $md-autocomplete-item-height: 36px !default;
 
 @import 'ember-paper';
-@import 'ember-paper-link';
 @import 'ember-paper-data-table';
 
 $ember-power-select-material-active-color: paper-color($primary) !default;
