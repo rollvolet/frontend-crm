@@ -109,7 +109,7 @@ export default class InterventionPanelComponent extends Component {
     };
     yield updateContactAndBuildingRequest(access_token, body);
 
-    this.router.transitionTo('main.case.request.edit', customer, request.id, {
+    this.router.transitionTo('main.requests.edit', request.id, {
       queryParams: { editMode: true }
     });
   }

@@ -107,6 +107,11 @@
       <Order::DocumentView @model={{@model}} />
     {{/if}}
   {{/if}}
+
+  <div>
+    <Order::Interventions @order={{@model}} />
+  </div>
+
 {{/if}}
 
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />
