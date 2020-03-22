@@ -11,10 +11,9 @@ export default class CustomerEntityEditForm extends Component {
   @service router
 
   @tracked showUnsavedChangesDialog = false
-  @tracked scope = 'customer'; // one of 'customer', 'contact', 'building'
 
   get isScopeCustomer() {
-    return this.scope == 'customer';
+    return this.args.scope == 'customer';  // one of 'customer', 'contact', 'building'
   }
 
   @computed('args.model.telephones.[]')
@@ -44,7 +43,7 @@ export default class CustomerEntityEditForm extends Component {
       yield all(telephones.map(t => t.destroyRecord()));
       yield this.args.model.destroyRecord();
     } catch (e) {
-      warn(`Something went wrong while destroying ${this.scope} ${this.args.model.id}`, { id: 'destroy-failure' });
+      warn(`Something went wrong while destroying ${this.args.scope} ${this.args.model.id}`, { id: 'destroy-failure' });
     } finally {
       this.args.onRemove();
     }
@@ -68,7 +67,7 @@ export default class CustomerEntityEditForm extends Component {
 
   @keepLatestTask
   *save() {
-    if (this.scope == 'customer' && this.args.model.name)
+    if (this.args.scope == 'customer' && this.args.model.name)
       this.args.model.name = this.args.model.name.toUpperCase();
 
     const { validations } = yield this.args.model.validate();
