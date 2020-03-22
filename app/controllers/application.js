@@ -11,9 +11,9 @@ export default class ApplicationController extends Controller {
 
   init() {
     super.init(...arguments);
-    // Ember.onerror = (error) => {
-    //   this.handleApplicationError(error);
-    // };
+    Ember.onerror = (error) => {
+       this.handleApplicationError(error);
+    };
   }
 
   handleApplicationError(error) {
