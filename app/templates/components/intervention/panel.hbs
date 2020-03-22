@@ -120,3 +120,33 @@
 <Intervention::Order @model={{@model}} />
 
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />
+
+{{#if this.showCancellationDialog}}
+  <PaperDialog @onClose={{fn this.closeCancellationDialog}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
+    <PaperToolbar>
+      <PaperToolbarTools>
+        <h2>Bent u zeker dat u de interventie wil afsluiten?</h2><span class="flex"></span>
+        <PaperButton @iconButton={{true}} @onClick={{fn this.closeCancellationDialog}}>
+          <PaperIcon @icon="close" />
+        </PaperButton>
+      </PaperToolbarTools>
+    </PaperToolbar>
+
+    <PaperDialogContent>
+      <PaperInput
+        @label="Reden van afsluiten"
+        @value={{@model.cancellationReason}}
+        @onChange={{fn (mut @model.cancellationReason)}}
+        @textarea={{true}}
+        @passThru={{hash rows=3}}
+        @class="xxlarge"
+      />
+    </PaperDialogContent>
+
+    <PaperDialogActions @class="layout-row">
+      <span class="flex"></span>
+      <PaperButton @onClick={{fn this.closeCancellationDialog}}>Terug</PaperButton>
+      <PaperButton @primary={{true}} @raised={{true}} @onClick={{fn this.confirmCancellation}}>Bevestig afsluiten</PaperButton>
+    </PaperDialogActions>
+  </PaperDialog>
+{{/if}}

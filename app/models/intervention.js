@@ -11,6 +11,7 @@ export default class InterventionModel extends Model.extend(Validations, Loadabl
   @attr('date-midnight') date
   @attr comment
   @attr('date-midnight') cancellationDate
+  @attr cancellationReason
 
   @belongsTo('customer') customer
   @belongsTo('contact') contact

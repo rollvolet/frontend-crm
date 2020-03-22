@@ -29,5 +29,10 @@
     {{#if this.planningEvent}}
       <PlanningEvent::Panel @model={{this.planningEvent}} />
     {{/if}}
+    {{#if @model.cancellationReason}}
+      <DetailListItem @label="Reden van afsluiten">
+        <span class="html-body">{{@model.cancellationReason}}</span>
+      </DetailListItem>
+    {{/if}}
   </div>
 </div>

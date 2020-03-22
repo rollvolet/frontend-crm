@@ -14,6 +14,7 @@ export default class InterventionPanelComponent extends Component {
   @service store
   @service router
 
+  @tracked showCancellationDialog = false
   @tracked showUnsavedChangesDialog = false
 
   get isDisabledEdit() {
@@ -142,12 +143,25 @@ export default class InterventionPanelComponent extends Component {
 
   @action
   cancelIntervention() {
+    this.showCancellationDialog = true;
+  }
+
+  @action
+  closeCancellationDialog() {
+    this.showCancellationDialog = false;
+    this.args.model.cancellationReason = null;
+  }
+
+  @action
+  confirmCancellation() {
+    this.showCancellationDialog = false;
     this.args.model.cancellationDate = new Date();
     this.save.perform();
   }
 
   @action
   uncancelIntervention() {
+    this.args.model.cancellationReason = null;
     this.args.model.cancellationDate = null;
     this.save.perform();
   }
