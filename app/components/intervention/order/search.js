@@ -1,6 +1,5 @@
 import classic from 'ember-classic-decorator';
 import { observes } from '@ember-decorators/object';
-import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import FilterComponent from '../../data-table-filter';
 import { task } from 'ember-concurrency';
