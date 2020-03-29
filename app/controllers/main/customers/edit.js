@@ -1,8 +1,6 @@
-import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
 import Controller from '@ember/controller';
+import { action } from '@ember/object';
 
-@classic
 export default class EditController extends Controller {
   queryParams = ['editMode', 'selectedTab'];
   editMode = false;

@@ -1,20 +1,20 @@
-import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
-import { inject } from '@ember/service';
 import Controller from '@ember/controller';
-import { task } from 'ember-concurrency';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
+import { restartableTask } from 'ember-concurrency-decorators';
 
-@classic
 export default class LoginController extends Controller {
-  @inject()
-  session;
+  @service session
 
-  @(task(function * () {
+  @tracked errorMessage
+
+  @restartableTask
+  *login() {
     yield this.session.authenticate('authenticator:torii', 'azure-ad2-oauth2').catch((reason) => {
-      this.set('errorMessage', reason.error || reason);
+      this.errorMessage = reason.error || reason;
     });
-  }).restartable())
-  login;
+  }
 
   @action
   logout() {
@@ -23,6 +23,6 @@ export default class LoginController extends Controller {
 
   @action
   resetError() {
-    this.set('errorMessage', null);
+    this.errorMessage = null;
   }
 }

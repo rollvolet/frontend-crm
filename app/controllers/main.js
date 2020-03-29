@@ -1,15 +1,10 @@
-import classic from 'ember-classic-decorator';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 
-@classic
 export default class MainController extends Controller {
-  @service
-  configuration;
-
-  @service
-  session;
+  @service configuration
+  @service session
 
   @action
   openMail() {

@@ -1,11 +1,8 @@
-import classic from 'ember-classic-decorator';
-import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
-@classic
 export default class OopsRoute extends Route {
-  @service
-  appState;
+  @service appState
 
   beforeModel() {
     if (!this.appState.lastError)

@@ -1,13 +1,10 @@
-import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import Ember from 'ember';
 import { debug } from '@ember/debug';
 
-@classic
 export default class ApplicationController extends Controller {
-  @service
-  appState;
+  @service appState
 
   init() {
     super.init(...arguments);

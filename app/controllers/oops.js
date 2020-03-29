@@ -1,12 +1,9 @@
-import classic from 'ember-classic-decorator';
+import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Controller from '@ember/controller';
 
-@classic
 export default class OopsController extends Controller {
-  @service
-  appState;
+  @service appState
 
   @action
   goBack() {
