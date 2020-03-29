@@ -1,10 +1,10 @@
-FROM madnificent/ember:3.15.2 as builder
+FROM madnificent/ember:3.17.0 as builder
 
 LABEL maintainer="Erika Pauwels <erika.pauwels@gmail.com>"
 
 WORKDIR /app
 COPY package.json .
-RUN yarn install
+RUN npm install
 COPY . .
 RUN ember build -prod
 
