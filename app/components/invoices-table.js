@@ -1,45 +1,49 @@
-import classic from 'ember-classic-decorator';
-import { classNames } from '@ember-decorators/component';
-import { observes } from '@ember-decorators/object';
+import Component from '@glimmer/component';
+import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
-import { task } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
+import { restartableTask } from 'ember-concurrency-decorators';
 
-@classic
-@classNames('invoices-table')
 export default class InvoicesTable extends Component {
-  @service
-  store;
+  @service store;
 
-  init() {
-    super.init(...arguments);
-    this.set('invoices', []);
-  }
+  @tracked invoices = []
 
-  didReceiveAttrs() {
+  constructor() {
+    super(...arguments);
+    this.filter = EmberObject.create();
+    this.filter.set('page', 0);
+    this.filter.set('size', this.args.size || 10);
+    this.filter.set('sort', '-number');
+
+    // Setup observers for 2-way binded values of ember-data-table
+    this.filter.addObserver('page', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+    this.filter.addObserver('size', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+    this.filter.addObserver('sort', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
     this.search.perform();
   }
 
-  page = 0;
-  size = 10;
-  sort = '-number';
+  onDataTableParamChange() {
+    this.search.perform();
+  }
+
+  willDestroy() {
+    this.filter.removeObserver('page', this, 'onDataTableParamChange');
+    this.filter.removeObserver('size', this, 'onDataTableParamChange');
+    this.filter.removeObserver('sort', this, 'onDataTableParamChange');
+  }
+
   onClickRow = null;
 
-  @observes('page', 'size', 'sort')
-  dataTableParamChanged() {
-    this.search.perform();
-  }
-
-  @task(function * () {
-    const invoices = yield this.store.query('invoice', {
+  @restartableTask
+  *search() {
+    this.invoices = yield this.store.query('invoice', {
       page: {
-        size: this.size,
-        number: this.page
+        size: this.filter.size,
+        number: this.filter.page
       },
-      sort: this.sort,
+      sort: this.filter.sort,
       include: 'building'
     });
-    this.set('invoices', invoices);
-  })
-  search;
+  }
 }

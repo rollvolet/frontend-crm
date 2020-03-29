@@ -66,7 +66,7 @@
       <div class="note-message text-fade-dark">Selecteer een bestelling om aan deze interventie te koppelen.</div>
       <Intervention::Order::Search @model={{@model}} @onSelect={{perform this.link}} />
     {{else}}
-      <div class="note-message text-fade-dark">Deze interventie is nog niet gekoppeld aan een bestelling. Klik {{paper-icon "link" size=16}} om een koppeling te maken.</div>
+      <div class="note-message text-fade-dark">Deze interventie is niet gekoppeld aan een (eerdere) bestelling. Klik {{paper-icon "link" size=16}} om een koppeling te maken.</div>
     {{/if}}
   {{/if}}
 </div>

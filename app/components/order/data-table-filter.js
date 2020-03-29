@@ -1,7 +1,8 @@
 import FilterComponent from '../data-table-filter';
-import classic from 'ember-classic-decorator';
 
-@classic
 export default class DataFilterComponent extends FilterComponent {
-  filterKeys = Object.freeze(['offerNumber', 'reference', 'visitor', 'requestNumber', 'cName', 'cPostalCode', 'cCity', 'cStreet', 'cTelephone', 'bName', 'bPostalCode', 'bCity', 'bStreet', 'withoutInvoice'])
+  constructor() {
+    super(...arguments);
+    super.initFilter(['offerNumber', 'reference', 'visitor', 'requestNumber', 'cName', 'cPostalCode', 'cCity', 'cStreet', 'cTelephone', 'bName', 'bPostalCode', 'bCity', 'bStreet', 'withoutInvoice']);
+  }
 }

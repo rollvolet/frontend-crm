@@ -6,17 +6,17 @@
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title"></div>
           <div class="layout-row data-table-filters--group-fields">
-            <PaperInput @label="Nummer" @value={{this.numberFilter}} @onChange={{perform this.debounceFilter "number"}} @class="small search-autofocus" />
+            <PaperInput @label="Nummer" @value={{this.filter.number}} @onChange={{perform this.debounceFilter "number"}} @class="small" {{did-insert this.autofocus}} />
           </div>
         </div>
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title">Klant</div>
           <div class="layout-row data-table-filters--group-fields">
-            <PaperInput @label="Naam" @value={{this.cNameFilter}} @onChange={{perform this.debounceFilter "cName"}} />
-            <PaperInput @label="Straat" @value={{this.cStreetFilter}} @onChange={{perform this.debounceFilter "cStreet"}} @class="large" />
-            <PaperInput @label="Postcode" @value={{this.cPostalCodeFilter}} @onChange={{perform this.debounceFilter "cPostalCode"}} @class="small" />
-            <PaperInput @label="Gemeente" @value={{this.cCityFilter}} @onChange={{perform this.debounceFilter "cCity"}} />
-            <PaperInput @label="Telefoon" @value={{this.cTelephoneFilter}} @onChange={{perform this.debounceFilter "cTelephone"}} />
+            <PaperInput @label="Naam" @value={{this.filter.cName}} @onChange={{perform this.debounceFilter "cName"}} />
+            <PaperInput @label="Straat" @value={{this.filter.cStreet}} @onChange={{perform this.debounceFilter "cStreet"}} @class="large" />
+            <PaperInput @label="Postcode" @value={{this.filter.cPostalCode}} @onChange={{perform this.debounceFilter "cPostalCode"}} @class="small" />
+            <PaperInput @label="Gemeente" @value={{this.filter.cCity}} @onChange={{perform this.debounceFilter "cCity"}} />
+            <PaperInput @label="Telefoon" @value={{this.filter.cTelephone}} @onChange={{perform this.debounceFilter "cTelephone"}} />
           </div>
         </div>
       </div>
@@ -24,16 +24,16 @@
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title">Gebouw</div>
           <div class="layout-row data-table-filters--group-fields">
-            <PaperInput @label="Naam" @value={{this.bNameFilter}} @onChange={{perform this.debounceFilter "bName"}} />
-            <PaperInput @label="Straat" @value={{this.bStreetFilter}} @onChange={{perform this.debounceFilter "bStreet"}} @class="large" />
-            <PaperInput @label="Postcode" @value={{this.bPostalCodeFilter}} @onChange={{perform this.debounceFilter "bPostalCode"}} @class="small" />
-            <PaperInput @label="Gemeente" @value={{this.bCityFilter}} @onChange={{perform this.debounceFilter "bCity"}} />
+            <PaperInput @label="Naam" @value={{this.filter.bName}} @onChange={{perform this.debounceFilter "bName"}} />
+            <PaperInput @label="Straat" @value={{this.filter.bStreet}} @onChange={{perform this.debounceFilter "bStreet"}} @class="large" />
+            <PaperInput @label="Postcode" @value={{this.filter.bPostalCode}} @onChange={{perform this.debounceFilter "bPostalCode"}} @class="small" />
+            <PaperInput @label="Gemeente" @value={{this.filter.bCity}} @onChange={{perform this.debounceFilter "bCity"}} />
           </div>
         </div>
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title"></div>
           <div class="layout-row data-table-filters--group-fields">
-            <PaperSwitch @value={{this.withoutInvoiceFilter}} @primary={{true}} @onChange={{fn this.setFilter "withoutInvoice"}}>
+            <PaperSwitch @value={{this.filter.withoutInvoice}} @primary={{true}} @onChange={{fn this.setFilter "withoutInvoice"}}>
               Zonder factuur
             </PaperSwitch>
           </div>

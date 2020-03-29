@@ -1,54 +1,50 @@
-import Component from '@ember/component';
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import { action } from '@ember/object';
+import Component from '@glimmer/component';
+import EmberObject, { action } from '@ember/object';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { timeout } from 'ember-concurrency';
 
-@classic
-@tagName('')
-export default class DataTableFilter extends Component {
-  filterKeys = Object.freeze([])
-
-  didReceiveAttrs() {
-    super.didReceiveAttrs(...arguments);
+export default class DataTableFilterComponent extends Component {
+  initFilter(filterKeys) {
+    this.filterKeys = filterKeys;
+    this.filter = EmberObject.create();
     for (let key of this.filterKeys) {
-      const value = this.get(key);
-      this.set(`${key}Filter`, value);
+      const value = this.args[key];
+      this.filter.set(key, value);
     }
   }
 
-  didInsertElement() {
-    super.didInsertElement(...arguments);
-    const el = document.querySelector('.search-autofocus input');  // TODO replace with autofocus modifier
-    if (el)
-      el.focus();
-  }
-
-  getFilter() {
-    const filter = {};
-    for (let key of this.filterKeys) {
-      filter[key] = this.get(`${key}Filter`);
-    }
-    return filter;
+  onChange(filter) {
+    this.args.onChange(filter);
   }
 
   @restartableTask
   *debounceFilter(key, value) {
-    this.set(`${key}Filter`, value);
+    this.filter.set(key, value);
     yield timeout(500);
-    this.onChange(this.getFilter());
+    this.onChange(this.filter);
   }
 
   @action
   resetFilters() {
-    this.filterKeys.forEach(key => this.set(`${key}Filter`, undefined));
-    this.onChange(this.getFilter());
+    this.filterKeys.forEach(key => this.filter.set(key, undefined));
+    this.onChange(this.filter);
   }
 
   @action
   setFilter(key, value) {
-    this.set(`${key}Filter`, value);
-    this.onChange(this.getFilter());
+    this.filter.set(key, value);
+    this.onChange(this.filter);
+  }
+
+  @action
+  autofocus(element) {
+    const inputEl = element.querySelector('input');
+    if (inputEl) {
+      // If we don't delay .focus(), another element seems to gain the final focus
+      // By postponing the .focus() action 1ms, the correct input element gets focus
+      setTimeout(() => {
+        inputEl.focus();
+      }, 1);
+    }
   }
 }

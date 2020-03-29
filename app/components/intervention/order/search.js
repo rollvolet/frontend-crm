@@ -1,43 +1,60 @@
-import classic from 'ember-classic-decorator';
-import { observes } from '@ember-decorators/object';
+import FilterComponent from '../data-table-filter';
+import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import FilterComponent from '../../data-table-filter';
-import { task } from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency-decorators';
 
-@classic
 export default class OrdersTable extends FilterComponent {
   @service router
-
   @service store
 
-  page = 0;
-  size = 10;
-  sort = '-order-date';
-  filterKeys = Object.freeze(['requestNumber', 'offerNumber', 'reference', 'name', 'postalCode', 'city', 'street'])
+  @tracked orders = []
 
-  async init() {
-    super.init(...arguments);
-    const customer = await this.model.customer;
-    this.set('nameFilter', customer.name);
-    this.search.perform(this.getFilter());
+  constructor() {
+    super(...arguments);
+    this.initFilter(['requestNumber', 'offerNumber', 'reference', 'name', 'postalCode', 'city', 'street']);
+    this.filter.set('page', 0);
+    this.filter.set('size', 10);
+    this.filter.set('sort', '-order-date');
+
+    // Setup observers for 2-way binded values of ember-data-table
+    this.filter.addObserver('page', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+    this.filter.addObserver('size', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+    this.filter.addObserver('sort', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+
+    this.initSearch();
   }
 
-  async onChange(filter) {
-    await this.search.perform(filter);
+  async initSearch() {
+    const customer = await this.args.model.customer;
+    this.filter.set('name', customer.name);
+    this.search.perform(this.filter);
   }
 
-  @observes('page', 'size', 'sort')
-  dataTableParamChanged() { // eslint-disable-line ember/no-observers
-    this.search.perform(this.getFilter());
+  onChange(filter) {
+    if (filter.page != 0)
+      filter.set('page', 0); // search will be triggered by onDataTableParamChange()
+    else
+      this.search.perform(filter);
   }
 
-  @task(function * (filter) {
-    const orders = yield this.store.query('order', {
+  onDataTableParamChange() {
+    this.search.perform(this.filter);
+  }
+
+  willDestroy() {
+    this.filter.removeObserver('page', this, 'onDataTableParamChange');
+    this.filter.removeObserver('size', this, 'onDataTableParamChange');
+    this.filter.removeObserver('sort', this, 'onDataTableParamChange');
+  }
+
+  @restartableTask
+  *search(filter) {
+    this.orders = yield this.store.query('order', {
       page: {
-        size: this.size,
-        number: this.page
+        size: filter.size,
+        number: filter.page
       },
-      sort: this.sort,
+      sort: filter.sort,
       include: 'customer,offer',
       filter: {
         customer: {
@@ -51,7 +68,5 @@ export default class OrdersTable extends FilterComponent {
         reference: filter.reference,
       }
     });
-    this.set('orders', orders);
-  })
-  search;
+  }
 }

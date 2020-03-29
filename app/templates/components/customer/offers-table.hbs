@@ -1,26 +1,26 @@
 <div class="offers-table">
   <div class="data-table-filters">
     <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-    <PaperInput @label="Aanvraag" @value={{this.requestNumberFilter}} @onChange={{perform this.debounceFilter "requestNumber"}} @class="small" />
-    <PaperInput @label="Nummer" @value={{this.numberFilter}} @onChange={{perform this.debounceFilter "number"}} @class="small" />
-    <PaperInput @label="Referentie" @value={{this.referenceFilter}} @onChange={{perform this.debounceFilter "reference"}} @class="small" />
-    <PaperInput @label="Gebouw" @value={{this.nameFilter}} @onChange={{perform this.debounceFilter "name"}} />
-    <PaperInput @label="Straat" @value={{this.streetFilter}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
-    <PaperInput @label="Postcode" @value={{this.postalCodeFilter}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
-    <PaperInput @label="Gemeente" @value={{this.cityFilter}} @onChange={{perform this.debounceFilter "city"}} />
+    <PaperInput @label="Aanvraag" @value={{this.filter.requestNumber}} @onChange={{perform this.debounceFilter "requestNumber"}} @class="small" />
+    <PaperInput @label="Nummer" @value={{this.filter.number}} @onChange={{perform this.debounceFilter "number"}} @class="small" />
+    <PaperInput @label="Referentie" @value={{this.filter.reference}} @onChange={{perform this.debounceFilter "reference"}} @class="small" />
+    <PaperInput @label="Gebouw" @value={{this.filter.name}} @onChange={{perform this.debounceFilter "name"}} />
+    <PaperInput @label="Straat" @value={{this.filter.street}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
+    <PaperInput @label="Postcode" @value={{this.filter.postalCode}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
+    <PaperInput @label="Gemeente" @value={{this.filter.city}} @onChange={{perform this.debounceFilter "city"}} />
     <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
       {{paper-icon "close"}}
       <PaperTooltip>Wis filters</PaperTooltip>
     </PaperButton>
   </div>
 
-  <DataTable @content={{this.offers}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen offertes" @onClickRow={{fn this.clickRow}} @page={{this.page}} @size={{this.size}} @sort={{this.sort}} as |t|>
+  <DataTable @content={{this.offers}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen offertes" @onClickRow={{fn this.clickRow}} @page={{this.filter.page}} @size={{this.filter.size}} @sort={{this.filter.sort}} as |t|>
     <t.content as |c|>
       <c.header>
         <th>Aanvraag</th>
-        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
-        <ThSortable @field="reference" @currentSorting={{this.sort}} @label="Referentie" />
-        <ThSortable @field="offer-date" @currentSorting={{this.sort}} @label="Datum" />
+        <ThSortable @field="number" @currentSorting={{this.filter.sort}} @label="Nr" />
+        <ThSortable @field="reference" @currentSorting={{this.filter.sort}} @label="Referentie" />
+        <ThSortable @field="offer-date" @currentSorting={{this.filter.sort}} @label="Datum" />
         <th>Bezoeker</th>
         <th>Gebouw</th>
         <th>Straat</th>

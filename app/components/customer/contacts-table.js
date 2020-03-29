@@ -1,43 +1,57 @@
-import classic from 'ember-classic-decorator';
-import { observes } from '@ember-decorators/object';
-import { inject as service } from '@ember/service';
 import FilterComponent from '../data-table-filter';
-import { task } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { restartableTask } from 'ember-concurrency-decorators';
 
-@classic
 export default class ContactsTable extends FilterComponent {
-  @service store;
+  @service store
 
-  page = 0;
-  size = 10;
-  sort = 'name';
-  filterKeys = Object.freeze(['number', 'name', 'postalCode', 'city', 'street', 'telephone'])
+  @tracked contacts
 
-  init() {
-    super.init(...arguments);
-    this.search.perform(this.getFilter());
+  constructor() {
+    super(...arguments);
+    this.initFilter(['number', 'name', 'postalCode', 'city', 'street', 'telephone']);
+    this.filter.set('page', 0);
+    this.filter.set('size', 10);
+    this.filter.set('sort', 'name');
+
+    // Setup observers for 2-way binded values of ember-data-table
+    this.filter.addObserver('page', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+    this.filter.addObserver('size', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+    this.filter.addObserver('sort', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+    this.search.perform(this.filter);
   }
 
-  async onChange(filter) {
-    await this.search.perform(filter);
+  onChange(filter) {
+    if (filter.page != 0)
+      filter.set('page', 0); // search will be triggered by onDataTableParamChange()
+    else
+      this.search.perform(filter);
   }
 
-  @observes('page', 'size', 'sort')
-  dataTableParamChanged() { // eslint-disable-line ember/no-observers
-    this.search.perform(this.getFilter());
+  onDataTableParamChange() {
+    this.search.perform(this.filter);
   }
 
-  @task(function * (filter) {
-    const contacts = yield this.store.query('contact', {
+  willDestroy() {
+    this.filter.removeObserver('page', this, 'onDataTableParamChange');
+    this.filter.removeObserver('size', this, 'onDataTableParamChange');
+    this.filter.removeObserver('sort', this, 'onDataTableParamChange');
+  }
+
+  @restartableTask
+  *search(filter) {
+    this.contacts = yield this.store.query('contact', {
       page: {
-        size: this.size,
-        number: this.page
+        size: filter.size,
+        number: filter.page
       },
-      sort: this.sort,
+      sort: filter.sort,
       include: 'country,language,honorific-prefix',
       filter: {
         customer: {
-          number: this.customer.number
+          number: this.args.customer.number
         },
         number: filter.number,
         name: filter.name,
@@ -47,7 +61,5 @@ export default class ContactsTable extends FilterComponent {
         telephone: filter.telephone
       }
     });
-    this.set('contacts', contacts);
-  })
-  search;
+  }
 }

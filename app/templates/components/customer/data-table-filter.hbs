@@ -1,12 +1,12 @@
 <div class="data-table-filters">
   <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
   <div class="layout-row flex layout-align-space-between-center">
-    <PaperInput @label="Nummer" @value={{this.numberFilter}} @onChange={{perform this.debounceFilter "number"}} @class="small" />
-    <PaperInput @label="Naam" @value={{this.nameFilter}} @onChange={{perform this.debounceFilter "name"}} @class="search-autofocus" />
-    <PaperInput @label="Straat" @value={{this.streetFilter}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
-    <PaperInput @label="Postcode" @value={{this.postalCodeFilter}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
-    <PaperInput @label="Gemeente" @value={{this.cityFilter}} @onChange={{perform this.debounceFilter "city"}} />
-    <PaperInput @label="Telefoon" @value={{this.telephoneFilter}} @onChange={{perform this.debounceFilter "telephone"}} />
+    <PaperInput @label="Nummer" @value={{this.filter.number}} @onChange={{perform this.debounceFilter "number"}} @class="small" />
+    <PaperInput @label="Naam" @value={{this.filter.name}} @onChange={{perform this.debounceFilter "name"}} {{did-insert this.autofocus}} />
+    <PaperInput @label="Straat" @value={{this.filter.street}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
+    <PaperInput @label="Postcode" @value={{this.filter.postalCode}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
+    <PaperInput @label="Gemeente" @value={{this.filter.city}} @onChange={{perform this.debounceFilter "city"}} />
+    <PaperInput @label="Telefoon" @value={{this.filter.telephone}} @onChange={{perform this.debounceFilter "telephone"}} />
     <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
       {{paper-icon "close"}}
       <PaperTooltip>Wis filters</PaperTooltip>

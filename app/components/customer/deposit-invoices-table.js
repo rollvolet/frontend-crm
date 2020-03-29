@@ -1,46 +1,58 @@
-import classic from 'ember-classic-decorator';
-import { observes } from '@ember-decorators/object';
+import FilterComponent from '../data-table-filter';
+import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import FilterComponent from '../data-table-filter';
-import { task } from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency-decorators';
 
-@classic
 export default class DepositInvoicesTable extends FilterComponent {
-  @service router;
+  @service router
+  @service store
 
-  @service store;
+  @tracked depositInvoices = []
 
-  page = 0;
-  size = 10;
-  sort = '-number';
-  filterKeys = Object.freeze(['number', 'reference', 'name', 'postalCode', 'city', 'street'])
+  constructor() {
+    super(...arguments);
+    this.initFilter(['number', 'reference', 'name', 'postalCode', 'city', 'street']);
+    this.filter.set('page', 0);
+    this.filter.set('size', 10);
+    this.filter.set('sort', '-number');
 
-  init() {
-    super.init(...arguments);
-    this.search.perform(this.getFilter());
+    // Setup observers for 2-way binded values of ember-data-table
+    this.filter.addObserver('page', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+    this.filter.addObserver('size', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+    this.filter.addObserver('sort', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
+    this.search.perform(this.filter);
   }
 
-  async onChange(filter) {
-    await this.search.perform(filter);
+  onChange(filter) {
+    if (filter.page != 0)
+      filter.set('page', 0); // search will be triggered by onDataTableParamChange()
+    else
+      this.search.perform(filter);
   }
 
-  @observes('page', 'size', 'sort')
-  dataTableParamChanged() { // eslint-disable-line ember/no-observers
-    this.search.perform(this.getFilter());
+  onDataTableParamChange() {
+    this.search.perform(this.filter);
   }
 
-  @task(function * (filter) {
-    const invoices = yield this.store.query('depositInvoice', {
+  willDestroy() {
+    this.filter.removeObserver('page', this, 'onDataTableParamChange');
+    this.filter.removeObserver('size', this, 'onDataTableParamChange');
+    this.filter.removeObserver('sort', this, 'onDataTableParamChange');
+  }
+
+  @restartableTask
+  *search(filter) {
+    this.depositInvoices = yield this.store.query('depositInvoice', {
       page: {
-        size: this.size,
-        number: this.page
+        size: filter.size,
+        number: filter.page
       },
-      sort: this.sort,
+      sort: filter.sort,
       include: 'order,building',
       filter: {
         customer: {
-          number: this.customer.number
+          number: this.args.customer.number
         },
         number: filter.number,
         reference: filter.reference,
@@ -52,13 +64,11 @@ export default class DepositInvoicesTable extends FilterComponent {
         }
       }
     });
-    this.set('depositInvoices', invoices);
-  })
-  search;
+  }
 
   @action
   clickRow(row) {
     const orderId = row.get('order.id');
-    this.router.transitionTo('main.case.order.edit.deposit-invoices', this.customer, orderId);
+    this.router.transitionTo('main.case.order.edit.deposit-invoices', this.args.customer, orderId);
   }
 }
