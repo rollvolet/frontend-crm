@@ -37,7 +37,7 @@
         <td>{{row.city}}</td>
         <td>{{row.country.name}}</td>
         <td>{{row.language.name}}</td>
-        <td {{on "click" (fn this.edit row)}} role="button">{{paper-icon "mode edit"}}</td>
+        <td {{on "click" (fn @onEdit row)}} role="button">{{paper-icon "mode edit"}}</td>
       </c.body>
     </t.content>
   </DataTable>
