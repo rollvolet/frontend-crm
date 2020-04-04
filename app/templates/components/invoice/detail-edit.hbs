@@ -20,7 +20,7 @@
     </div>
     {{#if (or @model.isIsolated @model.intervention)}}
       <div class="layout-row">
-        <InputField::VatRateSelect @value={{@model.vatRate}} @required="style" @errors={{v-get @model "vatRate" "messages"}} @onSelectionChange={{queue (fn this.setVatRate) (perform @save)}} @allowClear={{false}} @class="md-input-wrapper large" />
+        <InputField::VatRateSelect @value={{@model.vatRate}} @required="style" @errors={{v-get @model "vatRate" "messages"}} @onSelectionChange={{queue (fn this.setVatRate) (perform @save)}} @allowClear={{false}} class="md-input-wrapper large" />
       </div>
     {{/if}}
   </section>

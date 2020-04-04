@@ -27,8 +27,8 @@
     <InputField::VatRateSelect
       @value={{@model.vatRate}}
       @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save)}}
-      @class="md-input-wrapper large"
       @required="style"
+      class="md-input-wrapper large"
     />
   </div>
 </div>

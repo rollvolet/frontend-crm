@@ -4,7 +4,7 @@
       <PaperInput @label="Datum" @value={{@model.offerDateStr}} @type="date" @required="style" @errors={{v-get @model "offerDate" "messages"}} @onChange={{queue (fn (mut @model.offerDateStr)) (perform @save)}} @class="default" />
     </div>
     <div class="layout-row">
-      <InputField::VatRateSelect @value={{@model.vatRate}} @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform @save)}} @class="md-input-wrapper large" />
+      <InputField::VatRateSelect @value={{@model.vatRate}} @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform @save)}} class="md-input-wrapper large" />
     </div>
     <div class="layout-row">
       <InputField::EmployeeSelect @label="Bezoeker" @value={{this.visitor}} @isOnRoad={{true}} @isTechnician={{true}} @onSelectionChange={{queue (fn this.setVisitor) (perform @save)}} @class="md-input-wrapper large" />
