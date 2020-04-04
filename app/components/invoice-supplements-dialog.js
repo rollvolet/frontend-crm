@@ -4,7 +4,7 @@ import { tagName } from '@ember-decorators/component';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { task } from 'ember-concurrency';
-import { or, notEmpty } from 'ember-awesome-macros';
+import { isEmpty } from '@ember/utils';
 
 @classic
 @tagName('')
@@ -16,11 +16,13 @@ export default class InvoiceSupplementsDialog extends Component {
   model = null;
   showUnsavedChangesWarning = false;
 
-  @or(notEmpty('selected'), 'model.isBooked', 'model.isMasteredByAccess')
-  isDisabledNew;
+  get isDisabledNew() {
+    return !isEmpty('selected') || this.model.isBooked || this.model.isMasteredByAccess;
+  }
 
-  @or('model.isBooked', 'model.isMasteredByAccess')
-  isDisabledEdit;
+  get isDisabledEdit() {
+    return this.model.isBooked || this.model.isMasteredByAccess;
+  }
 
   @task(function * () {
     this.selected.rollbackAttributes();

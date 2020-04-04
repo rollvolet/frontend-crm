@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import { all } from 'ember-concurrency';
 import { keepLatestTask, task } from 'ember-concurrency-decorators';
 import { warn } from '@ember/debug';
-import { raw, equal, and, isEmpty, not } from 'ember-awesome-macros';
+import { isEmpty } from '@ember/utils';
 
 export default class CustomerEntityEditForm extends Component {
   @service router
@@ -16,25 +16,30 @@ export default class CustomerEntityEditForm extends Component {
     return this.args.scope == 'customer';  // one of 'customer', 'contact', 'building'
   }
 
-  @computed('args.model.telephones.[]')
   get hasFailedTelephone() {
     return this.args.model.telephones.find(t => t.isNew || t.validations.isInvalid || t.isError) != null;
   }
 
-  @and(isEmpty('args.model.requests'), isEmpty('args.model.invoices'))
-  hasNoRequestsOrInvoices;
+  get hasNoRequestsOrInvoices() {
+    return isEmpty(this.args.model.requests) && isEmpty(this.args.model.invoices);
+  }
 
-  @and(isEmpty('args.model.contacts'), isEmpty('args.model.buildings'))
-  hasNoContactsOrBuildings;
+  get hasNoContactsOrBuildings() {
+    return isEmpty(this.args.model.contacts) && isEmpty(this.args.model.buildings);
+  }
 
-  @and('hasNoRequestsOrInvoices', 'hasNoContactsOrBuildings')
-  isEnabledDelete;
+  get isEnabledDelete() {
+    return this.hasNoRequestsOrInvoices && this.hasNoContactsOrBuildings;
+  }
 
-  @not('isEnabledDelete')
-  isDisabledDelete;
+  get isDisabledDelete() {
+    return !this.isEnabledDelete;
+  }
 
-  @equal('args.model.validations.attrs.vatNumber.error.type', raw('unique-vat-number'))
-  isDuplicateVatNumber;
+  get isDuplicateVatNumber() {
+    const error = this.args.model.validations.attrs.vatNumber.error;
+    return error && error.type == 'unique-vat-number';
+  }
 
   @task
   *remove() {
