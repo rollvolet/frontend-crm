@@ -1,29 +1,26 @@
-import classic from 'ember-classic-decorator';
-import { computed } from '@ember/object';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
-import { proxyAware } from '../../utils/proxy-aware';
 
-@classic
 export default class TelephoneTypeSelect extends Component {
-  @service
-  store;
+  @service store
 
-  @proxyAware('value')
-  selected;
+  @tracked options = []
 
-  init() {
-    super.init(...arguments);
+  constructor() {
+    super(...arguments);
     const types = this.store.peekAll('telephone-type');
-    const supportedTypes = types.filter(t => ['TEL', 'FAX'].includes(t.name));
-    this.set('options', supportedTypes);
+    this.options = types.filter(t => ['TEL', 'FAX'].includes(t.name));
   }
 
-  label = 'Type';
-  value = null;
-  onSelectionChange = null;
+  get label() {
+    return this.args.label || 'Type';
+  }
 
-  @computed('label', 'required')
+  get required() {
+    return this.args.required || false;
+  }
+
   get placeholder() {
     return this.required ? `${this.label} *` : this.label;
   }

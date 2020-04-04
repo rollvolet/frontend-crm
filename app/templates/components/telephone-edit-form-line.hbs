@@ -2,10 +2,10 @@
   {{paper-icon "delete"}}
 </td>
 <td>
-  <InputField::TelephoneTypeSelect @value={{@model.telephoneType}} @onSelectionChange={{queue (fn (mut @model.telephoneType)) (perform @save)}} @errors={{v-get @model "telephoneType" "messages"}} @class="md-input-wrapper small" />
+  <InputField::TelephoneTypeSelect @value={{@model.telephoneType}} @onSelectionChange={{queue (fn (mut @model.telephoneType)) (perform @save)}} @errors={{v-get @model "telephoneType" "messages"}} class="md-input-wrapper small" />
 </td>
 <td>
-  <InputField::TelephonePrefixSelect @value={{@model.country}} @onSelectionChange={{queue (fn (mut @model.country)) (perform @save)}} @errors={{v-get @model "country" "messages"}} @class="md-input-wrapper small" />
+  <InputField::TelephonePrefixSelect @value={{@model.country}} @onSelectionChange={{queue (fn (mut @model.country)) (perform @save)}} @errors={{v-get @model "country" "messages"}} class="md-input-wrapper small" />
 </td>
 <td>
   <PaperInput @value={{@model.area}} @onChange={{fn this.setArea}} @onBlur={{perform @save}} @errors={{v-get @model "area" "messages"}} @required="style" @class="xsmall" />
