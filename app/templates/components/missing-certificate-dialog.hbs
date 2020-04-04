@@ -1,9 +1,9 @@
-{{#if this.show}}
-  <PaperDialog @class="flex-50 invoice-document-dialog" @onClose={{fn this.close}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
+{{#if @show}}
+  <PaperDialog @class="flex-50 invoice-document-dialog" @onClose={{fn @close}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
     <PaperToolbar>
       <PaperToolbarTools>
         <h2>BTW-attest ontbreekt</h2><span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{fn this.close}}>
+        <PaperButton @iconButton={{true}} @onClick={{fn @close}}>
           <PaperIcon @icon="close" />
         </PaperButton>
       </PaperToolbarTools>
@@ -13,14 +13,14 @@
       <div class="panel--vat-certificate">
         <p>Deze factuur vereist een BTW-attest, maar er is nog geen attest opgeladen.</p>
         <div>
-          <CertificateDocumentButtons @model={{this.model}} @iconButton={{false}} />
+          <CertificateDocumentButtons @model={{@model}} @iconButton={{false}} />
         </div>
       </div>
     </PaperDialogContent>
 
     <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
-      <PaperButton @onClick={{fn this.close}}>Factuur maken</PaperButton>
+      <PaperButton @onClick={{fn @close}}>Factuur maken</PaperButton>
     </PaperDialogActions>
   </PaperDialog>
 {{/if}}

@@ -1,10 +1,16 @@
 import Service, { inject as service } from '@ember/service';
-import { warn } from '@ember/debug';
+import { debug, warn } from '@ember/debug';
 import { all } from 'ember-concurrency';
 import { dropTask } from 'ember-concurrency-decorators';
 
 export default class ConfigurationService extends Service {
   @service store
+
+  constructor() {
+    super(...arguments);
+    debug('Preloading static lists');
+    this.preloadStaticLists.perform();
+  }
 
   @dropTask
   *preloadStaticLists() {

@@ -1,8 +1,10 @@
-<div class="category-icon">
-  {{#paper-icon this.icon}}
-    <PaperTooltip>{{@label}}</PaperTooltip>
-  {{/paper-icon}}
-</div>
-<div>
-  {{yield}}
+<div class="resource-details--section layout-row">
+  <div class="category-icon">
+    {{#paper-icon @icon}}
+      <PaperTooltip>{{@label}}</PaperTooltip>
+    {{/paper-icon}}
+  </div>
+  <div>
+    {{yield}}
+  </div>
 </div>
