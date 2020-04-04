@@ -74,7 +74,7 @@
     <div class="layout-row">
       <InputField::PostalCodeSelect @postalCode={{@model.postalCode}} @city={{@model.city}} @titleize={{not this.isScopeCustomer}} @onSelectionChange={{queue (fn this.setPostalCode) (perform this.save)}} @class="md-input-wrapper xxxlarge" />
       <InputField::CountrySelect @value={{@model.country}} @onSelectionChange={{queue (fn (mut @model.country)) (perform this.save)}} @required="style" @errors={{v-get @model "country" "messages"}} @class="md-input-wrapper xlarge" />
-      <InputField::LanguageSelect @value={{@model.language}} @onSelectionChange={{queue (fn (mut @model.language)) (perform this.save)}} @required="style" @errors={{v-get @model "language" "messages"}} @class="md-input-wrapper xlarge" />
+      <InputField::LanguageSelect @value={{@model.language}} @onSelectionChange={{queue (fn (mut @model.language)) (perform this.save)}} @required="style" @errors={{v-get @model "language" "messages"}} class="md-input-wrapper xlarge" />
     </div>
   </section>
 
