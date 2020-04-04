@@ -12,7 +12,7 @@
     <PaperDialogContent>
       <div class="layout-row layout-align-start-center">
         <PaperInput @label="Datum" @value={{this.newWorkingHour.dateStr}} @type="date" @required="style" @errors={{v-get this.newWorkingHour "date" "messages"}} @onChange={{fn (mut this.newWorkingHour.dateStr)}} @class="default" />
-        <InputField::EmployeeSelect @label="Technieker" @value={{this.newWorkingHour.employee}} @isTechnician={{true}} @isOnRoad={{true}} @isAdministrative={{true}} @optionSort={{array "functionSort:desc"}} @required="style" @errors={{v-get this.newWorkingHour "employee" "messages"}} @onSelectionChange={{fn (mut this.newWorkingHour.employee)}} @class="md-input-wrapper large u-rel-top-xxsmall" />
+        <InputField::EmployeeSelect @label="Technieker" @value={{this.newWorkingHour.employee}} @isTechnician={{true}} @isOnRoad={{true}} @isAdministrative={{true}} @sort={{array "functionSort:desc"}} @required="style" @errors={{v-get this.newWorkingHour "employee" "messages"}} @onSelectionChange={{fn (mut this.newWorkingHour.employee)}} class="md-input-wrapper large u-rel-top-xxsmall" />
         {{#if this.save.isRunning}}
           <PaperProgressCircular @diameter={{18}} />
         {{else}}

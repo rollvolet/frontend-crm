@@ -8,7 +8,7 @@
       <PaperInput @label="Vereist" @value={{@model.requiredDateStr}} @type="date" @onChange={{queue (fn (mut @model.requiredDateStr)) (perform @save)}} @class="default" />
     </div>
     <div class="layout-row">
-      <InputField::EmployeeSelect @label="Bezoeker" @value={{this.visitor}} @isOnRoad={{true}} @isTechnician={{true}} @onSelectionChange={{queue (fn this.setVisitor) (perform @save)}} @class="md-input-wrapper large" />
+      <InputField::EmployeeSelect @label="Bezoeker" @value={{this.visitor}} @isOnRoad={{true}} @isTechnician={{true}} @onSelectionChange={{queue (fn this.setVisitor) (perform @save)}} class="md-input-wrapper large" />
     </div>
     <div class="layout-row">
       <PaperInput @label="Referentie klant" @value={{@model.reference}} @onChange={{fn (mut @model.reference)}} @onBlur={{perform @save}} @class="large" />

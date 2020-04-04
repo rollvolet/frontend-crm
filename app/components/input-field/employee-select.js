@@ -1,31 +1,20 @@
-import classic from 'ember-classic-decorator';
-import Component from '@ember/component';
-import { computed } from '@ember/object';
+import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { sort } from 'ember-awesome-macros/array';
-import { proxyAware } from '../../utils/proxy-aware';
 
-const filterKeys = ['isTechnician', 'isAdministrative', 'isOnRoad'];
-
-@classic
 export default class EmployeeSelect extends Component {
   @service store
 
-  @proxyAware('value')
-  selected
-
-  @computed('isActive', 'isTechnician', 'isAdministrative', 'isOnRoad')
   get employees() {
     let employees = this.store.peekAll('employee');
 
     if (this.isActive)
       employees = employees.filter(e => e.active);
 
-    const enabledFilters = filterKeys.filter(key => this.get(key));
+    const enabledFilters = ['isTechnician', 'isAdministrative', 'isOnRoad'].filter(key => this[key]);
     if (enabledFilters.length) {
       const matches = function(employee) {
         for (let key of enabledFilters) {
-          if (employee.get(key))
+          if (employee[key])
             return true;
         }
         return false;
@@ -36,24 +25,39 @@ export default class EmployeeSelect extends Component {
     return employees;
   }
 
-  optionSort = Object.freeze(['functionSort:asc'])
-  @sort('employees', 'optionSort') options
+  get sort() {
+    return this.args.sort || ['functionSort'];
+  }
 
-  @computed('label', 'required')
+  get options() {
+    return this.employees.sortBy(...this.sort);
+  }
+
+  get label() {
+    return this.args.label || 'Werknemer';
+  }
+
+  get required() {
+    return this.args.required || false;
+  }
+
   get placeholder() {
     return this.required ? `${this.label} *` : this.label;
   }
 
-  label = 'Werknemer'
-  type = null
-  function = null
-  value = null
-  errors = null
-  required = false
-  onSelectionChange = null
+  get isActive() {
+    return this.args.isActive !== false; // default to true
+  }
 
-  isActive = true
-  isTechnician = false
-  isAdministrative = false
-  isOnRoad = false
+  get isTechnician() {
+    return this.args.isTechnician || false;
+  }
+
+  get isAdministrative() {
+    return this.args.isAdministrative || false;
+  }
+
+  get isOnRoad() {
+    return this.args.isOnRoad || false;
+  }
 }

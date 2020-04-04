@@ -21,7 +21,7 @@ export default class VatRateSelect extends Component {
   }
 
   get allowClear() {
-    return this.args.allowClear || true;
+    return this.args.allowClear !== false; // default to true
   }
 
   get placeholder() {
