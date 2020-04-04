@@ -83,7 +83,7 @@
             {{/if}}
           </div>
           {{#if this.isEnabledEditBuilding}}
-            <InputField::BuildingSelect @value={{this.building}} @customer={{@model}} @onSelectionChange={{fn this.updateBuilding}} @class="md-input-wrapper xxxxlarge" />
+            <InputField::BuildingSelect @value={{this.building}} @customer={{@model}} @onSelectionChange={{fn this.updateBuilding}} class="md-input-wrapper xxxxlarge" />
           {{else}}
             {{#if this.building}}
               <BuildingDetailCard @model={{this.building}} />
@@ -110,7 +110,7 @@
             {{/if}}
           </div>
           {{#if this.isEnabledEditContact}}
-            <InputField::ContactSelect @value={{this.contact}} @customer={{@model}} @onSelectionChange={{fn this.updateContact}} @class="md-input-wrapper xxxxlarge" />
+            <InputField::ContactSelect @value={{this.contact}} @customer={{@model}} @onSelectionChange={{fn this.updateContact}} class="md-input-wrapper xxxxlarge" />
           {{else}}
             {{#if this.contact}}
               <ContactDetailCard @model={{this.contact}} />

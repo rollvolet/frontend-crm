@@ -1,32 +1,44 @@
-import classic from 'ember-classic-decorator';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
-import { proxyAware } from '../../utils/proxy-aware';
+import { keepLatestTask } from 'ember-concurrency-decorators';
 
-@classic
 export default class BuildingSelect extends Component {
-  @service store;
+  @service store
 
-  @proxyAware('value')
-  selected;
+  @tracked options = []
 
-  didReceiveAttrs() {
-    if (this.customer) {
+  constructor() {
+    super(...arguments);
+    this.loadData.perform();
+  }
+
+  @keepLatestTask
+  *loadData() {
+    if (this.args.customer) {
       // By using query we force ember-data to reload the relationship.
       // Ember data may otherwise assume it has already loaded the relation when it only fetched 1 page
-      this.store.query('building', {
+      this.options = yield this.store.query('building', {
         page: { size: 1000 },
         filter: {
           customer: {
-            number: this.customer.number
+            number: this.args.customer.number
           }
         }
-      }).then((buildings) => this.set('options', buildings));
+      });
     }
+
   }
 
-  customer = null;
-  label = 'Gebouw';
-  value = null;
-  onSelectionChange = null;
+  get label() {
+    return this.args.label || 'Gebouw';
+  }
+
+  get required() {
+    return this.args.required || false;
+  }
+
+  get placeholder() {
+    return this.required ? `${this.label} *` : this.label;
+  }
 }
