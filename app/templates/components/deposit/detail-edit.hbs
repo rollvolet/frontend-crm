@@ -19,6 +19,6 @@
   <InputField::PaymentSelect
     @value={{@model.payment}}
     @onSelectionChange={{queue (fn (mut @model.payment)) (perform @save)}}
-    @class="md-input-wrapper large u-rel-top-small"
+    class="md-input-wrapper large u-rel-top-neg-normal"
   />
 </div>
