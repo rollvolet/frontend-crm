@@ -5,7 +5,7 @@
     </div>
     <div class="layout-row">
       <InputField::EmployeeSelect @label="Bediende" @value={{this.employee}} @isAdministrative={{true}} @onSelectionChange={{queue (fn this.setEmployee) (perform @save)}} @class="md-input-wrapper large" />
-      <InputField::WayOfEntrySelect @value={{@model.wayOfEntry}} @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform @save)}} @class="md-input-wrapper default" />
+      <InputField::WayOfEntrySelect @value={{@model.wayOfEntry}} @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform @save)}} class="md-input-wrapper default" />
     </div>
     {{#if this.isLinkedToCustomer}}
       <div class="layout-row layout-align-start-center">

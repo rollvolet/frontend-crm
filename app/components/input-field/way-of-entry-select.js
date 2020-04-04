@@ -1,26 +1,30 @@
-import classic from 'ember-classic-decorator';
-import { sort } from '@ember/object/computed';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
-import { proxyAware } from '../../utils/proxy-aware';
 
-@classic
 export default class WayOfEntrySelect extends Component {
-  @service store;
+  @service store
 
-  @proxyAware('value')
-  selected;
+  @tracked options = []
 
-  init() {
-    super.init(...arguments);
-    const wayOfEntries = this.store.peekAll('way-of-entry');
-    this.set('options', wayOfEntries);
+  constructor() {
+    super(...arguments);
+    this.options = this.store.peekAll('way-of-entry');
   }
 
-  label = 'Aanmelding';
-  value = null;
-  onSelectionChange = null;
+  get label() {
+    return this.args.label || 'Aanmelding';
+  }
 
-  optionSort = Object.freeze(['position'])
-  @sort('options', 'optionSort') sortedOptions
+  get required() {
+    return this.args.required || false;
+  }
+
+  get placeholder() {
+    return this.required ? `${this.label} *` : this.label;
+  }
+
+  get sortedOptions() {
+    return this.options.sortBy('position');
+  }
 }
