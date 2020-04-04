@@ -18,8 +18,9 @@ export default class InvoiceDocumentEditComponent extends Component {
   *loadData() {
     yield this.args.model.sideload('vatRate');
     // load data that is already loaded by the invoice/panel component
-    this.invoicelines = yield this.args.model.load('invoicelines', { backgroundReload: false });
-    yield all(this.invoicelines.map(line => line.sideload('order,invoice,vat-rate')));
+    const invoicelines = yield this.args.model.invoicelines;
+    yield all(invoicelines.map(line => line.sideload('order,invoice,vat-rate')));
+    this.invoicelines = invoicelines.toArray();
   }
 
   get sortedInvoicelines() {

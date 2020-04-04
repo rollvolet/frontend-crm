@@ -16,8 +16,9 @@ export default class OfferDocumentEditComponent extends Component {
   @keepLatestTask
   *loadData() {
     yield this.args.model.sideload('vatRate');
-    this.offerlines = yield this.args.model.load('offerlines');
+    const offerlines = yield this.args.model.load('offerlines');
     // No need to sideload the VAT rate of each offerlines, since they are included by default by the backend
+    this.offerlines = offerlines.toArray();
   }
 
   get sortedOfferlines() {
