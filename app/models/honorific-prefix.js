@@ -5,7 +5,7 @@ export default class HonorificPrefixModel extends Model {
 
   @hasMany('customer') customers
 
-  get entitiyId() {
+  get entityId() {
     return this.id.substring(0, this.id.indexOf('-'));
   }
 

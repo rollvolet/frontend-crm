@@ -1,57 +1,51 @@
-import classic from 'ember-classic-decorator';
-import { computed } from '@ember/object';
+import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { next } from '@ember/runloop';
-import Component from '@ember/component';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { composeId } from '../../models/honorific-prefix';
-import { proxyAware } from '../../utils/proxy-aware';
 
-@classic
 export default class HonorificPrefixSelect extends Component {
-  @service
-  store;
+  @service store
 
-  @proxyAware('value')
-  selected;
+  @tracked honorificPrefixes = []
 
-  async init() {
-    super.init(...arguments);
-    const prefixes = this.store.peekAll('honorific-prefix');
-    this.set('honorificPrefixes', prefixes);
+  constructor() {
+    super(...arguments);
+    this.honorificPrefixes = this.store.peekAll('honorific-prefix');
   }
 
-  label = 'Aanspreektitel';
-  value = null;
-  language = null;
-  onSelectionChange = null;
+  get label() {
+    return this.args.label || 'Aanspreektitel';
+  }
 
-  @computed(
-    'honorificPrefixes',
-    'honorificPrefixes.[]',
-    'language',
-    'language.content'
-  )
+  get required() {
+    return this.args.required || false;
+  }
+
+  get placeholder() {
+    return this.required ? `${this.label} *` : this.label;
+  }
+
   get options() {
-    if (this.honorificPrefixes && this.get('language.id')) {
+    if (this.honorificPrefixes && this.args.language.get('id')) {
       return this.honorificPrefixes.filter(p => {
-        return p.name && p.languageId == this.get('language.id');
+        return p.name && p.languageId == this.args.language.get('id');
       });
     } else {
       return this.honorificPrefixes.filter(p => p.name);
     }
   }
 
-  didUpdateAttrs() {
-    super.didUpdateAttrs(...arguments);
-
-    if (this.get('value.entityId') && this.get('language.id') && this.get('value.languageId') != this.get('language.id')) { // the language changed while a prefix has already been selected
+  @action
+  updateSelection() {
+    if (this.args.value.get('entityId') && this.args.language.get('id')
+        && this.args.value.get('languageId') != this.args.language.get('id')) {
+      // the language changed while a prefix has already been selected
       const honorificPrefix = this.honorificPrefixes.find(p => {
         // Find same prefix in the new language
-        return p.get('id') == composeId(this.get('value.entityId'), this.get('language.id'));
+        return p.get('id') == composeId(this.args.value.get('entityId'), this.args.language.get('id'));
       });
-      next(this, function() {
-        this.onSelectionChange(honorificPrefix);
-      });
+      this.args.onSelectionChange(honorificPrefix);
     }
   }
 }
