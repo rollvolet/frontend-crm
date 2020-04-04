@@ -1,6 +1,6 @@
 <div class="layout-row">
   <InputField::DecimalInput @label="Aantal" @value={{@model.nbOfPieces}} @errors={{v-get @model "nbOfPieces" "messages"}} @onChange={{queue (fn (mut @model.nbOfPieces)) (perform @save)}} @class="small" />
-  <InputField::ProductUnitSelect @value={{@model.unit}} @errors={{v-get @model "unit" "messages"}} @onSelectionChange={{queue (fn (mut @model.unit)) (perform @save)}} @class="md-input-wrapper default u-rel-top-small" />
+  <InputField::ProductUnitSelect @value={{@model.unit}} @errors={{v-get @model "unit" "messages"}} @onSelectionChange={{queue (fn (mut @model.unit)) (perform @save)}} class="md-input-wrapper default u-rel-top-small" />
   <div>
     <InputField::DecimalInput @label="Netto totaal (€)" @value={{@model.amount}} @errors={{v-get @model "amount" "messages"}} @onChange={{queue (fn (mut @model.amount)) (perform @save)}} @class="default" />
   </div>
