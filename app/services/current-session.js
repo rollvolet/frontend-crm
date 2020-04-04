@@ -1,13 +1,8 @@
-import classic from 'ember-classic-decorator';
 import Service, { inject } from '@ember/service';
 
-@classic
 export default class CurrentSessionService extends Service {
-  @inject()
-  session;
-
-  @inject()
-  store;
+  @inject session
+  @inject store
 
   employee = undefined;
 

@@ -1,14 +1,13 @@
-import classic from 'ember-classic-decorator';
 import Service, { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
-import { task, all } from 'ember-concurrency';
+import { all } from 'ember-concurrency';
+import { dropTask } from 'ember-concurrency-decorators';
 
-@classic
 export default class ConfigurationService extends Service {
-  @service
-  store;
+  @service store
 
-  @(task(function * () {
+  @dropTask
+  *preloadStaticLists() {
     const entities = [
       'country',
       'honorific-prefix',
@@ -22,22 +21,21 @@ export default class ConfigurationService extends Service {
       'product-unit'
     ];
     yield all(entities.map(e => this.store.findAll(e)));
-  }).drop())
-  preloadStaticLists;
+  }
 
-  defaultLanguage() {
+  get defaultLanguage() {
     const value = this.store.peekAll('language').find(l => l.code == 'NED');
     warn("No default language with code 'NED' found", value != null, { id: 'no-default-value' });
     return value;
   }
 
-  defaultCountry() {
+  get defaultCountry() {
     const value = this.store.peekAll('country').find(c => c.code == 'BE');
     warn("No default country with code 'BE' found", value != null, { id: 'no-default-value' });
     return value;
   }
 
-  defaultTelephoneType() {
+  get defaultTelephoneType() {
     const value = this.store.peekAll('telephoneType').find(t => t.name == 'TEL');
     warn("No default telephone type with name 'TEL' found", value != null, { id: 'no-default-value' });
     return value;

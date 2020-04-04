@@ -92,8 +92,8 @@ export default class TelephoneEditForm extends Component {
 
     const customerEntity = yield this.model;
     const order = this.displayTelephones.length + 1;
-    const telephoneType = this.configuration.defaultTelephoneType();
-    const country = this.configuration.defaultCountry();
+    const telephoneType = this.configuration.defaultTelephoneType;
+    const country = this.configuration.defaultCountry;
 
     const attributes = {
       order: order,

@@ -10,8 +10,8 @@ export default class NewRoute extends Route {
       printInFront: true,
       printPrefix: true,
       printSuffix: true,
-      language: this.configuration.defaultLanguage(),
-      country: this.configuration.defaultCountry()
+      language: this.configuration.defaultLanguage,
+      country: this.configuration.defaultCountry
     });
 
     return customer.save();

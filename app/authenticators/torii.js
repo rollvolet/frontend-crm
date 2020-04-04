@@ -1,5 +1,4 @@
-import classic from 'ember-classic-decorator';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
 import { debug, warn } from '@ember/debug';
 import fetch, { Headers } from 'fetch';
@@ -13,10 +12,8 @@ import decodeAuthToken from '../utils/decode-auth-token';
  *
  * Inspired by the JWT authenticator of ember-simple-auth-token
 */
-@classic
 export default class Torii extends ToriiAuthenticator {
-  @inject()
-  torii;
+  @service torii
 
   tokenEndpoint = '/api/authentication/token';
   refreshTokenEndpoint = '/api/authentication/refresh-token';

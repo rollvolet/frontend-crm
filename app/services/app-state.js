@@ -1,16 +1,11 @@
-import classic from 'ember-classic-decorator';
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import fetch from 'fetch';
 import config from '../config/environment';
 
-@classic
 export default class AppStateService extends Service {
-  @service
-  router;
-
-  @service
-  session;
+  @service router
+  @service session
 
   lastError = null;
   lastSuccessUrl = null;
