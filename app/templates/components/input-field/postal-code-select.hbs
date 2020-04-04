@@ -1,11 +1,25 @@
-<label class="power-select--label">{{this.label}}</label>
-<PowerSelect @placeholder={{@label}} @selected={{this.value}} @onChange={{fn this.selectValue}} @options={{this.options}} @searchEnabled={{true}} @search={{perform this.search}} @searchPlaceholder="Typ om te zoeken" @noMatchesMessage="Geen resultaten" @allowClear={{true}} @afterOptionsComponent={{component "input-field/postal-code-select/create-new" onCreate=(fn (mut this.showCreateModal) true)}} as |option select|>
-  {{#if this.titleize}}
-    {{highlight-substr (titleize-extended (lowercase option.search)) select.lastSearchedText}}
-  {{else}}
-    {{highlight-substr option.search select.lastSearchedText}}
-  {{/if}}
-</PowerSelect>
+<div ...attributes>
+  <label class="power-select--label">{{this.label}}</label>
+  <PowerSelect
+    @placeholder={{@label}}
+    @selected={{this.value}}
+    @onChange={{fn this.selectValue}}
+    @options={{this.options}}
+    @searchEnabled={{true}}
+    @search={{perform this.search}}
+    @searchPlaceholder="Typ om te zoeken"
+    @noMatchesMessage="Geen resultaten"
+    @allowClear={{true}}
+    @afterOptionsComponent={{component "input-field/postal-code-select/create-new"
+                               onCreate=(fn (mut this.showCreateModal) true)}}
+    as |option select|>
+    {{#if this.titleize}}
+      {{highlight-substr (titleize-extended (lowercase option.search)) select.lastSearchedText}}
+    {{else}}
+      {{highlight-substr option.search select.lastSearchedText}}
+    {{/if}}
+  </PowerSelect>
+</div>
 
 {{#if this.showCreateModal}}
   <PaperDialog @class="flex-50" @onClose={{fn (mut this.showCreateModal) false}} @clickOutsideToClose={{true}} @parent=".main-outlet" @origin=".main-outlet">
