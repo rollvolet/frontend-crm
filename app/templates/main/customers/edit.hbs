@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <CustomerDetailCard @model={{@model}} />
+  <Customer::DetailView @model={{@model}} />
 
   <div class="related-resources">
     <PaperTabs @selected={{this.selectedTab}} @onChange={{fn this.setTab}} @borderBottom={{true}} as |tabs|>
