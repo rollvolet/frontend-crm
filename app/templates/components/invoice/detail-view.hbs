@@ -20,11 +20,9 @@
     <DetailListItem @label="Creditnota">
       {{paper-icon (if @model.isCreditNote "check_box" "check_box_outline_blank")}}
     </DetailListItem>
-    {{#unless @model.isCreditNote}}
-      <DetailListItem @label="Betaalref.">
-        {{format-bank-reference @model.bankReference}}
-      </DetailListItem>
-    {{/unless}}
+    <DetailListItem @label="Betaalref.">
+      {{format-bank-reference @model.bankReference}}
+    </DetailListItem>
     {{#if @model.certificateRequired}}
       <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
         <CertificateDocumentButtons @model={{@model}} />
