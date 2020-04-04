@@ -1,13 +1,17 @@
-import classic from 'ember-classic-decorator';
-import { action, computed } from '@ember/object';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-@classic
 export default class CalendarPeriodSelect extends Component {
-  init() {
-    super.init(...arguments);
+  @service store
 
-    const periods = [
+  @tracked options = []
+  @tracked selected
+
+  constructor() {
+    super(...arguments);
+    this.options = [
       { name: 'Gehele dag', value: 'GD' },
       { name: 'Voormiddag (9-12)', value: 'VM' },
       { name: 'Namiddag (12-16)', value: 'NM' },
@@ -17,31 +21,25 @@ export default class CalendarPeriodSelect extends Component {
       { name: 'Uur (stipt)', value: 'stipt uur' },
       { name: 'Rond uur', value: 'benaderend uur' }
     ];
-    this.set('options', periods);
+    this.selected = this.options.find(o => o.value == this.args.value);
   }
 
-  didReceiveAttrs() {
-    super.didReceiveAttrs(...arguments);
-
-    const selectedOption = this.options.find(o => o.value == this.value);
-    this.set('selectedOption', selectedOption);
+  get label() {
+    return this.args.label || 'Periode';
   }
 
-  label = 'Periode';
-  value = null;
-  errors = null;
-  required = false;
-  onSelectionChange = null;
+  get required() {
+    return this.args.required || false;
+  }
 
-  @computed('label', 'required')
   get placeholder() {
     return this.required ? `${this.label} *` : this.label;
   }
 
   @action
   changeSelection(option) {
-    this.set('selectedOption', option);
+    this.selected = option;
     const value = option ? option.value : null;
-    this.onSelectionChange(value);
+    this.args.onSelectionChange(value);
   }
 }

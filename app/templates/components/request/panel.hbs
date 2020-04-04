@@ -47,20 +47,6 @@
   <WarningMessage @message="Offerte reeds opgemaakt. Geen wijzigingen meer mogelijk." />
 {{/if}}
 
-{{#if @model.origin.id}}
-  <InfoMessage>
-    <div class="layout-row layout-align-space-between-center" role="button" {{on "click" (fn this.goToOrigin)}}>
-      <div>
-        Deze aanvraag is een gevolg van interventie IR{{@model.origin.id}}
-      </div>
-      <div>
-        {{paper-icon "forward"}}
-      </div>
-      <PaperTooltip>Ga naar de interventie</PaperTooltip>
-    </div>
-  </InfoMessage>
-{{/if}}
-
 {{#if @editMode}}
   {{#if this.remove.isRunning}}
     <div>
@@ -86,6 +72,20 @@
     <Request::DetailEdit @model={{@model}} @save={{this.save}} />
   {{/if}}
 {{else}}
+  {{#if @model.origin.id}}
+    <InfoMessage>
+      <div class="layout-row layout-align-space-between-center" role="button" {{on "click" (fn this.goToOrigin)}}>
+      <div>
+        Deze aanvraag is een gevolg van interventie IR{{@model.origin.id}}
+      </div>
+      <div>
+        {{paper-icon "forward"}}
+      </div>
+      <PaperTooltip>Ga naar de interventie</PaperTooltip>
+      </div>
+    </InfoMessage>
+  {{/if}}
+
   <Request::DetailView @model={{@model}} />
 {{/if}}
 

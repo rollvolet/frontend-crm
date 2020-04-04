@@ -4,7 +4,7 @@
     <SaveStatusIcon @model={{@model}} @task={{@save}} />
   </div>
   <PaperInput @label="Datum" @value={{@model.visitDateStr}} @type="date" @required="style" @errors={{v-get @model "visitDate" "messages"}} @onChange={{queue (fn (mut @model.visitDateStr)) (perform @save)}} @class="default" />
-  <InputField::CalendarPeriodSelect @value={{@model.period}} @errors={{v-get @model "period" "messages"}} @required={{true}} @onSelectionChange={{fn this.changePeriod}} @class="md-input-wrapper large" />
+  <InputField::CalendarPeriodSelect @value={{@model.period}} @errors={{v-get @model "period" "messages"}} @required={{true}} @onSelectionChange={{fn this.changePeriod}} class="md-input-wrapper large" />
   {{#if this.requiresSingleTime}}
     <PaperInput @label="Tijdstip" @value={{@model.fromHour}} @errors={{v-get @model "fromHour" "messages"}} @onChange={{fn (mut @model.fromHour)}} @onBlur={{perform @save}} @required="style" @class="small" /> uur
   {{/if}}

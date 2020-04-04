@@ -52,7 +52,7 @@
           {{else}}
             <PaperInput @label="Datum" @value={{@model.dateStr}} @type="date" @onChange={{fn this.changeDate}} @class="default" />
             {{#if @model.date}}
-              <InputField::CalendarPeriodSelect @value={{@model.period}} @errors={{v-get @model "period" "messages"}} @onSelectionChange={{fn this.changePeriod}} @class="md-input-wrapper large" />
+              <InputField::CalendarPeriodSelect @value={{@model.period}} @errors={{v-get @model "period" "messages"}} @onSelectionChange={{fn this.changePeriod}} class="md-input-wrapper large" />
               {{#if this.requiresSingleTime}}
                 <PaperInput @label="Tijdstip" @value={{@model.fromHour}} @errors={{v-get @model "fromHour" "messages"}} @onChange={{fn (mut @model.fromHour)}} @required="style" @class="small" /> uur
               {{/if}}
