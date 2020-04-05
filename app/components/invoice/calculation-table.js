@@ -8,6 +8,7 @@ import sum from '../../utils/math/sum';
 
 export default class InvoiceCalculationTableComponent extends Component {
   @service case
+  @service router
 
   @tracked showSupplementsDialog = false
   @tracked vatRate
@@ -112,5 +113,10 @@ export default class InvoiceCalculationTableComponent extends Component {
   @action
   openSupplementsDialog() {
     this.showSupplementsDialog = true;
+  }
+
+  @action
+  goToDeposits() {
+    this.router.transitionTo('main.case.order.edit.deposit-invoices', this.args.model.order);
   }
 }
