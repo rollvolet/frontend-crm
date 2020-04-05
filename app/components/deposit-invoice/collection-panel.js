@@ -99,6 +99,34 @@ export default class DepositInvoiceCollectionPanelComponent extends Component {
   }
 
   @task
+  *createNewCreditNoteForDepositInvoice(invoice) {
+    const invoiceDate = new Date();
+    const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+
+    const creditNote = this.store.createRecord('deposit-invoice', {
+      invoiceDate,
+      dueDate,
+      isCreditNote: true,
+      certificateRequired: false,
+      certificateReceived: false,
+      certificateClosed: false,
+      reference: invoice.reference,
+      baseAmount: invoice.baseAmount,
+      order: this.order,
+      vatRate: this.vatRate,
+      customer: this.customer,
+      contact: this.contact,
+      building: this.building
+    });
+
+    const { validations } = yield creditNote.validate();
+    if (validations.isValid)
+      yield creditNote.save();
+
+    this.depositInvoices.pushObject(creditNote);
+  }
+
+  @task
   *remove(invoice) {
     this.depositInvoices.removeObject(invoice);
     yield invoice.destroyRecord();
