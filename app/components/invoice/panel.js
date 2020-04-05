@@ -136,7 +136,8 @@ export default class InvoicePanelComponent extends Component {
 
   @task
   *generateInvoiceDocument() {
-    if (!this.showMissingCertificateDialog && this.args.model.certificateRequired && !this.args.model.certificateReceived) {
+    if (!this.args.model.isCreditNote && !this.showMissingCertificateDialog
+        && this.args.model.certificateRequired && !this.args.model.certificateReceived) {
       this.showMissingCertificateDialog = true;
     } else {
       this.showMissingCertificateDialog = false;
