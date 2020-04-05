@@ -8,10 +8,10 @@
         <DetailListSubitem @label={{concat this.vatRate.rate "% BTW"}}>
           <FmtCurrency @value={{this.totalVat}} />
         </DetailListSubitem>
-        <DetailListSubitem @label="Voorschotfacturen" @click={{fn this.goToDepositInvoices}} @class="clickable">
+        <DetailListSubitem @label="Voorschotfacturen" {{on "click" this.goToDepositInvoices}} role="button">
           <FmtCurrency @value={{this.depositInvoicesAmount}} /> {{paper-icon "launch" size=18}}
         </DetailListSubitem>
-        <DetailListSubitem @label="Voorschotten" @click={{fn this.goToDepositInvoices}} @class="clickable">
+        <DetailListSubitem @label="Voorschotten" {{on "click" this.goToDepositInvoices}} role="button">
           <FmtCurrency @value={{this.depositsAmount}} />
           {{paper-icon "launch" size=18}}
           {{paper-icon (if @model.depositRequired "check_box" "check_box_outline_blank")}} Nodig
