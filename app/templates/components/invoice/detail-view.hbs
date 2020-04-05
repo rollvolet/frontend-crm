@@ -45,7 +45,7 @@
         {{/if}}
       </DetailListItem>
     {{/unless}}
-    <DetailListItem @label="Techniekers" @click={{fn this.openWorkingHoursDialog}} @class="clickable">
+    <DetailListItem @label="Techniekers" {{on "click" this.openWorkingHoursDialog}} role="button">
       {{#if @model.workingHours}}
         {{join ", " this.employeeFirstNames}} {{paper-icon "info" size=18}}
       {{else}}
