@@ -25,7 +25,7 @@ module.exports = function(defaults) {
       sourcemap: false // Was never helpful
     },
     sourcemaps: {
-      enabled: IS_PROD // CMD ALT F in chrome is *almost* as fast as CMD P
+      // enabled: IS_PROD // CMD ALT F in chrome is *almost* as fast as CMD P
     },
     fingerprint: {
       enabled: IS_PROD //Asset rewrite will takes more time and fingerprinting can be omitted in development
