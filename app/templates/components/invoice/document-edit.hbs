@@ -20,7 +20,20 @@
     {{/if}}
   </section>
   <section>
-    <label>Mededeling</label>
-    <RichTextArea @class="invoice-outro" @value={{@model.documentOutro}} @onChange={{fn (mut @model.documentOutro)}} @focusOut={{perform @save}} />
+    <div class="layout-row">
+      <div class="flex">
+        <label>Mededeling</label>
+      </div>
+      <div {{on "click" (toggle "isOutroExpanded" this)}} role="button">
+        {{#if this.isOutroExpanded}}
+          {{paper-icon "expand_less"}}
+        {{else}}
+          {{paper-icon "expand_more"}}
+        {{/if}}
+      </div>
+    </div>
+    {{#liquid-if this.isOutroExpanded class="expand-more"}}
+      <RichTextArea @class="invoice-outro" @value={{@model.documentOutro}} @onChange={{fn (mut @model.documentOutro)}} @focusOut={{perform @save}} />
+    {{/liquid-if}}
   </section>
 </div>

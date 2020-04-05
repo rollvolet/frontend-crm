@@ -8,6 +8,7 @@ export default class InvoiceDocumentEditComponent extends Component {
   @service store
 
   @tracked invoicelines = []
+  @tracked isOutroExpanded = false
 
   constructor() {
     super(...arguments);
