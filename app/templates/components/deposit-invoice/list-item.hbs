@@ -54,11 +54,14 @@
       </DetailListItem>
     </div>
     <div class="case--right-panel flex-noshrink layout-column">
+      <DetailListItem @label="Creditnota">
+        {{paper-icon (if @model.isCreditNote "check_box" "check_box_outline_blank")}}
+      </DetailListItem>
       <DetailListItem @label="Nettobedrag">
-        <FmtCurrency @value={{@model.arithmeticAmount}} />
+        <FmtCurrency @value={{this.baseAmount}} />
       </DetailListItem>
       <DetailListItem @label="BTW">
-        <FmtCurrency @value={{await @model.arithmeticVat}} />
+        <FmtCurrency @value={{await this.baseAmountVat}} />
       </DetailListItem>
       <DetailListItem @label="Betaalref.">
         {{format-bank-reference @model.bankReference}}

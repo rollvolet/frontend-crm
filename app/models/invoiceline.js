@@ -22,14 +22,5 @@ export default class InvoicelineModel extends Model.extend(Validations, Loadable
     return this.amount;
   }
 
-  get arithmeticVat() {
-    return (async () => {
-      const vatRate = await this.vatRate;
-      const rate = vatRate.rate / 100;
-      const vat = this.amount * rate;
-      return vat;
-    })();
-  }
-
   @tracked isSupplement
 }

@@ -3,6 +3,9 @@
     <div class="layout-row">
       <PaperInput @label="Datum" @value={{@model.invoiceDateStr}} @type="date" @required="style" @errors={{v-get @model "invoiceDate" "messages"}} @onChange={{queue (fn (mut @model.invoiceDateStr)) (perform @save)}} @class="default" />
       <InputField::DecimalInput @label="Bedrag (€)" @value={{@model.baseAmount}} @errors={{v-get @model "baseAmount" "messages"}} @onChange={{queue (fn (mut @model.baseAmount)) (perform @save)}} @isRequired={{true}} @class="small" />
+      <div class="layout-row layout-align-start-center">
+        <PaperCheckbox @label="Creditnota" @value={{@model.isCreditNote}} @onChange={{queue (fn (mut @model.isCreditNote)) (perform @save)}} />
+      </div>
     </div>
     <div class="layout-row">
     </div>

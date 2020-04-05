@@ -46,16 +46,7 @@ export default class InvoiceModel extends Model.extend(Validations, LoadableMode
   @dateString('cancellationDate') cancellationDateStr
 
   get arithmeticAmount() {
-    return this.baseAmount;
-  }
-
-  get arithmeticVat() {
-    return (async () => {
-      const vatRate = await this.vatRate;
-      const rate = vatRate.rate / 100;
-      const vat = this.baseAmount * rate;
-      return vat;
-    })();
+    return this.isCreditNote ? this.baseAmount * -1.0 : this.baseAmount;
   }
 
   get isBooked() {
@@ -63,7 +54,7 @@ export default class InvoiceModel extends Model.extend(Validations, LoadableMode
   }
 
   get bankReference() {
-    const base = 5000000000;
+    const base = this.isCreditNote ? 8000000000 : 5000000000;
     const ref = base + this.number;
     const modulo = `${(ref % 97)}`.padStart(2, '0');
     return `${ref}${modulo}`.padStart(12, '0');
