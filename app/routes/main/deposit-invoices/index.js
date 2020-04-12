@@ -26,9 +26,7 @@ export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
 
   mergeQueryOptions(params) {
     return {
-      // Building and contact must already be included
-      // such that correct values can be set in the case controller when opening the detail
-      include: 'customer,customer.honorific-prefix,order,building,contact',
+      include: 'customer,customer.honorific-prefix,order,building',
       filter: {
         number: params.number,
         reference: params.reference,
