@@ -28,12 +28,12 @@ export default class InvoicePanelComponent extends Component {
     yield all(this.invoicelines.map(line => line.sideload('order,invoice')));
   }
 
-  get isDisableEdit() {
+  get isDisabledEdit() {
     return this.args.model.isMasteredByAccess || this.args.model.isBooked;
   }
 
   get isEnabledDelete() {
-    return !this.isDisableEdit;
+    return !this.isDisabledEdit;
   }
 
   get intervention() {

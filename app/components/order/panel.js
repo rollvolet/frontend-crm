@@ -36,7 +36,7 @@ export default class OrderPanelComponent extends Component {
   }
 
   get isEnabledDelete() {
-    return !this.isDisableEdit && !this.depositInvoices.length && !this.deposits.length;
+    return !this.isDisabledEdit && !this.depositInvoices.length && !this.deposits.length;
   }
 
   get request() {
