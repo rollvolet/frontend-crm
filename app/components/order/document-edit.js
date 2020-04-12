@@ -17,8 +17,9 @@ export default class InvoiceDocumentEditComponent extends Component {
   @keepLatestTask
   *loadData() {
     yield this.args.model.sideload('vatRate');
-    this.invoicelines = yield this.args.model.load('invoicelines', { backgroundReload: false });
-    yield all(this.invoicelines.map(line => line.sideload('order,invoice,vat-rate')));
+    const invoicelines = yield this.args.model.load('invoicelines', { backgroundReload: false });
+    yield all(invoicelines.map(line => line.sideload('order,invoice,vat-rate')));
+    this.invoicelines = invoicelines.toArray();
   }
 
   get sortedInvoicelines() {
@@ -51,7 +52,7 @@ export default class InvoiceDocumentEditComponent extends Component {
 
   @task
   *deleteInvoiceline(invoiceline) {
-    if (invoiceline.isNew)
+    if (!invoiceline.isNew)
       invoiceline.rollbackAttributes();
     this.invoicelines.removeObject(invoiceline);
     yield invoiceline.destroyRecord();

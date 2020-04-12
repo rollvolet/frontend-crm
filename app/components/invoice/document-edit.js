@@ -54,7 +54,7 @@ export default class InvoiceDocumentEditComponent extends Component {
 
   @task
   *deleteInvoiceline(invoiceline) {
-    if (invoiceline.isNew)
+    if (!invoiceline.isNew)
       invoiceline.rollbackAttributes();
     this.invoicelines.removeObject(invoiceline);
     yield invoiceline.destroyRecord();
