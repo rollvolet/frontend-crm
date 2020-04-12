@@ -63,7 +63,7 @@
     "ember-paper": "1.0.0-beta.29",
     "ember-paper-data-table": "^0.2.4",
     "ember-pell": "^1.4.5",
-    "ember-power-select": "^3.0.6",
+    "ember-power-select": "https://github.com/erikap/ember-power-select.git#bugfix/premature-close-of-dropdown",
     "ember-promise-helpers": "^1.0.8",
     "ember-qunit": "^4.6.0",
     "ember-resolver": "^7.0.0",
