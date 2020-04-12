@@ -9,14 +9,6 @@
 </div>
 
 {{#unless this.loadData.isRunning}}
-  {{#unless this.editMode}}
-    {{#if (and @model.depositRequired (not this.deposits.length))}}
-      <WarningMessage @message="Er is een voorschot gevraagd bij bestelling, maar er is nog geen voorschot geregistreerd." />
-    {{else if (and (not @model.depositRequired) this.deposits.length)}}
-      <InfoMessage @message="Er is geen voorschot gevraagd bij bestelling" />
-    {{/if}}
-  {{/unless}}
-
   <div class="layout-row layout-xs-column layout-align-space-between">
     <div class="case--left-panel case--deposits--entry flex-100 layout-column">
       <DetailListItem @label="Totaal">
