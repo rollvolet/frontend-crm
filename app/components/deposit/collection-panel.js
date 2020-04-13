@@ -20,11 +20,16 @@ export default class DepositCollectionPanelComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    this.deposits = yield this.args.model.deposits;
+    const deposits = yield this.args.model.deposits;
+    this.deposits = deposits.toArray();
   }
 
   get customer() {
     return this.case.current && this.case.current.customer;
+  }
+
+  get order() {
+    return this.case.current && this.case.current.order;
   }
 
   get invoice() {
@@ -47,7 +52,7 @@ export default class DepositCollectionPanelComponent extends Component {
   *createNew() {
     const deposit = this.store.createRecord('deposit', {
       customer: this.customer,
-      order: this.args.model,
+      order: this.order,
       paymentDate: new Date()
     });
     const { validations } = yield deposit.validate();
@@ -66,8 +71,13 @@ export default class DepositCollectionPanelComponent extends Component {
 
   @task
   *rollbackTree() {
-    this.selected.rollbackAttributes();
-    yield this.save.perform(null, { forceSucces: true });
+    if (this.selected.isNew) {
+      this.deposits.removeObject(this.selected);
+      yield this.selected.destroyRecord();
+    } else {
+      this.selected.rollbackAttributes();
+      yield this.save.perform(null, { forceSucces: true });
+    }
   }
 
   @keepLatestTask
