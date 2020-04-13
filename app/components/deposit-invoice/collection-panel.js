@@ -134,14 +134,16 @@ export default class DepositInvoiceCollectionPanelComponent extends Component {
 
   @task
   *rollbackTree() {
-    const rollbackPromises = [];
-
-    this.selected.rollbackAttributes();
-
-    rollbackPromises.push(this.selected.belongsTo('vatRate').reload());
-    yield all(rollbackPromises);
-
-    yield this.save.perform(null, { forceSucces: true });
+    if (this.selected.isNew) {
+      this.depositInvoices.removeObject(this.selected);
+      yield this.selected.destroyRecord();
+    } else {
+      const rollbackPromises = [];
+      this.selected.rollbackAttributes();
+      rollbackPromises.push(this.selected.belongsTo('vatRate').reload());
+      yield all(rollbackPromises);
+      yield this.save.perform(null, { forceSucces: true });
+    }
   }
 
   @keepLatestTask
