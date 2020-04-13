@@ -63,8 +63,10 @@ export default class OrderPanelComponent extends Component {
     const rollbackPromises = [];
 
     this.invoicelines.forEach(invoiceline => {
+      if (!invoiceline.isNew) {
+        rollbackPromises.push(invoiceline.belongsTo('vatRate').reload());
+      }
       invoiceline.rollbackAttributes();
-      rollbackPromises.push(invoiceline.belongsTo('vatRate').reload());
     });
 
     this.args.model.rollbackAttributes();

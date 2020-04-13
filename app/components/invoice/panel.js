@@ -36,6 +36,13 @@ export default class InvoicePanelComponent extends Component {
     return !this.isDisabledEdit;
   }
 
+  get hasUnsavedChanges() {
+    const invoicelinesWithUnsavedChanges = this.invoicelines.find(o => o.isNew || o.validations.isInvalid || o.isError);
+    return invoicelinesWithUnsavedChanges != null
+        || this.args.model.isNew || this.args.model.validations.isInvalid || this.args.model.isError
+        || (this.save.last && this.save.last.isError);
+  }
+
   get intervention() {
     return this.case.current && this.case.current.intervention;
   }
@@ -57,12 +64,14 @@ export default class InvoicePanelComponent extends Component {
   }
 
   @task
-  *rollabckTree() {
+  *rollbackTree() {
     const rollbackPromises = [];
 
     this.invoicelines.forEach(invoiceline => {
+      if (!invoiceline.isNew) {
+        rollbackPromises.push(invoiceline.belongsTo('vatRate').reload());
+      }
       invoiceline.rollbackAttributes();
-      rollbackPromises.push(invoiceline.belongsTo('vatRate').reload());
     });
 
     this.args.model.rollbackAttributes();
@@ -151,9 +160,7 @@ export default class InvoicePanelComponent extends Component {
 
   @action
   closeEdit() {
-    if (this.args.model.isNew || this.args.model.validations.isInvalid || this.args.model.isError
-      || (this.save.last && this.save.last.isError)
-      || this.hasFailedVisit) {  // TODO implement hasFailedVisit
+    if (this.hasUnsavedChanges) {
       this.showUnsavedChangesDialog = true;
     } else {
       this.args.onCloseEdit();
