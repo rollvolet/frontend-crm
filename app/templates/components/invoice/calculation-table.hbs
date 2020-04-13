@@ -48,14 +48,16 @@
       <th>Bruto</th>
     </thead>
     <tbody>
-      <tr class="subtotal">
-        <td>Totaal</td>
-        <td><FmtCurrency @value={{this.totalGrossAmount}} /></td>
-      </tr>
-      <tr>
-        <td {{on "click" this.goToDeposits}} role="button">Betaalde voorschotten {{paper-icon "launch" size=18}}</td>
-        <td>&minus; <FmtCurrency @value={{this.depositsAmount}} /></td>
-      </tr>
+      {{#unless @model.isIsolated}}
+        <tr class="subtotal">
+          <td>Totaal</td>
+          <td><FmtCurrency @value={{this.totalGrossAmount}} /></td>
+        </tr>
+        <tr>
+          <td {{on "click" this.goToDeposits}} role="button">Betaalde voorschotten {{paper-icon "launch" size=18}}</td>
+          <td>&minus; <FmtCurrency @value={{this.depositsAmount}} /></td>
+        </tr>
+      {{/unless}}
       <tr class="total">
         <td>Totaal te betalen</td>
         <td><FmtCurrency @value={{this.totalToPay}} /></td>
