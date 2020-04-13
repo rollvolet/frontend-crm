@@ -1,10 +1,12 @@
 <div class="layout-row layout-align-space-between-center">
   <h2>Voorschotten</h2>
   {{#unless this.editMode}}
-    <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{perform this.createNew}} @disabled={{this.isDisabledEdit}}>
-      {{paper-icon "add"}}
-      <PaperTooltip>Voeg nieuw voorschot toe</PaperTooltip>
-    </PaperButton>
+    {{#unless this.isDisabledEdit}}
+      <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{perform this.createNew}}>
+        {{paper-icon "add"}}
+        <PaperTooltip>Voeg nieuw voorschot toe</PaperTooltip>
+      </PaperButton>
+    {{/unless}}
   {{/unless}}
 </div>
 
