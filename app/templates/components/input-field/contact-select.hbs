@@ -11,7 +11,7 @@
     @noMatchesMessage="Geen resultaten"
     @allowClear={{true}} as |option select|
   >
-    {{highlight-substr option.name select.lastSearchedText}}
+    {{highlight-substr option.searchName select.lastSearchedText}}
   </PowerSelect>
 
   <MdErrorMessages @errors={{@errors}} />
