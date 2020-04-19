@@ -104,6 +104,7 @@ export default class InvoicePanelComponent extends Component {
         this.router.transitionTo('main.customers.edit', this.customer.id);
     } catch (e) {
       warn(`Something went wrong while destroying invoice ${this.args.model.id}`, { id: 'destroy-failure' });
+      yield this.args.model.rollbackAttributes(); // undo delete-state
       if (this.order) {
         this.order.invoice = this.args.model;
         yield this.order.save();
@@ -111,7 +112,6 @@ export default class InvoicePanelComponent extends Component {
         this.intervention.invoice = this.args.model;
         yield this.intervention.save();
       }
-      yield this.args.model.rollbackAttributes(); // undo delete-state
       this.case.updateRecord('invoice', this.args.model);
     }
   }
