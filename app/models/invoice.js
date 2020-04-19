@@ -60,7 +60,7 @@ export default class InvoiceModel extends Model.extend(Validations, LoadableMode
   get bankReference() {
     const base = this.isCreditNote ? 8000000000 : 0;
     const ref = base + this.number;
-    const modulo = `${(ref % 97)}`.padStart(2, '0');
+    let modulo = `${(ref % 97)}`.padStart(2, '0');
     if (modulo == '00')
       modulo = '97';
     return `${ref}${modulo}`.padStart(12, '0');
