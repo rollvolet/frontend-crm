@@ -52,7 +52,7 @@ export default class PostalCodeSelect extends Component {
   }
 
   get isAddOptionDisabled() {
-    return isEmpty('newCode') || isEmpty('newCity');
+    return isEmpty(this.newCode) || isEmpty(this.newCity);
   }
 
   get titleize() {
