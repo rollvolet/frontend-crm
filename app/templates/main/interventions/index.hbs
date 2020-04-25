@@ -14,7 +14,7 @@
         <th>Straat</th>
         <th>Postcode</th>
         <th>Gemeente</th>
-        <th>Opmerking</th>
+        <th>Beschrijving</th>
       </c.header>
       <c.body as |row|>
         <td>{{row.id}}</td>
@@ -36,7 +36,7 @@
           <td>{{row.customer.postalCode}}</td>
           <td>{{row.customer.city}}</td>
         {{/if}}
-        <td class="truncate">{{row.comment}}</td>
+        <td class="truncate">{{row.description}}</td>
       </c.body>
     </t.content>
   </DataTable>
