@@ -55,6 +55,10 @@ export default class InvoicePanelComponent extends Component {
     return this.case.current && this.case.current.customer;
   }
 
+  get isIsolated() {
+    return this.intervention == null && this.order == null;
+  }
+
   @task
   *updateInvoicelinesVatRate(vatRate) {
     yield all(this.invoicelines.map(async (invoiceline) => {
@@ -85,13 +89,17 @@ export default class InvoicePanelComponent extends Component {
   *remove() {
     try {
       const supplements = yield this.args.model.load('supplements');
-      yield all(supplements.map(async (t) => await t.destroyRecord()));
+      yield all(supplements.map((suppl) => suppl.destroyRecord()));
 
       const copiedInvoicelines = this.invoicelines.slice(0);
-      yield all(copiedInvoicelines.map(async (invoiceline) => {
-        invoiceline.invoice = null;
-        await invoiceline.save();
-      }));
+      if (this.isIsolated) {
+        yield all(copiedInvoicelines.map((invoiceline) => invoiceline.destroyRecord()));
+      } else {
+        yield all(copiedInvoicelines.map((invoiceline) => {
+          invoiceline.invoice = null;
+          invoiceline.save();
+        }));
+      }
 
       this.case.updateRecord('invoice', null);
       yield this.args.model.destroyRecord();
