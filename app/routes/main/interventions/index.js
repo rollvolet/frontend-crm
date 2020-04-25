@@ -24,7 +24,7 @@ export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
 
   mergeQueryOptions(params) {
     return {
-      include: 'customer,customer.honorific-prefix,building',
+      include: 'customer,customer.honorific-prefix,building,planning-event',
       filter: {
         number: params.number,
         invoice: !params.withoutInvoice,

@@ -8,6 +8,7 @@
       <c.header>
         <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
         <ThSortable @field="date" @currentSorting={{this.sort}} @label="Datum" />
+        <ThSortable @field="planning-event.date" @currentSorting={{this.sort}} @label="Planning" />
         <th></th>
         <th>Naam</th>
         <th>Straat</th>
@@ -17,6 +18,7 @@
       <c.body as |row|>
         <td>{{row.id}}</td>
         <td><FmtDate @value={{row.date}} /></td>
+        <td><FmtDate @value={{row.planningEvent.date}} /></td>
         {{#if row.building}}
           <td>{{paper-icon "home"}}</td>
           <td>
