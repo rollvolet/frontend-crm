@@ -21,15 +21,12 @@ export default class InvoiceRoute extends Route {
     const contact = await order.contact;
     const building = await order.building;
 
-    const amount = add(invoicelines.mapBy('amount'));
-
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
 
     const invoice = this.store.createRecord('invoice', {
       invoiceDate,
       dueDate,
-      baseAmount: amount,
       certificateRequired: vatRate.rate == 6,
       certificateReceived: false,
       certificateClosed: false,

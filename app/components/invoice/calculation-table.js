@@ -52,21 +52,18 @@ export default class InvoiceCalculationTableComponent extends Component {
   }
 
   get baseAmount() {
-    return this.args.model.baseAmount;
+    if (this.args.model.baseAmount)
+      return this.args.model.baseAmount;
+    else
+      return sum(this.invoicelines.mapBy('arithmeticAmount'));
   }
 
   get baseAmountVat() {
     return this.baseAmount * this.vatPercentage;
   }
 
-  get supplementaryInvoicelines() {
-    return this.invoicelines.filter(line => line.order && line.order.get('id') == null);
-  }
-
   get supplementsAmount() {
-    const invoicelines = sum(this.supplementaryInvoicelines.mapBy('arithmeticAmount'));
-    const supplements = sum(this.supplements.mapBy('amount'));
-    return invoicelines + supplements;
+    return sum(this.supplements.mapBy('amount'));
   }
 
   get supplementsVat() {
