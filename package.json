@@ -75,6 +75,7 @@
     "eslint-plugin-node": "^11.0.0",
     "liquid-fire": "^0.30.0",
     "loader.js": "^4.7.0",
+    "moment": "~2.24.0",
     "node-sass": "^4.13.1",
     "qunit-dom": "^1.0.0",
     "sass": "^1.22.9",
