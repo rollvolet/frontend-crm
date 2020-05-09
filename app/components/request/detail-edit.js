@@ -55,7 +55,7 @@ export default class RequestDetailEditComponent extends Component {
         this.args.model.requiresVisit = false;
         this.args.save.perform();
       }
-    } else {
+    } else if (this.calendarEvent) {
       try {
         yield this.calendarEvent.destroyRecord();
         // TODO: Fix this hack when Ember Data allows creation of already deleted ID

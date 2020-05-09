@@ -1,15 +1,26 @@
-<section class="case--request--visit">
-  <div class="layout-row layout-align-start-center">
-    <h3>{{paper-icon "event"}} Bezoek</h3>
-    <SaveStatusIcon @model={{@model}} @task={{@save}} />
-  </div>
-  <PaperInput @label="Datum" @value={{@model.visitDateStr}} @type="date" @required="style" @errors={{v-get @model "visitDate" "messages"}} @onChange={{queue (fn (mut @model.visitDateStr)) (perform @save)}} @class="default" />
-  <InputField::CalendarPeriodSelect @value={{@model.period}} @errors={{v-get @model "period" "messages"}} @required={{true}} @onSelectionChange={{fn this.changePeriod}} class="md-input-wrapper large" />
-  {{#if this.requiresSingleTime}}
-    <PaperInput @label="Tijdstip" @value={{@model.fromHour}} @errors={{v-get @model "fromHour" "messages"}} @onChange={{fn (mut @model.fromHour)}} @onBlur={{perform @save}} @required="style" @class="small" /> uur
-  {{/if}}
-  {{#if this.requiresTimeRange}}
-    <PaperInput @label="Van" @value={{@model.fromHour}} @errors={{v-get @model "fromHour" "messages"}} @onChange={{fn (mut @model.fromHour)}} @onBlur={{perform @save}} @required="style" @class="small" /> -
-    <PaperInput @label="Tot" @value={{@model.untilHour}} @errors={{v-get @model "untilHour" "messages"}} @onChange={{fn (mut @model.untilHour)}} @onBlur={{perform @save}} @required="style" @class="small" /> uur
-  {{/if}}
-</section>
+{{#if @model}}
+  <section class="case--request--visit">
+    <div class="layout-row layout-align-start-center">
+      <h3>{{paper-icon "event"}} Bezoek</h3>
+      <SaveStatusIcon @model={{@model}} @task={{@save}} />
+    </div>
+    <PaperInput @label="Datum" @value={{@model.visitDateStr}} @type="date" @required="style" @errors={{v-get @model "visitDate" "messages"}} @onChange={{queue (fn (mut @model.visitDateStr)) (perform @save)}} @class="default" />
+    <InputField::CalendarPeriodSelect @value={{@model.period}} @errors={{v-get @model "period" "messages"}} @required={{true}} @onSelectionChange={{fn this.changePeriod}} class="md-input-wrapper large" />
+    {{#if this.requiresSingleTime}}
+      <PaperInput @label="Tijdstip" @value={{@model.fromHour}} @errors={{v-get @model "fromHour" "messages"}} @onChange={{fn (mut @model.fromHour)}} @onBlur={{perform @save}} @required="style" @class="small" /> uur
+    {{/if}}
+    {{#if this.requiresTimeRange}}
+      <PaperInput @label="Van" @value={{@model.fromHour}} @errors={{v-get @model "fromHour" "messages"}} @onChange={{fn (mut @model.fromHour)}} @onBlur={{perform @save}} @required="style" @class="small" /> -
+      <PaperInput @label="Tot" @value={{@model.untilHour}} @errors={{v-get @model "untilHour" "messages"}} @onChange={{fn (mut @model.untilHour)}} @onBlur={{perform @save}} @required="style" @class="small" /> uur
+    {{/if}}
+  </section>
+{{else}}
+  <section class="case--request--visit not-found">
+    <div class="layout-row layout-align-start-center">
+      <h3>{{paper-icon "event"}} Bezoek</h3>
+    </div>
+    <div class="case--request--visit--description">
+      <p>Bezoek niet correct aangemaakt. Vink 'Bezoek nodig' opnieuw aan.</p>
+    </div>
+  </section>
+{{/if}}
