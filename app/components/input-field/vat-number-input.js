@@ -9,7 +9,10 @@ export default class VatNumberInputComponent extends Component {
   }
 
   get formattedValue() {
-    return formatVatNumber(this.args.value);
+    if (this.args.value)
+      return formatVatNumber(this.args.value);
+    else
+      return 'BE 0';
   }
 
   @action
