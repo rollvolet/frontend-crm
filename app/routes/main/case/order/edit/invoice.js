@@ -1,7 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
-import { add } from 'ember-math-helpers/helpers/add';
 
 export default class InvoiceRoute extends Route {
   @service case;
