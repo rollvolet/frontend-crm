@@ -31,8 +31,8 @@ export default class Torii extends ToriiAuthenticator {
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify({
-        authorizationCode: data.authorizationCode,
-        redirectUri: data.redirectUri,
+        'authorization-code': data.authorizationCode,
+        'redirect-uri': data.redirectUri,
         scope: config.torii.providers['azure-ad2-oauth2'].scope
       })
     });
@@ -76,8 +76,8 @@ export default class Torii extends ToriiAuthenticator {
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify({
-        refreshToken: refreshToken,
-        redirectUri: config.torii.providers['azure-ad2-oauth2'].redirectUri,
+        'refresh-token': refreshToken,
+        'redirect-uri': config.torii.providers['azure-ad2-oauth2'].redirectUri,
         scope: config.torii.providers['azure-ad2-oauth2'].scope
       })
     });
