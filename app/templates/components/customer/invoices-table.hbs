@@ -36,10 +36,14 @@
     </t.content>
   </DataTable>
 
-  <div class="layout-row layout-align-end">
-    <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.openNewInvoice}}>
-      {{paper-icon "add"}}
-      <PaperTooltip>Maak nieuwe factuur</PaperTooltip>
-    </PaperButton>
-  </div>
+  {{#if @customer.name}}
+    <div class="layout-row layout-align-end">
+      <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.openNewInvoice}}>
+        {{paper-icon "add"}}
+        <PaperTooltip>Maak nieuwe factuur</PaperTooltip>
+      </PaperButton>
+    </div>
+  {{else}}
+    <WarningMessage @message="Klant heeft geen naam. Er kan geen nieuwe factuur gemaakt worden." />
+  {{/if}}
 </div>
