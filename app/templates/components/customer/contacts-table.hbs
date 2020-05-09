@@ -13,7 +13,7 @@
     </PaperButton>
   </div>
 
-  <DataTable @content={{this.contacts}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen contacten" @onClickRow={{this.onClickRow}} @page={{this.filter.page}} @size={{this.filter.size}} @sort={{this.filter.sort}} as |t|>
+  <DataTable @content={{this.contacts}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen contacten" @onClickRow={{@onClickRow}} @page={{this.filter.page}} @size={{this.filter.size}} @sort={{this.filter.sort}} as |t|>
     <t.content as |c|>
       <c.header>
         <ThSortable @field="number" @currentSorting={{this.filter.sort}} @label="Nr" />
