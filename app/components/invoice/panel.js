@@ -88,7 +88,7 @@ export default class InvoicePanelComponent extends Component {
   @task
   *remove() {
     try {
-      const supplements = yield this.args.model.load('supplements');
+      const supplements = yield this.args.model.supplements;
       yield all(supplements.map((suppl) => suppl.destroyRecord()));
 
       const copiedInvoicelines = this.invoicelines.slice(0);
