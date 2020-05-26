@@ -62,5 +62,9 @@ Router.map(function() {
     this.route('accountancy', function() {
       this.route('exports', function() {});
     });
+
+    this.route('reports', function() {
+      this.route('revenue');
+    });
   });
 });

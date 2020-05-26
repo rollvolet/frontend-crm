@@ -1,0 +1,32 @@
+<div class="layout-row layout-align-space-between-center">
+  <h1>Omzet</h1>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th class="u-text-right">Maand</th>
+      {{#each this.years as |year|}}
+        <th class="u-text-right">{{year}}</th>
+      {{/each}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#each this.matrix as |row|}}
+      <tr>
+        <td class="u-text-right">{{row.month}}</td>
+        {{#each row.entries as |entry|}}
+          <td class="u-text-right"><FmtCurrency @value={{entry.amount}} /></td>
+        {{/each}}
+      </tr>
+    {{/each}}
+    <tr class="u-bold">
+      <td class="u-text-right">Totaal</td>
+      {{#each this.totals as |total|}}
+        <td class="u-text-right"><FmtCurrency @value={{total}} /></td>
+      {{/each}}
+    </tr>
+  </tbody>
+</table>
+
+{{outlet}}

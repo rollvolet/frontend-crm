@@ -76,22 +76,12 @@
         <PaperItem @href={{href-to "main.accountancy.exports" (query-params page=0)}}>Exports</PaperItem>
       </PaperList>
 
-      {{!-- {{#paper-list}}
-           {{#paper-subheader}}Rapporten{{/paper-subheader}}
-           {{paper-divider}}
-           {{#paper-item}}Offertes{{/paper-item}}
-           {{paper-divider}}
-           {{#paper-item}}Bestellingen{{/paper-item}}
-           {{/paper-list}}
+      <PaperList>
+        <PaperSubheader>Rapporten</PaperSubheader>
+        <PaperDivider />
+        <PaperItem @href={{href-to "main.reports.revenue"}}>Omzet</PaperItem>
+      </PaperList>
 
-           {{#paper-list}}
-           {{#paper-subheader}}Systeem{{/paper-subheader}}
-           {{paper-divider}}
-           {{#paper-item}}Gebruikers{{/paper-item}}
-           {{paper-divider}}
-           {{#paper-item}}Lijsten{{/paper-item}}
-           {{/paper-list}}
-         --}}
       <PaperList>
         <PaperSubheader>Gebruiker</PaperSubheader>
         <PaperDivider />
