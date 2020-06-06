@@ -79,7 +79,9 @@
       <PaperList>
         <PaperSubheader>Rapporten</PaperSubheader>
         <PaperDivider />
-        <PaperItem @href={{href-to "main.reports.revenue"}}>Omzet</PaperItem>
+        {{#if this.currentSession.hasBoardRole}}
+          <PaperItem @href={{href-to "main.reports.revenue"}}>Omzet</PaperItem>
+        {{/if}}
       </PaperList>
 
       <PaperList>

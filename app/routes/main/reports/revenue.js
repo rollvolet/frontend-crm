@@ -5,6 +5,7 @@ import MonthlySalesEntry from '../../../classes/monthly-sales-entry';
 
 export default class MainReportsRevenueRoute extends Route {
   @service session
+  @service currentSession
 
   queryParams = {
     fromYear: {
@@ -14,6 +15,11 @@ export default class MainReportsRevenueRoute extends Route {
       refreshModel: true
     }
   };
+
+  beforeModel() {
+    if (!this.currentSession.hasBoardRole)
+      this.transitionTo('forbidden');
+  }
 
   async model(params) {
     const endpoint = new URL(`/api/reports/revenue`, window.location.origin);
