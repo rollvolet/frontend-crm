@@ -112,7 +112,8 @@ export default class Torii extends ToriiAuthenticator {
       'expires_at': expiresAt,
       user: {
         account: jwt.preferred_username,
-        name: jwt.name
+        name: jwt.name,
+        roles: jwt.roles
       }
     };
   }

@@ -6,9 +6,22 @@ export default class CurrentSessionService extends Service {
 
   employee = undefined;
 
+  get hasBoardRole() {
+    return this.hasRole('board');
+  }
+
+  get hasMemberRole() {
+    return this.hasRole('member');
+  }
+
+  hasRole(role) {
+    const roles = this.session.data.authenticated.user.roles || [];
+    return roles.includes(role);
+  }
+
   async getCurrentEmployee() {
     if (this.employee === undefined) {
-      const username = this.session.get('data.authenticated.user.name');
+      const username = this.session.data.authenticated.user.name;
       if (username) {
         const firstName = username.split(' ')[0].toLowerCase();
         const employees = await this.store.findAll('employee');
