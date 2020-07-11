@@ -20,4 +20,8 @@ export default class InterventionDetailViewComponent extends Component {
       .sortBy('firstName')
       .mapBy('firstName');
   }
+
+  get isNbOfPersonsWarning() {
+    return this.args.model.nbOfPersons == 2;
+  }
 }

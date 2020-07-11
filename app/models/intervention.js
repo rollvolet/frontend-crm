@@ -5,12 +5,17 @@ import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   date: validator('presence', true),
+  nbOfPersons: validator('number', {
+    allowBlank: true,
+    positive: true
+  })
 });
 
 export default class InterventionModel extends Model.extend(Validations, LoadableModel) {
   @attr('date-midnight') date
   @attr description
   @attr comment
+  @attr('number') nbOfPersons
   @attr('date-midnight') cancellationDate
   @attr cancellationReason
 

@@ -6,6 +6,7 @@
     <div class="layout-row">
       <InputField::EmployeeSelect @label="Bediende" @value={{@model.employee}} @isAdministrative={{true}} @onSelectionChange={{queue (fn (mut @model.employee)) (perform @save)}} class="md-input-wrapper large" />
       <InputField::WayOfEntrySelect @value={{@model.wayOfEntry}} @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform @save)}} class="md-input-wrapper default" />
+      <InputField::DecimalInput @label="Aantal pers." @value={{@model.nbOfPersons}} @errors={{v-get @model "nbOfPersons" "messages"}} @onChange={{queue (fn (mut @model.nbOfPersons)) (perform @save)}} @class="small u-rel-top-normal" />
     </div>
     <div class="layout-row">
       <InputField::EmployeeSelect @label="Techniekers" @value={{@model.technicians}} @multiple={{true}} @isTechnician={{true}} @isOnRoad={{true}} @isAdministrative={{true}} @sort={{array "functionSort:desc"}} @onSelectionChange={{queue (fn this.setTechnicians) (perform @save)}} class="md-input-wrapper xxlarge" />
