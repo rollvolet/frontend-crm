@@ -14,6 +14,7 @@ export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
     visitor: { refreshModel: true },
     reference: { refreshModel: true },
     withoutInvoice: { refreshModel: true },
+    onlyNotCanceled: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
     cCity: { refreshModel: true },
@@ -33,6 +34,7 @@ export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
         'offer-number': params.offerNumber,
         reference: params.reference,
         invoice: !params.withoutInvoice,
+        canceled: !params.onlyNotCanceled,
         offer: {
           request: {
             visitor: params.visitor,

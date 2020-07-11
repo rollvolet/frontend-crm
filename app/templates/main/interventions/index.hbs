@@ -1,7 +1,7 @@
 <h1>Interventies</h1>
 
 <div class="interventions-data-table">
-  <Intervention::DataTableFilter @number={{this.number}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutInvoice={{this.withoutInvoice}} @onChange={{fn this.applyFilter}} />
+  <Intervention::DataTableFilter @number={{this.number}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutInvoice={{this.withoutInvoice}} @onlyNotCanceled={{this.onlyNotCanceled}} @onChange={{fn this.applyFilter}} />
 
   <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
     <t.content as |c|>

@@ -49,7 +49,7 @@
           Aanvragen
         </PaperItem>
         <PaperDivider />
-        <PaperItem @href={{href-to "main.interventions.index" (query-params page=0 number=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutInvoice=true)}}>
+        <PaperItem @href={{href-to "main.interventions.index" (query-params page=0 number=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutInvoice=true onlyNotCanceled=true)}}>
           Interventies
         </PaperItem>
         <PaperDivider />
@@ -57,7 +57,7 @@
           Offertes
         </PaperItem>
         <PaperDivider />
-        <PaperItem @href={{href-to "main.orders.index" (query-params page=0 reference=undefined offerNumber=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutInvoice=undefined)}}>
+        <PaperItem @href={{href-to "main.orders.index" (query-params page=0 reference=undefined offerNumber=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutInvoice=undefined onlyNotCanceled=undefined)}}>
           Bestellingen
         </PaperItem>
         <PaperDivider />

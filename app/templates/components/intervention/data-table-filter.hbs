@@ -36,6 +36,9 @@
             <PaperSwitch @value={{this.filter.withoutInvoice}} @primary={{true}} @onChange={{fn this.setFilter "withoutInvoice"}}>
               Nog geen factuur
             </PaperSwitch>
+            <PaperSwitch @value={{this.filter.onlyNotCanceled}} @primary={{true}} @onChange={{fn this.setFilter "onlyNotCanceled"}}>
+              Niet afgesloten
+            </PaperSwitch>
           </div>
         </div>
       </div>
