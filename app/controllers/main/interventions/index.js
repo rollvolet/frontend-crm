@@ -8,14 +8,21 @@ export default class IndexController extends Controller.extend(DefaultQueryParam
   sort = '-date'
 
   @action
-  clickRow(row) {
-    const customerId = row.get('customer.id');
-    const interventionId = row.get('id');
-    this.transitionToRoute('main.case.intervention.edit', customerId, interventionId);
+  clickRow(row, e) {
+    if (e.target.getAttribute('role') != 'button') {
+      const customerId = row.get('customer.id');
+      const interventionId = row.get('id');
+      this.transitionToRoute('main.case.intervention.edit', customerId, interventionId);
+    }
   }
 
   @action
   applyFilter(filter) {
     applyFilterParams.bind(this)(filter);
+  }
+
+  @action
+  toggleDescription(row, e) {
+    row.set('expandDescription', !row.expandDescription);
   }
 }

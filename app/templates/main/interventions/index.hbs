@@ -36,7 +36,9 @@
           <td>{{row.customer.postalCode}}</td>
           <td>{{row.customer.city}}</td>
         {{/if}}
-        <td class="truncate">{{row.description}}</td>
+        <td class="{{unless row.expandDescription "truncate"}}" role="button" {{on "click" (fn this.toggleDescription row)}}>
+          {{row.description}}
+        </td>
       </c.body>
     </t.content>
   </DataTable>
