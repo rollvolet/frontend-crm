@@ -1,0 +1,19 @@
+<FileUpload
+  @name={{this.fieldName}}
+  @accept="application/pdf"
+  @class="certificate-upload"
+  @onfileadd={{@onUpload}}
+  as |queue|>
+  {{#if queue.files.length}}
+    <PaperProgressCircular @diameter={{25}} />
+  {{else}}
+    {{#if @iconButton}}
+      <i class="material-icons md-18">cloud_upload</i>
+      <PaperTooltip>BTW-attest opladen</PaperTooltip>
+    {{else}}
+      <span class="md-default-theme md-button md-primary md-raised">
+        BTW-attest opladen
+      </span>
+    {{/if}}
+  {{/if}}
+</FileUpload>

@@ -1,0 +1,12 @@
+<PaperButton
+  @onClick={{@onClick}}
+  @iconButton={{@iconButton}}
+  @raised={{not @iconButton}}
+  @primary={{not @iconButton}}>
+  {{#if @iconButton}}
+    {{paper-icon "delete"}}
+    <PaperTooltip>BTW-attest verwijderen</PaperTooltip>
+  {{else}}
+    BTW-attest verwijderen
+  {{/if}}
+</PaperButton>

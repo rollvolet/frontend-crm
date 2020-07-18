@@ -1,0 +1,41 @@
+{{#if @show}}
+  <PaperDialog
+    @class="flex-50 invoice-document-dialog"
+    @onClose={{fn @onClose}}
+    @clickOutsideToClose={{true}}
+    @parent=".main-outlet"
+    @origin=".main-outlet">
+    <PaperToolbar>
+      <PaperToolbarTools>
+        <h2>BTW-attest ontbreekt</h2><span class="flex"></span>
+        <PaperButton @iconButton={{true}} @onClick={{fn @onClose}}>
+          <PaperIcon @icon="close" />
+        </PaperButton>
+      </PaperToolbarTools>
+    </PaperToolbar>
+
+    <PaperDialogContent>
+      {{#if this.showRecycle}}
+        <p>Hier gaan we attesten recycleren. Jeej!</p>
+      {{else}}
+        <div class="panel--vat-certificate">
+          <span>
+            <PaperIcon @class="error" @icon="error outline" @size={{28}} />
+            <PaperTooltip>BTW-attest ontbreekt</PaperTooltip>
+          </span>
+          <p>Deze factuur vereist een BTW-attest, maar er is nog geen attest opgeladen.</p>
+          <div>
+            <Certificate::Buttons
+              @model={{@model}}
+              @onRecycle={{fn this.openRecycle}} />
+          </div>
+        </div>
+      {{/if}}
+    </PaperDialogContent>
+
+    <PaperDialogActions @class="layout-row">
+      <span class="flex"></span>
+      <PaperButton @onClick={{fn @onClose}}>Factuur maken</PaperButton>
+    </PaperDialogActions>
+  </PaperDialog>
+{{/if}}

@@ -1,0 +1,12 @@
+<PaperButton
+  @onClick={{@onClick}}
+  @iconButton={{@iconButton}}
+  @raised={{not @iconButton}}
+  @primary={{not @iconButton}}>
+  {{#if @iconButton}}
+    {{paper-icon "find in page"}}
+    <PaperTooltip>BTW-attest bekijken</PaperTooltip>
+  {{else}}
+    BTW-attest bekijken
+  {{/if}}
+</PaperButton>

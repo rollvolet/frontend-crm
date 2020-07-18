@@ -93,4 +93,7 @@
 {{/if}}
 
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />
-<MissingCertificateDialog @show={{this.showMissingCertificateDialog}} @model={{@model}} @onClose={{perform this.generateInvoiceDocument}} />
+<Certificate::Dialog
+  @show={{this.showMissingCertificateDialog}}
+  @model={{@model}}
+  @onClose={{perform this.generateInvoiceDocument}} />

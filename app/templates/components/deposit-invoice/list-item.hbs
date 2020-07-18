@@ -81,4 +81,7 @@
   </div>
 </div>
 
-<MissingCertificateDialog @show={{this.showMissingCertificateDialog}} @model={{@model}} @onClose={{perform this.generateInvoiceDocument}} />
+<Certificate::Dialog
+  @show={{this.showMissingCertificateDialog}}
+  @model={{@model}}
+  @onClose={{perform this.generateInvoiceDocument}} />

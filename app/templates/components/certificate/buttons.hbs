@@ -1,0 +1,45 @@
+<div class="certificate-document-buttons layout-row layout-align-start-center">
+  {{#if this.isRunning}}
+    <PaperProgressCircular @diameter={{20}} />
+  {{else}}
+    <div class="certificate--status">
+      {{#if @model.certificateReceived}}
+        <span>
+          <PaperIcon @class="success" @icon="done" @size={{32}} />
+          <PaperTooltip>In orde</PaperTooltip>
+        </span>
+      {{else}}
+        <span>
+          <PaperIcon @class="error" @icon="error outline" @size={{28}} />
+          <PaperTooltip>BTW-attest ontbreekt</PaperTooltip>
+        </span>
+      {{/if}}
+    </div>
+
+    <div class="certificate--buttons">
+      <Certificate::BtnGenerateTemplate
+        @onClick={{perform this.generateTemplate}}
+        @iconButton={{@iconButton}} />
+
+      {{#if @model.certificateReceived}}
+        <Certificate::BtnDownload
+          @onClick={{fn this.download}}
+          @iconButton={{@iconButton}} />
+        <Certificate::BtnDelete
+          @onClick={{perform this.delete}}
+          @iconButton={{@iconButton}} />
+      {{else}}
+        <Certificate::BtnRecycle
+          @onClick={{@onRecycle}}
+          @iconButton={{@iconButton}} />
+        <Certificate::BtnUpload
+          @onUpload={{perform this.upload}}
+          @iconButton={{@iconButton}} />
+        {{#if this.hasUploadError}}
+          {{paper-icon "error" primary=true}}
+          <PaperTooltip>Bestand niet correct opgeladen</PaperTooltip>
+        {{/if}}
+      {{/if}}
+    </div>
+  {{/if}}
+</div>
