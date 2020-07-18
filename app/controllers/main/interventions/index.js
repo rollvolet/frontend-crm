@@ -22,7 +22,7 @@ export default class IndexController extends Controller.extend(DefaultQueryParam
   }
 
   @action
-  toggleDescription(row, e) {
+  toggleDescription(row) {
     row.set('expandDescription', !row.expandDescription);
   }
 }
