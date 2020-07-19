@@ -1,14 +1,23 @@
 {{#if @show}}
   <PaperDialog
-    @class="flex-50 invoice-document-dialog"
-    @onClose={{fn @onClose}}
+    @class="invoice-document-dialog"
+    @onClose={{fn this.close}}
     @clickOutsideToClose={{true}}
     @parent=".main-outlet"
     @origin=".main-outlet">
     <PaperToolbar>
       <PaperToolbarTools>
-        <h2>BTW-attest ontbreekt</h2><span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{fn @onClose}}>
+        <h2>
+          {{#if this.showRecycle}}
+            BTW-attest opzoeken
+          {{else if @model.certificateReceived}}
+            Factuur maken
+          {{else}}
+            BTW-attest ontbreekt
+          {{/if}}
+        </h2>
+        <span class="flex"></span>
+        <PaperButton @iconButton={{true}} @onClick={{fn this.close}}>
           <PaperIcon @icon="close" />
         </PaperButton>
       </PaperToolbarTools>
@@ -16,14 +25,26 @@
 
     <PaperDialogContent>
       {{#if this.showRecycle}}
-        <p>Hier gaan we attesten recycleren. Jeej!</p>
+        <Certificate::Recycle
+          @model={{@model}}
+          @onSelect={{perform this.recycle}} />
       {{else}}
         <div class="panel--vat-certificate">
-          <span>
-            <PaperIcon @class="error" @icon="error outline" @size={{28}} />
-            <PaperTooltip>BTW-attest ontbreekt</PaperTooltip>
-          </span>
-          <p>Deze factuur vereist een BTW-attest, maar er is nog geen attest opgeladen.</p>
+          <div class="layout-row layout-align-start-center certificate--status">
+            {{#if @model.certificateReceived}}
+              <span>
+                <PaperIcon @class="success" @icon="done" @size={{32}} />
+                <PaperTooltip>In orde</PaperTooltip>
+              </span>
+              <p>Er is een BTW-attest gekoppeld.</p>
+            {{else}}
+              <span>
+                <PaperIcon @class="error" @icon="error outline" @size={{28}} />
+                <PaperTooltip>BTW-attest ontbreekt</PaperTooltip>
+              </span>
+              <p>Deze factuur vereist een BTW-attest, maar er is nog geen attest opgeladen.</p>
+            {{/if}}
+          </div>
           <div>
             <Certificate::Buttons
               @model={{@model}}
@@ -33,9 +54,11 @@
       {{/if}}
     </PaperDialogContent>
 
-    <PaperDialogActions @class="layout-row">
-      <span class="flex"></span>
-      <PaperButton @onClick={{fn @onClose}}>Factuur maken</PaperButton>
-    </PaperDialogActions>
+    {{#unless this.showRecycle}}
+      <PaperDialogActions @class="layout-row">
+        <span class="flex"></span>
+        <PaperButton @onClick={{fn this.close}}>Factuur maken</PaperButton>
+      </PaperDialogActions>
+    {{/unless}}
   </PaperDialog>
 {{/if}}

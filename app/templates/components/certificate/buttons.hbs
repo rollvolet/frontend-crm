@@ -2,19 +2,21 @@
   {{#if this.isRunning}}
     <PaperProgressCircular @diameter={{20}} />
   {{else}}
-    <div class="certificate--status">
-      {{#if @model.certificateReceived}}
-        <span>
-          <PaperIcon @class="success" @icon="done" @size={{32}} />
-          <PaperTooltip>In orde</PaperTooltip>
-        </span>
-      {{else}}
-        <span>
-          <PaperIcon @class="error" @icon="error outline" @size={{28}} />
-          <PaperTooltip>BTW-attest ontbreekt</PaperTooltip>
-        </span>
-      {{/if}}
-    </div>
+    {{#if @iconButton}}
+      <div class="certificate--status">
+        {{#if @model.certificateReceived}}
+          <span>
+            <PaperIcon @class="success" @icon="done" @size={{32}} />
+            <PaperTooltip>In orde</PaperTooltip>
+          </span>
+        {{else}}
+          <span>
+            <PaperIcon @class="error" @icon="error outline" @size={{28}} />
+            <PaperTooltip>BTW-attest ontbreekt</PaperTooltip>
+          </span>
+        {{/if}}
+      </div>
+    {{/if}}
 
     <div class="certificate--buttons">
       <Certificate::BtnGenerateTemplate

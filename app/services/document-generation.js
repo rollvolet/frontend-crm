@@ -48,6 +48,16 @@ export default class DocumentGenerationService extends Service {
     this.downloadCertificateTemplate(invoice);
   }
 
+  async recycleCertificate(sourceInvoice, targetInvoice) {
+    const resource = targetInvoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    const body = {
+      id: sourceInvoice.get('id'),
+      type: sourceInvoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices'
+    };
+    await this._generate(`/api/${resource}/${targetInvoice.get('id')}/certificate-recyclations`, JSON.stringify(body));
+  }
+
+
   // Document uploads
 
   uploadProductionTicket(model, file) {
@@ -143,13 +153,15 @@ export default class DocumentGenerationService extends Service {
   }
 
   // Core helpers
-  async _generate(url) {
+  async _generate(url, body = '') {
     const { access_token } = this.get('session.data.authenticated');
     const result = await fetch(url, {
       method: 'POST',
       headers: new Headers({
-        Authorization: `Bearer ${access_token}`
-      })
+        Authorization: `Bearer ${access_token}`,
+        'Content-Type': 'application/json'
+      }),
+      body: body
     });
 
     if (result.ok)
