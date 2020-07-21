@@ -137,8 +137,10 @@ input {
     position: relative;
     color: paper-color('grey', '600');
     cursor: pointer;
-    top: 5px;
-    left: -6px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    top: 6px;
   }
 }
 

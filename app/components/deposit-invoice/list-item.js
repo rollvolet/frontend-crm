@@ -53,4 +53,9 @@ export default class DepositInvoiceListItemComponent extends Component {
   downloadInvoiceDocument() {
     this.documentGeneration.downloadInvoiceDocument(this.args.model);
   }
+
+  @action
+  closeCertificateDialog() {
+    this.showMissingCertificateDialog = false;
+  }
 }

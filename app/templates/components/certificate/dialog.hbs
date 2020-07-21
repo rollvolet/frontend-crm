@@ -1,7 +1,7 @@
 {{#if @show}}
   <PaperDialog
     @class="invoice-document-dialog"
-    @onClose={{fn this.close}}
+    @onClose={{fn @onClose}}
     @clickOutsideToClose={{true}}
     @parent=".main-outlet"
     @origin=".main-outlet">
@@ -17,7 +17,7 @@
           {{/if}}
         </h2>
         <span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{fn this.close}}>
+        <PaperButton @iconButton={{true}} @onClick={{fn @onClose}}>
           <PaperIcon @icon="close" />
         </PaperButton>
       </PaperToolbarTools>
@@ -54,11 +54,11 @@
       {{/if}}
     </PaperDialogContent>
 
-    {{#unless this.showRecycle}}
+    {{#if @onGenerateInvoiceDocument}}
       <PaperDialogActions @class="layout-row">
         <span class="flex"></span>
-        <PaperButton @onClick={{fn this.close}}>Factuur maken</PaperButton>
+        <PaperButton @onClick={{fn @onGenerateInvoiceDocument}}>Factuur maken</PaperButton>
       </PaperDialogActions>
-    {{/unless}}
+    {{/if}}
   </PaperDialog>
 {{/if}}

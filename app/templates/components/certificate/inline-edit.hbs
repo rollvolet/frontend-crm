@@ -1,0 +1,12 @@
+<div>
+  <Certificate::Buttons
+    @model={{@model}}
+    @iconButton={{true}}
+    @onRecycle={{fn this.openRecycle}} />
+</div>
+
+<Certificate::Dialog
+  @show={{this.showRecycleDialog}}
+  @model={{@model}}
+  @onClose={{fn this.closeDialog}}
+  @showRecycle={{true}} />

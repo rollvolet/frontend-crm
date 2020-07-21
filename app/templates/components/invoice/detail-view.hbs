@@ -25,7 +25,7 @@
     </DetailListItem>
     {{#if @model.certificateRequired}}
       <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
-        <CertificateDocumentButtons @model={{@model}} />
+        <Certificate::InlineEdit @model={{@model}} />
       </DetailListItem>
     {{/if}}
     <DetailListItem @label="Referentie">

@@ -9,6 +9,11 @@ export default class CertificateDialogComponent extends Component {
   @service documentGeneration
   @tracked showRecycle = false;
 
+  constructor() {
+    super(...arguments);
+    this.showRecycle = this.args.showRecycle;
+  }
+
   @task
   *recycle(sourceInvoice) {
     try {
@@ -26,13 +31,5 @@ export default class CertificateDialogComponent extends Component {
   @action
   openRecycle() {
     this.showRecycle = true;
-  }
-
-  @action
-  close() {
-    if (this.showRecycle)
-      this.showRecycle = false;
-    else
-      this.args.onClose();
   }
 }

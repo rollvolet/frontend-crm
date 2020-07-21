@@ -192,4 +192,9 @@ export default class InvoicePanelComponent extends Component {
     this.documentGeneration.downloadInvoiceDocument(this.args.model);
   }
 
+  @action
+  closeCertificateDialog() {
+    this.showMissingCertificateDialog = false;
+  }
+
 }

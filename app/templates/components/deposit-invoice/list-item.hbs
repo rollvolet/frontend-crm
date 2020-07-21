@@ -74,7 +74,7 @@
       </DetailListItem>
       {{#if @model.certificateRequired}}
         <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
-          <CertificateDocumentButtons @model={{@model}} />
+          <Certificate::InlineEdit @model={{@model}} />
         </DetailListItem>
       {{/if}}
     </div>
@@ -84,4 +84,5 @@
 <Certificate::Dialog
   @show={{this.showMissingCertificateDialog}}
   @model={{@model}}
-  @onClose={{perform this.generateInvoiceDocument}} />
+  @onClose={{fn this.closeCertificateDialog}}
+  @onGenerateInvoiceDocument={{perform this.generateInvoiceDocument}} />

@@ -97,4 +97,5 @@
 <Certificate::Dialog
   @show={{this.showMissingCertificateDialog}}
   @model={{@model}}
-  @onClose={{perform this.generateInvoiceDocument}} />
+  @onClose={{fn this.closeCertificateDialog}}
+  @onGenerateInvoiceDocument={{perform this.generateInvoiceDocument}} />
