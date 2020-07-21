@@ -28,7 +28,8 @@ export default class CertificateButtonsComponent extends Component {
       yield this.args.model.save();
     } catch (e) {
       warn(`Error while uploading certificate: ${e.message || JSON.stringify(e)}`, { id: 'failure.upload' } );
-      file.queue.remove(file);
+      if (file.queue)
+        file.queue.remove(file);
       this.args.model.certificateReceived = false;
       this.hasUploadedError = true;
     }

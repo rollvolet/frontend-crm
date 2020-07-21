@@ -34,7 +34,8 @@ export default class CertificateDocumentButtons extends Component {
       yield this.model.save();
     } catch (e) {
       warn(`Error while uploading certificate: ${e.message || JSON.stringify(e)}`, { id: 'failure.upload' } );
-      file.queue.remove(file);
+      if (file.queue)
+        file.queue.remove(file);
       this.model.set('certificateReceived', false);
       this.set('hasUploadError', true);
     }
