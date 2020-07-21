@@ -1,7 +1,14 @@
 <div class="case--deposit-invoices--detail-panel">
   <PaperDivider />
   <div class="layout-row layout-align-space-between-center">
-    <h3>Voorschotfactuur {{format-invoice-number @model.number}}</h3>
+    <div class="layout-row layout-align-start-center">
+      <h3>Voorschotfactuur {{format-invoice-number @model.number}}</h3>
+      {{#if @model.isPaid}}
+        <div class="u-margin-left-normal badge badge--success">Betaald</div>
+      {{else}}
+        <div class="u-margin-left-normal badge badge--failure">Niet betaald</div>
+      {{/if}}
+    </div>
     <div>
       {{#if this.generateInvoiceDocument.isRunning}}
         <PaperProgressCircular @diameter={{18}} />

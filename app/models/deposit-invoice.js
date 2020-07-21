@@ -53,6 +53,10 @@ export default class InvoiceModel extends Model.extend(Validations, LoadableMode
     return this.bookingDate != null;
   }
 
+  get isPaid() {
+    return this.paymentDate != null;
+  }
+
   get bankReference() {
     const base = this.isCreditNote ? 8000000000 : 5000000000;
     const ref = base + this.number;

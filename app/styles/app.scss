@@ -105,6 +105,20 @@ md-input-container .md-errors-spacer {
   }
 }
 
+.badge {
+  padding: 5px 7px;
+  border-radius: 7px;
+  color: #FFF;
+
+  &.badge--success {
+    background-color: paper-color('green');
+  }
+
+  &.badge--failure {
+    background-color: paper-color('red');
+  }
+}
+
 .telephone-edit-table {
   td {
     md-input-container {

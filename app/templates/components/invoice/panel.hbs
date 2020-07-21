@@ -1,9 +1,16 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
-    <div>
+    <div class="layout-row layout-align-start-center">
       <h2>
         {{#if @editMode}}Bewerk details{{else}}Overzicht{{/if}} factuur {{format-invoice-number @model.number}}
       </h2>
+      {{#unless @editMode}}
+        {{#if @model.isPaid}}
+          <div class="u-margin-left-normal badge badge--success">Betaald</div>
+        {{else}}
+          <div class="u-margin-left-normal badge badge--failure">Niet betaald</div>
+        {{/if}}
+      {{/unless}}
     </div>
     {{#if @editMode}}
       <SaveStatusIcon @model={{@model}} @task={{this.save}} />
