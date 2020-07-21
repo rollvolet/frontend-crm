@@ -22,10 +22,12 @@
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
     {{else}}
-      <PaperButton @onClick={{fn @onOpenEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
-        {{paper-icon "edit mode"}}
-        <PaperTooltip>Aanpassen</PaperTooltip>
-      </PaperButton>
+      {{#unless this.isDisabledEdit}}
+        <PaperButton @onClick={{fn @onOpenEdit}} @iconButton={{true}}>
+          {{paper-icon "edit mode"}}
+          <PaperTooltip>Aanpassen</PaperTooltip>
+        </PaperButton>
+      {{/unless}}
     {{/if}}
   </div>
 </div>
@@ -47,7 +49,7 @@
   </div>
 {{else}}
   {{#if @model.isBooked}}
-    <WarningMessage @message="Factuur reeds geboekt. Geen wijzigingen meer mogelijk." />
+    <WarningMessage @message="Factuur reeds geboekt. Enkel beperkte wijzigingen zijn nog mogelijk." />
   {{/if}}
   {{#if @editMode}}
     <Invoice::DetailEdit @model={{@model}} @save={{this.save}} @onChangeVatRate={{perform this.updateInvoicelinesVatRate}} />
@@ -84,7 +86,7 @@
         {{/if}}
       </div>
     </div>
-    {{#if @editMode}}
+    {{#if (and @editMode (not @model.isBooked))}}
       <Invoice::DocumentEdit @model={{@model}} @save={{this.save}} />
     {{else}}
       <Invoice::DocumentView @model={{@model}} />

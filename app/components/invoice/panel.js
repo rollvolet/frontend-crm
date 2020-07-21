@@ -29,7 +29,7 @@ export default class InvoicePanelComponent extends Component {
   }
 
   get isDisabledEdit() {
-    return this.args.model.isMasteredByAccess || this.args.model.isBooked;
+    return this.args.model.isMasteredByAccess;
   }
 
   get isEnabledDelete() {

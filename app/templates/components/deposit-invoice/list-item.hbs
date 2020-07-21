@@ -14,7 +14,7 @@
           {{paper-icon "restore page"}}
           <PaperTooltip>Voorschotfactuur maken</PaperTooltip>
         </PaperButton>
-        {{#if (and (not @isDisabledEdit) (not @model.isBooked))}}
+        {{#if (not @isDisabledEdit)}}
           <PaperButton @onClick={{fn @edit @model}} @iconButton={{true}}>
             {{paper-icon "edit mode"}}
             <PaperTooltip>Bewerken</PaperTooltip>
@@ -25,15 +25,13 @@
               <PaperTooltip>Crediteer voorschotfactuur</PaperTooltip>
             </PaperButton>
           {{/unless}}
-          <PaperButton @onClick={{perform @remove @model}} @iconButton={{true}}>
-            {{paper-icon "delete"}}
-            <PaperTooltip>Verwijderen</PaperTooltip>
-          </PaperButton>
+          {{#unless @model.isBooked}}
+            <PaperButton @onClick={{perform @remove @model}} @iconButton={{true}}>
+              {{paper-icon "delete"}}
+              <PaperTooltip>Verwijderen</PaperTooltip>
+            </PaperButton>
+          {{/unless}}
         {{/if}}
-      {{/if}}
-      {{#if @model.isBooked}}
-        {{paper-icon "lock"}}
-        <PaperTooltip>Geboekt in boekhouding</PaperTooltip>
       {{/if}}
     </div>
   </div>

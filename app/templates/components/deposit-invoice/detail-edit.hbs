@@ -1,21 +1,37 @@
-<div class="layout-row layout-align-start-start">
-  <section class="layout-column">
-    <div class="layout-row">
-      <PaperInput @label="Datum" @value={{@model.invoiceDateStr}} @type="date" @required="style" @errors={{v-get @model "invoiceDate" "messages"}} @onChange={{queue (fn (mut @model.invoiceDateStr)) (perform @save)}} @class="default" />
-      <InputField::DecimalInput @label="Bedrag (€)" @value={{@model.baseAmount}} @errors={{v-get @model "baseAmount" "messages"}} @onChange={{queue (fn (mut @model.baseAmount)) (perform @save)}} @isRequired={{true}} @class="small" />
-      <div class="layout-row layout-align-start-center">
-        <PaperCheckbox @label="Creditnota" @value={{@model.isCreditNote}} @onChange={{queue (fn (mut @model.isCreditNote)) (perform @save)}} />
+{{#if @model.isBooked}}
+  <WarningMessage @message="Factuur reeds geboekt. Enkel beperkte wijzigingen zijn nog mogelijk." />
+  <div class="layout-row layout-align-start-start">
+    <section class="layout-column">
+      <div class="layout-row">
+        <PaperInput @label="Betaald" @value={{@model.paymentDateStr}} @type="date" @onChange={{queue (fn (mut @model.paymentDateStr)) (perform @save)}} @class="default" />
       </div>
-    </div>
-    <div class="layout-row">
-    </div>
-    <div class="layout-row">
-      <PaperInput @label="Vervaldag" @value={{@model.dueDateStr}} @type="date" @onChange={{queue (fn (mut @model.dueDateStr)) (perform @save)}} @class="default" />
-      <PaperInput @label="Betaald" @value={{@model.paymentDateStr}} @type="date" @onChange={{queue (fn (mut @model.paymentDateStr)) (perform @save)}} @class="default" />
-    </div>
-    <div class="layout-row">
-      <PaperInput @label="Referentie klant" @value={{@model.reference}} @onChange={{fn (mut @model.reference)}} @onBlur={{perform @save}} @class="xlarge" />
-    </div>
+      <div class="layout-row">
+        <PaperInput @label="Opmerking" @value={{@model.comment}} @onChange={{fn (mut @model.comment)}} @onBlur={{perform @save}} @textarea={{true}} @passThru={{hash rows=3}} @class="xxlarge" />
+      </div>
+    </section>
+    <section class="case--right-panel flex-noshrink layout-column">
+
+    </section>
+  </div>
+{{else}}
+  <div class="layout-row layout-align-start-start">
+    <section class="layout-column">
+      <div class="layout-row">
+        <PaperInput @label="Datum" @value={{@model.invoiceDateStr}} @type="date" @required="style" @errors={{v-get @model "invoiceDate" "messages"}} @onChange={{queue (fn (mut @model.invoiceDateStr)) (perform @save)}} @class="default" />
+        <InputField::DecimalInput @label="Bedrag (€)" @value={{@model.baseAmount}} @errors={{v-get @model "baseAmount" "messages"}} @onChange={{queue (fn (mut @model.baseAmount)) (perform @save)}} @isRequired={{true}} @class="small" />
+        <div class="layout-row layout-align-start-center">
+          <PaperCheckbox @label="Creditnota" @value={{@model.isCreditNote}} @onChange={{queue (fn (mut @model.isCreditNote)) (perform @save)}} />
+        </div>
+      </div>
+      <div class="layout-row">
+      </div>
+      <div class="layout-row">
+        <PaperInput @label="Vervaldag" @value={{@model.dueDateStr}} @type="date" @onChange={{queue (fn (mut @model.dueDateStr)) (perform @save)}} @class="default" />
+        <PaperInput @label="Betaald" @value={{@model.paymentDateStr}} @type="date" @onChange={{queue (fn (mut @model.paymentDateStr)) (perform @save)}} @class="default" />
+      </div>
+      <div class="layout-row">
+        <PaperInput @label="Referentie klant" @value={{@model.reference}} @onChange={{fn (mut @model.reference)}} @onBlur={{perform @save}} @class="xlarge" />
+      </div>
     <div class="layout-row">
       <PaperInput @label="Opmerking" @value={{@model.comment}} @onChange={{fn (mut @model.comment)}} @onBlur={{perform @save}} @textarea={{true}} @passThru={{hash rows=3}} @class="xxlarge" />
     </div>
@@ -24,3 +40,4 @@
 
   </section>
 </div>
+{{/if}}
