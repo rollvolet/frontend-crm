@@ -1,5 +1,5 @@
 import Service, { inject as service } from '@ember/service';
-import fetch, { Headers } from 'fetch';
+import fetch from 'fetch';
 import { assert, warn } from '@ember/debug';
 import Case from '../models/case';
 import { keepLatestTask, task } from 'ember-concurrency-decorators';
@@ -27,7 +27,6 @@ const calcQueryParam = function(routeUrl, key, regexKey) {
 
 export default class CaseService extends Service.extend(Evented) {
   @service router
-  @service session
   @service store
 
   @tracked isInvalid = false
@@ -81,13 +80,7 @@ export default class CaseService extends Service.extend(Evented) {
     else if (currentRoute.includes('case.invoice'))
       queryParam = calcQueryParam(currentUrl, 'invoiceId');
 
-    const { access_token } = this.get('session.data.authenticated');
-    const response = yield fetch(`/api/cases?${queryParam}`, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Bearer ${access_token}`
-      })
-    });
+    const response = yield fetch(`/api/cases?${queryParam}`);
 
     if (response.ok) {
       const responseBody = yield response.json();
@@ -209,7 +202,6 @@ export default class CaseService extends Service.extend(Evented) {
 
   @task
   *_updateContactAndBuilding(contact, building) {
-    const { access_token } = this.get('session.data.authenticated');
     const body = {
       contactId: contact && contact.get('id'),
       buildingId: building && building.get('id'),
@@ -219,6 +211,6 @@ export default class CaseService extends Service.extend(Evented) {
       orderId: this.current.orderId,
       invoiceId: this.current.invoiceId
     };
-    yield updateContactAndBuildingRequest(access_token, body);
+    yield updateContactAndBuildingRequest(body);
   }
 }

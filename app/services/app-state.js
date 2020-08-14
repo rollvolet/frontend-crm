@@ -5,7 +5,6 @@ import config from '../config/environment';
 
 export default class AppStateService extends Service {
   @service router
-  @service session
 
   lastError = null;
   lastSuccessUrl = null;
@@ -14,11 +13,9 @@ export default class AppStateService extends Service {
     this.set('lastError', error);
     this.set('lastSuccessUrl', this.router.currentURL);
 
-    const { access_token } = this.session.data.authenticated;
     fetch('/api/error-notifications', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${access_token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({

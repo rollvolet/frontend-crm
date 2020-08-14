@@ -1,8 +1,7 @@
-import Service, { inject } from '@ember/service';
+import Service from '@ember/service';
 import fetch, { Headers } from 'fetch';
 
 export default class DocumentGenerationService extends Service {
-  @inject session
 
   // Document generation
 
@@ -61,46 +60,28 @@ export default class DocumentGenerationService extends Service {
   // Document uploads
 
   uploadProductionTicket(model, file) {
-    const { access_token } = this.get('session.data.authenticated');
     const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
-    return file.upload(`/api/${resource}/${model.id}/production-ticket`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`
-      }
-    });
+    return file.upload(`/api/${resource}/${model.id}/production-ticket`);
   }
 
   uploadCertificate(invoice, file) {
-    const { access_token } = this.get('session.data.authenticated');
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    return file.upload(`/api/${resource}/${invoice.id}/certificate`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`
-      }
-    });
+    return file.upload(`/api/${resource}/${invoice.id}/certificate`);
   }
 
   // Document removal
 
   deleteProductionTicket(model) {
-    const { access_token } = this.get('session.data.authenticated');
     const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
     return fetch(`/api/${resource}/${model.id}/production-ticket`, {
-      method: 'DELETE',
-      headers: new Headers({
-        Authorization: `Bearer ${access_token}`
-      })
+      method: 'DELETE'
     });
   }
 
   deleteCertificate(invoice) {
-    const { access_token } = this.get('session.data.authenticated');
     const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     return fetch(`/api/${resource}/${invoice.id}/certificate`, {
-      method: 'DELETE',
-      headers: new Headers({
-        Authorization: `Bearer ${access_token}`
-      })
+      method: 'DELETE'
     });
   }
 
@@ -154,11 +135,9 @@ export default class DocumentGenerationService extends Service {
 
   // Core helpers
   async _generate(url, body = '') {
-    const { access_token } = this.get('session.data.authenticated');
     const result = await fetch(url, {
       method: 'POST',
       headers: new Headers({
-        Authorization: `Bearer ${access_token}`,
         'Content-Type': 'application/json'
       }),
       body: body

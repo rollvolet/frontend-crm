@@ -3,12 +3,11 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { keepLatestTask, task } from 'ember-concurrency-decorators';
-import fetch, { Headers } from 'fetch';
+import fetch from 'fetch';
 import { isEmpty } from '@ember/utils';
 
 export default class PlanningPanelComponent extends Component {
   @service case
-  @service session
 
   @tracked editMode
   @tracked calendarSubject
@@ -53,13 +52,7 @@ export default class PlanningPanelComponent extends Component {
   @task
   *loadCalendarEvent() {
     if (this.args.model.isPlanned) {
-      const { access_token } = this.session.get('data.authenticated');
-      const result = yield fetch(`/api/calendars/planning/${this.args.model.planningMsObjectId}/subject`, {
-        method: 'GET',
-        headers: new Headers({
-          Authorization: `Bearer ${access_token}`
-        })
-      });
+      const result = yield fetch(`/api/calendars/planning/${this.args.model.planningMsObjectId}/subject`);
 
       if (result.ok) {
         const { subject } = yield result.json();
@@ -85,13 +78,9 @@ export default class PlanningPanelComponent extends Component {
 
   @keepLatestTask
   *synchronize() {
-    const { access_token } = this.session.get('data.authenticated');
     const resource = this.args.model.constructor.modelName == 'order' ? 'orders' : 'interventions';
     yield fetch(`/api/${resource}/${this.args.model.id}/planning-event`, {
       method: 'PUT',
-      headers: new Headers({
-        Authorization: `Bearer ${access_token}`
-      })
     });
 
     if (this.isNotAvailableInCalendar)

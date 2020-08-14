@@ -10,7 +10,6 @@ import updateContactAndBuildingRequest from '../../utils/api/update-contact-and-
 export default class InterventionPanelComponent extends Component {
   @service case
   @service documentGeneration
-  @service session
   @service store
   @service router
 
@@ -102,13 +101,12 @@ export default class InterventionPanelComponent extends Component {
     });
     yield request.save();
 
-    const { access_token } = this.session.get('data.authenticated');
     const body = {
       contactId: contact && contact.id,
       buildingId: building && building.id,
       requestId: request.id
     };
-    yield updateContactAndBuildingRequest(access_token, body);
+    yield updateContactAndBuildingRequest(body);
 
     this.router.transitionTo('main.requests.edit', request.id, {
       queryParams: { editMode: true }
