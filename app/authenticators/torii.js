@@ -1,11 +1,7 @@
 import { inject as service } from '@ember/service';
 import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
-import { debug, warn } from '@ember/debug';
 import fetch, { Headers } from 'fetch';
-import { run, later, cancel } from '@ember/runloop';
-import { isEmpty } from '@ember/utils';
 import config from '../config/environment';
-import decodeAuthToken from '../utils/decode-auth-token';
 
 const toriiProvider = 'azure-ad2-oauth2';
 
