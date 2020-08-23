@@ -2,16 +2,17 @@ import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import fetch from 'fetch';
 import config from '../config/environment';
+import { tracked } from '@glimmer/tracking';
 
 export default class AppStateService extends Service {
   @service router
 
-  lastError = null;
-  lastSuccessUrl = null;
+  @tracked lastError = null;
+  @tracked lastSuccessUrl = null;
 
   reportError(error) {
-    this.set('lastError', error);
-    this.set('lastSuccessUrl', this.router.currentURL);
+    this.lastError = error;
+    this.lastSuccessUrl = this.router.currentURL;
 
     fetch('/api/error-notifications', {
       method: 'POST',
@@ -28,9 +29,9 @@ export default class AppStateService extends Service {
             'column-number': error.columnNumber,
             'current-url': window.location.toString(),
             'current-path': this.lastSuccessUrl,
-            type: error.name,
-            message: error.message,
-            stack: error.stack
+            type: error.name || 'XHR',
+            message: error.message || `[${error.status}] ${error.statusText}`,
+            stack: error.stack || error.url
           }
         }
       })
