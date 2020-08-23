@@ -1,5 +1,4 @@
 import { inject as service } from '@ember/service';
-import { computed } from '@ember/object';
 import DS from 'ember-data';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
