@@ -50,7 +50,7 @@ export default class CaseService extends Service.extend(Evented) {
 
   updateRecord(type, record) {
     this.current[type] = record;
-    this.current[`${type}Id`] = record && record.get('id');
+    this.current[`${type}Id`] = record && `${record.get('id')}`;
   }
 
   @keepLatestTask()
@@ -85,14 +85,14 @@ export default class CaseService extends Service.extend(Evented) {
     if (response.ok) {
       const responseBody = yield response.json();
       return new Case({
-        customerId: responseBody.customerId,
-        contactId: responseBody.contactId,
-        buildingId: responseBody.buildingId,
-        requestId: responseBody.requestId,
-        interventionId: responseBody.interventionId,
-        offerId: responseBody.offerId,
-        orderId: responseBody.orderId,
-        invoiceId: responseBody.invoiceId
+        customerId: responseBody.customerId && `${responseBody.customerId}`,
+        contactId: responseBody.contactId && `${responseBody.contactId}`,
+        buildingId: responseBody.buildingId && `${responseBody.buildingId}`,
+        requestId: responseBody.requestId && `${responseBody.requestId}`,
+        interventionId: responseBody.interventionId && `${responseBody.interventionId}`,
+        offerId: responseBody.offerId && `${responseBody.offerId}`,
+        orderId: responseBody.orderId && `${responseBody.orderId}`,
+        invoiceId: responseBody.invoiceId && `${responseBody.invoiceId}`
       });
     } else {
       throw response;
@@ -203,8 +203,8 @@ export default class CaseService extends Service.extend(Evented) {
   @task
   *_updateContactAndBuilding(contact, building) {
     const body = {
-      contactId: contact && contact.get('id'),
-      buildingId: building && building.get('id'),
+      contactId: contact && `${contact.get('id')}`,
+      buildingId: building && `${building.get('id')}`,
       requestId: this.current.requestId,
       interventionId: this.current.interventionId,
       offerId: this.current.offerId,
