@@ -35,8 +35,10 @@ export default class BuildingsPanel extends Component {
 
   @action
   openDetail(building) {
-    this.selectedBuilding = building;
-    this.state = 'detail';
+    if (this.state != 'edit') {
+      this.selectedBuilding = building;
+      this.state = 'detail';
+    } // else: edit is opened. Nothing should happen
   }
 
   @action

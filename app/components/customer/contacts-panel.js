@@ -34,9 +34,11 @@ export default class ContactsPanel extends Component {
   }
 
   @action
-  openDetail(contact) {
-    this.selectedContact = contact;
-    this.state = 'detail';
+  openDetail(contact, event) {
+    if (this.state != 'edit') {
+      this.selectedContact = contact;
+      this.state = 'detail';
+    } // else: edit is opened. Nothing should happen
   }
 
   @action
@@ -54,7 +56,7 @@ export default class ContactsPanel extends Component {
   }
 
   @action
-  openEdit(contact) {
+  openEdit(contact, event) {
     this.selectedContact = contact;
     this.state = 'edit';
   }
