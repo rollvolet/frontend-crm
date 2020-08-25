@@ -97,7 +97,7 @@ export default class InvoicePanelComponent extends Component {
       } else {
         yield all(copiedInvoicelines.map((invoiceline) => {
           invoiceline.invoice = null;
-          invoiceline.save();
+          return invoiceline.save();
         }));
       }
 
