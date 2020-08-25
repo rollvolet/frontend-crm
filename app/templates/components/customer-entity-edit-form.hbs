@@ -4,10 +4,12 @@
     <SaveStatusIcon @model={{@model}} @task={{this.save}} />
   </div>
   <div>
-    <PaperButton @onClick={{perform this.remove}} @iconButton={{true}} @disabled={{this.isDisabledDelete}}>
-      {{paper-icon "delete"}}
-      <PaperTooltip>Verwijderen</PaperTooltip>
-    </PaperButton>
+    {{#if this.isEnabledDelete}}
+      <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
+        {{paper-icon "delete"}}
+        <PaperTooltip>Verwijderen</PaperTooltip>
+      </PaperButton>
+    {{/if}}
     <PaperButton @onClick={{fn this.close}} @iconButton={{true}}>
       {{paper-icon "exit to app"}}
       <PaperTooltip>Sluiten</PaperTooltip>

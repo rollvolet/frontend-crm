@@ -21,10 +21,12 @@
       </PaperButton>
     {{else}}
       {{#if this.isLinkedToCustomer}}
-        <PaperButton @onClick={{perform this.unlinkCustomer}} @iconButton={{true}} @disabled={{this.isDisabledUnlinkCustomer}}>
-          {{paper-icon "link off"}}
-          <PaperTooltip>Ontkoppel klant</PaperTooltip>
-        </PaperButton>
+        {{#unless this.isDisabledUnlinkCustomer}}
+          <PaperButton @onClick={{perform this.unlinkCustomer}} @iconButton={{true}}>
+            {{paper-icon "link off"}}
+            <PaperTooltip>Ontkoppel klant</PaperTooltip>
+          </PaperButton>
+        {{/unless}}
         <PaperButton @onClick={{fn this.generateVisitReport}} @iconButton={{true}}>
           {{paper-icon "description"}}
           <PaperTooltip>Bezoekrapport</PaperTooltip>
@@ -35,10 +37,12 @@
           <PaperTooltip>Koppel klant</PaperTooltip>
         </PaperButton>
       {{/if}}
-      <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
-        {{paper-icon "edit mode"}}
-        <PaperTooltip>Aanpassen</PaperTooltip>
-      </PaperButton>
+      {{#unless this.isDisabledEdit}}
+        <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}}>
+          {{paper-icon "edit mode"}}
+          <PaperTooltip>Aanpassen</PaperTooltip>
+        </PaperButton>
+      {{/unless}}
     {{/if}}
   </div>
 </div>

@@ -24,10 +24,12 @@
           {{paper-icon "description"}}
         <PaperTooltip>Interventierapport</PaperTooltip>
       </PaperButton>
-      <PaperButton @onClick={{fn @onOpenEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
-        {{paper-icon "edit mode"}}
-        <PaperTooltip>Aanpassen</PaperTooltip>
-      </PaperButton>
+      {{#unless this.isDisabledEdit}}
+        <PaperButton @onClick={{fn @onOpenEdit}} @iconButton={{true}}>
+          {{paper-icon "edit mode"}}
+          <PaperTooltip>Aanpassen</PaperTooltip>
+        </PaperButton>
+      {{/unless}}
       {{#if (or (not this.hasInvoice) (not this.hasFollowUpRequest))}}
         <PaperMenu @position={{"target-right target"}} as |menu|>
           <menu.trigger>

@@ -32,10 +32,6 @@ export default class CustomerEntityEditForm extends Component {
     return this.hasNoRequestsOrInvoices && this.hasNoContactsOrBuildings;
   }
 
-  get isDisabledDelete() {
-    return !this.isEnabledDelete;
-  }
-
   get isDuplicateVatNumber() {
     const error = this.args.model.validations.attrs.vatNumber.error;
     return error && error.type == 'unique-vat-number';

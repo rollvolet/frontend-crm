@@ -41,9 +41,15 @@
 
     <PaperDialogActions @class="layout-row">
       <span class="flex"></span>
-      <PaperButton @onClick={{fn this.addOption}} @disabled={{this.isAddOptionDisabled}}>
-        Voeg toe
-      </PaperButton>
+      {{#if this.isAddOptionDisabled}}
+        <PaperButton @onClick={{null}} @disabled={{this.isAddOptionDisabled}}>
+          Voeg toe
+        </PaperButton>
+      {{else}}
+        <PaperButton @onClick={{fn this.addOption}}>
+          Voeg toe
+        </PaperButton>
+      {{/if}}
     </PaperDialogActions>
   </PaperDialog>
 {{/if}}

@@ -21,10 +21,12 @@
           <PaperTooltip>Sluiten</PaperTooltip>
         </PaperButton>
       {{else}}
-        <PaperButton @onClick={{@onOpenEdit}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
-          {{paper-icon "edit mode"}}
-          <PaperTooltip>Aanpassen</PaperTooltip>
-        </PaperButton>
+        {{#unless this.isDisabledEdit}}
+          <PaperButton @onClick={{@onOpenEdit}} @iconButton={{true}}>
+            {{paper-icon "edit mode"}}
+            <PaperTooltip>Aanpassen</PaperTooltip>
+          </PaperButton>
+        {{/unless}}
       {{/if}}
     {{/unless}}
   </div>

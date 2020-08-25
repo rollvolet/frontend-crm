@@ -2,10 +2,12 @@
   <div class="layout-row layout-align-space-between-center">
     <h2>Interventies bij bestelling</h2>
     <div class="layout-row layout-align-end">
-      <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{perform this.createNew}} @disabled={{this.createNew.isRunning}}>
-        {{paper-icon "add"}}
-        <PaperTooltip>Maak nieuwe interventie voor bestelling</PaperTooltip>
-      </PaperButton>
+      {{#unless this.createNew.isRunning}}
+        <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{perform this.createNew}}>
+          {{paper-icon "add"}}
+          <PaperTooltip>Maak nieuwe interventie voor bestelling</PaperTooltip>
+        </PaperButton>
+      {{/unless}}
     </div>
   </div>
   {{#if this.createNew.isRunning}}

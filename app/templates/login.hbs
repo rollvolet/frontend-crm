@@ -10,14 +10,14 @@
           Helaas, er is iets fout gelopen. <a href="#" {{on "click" (fn this.resetError)}}>Probeer opnieuw</a>.
         </div>
         <div class="error--tech-description">{{this.errorMessage}}</div>
-      {{/if}}
-      {{#if this.login.isRunning}}
+        <PaperButton @disabled={{true}} @raised={{true}} @primary={{true}} @onClick={{null}}>Login</PaperButton>
+      {{else if this.login.isRunning}}
         <PaperButton @disabled={{true}} @raised={{true}} @primary={{true}} @onClick={{null}}>Bezig met aanmelden...</PaperButton>
         <div class="error--tech-description">
           Het aanmelden gebeurt in een pop-up; zorg dat de instellingen van uw browser correct staan indien deze niet verschijnt.
         </div>
       {{else}}
-        <PaperButton @disabled={{this.errorMessage}} @raised={{true}} @primary={{true}} @onClick={{perform this.login}}>Login</PaperButton>
+        <PaperButton @raised={{true}} @primary={{true}} @onClick={{perform this.login}}>Login</PaperButton>
       {{/if}}
     {{/if}}
   </div>

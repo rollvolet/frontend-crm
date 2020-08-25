@@ -36,12 +36,12 @@
                 <PaperTooltip>Stuur wijzigingen naar agenda</PaperTooltip>
               </PaperButton>
             {{/if}}
-            {{#unless @model.isNotAvailableInCalendar}}
-              <PaperButton @onClick={{fn (mut this.editMode) true}} @iconButton={{true}} @disabled={{this.isDisabledEdit}}>
+            {{#if (and  (not this.isNotAvailableInCalendar) (not this.isDisabledEdit))}}
+              <PaperButton @onClick={{fn (mut this.editMode) true}} @iconButton={{true}}>
                 {{paper-icon "edit mode"}}
                 <PaperTooltip>Aanpassen</PaperTooltip>
               </PaperButton>
-            {{/unless}}
+            {{/if}}
           </div>
         {{/if}}
       </div>

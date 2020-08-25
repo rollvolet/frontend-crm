@@ -51,9 +51,15 @@
 
 <div class="layout-row layout-align-end-center">
   <PaperButton @onClick={{fn this.cancel}}>Annuleer</PaperButton>
-  <PaperButton @primary={{true}} @raised={{true}} @onClick={{perform this.createOrder}} @disabled={{this.isDisabledCreate}}>
-    Ga verder
-  </PaperButton>
+  {{#if this.isDisabledCreate}}
+    <PaperButton @primary={{true}} @raised={{true}} @onClick={{null}} @disabled={{true}}>
+      Ga verder
+    </PaperButton>
+  {{else}}
+    <PaperButton @primary={{true}} @raised={{true}} @onClick={{perform this.createOrder}}>
+      Ga verder
+    </PaperButton>
+  {{/if}}
 </div>
 
 {{#if this.showIncompatibleVatRatesDialog}}

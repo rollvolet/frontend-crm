@@ -35,8 +35,10 @@
   </tbody>
 </table>
 <div class="layout-row layout-align-end-center">
-  <PaperButton @primary={{true}} @fab={{true}} @mini={{true}} @raised={{true}} @disabled={{this.isDisabledCreateNew}} @onClick={{perform this.createNewTelephone}}>
-    {{paper-icon "add"}}
-    <PaperTooltip>Voeg nieuw nummer toe</PaperTooltip>
-  </PaperButton>
+  {{#unless this.isDisabledCreateNew}}
+    <PaperButton @primary={{true}} @fab={{true}} @mini={{true}} @raised={{true}} @onClick={{perform this.createNewTelephone}}>
+      {{paper-icon "add"}}
+      <PaperTooltip>Voeg nieuw nummer toe</PaperTooltip>
+    </PaperButton>
+  {{/unless}}
 </div>
