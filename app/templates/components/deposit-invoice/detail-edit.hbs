@@ -1,5 +1,9 @@
-{{#if @model.isBooked}}
-  <WarningMessage @message="Factuur reeds geboekt. Enkel beperkte wijzigingen zijn nog mogelijk." />
+{{#if this.isLimitedUpdateOnly}}
+  {{#if @model.isBooked}}
+    <WarningMessage @message="Factuur reeds geboekt. Enkel beperkte wijzigingen zijn nog mogelijk." />
+  {{else if @invoice}}
+    <WarningMessage @message="Eindfactuur reeds gemaakt. Enkel beperkte wijzigingen zijn nog mogelijk." />
+  {{/if}}
   <div class="layout-row layout-align-start-start">
     <section class="layout-column">
       <div class="layout-row">

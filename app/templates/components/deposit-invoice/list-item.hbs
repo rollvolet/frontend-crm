@@ -26,18 +26,20 @@
             {{paper-icon "edit mode"}}
             <PaperTooltip>Bewerken</PaperTooltip>
           </PaperButton>
-          {{#unless @model.isCreditNote}}
-            <PaperButton @onClick={{perform @credit @model}} @iconButton={{true}}>
-              {{paper-icon "remove shopping cart"}}
-              <PaperTooltip>Crediteer voorschotfactuur</PaperTooltip>
-            </PaperButton>
-          {{/unless}}
-          {{#unless @model.isBooked}}
-            <PaperButton @onClick={{perform @remove @model}} @iconButton={{true}}>
-              {{paper-icon "delete"}}
-              <PaperTooltip>Verwijderen</PaperTooltip>
-            </PaperButton>
-          {{/unless}}
+          {{#if (not this.hasFinalInvoice)}}
+            {{#unless @model.isCreditNote}}
+              <PaperButton @onClick={{perform @credit @model}} @iconButton={{true}}>
+                {{paper-icon "remove shopping cart"}}
+                <PaperTooltip>Crediteer voorschotfactuur</PaperTooltip>
+              </PaperButton>
+            {{/unless}}
+            {{#unless @model.isBooked}}
+              <PaperButton @onClick={{perform @remove @model}} @iconButton={{true}}>
+                {{paper-icon "delete"}}
+                <PaperTooltip>Verwijderen</PaperTooltip>
+              </PaperButton>
+            {{/unless}}
+          {{/if}}
         {{/if}}
       {{/if}}
     </div>

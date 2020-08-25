@@ -1,6 +1,7 @@
-{{#each this.sortedDepositInvoices as |invoice|}}
+{{#each this.sortedDepositInvoices as |depositInvoice|}}
   <DepositInvoice::ListItem
-    @model={{invoice}}
+    @model={{depositInvoice}}
+    @invoice={{@invoice}}
     @isDisabledEdit={{@isDisabledEdit}}
     @edit={{@edit}}
     @remove={{@remove}}

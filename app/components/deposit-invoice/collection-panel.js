@@ -52,7 +52,8 @@ export default class DepositInvoiceCollectionPanelComponent extends Component {
   }
 
   get isDisabledEdit() {
-    return this.order.isMasteredByAccess || this.invoice;
+    // even with an invoice, the deposit-invoice can still limitedly be updated
+    return this.order.isMasteredByAccess;
   }
 
   get totalAmount() {

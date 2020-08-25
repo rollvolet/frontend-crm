@@ -34,6 +34,10 @@ export default class DepositInvoiceListItemComponent extends Component {
     return this.baseAmount * this.vatPercentage;
   }
 
+  get hasFinalInvoice() {
+    return this.args.invoice;
+  }
+
   @task
   *generateInvoiceDocument() {
     if (!this.args.model.isCreditNote && !this.showMissingCertificateDialog
