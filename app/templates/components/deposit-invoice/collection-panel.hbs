@@ -1,7 +1,7 @@
 <div class="layout-row layout-align-space-between-center">
   <h2>Voorschotfacturen</h2>
   {{#unless this.editMode}}
-    {{#unless this.isDisabledEdit}}
+    {{#unless this.isDisabledCreate}}
       <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{perform this.createNew}}>
         {{paper-icon "add"}}
         <PaperTooltip>Maak nieuwe voorschotfactuur</PaperTooltip>
