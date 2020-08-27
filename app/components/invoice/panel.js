@@ -33,7 +33,7 @@ export default class InvoicePanelComponent extends Component {
   }
 
   get isEnabledDelete() {
-    return !this.isDisabledEdit;
+    return !this.args.model.isMasteredByAccess && !this.args.model.isBooked;
   }
 
   get hasUnsavedChanges() {
