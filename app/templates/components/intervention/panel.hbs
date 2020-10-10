@@ -43,6 +43,9 @@
               <content.menu-item @onClick={{fn this.uncancelIntervention}}>
                 <p>Opnieuw openen</p>
               </content.menu-item>
+              <content.menu-item @onClick={{perform this.createNewIntervention}}>
+                <p>Nieuwe interventie</p>
+              </content.menu-item>
             {{else}}
               {{#unless this.hasInvoice}}
                 <content.menu-item @onClick={{fn this.createInvoice}}>
@@ -54,6 +57,9 @@
                   <p>Nieuwe aanvraag</p>
                 </content.menu-item>
               {{/unless}}
+              <content.menu-item @onClick={{perform this.createNewIntervention}}>
+                <p>Nieuwe interventie</p>
+              </content.menu-item>
               {{#if (and (not this.hasInvoice) (not this.hasFollowUpRequest))}}
                 <content.menu-item @onClick={{fn this.cancelIntervention}}>
                   <p>Afsluiten</p>

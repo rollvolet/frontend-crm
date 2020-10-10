@@ -113,6 +113,29 @@ export default class InterventionPanelComponent extends Component {
     });
   }
 
+  @task
+  *createNewIntervention() {
+    const customer = this.case.current.customer;
+    const contact = this.case.current.contact;
+    const building = this.case.current.building;
+    const employee = yield this.args.model.employee;
+    const origin = yield this.args.model.origin;
+
+    const intervention = this.store.createRecord('intervention', {
+      date: new Date(),
+      customer,
+      contact,
+      building,
+      employee,
+      origin
+    });
+
+    yield intervention.save();
+    this.router.transitionTo('main.case.intervention.edit', customer, intervention, {
+      queryParams: { editMode: true }
+    });
+  }
+
   @action
   closeEdit() {
     if (this.hasUnsavedChanges) {
