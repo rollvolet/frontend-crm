@@ -6,6 +6,7 @@
   <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
     <t.content as |c|>
       <c.header>
+        <th></th>
         <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
         <th>Aanvraag</th>
         <ThSortable @field="invoice-date" @currentSorting={{this.sort}} @label="Datum" />
@@ -16,6 +17,17 @@
         <th>Gemeente</th>
       </c.header>
       <c.body as |row|>
+        <td>
+          {{#if row.isPaid}}
+            <div class="badge badge--dot badge--success">
+              <PaperTooltip>Betaald</PaperTooltip>
+            </div>
+          {{else}}
+            <div class="badge badge--dot badge--failure">
+              <PaperTooltip>Niet betaald</PaperTooltip>
+            </div>
+          {{/if}}
+        </td>
         <td>{{format-invoice-number row.number}}</td>
         <td>{{row.order.requestNumber}}</td>
         <td><FmtDate @value={{row.invoiceDate}} /></td>

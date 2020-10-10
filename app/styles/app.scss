@@ -110,6 +110,12 @@ md-input-container .md-errors-spacer {
   border-radius: 7px;
   color: #FFF;
 
+  &.badge--dot {
+    height: 10px;
+    width: 10px;
+    padding: 0;
+  }
+
   &.badge--success {
     background-color: paper-color('green');
   }
