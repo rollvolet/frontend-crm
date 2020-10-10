@@ -31,7 +31,7 @@ export default class RequestPanelComponent extends Component {
   }
 
   get isDisabledUnlinkCustomer() {
-    return this.case.current && this.case.current.offer != null;
+    return this.isDisabledEdit;
   }
 
   @task
@@ -110,11 +110,6 @@ export default class RequestPanelComponent extends Component {
     }
     yield this.case.unlinkCustomer.perform();
     this.router.transitionTo('main.requests.edit', this.args.model.id);
-  }
-
-  @action
-  openEdit() {
-    this.args.onOpenEdit();
   }
 
   @action

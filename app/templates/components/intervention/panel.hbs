@@ -20,12 +20,25 @@
         <PaperTooltip>Sluiten</PaperTooltip>
       </PaperButton>
     {{else}}
-      <PaperButton @onClick={{fn this.generateInterventionReport}} @iconButton={{true}}>
+      {{#if this.isLinkedToCustomer}}
+        {{#unless this.isDisabledUnlinkCustomer}}
+          <PaperButton @onClick={{perform this.unlinkCustomer}} @iconButton={{true}}>
+            {{paper-icon "link off"}}
+            <PaperTooltip>Ontkoppel klant</PaperTooltip>
+          </PaperButton>
+        {{/unless}}
+        <PaperButton @onClick={{fn this.generateInterventionReport}} @iconButton={{true}}>
           {{paper-icon "description"}}
-        <PaperTooltip>Interventierapport</PaperTooltip>
-      </PaperButton>
+          <PaperTooltip>Interventierapport</PaperTooltip>
+        </PaperButton>
+      {{else}}
+        <PaperButton @onClick={{fn this.linkCustomer}} @iconButton={{true}}>
+          {{paper-icon "link"}}
+          <PaperTooltip>Koppel klant</PaperTooltip>
+        </PaperButton>
+      {{/if}}
       {{#unless this.isDisabledEdit}}
-        <PaperButton @onClick={{fn @onOpenEdit}} @iconButton={{true}}>
+        <PaperButton @onClick={{@onOpenEdit}} @iconButton={{true}}>
           {{paper-icon "edit mode"}}
           <PaperTooltip>Aanpassen</PaperTooltip>
         </PaperButton>

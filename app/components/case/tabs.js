@@ -50,7 +50,7 @@ export default class CaseTabsComponent extends Component {
 
   get canCreateNewInvoice() {
     const canCreateNewInvoiceForOrder = this.model && this.model.orderId && this.model.invoiceId == null && this.model.order && !this.model.order.isMasteredByAccess && !this.model.order.canceled;
-    const canCreateNewInvoiceForIntervention = this.model && this.model.interventionId && this.model.invoiceId == null && !this.model.intervention.isCancelled;
+    const canCreateNewInvoiceForIntervention = this.model && this.model.customerId && this.model.interventionId && this.model.invoiceId == null && !this.model.intervention.isCancelled;
     return !this.isEditRoute && (canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention);
   }
 

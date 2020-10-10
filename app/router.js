@@ -22,7 +22,10 @@ Router.map(function() {
       });
     });
     this.route('interventions', function() {
-      this.route('edit', { path: '/:intervention_id' });
+      this.route('new'); // create a new intervention without a customer
+      this.route('edit', { path: '/:intervention_id' }, function() {
+        this.route('customer');
+      });
     });
     this.route('offers', function() {});
     this.route('orders', function() {

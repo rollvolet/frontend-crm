@@ -37,6 +37,14 @@ export default class InterventionPanelComponent extends Component {
         || (this.save.last && this.save.last.isError);
   }
 
+  get isLinkedToCustomer() {
+    return this.case.current && this.case.current.customer != null;
+  }
+
+  get isDisabledUnlinkCustomer() {
+    return this.isDisabledEdit;
+  }
+
   @task
   *rollbackTree() {
     this.args.model.rollbackAttributes();
@@ -136,6 +144,13 @@ export default class InterventionPanelComponent extends Component {
     });
   }
 
+  @task
+  *unlinkCustomer() {
+    // planning event is deleted by the backend on deletion of the intervention
+    yield this.case.unlinkCustomer.perform();
+    this.router.transitionTo('main.interventions.edit', this.args.model.id);
+  }
+
   @action
   closeEdit() {
     if (this.hasUnsavedChanges) {
@@ -191,6 +206,11 @@ export default class InterventionPanelComponent extends Component {
   createInvoice() {
     const customerId = this.case.current.customerId;
     this.router.transitionTo('main.case.intervention.edit.invoice', customerId, this.args.model.id);
+  }
+
+  @action
+  linkCustomer() {
+    this.router.transitionTo('main.interventions.edit.customer', this.args.model);
   }
 
   @action

@@ -38,7 +38,7 @@
         </PaperButton>
       {{/if}}
       {{#unless this.isDisabledEdit}}
-        <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}}>
+        <PaperButton @onClick={{@onOpenEdit}} @iconButton={{true}}>
           {{paper-icon "edit mode"}}
           <PaperTooltip>Aanpassen</PaperTooltip>
         </PaperButton>

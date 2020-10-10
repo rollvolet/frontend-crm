@@ -1,0 +1,31 @@
+<h2>Koppel klant aan interventie</h2>
+
+{{#if this.linkCustomerToIntervention.isRunning}}
+  <div>
+    <PaperProgressLinear />
+    <p>Klant koppelen aan interventie...</p>
+  </div>
+{{else}}
+  <Customer::DataTableFilter @number={{this.number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{fn this.applyFilter}} />
+
+  <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{perform this.linkCustomerToIntervention}} as |t|>
+    <t.content as |c|>
+      <c.header>
+        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
+        <ThSortable @field="name" @currentSorting={{this.sort}} @label="Naam" />
+        <ThSortable @field="address" @currentSorting={{this.sort}} @label="Straat" />
+        <ThSortable @field="postal-code" @currentSorting={{this.sort}} @label="Postcode" />
+        <ThSortable @field="city" @currentSorting={{this.sort}} @label="Gemeente" />
+      </c.header>
+      <c.body as |row|>
+        <td>{{row.number}}</td>
+        <td><PrintName @model={{row}} /></td>
+        <td>{{row.address1}}</td>
+        <td>{{row.postalCode}}</td>
+        <td>{{row.city}}</td>
+      </c.body>
+    </t.content>
+  </DataTable>
+{{/if}}
+
+<LiquidOutlet />

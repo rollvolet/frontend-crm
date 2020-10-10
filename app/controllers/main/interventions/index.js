@@ -12,7 +12,10 @@ export default class IndexController extends Controller.extend(DefaultQueryParam
     if (e.target.getAttribute('role') != 'button') {
       const customerId = row.get('customer.id');
       const interventionId = row.get('id');
-      this.transitionToRoute('main.case.intervention.edit', customerId, interventionId);
+      if (customerId)
+        this.transitionToRoute('main.case.intervention.edit', customerId, interventionId);
+      else
+        this.transitionToRoute('main.interventions.edit', interventionId);
     }
   }
 

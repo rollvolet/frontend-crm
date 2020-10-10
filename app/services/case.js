@@ -10,6 +10,7 @@ import updateContactAndBuildingRequest from '../utils/api/update-contact-and-bui
 
 const regexMap = {
   unlinkedRequestId: /requests\/(\d+)/i,
+  unlinkedInterventionId: /interventions\/(\d+)/i,
   requestId: /case\/\d+\/request\/(\d+)/i,
   interventionId: /case\/\d+\/intervention\/(\d+)/i,
   offerId: /case\/\d+\/offer\/(\d+)/i,
@@ -69,6 +70,8 @@ export default class CaseService extends Service.extend(Evented) {
     let queryParam;
     if (currentRoute.includes('requests.edit'))
       queryParam = calcQueryParam(currentUrl, 'requestId', 'unlinkedRequestId');
+    else if (currentRoute.includes('interventions.edit'))
+      queryParam = calcQueryParam(currentUrl, 'interventionId', 'unlinkedInterventionId');
     else if (currentRoute.includes('case.request'))
       queryParam = calcQueryParam(currentUrl, 'requestId');
     else if (currentRoute.includes('case.intervention'))
@@ -129,18 +132,34 @@ export default class CaseService extends Service.extend(Evented) {
 
   @task
   *unlinkCustomer() {
-    if (this.current.offer) {
-      warn(`Unable to unlink customer. Case has an offer already`);
-    } else if (this.current.request) {
-      if (this.current.contact || this.current.building) {
-        yield this._updateContactAndBuilding.perform(null, null);
-        this.current.contact = null;
-        this.current.building = null;
-      }
+    if (this.current.request) {
+      if (this.current.offer) {
+        warn(`Unable to unlink customer from request. Case has an offer already.`);
+      } else {
+        if (this.current.contact || this.current.building) {
+          yield this._updateContactAndBuilding.perform(null, null);
+          this.current.contact = null;
+          this.current.building = null;
+        }
 
-      this.current.request.customer = null;
-      yield this.current.request.save();
-      this.current.customer = null;
+        this.current.request.customer = null;
+        yield this.current.request.save();
+        this.current.customer = null;
+      }
+    } else if (this.current.intervention) {
+      if (this.current.invoice) {
+        warn(`Unable to unlink customer from intervention. Case has an invoice already.`);
+      } else {
+        if (this.current.contact || this.current.building) {
+          yield this._updateContactAndBuilding.perform(null, null);
+          this.current.contact = null;
+          this.current.building = null;
+        }
+
+        this.current.intervention.customer = null;
+        yield this.current.intervention.save();
+        this.current.customer = null;
+      }
     }
   }
 

@@ -1,2 +1,18 @@
-<p>Interventie kan niet weergegeven worden, omdat er geen klant gekoppeld is.</p>
-{{outlet}}
+<Case::Tabs />
+
+{{#if this.case.isLoadingCurrentCase}}
+  <div class="case--main-panel skeleton">
+    <PaperProgressCircular @diameter={{25}} />
+  </div>
+{{else}}
+  <div class="case--main-panel">
+    <Intervention::Panel
+      @model={{@model}}
+      @editMode={{this.editMode}}
+      @onOpenEdit={{fn (mut this.editMode) true}}
+      @onCloseEdit={{fn (mut this.editMode) false}}
+    />
+  </div>
+{{/if}}
+
+<LiquidOutlet />
