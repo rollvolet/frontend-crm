@@ -61,7 +61,15 @@
   {{/if}}
 
   {{#if @model.isMasteredByAccess}}
-    <h2>Offerte</h2>
+    <div class="layout-row layout-align-space-between-center">
+      <h2>Offerte</h2>
+      <div>
+        <PaperButton @onClick={{fn this.downloadOfferDocument}} @iconButton={{true}}>
+          {{paper-icon "find in page"}}
+          <PaperTooltip>Offerte bekijken</PaperTooltip>
+        </PaperButton>
+      </div>
+    </div>
     <p class="note-message">De offerte is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
   {{else}}
     <div class="layout-row layout-align-space-between-center">
