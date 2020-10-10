@@ -1,5 +1,5 @@
 {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
-{{@model.prefix}}
+{{#if @model.printPrefix}}{{@model.prefix}}{{/if}}
 {{@model.name}}
-{{@model.suffix}}
+{{#if @model.printSuffix}}{{@model.suffix}}{{/if}}
 {{#if (not @model.printInFront)}}{{@model.honorificPrefix.name}}{{/if}}
