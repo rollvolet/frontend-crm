@@ -17,5 +17,4 @@ export default class OfferDetailEditComponent extends Component {
   setVisitor(visitor) {
     this.request.visitor = visitor ? visitor.firstName : null;
   }
-
 }

@@ -8,6 +8,12 @@ export default class OrderDetailViewComponent extends Component {
     return this.case.current && this.case.current.request;
   }
 
+  get technicianNames() {
+    return this.args.model.technicians
+      .sortBy('firstName')
+      .mapBy('firstName');
+  }
+
   get isNbOfPersonsWarning() {
     return this.args.model.scheduledNbOfPersons != 2;
   }

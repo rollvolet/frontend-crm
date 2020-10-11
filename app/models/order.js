@@ -47,6 +47,7 @@ export default class OrderModel extends Model.extend(Validations, LoadableModel)
   @hasMany('deposit-invoices') depositInvoices
   @hasMany('invoiceline') invoicelines
   @hasMany('interventions') interventions
+  @hasMany('employee', { inverse: null }) technicians
 
   @dateString('orderDate') orderDateStr
   @dateString('expectedDate') expectedDateStr

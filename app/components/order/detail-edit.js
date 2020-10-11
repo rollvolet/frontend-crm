@@ -40,4 +40,9 @@ export default class OrderDetailEditComponent extends Component {
   setVisitor(visitor) {
     this.request.visitor = visitor ? visitor.firstName : null;
   }
+
+  @action
+  setTechnicians(employees) {
+    this.args.model.technicians = employees;
+  }
 }
