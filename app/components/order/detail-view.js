@@ -9,6 +9,6 @@ export default class OrderDetailViewComponent extends Component {
   }
 
   get isNbOfPersonsWarning() {
-    return this.args.model.scheduledNbOfPersons == 2;
+    return this.args.model.scheduledNbOfPersons != 2;
   }
 }

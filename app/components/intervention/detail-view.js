@@ -22,6 +22,6 @@ export default class InterventionDetailViewComponent extends Component {
   }
 
   get isNbOfPersonsWarning() {
-    return this.args.model.nbOfPersons == 2;
+    return this.args.model.nbOfPersons != 2;
   }
 }
