@@ -1,0 +1,113 @@
+<div class="layout-row layout-align-space-between-center">
+  <h1>Uit te voeren werken</h1>
+  <div>
+    <PaperButton @onClick={{fn this.print}} @iconButton={{true}}>
+    {{paper-icon "print"}}
+      <PaperTooltip>Print view</PaperTooltip>
+    </PaperButton>
+  </div>
+</div>
+
+<div class="data-table-filters">
+  <div class="data-table-filters--title">{{paper-icon "search"}} Filteren</div>
+  <div class="data-table-filters--fields layout-row flex layout-align-start">
+    <InputField::EmployeeSelect
+      @label="Bezoeker"
+      @value={{this.visitor}}
+      @isTechnician={{true}}
+      @isOnRoad={{true}}
+      @onSelectionChange={{this.selectVisitor}}
+      class="md-input-wrapper large" />
+
+    <div>
+      <PaperInput
+        @label="Besteldatum na"
+        @value={{this.orderDate}}
+        @type="date"
+        @onChange={{fn (mut this.orderDate)}}
+        @class="default u-rel-top-normal" />
+    </div>
+
+    <InputField::FilterFlag @label="Productiebon"
+      @value={{this.hasProductionTicket}}
+      @onChange={{fn (mut this.hasProductionTicket)}}
+    />
+
+    <InputField::FilterFlag @label="Te plaatsen"
+      @value={{this.mustBeInstalled}}
+      @onChange={{fn (mut this.mustBeInstalled)}}
+    />
+
+    <InputField::FilterFlag @label="Te leveren"
+      @value={{this.mustBeDelivered}}
+      @onChange={{fn (mut this.mustBeDelivered)}}
+    />
+
+    <InputField::FilterFlag @label="Product klaar"
+      @value={{this.isProductReady}}
+      @onChange={{fn (mut this.isProductReady)}}
+    />
+  </div>
+</div>
+
+<DataTable
+  @content={{@model}}
+  @onClickRow={{this.goToOrder}}
+  @isLoading={{this.isLoadingModel}}
+  @noDataMessage="Geen resultaten"
+  @page={{this.page}}
+  @size={{this.size}}
+  as |t|>
+  <t.content as |c|>
+    <c.header>
+      <th>Aanvraag</th>
+      <th>Offerte</th>
+      <th>Bezoeker</th>
+      <th>Besteldatum</th>
+      <th>Kl. Nr.</th>
+      <th>Klant</th>
+      <th>Gemeente</th>
+      <th>Levering</th>
+      <th>Productiebon</th>
+      <th>Plaatsing</th>
+      <th>Uren</th>
+      <th>Klaar?</th>
+    </c.header>
+    <c.body as |row|>
+      <td>AD{{row.requestId}}</td>
+      <td>{{row.offerNumber}}</td>
+      <td>{{row.visitor}}</td>
+      <td><FmtDate @value={{row.orderDate}} /></td>
+      <td>{{row.customerNumber}}</td>
+      <td>
+        {{row.customerName}}
+        <br>{{row.customerAddress1}}
+        {{#if row.buildingAddress1}}
+          <br>{{row.buildingAddress1}}
+        {{/if}}
+      </td>
+      <td>
+        <br>
+        {{row.customerPostalCode}} {{row.customerCity}}
+        {{#if row.buildingCity}}
+          <br>{{row.buildingPostalCode}} {{row.buildingCity}}
+        {{/if}}
+      </td>
+      <td>
+        {{paper-icon (if row.mustBeDelivered "check_box" "check_box_outline_blank")}}
+      </td>
+      <td>
+        {{paper-icon (if row.hasProductionTicket "check_box" "check_box_outline_blank")}}
+      </td>
+      <td>
+        {{paper-icon (if row.mustBeInstalled "check_box" "check_box_outline_blank")}}
+      </td>
+      <td>
+        {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
+      </td>
+      <td>
+        {{paper-icon (if row.productIsReady "check_box" "check_box_outline_blank")}}
+      </td>
+    </c.body>
+  </t.content>
+</DataTable>

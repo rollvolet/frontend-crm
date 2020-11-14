@@ -1,0 +1,76 @@
+<h1>Uit te voeren werken</h1>
+
+<div>
+  <span>Bezoeker: {{if this.visitorName this.visitorName " - "}}</span> |
+  <span>Vanaf: {{#if this.orderDate}}{{moment-format this.orderDate 'DD/MM/YY'}}{{else}} - {{/if}}</span> |
+  <span>Productiebon: <Print::FilterFlag @value={{this.hasProductionTicket}} /></span> |
+  <span>Levering: <Print::FilterFlag @value={{this.mustBeDelivered}} /></span> |
+  <span>Plaatsing: <Print::FilterFlag @value={{this.mustBeInstalled}} /></span> |
+  <span>Product klaar: <Print::FilterFlag @value={{this.isProductReady}} /></span>
+</div>
+
+<div class="hide-on-print u-margin-top-small">
+  <InfoMessage>
+    <div>
+      Het is normaal dat u hier geen resultaten ziet. Gebruik de print-functie van de browser (Ctrl+P) om dit rapport te printen.
+    </div>
+  </InfoMessage>
+</div>
+
+<div class="display-on-print table table-striped report-outstanding-jobs">
+  <div class="row header">
+    <div>Aanvraag</div>
+    <div>Bez.</div>
+    <div>Datum</div>
+    <div>Kl. Nr.</div>
+    <div>Klant</div>
+    <div>Gemeente</div>
+    <div>Lv</div>
+    <div>Pr</div>
+    <div>Pl</div>
+    <div>Uren</div>
+    <div>Pk</div>
+  </div>
+  {{#each this.model as |row|}}
+    <div class="row">
+      <div>
+        AD{{row.requestId}}
+        <br>{{row.offerNumber}}
+      </div>
+      <div>{{row.visitorInitials}}</div>
+      <div>{{moment-format row.orderDate 'DD/MM/YY'}}</div>
+      <div>{{row.customerNumber}}</div>
+      <div>
+        {{row.customerName}}
+        <br>{{row.customerAddress1}}
+        {{#if row.buildingAddress1}}
+          <br>{{row.buildingAddress1}}
+        {{/if}}
+      </div>
+      <div>
+        <br>
+        {{row.customerCity}}
+        {{#if row.buildingCity}}
+          <br>{{row.buildingCity}}
+        {{/if}}
+      </div>
+      <div>
+        {{paper-icon (if row.mustBeDelivered "check_box" "check_box_outline_blank")}}
+      </div>
+      <div>
+        {{paper-icon (if row.hasProductionTicket "check_box" "check_box_outline_blank")}}
+      </div>
+      <div>
+        {{paper-icon (if row.mustBeInstalled "check_box" "check_box_outline_blank")}}
+      </div>
+      <div class="center">
+        {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}}T
+      </div>
+      <div>
+        {{paper-icon (if row.productIsReady "check_box" "check_box_outline_blank")}}
+      </div>
+    </div>
+  {{/each}}
+</div>
+
+{{outlet}}

@@ -1,0 +1,6 @@
+{{#if (eq @value -1)}}
+  n.v.t.
+{{else}}
+  {{paper-icon (if @value "check_box" "check_box_outline_blank")}}
+{{/if}}
+{{yield}}

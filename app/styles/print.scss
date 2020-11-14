@@ -1,0 +1,121 @@
+.display-on-print {
+  display: none;
+}
+
+@media print {
+  body > .ember-view {
+    margin-top: 0;
+  }
+
+  /* Firefox only prints 1st page when tree has display: flex */
+  html,
+  body,
+  body > .ember-view,
+  body > .ember-view > div.h-screen > div.flex {
+    display: block;
+  }
+
+  /* Safari scales page down so width of 100vw fits on the page */
+  .print\:w-screen {
+    width: auto !important;
+  }
+
+  .hide-on-print {
+    display: none;
+  }
+
+  .display-on-print {
+    display: block;
+  }
+
+  md-toolbar {
+    display: none;
+  }
+
+  .main-container {
+    overflow: hidden;
+
+    .main-outlet {
+      margin: 0;
+      padding: 0;
+      min-width: unset;
+      font-size: 10pt;
+    }
+  }
+
+  .table {
+    display: table;
+    border-spacing: 2px;
+  }
+
+  .row {
+    display: block;
+
+    &.header {
+      border-bottom: 2px solid #000;
+      padding-bottom: 0.1cm;
+      font-weight: bold;
+    }
+  }
+
+  .row > div {
+    display: inline-block;
+    vertical-align: top;
+
+    &.center {
+      text-align: center;
+    }
+  }
+
+  .table-striped {
+    .row:nth-child(odd) {
+      /** Workaround for background-color in print-stlye */
+      box-shadow: inset 0 0 0 1000px #e5e7eb;
+    }
+
+    .row.header {
+      /** Workaround for background-color in print-stlye */
+      box-shadow: inset 0 0 0 1000px #FFF;
+    }
+  }
+
+  .table.report-outstanding-jobs {
+    .row {
+      padding: 0.2cm 0;
+
+      div:nth-child(1) {
+        width: 2cm;
+      }
+      div:nth-child(2) {
+        width: 1cm;
+      }
+      div:nth-child(3) {
+        width: 1.5cm;
+      }
+      div:nth-child(4) {
+        width: 1.3cm;
+      }
+      div:nth-child(5) {
+        width: 5cm;
+      }
+      div:nth-child(6) {
+        width: 3cm;
+      }
+      div:nth-child(7) {
+        width: 0.5cm;
+      }
+      div:nth-child(8) {
+        width: 0.5cm;
+      }
+      div:nth-child(9) {
+        width: 0.5cm;
+      }
+      div:nth-child(10) {
+        width: 1.3cm;
+      }
+      div:nth-child(11) {
+        width: 0.5cm;
+      }
+    }
+  }
+}
