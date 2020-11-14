@@ -20,7 +20,7 @@
           </div>
         </div>
       </div>
-      <div class="layout-row data-table-filter--line layout-align-end">
+      <div class="layout-row data-table-filter--line layout-align-start">
         <div class="layout-column data-table-filter--group">
           <div class="data-table-filters--group-title">Gebouw</div>
           <div class="layout-row data-table-filters--group-fields">
@@ -30,16 +30,19 @@
             <PaperInput @label="Gemeente" @value={{this.filter.bCity}} @onChange={{perform this.debounceFilter "bCity"}} />
           </div>
         </div>
-        <div class="layout-column data-table-filter--group">
-          <div class="data-table-filters--group-title"></div>
-          <div class="layout-row data-table-filters--group-fields">
-            <PaperSwitch @value={{this.filter.withoutInvoice}} @primary={{true}} @onChange={{fn this.setFilter "withoutInvoice"}}>
-              Nog geen factuur
-            </PaperSwitch>
-            <PaperSwitch @value={{this.filter.onlyNotCanceled}} @primary={{true}} @onChange={{fn this.setFilter "onlyNotCanceled"}}>
-              Niet afgesloten
-            </PaperSwitch>
-          </div>
+        <div class="layout-row data-table-filters--fields">
+          <InputField::FilterFlag @label="Reeds gefactureerd"
+            @value={{this.filter.hasInvoice}}
+            @onChange={{fn this.setFilter "hasInvoice"}}
+          />
+          <InputField::FilterFlag @label="Afgesloten"
+            @value={{this.filter.isCancelled}}
+            @onChange={{fn this.setFilter "isCancelled"}}
+          />
+          <InputField::FilterFlag @label="Gepland"
+            @value={{this.filter.isPlanned}}
+            @onChange={{fn this.setFilter "isPlanned"}}
+          />
         </div>
       </div>
     </div>

@@ -10,8 +10,9 @@ export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
     sort: { refreshModel: true },
     // filter params
     number: { refreshModel: true },
-    withoutInvoice: { refreshModel: true },
-    onlyNotCanceled: { refreshModel: true },
+    hasInvoice: { refreshModel: true },
+    isCancelled: { refreshModel: true },
+    isPlanned: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
     cCity: { refreshModel: true },
@@ -28,8 +29,9 @@ export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
       include: 'customer,customer.honorific-prefix,building,planning-event',
       filter: {
         number: params.number,
-        invoice: !params.withoutInvoice,
-        canceled: !params.onlyNotCanceled,
+        isCancelled: params.isCancelled,
+        hasInvoice: params.hasInvoice,
+        isPlanned: params.isPlanned,
         customer: {
           name: params.cName,
           'postal-code': params.cPostalCode,

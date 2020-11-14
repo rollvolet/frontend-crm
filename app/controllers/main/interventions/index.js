@@ -4,8 +4,11 @@ import DefaultQueryParams from 'ember-data-table/mixins/default-query-params';
 import applyFilterParams from '../../../utils/apply-filter-params';
 
 export default class IndexController extends Controller.extend(DefaultQueryParams) {
-  size = 25
-  sort = '-date'
+  size = 25;
+  sort = '-date';
+  isCancelled = 0;
+  hasInvoice = 0;
+  isPlanned = -1;
 
   @action
   clickRow(row, e) {
