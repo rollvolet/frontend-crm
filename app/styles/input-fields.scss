@@ -172,6 +172,7 @@ md-checkbox .checkbox-tooltip {
   }
 }
 
+.radio .radio--group-label,
 label.power-select--label {
   font-size: 12px;
   color: rgba(0, 0, 0, 0.54);
@@ -186,4 +187,27 @@ label.power-select--label {
   padding-right: 0;
   z-index: 1;
   max-width: 100%;
+}
+
+.radio {
+  input[type=radio] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid #999;
+    transition: 0.2s all linear;
+    margin-right: 5px;
+
+    position: relative;
+    top: 4px;
+  }
+
+  input:checked {
+    border: 6px solid paper-color('grey')
+  }
 }

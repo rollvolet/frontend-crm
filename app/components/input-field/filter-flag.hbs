@@ -1,0 +1,16 @@
+<div class="radio radio--filter-flag">
+  {{#if @label}}
+    <div class="radio--group-label">{{@label}}</div>
+  {{/if}}
+  {{#each this.options as |option|}}
+    <div>
+      <input type="radio"
+        id={{option.id}}
+        name={{this.group}}
+        value={{option.value}}
+        checked={{eq @value option.value}}
+        {{on "click" (fn @onChange option.value)}}>
+      <label for={{option.id}}>{{option.label}}</label>
+    </div>
+  {{/each}}
+</div>

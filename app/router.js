@@ -69,6 +69,7 @@ Router.map(function() {
 
     this.route('reports', function() {
       this.route('revenue');
+      this.route('outstanding-jobs');
     });
   });
 });
