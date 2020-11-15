@@ -10,8 +10,7 @@
   /* Firefox only prints 1st page when tree has display: flex */
   html,
   body,
-  body > .ember-view,
-  body > .ember-view > div.h-screen > div.flex {
+  .flex {
     display: block;
   }
 
@@ -50,10 +49,14 @@
 
   .row {
     display: block;
+  }
 
-    &.header {
+  .header {
+    display: table-header-group;
+    padding-bottom: 0.1cm;
+
+    .row {
       border-bottom: 2px solid #000;
-      padding-bottom: 0.1cm;
       font-weight: bold;
     }
   }
@@ -73,7 +76,7 @@
       box-shadow: inset 0 0 0 1000px #e5e7eb;
     }
 
-    .row.header {
+    .header .row {
       /** Workaround for background-color in print-stlye */
       box-shadow: inset 0 0 0 1000px #FFF;
     }
