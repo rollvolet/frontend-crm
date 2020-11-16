@@ -33,14 +33,10 @@
       @onChange={{fn (mut this.hasProductionTicket)}}
     />
 
-    <InputField::FilterFlag @label="Te plaatsen"
-      @value={{this.mustBeInstalled}}
-      @onChange={{fn (mut this.mustBeInstalled)}}
-    />
-
-    <InputField::FilterFlag @label="Te leveren"
-      @value={{this.mustBeDelivered}}
-      @onChange={{fn (mut this.mustBeDelivered)}}
+    <InputField::FilterFlag @label="Uitvoering"
+      @value={{this.execution}}
+      @options={{this.executionOptions}}
+      @onChange={{fn (mut this.execution)}}
     />
 
     <InputField::FilterFlag @label="Product klaar"

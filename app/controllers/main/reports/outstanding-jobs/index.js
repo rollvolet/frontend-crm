@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { guidFor } from '@ember/object/internals';
 
 export default class MainReportsOutstandingJobsIndexController extends Controller {
   @service router;
@@ -9,9 +10,15 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
   page = 0;
   size = 100;
   hasProductionTicket = -1;
-  mustBeInstalled = -1;
-  mustBeDelivered = -1;
-  isProductReady = -1
+  execution = 'na';
+  isProductReady = -1;
+
+  executionOptions = [
+    { label: 'n.v.t.', value: 'na', id: `na-${guidFor(this)}` },
+    { label: 'te leveren', value: 'delivery', id: `yes-${guidFor(this)}` },
+    { label: 'te plaatsen', value: 'installation', id: `no-${guidFor(this)}` },
+    { label: 'op te halen', value: 'take-out', id: `no-${guidFor(this)}` }
+  ];
 
   @tracked visitor;
 
@@ -42,8 +49,7 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
         visitorName: this.visitorName,
         orderDate: this.orderDate,
         hasProductionTicket: this.hasProductionTicket,
-        mustBeInstalled: this.mustBeInstalled,
-        mustBeDelivered: this.mustBeDelivered,
+        execution: this.execution,
         isProductReady: this.isProductReady
       }
     });

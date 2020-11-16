@@ -13,8 +13,7 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     visitorName: { refreshModel: true },
     orderDate: { refreshModel: true }, // format yyyy-mm-dd
     hasProductionTicket: { refreshModel: true },
-    mustBeInstalled: { refreshModel: true },
-    mustBeDelivered: { refreshModel: true },
+    execution: { refreshModel: true },
     isProductReady: { refreshModel: true },
   }
 
@@ -45,10 +44,22 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     if (params.visitorName)
       searchParams.append('filter[visitor]', params.visitorName);
 
+    if (params.execution == 'delivery') {
+      searchParams.append('filter[mustBeDelivered]', 1);
+      searchParams.append('filter[mustBeInstalled]', 0);
+    } else if (params.execution == 'installation') {
+      searchParams.append('filter[mustBeDelivered]', 0);
+      searchParams.append('filter[mustBeInstalled]', 1);
+    } else if (params.execution == 'take-out') {
+      searchParams.append('filter[mustBeDelivered]', 0);
+      searchParams.append('filter[mustBeInstalled]', 0);
+    } else {
+      searchParams.append('filter[mustBeDelivered]', -1);
+      searchParams.append('filter[mustBeInstalled]', -1);
+    }
+
     searchParams.append('filter[orderDate]', params.orderDate);
     searchParams.append('filter[hasProductionTicket]', params.hasProductionTicket);
-    searchParams.append('filter[mustBeInstalled]', params.mustBeInstalled);
-    searchParams.append('filter[mustBeDelivered]', params.mustBeDelivered);
     searchParams.append('filter[isProductReady]', params.isProductReady);
 
     endpoint.search = searchParams.toString();
