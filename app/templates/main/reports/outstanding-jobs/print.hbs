@@ -35,9 +35,8 @@
       <div>Kl. Nr.</div>
       <div>Klant</div>
       <div>Gemeente</div>
-      <div>Lv</div>
+      <div>Uitv.</div>
       <div>Pr</div>
-      <div>Pl</div>
       <div>Uren</div>
       <div>Pk</div>
     </div>
@@ -48,7 +47,32 @@
         AD{{row.requestId}}
       </div>
       <div>{{row.visitorInitials}}</div>
-      <div>{{moment-format row.orderDate 'DD/MM/YY'}}</div>
+      <div>
+        {{#if row.orderDate}}
+          <div>
+            <span class="note note--info">Be </span>
+            {{moment-format row.orderDate 'DD/MM/YY'}}
+          </div>
+        {{/if}}
+        {{#if row.expectedDate}}
+          <div>
+            <span class="note note--info">Vw </span>
+            {{moment-format row.expectedDate 'DD/MM/YY'}}
+          </div>
+        {{/if}}
+        {{#if row.requiredDate}}
+          <div>
+            <span class="note note--info">Ve </span>
+            {{moment-format row.requiredDate 'DD/MM/YY'}}
+          </div>
+        {{/if}}
+        {{#if row.planningDate}}
+          <div>
+            <span class="note note--info">Pl </span>
+            {{moment-format row.planningDate 'DD/MM/YY'}}
+          </div>
+        {{/if}}
+      </div>
       <div>{{row.customerNumber}}</div>
       <div>
         {{row.customerName}}
@@ -65,13 +89,16 @@
         {{/if}}
       </div>
       <div>
-        {{paper-icon (if row.mustBeDelivered "check_box" "check_box_outline_blank")}}
+        {{#if row.mustBeDelivered}}
+          Lev
+        {{else if row.mustBeInstalled}}
+          Pla
+        {{else}}
+          Oph
+        {{/if}}
       </div>
       <div>
         {{paper-icon (if row.hasProductionTicket "check_box" "check_box_outline_blank")}}
-      </div>
-      <div>
-        {{paper-icon (if row.mustBeInstalled "check_box" "check_box_outline_blank")}}
       </div>
       <div class="center">
         {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}}T
