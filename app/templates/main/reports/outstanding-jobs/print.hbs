@@ -6,11 +6,11 @@
   <span>Productiebon: <Print::FilterFlag @value={{this.hasProductionTicket}} /></span> |
   <span>Uitvoering:
     {{#if (eq this.execution "delivery")}}
-      Te leveren
+      {{order-execution 'delivery'}}
     {{else if (eq this.execution "installation")}}
-      Te plaatsen
+      {{order-execution 'installation'}}
     {{else if (eq this.execution "take-out")}}
-      Op te halen
+      {{order-execution 'pickup'}}
     {{else}}
       n.v.t.
     {{/if}}
@@ -46,7 +46,6 @@
     <div class="row">
       <div>
         AD{{row.requestId}}
-        <br>{{row.offerNumber}}
       </div>
       <div>{{row.visitorInitials}}</div>
       <div>{{moment-format row.orderDate 'DD/MM/YY'}}</div>

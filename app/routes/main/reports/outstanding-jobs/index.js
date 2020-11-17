@@ -50,7 +50,7 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     } else if (params.execution == 'installation') {
       searchParams.append('filter[mustBeDelivered]', 0);
       searchParams.append('filter[mustBeInstalled]', 1);
-    } else if (params.execution == 'take-out') {
+    } else if (params.execution == 'pickup') {
       searchParams.append('filter[mustBeDelivered]', 0);
       searchParams.append('filter[mustBeInstalled]', 0);
     } else {

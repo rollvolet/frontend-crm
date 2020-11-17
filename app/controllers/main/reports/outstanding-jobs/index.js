@@ -17,7 +17,7 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
     { label: 'n.v.t.', value: 'na', id: `na-${guidFor(this)}` },
     { label: 'te leveren', value: 'delivery', id: `yes-${guidFor(this)}` },
     { label: 'te plaatsen', value: 'installation', id: `no-${guidFor(this)}` },
-    { label: 'op te halen', value: 'take-out', id: `no-${guidFor(this)}` }
+    { label: 'af te halen', value: 'pickup', id: `no-${guidFor(this)}` }
   ];
 
   @tracked visitor;

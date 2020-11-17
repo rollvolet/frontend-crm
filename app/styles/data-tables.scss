@@ -89,3 +89,10 @@
 .data-table-pagination-right .ember-power-select-trigger {
   min-width: 75px;
 }
+
+.data-table--outstanding-jobs {
+  .note--info {
+    display: inline-block;
+    min-width: 18px;
+  }
+}

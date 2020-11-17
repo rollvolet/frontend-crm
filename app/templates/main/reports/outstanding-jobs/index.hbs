@@ -46,64 +46,84 @@
   </div>
 </div>
 
-<DataTable
-  @content={{@model}}
-  @onClickRow={{this.goToOrder}}
-  @isLoading={{this.isLoadingModel}}
-  @noDataMessage="Geen resultaten"
-  @page={{this.page}}
-  @size={{this.size}}
-  as |t|>
-  <t.content as |c|>
-    <c.header>
-      <th>Aanvraag</th>
-      <th>Offerte</th>
-      <th>Bezoeker</th>
-      <th>Besteldatum</th>
-      <th>Kl. Nr.</th>
-      <th>Klant</th>
-      <th>Gemeente</th>
-      <th>Levering</th>
-      <th>Productiebon</th>
-      <th>Plaatsing</th>
-      <th>Uren</th>
-      <th>Klaar?</th>
-    </c.header>
-    <c.body as |row|>
-      <td>AD{{row.requestId}}</td>
-      <td>{{row.offerNumber}}</td>
-      <td>{{row.visitor}}</td>
-      <td><FmtDate @value={{row.orderDate}} /></td>
-      <td>{{row.customerNumber}}</td>
-      <td>
-        {{row.customerName}}
-        <br>{{row.customerAddress1}}
-        {{#if row.buildingAddress1}}
-          <br>{{row.buildingAddress1}}
-        {{/if}}
-      </td>
-      <td>
-        <br>
-        {{row.customerPostalCode}} {{row.customerCity}}
-        {{#if row.buildingCity}}
-          <br>{{row.buildingPostalCode}} {{row.buildingCity}}
-        {{/if}}
-      </td>
-      <td>
-        {{paper-icon (if row.mustBeDelivered "check_box" "check_box_outline_blank")}}
-      </td>
-      <td>
-        {{paper-icon (if row.hasProductionTicket "check_box" "check_box_outline_blank")}}
-      </td>
-      <td>
-        {{paper-icon (if row.mustBeInstalled "check_box" "check_box_outline_blank")}}
-      </td>
-      <td>
-        {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
-      </td>
-      <td>
-        {{paper-icon (if row.productIsReady "check_box" "check_box_outline_blank")}}
-      </td>
-    </c.body>
-  </t.content>
-</DataTable>
+<div class="data-table--outstanding-jobs">
+  <DataTable
+    @content={{@model}}
+    @onClickRow={{this.goToOrder}}
+    @isLoading={{this.isLoadingModel}}
+    @noDataMessage="Geen resultaten"
+    @page={{this.page}}
+    @size={{this.size}}
+    as |t|>
+    <t.content as |c|>
+      <c.header>
+        <th>Aanvraag</th>
+        <th>Bezoeker</th>
+        <th>Besteldatum</th>
+        <th>Kl. Nr.</th>
+        <th>Klant</th>
+        <th>Gemeente</th>
+        <th>Uitvoering</th>
+        <th>Pr.bon</th>
+        <th>Planning</th>
+        <th>Uren</th>
+        <th>Klaar?</th>
+      </c.header>
+      <c.body as |row|>
+        <td>AD{{row.requestId}}</td>
+        <td>{{row.visitor}}</td>
+        <td><FmtDate @value={{row.orderDate}} /></td>
+        <td>{{row.customerNumber}}</td>
+        <td>
+          {{row.customerName}}
+          <br>{{row.customerAddress1}}
+          {{#if row.buildingAddress1}}
+            <br>{{row.buildingAddress1}}
+          {{/if}}
+        </td>
+        <td>
+          <br>
+          {{row.customerPostalCode}} {{row.customerCity}}
+          {{#if row.buildingCity}}
+            <br>{{row.buildingPostalCode}} {{row.buildingCity}}
+          {{/if}}
+        </td>
+        <td>
+          {{#if row.mustBeDelivered}}
+            {{order-execution 'delivery'}}
+          {{else if row.mustBeInstalled}}
+            {{order-execution 'installation'}}
+          {{else}}
+            {{order-execution 'pickup'}}
+          {{/if}}
+        </td>
+        <td>
+          {{paper-icon (if row.hasProductionTicket "check_box" "check_box_outline_blank")}}
+        </td>
+        <td>
+          <div>
+            <PaperTooltip>Verwacht</PaperTooltip>
+            <span class="note note--info">Vw </span>
+            <FmtDate @value={{row.expectedDate}} />
+          </div>
+          <div>
+            <PaperTooltip>Vereist</PaperTooltip>
+            <span class="note note--info">Ve </span>
+            <FmtDate @value={{row.requiredDate}} />
+          </div>
+          <div>
+            <PaperTooltip>Gepland</PaperTooltip>
+            <span class="note note--info">Pl </span>
+            <FmtDate @value={{row.planningDate}} />
+          </div>
+        </td>
+        <td>
+          {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
+        </td>
+        <td>
+          {{paper-icon (if row.productIsReady "check_box" "check_box_outline_blank")}}
+        </td>
+      </c.body>
+    </t.content>
+  </DataTable>
+</div>
