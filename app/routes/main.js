@@ -3,8 +3,12 @@ import { inject as service } from '@ember/service';
 
 export default class MainRoute extends Route {
   @service session;
+  @service userInfo;
 
   beforeModel(transition) {
-    this.session.requireAuthentication(transition, 'login');
+    const isAuthenticated = this.session.requireAuthentication(transition, 'login');
+
+    if (isAuthenticated)
+      this.userInfo.fetchUserInfo.perform();
   }
 }

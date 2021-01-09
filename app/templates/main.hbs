@@ -16,7 +16,7 @@
       {{paper-icon "account circle"}}
       <PaperTooltip>Profiel</PaperTooltip>
     </PaperButton>
-    {{this.session.data.authenticated.user.account}}
+    {{this.userInfo.username}}
     <PaperButton @onClick={{fn this.logout}} @iconButton={{true}}>
       {{paper-icon "exit to app"}}
       <PaperTooltip>Log uit</PaperTooltip>
@@ -79,7 +79,7 @@
       <PaperList>
         <PaperSubheader>Rapporten</PaperSubheader>
         <PaperDivider />
-        {{#if this.currentSession.hasBoardRole}}
+        {{#if this.userInfo.hasBoardRole}}
           <PaperItem @href={{href-to "main.reports.revenue"}}>Omzet</PaperItem>
           <PaperDivider />
         {{/if}}

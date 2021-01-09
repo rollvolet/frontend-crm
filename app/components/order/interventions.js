@@ -5,14 +5,14 @@ import updateContactAndBuildingRequest from '../../utils/api/update-contact-and-
 
 export default class OrderInterventionsComponent extends Component {
   @service case
-  @service currentSession
+  @service userInfo
   @service store
   @service router
 
   @task
   *createNew() {
     const customer = this.case.current.customer;
-    const employee = yield this.currentSession.getCurrentEmployee();
+    const employee = yield this.userInfo.getCurrentEmployee();
     const intervention = this.store.createRecord('intervention', {
       date: new Date(),
       origin: this.args.order,

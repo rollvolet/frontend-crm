@@ -11,7 +11,7 @@ export default class OopsRoute extends Route {
       this.transitionTo('main.index');
     } else if (this.appState.lastError.status == 401) {
       warn('XHR request returned 401 Unauthorized. Log out to get in a consistent authentication state', { id: 'xhr.failure' });
-      return this.session.invalidate();
+      this.session.invalidate();
     }
   }
 

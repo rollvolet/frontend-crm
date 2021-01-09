@@ -3,9 +3,9 @@ import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 
 export default class MainController extends Controller {
-  @service configuration
-  @service session
-  @service currentSession
+  @service configuration;
+  @service session;
+  @service userInfo;
 
   @action
   openMail() {

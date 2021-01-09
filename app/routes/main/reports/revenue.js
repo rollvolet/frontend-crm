@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import MonthlySalesEntry from '../../../classes/monthly-sales-entry';
 
 export default class MainReportsRevenueRoute extends Route {
-  @service currentSession
+  @service userInfo
 
   queryParams = {
     fromYear: {
@@ -16,7 +16,7 @@ export default class MainReportsRevenueRoute extends Route {
   };
 
   beforeModel() {
-    if (!this.currentSession.hasBoardRole)
+    if (!this.userInfo.hasBoardRole)
       this.transitionTo('forbidden');
   }
 
