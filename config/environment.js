@@ -32,9 +32,8 @@ module.exports = function(environment) {
         'azure-ad2-oauth2': {
           tenantId: '3e9b8827-39f2-4fb4-9bc1-f8a200aaea79',
           apiKey: '73f6618e-be24-4ab5-a1da-4f368448fd96',
-          // scope 'access_as_user' is used for the on-behalf-of authentication flow in the backend
           // scope  'offline_access' is required to get a refresh token together with the access token
-          scope: 'api://73f6618e-be24-4ab5-a1da-4f368448fd96/access_as_user offline_access User.Read Calendars.ReadWrite.Shared Files.ReadWrite.All',
+          scope: 'offline_access User.Read Calendars.ReadWrite.Shared Files.ReadWrite.All',
           redirectUri: 'http://localhost:4200/torii/redirect.html'
         }
       }
