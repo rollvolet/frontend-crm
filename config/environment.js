@@ -34,7 +34,7 @@ module.exports = function(environment) {
           apiKey: '73f6618e-be24-4ab5-a1da-4f368448fd96',
           // scope 'access_as_user' is used for the on-behalf-of authentication flow in the backend
           // scope  'offline_access' is required to get a refresh token together with the access token
-          scope: 'api://73f6618e-be24-4ab5-a1da-4f368448fd96/access_as_user offline_access',
+          scope: 'api://73f6618e-be24-4ab5-a1da-4f368448fd96/access_as_user offline_access User.Read Calendars.ReadWrite.Shared Files.ReadWrite.All',
           redirectUri: 'http://localhost:4200/torii/redirect.html'
         }
       }
@@ -68,19 +68,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    // acceptance env
-    // ENV.torii.providers['azure-ad2-oauth2'].apiKey = '552ea087-fcd9-4d53-911b-19b11ff6631a';
-    // ENV.torii.providers['azure-ad2-oauth2'].scope = 'api://552ea087-fcd9-4d53-911b-19b11ff6631a/access_as_user offline_access',
-    // ENV.torii.providers['azure-ad2-oauth2'].redirectUri = 'https://crm.rollvolet.info/torii/redirect.html';
-
-    // production env
-    // ENV.torii.providers['azure-ad2-oauth2'].apiKey = '2336e897-d594-47ad-b2a3-bb3f0973e60a';
-    // ENV.torii.providers['azure-ad2-oauth2'].scope = 'api://2336e897-d594-47ad-b2a3-bb3f0973e60a/access_as_user offline_access',
-    // ENV.torii.providers['azure-ad2-oauth2'].redirectUri = 'https://rkb.rollvolet.be/torii/redirect.html';
-
-    ENV.torii.providers['azure-ad2-oauth2'].apiKey = '{{OAUTH_API_KEY}}';
-    ENV.torii.providers['azure-ad2-oauth2'].scope = '{{OAUTH_SCOPE}}';
-    ENV.torii.providers['azure-ad2-oauth2'].redirectUri = '{{OAUTH_REDIRECT_URI}}';
+    ENV.torii.providers['azure-ad2-oauth2'].apiKey = '{{AUTH_CLIENT_ID}}';
+    ENV.torii.providers['azure-ad2-oauth2'].redirectUri = '{{AUTH_REDIRECT_URI}}';
   }
 
   return ENV;

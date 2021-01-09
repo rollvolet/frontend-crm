@@ -1,26 +1,18 @@
-<div class="layout-row login-screen">
-  <div class="layout-column layout-align-center-center flex">
-    <img src="/assets/images/logo.jpg" alt="Rollvolet" class="logo">
-    <h1 class="header">Klantenbeheer</h1>
-    {{#if this.session.isAuthenticated}}
-      <p>U bent reeds ingelogd. <a href="#" {{on "click" (fn this.logout)}}>Log uit</a> of ga naar de <LinkTo @route="main.index">applicatie</LinkTo>.</p>
-    {{else}}
-      {{#if this.errorMessage}}
-        <div class="error--message">
-          Helaas, er is iets fout gelopen. <a href="#" {{on "click" (fn this.resetError)}}>Probeer opnieuw</a>.
-        </div>
-        <div class="error--tech-description">{{this.errorMessage}}</div>
-        <PaperButton @disabled={{true}} @raised={{true}} @primary={{true}} @onClick={{null}}>Login</PaperButton>
-      {{else if this.login.isRunning}}
-        <PaperButton @disabled={{true}} @raised={{true}} @primary={{true}} @onClick={{null}}>Bezig met aanmelden...</PaperButton>
-        <div class="error--tech-description">
-          Het aanmelden gebeurt in een pop-up; zorg dat de instellingen van uw browser correct staan indien deze niet verschijnt.
-        </div>
-      {{else}}
-        <PaperButton @raised={{true}} @primary={{true}} @onClick={{perform this.login}}>Login</PaperButton>
-      {{/if}}
-    {{/if}}
-  </div>
-</div>
+{{#if this.session.isAuthenticated}}
+  Redirecting...
+{{else}}
+  <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="bg-white shadow py-8 px-4 sm:px-10 sm:rounded-lg sm:mx-auto sm:w-full sm:max-w-md">
+      <div class="">
+        <img class="mx-auto h-32 w-auto" src="/assets/images/logo.jpg" alt="Rollvolet">
+        <h2 class="mt-6 text-center text-4xl font-extrabold font-display tracking-wide text-gray-900">
+          Klantenbeheer
+        </h2>
+      </div>
 
-<LiquidOutlet />
+      <div class="mt-8">
+        <MsalLogin />
+      </div>
+    </div>
+  </div>
+{{/if}}

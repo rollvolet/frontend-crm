@@ -1,40 +1,35 @@
 import { inject as service } from '@ember/service';
 import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
 import fetch, { Headers } from 'fetch';
-import config from '../config/environment';
 
 const toriiProvider = 'azure-ad2-oauth2';
 
 /**
- * Azure AD 2.0 OAuth2 authenticator that supports automatic token refresh.
- *
- * Inspired by the JWT authenticator of ember-simple-auth-token
+ * Azure AD 2.0 OAuth2 authenticator
 */
 export default class Torii extends ToriiAuthenticator {
   @service torii
 
   async authenticate() {
-    const data = await super.authenticate(...arguments); // get authorization code through Torii
+    // get authorization code through Torii
+    const data = await super.authenticate(...arguments);
 
-    // exchange authorization code for access token/refresh token
-    const result = await fetch('/api/sessions', {
+    // exchange authorization code for access token in backend
+    const result = await fetch('/sessions', {
       method: 'POST',
       headers: new Headers({
-        'Content-Type': 'application/json'
+        Accept: 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json'
       }),
       body: JSON.stringify({
-        'authorization-code': data.authorizationCode,
-        'redirect-uri': data.redirectUri,
-        scope: config.torii.providers['azure-ad2-oauth2'].scope
+        authorizationCode: data.authorizationCode
       })
     });
 
     if (result.ok) {
       const response = await result.json();
-      return {
-        provider: toriiProvider, // required to make session restore work
-        user: response
-      };
+      response.provider = toriiProvider; // required to make session restore work
+      return response;
     } else {
       throw result;
     }
@@ -42,10 +37,10 @@ export default class Torii extends ToriiAuthenticator {
 
   async invalidate() {
     const response = await super.invalidate(...arguments);
-    await fetch('/api/sessions/current', {
+    await fetch('/sessions/current', {
       method: 'DELETE',
       headers: new Headers({
-        'Content-Type': 'application/json'
+        Accept: 'application/vnd.api+json'
       })
     });
     return response;
@@ -53,19 +48,17 @@ export default class Torii extends ToriiAuthenticator {
 
   async restore() {
     await super.restore(...arguments);
-    const result = await fetch('/api/sessions/current', {
+    const result = await fetch(`/sessions/current`, {
       method: 'GET',
       headers: new Headers({
-        'Content-Type': 'application/json'
+        Accept: 'application/vnd.api+json'
       })
     });
 
     if (result.ok) {
       const response = await result.json();
-      return {
-        provider: toriiProvider, // required to make session restore work
-        user: response
-      };
+      response.provider = toriiProvider; // required to make session restore work
+      return response;
     } else {
       throw result;
     }
