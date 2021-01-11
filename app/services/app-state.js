@@ -17,6 +17,7 @@ export default class AppStateService extends Service {
     fetch('/api/error-notifications', {
       method: 'POST',
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({

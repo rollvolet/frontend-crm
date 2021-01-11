@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import fetch from 'fetch';
+import fetch, { Headers } from 'fetch';
 import { tracked } from '@glimmer/tracking';
 import { isEmpty } from '@ember/utils';
 import { keepLatestTask } from 'ember-concurrency-decorators';
@@ -24,7 +24,11 @@ export default class VisitDetailViewComponent extends Component {
   @keepLatestTask
   *synchronize() {
     yield fetch(`/api/orders/${this.args.model.id}/planning-event`, {
-      method: 'PUT'
+      method: 'PUT',
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      })
     });
     yield this.loadCalendarEvent.perform();
   }

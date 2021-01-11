@@ -4,7 +4,8 @@ export default function apiUpdateContactAndBuilding(body) {
   return fetch(`/api/cases/contact-and-building`, {
     method: 'POST',
     headers: new Headers({
-      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
     }),
     body: JSON.stringify(body)
   });

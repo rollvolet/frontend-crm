@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { keepLatestTask, task } from 'ember-concurrency-decorators';
-import fetch from 'fetch';
+import fetch, { Headers } from 'fetch';
 import { isEmpty } from '@ember/utils';
 
 export default class PlanningPanelComponent extends Component {
@@ -52,7 +52,12 @@ export default class PlanningPanelComponent extends Component {
   @task
   *loadCalendarEvent() {
     if (this.args.model.isPlanned) {
-      const result = yield fetch(`/api/calendars/planning/${this.args.model.planningMsObjectId}/subject`);
+      const result = yield fetch(`/api/calendars/planning/${this.args.model.planningMsObjectId}/subject`, {
+        headers: new Headers({
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        })
+      });
 
       if (result.ok) {
         const { subject } = yield result.json();
@@ -81,6 +86,10 @@ export default class PlanningPanelComponent extends Component {
     const resource = this.args.model.constructor.modelName == 'order' ? 'orders' : 'interventions';
     yield fetch(`/api/${resource}/${this.args.model.id}/planning-event`, {
       method: 'PUT',
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      })
     });
 
     if (this.isNotAvailableInCalendar)

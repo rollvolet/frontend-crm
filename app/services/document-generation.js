@@ -138,6 +138,7 @@ export default class DocumentGenerationService extends Service {
     const result = await fetch(url, {
       method: 'POST',
       headers: new Headers({
+        Accept: 'application/pdf',
         'Content-Type': 'application/json'
       }),
       body: body

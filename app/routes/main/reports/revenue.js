@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import fetch from 'fetch';
+import fetch, { Headers } from 'fetch';
 import { inject as service } from '@ember/service';
 import MonthlySalesEntry from '../../../classes/monthly-sales-entry';
 
@@ -28,7 +28,11 @@ export default class MainReportsRevenueRoute extends Route {
     }));
 
     endpoint.search = urlParams.toString();
-    const response = await (await fetch(endpoint)).json();
+    const response = await (await fetch(endpoint), {
+      headers: new Headers({
+        Accept: 'application/json'
+      })
+    }).json();
     return response.data.map(item => new MonthlySalesEntry(item.attributes));
   }
 }

@@ -1,5 +1,5 @@
 import Service, { inject as service } from '@ember/service';
-import fetch from 'fetch';
+import fetch, { Headers } from 'fetch';
 import { assert, warn } from '@ember/debug';
 import Case from '../models/case';
 import { keepLatestTask, task } from 'ember-concurrency-decorators';
@@ -83,7 +83,12 @@ export default class CaseService extends Service.extend(Evented) {
     else if (currentRoute.includes('case.invoice'))
       queryParam = calcQueryParam(currentUrl, 'invoiceId');
 
-    const response = yield fetch(`/api/cases?${queryParam}`);
+    const response = yield fetch(`/api/cases?${queryParam}`, {
+      headers: new Headers({
+        Accept: 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json'
+      }),
+    });
 
     if (response.ok) {
       const responseBody = yield response.json();

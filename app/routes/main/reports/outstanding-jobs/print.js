@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import OutstandingJob from '../../../../classes/outstanding-job';
+import fetch, { Headers } from 'fetch';
 
 export default class MainReportsOutstandingJobsPrintRoute extends Route {
   queryParams = {
@@ -42,7 +43,11 @@ export default class MainReportsOutstandingJobsPrintRoute extends Route {
 
     endpoint.search = searchParams.toString();
 
-    const response = await (await fetch(endpoint)).json();
+    const response = await (await fetch(endpoint), {
+      headers: new Headers({
+        Accept: 'application/json'
+      })
+    }).json();
     const entries = response.data.map(item => new OutstandingJob(item.attributes));
 
     return entries;

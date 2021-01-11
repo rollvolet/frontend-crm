@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { action } from '@ember/object';
 import ArrayProxy from '@ember/array/proxy';
-import fetch from 'fetch';
+import fetch, { Headers } from 'fetch';
 import OutstandingJob from '../../../../classes/outstanding-job';
 import getPaginationMetadata from '../../../../utils/get-pagination-metadata';
 import Snapshot from '../../../../utils/snapshot';
@@ -64,7 +64,11 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
 
     endpoint.search = searchParams.toString();
 
-    const response = await (await fetch(endpoint)).json();
+    const response = await (await fetch(endpoint), {
+      headers: new Headers({
+        Accept: 'application/json'
+      })
+    }).json();
     const entries = response.data.map(item => new OutstandingJob(item.attributes));
     const count = response.meta.count;
     const pagination = getPaginationMetadata(response.meta.page.number, response.meta.page.size, count);
