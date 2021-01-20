@@ -68,6 +68,7 @@
         <th>Planning</th>
         <th>Uren</th>
         <th>Klaar?</th>
+        <th>Opmerking</th>
       </c.header>
       <c.body as |row|>
         <td>AD{{row.requestId}}</td>
@@ -119,9 +120,15 @@
         </td>
         <td>
           {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
+          {{#each row.techniciansList as |technician|}}
+            <br>{{technician}}
+          {{/each}}
         </td>
         <td>
           {{paper-icon (if row.productIsReady "check_box" "check_box_outline_blank")}}
+        </td>
+        <td class="{{unless row.expandComment "truncate"}}" role="button" {{on "click" (fn this.toggleComment row)}}>
+          {{row.comment}}
         </td>
       </c.body>
     </t.content>

@@ -21,7 +21,7 @@
 <div class="hide-on-print u-margin-top-small">
   <InfoMessage>
     <div>
-      Het is normaal dat u hier geen resultaten ziet. Gebruik de print-functie van de browser (Ctrl+P) om dit rapport te printen.
+      Het rapport om te printen is voorbereid. Het is normaal dat u hier geen resultaten ziet. Gebruik de print-functie van de browser (Ctrl+P) om dit rapport te printen.
     </div>
   </InfoMessage>
 </div>
@@ -102,6 +102,9 @@
       </div>
       <div class="center">
         {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}}T
+        {{#each row.techniciansList as |technician|}}
+          <br>{{technician}}
+        {{/each}}
       </div>
       <div>
         {{paper-icon (if row.productIsReady "check_box" "check_box_outline_blank")}}

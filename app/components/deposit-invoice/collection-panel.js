@@ -60,6 +60,10 @@ export default class DepositInvoiceCollectionPanelComponent extends Component {
     return this.order.isMasteredByAccess;
   }
 
+  get isEnabledDelete() {
+    return false;
+  }
+
   get totalAmount() {
     return sum(this.depositInvoices.mapBy('arithmeticAmount'));
   }

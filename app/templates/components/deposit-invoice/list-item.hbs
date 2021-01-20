@@ -33,12 +33,12 @@
                 <PaperTooltip>Crediteer voorschotfactuur</PaperTooltip>
               </PaperButton>
             {{/unless}}
-            {{#unless @model.isBooked}}
+            {{#if @isEnabledDelete}}
               <PaperButton @onClick={{perform @remove @model}} @iconButton={{true}}>
                 {{paper-icon "delete"}}
                 <PaperTooltip>Verwijderen</PaperTooltip>
               </PaperButton>
-            {{/unless}}
+            {{/if}}
           {{/if}}
         {{/if}}
       {{/if}}

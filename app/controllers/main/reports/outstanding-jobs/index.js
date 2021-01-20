@@ -32,8 +32,11 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
   }
 
   @action
-  goToOrder(row) {
-    this.transitionToRoute('main.case.order.edit', row.customerNumber, row.orderId);
+  goToOrder(row, e) {
+    if (e.target.getAttribute('role') != 'button') {
+      this.transitionToRoute('main.case.order.edit', row.customerNumber, row.orderId);
+    }
+    // else: prevent transition if expandComment is clicked
   }
 
   @action
@@ -54,4 +57,10 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
       }
     });
   }
+
+  @action
+  toggleComment(row) {
+    row.expandComment = !row.expandComment;
+  }
+
 }
