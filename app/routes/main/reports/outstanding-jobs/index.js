@@ -75,6 +75,8 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
       if (!visitors.length)
         visitors = await this.store.findAll('employee');
       this.visitor = visitors.find(e => e.firstName == params.visitorName);
+    } else {
+      this.visitor = null;
     }
 
     this.lastParams.commit();
