@@ -1,3 +1,5 @@
+@import 'tailwind';
+
 /* material variables are spread in the SCSS files of https://github.com/angular/material */
 $primary: "red";
 $accent: "blue-grey";
@@ -23,17 +25,17 @@ $ember-power-select-highlighted-background: paper-color($primary, '200') !defaul
 @import 'ember-power-select/themes/material';
 @import "ember-power-select";
 
-@import 'layout';
-@import 'print';
-@import 'utils';
-@import 'input-fields';
-@import 'loading';
-@import 'login';
-@import 'error';
-@import 'resource-pages';
-@import 'case-pages';
-@import 'data-tables';
-@import 'rich-text-editor';
+@import 'scss/layout';
+@import 'scss/print';
+@import 'scss/utils';
+@import 'scss/input-fields';
+@import 'scss/loading';
+@import 'scss/login';
+@import 'scss/error';
+@import 'scss/resource-pages';
+@import 'scss/case-pages';
+@import 'scss/data-tables';
+@import 'scss/rich-text-editor';
 
 /* Default style overwrites */
 table {
