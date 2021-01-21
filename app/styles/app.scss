@@ -1,24 +1,24 @@
-@import 'tailwind';
-
-/* material variables are spread in the SCSS files of https://github.com/angular/material */
 $primary: "red";
 $accent: "blue-grey";
-
 $base-color: rgba(0, 0, 0, 0.87) !default;
 
 @import 'color-palette';
 $color-red: map-merge($color-red, ('contrastDefaultColor':  $light-contrast-color));
 $color-blue-grey: map-merge($color-blue-grey, ('contrastDefaultColor':  $light-contrast-color));
 
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
-html, body {
-  font-family: 'Nunito', sans-serif;
-}
-
 $md-autocomplete-item-height: 36px !default;
 
 @import 'ember-paper';
 @import 'ember-paper-data-table';
+
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
+html, body {
+  font-family: 'Inter var', sans-serif;
+}
+
+@import 'tailwind';
+
+/* material variables are spread in the SCSS files of https://github.com/angular/material */
 
 $ember-power-select-material-active-color: paper-color($primary) !default;
 $ember-power-select-highlighted-background: paper-color($primary, '200') !default;
@@ -155,4 +155,16 @@ md-input-container .md-errors-spacer {
 
 .email-address {
   color: paper-color($primary);
+}
+
+
+/** Overwrites after applying Tailwind base style */
+.flex.detail-value {
+  md-icon {
+    @apply m-0;
+  }
+}
+
+md-input-container .md-input:focus {
+  @apply ring-0;
 }
