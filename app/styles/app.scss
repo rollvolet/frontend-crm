@@ -3,8 +3,24 @@ $accent: "blue-grey";
 $base-color: rgba(0, 0, 0, 0.87) !default;
 
 @import 'color-palette';
-$color-red: map-merge($color-red, ('contrastDefaultColor':  $light-contrast-color));
 $color-blue-grey: map-merge($color-blue-grey, ('contrastDefaultColor':  $light-contrast-color));
+
+$color-red: (
+  '50': #FEF2F2,
+  '100': #FEE2E2,
+  '200': #FECACA,
+  '300': #FCA5A5,
+  '400': #F87171,
+/**  '500': #EF4444,*/
+  '500': #DC2626,
+  '600': #DC2626,
+  '700': #B91C1C,
+  '800': #991B1B,
+  '900': #7F1D1D,
+  'contrastDefaultColor': $light-contrast-color,
+  'contrastDarkColors': ('50', '100', '200', '300', 'A100'),
+  'contrastStrongLightColors': ('400', '500', '600', '700', 'A200', 'A400', 'A700')
+);
 
 $md-autocomplete-item-height: 36px !default;
 
