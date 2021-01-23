@@ -1,20 +1,37 @@
-<div class="oops-page">
-  <div class="error-page">
-    <h1>Oeps, er is iets misgelopen...</h1>
+<div class="max-w-2xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+  <h1 class="text-3xl font-bold font-display mt-8 mb-6">Oeps, er is iets misgelopen...</h1>
 
-    <p>De foutmelding is automatisch doorgestuurd. We proberen dit zo snel mogelijk te verhelpen. Contacteer de helpdesk indien deze fout zich blijft voordoen.</p>
+  <p class="mb-10 text-sm">
+    De foutmelding is automatisch doorgestuurd. We proberen dit zo snel mogelijk te verhelpen. Contacteer de helpdesk indien deze fout zich blijft voordoen.
+  </p>
 
-    <div class="layout-row layout-align-start-start error--tech-description">
-      {{paper-icon "error"}}
-      <div class="flex">
-        <pre>{{this.model.fileName}}:{{this.model.lineNumber}}:{{this.model.columnNumber}}</pre>
-        <pre>{{this.model.message}}</pre>
-        <pre>{{this.model.stack}}</pre>
-      </div>
+  <div class="relative">
+    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+      <div class="w-full border-t border-gray-300"></div>
     </div>
-
-    <div class="layout-row layout-align-end-center">
-      <PaperButton @label="Ga terug" @onClick={{fn this.goBack}} @primary={{true}} @raised={{true}} />
+    <div class="relative flex justify-center">
+      <span class="px-2 bg-white text-sm text-gray-500">
+        Foutmelding
+      </span>
     </div>
+  </div>
+
+  <div class="font-mono text-gray-500 whitespace-pre-wrap break-words">
+    <pre>
+      {{this.model.fileName}}:{{this.model.lineNumber}}:{{this.model.columnNumber}}
+    </pre>
+    <pre>
+      {{this.model.message}}
+    </pre>
+    <pre>
+      {{this.model.stack}}
+    </pre>
+  </div>
+  <div class="flex justify-end">
+    <button type="button"
+      class="inline-flex justify-center py-2 px-4 w-24 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+      {{on "click" this.goBack}}>
+      Ga terug
+    </button>
   </div>
 </div>
