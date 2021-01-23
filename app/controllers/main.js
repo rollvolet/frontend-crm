@@ -6,11 +6,17 @@ import { later } from '@ember/runloop';
 
 export default class MainController extends Controller {
   @service configuration;
+  @service router;
   @service session;
   @service userInfo;
 
   @tracked isOpenMenu = false;
   @tracked showMenuContent = false;
+
+  constructor() {
+    super(...arguments);
+    this.router.on('routeWillChange', () => this.closeMenu());
+  }
 
   @action
   logout() {
