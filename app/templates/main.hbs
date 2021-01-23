@@ -238,7 +238,9 @@
 
     <main class="flex-1 relative overflow-y-auto focus:outline-none main-outlet" tabindex="0">
       <div class="mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        {{outlet}}
+        {{#unless this.configuration.preloadStaticLists.isRunning}}
+          {{outlet}}
+        {{/unless}}
       </div>
     </main>
   </div>
