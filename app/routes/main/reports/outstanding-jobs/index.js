@@ -64,14 +64,15 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
 
     endpoint.search = searchParams.toString();
 
-    const response = await (await fetch(endpoint), {
+    const response = await fetch(endpoint, {
       headers: new Headers({
         Accept: 'application/json'
       })
-    }).json();
-    const entries = response.data.map(item => new OutstandingJob(item.attributes));
-    const count = response.meta.count;
-    const pagination = getPaginationMetadata(response.meta.page.number, response.meta.page.size, count);
+    });
+    const json = await response.json();
+    const entries = json.data.map(item => new OutstandingJob(item.attributes));
+    const count = json.meta.count;
+    const pagination = getPaginationMetadata(json.meta.page.number, json.meta.page.size, count);
 
     // Preload selected visitor value for ember-power-select
     if (params.visitorName) {

@@ -50,7 +50,7 @@
         <group.radio @value="pickup">{{order-execution 'pickup'}}</group.radio>
       </PaperRadioGroup>
     </DetailListItem>
-    <DetailListItem @label="Productiebon" class="layout-align-center-center">
+    <DetailListItem @label="Productiebon" class="layout-align-start-center">
       <div class="layout-row layout-align-start-center">
         <div>{{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
         <ProductionTicketButtons @model={{@model}} />

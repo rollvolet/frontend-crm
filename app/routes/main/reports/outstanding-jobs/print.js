@@ -43,12 +43,13 @@ export default class MainReportsOutstandingJobsPrintRoute extends Route {
 
     endpoint.search = searchParams.toString();
 
-    const response = await (await fetch(endpoint), {
+    const response = await fetch(endpoint, {
       headers: new Headers({
         Accept: 'application/json'
       })
-    }).json();
-    const entries = response.data.map(item => new OutstandingJob(item.attributes));
+    });
+    const json = await response.json();
+    const entries = json.data.map(item => new OutstandingJob(item.attributes));
 
     return entries;
   }
