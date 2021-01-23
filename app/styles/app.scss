@@ -45,7 +45,6 @@ $ember-power-select-highlighted-background: paper-color($primary, '200') !defaul
 @import 'scss/print';
 @import 'scss/utils';
 @import 'scss/input-fields';
-@import 'scss/loading';
 @import 'scss/error';
 @import 'scss/resource-pages';
 @import 'scss/case-pages';
@@ -105,6 +104,9 @@ md-input-container .md-errors-spacer {
   border: 1px solid $base-color;
 }
 
+md-progress-circular.md-progress-white path {
+  stroke: white;
+}
 
 /* Edit pages */
 .save-status {
