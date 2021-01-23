@@ -18,7 +18,12 @@ export default class VisitDetailViewComponent extends Component {
 
   @keepLatestTask
   *loadCalendarEvent() {
-    this.calendarEvent = yield this.args.model.calendarEvent;
+    try {
+      this.calendarEvent = yield this.args.model.calendarEvent;
+    } catch(e) {
+      // Something went wrong
+    }
+
   }
 
   @keepLatestTask
