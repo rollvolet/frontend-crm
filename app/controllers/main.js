@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { later } from '@ember/runloop';
 
 export default class MainController extends Controller {
   @service configuration;
@@ -9,6 +10,7 @@ export default class MainController extends Controller {
   @service userInfo;
 
   @tracked isOpenMenu = false;
+  @tracked showMenuContent = false;
 
   @action
   logout() {
@@ -18,10 +20,14 @@ export default class MainController extends Controller {
   @action
   openMenu() {
     this.isOpenMenu = true;
+    this.showMenuContent = true;
   }
 
   @action
   closeMenu() {
-    this.isOpenMenu = false;
+    this.showMenuContent = false;
+    later(this, function() {
+      this.isOpenMenu = false;
+    }, 300); // delay to finish leave CSS animation
   }
 }
