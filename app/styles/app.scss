@@ -66,7 +66,7 @@ table {
   }
 
   tbody tr:nth-child(odd) {
-    background-color: lighten(paper-color($primary, '50'), 1);
+    background-color: lighten(paper-color($primary, '100'), 1);
   }
 }
 

@@ -2,7 +2,7 @@
   <div class="flex-none detail-key">
     {{@label}}
   </div>
-  <div class="flex detail-value {{if this.displayRow "layout-row"}}">
+  <div class="flex flex-none detail-value {{if this.displayRow "layout-row" "layout-column"}}">
     {{yield}}
   </div>
 </div>

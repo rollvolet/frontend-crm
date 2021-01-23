@@ -7,10 +7,6 @@
 }
 
 /** Overwrites after applying Tailwind base style */
-.flex.detail-value md-icon {
-  @apply m-0;
-}
-
 md-input-container .md-input:focus {
   @apply ring-0;
 }
