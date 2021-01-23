@@ -1,7 +1,7 @@
 {{#if @model}}
   <section class="case--request--visit">
     <div class="layout-row layout-align-start-center">
-      <h3>{{paper-icon "event"}} Bezoek</h3>
+      <h3 class="text-xl font-bold font-display my-3">{{paper-icon "event"}} Bezoek</h3>
       <SaveStatusIcon @model={{@model}} @task={{@save}} />
     </div>
     <PaperInput @label="Datum" @value={{@model.visitDateStr}} @type="date" @required="style" @errors={{v-get @model "visitDate" "messages"}} @onChange={{queue (fn (mut @model.visitDateStr)) (perform @save)}} @class="default" />
@@ -17,7 +17,7 @@
 {{else}}
   <section class="case--request--visit not-found">
     <div class="layout-row layout-align-start-center">
-      <h3>{{paper-icon "event"}} Bezoek</h3>
+      <h3 class="text-xl font-bold font-display my-3">{{paper-icon "event"}} Bezoek</h3>
     </div>
     <div class="case--request--visit--description">
       <p>Bezoek niet correct aangemaakt. Vink 'Bezoek nodig' opnieuw aan.</p>

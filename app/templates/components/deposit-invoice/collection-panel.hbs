@@ -1,5 +1,5 @@
 <div class="layout-row layout-align-space-between-center">
-  <h2>Voorschotfacturen</h2>
+  <h2 class="text-2xl font-bold font-display my-4">Voorschotfacturen</h2>
   {{#unless this.editMode}}
     {{#unless this.isDisabledCreate}}
       <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{perform this.createNew}}>
@@ -27,7 +27,7 @@
   {{#liquid-if this.editMode class="data-table-selection"}}
     <div class="layout-row layout-align-space-between-center">
       <div class="layout-row layout-align-start-center">
-        <h2>Factuur {{format-invoice-number this.selected.number}}</h2>
+        <h2 class="text-2xl font-bold font-display my-4">Factuur {{format-invoice-number this.selected.number}}</h2>
         <SaveStatusIcon @model={{this.selected}} @task={{this.save}} />
       </div>
       <div>

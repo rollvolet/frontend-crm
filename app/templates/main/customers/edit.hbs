@@ -1,10 +1,10 @@
 {{#if this.editMode}}
   <CustomerEntityEditForm @scope="customer" @model={{@model}} @onClose={{fn this.closeEdit}} @onRemove={{fn this.onRemove}}>
-    <h1>Bewerk klant <span class="small-text-fade">[{{@model.number}}]</span></h1>
+    <h1 class="text-3xl font-bold font-display my-6">Bewerk klant <span class="small-text-fade">[{{@model.number}}]</span></h1>
   </CustomerEntityEditForm>
 {{else}}
   <div class="layout-row layout-align-start-center">
-    <h1><PrintName @model={{@model}} /> <span class="small-text-fade">[{{@model.number}}]</span></h1>
+    <h1 class="text-3xl font-bold font-display my-6"><PrintName @model={{@model}} /> <span class="small-text-fade">[{{@model.number}}]</span></h1>
     <div>
       <PaperButton @onClick={{fn this.openEdit}} @iconButton={{true}}>
         {{paper-icon "edit mode"}}

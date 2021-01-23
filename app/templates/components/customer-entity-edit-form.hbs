@@ -48,7 +48,7 @@
         <DuplicateVatNumberWarning @customer={{@model}} />
       {{/if}}
     {{/if}}
-    <h4>
+    <h4 class="text-lg font-bold font-display my-2">
       Geprinte naam: {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
       {{#if @model.printPrefix}}{{@model.prefix}}{{/if}} {{@model.name}} {{#if @model.printSuffix}}{{@model.suffix}}{{/if}}
       {{#if (not @model.printInFront)}}{{@model.honorificPrefix.name}}{{/if}}
@@ -70,7 +70,7 @@
     </div>
   </section>
 
-  <h3>Adres</h3>
+  <h3 class="text-xl font-bold font-display my-3">Adres</h3>
   <section class="layout-column">
     <InputField::AddressInput @address1={{@model.address1}} @address2={{@model.address2}} @address3={{@model.address3}} @onBlur={{queue (fn this.setAddress) (perform this.save)}} />
     <div class="layout-row">
@@ -86,7 +86,7 @@
     <PaperInput @label="Website" @value={{@model.url}} @errors={{v-get @model "url" "messages"}} @onChange={{fn (mut @model.url)}} @onBlur={{perform this.save}} @class="xlarge" />
   </section>
 
-  <h3>Telefoon</h3>
+  <h3 class="text-xl font-bold font-display my-3">Telefoon</h3>
   <section class="layout-column">
     <TelephoneEditForm @model={{@model}} />
   </section>

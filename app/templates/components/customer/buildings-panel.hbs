@@ -10,6 +10,6 @@
   <BuildingDetailPanel @model={{this.selectedBuilding}} @onClose={{fn this.closeDetail}} @onEdit={{fn this.openEdit}} />
 {{else if this.displayEdit}}
   <CustomerEntityEditForm @scope="building" @model={{this.selectedBuilding}} @onClose={{fn this.closeEdit}} @onRemove={{fn this.closeEdit}}>
-    <h3>Gebouw</h3>
+    <h3 class="text-xl font-bold font-display my-3">Gebouw</h3>
   </CustomerEntityEditForm>
 {{/liquid-if}}

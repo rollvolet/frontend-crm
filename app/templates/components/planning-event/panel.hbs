@@ -1,7 +1,7 @@
 {{#if @model.isMasteredByAccess}}
   <div class="case--right-panel flex-noshrink layout-column">
     <div class="case--order--planning">
-      <h3>{{paper-icon "event"}} Planning</h3>
+      <h3 class="text-xl font-bold font-display my-3">{{paper-icon "event"}} Planning</h3>
       <div class="case--order--planning--description">
         {{#if @model.date}}<FmtDate @value={{@model.date}} />{{else}}Niet ingepland{{/if}}
       </div>
@@ -12,7 +12,7 @@
   <div class="case--right-panel flex-noshrink layout-column">
     <div class="case--order--planning {{if @model.isNotAvailableInCalendar "not-found"}}">
       <div class="layout-row layout-align-space-between-center">
-        <h3>{{paper-icon "event"}} Planning</h3>
+        <h3 class="text-xl font-bold font-display my-3">{{paper-icon "event"}} Planning</h3>
         {{#if this.editMode}}
           <div>
           <PaperButton @onClick={{fn this.remove}} @iconButton={{true}}>

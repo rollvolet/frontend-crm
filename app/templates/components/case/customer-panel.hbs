@@ -1,5 +1,5 @@
 {{#if @model}}
-  <h2>
+  <h2 class="text-2xl font-bold font-display my-4">
     Klant: <PrintName @model={{@model}} /> <span class="small-text-fade">[{{@model.number}}]</span>
     <PaperButton @href={{href-to "main.customers.edit" @model }} @iconButton={{true}}>
       {{paper-icon "open in new"}}
@@ -67,7 +67,7 @@
       <div class="right-column layout-column">
         <div>
           <div class="layout-row layout-align-space-between-center">
-            <h3>Gebouw</h3>
+            <h3 class="text-xl font-bold font-display my-3">Gebouw</h3>
             {{#if this.isEnabledEditBuilding}}
               <PaperButton @onClick={{fn this.toggleBuildingEdit}} @iconButton={{true}}>
                 {{paper-icon "exit to app"}}
@@ -94,7 +94,7 @@
         </div>
         <div>
           <div class="layout-row layout-align-space-between-center">
-            <h3>Contact</h3>
+            <h3 class="text-xl font-bold font-display my-3">Contact</h3>
             {{#if this.isEnabledEditContact}}
               <PaperButton @onClick={{fn this.toggleContactEdit}} @iconButton={{true}}>
                 {{paper-icon "exit to app"}}

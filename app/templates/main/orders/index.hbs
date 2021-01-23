@@ -1,4 +1,4 @@
-<h1>Bestellingen</h1>
+<h1 class="text-3xl font-bold font-display my-6">Bestellingen</h1>
 
 <div class="orders-data-table">
   <Order::DataTableFilter @offerNumber={{this.offerNumber}} @reference={{this.reference}} @visitor={{this.visitor}} @requestNumber={{this.requestNumber}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutInvoice={{this.withoutInvoice}} @onlyNotCanceled={{this.onlyNotCanceled}} @onChange={{fn this.applyFilter}} />

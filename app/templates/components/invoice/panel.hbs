@@ -1,7 +1,7 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
     <div class="layout-row layout-align-start-center">
-      <h2>
+      <h2 class="text-2xl font-bold font-display my-4">
         {{#if @editMode}}Bewerk details{{else}}Overzicht{{/if}} factuur {{format-invoice-number @model.number}}
       </h2>
       {{#unless @editMode}}
@@ -66,7 +66,7 @@
 
   {{#if @model.isMasteredByAccess}}
     <div class="case--invoice--invoicelines layout-row layout-align-space-between-center">
-      <h2>Gefactureerde producten</h2>
+      <h2 class="text-2xl font-bold font-display my-4">Gefactureerde producten</h2>
       <div class="layout-row">
         <PaperButton @onClick={{fn this.downloadInvoiceDocument}} @iconButton={{true}}>
           {{paper-icon "find in page"}}
@@ -77,7 +77,7 @@
     <p class="note-message">De factuur is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
   {{else}}
     <div class="case--invoice--invoicelines layout-row layout-align-space-between-center">
-      <h2>Gefactureerde producten</h2>
+      <h2 class="text-2xl font-bold font-display my-4">Gefactureerde producten</h2>
       <div class="layout-row">
         {{#if this.generateInvoiceDocument.isRunning}}
           <PaperProgressCircular @diameter={{18}} />

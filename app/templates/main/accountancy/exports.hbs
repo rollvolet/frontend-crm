@@ -1,5 +1,5 @@
 <div class="layout-row layout-align-space-between-center">
-  <h1>
+  <h1 class="text-3xl font-bold font-display my-6">
     Exports naar boekhouding
     <span class="note-fade">Genereer een export voor de boekhouding van facturen die nog niet geboekt zijn.</span>
   </h1>
@@ -7,7 +7,7 @@
 
 <AccountancyExportForm @onExport={{perform this.onExport}} />
 
-<h2 {{on "click" (toggle "isInvoicesExpanded" this)}} role="button">
+<h2 class="text-2xl font-bold font-display my-4" {{on "click" (toggle "isInvoicesExpanded" this)}} role="button">
   Bekijk facturen
   {{#if this.isInvoicesExpanded}}
     {{paper-icon "expand_less"}}
@@ -22,7 +22,7 @@
 
 <div class="u-spacer-large"></div>
 
-<h2 {{on "click" (toggle "isHistoryExpanded" this)}} role="button">
+<h2 class="text-2xl font-bold font-display my-4" {{on "click" (toggle "isHistoryExpanded" this)}} role="button">
   Export historiek
   {{#if this.isHistoryExpanded}}
     {{paper-icon "expand_less"}}

@@ -2,7 +2,7 @@
   <PaperDivider />
   <div class="layout-row layout-align-space-between-center">
     <div class="layout-row layout-align-start-center">
-      <h3>Voorschotfactuur {{format-invoice-number @model.number}}</h3>
+      <h3 class="text-xl font-bold font-display my-3">Voorschotfactuur {{format-invoice-number @model.number}}</h3>
       {{#if @model.isPaid}}
         <div class="u-margin-left-normal badge badge--success">Betaald</div>
       {{else}}

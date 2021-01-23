@@ -1,6 +1,6 @@
 <div class="resource-details">
   <div class="layout-row layout-align-space-between-center">
-    <h4><span class="small-text-fade">[{{@model.number}}]</span> {{@model.printName}}</h4>
+    <h4 class="text-lg font-bold font-display my-2"><span class="small-text-fade">[{{@model.number}}]</span> {{@model.printName}}</h4>
     <div>
       <PaperButton @onClick={{fn @onEdit @model}} @iconButton={{true}}>{{paper-icon "edit mode"}}</PaperButton>
       <PaperButton @onClick={{fn @onClose}} @iconButton={{true}}>{{paper-icon "exit to app"}}</PaperButton>

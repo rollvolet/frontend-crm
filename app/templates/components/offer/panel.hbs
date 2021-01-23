@@ -1,6 +1,6 @@
 <div class="layout-row layout-align-space-between-center">
   <div class="layout-row layout-align-start-center">
-    <h2>
+    <h2 class="text-2xl font-bold font-display my-4">
       {{#if @editMode}}Bewerk details{{else}}Overzicht{{/if}} offerte {{@model.number}}
     </h2>
     {{#if @editMode}}
@@ -62,7 +62,7 @@
 
   {{#if @model.isMasteredByAccess}}
     <div class="layout-row layout-align-space-between-center">
-      <h2>Offerte</h2>
+      <h2 class="text-2xl font-bold font-display my-4">Offerte</h2>
       <div>
         <PaperButton @onClick={{fn this.downloadOfferDocument}} @iconButton={{true}}>
           {{paper-icon "find in page"}}
@@ -73,7 +73,7 @@
     <p class="note-message">De offerte is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
   {{else}}
     <div class="layout-row layout-align-space-between-center">
-      <h2>Offerte
+      <h2 class="text-2xl font-bold font-display my-4">Offerte
         <span class="small-text-fade">[
           {{#if @editMode}}
             <Input @value={{@model.documentVersion}} @key-up={{fn (mut @model.documentVersion)}} @focus-out={{perform this.save}} class="xsmall" />
