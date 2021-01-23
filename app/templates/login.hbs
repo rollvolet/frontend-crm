@@ -1,5 +1,8 @@
 {{#if this.session.isAuthenticated}}
-  Redirecting...
+  <div class="px-4 py-6 sm:px-6 lg:px-8">
+    U wordt doorverwezen. Indien dit scherm niet automatisch herlaadt na 5 seconden, klik dan
+    <LinkTo @route="main.index" class="text-red-500 underline">hier</LinkTo>.
+  </div>
 {{else}}
   <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="bg-white shadow py-8 px-4 sm:px-10 sm:rounded-lg sm:mx-auto sm:w-full sm:max-w-md">
