@@ -55,23 +55,6 @@
           <div><FmtEmail @value={{@model.email2}} /></div>
           <div>{{@model.url}}</div>
         </DetailIconListItem>
-
-        <DetailIconListItem @icon="assignment" @label="Memo" @class="resource-details--section-memo">
-          <div {{on "click" (toggle "isMemoExpanded" this)}} role="button">
-            {{#if @model.memo}}
-              {{#if this.isMemoExpanded}}
-                Memo {{paper-icon "expand less"}}
-              {{else}}
-                Memo {{paper-icon "expand more"}}
-              {{/if}}
-              {{#liquid-if this.isMemoExpanded class="expand-more"}}
-                <span class="html-body">{{@model.memo}}</span>
-              {{/liquid-if}}
-            {{else}}
-              Geen memo
-            {{/if}}
-          </div>
-        </DetailIconListItem>
       </div>
       <div class="space-y-6">
         <div class="">
@@ -182,6 +165,4 @@
       </div>
     </div>
   </div>
-{{else}}
-  <PaperButton @onClick={{null}}>Koppel klant</PaperButton>
 {{/if}}

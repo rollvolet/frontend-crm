@@ -6,7 +6,6 @@ import { action } from '@ember/object';
 export default class CaseCustomerPanelComponent extends Component {
   @service('case') caseService
 
-  @tracked isMemoExpanded = false
   @tracked isEnabledEditBuilding = false
   @tracked isEnabledEditContact = false
 
