@@ -1,61 +1,106 @@
-<div class="case--tabs">
-  <PaperTabs @selected={{this.currentRouteName}} @borderBottom={{true}} as |tabs|>
-    {{#if this.model.requestId}}
-      <div class="case--tabs--number">AD {{this.model.requestId}} {{this.visitor.initials}}</div>
-      {{#if this.model.customerId}}
-        <tabs.tab @value="main.case.request.edit.index" @href={{href-to "main.case.request.edit.index" this.model.customerId this.model.requestId (query-params editMode=false)}}>
-        Aanvraag
-        </tabs.tab>
-      {{else}}
-        <tabs.tab @value="main.requests.edit" @href={{href-to "main.requests.edit" this.model.requestId (query-params editMode=false)}}>
-          Aanvraag
-        </tabs.tab>
-      {{/if}}
-    {{/if}}
-    {{#if this.model.interventionId}}
-      <div class="case--tabs--number">IR {{this.model.interventionId}}</div>
-      {{#if this.model.customerId}}
-        <tabs.tab @value="main.case.intervention.edit.index" @href={{href-to "main.case.intervention.edit.index" this.model.customerId this.model.interventionId (query-params editMode=false)}}>
-        Interventie
-        </tabs.tab>
-{{!--      {{else}}
-        <tabs.tab @value="main.interventions.edit" @href={{href-to "main.interventions.edit" this.model.interventionId (query-params editMode=false)}}>
-          Interventie
-        </tabs.tab> --}}
-      {{/if}}
-    {{/if}}
-    {{#if this.model.offerId}}
-      <tabs.tab @value="main.case.offer.edit.index" @href={{href-to "main.case.offer.edit.index" this.model.customerId this.model.offerId (query-params editMode=false)}}>
-        Offerte
-      </tabs.tab>
-    {{/if}}
-    {{#if this.model.orderId}}
-      <tabs.tab @value="main.case.order.edit.index" @href={{href-to "main.case.order.edit.index" this.model.customerId this.model.orderId (query-params editMode=false)}}>
-        Bestelling
-      </tabs.tab>
-      <tabs.tab @value="main.case.order.edit.deposit-invoices" @href={{href-to "main.case.order.edit.deposit-invoices" this.model.customerId this.model.orderId (query-params editMode=false)}}>
-        Voorschotten
-      </tabs.tab>
-    {{/if}}
-    {{#if this.model.invoiceId}}
-      <tabs.tab @value="main.case.invoice.edit.index" @href={{href-to "main.case.invoice.edit.index" this.model.customerId this.model.invoiceId (query-params editMode=false)}}>
-        Factuur
-      </tabs.tab>
-    {{/if}}
-    {{#if this.canCreateNewOffer}}
-      <tabs.tab @value="main.case.request.edit.offer" @onClick={{fn this.openNewOffer}}>
-        {{paper-icon "add box"}} <PaperTooltip>Maak offerte</PaperTooltip>
-      </tabs.tab>
-    {{/if}}
-    {{#if this.canCreateNewOrder}}
-      <tabs.tab @value="main.case.offer.edit.order" @onClick={{fn this.openNewOrder}}>
-        {{paper-icon "add box"}} <PaperTooltip>Maak bestelling</PaperTooltip>
-      </tabs.tab>
-    {{/if}}
-    {{#if this.canCreateNewInvoice}}
-      <tabs.tab @value="main.case.order.edit.invoice" @onClick={{fn this.openNewInvoice}}>
-        {{paper-icon "add box"}} <PaperTooltip>Maak factuur</PaperTooltip>
-      </tabs.tab>
-    {{/if}}
-  </PaperTabs>
+<div>
+  <div class="block">
+    <div class="border-b border-gray-200">
+      <nav class="-mb-px flex flex-wrap md:flex-nowrap space-x-8" aria-label="Tabs">
+        <div class="py-4 px-4 text-sm font-bold text-white shadow bg-red-600 opacity-85 rounded-t-lg whitespace-nowrap">
+          AD {{this.model.requestId}} {{this.visitor.initials}}
+        </div>
+        {{#if this.model.requestId}}
+          {{#if this.model.customerId}}
+            <LinkTo @route="main.case.request.edit.index"
+              @models={{array this.model.customerId this.model.requestId}}
+              @query={{hash editMode=false}}
+              @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+              Aanvraag
+            </LinkTo>
+          {{else}}
+            <LinkTo @route="main.requests.edit"
+              @model={{this.model.requestId}}
+              @query={{hash editMode=false}}
+              @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+              Aanvraag
+            </LinkTo>
+          {{/if}}
+        {{/if}}
+        {{#if this.model.offerId}}
+          <LinkTo @route="main.case.offer.edit.index"
+            @models={{array this.model.customerId this.model.offerId}}
+            @query={{hash editMode=false}}
+            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            Offerte
+          </LinkTo>
+        {{/if}}
+        {{#if this.model.orderId}}
+          <LinkTo @route="main.case.order.edit.index"
+            @models={{array this.model.customerId this.model.orderId}}
+            @query={{hash editMode=false}}
+            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            Bestelling
+          </LinkTo>
+          <LinkTo @route="main.case.order.edit.deposit-invoices"
+            @models={{array this.model.customerId this.model.orderId}}
+            @query={{hash editMode=false}}
+            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            Voorschotten
+          </LinkTo>
+        {{/if}}
+        {{#if this.model.invoiceId}}
+          <LinkTo @route="main.case.invoice.edit.index"
+            @models={{array this.model.customerId this.model.invoiceId}}
+            @query={{hash editMode=false}}
+            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            Factuur
+          </LinkTo>
+        {{/if}}
+
+        {{#if this.canCreateNewOffer}}
+          <LinkTo @route="main.case.request.edit.offer"
+            @models={{array this.model.customerId this.model.requestId}}
+            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+            class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </LinkTo>
+        {{/if}}
+        {{#if this.canCreateNewOrder}}
+          <LinkTo @route="main.case.offer.edit.order"
+            @models={{array this.model.customerId this.model.offerId}}
+            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+            class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </LinkTo>
+        {{/if}}
+        {{#if this.canCreateNewInvoice}}
+          {{#if this.model.orderId}}
+            <LinkTo @route="main.case.order.edit.invoice"
+              @models={{array this.model.customerId this.model.orderId}}
+              @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+              class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </LinkTo>
+          {{else if this.model.interventionId}}
+            <LinkTo @route="main.case.intervention.edit.invoice"
+              @models={{array this.model.customerId this.model.interventionId}}
+              @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+              class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </LinkTo>
+          {{/if}}
+        {{/if}}
+      </nav>
+    </div>
+  </div>
 </div>
