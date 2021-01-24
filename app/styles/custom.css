@@ -6,6 +6,54 @@
   @apply bg-red-800 text-white;
 }
 
+
+/**
+ *  ember-power-select
+*/
+
+.ember-power-select-trigger {
+  @apply appearance-none pt-1.5 px-1 pb-1 h-auto w-full text-sm border border-gray-300 rounded-md;
+}
+
+.ember-power-select-trigger:focus,
+.ember-power-select-trigger--active {
+  @apply ring-red-200 border-2 border-red-200 outline-none;
+}
+
+.ember-power-select-selected-item {
+  @apply truncate;
+}
+
+.ember-power-select-clear-btn {
+  left: 0;
+  top: 5px;
+}
+
+.ember-power-select-search {
+  @apply p-0;
+}
+
+.ember-power-select-search-input {
+  @apply border-gray-300 border-0 border-b text-sm;
+}
+
+.ember-power-select-search-input:focus {
+  @apply ring-0 border-0 border-b border-red-200 outline-none;
+}
+
+.ember-power-select-option {
+  @apply py-1 text-sm;
+}
+
+.ember-power-select-option[aria-current="true"] {
+  @apply bg-gray-200 text-black;
+}
+
+.ember-power-select-option[aria-selected="true"] {
+  @apply bg-red-100 text-black;
+}
+
+
 /** Overwrites after applying Tailwind base style */
 md-input-container .md-input:focus {
   @apply ring-0;

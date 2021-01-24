@@ -36,10 +36,11 @@ html, body {
 
 /* material variables are spread in the SCSS files of https://github.com/angular/material */
 
-$ember-power-select-material-active-color: paper-color($primary) !default;
+/* $ember-power-select-material-active-color: paper-color($primary) !default;
 $ember-power-select-highlighted-background: paper-color($primary, '200') !default;
 @import 'ember-power-select/themes/material';
 @import "ember-power-select";
+*/
 
 @import 'scss/layout';
 @import 'scss/print';
