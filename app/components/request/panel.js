@@ -103,10 +103,14 @@ export default class RequestPanelComponent extends Component {
 
   @task
   *unlinkCustomer() {
-    const calendarEvent = yield this.args.model.calendarEvent;
-    if (calendarEvent) {
-      this.args.model.requiresVisit = false;
-      yield calendarEvent.destroyRecord();
+    try {
+      const calendarEvent = yield this.args.model.calendarEvent;
+      if (calendarEvent) {
+        this.args.model.requiresVisit = false;
+        yield calendarEvent.destroyRecord();
+      }
+    } catch (e) {
+      // TODO handle calendar event error
     }
     yield this.case.unlinkCustomer.perform();
     this.router.transitionTo('main.requests.edit', this.args.model.id);
