@@ -1,115 +1,163 @@
-<div class="layout-row layout-align-space-between-center">
-  <div class="layout-row layout-align-start-center">
-    <h2 class="text-2xl font-bold font-display my-4">
-      {{#if @editMode}}Bewerk details{{else}}Overzicht{{/if}} offerte {{@model.number}}
-    </h2>
-    {{#if @editMode}}
-      <SaveStatusIcon @model={{@model}} @task={{this.save}} />
-    {{/if}}
-  </div>
-  <div>
-    {{#if @editMode}}
-      {{#if this.isEnabledDelete}}
-        <PaperButton @onClick={{perform this.remove}} @iconButton={{true}}>
-          {{paper-icon "delete"}}
-          <PaperTooltip>Verwijderen</PaperTooltip>
-        </PaperButton>
-      {{/if}}
-      <PaperButton @onClick={{fn this.closeEdit}} @iconButton={{true}}>
-        {{paper-icon "exit to app"}}
-        <PaperTooltip>Sluiten</PaperTooltip>
-      </PaperButton>
-    {{else}}
-      {{#unless this.isDisabledEdit}}
-        <PaperButton @onClick={{fn @onOpenEdit}} @iconButton={{true}}>
-          {{paper-icon "edit mode"}}
-          <PaperTooltip>Aanpassen</PaperTooltip>
-        </PaperButton>
-      {{/unless}}
-    {{/if}}
-  </div>
-</div>
-
-{{#if (or this.remove.isRunning @model.isDeleted)}}
-  <div>
-    <PaperProgressLinear />
-    <p>Aan het verwijderen...</p>
-  </div>
-{{else if this.rollbackTree.isRunning}}
-  <div>
-    <PaperProgressLinear />
-    <p>Aan het herstellen...</p>
-  </div>
-{{else if (and (not @model.id) @model.isSaving)}}
-  <div>
-    <PaperProgressLinear />
-    <p>Aan het aanmaken...</p>
-  </div>
-{{else}}
-  {{#if this.order}}
-    <WarningMessage @message="Reeds besteld. Geen wijzigingen meer mogelijk." />
-  {{else if @model.isMasteredByAccess}}
-    <WarningMessage @message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden." />
-  {{else if this.hasMixedVatRates}}
-    <InfoMessage @message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
-  {{/if}}
-
-  {{#if @editMode}}
-    <Offer::DetailEdit @model={{@model}} @save={{this.save}} />
-  {{else}}
-    <Offer::DetailView @model={{@model}} />
-  {{/if}}
-
-  {{#if @model.isMasteredByAccess}}
-    <div class="layout-row layout-align-space-between-center">
-      <h2 class="text-2xl font-bold font-display my-4">Offerte</h2>
-      <div>
-        <PaperButton @onClick={{fn this.downloadOfferDocument}} @iconButton={{true}}>
-          {{paper-icon "find in page"}}
-          <PaperTooltip>Offerte bekijken</PaperTooltip>
-        </PaperButton>
+<div class="space-y-4">
+  {{!-- Details panel --}}
+  <div class="p-6 space-y-5 bg-white shadow rounded-lg overflow-hidden">
+    <div class="">
+      <div class="flex justify-between items-center">
+        <div class="flex">
+          <h2 class="text-2xl font-bold font-display">
+            Offerte {{@model.number}}
+          </h2>
+          {{#if @editMode}}
+            <SaveStatusIcon @model={{@model}} @task={{this.save}} />
+          {{/if}}
+        </div>
+        <div class="flex flex-none space-x-4">
+          {{#if @editMode}}
+            {{#if this.isEnabledDelete}}
+              <button type="button"
+                onClick={{perform this.remove}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                {{!-- Heroicon name: trash --}}
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            {{/if}}
+            <button type="button"
+              onClick={{this.closeEdit}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{!-- Heroicon name: logout --}}
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
+          {{else}}
+            {{#unless this.isDisabledEdit}}
+              <button type="button"
+                onClick={{@onOpenEdit}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                {{!-- Heroicon name: pencil --}}
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+              </button>
+            {{/unless}}
+          {{/if}}
+        </div>
       </div>
     </div>
-    <p class="note-message">De offerte is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.</p>
-  {{else}}
-    <div class="layout-row layout-align-space-between-center">
-      <h2 class="text-2xl font-bold font-display my-4">Offerte
-        <span class="small-text-fade">[
-          {{#if @editMode}}
-            <Input @value={{@model.documentVersion}} @key-up={{fn (mut @model.documentVersion)}} @focus-out={{perform this.save}} class="xsmall" />
-            <PaperTooltip>
-              Pas het versienummer aan om een nieuwe versie van het document te maken; anders wordt het vorige document overschreven.
-            </PaperTooltip>
-          {{else}}
-            {{@model.documentVersion}}
-          {{/if}}
-          ]
-        </span>
-      </h2>
-      <div>
-        {{#if this.generateOfferDocument.isRunning}}
-          <PaperProgressCircular @diameter={{18}} />
+    <div class="">
+      {{#if (or this.remove.isRunning @model.isDeleted)}}
+        <div>
+          <PaperProgressLinear />
+          <p>Aan het verwijderen...</p>
+        </div>
+      {{else if this.rollbackTree.isRunning}}
+        <div>
+          <PaperProgressLinear />
+          <p>Aan het herstellen...</p>
+        </div>
+      {{else if (and (not @model.id) @model.isSaving)}}
+        <div>
+          <PaperProgressLinear />
+          <p>Aan het aanmaken...</p>
+        </div>
+      {{else}}
+        {{#if this.order}}
+          <WarningMessage @message="Reeds besteld. Geen wijzigingen meer mogelijk." />
+        {{else if @model.isMasteredByAccess}}
+          <WarningMessage @message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden." />
+        {{else if this.hasMixedVatRates}}
+          <InfoMessage @message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
+        {{/if}}
+
+        {{#if @editMode}}
+          <Offer::DetailEdit @model={{@model}} @save={{this.save}} />
         {{else}}
-          {{#unless @editMode}}
+          <Offer::DetailView @model={{@model}} />
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+
+  {{!-- Document panel --}}
+  <div class="bg-white shadow rounded-lg overflow-hidden">
+    {{#if @model.isMasteredByAccess}}
+      <div class="p-6">
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold font-display">
+            Document
+          </h2>
+          <div class="flex">
             <PaperButton @onClick={{fn this.downloadOfferDocument}} @iconButton={{true}}>
               {{paper-icon "find in page"}}
               <PaperTooltip>Offerte bekijken</PaperTooltip>
             </PaperButton>
-          {{/unless}}
-          <PaperButton @onClick={{perform this.generateOfferDocument}} @iconButton={{true}}>
-            {{paper-icon "restore page"}}
-            <PaperTooltip>Offerte maken</PaperTooltip>
-          </PaperButton>
-        {{/if}}
+          </div>
+        </div>
+        <div>
+          <div>
+            De offerte is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.
+          </div>
+        </div>
       </div>
-    </div>
-
-    {{#if @editMode}}
-      <Offer::DocumentEdit @model={{@model}} @save={{this.save}} />
-  {{else}}
-      <Offer::DocumentView @model={{@model}} />
+    {{else}}
+      <div class="p-6">
+        <div class="flex justify-between items-center">
+          <div class="flex items-baseline space-x-2">
+            <h2 class="text-2xl font-bold font-display">
+              Document
+            </h2>
+            {{#if @editMode}}
+              <div>
+                <Input @value={{@model.documentVersion}} @key-up={{fn (mut @model.documentVersion)}} @focus-out={{perform this.save}} class="xsmall" />
+                <PaperTooltip>
+                  Pas het versienummer aan om een nieuwe versie van het document te maken; anders wordt het vorige document overschreven.
+                </PaperTooltip>
+              </div>
+            {{else}}
+              <div class="text-gray-400 font-bold font-display">
+                {{@model.documentVersion}}
+              </div>
+            {{/if}}
+          </div>
+          <div class="flex flex-none space-x-4">
+            {{#if this.generateOfferDocument.isRunning}}
+              <PaperProgressCircular @diameter={{18}} />
+            {{else}}
+              {{#unless @editMode}}
+                <button type="button"
+                  onClick={{this.downloadOfferDocument}}
+                class="inline-flex items-center px-4 py-2 border border-gray-400 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+                  <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  Bekijken
+                </button>
+              {{/unless}}
+              <button type="button"
+                onClick={{this.generateOfferDocument}}
+                class="inline-flex items-center px-4 py-2 border border-gray-400 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Maken
+              </button>
+            {{/if}}
+          </div>
+        </div>
+        <div>
+          {{#if @editMode}}
+            <Offer::DocumentEdit @model={{@model}} @save={{this.save}} />
+          {{else}}
+            <Offer::DocumentView @model={{@model}} />
+          {{/if}}
+        </div>
+      </div>
     {{/if}}
-  {{/if}}
-{{/if}}
+  </div>
+</div>
 
 <UnsavedChangesDialog @show={{this.showUnsavedChangesDialog}} @onCancel={{fn this.closeUnsavedChangesDialog}} @onConfirm={{fn this.confirmCloseEdit}} />
