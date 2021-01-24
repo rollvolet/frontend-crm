@@ -1,15 +1,24 @@
 {{#if @model}}
-  <h2 class="text-2xl font-bold font-display my-4">
-    Klant: <PrintName @model={{@model}} /> <span class="small-text-fade">[{{@model.number}}]</span>
-    <PaperButton @href={{href-to "main.customers.edit" @model }} @iconButton={{true}}>
-      {{paper-icon "open in new"}}
-      <PaperTooltip>Open klant</PaperTooltip>
-    </PaperButton>
-  </h2>
-
-  <div class="resource-details">
-    <div class="layout-row layout-xs-column">
-      <div class="left-column">
+  <div class="divide-y divide-gray-200">
+    <div class="relative px-6 pt-6 pb-4">
+      <h3 class="text-xl font-bold font-display text-gray-400">
+        {{@model.number}}
+      </h3>
+      <h2 class="text-2xl font-bold font-display">
+        <PrintName @model={{@model}} />
+      </h2>
+      <div class="absolute top-0 right-0 m-6">
+        <LinkTo @route="main.customers.edit" @model={{@model}}
+          class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+          {{!-- Heroicon: external-link --}}
+          <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </LinkTo>
+      </div>
+    </div>
+    <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:grid-cols-1">
+      <div class="resource-details">
         <DetailIconListItem @icon={{if @model.isCompany "business" "person"}} @label={{if @model.isCompany "Bedrijf" "Naam"}} @class="resource-details--section-name">
           <div>
             {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
@@ -64,65 +73,113 @@
           </div>
         </DetailIconListItem>
       </div>
-      <div class="right-column layout-column">
-        <div>
-          <div class="layout-row layout-align-space-between-center">
-            <h3 class="text-xl font-bold font-display my-3">Gebouw</h3>
+      <div class="space-y-6">
+        <div class="">
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex items-center justify-between">
+              <span class="pr-3 bg-white text-lg font-medium text-gray-900">
+                Gebouw
+              </span>
+              {{#if this.isEnabledEditBuilding}}
+                <button type="button"
+                  onClick={{this.toggleBuildingEdit}}
+              class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                  {{!-- Heroicon name: x --}}
+                  <svg class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  <span>Annuleer</span>
+                </button>
+              {{else}}
+                <button type="button"
+                  onClick={{this.toggleBuildingEdit}}
+              class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                  {{!-- Heroicon name: pencil --}}
+                  <svg class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                  </svg>
+                  <span>Bewerk</span>
+                </button>
+              {{/if}}
+            </div>
+          </div>
+          <div class="py-4">
             {{#if this.isEnabledEditBuilding}}
-              <PaperButton @onClick={{fn this.toggleBuildingEdit}} @iconButton={{true}}>
-                {{paper-icon "exit to app"}}
-                <PaperTooltip>Sluiten</PaperTooltip>
-              </PaperButton>
-            {{else if this.isUpdatingBuilding}}
-              <PaperProgressCircular @diameter={{18}} />
+              <InputField::BuildingSelect
+                @value={{this.building}}
+                @customer={{@model}}
+                @onSelectionChange={{this.updateBuilding}}
+                @label="Selecteer een gebouw" />
             {{else}}
-              <PaperButton @onClick={{fn this.toggleBuildingEdit}} @iconButton={{true}}>
-                {{paper-icon "edit mode"}}
-                <PaperTooltip>Aanpassen</PaperTooltip>
-              </PaperButton>
+              {{#if this.building}}
+                <BuildingDetailCard @model={{this.building}} />
+              {{else}}
+                <div class="italic text-gray-400">
+                  Geen gebouw gekoppeld
+                </div>
+              {{/if}}
             {{/if}}
           </div>
-          {{#if this.isEnabledEditBuilding}}
-            <InputField::BuildingSelect @value={{this.building}} @customer={{@model}} @onSelectionChange={{fn this.updateBuilding}} class="md-input-wrapper xxxxlarge" />
-          {{else}}
-            {{#if this.building}}
-              <BuildingDetailCard @model={{this.building}} />
-            {{else}}
-              <p>n.v.t.</p>
-            {{/if}}
-          {{/if}}
         </div>
-        <div>
-          <div class="layout-row layout-align-space-between-center">
-            <h3 class="text-xl font-bold font-display my-3">Contact</h3>
+        <div class="">
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex items-center justify-between">
+              <span class="pr-3 bg-white text-lg font-medium text-gray-900">
+                Contact
+              </span>
+              {{#if this.isEnabledEditContact}}
+                <button type="button"
+                  onClick={{this.toggleContactEdit}}
+              class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                  {{!-- Heroicon name: x --}}
+                  <svg class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  <span>Annuleer</span>
+                </button>
+              {{else}}
+                <button type="button"
+                  onClick={{this.toggleContactEdit}}
+              class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                  {{!-- Heroicon name: pencil --}}
+                  <svg class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                  </svg>
+                  <span>Bewerk</span>
+                </button>
+              {{/if}}
+            </div>
+          </div>
+          <div class="py-4">
             {{#if this.isEnabledEditContact}}
-              <PaperButton @onClick={{fn this.toggleContactEdit}} @iconButton={{true}}>
-                {{paper-icon "exit to app"}}
-                <PaperTooltip>Sluiten</PaperTooltip>
-              </PaperButton>
-            {{else if this.isUpdatingContact}}
-              <PaperProgressCircular @diameter={{18}} />
+              <InputField::ContactSelect
+                @value={{this.contact}}
+                @customer={{@model}}
+                @onSelectionChange={{this.updateContact}}
+                @label="Selecteer een contact" />
             {{else}}
-              <PaperButton @onClick={{fn this.toggleContactEdit}} @iconButton={{true}}>
-                {{paper-icon "edit mode"}}
-                <PaperTooltip>Aanpassen</PaperTooltip>
-              </PaperButton>
+              {{#if this.contact}}
+                <ContactDetailCard @model={{this.contact}} />
+              {{else}}
+                <div class="italic text-gray-400">
+                  Geen contact gekoppeld
+                </div>
+              {{/if}}
             {{/if}}
           </div>
-          {{#if this.isEnabledEditContact}}
-            <InputField::ContactSelect @value={{this.contact}} @customer={{@model}} @onSelectionChange={{fn this.updateContact}} class="md-input-wrapper xxxxlarge" />
-          {{else}}
-            {{#if this.contact}}
-              <ContactDetailCard @model={{this.contact}} />
-            {{else}}
-              <p>n.v.t.</p>
-            {{/if}}
-          {{/if}}
         </div>
       </div>
     </div>
-    <div class="resource-details--section resource-details--section-audit layout-row">
-      Aangemaakt: {{moment-format @model.created}}
+    <div class="px-6 py-4">
+      <div class="text-sm text-gray-400 italic">
+        Aangemaakt: {{moment-format @model.created}}
+      </div>
     </div>
   </div>
 {{else}}

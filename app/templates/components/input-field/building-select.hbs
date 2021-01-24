@@ -7,12 +7,11 @@
     @selected={{@value}}
     @searchEnabled={{true}}
     @searchField="searchName"
-    @onChange={{fn @onSelectionChange}}
+    @onChange={{@onSelectionChange}}
     @noMatchesMessage="Geen resultaten"
+    @renderInPlace={{true}}
     @allowClear={{true}} as |option select|
   >
     {{highlight-substr option.searchName select.lastSearchedText}}
   </PowerSelect>
-
-  <MdErrorMessages @errors={{@errors}} />
 </div>

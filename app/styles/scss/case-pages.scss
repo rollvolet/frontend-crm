@@ -5,17 +5,6 @@
   color: #FFF;
 }
 
-.case--main-panel {
-  &.skeleton {
-    display: flex;
-    height: 250px;
-
-    md-progress-circular {
-      margin: auto;
-    }
-  }
-}
-
 .case--request--entry,
 .case--order--entry,
 .case--offer--entry,

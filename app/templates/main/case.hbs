@@ -1,13 +1,20 @@
 <Case::Tabs />
 
 {{#if this.case.isLoadingCurrentCase}}
-  <div class="case--main-panel skeleton">
-    <PaperProgressCircular @diameter={{25}} />
+  <div class="px-4 py-6 h-64">
+    <LoadingSpinner @label="Dossier laden..." />
   </div>
 {{else}}
-  <div class="case--main-panel">
-    <LiquidOutlet />
+  <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="lg:col-span-2">
+      <div class="bg-white shadow rounded-lg overflow-hidden">
+        {{outlet}}
+      </div>
+    </div>
+    <div class="lg:col-span-1">
+      <div class="bg-white shadow rounded-lg overflow-hidden">
+        <Case::CustomerPanel @model={{@model}} />
+      </div>
+    </div>
   </div>
 {{/if}}
-
-<Case::CustomerPanel @model={{@model}} />
