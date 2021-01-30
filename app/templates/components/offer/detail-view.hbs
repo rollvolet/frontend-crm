@@ -1,27 +1,59 @@
-<div class="layout-row layout-xs-column layout-align-space-between">
-  <div class="case--left-panel case--offer--entry flex-100 layout-column">
-    <DetailListItem @label="Datum">
-      <FmtDate @value={{@model.offerDate}} />
-    </DetailListItem>
-    {{#if @model.isMasteredByAccess}}
-      <DetailListItem @label="Bedrag">
-        <FmtCurrency @value={{@model.amount}} />
-      </DetailListItem>
-    {{/if}}
-    <DetailListItem @label="BTW tarief">
-      {{#if @model.vatRate}}
-        {{@model.vatRate.name}} BTW
-      {{/if}}
-    </DetailListItem>
-    <DetailListItem @label="Bezoeker">
-      {{this.request.visitor}}
-    </DetailListItem>
-    <DetailListItem @label="Referentie">
-      {{@model.reference}}
-    </DetailListItem>
-    <DetailListItem @label="Opmerking">
-      <span class="html-body">{{@model.comment}}</span>
-    </DetailListItem>
+<div class="divide-y divide-y-200">
+  {{!-- Card header --}}
+  <div class="px-6 pt-6 pb-4">
+    <div class="flex justify-between items-center">
+      <div class="flex">
+        <h2 class="text-2xl font-bold font-display text-gray-900">
+          Offerte {{@model.number}}
+        </h2>
+      </div>
+      <div class="flex flex-none space-x-4">
+        {{#unless @isDisabledEdit}}
+          <button type="button"
+            onClick={{@onOpenEdit}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            {{!-- Heroicon name: pencil --}}
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </button>
+        {{/unless}}
+      </div>
+    </div>
   </div>
-  <Visit::DetailView @model={{this.request}} />
+
+  {{!-- Card content --}}
+  <div class="p-6">
+    <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
+      <div class="space-y-1">
+        <DetailListItem @label="Datum">
+          <FmtDate @value={{@model.offerDate}} />
+        </DetailListItem>
+        {{#if @model.isMasteredByAccess}}
+          <DetailListItem @label="Bedrag">
+            <FmtCurrency @value={{@model.amount}} />
+          </DetailListItem>
+        {{/if}}
+        <DetailListItem @label="BTW tarief">
+          {{#if @model.vatRate}}
+            {{@model.vatRate.name}} BTW
+          {{/if}}
+        </DetailListItem>
+        <DetailListItem @label="Bezoeker">
+          {{this.request.visitor}}
+        </DetailListItem>
+        <DetailListItem @label="Referentie">
+          {{@model.reference}}
+        </DetailListItem>
+      </div>
+      <div>
+        <Visit::DetailView @model={{this.request}} />
+      </div>
+      <div class="resource-details sm:col-span-2">
+        <DetailListItem @label="Opmerking">
+          <span class="whitespace-pre-wrap">{{@model.comment}}</span>
+        </DetailListItem>
+      </div>
+    </dl>
+  </div>
 </div>
