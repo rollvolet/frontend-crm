@@ -1,6 +1,8 @@
-<div class="detail-list--subitem" ...attributes>
-  <div class="detail-subkey">{{@label}}</div>
-  <div class="detail-subvalue">
+<div ...attributes>
+  <dt class="flex-none font-semibold italic text-gray-500">
+    {{@label}}
+  </dt>
+  <dd class="text-gray-900">
     {{yield}}
-  </div>
+  </dd>
 </div>

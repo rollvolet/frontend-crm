@@ -1,8 +1,8 @@
-<div class="detail-list--item layout-row" ...attributes>
-  <div class="flex-none detail-key">
+<div class="flex flex-auto flex-shrink-0" ...attributes>
+  <dt class="flex-none w-32 pr-4 text-right font-semibold text-gray-500">
     {{@label}}
-  </div>
-  <div class="flex flex-none detail-value {{if this.displayRow "layout-row" "layout-column"}}">
+  </dt>
+  <dd class="{{if this.displayRow "flex-row" "flex-col"}} text-gray-900">
     {{yield}}
-  </div>
+  </dd>
 </div>
