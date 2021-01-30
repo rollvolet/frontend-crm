@@ -25,7 +25,10 @@
   {{!-- Card content --}}
   <div class="p-6">
     <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-      <div class="space-y-1">
+      <div class="mb-4 sm:mb-0 sm:order-2">
+        <Visit::DetailView @model={{this.request}} />
+      </div>
+      <div class="space-y-1 sm:order-1">
         <DetailListItem @label="Datum">
           <FmtDate @value={{@model.offerDate}} />
         </DetailListItem>
@@ -46,10 +49,7 @@
           {{@model.reference}}
         </DetailListItem>
       </div>
-      <div>
-        <Visit::DetailView @model={{this.request}} />
-      </div>
-      <div class="resource-details sm:col-span-2">
+      <div class="sm:col-span-2 sm:order-3">
         <DetailListItem @label="Opmerking">
           <span class="whitespace-pre-wrap">{{@model.comment}}</span>
         </DetailListItem>
