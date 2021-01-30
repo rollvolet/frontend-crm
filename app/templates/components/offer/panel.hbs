@@ -15,16 +15,22 @@
   </div>
 {{else}}
   <div class="space-y-4">
+    {{#if this.order}}
+      <AlertMessage::Warning
+        @message="De offerte is reeds besteld. Er zijn geen wijzigingen meer mogelijk."
+        class="shadow" />
+    {{else if @model.isMasteredByAccess}}
+      <AlertMessage::Warning
+        @message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden."
+        class="shadow" />
+    {{else if this.hasMixedVatRates}}
+      <AlertMessage::Info
+        @message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden."
+        class="shadow" />
+    {{/if}}
+
     {{!-- Details panel --}}
     <div class="bg-white shadow rounded-lg overflow-hidden">
-      {{#if this.order}}
-        <WarningMessage @message="Reeds besteld. Geen wijzigingen meer mogelijk." />
-      {{else if @model.isMasteredByAccess}}
-        <WarningMessage @message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden." />
-      {{else if this.hasMixedVatRates}}
-        <InfoMessage @message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
-      {{/if}}
-
       {{#if @editMode}}
         <Offer::DetailEdit
           @model={{@model}}
