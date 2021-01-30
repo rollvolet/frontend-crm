@@ -37,6 +37,10 @@ export default class CaseTabsComponent extends Component {
     return this.case.visitor;
   }
 
+  get isLoading() {
+    return this.case.initCase.isRunning;
+  }
+
   get canCreateNewOffer() {
     return !this.isEditRoute
       && this.model
