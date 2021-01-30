@@ -1,15 +1,17 @@
 <div class="layout-row layout-xs-column layout-align-space-between">
   <div class="case--left-panel case--order--entry flex-100 layout-column">
     <DetailListItem @label="Datum">
-      <DetailListSubitem @label="Bestelling">
-        <FmtDate @value={{@model.orderDate}} />
-      </DetailListSubitem>
-      <DetailListSubitem @label="Verwacht">
-        <FmtDate @value={{@model.expectedDate}} />
-      </DetailListSubitem>
-      <DetailListSubitem @label="Vereist">
-        <FmtDate @value={{@model.requiredDate}} />
-      </DetailListSubitem>
+      <dl class="space-y-1">
+        <DetailListSubitem @label="Bestelling">
+          <FmtDate @value={{@model.orderDate}} />
+        </DetailListSubitem>
+        <DetailListSubitem @label="Verwacht">
+          <FmtDate @value={{@model.expectedDate}} />
+        </DetailListSubitem>
+        <DetailListSubitem @label="Vereist">
+          <FmtDate @value={{@model.requiredDate}} />
+        </DetailListSubitem>
+      </dl>
     </DetailListItem>
     <DetailListItem @label="Bezoeker">
       {{this.request.visitor}}
