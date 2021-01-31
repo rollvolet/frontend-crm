@@ -48,16 +48,11 @@
 
     {{!-- Document panel --}}
     <div class="bg-white shadow rounded-lg overflow-hidden">
-      {{#if @editMode}}
-        <Offer::DocumentEdit
-          @model={{@model}}
-          @save={{this.save}} />
-      {{else}}
-        <Offer::DocumentView
-          @model={{@model}}
-          @generateOfferDocumentTask={{this.generateOfferDocument}}
-          @onDowloadOfferDocument={{this.downloadOfferDocument}} />
-      {{/if}}
+      <Offer::DocumentView
+        @model={{@model}}
+        @generateOfferDocumentTask={{this.generateOfferDocument}}
+        @onDowloadOfferDocument={{this.downloadOfferDocument}}
+        @isDisabledEdit={{this.isDisabledEdit}} />
     </div>
   </div>
 {{/if}}

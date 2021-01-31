@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { keepLatestTask } from 'ember-concurrency-decorators';
 import { tracked } from '@glimmer/tracking';
 
-export default class OfferlineTableComponent extends Component {
+export default class OfferlineListComponent extends Component {
   @tracked offerlines = []
 
   constructor() {

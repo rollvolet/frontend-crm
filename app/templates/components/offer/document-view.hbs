@@ -46,19 +46,16 @@
         De offerte is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.
       </div>
     {{else}}
-      <section class="px-4 py-4 border-gray-200 border rounded">
-        <div class="text-sm text-gray-900">
-          {{{@model.documentIntro}}}
-        </div>
-      </section>
+      <Offer::Document::Line
+        @model={{@model}}
+        @field="documentIntro"
+        @textAreaHeight="h-24" />
       <section>
-        <Offerline::Table @model={{@model.offerlines}} />
+        <Offerline::List @model={{@model.offerlines}} />
       </section>
-      <section class="px-4 py-4 border-gray-200 border rounded">
-        <div class="text-sm text-gray-900">
-          {{{@model.documentOutro}}}
-        </div>
-      </section>
+      <Offer::Document::Line
+        @model={{@model}}
+        @field="documentOutro" />
     {{/if}}
   </div>
 </div>
