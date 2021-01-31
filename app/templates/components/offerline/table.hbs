@@ -1,24 +1,28 @@
-<table class="offerlines-data-table">
-  <thead>
-    <th></th>
-    <th>Beschrijving</th>
-    <th>Bedrag</th>
-    <th>BTW</th>
-  </thead>
-  <tbody>
-    {{#if this.loadData.isRunning}}
-      <tr><td colspan="4">Aan het laden...</td></tr>
-    {{else}}
-      {{#each this.sortedOfferlines as |line|}}
-        <tr>
-          <td>{{line.sequenceNumber}}</td>
-          <td>{{{line.description}}}</td>
-          <td><FmtCurrency @value={{line.amount}} /></td>
-          <td>{{line.vatRate.rate}}%</td>
-        </tr>
-      {{else}}
-        <tr><td colspan="4">Geen inhoud</td></tr>
-      {{/each}}
-    {{/if}}
-  </tbody>
-</table>
+<ul>
+  {{#each this.sortedOfferlines as |line|}}
+    <li class="py-2">
+      <div class="grid border border-gray-200 rounded">
+        <div class="bg-gray-200 rounded-t px-4 py-2 flex justify-between items-center">
+          <div class="flex-grow-0 flex-auto bg-white rounded-full h-10 w-10 flex items-center justify-center text-gray-700 text-xl font-semibold">
+            {{line.sequenceNumber}}
+          </div>
+          <div class="flex-grow-0 pl-4 flex flex-col items-end">
+            <div class="text-sm text-gray-900 font-semibold">
+              <FmtCurrency @value={{line.amount}} />
+            </div>
+            <div class="text-sm text-gray-900 font-semibold">
+              {{line.vatRate.rate}}%
+            </div>
+          </div>
+        </div>
+        <div class="p-4 text-sm text-gray-900">
+          {{{line.description}}}
+        </div>
+      </div>
+    </li>
+  {{else}}
+    <li class="py-4 text-gray-400">
+      Geen inhoud
+    </li>
+  {{/each}}
+</ul>
