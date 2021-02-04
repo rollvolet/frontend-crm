@@ -13,6 +13,10 @@ module.exports = function(defaults) {
           require('tailwindcss')('./app/styles/tailwind.config.js')
         ]
       }
+    },
+    flatpickr: {
+      locales: ['nl'],
+      theme: 'material_red'
     }
   });
 
