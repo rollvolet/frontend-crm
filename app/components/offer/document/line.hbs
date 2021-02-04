@@ -1,12 +1,12 @@
-{{#if this.isEdit}}
-  <section class="relative border-gray-200 border rounded">
+{{#if this.editMode}}
+  <div class="relative" ...attributes>
     <InputField::RichTextArea
       @value={{this.value}}
       @class="w-full text-sm"
       @textAreaHeight={{@textAreaHeight}}
       @onChange={{this.setValue}}
       @focusOut={{perform this.save}} />
-    <div class="absolute top-0 right-0 p-2">
+    <div class="absolute bottom-0 right-0 px-4 py-2">
       <button type="button"
         onClick={{this.closeEdit}}
                 class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
@@ -16,23 +16,25 @@
         </svg>
       </button>
     </div>
-  </section>
+  </div>
 {{else}}
-  <section class="px-4 py-4 border-gray-200 border rounded">
+  <div class="px-4 py-4" ...attributes>
     <div class="flex flex-row justify-between">
       <div class="text-sm text-gray-900">
         {{{this.value}}}
       </div>
-      <div class="flex-grow-0 flex-auto">
-        <button type="button"
-          onClick={{this.openEdit}}
+      {{#unless @isDisabledEdit}}
+        <div class="flex-grow-0 flex-auto flex items-end">
+          <button type="button"
+            onClick={{this.openEdit}}
                 class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-          {{!-- Heroicon name: pencil --}}
-          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-          </svg>
-        </button>
-      </div>
+            {{!-- Heroicon name: pencil --}}
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </button>
+        </div>
+      {{/unless}}
     </div>
-  </section>
+  </div>
 {{/if}}

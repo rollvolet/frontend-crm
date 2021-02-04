@@ -1,0 +1,82 @@
+<div class="grid border border-gray-200 rounded">
+  <div class="bg-gray-200 rounded-t px-4 py-2 flex justify-between items-center">
+    <div class="flex-grow-0 flex-auto bg-gray-200 flex items-center justify-center text-gray-500 font-semibold">
+      {{@model.sequenceNumber}}
+    </div>
+    <div class="pl-4 space-x-1 flex flex-row justify-end items-baseline">
+      {{#if this.editMode}}
+        <div class="relative shadow-sm rounded-md">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <span class="text-gray-500 sm:text-sm">
+              &euro;
+            </span>
+          </div>
+          <InputField::DecimalInput
+            @value={{@model.amount}}
+            @errors={{v-get @model "amount" "messages"}}
+            @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
+            class="block w-32 sm:text-sm pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+        </div>
+        <div class="text-gray-900 sm:text-sm">
+          +
+        </div>
+        <InputField::VatRateSelect
+          @value={{@model.vatRate}}
+          @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save)}}
+          @allowClear={{false}}
+          class="w-36" />
+        <div class="text-gray-900 sm:text-sm">
+          btw
+        </div>
+      {{else}}
+        <div class="text-sm text-gray-900 font-semibold">
+          <FmtCurrency @value={{@model.amount}} />
+        </div>
+        <div class="ml-1 text-sm text-gray-900 font-semibold">
+          + {{@model.vatRate.rate}}% btw
+        </div>
+      {{/if}}
+    </div>
+  </div>
+  {{#if this.editMode}}
+    <div class="relative" ...attributes>
+      <InputField::RichTextArea
+        @value={{@model.description}}
+        @class="w-full text-sm"
+        @textAreaHeight={{@textAreaHeight}}
+        @onChange={{fn (mut @model.description)}}
+        @focusOut={{perform this.save}} />
+      <div class="absolute bottom-0 right-0 px-4 py-2">
+        <SaveStatusIcon @model={{@model}} @task={{this.save}} />
+        <button type="button"
+          onClick={{this.closeEdit}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+          {{!-- Heroicon name: logout --}}
+          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  {{else}}
+    <div class="px-4 py-4" ...attributes>
+      <div class="flex flex-row justify-between">
+        <div class="text-sm text-gray-900">
+          {{{@model.description}}}
+        </div>
+        {{#unless @isDisabledEdit}}
+          <div class="flex-grow-0 flex-auto flex items-end">
+            <button type="button"
+              onClick={{this.openEdit}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{!-- Heroicon name: pencil --}}
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+          </div>
+        {{/unless}}
+      </div>
+    </div>
+  {{/if}}
+</div>

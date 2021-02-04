@@ -12,10 +12,6 @@ export default class VatRateSelect extends Component {
     this.options = this.store.peekAll('vat-rate');
   }
 
-  get label() {
-    return this.args.label || 'BTW tarief';
-  }
-
   get required() {
     return this.args.required || false;
   }

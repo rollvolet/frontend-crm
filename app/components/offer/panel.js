@@ -8,7 +8,6 @@ import { debug, warn } from '@ember/debug';
 
 export default class OfferPanelComponent extends Component {
   @service case
-  @service documentGeneration
   @service router
 
   @tracked offerlines = []
@@ -86,15 +85,6 @@ export default class OfferPanelComponent extends Component {
     }
   }
 
-  @task
-  *generateOfferDocument() {
-    try {
-      yield this.documentGeneration.offerDocument(this.args.model);
-    } catch(e) {
-      warn(`Something went wrong while generating the offer document`, { id: 'document-generation-failure' });
-    }
-  }
-
   @action
   closeEdit() {
     if (this.hasUnsavedChanges) {
@@ -116,8 +106,4 @@ export default class OfferPanelComponent extends Component {
     this.args.onCloseEdit();
   }
 
-  @action
-  downloadOfferDocument() {
-    this.documentGeneration.downloadOfferDocument(this.args.model);
-  }
 }

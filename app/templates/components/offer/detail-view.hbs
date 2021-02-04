@@ -71,6 +71,7 @@
           <div class="">
             <InputField::VatRateSelect
               @value={{@model.vatRate}}
+              @label="BTW tarief"
               @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save)}}
               @allowClear={{false}} />
           </div>

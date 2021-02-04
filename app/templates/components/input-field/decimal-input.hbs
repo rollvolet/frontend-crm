@@ -1,1 +1,9 @@
-<PaperInput @label={{@label}} @value={{this.formattedValue}} @errors={{@errors}} @onChange={{fn (mut this.formattedValue)}} @onBlur={{fn this.updateValue this.formattedValue}} @class={{@class}} @required={{this.requiredStyle}} />
+{{#if @label}}
+  <label for={{this.fieldId}} class="block text-sm font-medium text-gray-700">
+    {{@label}}
+  </label>
+{{/if}}
+<Input ...attributes
+  @id={{this.fieldId}}
+  @value={{this.formattedValue}}
+  {{on "focusout" (fn this.updateValue this.formattedValue)}} />

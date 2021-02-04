@@ -1,24 +1,10 @@
 <ul>
   {{#each this.sortedOfferlines as |line|}}
     <li class="py-2">
-      <div class="grid border border-gray-200 rounded">
-        <div class="bg-gray-200 rounded-t px-4 py-2 flex justify-between items-center">
-          <div class="flex-grow-0 flex-auto bg-white rounded-full h-10 w-10 flex items-center justify-center text-gray-700 text-xl font-semibold">
-            {{line.sequenceNumber}}
-          </div>
-          <div class="flex-grow-0 pl-4 flex flex-col items-end">
-            <div class="text-sm text-gray-900 font-semibold">
-              <FmtCurrency @value={{line.amount}} />
-            </div>
-            <div class="text-sm text-gray-900 font-semibold">
-              {{line.vatRate.rate}}%
-            </div>
-          </div>
-        </div>
-        <div class="p-4 text-sm text-gray-900">
-          {{{line.description}}}
-        </div>
-      </div>
+      <Offerline::Detail
+        @model={{line}}
+        @onSave={{@onSave}}
+        @isDisabledEdit={{@isDisabledEdit}} />
     </li>
   {{else}}
     <li class="py-2">

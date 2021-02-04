@@ -1,6 +1,8 @@
-<label for="vat-rate-select" class="block text-sm font-medium text-gray-700">
-  {{this.label}}
-</label>
+{{#if @label}}
+  <label for="vat-rate-select" class="block text-sm font-medium text-gray-700">
+    {{@label}}
+  </label>
+{{/if}}
 <div class="mt-1" ...attributes>
   <PowerSelect
     @placeholder={{this.placeholder}}

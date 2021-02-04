@@ -5,7 +5,7 @@ import { task } from 'ember-concurrency-decorators';
 import { get, set } from '@ember/object';
 
 export default class OfferDocumentLineComponent extends Component {
-  @tracked isEdit = false;
+  @tracked editMode = false;
 
   get value() {
     return get(this.args.model, this.args.field);
@@ -16,7 +16,7 @@ export default class OfferDocumentLineComponent extends Component {
     if (this.args.model.hasDirtyAttributes) {
       const { validations } = yield this.args.model.validate();
       if (validations.isValid) {
-        yield this.args.model.save();
+        yield this.args.onSave(this.args.model);
       }
     }
   }
@@ -28,12 +28,11 @@ export default class OfferDocumentLineComponent extends Component {
 
   @action
   openEdit() {
-    this.isEdit = true;
+    this.editMode = true;
   }
 
   @action
-  async closeEdit() {
-    this.isEdit = false;
+  closeEdit() {
+    this.editMode = false;
   }
-
 }
