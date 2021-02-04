@@ -31,27 +31,17 @@
 
     {{!-- Details panel --}}
     <div class="bg-white shadow rounded-lg overflow-hidden">
-      {{#if @editMode}}
-        <Offer::DetailEdit
-          @model={{@model}}
-          @saveTask={{this.save}}
-          @onRemove={{perform this.remove}}
-          @onCloseEdit={{this.closeEdit}}
-          @isEnabledDelete={{this.isEnabledDelete}} />
-      {{else}}
-        <Offer::DetailView
-          @model={{@model}}
-          @isDisabledEdit={{this.isDisabledEdit}}
-          @onOpenEdit={{@onOpenEdit}} />
-      {{/if}}
+      <Offer::DetailView
+        @model={{@model}}
+        @onRemove={{perform this.remove}}
+        @isDisabledEdit={{this.isDisabledEdit}}
+        @isEnabledDelete={{this.isEnabledDelete}} />
     </div>
 
     {{!-- Document panel --}}
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <Offer::DocumentView
         @model={{@model}}
-        @generateOfferDocumentTask={{this.generateOfferDocument}}
-        @onDowloadOfferDocument={{this.downloadOfferDocument}}
         @isDisabledEdit={{this.isDisabledEdit}} />
     </div>
   </div>

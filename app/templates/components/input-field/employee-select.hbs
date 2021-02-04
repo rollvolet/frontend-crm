@@ -1,5 +1,7 @@
+<label for="employee-select" class="block text-sm font-medium text-gray-700">
+  {{this.label}}
+</label>
 <div ...attributes>
-  <label class="power-select--label">{{this.label}}</label>
   {{#if @multiple}}
     <PowerSelectMultiple
       @placeholder={{this.placeholder}}
@@ -29,5 +31,4 @@
       {{highlight-substr option.firstName select.lastSearchedText}}
     </PowerSelect>
   {{/if}}
-  <MdErrorMessages @errors={{@errors}} />
 </div>

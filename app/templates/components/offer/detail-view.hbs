@@ -6,54 +6,138 @@
         <h2 class="text-2xl font-bold font-display text-gray-900">
           Offerte {{@model.number}}
         </h2>
+        {{#if this.editMode}}
+          <SaveStatusIcon @model={{@model}} @task={{this.save}} />
+        {{/if}}
       </div>
       <div class="flex flex-none space-x-4">
-        {{#unless @isDisabledEdit}}
-          <button type="button"
-            onClick={{@onOpenEdit}}
+        {{#if this.editMode}}
+          {{#if @isEnabledDelete}}
+            <button type="button"
+              onClick={{@onRemove}}
                 class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{!-- Heroicon name: pencil --}}
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              {{!-- Heroicon name: trash --}}
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          {{/if}}
+          <button type="button"
+            onClick={{this.closeEdit}}
+            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            {{!-- Heroicon name: logout --}}
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
           </button>
-        {{/unless}}
+        {{else}}
+          {{#unless @isDisabledEdit}}
+            <button type="button"
+              onClick={{this.openEdit}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{!-- Heroicon name: pencil --}}
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+          {{/unless}}
+        {{/if}}
       </div>
     </div>
   </div>
 
   {{!-- Card content --}}
   <div class="p-6">
-    <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-      <div class="mb-4 sm:mb-0 sm:order-2">
-        <Visit::DetailView @model={{this.request}} />
+    {{#if this.editMode}}
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div class="mb-4 sm:mb-0 sm:order-2">
+          <Visit::DetailView @model={{this.request}} />
+        </div>
+        <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
+          <div class="">
+            <label for="offer-date" class="block text-sm font-medium text-gray-700">
+              Datum
+            </label>
+            <div class="mt-1">
+              <EmberFlatpickr
+                @locale="nl"
+                @date={{@model.offerDate}}
+                @dateFormat="j-n-Y"
+                @onChange={{queue this.setOfferDate (perform this.save)}}
+                class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+          </div>
+          <div class="">
+            <InputField::VatRateSelect
+              @value={{@model.vatRate}}
+              @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save)}}
+              @allowClear={{false}} />
+          </div>
+          <div class="">
+            <InputField::EmployeeSelect
+              @label="Bezoeker"
+              @value={{this.visitor}}
+              @isOnRoad={{true}}
+              @isTechnician={{true}}
+              @onSelectionChange={{queue this.setVisitor (perform this.save)}} />
+          </div>
+          <div class="">
+            <label for="reference" class="block text-sm font-medium text-gray-700">
+              Referentie klant
+            </label>
+            <Input
+              @id="reference"
+              @type="text"
+              @value={{@model.reference}}
+              class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+              {{on "focusout" (perform this.save)}} />
+          </div>
+        </div>
+        <div class="sm:col-span-2 sm:order-3">
+          <label for="comment" class="block text-sm font-medium text-gray-700">
+            Opmerking
+          </label>
+          <Textarea
+            @id="comment"
+            @value={{@model.comment}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            rows="5"
+            {{on "focusout" (perform this.save)}} />
+        </div>
       </div>
-      <div class="space-y-1 sm:order-1">
-        <DetailListItem @label="Datum">
-          <FmtDate @value={{@model.offerDate}} />
-        </DetailListItem>
-        {{#if @model.isMasteredByAccess}}
-          <DetailListItem @label="Bedrag">
-            <FmtCurrency @value={{@model.amount}} />
+    {{else}}
+      <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
+        <div class="mb-4 sm:mb-0 sm:order-2">
+          <Visit::DetailView @model={{this.request}} />
+        </div>
+        <div class="space-y-1 sm:order-1">
+          <DetailListItem @label="Datum">
+            <FmtDate @value={{@model.offerDate}} />
           </DetailListItem>
-        {{/if}}
-        <DetailListItem @label="BTW tarief">
-          {{#if @model.vatRate}}
-            {{@model.vatRate.name}} BTW
+          {{#if @model.isMasteredByAccess}}
+            <DetailListItem @label="Bedrag">
+              <FmtCurrency @value={{@model.amount}} />
+            </DetailListItem>
           {{/if}}
-        </DetailListItem>
-        <DetailListItem @label="Bezoeker">
-          {{this.request.visitor}}
-        </DetailListItem>
-        <DetailListItem @label="Referentie">
-          {{@model.reference}}
-        </DetailListItem>
-      </div>
-      <div class="sm:col-span-2 sm:order-3">
-        <DetailListItem @label="Opmerking">
-          <span class="whitespace-pre-wrap">{{@model.comment}}</span>
-        </DetailListItem>
-      </div>
-    </dl>
+          <DetailListItem @label="BTW tarief">
+            {{#if @model.vatRate}}
+              {{@model.vatRate.name}} BTW
+            {{/if}}
+          </DetailListItem>
+          <DetailListItem @label="Bezoeker">
+            {{this.request.visitor}}
+          </DetailListItem>
+          <DetailListItem @label="Referentie">
+            {{@model.reference}}
+          </DetailListItem>
+        </div>
+        <div class="sm:col-span-2 sm:order-3">
+          <DetailListItem @label="Opmerking">
+            <span class="whitespace-pre-wrap">{{@model.comment}}</span>
+          </DetailListItem>
+        </div>
+      </dl>
+    {{/if}}
   </div>
 </div>

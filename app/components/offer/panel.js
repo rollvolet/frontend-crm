@@ -10,7 +10,6 @@ export default class OfferPanelComponent extends Component {
   @service case
   @service documentGeneration
   @service router
-  @service store
 
   @tracked offerlines = []
   @tracked showUnsavedChangesDialog = false
@@ -22,7 +21,7 @@ export default class OfferPanelComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    this.offerlines = yield this.args.model.load('offerlines');
+    this.offerlines = yield this.args.model.offerlines;
     // No need to sideload the VAT rate of each offerlines, since they are included by default by the backend
   }
 
@@ -31,7 +30,7 @@ export default class OfferPanelComponent extends Component {
   }
 
   get isEnabledDelete() {
-    return !this.isDisabledEdit;
+    return !this.args.model.isMasteredByAccess && this.case.current.order == null;
   }
 
   get hasUnsavedChanges() {
@@ -85,36 +84,6 @@ export default class OfferPanelComponent extends Component {
       yield this.args.model.rollbackAttributes(); // undo delete-state
       this.case.updateRecord('offer', this.args.model);
     }
-  }
-
-  @task
-  *save(_, { forceSuccess = false } = {} ) {
-    if (forceSuccess) return;
-
-    const { validations } = yield this.args.model.validate();
-    let requiresOrderReload = false;
-    if (validations.isValid) {
-      const changedAttributes = this.args.model.changedAttributes();
-      const fieldsToSyncWithInvoice = ['reference', 'comment'];
-      for (let field of fieldsToSyncWithInvoice) {
-        if (changedAttributes[field]) {
-          if (this.invoice) {
-            debug(`Syncing ${field} of invoice with updated ${field} of offer`);
-            this.invoice[field] = this.model[field];
-            yield this.invoice.save();
-          }
-          requiresOrderReload = true;
-        }
-      }
-      yield this.args.model.save();
-
-      if (requiresOrderReload)
-        yield this.args.model.belongsTo('order').reload();
-    }
-
-    const changedAttributesOnRequest = this.request.changedAttributes();
-    if (changedAttributesOnRequest['visitor'])
-      yield this.request.save();
   }
 
   @task
