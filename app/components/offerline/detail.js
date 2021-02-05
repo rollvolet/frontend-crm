@@ -11,6 +11,11 @@ export default class OfferlineDetailComponent extends Component {
     this.editMode = this.args.model.isNew;
   }
 
+  get showUnsavedWarning() {
+    return !this.editMode &&
+      (this.args.model.validations.isInvalid || this.args.model.isNew || this.args.model.hasDirtyAttributes);
+  }
+
   @action
   openEdit() {
     this.editMode = true;
