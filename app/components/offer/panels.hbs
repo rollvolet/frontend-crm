@@ -1,12 +1,10 @@
 {{#if (or this.delete.isRunning @model.isDeleted)}}
-  <div>
-    <PaperProgressLinear />
-    <p>Aan het verwijderen...</p>
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het verwijderen..." />
   </div>
 {{else if (and (not @model.id) @model.isSaving)}}
-  <div>
-    <PaperProgressLinear />
-    <p>Aan het aanmaken...</p>
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het aanmaken..." />
   </div>
 {{else}}
   <div class="space-y-4">
