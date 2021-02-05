@@ -6,12 +6,9 @@ import { task } from 'ember-concurrency-decorators';
 export default class OfferlineDetailComponent extends Component {
   @tracked editMode = false;
 
-  @task
-  *save() {
-    const { validations } = yield this.args.model.validate();
-    if (validations.isValid) {
-      yield this.args.onSave(this.args.model);
-    }
+  constructor() {
+    super(...arguments);
+    this.editMode = this.args.model.isNew;
   }
 
   @action

@@ -14,7 +14,7 @@
           <InputField::DecimalInput
             @value={{@model.amount}}
             @errors={{v-get @model "amount" "messages"}}
-            @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
+            @onChange={{queue (fn (mut @model.amount)) (perform @saveTask @model)}}
             class="block w-32 sm:text-sm pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
         </div>
         <div class="text-gray-900 sm:text-sm">
@@ -22,7 +22,7 @@
         </div>
         <InputField::VatRateSelect
           @value={{@model.vatRate}}
-          @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save)}}
+          @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform @saveTask @model)}}
           @allowClear={{false}}
           class="w-36" />
         <div class="text-gray-900 sm:text-sm">
@@ -45,9 +45,14 @@
         @class="w-full text-sm"
         @textAreaHeight={{@textAreaHeight}}
         @onChange={{fn (mut @model.description)}}
-        @focusOut={{perform this.save}} />
+        @focusOut={{perform @saveTask @model}} />
       <div class="absolute bottom-0 right-0 px-4 py-2">
-        <SaveStatusIcon @model={{@model}} @task={{this.save}} />
+        <SaveStatusIcon @model={{@model}} @task={{@saveTask}} />
+        <button type="button"
+          onClick={{@onDelete}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+          {{svg-jar "heroicons-md-trash" class="h-5 w-5"}}
+        </button>
         <button type="button"
           onClick={{this.closeEdit}}
                 class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">

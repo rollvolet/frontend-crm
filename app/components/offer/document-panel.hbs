@@ -48,11 +48,40 @@
         @isDisabledEdit={{@isDisabledEdit}}
         class="border border-gray-200 rounded" />
       <section>
-        <Offerline::List
-          @model={{@model.offerlines}}
-          @onSave={{perform this.saveLine}}
-          @isDisabledEdit={{@isDisabledEdit}} />
-        {{!-- TODO add new offerline --}}
+        <ul>
+          {{#each this.sortedOfferlines as |line|}}
+            <li class="py-2">
+              <Offerline::Detail
+                @model={{line}}
+                @saveTask={{this.saveOfferline}}
+                @onDelete={{perform this.deleteOfferline line}}
+                @isDisabledEdit={{@isDisabledEdit}} />
+            </li>
+          {{else}}
+            <li class="py-2">
+              <div class="grid border border-gray-200 rounded">
+                <div class="p-4 text-sm text-gray-400 italic">
+                  Nog geen inhoud
+                </div>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+        {{#unless @isDisabledEdit}}
+          <div class="my-2 relative">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center">
+              <button type="button"
+                onClick={{perform this.addOfferline}}
+                class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                {{svg-jar "heroicons-sm-plus" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
+                <span>Lijn toevoegen</span>
+              </button>
+            </div>
+          </div>
+        {{/unless}}
       </section>
       <Offer::Document::Line
         @model={{@model}}
