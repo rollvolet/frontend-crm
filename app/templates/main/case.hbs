@@ -1,10 +1,6 @@
 <Case::Tabs />
 
-{{#if this.case.isLoadingCurrentCase}}
-  <div class="px-4 py-6 h-64">
-    <LoadingSpinner @label="Dossier laden..." />
-  </div>
-{{else}}
+{{#unless this.case.isLoadingCurrentCase}}
   <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
     <div class="lg:col-span-2">
       {{outlet}}
@@ -13,4 +9,4 @@
       <Case::CustomerPanel @model={{@model}} />
     </div>
   </div>
-{{/if}}
+{{/unless}}
