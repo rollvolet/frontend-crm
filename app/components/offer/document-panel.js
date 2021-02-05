@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency-decorators';
 import { warn } from '@ember/debug';
 
-export default class OfferDocumentViewComponent extends Component {
+export default class OfferDocumentPanelComponent extends Component {
   @service documentGeneration
 
   @task

@@ -6,7 +6,7 @@ import { task } from 'ember-concurrency-decorators';
 import { debug } from '@ember/debug';
 import { unlocalize } from '../../utils/date-helpers';
 
-export default class OfferDetailViewComponent extends Component {
+export default class OfferDetailPanelComponent extends Component {
   @service case;
 
   @tracked editMode = false;

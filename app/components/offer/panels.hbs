@@ -31,7 +31,7 @@
 
     {{!-- Details panel --}}
     <div class="bg-white shadow rounded-lg overflow-hidden">
-      <Offer::DetailView
+      <Offer::DetailPanel
         @model={{@model}}
         @onRemove={{perform this.remove}}
         @isDisabledEdit={{this.isDisabledEdit}}
@@ -40,7 +40,7 @@
 
     {{!-- Document panel --}}
     <div class="bg-white shadow rounded-lg overflow-hidden">
-      <Offer::DocumentView
+      <Offer::DocumentPanel
         @model={{@model}}
         @isDisabledEdit={{this.isDisabledEdit}} />
     </div>

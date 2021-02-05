@@ -6,7 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { warn } from '@ember/debug';
 
-export default class OfferPanelComponent extends Component {
+export default class OfferPanelsComponent extends Component {
   @service case
   @service router
 
