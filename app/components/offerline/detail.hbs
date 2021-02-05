@@ -3,7 +3,7 @@
     <div class="flex-grow-0 flex-auto bg-gray-200 flex items-center justify-center text-gray-500 font-semibold">
       {{@model.sequenceNumber}}
     </div>
-    <div class="pl-4 space-x-1 flex flex-row justify-end items-baseline">
+    <div class="pl-4 space-x-1 flex flex-col sm:flex-row justify-end items-end sm:items-baseline">
       {{#if this.editMode}}
         <div class="relative shadow-sm rounded-md">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
