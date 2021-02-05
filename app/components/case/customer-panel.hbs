@@ -12,6 +12,7 @@
           <LinkTo @route="main.customers.edit" @model={{@model}}
             class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
             {{svg-jar "heroicons-md-external-link" class="h-7 w-7"}}
+            <EmberTooltip @text="Open klant" @side="bottom" />
           </LinkTo>
         </div>
       </div>
