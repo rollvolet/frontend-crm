@@ -1,12 +1,7 @@
-{{#if (or this.remove.isRunning @model.isDeleted)}}
+{{#if (or this.delete.isRunning @model.isDeleted)}}
   <div>
     <PaperProgressLinear />
     <p>Aan het verwijderen...</p>
-  </div>
-{{else if this.rollbackTree.isRunning}}
-  <div>
-    <PaperProgressLinear />
-    <p>Aan het herstellen...</p>
   </div>
 {{else if (and (not @model.id) @model.isSaving)}}
   <div>
@@ -33,7 +28,7 @@
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <Offer::DetailPanel
         @model={{@model}}
-        @onRemove={{perform this.remove}}
+        @onDelete={{perform this.delete}}
         @isDisabledEdit={{this.isDisabledEdit}}
         @isEnabledDelete={{this.isEnabledDelete}} />
     </div>
@@ -46,8 +41,3 @@
     </div>
   </div>
 {{/if}}
-
-<UnsavedChangesDialog
-  @show={{this.showUnsavedChangesDialog}}
-  @onCancel={{fn this.closeUnsavedChangesDialog}}
-  @onConfirm={{fn this.confirmCloseEdit}} />

@@ -43,7 +43,7 @@
       <Offer::Document::Line
         @model={{@model}}
         @field="documentIntro"
-        @onSave={{perform this.saveLine}}
+        @saveTask={{this.saveDocumentline}}
         @textAreaHeight="h-24"
         @isDisabledEdit={{@isDisabledEdit}}
         class="border border-gray-200 rounded" />
@@ -86,7 +86,7 @@
       <Offer::Document::Line
         @model={{@model}}
         @field="documentOutro"
-        @onSave={{perform this.saveLine}}
+        @saveTask={{this.saveDocumentline}}
         @isDisabledEdit={{@isDisabledEdit}}
         class="border border-gray-200 rounded" />
     {{/if}}

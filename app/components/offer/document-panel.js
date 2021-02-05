@@ -56,8 +56,13 @@ export default class OfferDocumentPanelComponent extends Component {
   }
 
   @task
-  *saveLine(line) {
-    yield line.save();
+  *saveDocumentline() {
+    if (this.args.model.hasDirtyAttributes) {
+      const { validations } = yield this.args.model.validate();
+      if (validations.isValid) {
+        yield this.args.model.save();
+      }
+    }
   }
 
   @action

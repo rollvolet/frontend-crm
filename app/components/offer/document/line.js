@@ -11,16 +11,6 @@ export default class OfferDocumentLineComponent extends Component {
     return get(this.args.model, this.args.field);
   }
 
-  @task
-  *save() {
-    if (this.args.model.hasDirtyAttributes) {
-      const { validations } = yield this.args.model.validate();
-      if (validations.isValid) {
-        yield this.args.onSave(this.args.model);
-      }
-    }
-  }
-
   @action
   setValue(value) {
     set(this.args.model, this.args.field, value);
