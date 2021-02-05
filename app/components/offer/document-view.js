@@ -1,8 +1,8 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency-decorators';
+import { warn } from '@ember/debug';
 
 export default class OfferDocumentViewComponent extends Component {
   @service documentGeneration

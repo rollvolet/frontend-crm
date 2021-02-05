@@ -11,10 +11,7 @@
         <div class="absolute top-0 right-0 m-6">
           <LinkTo @route="main.customers.edit" @model={{@model}}
             class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{!-- Heroicon: external-link --}}
-            <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
+            {{svg-jar "heroicons-md-external-link" class="h-7 w-7"}}
           </LinkTo>
         </div>
       </div>
@@ -71,20 +68,14 @@
                   <button type="button"
                     onClick={{this.toggleBuildingEdit}}
               class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                    {{!-- Heroicon name: x --}}
-                    <svg class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    {{svg-jar "heroicons-md-x" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
                     <span>Annuleer</span>
                   </button>
                 {{else}}
                   <button type="button"
                     onClick={{this.toggleBuildingEdit}}
               class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                    {{!-- Heroicon name: pencil --}}
-                    <svg class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                    </svg>
+                    {{svg-jar "heroicons-md-pencil" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
                     <span>Bewerk</span>
                   </button>
                 {{/if}}
@@ -121,20 +112,14 @@
                   <button type="button"
                     onClick={{this.toggleContactEdit}}
               class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                    {{!-- Heroicon name: x --}}
-                    <svg class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    {{svg-jar "heroicons-md-x" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
                     <span>Annuleer</span>
                   </button>
                 {{else}}
                   <button type="button"
                     onClick={{this.toggleContactEdit}}
               class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                    {{!-- Heroicon name: pencil --}}
-                    <svg class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                    </svg>
+                    {{svg-jar "heroicons-md-pencil" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
                     <span>Bewerk</span>
                   </button>
                 {{/if}}

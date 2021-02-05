@@ -4,7 +4,7 @@ import { task, keepLatestTask } from 'ember-concurrency-decorators';
 import { all } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { debug, warn } from '@ember/debug';
+import { warn } from '@ember/debug';
 
 export default class OfferPanelComponent extends Component {
   @service case

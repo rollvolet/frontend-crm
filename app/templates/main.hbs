@@ -25,10 +25,7 @@
               onClick={{this.closeMenu}}
             class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white {{if this.showMenuContent "block" "hidden"}}">
               <span class="sr-only">Close sidebar</span>
-              {{!-- Heroicon name: x --}}
-              <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              {{svg-jar "heroicons-md-x" class="h-6 w-6 text-white"}}
             </button>
           </div>
           <div class="flex flex-none items-center px-4">
@@ -43,10 +40,7 @@
                 <LinkTo @route="main.index"
                   @activeClass="active-main-nav"
                   class="text-red-100 group flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
-                  {{!-- Heroicon name: home --}}
-                  <svg class="mr-4 h-6 w-6 text-red-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
+                  {{svg-jar "heroicons-md-home" class="mr-4 h-6 w-6 text-red-300"}}
                   Home
                 </LinkTo>
 
@@ -54,10 +48,7 @@
                   @query={{hash page=0 number=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined}}
                   @activeClass="active-main-nav"
                   class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-                  {{!-- Heroicon name: users --}}
-                  <svg class="mr-4 h-6 w-6 text-red-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
+                  {{svg-jar "heroicons-md-users" class="mr-4 h-6 w-6 text-red-300"}}
                   Klanten
                 </LinkTo>
 
@@ -65,10 +56,7 @@
                   @query={{hash page=0 number=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutOffer=undefined}}
                   @activeClass="active-main-nav"
                   class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-                  {{!-- Heroicon name: annotation --}}
-                  <svg class="mr-4 h-6 w-6 text-red-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                  </svg>
+                  {{svg-jar "heroicons-md-annotation" class="mr-4 h-6 w-6 text-red-300"}}
                   Aanvragen
                 </LinkTo>
 
@@ -76,11 +64,7 @@
                   @query={{hash page=0 number=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasInvoice=0 isCancelled=0 isPlanned=-1}}
                   @activeClass="active-main-nav"
                   class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-                  {{!-- Heroicon name: cog --}}
-                  <svg class="mr-4 h-6 w-6 text-red-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
+                  {{svg-jar "heroicons-md-cog" class="mr-4 h-6 w-6 text-red-300"}}
                   Interventies
                 </LinkTo>
 
@@ -88,10 +72,7 @@
                   @query={{hash page=0 number=undefined reference=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutOrder=undefined}}
                   @activeClass="active-main-nav"
                   class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-                  {{!-- Heroicon name: calculator --}}
-                  <svg class="mr-4 h-6 w-6 text-red-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
+                  {{svg-jar "heroicons-md-calculator" class="mr-4 h-6 w-6 text-red-300"}}
                   Offertes
                 </LinkTo>
 
@@ -99,10 +80,7 @@
                   @query={{hash page=0 reference=undefined offerNumber=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutInvoice=undefined onlyNotCanceled=undefined}}
                   @activeClass="active-main-nav"
                   class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-                  {{!-- Heroicon name: shopping-cart --}}
-                  <svg class="mr-4 h-6 w-6 text-red-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
+                  {{svg-jar "heroicons-md-shopping-cart" class="mr-4 h-6 w-6 text-red-300"}}
                   Bestellingen
                 </LinkTo>
 
@@ -110,10 +88,7 @@
                   @query={{hash page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined}}
                   @activeClass="active-main-nav"
                   class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-                  {{!-- Heroicon name: receipt-tax --}}
-                  <svg class="mr-4 h-6 w-6 text-red-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z" />
-                  </svg>
+                  {{svg-jar "heroicons-md-receipt-tax" class="mr-4 h-6 w-6 text-red-300"}}
                   Voorschotfacturen
                 </LinkTo>
 
@@ -121,10 +96,7 @@
                   @query={{hash page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined}}
                   @activeClass="active-main-nav"
                   class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-                  {{!-- Heroicon name: currency-euro --}}
-                  <svg class="mr-4 h-6 w-6 text-red-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 15.536c-1.171 1.952-3.07 1.952-4.242 0-1.172-1.953-1.172-5.119 0-7.072 1.171-1.952 3.07-1.952 4.242 0M8 10.5h4m-4 3h4m9-1.5a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  {{svg-jar "heroicons-md-currency-euro" class="mr-4 h-6 w-6 text-red-300"}}
                   Facturen
                 </LinkTo>
               </div>
@@ -132,17 +104,11 @@
                 <LinkTo @route="main.reports.outstanding-jobs.index"
                   @activeClass="active-main-nav"
                   class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-                  {{!-- Heroicon name: calendar --}}
-                  <svg class="mr-4 h-6 w-6 text-red-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
+                  {{svg-jar "heroicons-md-calendar" class="mr-4 h-6 w-6 text-red-300"}}
                   Uit te voeren werken
                 </LinkTo>
                 <div class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-                  {{!-- Heroicon name: chart-bar --}}
-                  <svg class="mr-4 h-6 w-6 text-red-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
+                  {{svg-jar "heroicons-md-chart-bar" class="mr-4 h-6 w-6 text-red-300"}}
                   Rapporten
                 </div>
                 <div class="space-y-1">
@@ -167,10 +133,7 @@
             <div class="flex items-center">
               <div class="flex-shrink-0">
                 <span class="inline-block h-10 w-10 rounded-full overflow-hidden bg-red-100">
-                  <svg class="h-full w-full text-red-400" fill="currentColor" viewBox="0 0 24 24">
-                    {{!-- Placeholder avatar --}}
-                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
+                  {{svg-jar "placeholder-avatar" class="h-full w-full text-red-400"}}
                 </span>
               </div>
               <div class="ml-3">
@@ -200,10 +163,7 @@
         onClick={{this.openMenu}}
         class="px-4 border-r border-red-800 text-red-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
         <span class="sr-only">Open sidebar</span>
-        {{!-- Heroicon name: menu-alt-2 --}}
-        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
-        </svg>
+        {{svg-jar "heroicons-md-menu-alt-2" class="h-6 w-6"}}
       </button>
       <div class="px-4 my-auto flex flex-1 justify-between">
         <div class="w-auto text-3xl text-white font-display font-bold">Klantenbeheer</div>
@@ -212,10 +172,7 @@
             <div class="flex items-center">
               <div class="flex-shrink-0">
                 <span class="inline-block h-6 w-6 rounded-full bg-red-100 overflow-hidden">
-                  <svg class="h-full w-full text-red-400" fill="currentColor" viewBox="0 0 24 24">
-                    {{!-- Placeholder avatar --}}
-                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
+                  {{svg-jar "placeholder-avatar" class="h-full w-full text-red-400"}}
                 </span>
               </div>
               <div class="ml-2">
@@ -227,9 +184,7 @@
             <button type="button"
               onClick={{this.logout}}
     class="ml-4 p-1 border-2 border-transparent text-white rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-red-600" aria-label="Log out">
-              <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M17 16L21 12M21 12L17 8M21 12L7 12M13 16V17C13 18.6569 11.6569 20 10 20H6C4.34315 20 3 18.6569 3 17V7C3 5.34315 4.34315 4 6 4H10C11.6569 4 13 5.34315 13 7V8"/>
-              </svg>
+              {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
             </button>
           </div>
         </div>
@@ -247,10 +202,7 @@
             <div class="rounded-md bg-red-50 p-4">
               <div class="flex">
                 <div class="flex-shrink-0">
-                  {{!-- Heroicon name: x-circle --}}
-                  <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                  </svg>
+                  {{svg-jar "heroicons-sm-x-circle" class="h-5 w-5 text-red-400"}}
                 </div>
                 <div class="ml-3">
                   <p class="text-sm text-red-700">
