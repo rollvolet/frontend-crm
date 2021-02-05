@@ -2,12 +2,15 @@
   {{!-- Card header --}}
   <div class="px-6 pt-6 pb-4">
     <div class="flex justify-between items-center">
-      <div class="flex">
+      <div class="flex items-center">
         <h2 class="text-2xl font-bold font-display text-gray-900">
           Offerte {{@model.number}}
         </h2>
         {{#if this.editMode}}
-          <SaveStatusIcon @model={{@model}} @task={{this.save}} />
+          <SaveStatusIcon
+            @model={{@model}}
+            @task={{this.save}}
+            class="ml-2" />
         {{/if}}
       </div>
       <div class="flex flex-none space-x-4">
