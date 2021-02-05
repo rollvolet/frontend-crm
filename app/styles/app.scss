@@ -110,21 +110,6 @@ md-progress-circular.md-progress-white path {
 }
 
 /* Edit pages */
-.save-status {
-  margin-left: 10px;
-  position: relative;
-  top: 3px;
-
-  md-icon.success {
-    color: paper-color('green');
-  }
-  md-icon.error {
-    color: paper-color('red');
-  }
-  md-icon.running {
-    color: paper-color('blue');
-  }
-}
 
 .badge {
   padding: 5px 7px;

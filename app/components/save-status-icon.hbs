@@ -1,17 +1,17 @@
-<span class="save-status">
+<div class="inline-block" ...attributes>
   {{#if @task.isRunning}}
-    {{paper-icon "sync" class="running"}}
-    <PaperTooltip>Aan het opslaan</PaperTooltip>
+    {{svg-jar "heroicons-md-refresh" class="h-5 w-5 text-blue-500"}}
+    <EmberTooltip @text="Aan het opslaan" />
   {{else}}
     {{#if @model.validations.isInvalid}}
-      {{paper-icon "error outline" class="error"}}
-      <PaperTooltip>Ongeldig</PaperTooltip>
+      {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-500"}}
+      <EmberTooltip @text="Ongeldig" />
     {{else if (or @model.isError @task.last.isError)}}
-      {{paper-icon "error outline" class="error"}}
-      <PaperTooltip>Fout bij opslaan</PaperTooltip>
+      {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-500"}}
+      <EmberTooltip @text="Fout bij het opslaan" />
     {{else}}
-      {{paper-icon "check circle outline" class="success"}}
-      <PaperTooltip>Opgeslagen</PaperTooltip>
+      {{svg-jar "heroicons-md-check-circle" class="h-5 w-5 text-green-500"}}
+      <EmberTooltip @text="Opgeslagen" />
     {{/if}}
   {{/if}}
-</span>
+</div>
