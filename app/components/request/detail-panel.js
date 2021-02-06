@@ -4,7 +4,6 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task, keepLatestTask } from 'ember-concurrency-decorators';
 import { debug, warn } from '@ember/debug';
-import { unlocalize } from '../../utils/date-helpers';
 
 export default class RequestDetailPanelComponent extends Component {
   @service case;
@@ -107,11 +106,6 @@ export default class RequestDetailPanelComponent extends Component {
   setVisitor(visitor) {
     this.visitor = visitor;
     this.args.model.visitor = visitor ? visitor.firstName : null;
-  }
-
-  @action
-  setRequestDate(dates) {
-    this.args.model.requestDate = unlocalize(dates[0]);
   }
 
   @action

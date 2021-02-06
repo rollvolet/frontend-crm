@@ -4,7 +4,6 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency-decorators';
 import { debug } from '@ember/debug';
-import { unlocalize } from '../../utils/date-helpers';
 
 export default class OfferDetailPanelComponent extends Component {
   @service case;
@@ -50,11 +49,6 @@ export default class OfferDetailPanelComponent extends Component {
   @action
   setVisitor(visitor) {
     this.request.visitor = visitor ? visitor.firstName : null;
-  }
-
-  @action
-  setOfferDate(dates) {
-    this.args.model.offerDate = unlocalize(dates[0]);
   }
 
   @action

@@ -64,18 +64,10 @@
         </div>
         <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
           <div>
-            <label for="offer-date" class="block text-sm font-medium text-gray-700">
-              Datum
-            </label>
-            <div class="mt-1">
-              <EmberFlatpickr
-                @locale="nl"
-                @date={{@model.requestDate}}
-                @dateFormat="j-n-Y"
-                @onChange={{queue this.setRequestDate (perform this.save)}}
-                class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-              />
-            </div>
+            <InputField::Date
+              @label="Datum"
+              @value={{@model.requestDate}}
+              @onChange={{queue (fn (mut @model.requestDate)) (perform this.save)}} />
           </div>
           <div class="col-start-1">
             <InputField::EmployeeSelect
