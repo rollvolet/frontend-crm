@@ -5,7 +5,7 @@ export default class MainInterventionsNewRoute extends Route {
   @service userInfo
 
   async model() {
-    const employee = await this.userInfo.getCurrentEmployee();
+    const employee = await this.userInfo.getEmployee();
     const intervention = this.store.createRecord('intervention', {
       date: new Date(),
       employee

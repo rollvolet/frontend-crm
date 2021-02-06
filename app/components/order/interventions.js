@@ -12,7 +12,7 @@ export default class OrderInterventionsComponent extends Component {
   @task
   *createNew() {
     const customer = this.case.current.customer;
-    const employee = yield this.userInfo.getCurrentEmployee();
+    const employee = yield this.userInfo.getEmployee();
     const intervention = this.store.createRecord('intervention', {
       date: new Date(),
       origin: this.args.order,
