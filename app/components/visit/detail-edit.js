@@ -1,10 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
 
 export default class VisitDetailEditComponent extends Component {
-  @service store
-
   get requiresNoTime() {
     return !this.requiresTimeRange && !this.requiresSingleTime;
   }
@@ -30,6 +27,6 @@ export default class VisitDetailEditComponent extends Component {
       }
     }
 
-    this.args.save.perform();
+    this.args.saveTask.perform();
   }
 }

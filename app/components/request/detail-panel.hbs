@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center">
       <div class="flex items-center">
         <h2 class="text-2xl font-bold font-display text-gray-900">
-          Offerte {{@model.number}}
+          Aanvraag {{@model.id}} {{this.visitor.initials}}
         </h2>
         {{#if this.editMode}}
           <SaveStatusIcon
@@ -28,6 +28,15 @@
             {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
           </button>
         {{else}}
+          {{!-- TODO link/unlink customer buttons --}}
+          {{#if this.isLinkedToCustomer}}
+            <button type="button"
+              onClick={{this.generateVisitReport}}
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-document-text" class="h-6 w-6"}}
+              <EmberTooltip @text="Bezoekrapport" @side="bottom" />
+            </button>
+          {{/if}}
           {{#unless @isDisabledEdit}}
             <button type="button"
               onClick={{this.openEdit}}
@@ -45,29 +54,43 @@
     {{#if this.editMode}}
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          <Visit::DetailView @model={{this.request}} />
+          {{#if this.isLinkedToCustomer}}
+            {{#if this.hasVisitMasteredByAccess}}
+              <Visit::DetailView @model={{@model}} />
+            {{else if @model.requiresVisit}}
+              <Visit::DetailEdit @model={{this.calendarEvent}} @saveTask={{this.saveCalendarEvent}} />
+            {{/if}}
+          {{/if}}
         </div>
         <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
-          <div class="">
+          <div>
             <label for="offer-date" class="block text-sm font-medium text-gray-700">
               Datum
             </label>
             <div class="mt-1">
               <EmberFlatpickr
                 @locale="nl"
-                @date={{@model.offerDate}}
+                @date={{@model.requestDate}}
                 @dateFormat="j-n-Y"
-                @onChange={{queue this.setOfferDate (perform this.save)}}
+                @onChange={{queue this.setRequestDate (perform this.save)}}
                 class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
               />
             </div>
           </div>
+          <div class="col-start-1">
+            <InputField::EmployeeSelect
+              @label="Bediende"
+              @value={{this.employee}}
+              @isAdministrative={{true}}
+              @onSelectionChange={{queue this.setEmployee (perform this.save)}}
+              class="mt-1" />
+          </div>
           <div>
-            <InputField::VatRateSelect
-              @value={{@model.vatRate}}
-              @label="BTW tarief"
-              @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save)}}
-              @allowClear={{false}} />
+            <InputField::WayOfEntrySelect
+              @label="Aanmelding"
+              @value={{@model.wayOfEntry}}
+              @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform this.save)}}
+              class="mt-1" />
           </div>
           <div>
             <InputField::EmployeeSelect
@@ -75,18 +98,24 @@
               @value={{this.visitor}}
               @isOnRoad={{true}}
               @isTechnician={{true}}
-              @onSelectionChange={{queue this.setVisitor (perform this.save)}} />
+              @onSelectionChange={{queue this.setVisitor (perform this.save)}}
+              class="mt-1" />
+          </div>
+          <div class="relative flex items-end">
+            <div class="flex flex-grow-0 items-center h-5">
+              <Input
+                @id="requires-visit"
+                @type="checkbox"
+                @checked={{@model.requiresVisit}}
+                disabled={{this.hasVisitMasteredByAccess}}
+                {{on "input" (perform this.setRequiresVisit)}}
+                class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
+            </div>
+            <div class="ml-3">
+              <label for="requires-visit" class="text-gray-500 text-sm font-medium">Bezoek nodig</label>
+            </div>
           </div>
           <div>
-            <label for="reference" class="block text-sm font-medium text-gray-700">
-              Referentie klant
-            </label>
-            <Input
-              @id="reference"
-              @type="text"
-              @value={{@model.reference}}
-              class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-              {{on "focusout" (perform this.save)}} />
           </div>
         </div>
         <div class="sm:col-span-2 sm:order-3">
@@ -104,27 +133,23 @@
     {{else}}
       <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          <Visit::DetailView @model={{this.request}} />
+          <Visit::DetailView @model={{@model}} />
         </div>
         <div class="space-y-1 sm:order-1">
           <DetailListItem @label="Datum">
-            <FmtDate @value={{@model.offerDate}} />
+            <FmtDate @value={{@model.requestDate}} />
           </DetailListItem>
-          {{#if @model.isMasteredByAccess}}
-            <DetailListItem @label="Bedrag">
-              <FmtCurrency @value={{@model.amount}} />
-            </DetailListItem>
-          {{/if}}
-          <DetailListItem @label="BTW tarief">
-            {{#if @model.vatRate}}
-              {{@model.vatRate.name}} BTW
-            {{/if}}
+          <DetailListItem @label="Aanmelding">
+            {{@model.wayOfEntry.name}}
+          </DetailListItem>
+          <DetailListItem @label="Bediende">
+            {{@model.employee}}
+          </DetailListItem>
+          <DetailListItem @label="Bezoek nodig" class="items-center">
+            {{svg-jar (if @model.requiresVisit "heroicons-sm-check" "heroicons-sm-minus-sm") class="h-5 w-5"}}
           </DetailListItem>
           <DetailListItem @label="Bezoeker">
-            {{this.request.visitor}}
-          </DetailListItem>
-          <DetailListItem @label="Referentie">
-            {{@model.reference}}
+            {{@model.visitor}}
           </DetailListItem>
         </div>
         <div class="sm:col-span-2 sm:order-3">

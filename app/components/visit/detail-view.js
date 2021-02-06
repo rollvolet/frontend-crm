@@ -23,7 +23,6 @@ export default class VisitDetailViewComponent extends Component {
     } catch(e) {
       // Something went wrong
     }
-
   }
 
   @keepLatestTask

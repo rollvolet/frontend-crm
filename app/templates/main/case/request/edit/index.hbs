@@ -1,8 +1,26 @@
-<Request::Panel
-  @model={{@model}}
-  @editMode={{this.editMode}}
-  @onOpenEdit={{fn (mut this.editMode) true}}
-  @onCloseEdit={{fn (mut this.editMode) false}}
-/>
+{{#if (or this.delete.isRunning this.model.isDeleted)}}
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het verwijderen..." />
+  </div>
+{{else if (and (not this.model.id) this.model.isSaving)}}
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het aanmaken..." />
+  </div>
+{{else}}
+  <div class="space-y-4">
+    {{#if this.offer}}
+      <AlertMessage::Warning
+        @message="Er is reeds een offerte gemaakt. Er zijn geen wijzigingen meer mogelijk."
+        class="shadow" />
+    {{/if}}
 
-<LiquidOutlet />
+    {{!-- Details panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Request::DetailPanel
+        @model={{this.model}}
+        @onDelete={{perform this.delete}}
+        @isDisabledEdit={{this.isDisabledEdit}}
+        @isEnabledDelete={{this.isEnabledDelete}} />
+    </div>
+  </div>
+{{/if}}

@@ -1,26 +1,106 @@
 {{#if @model}}
-  <section class="case--request--visit">
-    <div class="layout-row layout-align-start-center">
-      <h3 class="text-xl font-bold font-display my-3">{{paper-icon "event"}} Bezoek</h3>
-      <SaveStatusIcon @model={{@model}} @task={{@save}} />
+  <div class="p-4 bg-gray-100 rounded-lg">
+    <div class="space-y-3">
+      <div class="flex justify-between items-center">
+        <div class="flex flex-row items-center">
+          <div class="flex-none">
+            {{svg-jar "heroicons-md-calendar" class="h-5 w-5 text-gray-500"}}
+          </div>
+          <div class="ml-3 text-lg font-semibold text-gray-600">
+            Bezoek
+          </div>
+          <SaveStatusIcon
+            @model={{@model}}
+            @task={{@saveTask}}
+            class="ml-2" />
+        </div>
+      </div>
+      <div>
+        <div class="grid grid-cols-2 gap-y-6 gap-x-4">
+          <div class="col-span-2">
+            <label for="visit-date" class="block text-sm font-medium text-gray-700">
+              Datum
+            </label>
+            <div class="mt-1">
+              <EmberFlatpickr
+                @locale="nl"
+                @date={{@model.visitDate}}
+                @dateFormat="j-n-Y"
+                @onChange={{queue this.setVisitDate (perform @saveTask)}}
+                class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+          </div>
+          <div class="col-span-2">
+            <InputField::CalendarPeriodSelect
+              @label="Periode"
+              @value={{@model.period}}
+              @required={{true}}
+              @onSelectionChange={{this.changePeriod}} />
+          </div>
+          {{#if this.requiresSingleTime}}
+            <div>
+              <label for="period-from" class="block text-sm font-medium text-gray-700">
+                Tijdstip
+              </label>
+              <Input
+                @id="period-from"
+                @type="text"
+                @value={{@model.fromHour}}
+                class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                {{on "focusout" (perform @saveTask)}} />
+            </div>
+          {{/if}}
+          {{#if this.requiresTimeRange}}
+            <div>
+              <label for="period-from" class="block text-sm font-medium text-gray-700">
+                Van
+              </label>
+              <Input
+                @id="period-from"
+                @type="text"
+                @value={{@model.fromHour}}
+                class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                {{on "focusout" (perform @saveTask)}} />
+            </div>
+            <div>
+              <label for="period-to" class="block text-sm font-medium text-gray-700">
+                Tot
+              </label>
+              <Input
+                @id="period-to"
+                @type="text"
+                @value={{@model.untilHour}}
+                class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                {{on "focusout" (perform @saveTask)}} />
+            </div>
+          {{/if}}
+        </div>
+      </div>
     </div>
-    <PaperInput @label="Datum" @value={{@model.visitDateStr}} @type="date" @required="style" @errors={{v-get @model "visitDate" "messages"}} @onChange={{queue (fn (mut @model.visitDateStr)) (perform @save)}} @class="default" />
-    <InputField::CalendarPeriodSelect @value={{@model.period}} @errors={{v-get @model "period" "messages"}} @required={{true}} @onSelectionChange={{fn this.changePeriod}} class="md-input-wrapper large" />
-    {{#if this.requiresSingleTime}}
-      <PaperInput @label="Tijdstip" @value={{@model.fromHour}} @errors={{v-get @model "fromHour" "messages"}} @onChange={{fn (mut @model.fromHour)}} @onBlur={{perform @save}} @required="style" @class="small" /> uur
-    {{/if}}
-    {{#if this.requiresTimeRange}}
-      <PaperInput @label="Van" @value={{@model.fromHour}} @errors={{v-get @model "fromHour" "messages"}} @onChange={{fn (mut @model.fromHour)}} @onBlur={{perform @save}} @required="style" @class="small" /> -
-      <PaperInput @label="Tot" @value={{@model.untilHour}} @errors={{v-get @model "untilHour" "messages"}} @onChange={{fn (mut @model.untilHour)}} @onBlur={{perform @save}} @required="style" @class="small" /> uur
-    {{/if}}
-  </section>
+  </div>
 {{else}}
-  <section class="case--request--visit not-found">
-    <div class="layout-row layout-align-start-center">
-      <h3 class="text-xl font-bold font-display my-3">{{paper-icon "event"}} Bezoek</h3>
+  <div class="p-4 bg-gray-100 rounded-lg
+    {{if this.isNotAvailableInCalendar "relative border-2 border-dashed border-red-500" }}">
+    {{#if this.isNotAvailableInCalendar}}
+      <div class="absolute -bottom-3 -right-3 rounded shadow px-2 py-1 bg-red-600 text-white text-sm">
+        Niet gevonden in de agenda
+      </div>
+    {{/if}}
+    <div class="space-y-3">
+      <div class="flex justify-between items-center">
+        <div class="flex flex-row items-center">
+          <div class="flex-none">
+            {{svg-jar "heroicons-md-calendar" class="h-5 w-5 text-gray-500"}}
+          </div>
+          <div class="ml-3 text-lg font-semibold text-gray-600">
+            Bezoek
+          </div>
+        </div>
+      </div>
+      <div class="pl-8 italic text-gray-400">
+        Bezoek niet correct aangemaakt. Vink 'Bezoek nodig' opnieuw aan.
+      </div>
     </div>
-    <div class="case--request--visit--description">
-      <p>Bezoek niet correct aangemaakt. Vink 'Bezoek nodig' opnieuw aan.</p>
-    </div>
-  </section>
+  </div>
 {{/if}}

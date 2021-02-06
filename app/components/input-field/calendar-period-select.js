@@ -24,16 +24,13 @@ export default class CalendarPeriodSelect extends Component {
     this.selected = this.options.find(o => o.value == this.args.value);
   }
 
-  get label() {
-    return this.args.label || 'Periode';
-  }
 
   get required() {
     return this.args.required || false;
   }
 
   get placeholder() {
-    return this.required ? `${this.label} *` : this.label;
+    return this.required && this.args.label ? `${this.args.label} *` : this.args.label;
   }
 
   @action

@@ -10,7 +10,7 @@
       {{@model.employee}}
     </DetailListItem>
     <DetailListItem @label="Bezoek nodig">
-      {{paper-icon (if @model.requiresVisit "check_box" "check_box_outline_blank")}}
+      {{svg-jar (if @model.requiresVisit "heroicons-sm-check" "heroicons-sm-minus-sm") class="h-5 w-5"}}
     </DetailListItem>
     <DetailListItem @label="Bezoeker">
       {{@model.visitor}}

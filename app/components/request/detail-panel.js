@@ -4,14 +4,17 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task, keepLatestTask } from 'ember-concurrency-decorators';
 import { debug, warn } from '@ember/debug';
+import { unlocalize } from '../../utils/date-helpers';
 
-export default class RequestDetailEditComponent extends Component {
-  @service store
-  @service case
+export default class RequestDetailPanelComponent extends Component {
+  @service case;
+  @service documentGeneration;
+  @service store;
 
-  @tracked visitor
-  @tracked employee
-  @tracked calendarEvent
+  @tracked editMode = false;
+  @tracked visitor;
+  @tracked employee;
+  @tracked calendarEvent;
 
   constructor() {
     super(...arguments);
@@ -37,11 +40,25 @@ export default class RequestDetailEditComponent extends Component {
     return this.case.current.customer != null;
   }
 
+  @keepLatestTask
+  *save() {
+    const { validations } = yield this.args.model.validate();
+    if (validations.isValid) {
+      if (this.args.model.changedAttributes()['comment']) {
+        yield this.args.model.save();
+        // reload after save so calendar event has been updated
+        this.args.model.belongsTo('calendarEvent').reload();
+      } else {
+        yield this.args.model.save();
+      }
+    }
+  }
+
   @task
   *setRequiresVisit(event) {
     const value = event.target.checked;
     this.args.model.requiresVisit = value;
-    this.args.save.perform();
+    this.save.perform();
 
     if (value) {
       try {
@@ -54,14 +71,11 @@ export default class RequestDetailEditComponent extends Component {
       } catch (e) {
         warn(`Something went wrong while saving calendar event for request ${this.args.model.id}`, { id: 'create-failure' });
         this.args.model.requiresVisit = false;
-        this.args.save.perform();
+        this.save.perform();
       }
     } else if (this.calendarEvent) {
       try {
         yield this.calendarEvent.destroyRecord();
-        // TODO: Fix this hack when Ember Data allows creation of already deleted ID
-        // See https://github.com/emberjs/data/issues/5006
-        // this.store._internalModelsFor('calendar-event').remove(calendarEvent._internalModel, calendarEvent.id);
         this.args.model.calendarEvent = null;
         this.calendarEvent = null;
       } catch (e) {
@@ -79,6 +93,11 @@ export default class RequestDetailEditComponent extends Component {
   }
 
   @action
+  generateVisitReport() {
+    return this.documentGeneration.visitReport(this.args.model);
+  }
+
+  @action
   setEmployee(employee) {
     this.employee = employee;
     this.args.model.employee = employee ? employee.firstName : null;
@@ -88,5 +107,20 @@ export default class RequestDetailEditComponent extends Component {
   setVisitor(visitor) {
     this.visitor = visitor;
     this.args.model.visitor = visitor ? visitor.firstName : null;
+  }
+
+  @action
+  setRequestDate(dates) {
+    this.args.model.requestDate = unlocalize(dates[0]);
+  }
+
+  @action
+  openEdit() {
+    this.editMode = true;
+  }
+
+  @action
+  closeEdit() {
+    this.editMode = false;
   }
 }
