@@ -30,15 +30,11 @@ export default class BuildingSelect extends Component {
 
   }
 
-  get label() {
-    return this.args.label || 'Gebouw';
-  }
-
   get required() {
     return this.args.required || false;
   }
 
   get placeholder() {
-    return this.required ? `${this.label} *` : this.label;
+    return this.required ? `${this.args.label} *` : this.args.label;
   }
 }

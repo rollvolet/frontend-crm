@@ -88,7 +88,8 @@
                   @value={{this.building}}
                   @customer={{@model}}
                   @onSelectionChange={{this.updateBuilding}}
-                  @label="Selecteer een gebouw" />
+                  @label="Selecteer een gebouw"
+                  class="mt-1" />
               {{else}}
                 {{#if this.building}}
                   <BuildingDetailCard @model={{this.building}} />
@@ -132,7 +133,8 @@
                   @value={{this.contact}}
                   @customer={{@model}}
                   @onSelectionChange={{this.updateContact}}
-                  @label="Selecteer een contact" />
+                  @label="Selecteer een contact"
+                  class="mt-1" />
               {{else}}
                 {{#if this.contact}}
                   <ContactDetailCard @model={{this.contact}} />
