@@ -1,6 +1,8 @@
-<label for="employee-select" class="block text-sm font-medium text-gray-700">
-  {{this.label}}
-</label>
+{{#if @label}}
+  <label for="employee-select" class="block text-sm font-medium text-gray-700">
+    {{@label}}
+  </label>
+{{/if}}
 <div ...attributes>
   {{#if @multiple}}
     <PowerSelectMultiple

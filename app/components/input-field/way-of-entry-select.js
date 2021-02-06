@@ -12,16 +12,12 @@ export default class WayOfEntrySelect extends Component {
     this.options = this.store.peekAll('way-of-entry');
   }
 
-  get label() {
-    return this.args.label || 'Aanmelding';
-  }
-
   get required() {
     return this.args.required || false;
   }
 
   get placeholder() {
-    return this.required ? `${this.label} *` : this.label;
+    return this.required && this.args.label ? `${this.args.label} *` : this.args.label;
   }
 
   get sortedOptions() {
