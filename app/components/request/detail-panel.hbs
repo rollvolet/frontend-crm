@@ -28,7 +28,6 @@
             {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
           </button>
         {{else}}
-          {{!-- TODO link/unlink customer buttons --}}
           {{#if this.isLinkedToCustomer}}
             <button type="button"
               onClick={{this.generateVisitReport}}
@@ -93,22 +92,22 @@
               @onSelectionChange={{queue this.setVisitor (perform this.save)}}
               class="mt-1" />
           </div>
-          <div class="relative flex items-end">
-            <div class="flex flex-grow-0 items-center h-5">
-              <Input
-                @id="requires-visit"
-                @type="checkbox"
-                @checked={{@model.requiresVisit}}
+          {{#if this.isLinkedToCustomer}}
+            <div class="relative flex items-end">
+              <div class="flex flex-grow-0 items-center h-5">
+                <Input
+                  @id="requires-visit"
+                  @type="checkbox"
+                  @checked={{@model.requiresVisit}}
                 disabled={{this.hasVisitMasteredByAccess}}
                 {{on "input" (perform this.setRequiresVisit)}}
                 class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
+              </div>
+              <div class="ml-3">
+                <label for="requires-visit" class="text-gray-500 text-sm font-medium">Bezoek nodig</label>
+              </div>
             </div>
-            <div class="ml-3">
-              <label for="requires-visit" class="text-gray-500 text-sm font-medium">Bezoek nodig</label>
-            </div>
-          </div>
-          <div>
-          </div>
+          {{/if}}
         </div>
         <div class="sm:col-span-2 sm:order-3">
           <label for="comment" class="block text-sm font-medium text-gray-700">

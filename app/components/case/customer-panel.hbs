@@ -1,20 +1,30 @@
 {{#if @model}}
   <div class="bg-white shadow rounded-lg overflow-hidden">
     <div class="divide-y divide-gray-200">
-      <div class="relative px-6 pt-6 pb-4">
-        <h3 class="text-xl font-bold font-display text-gray-400">
-          {{@model.number}}
-        </h3>
+      <div class="px-6 py-4">
+        <div class="flex justify-between items-end">
+          <h3 class="text-xl font-bold font-display text-gray-400">
+            {{@model.number}}
+          </h3>
+          <div class="flex flex-grow-0 flex-row items-end space-x-3 pb-2">
+            {{#if this.isEnabledUnlinkCustomer}}
+              <button type="button"
+                onClick={{perform this.unlinkCustomer}}
+                class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                {{svg-jar "heroicons-md-user-remove" class="h-6 w-6"}}
+                <EmberTooltip @text="Ontkoppel klant" @side="bottom" />
+              </button>
+            {{/if}}
+            <LinkTo @route="main.customers.edit" @model={{@model}}
+              class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-external-link" class="h-6 w-6"}}
+              <EmberTooltip @text="Open klant" @side="bottom" />
+            </LinkTo>
+          </div>
+        </div>
         <h2 class="text-2xl font-bold font-display text-gray-900">
           <PrintName @model={{@model}} />
         </h2>
-        <div class="absolute top-0 right-0 m-6">
-          <LinkTo @route="main.customers.edit" @model={{@model}}
-            class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "heroicons-md-external-link" class="h-7 w-7"}}
-            <EmberTooltip @text="Open klant" @side="bottom" />
-          </LinkTo>
-        </div>
       </div>
       <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:grid-cols-1">
         <div class="resource-details">
@@ -151,6 +161,36 @@
       <div class="px-6 py-4">
         <div class="text-sm text-gray-400 italic">
           Aangemaakt: {{moment-format @model.created}}
+        </div>
+      </div>
+    </div>
+  </div>
+{{else}}
+  <div class="bg-white shadow rounded-lg overflow-hidden">
+    <div class="divide-y divide-gray-200">
+      <div class="px-6 pt-6 pb-4 flex justify-between">
+        <h2 class="text-2xl font-bold font-display text-gray-900">
+          Klant
+        </h2>
+        <div>
+          {{#if this.case.current.request}}
+            <LinkTo @route="main.requests.edit.customer" @model={{this.case.current.request}}
+              class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-link" class="h-6 w-6"}}
+              <EmberTooltip @text="Koppel klant" @side="bottom" />
+            </LinkTo>
+          {{else if this.case.current.intervention}}
+            <LinkTo @route="main.interventions.edit.customer" @model={{this.case.current.intervention}}
+              class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-link" class="h-6 w-6"}}
+              <EmberTooltip @text="Koppel klant" @side="bottom" />
+            </LinkTo>
+          {{/if}}
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="italic text-gray-400">
+          Er is nog geen klant gekoppeld aan dit dossier.
         </div>
       </div>
     </div>

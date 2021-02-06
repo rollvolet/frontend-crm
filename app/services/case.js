@@ -141,6 +141,16 @@ export default class CaseService extends Service.extend(Evented) {
       if (this.current.offer) {
         warn(`Unable to unlink customer from request. Case has an offer already.`);
       } else {
+        try {
+          const calendarEvent = yield this.current.request.calendarEvent;
+          if (calendarEvent) {
+            this.current.request.requiresVisit = false;
+            yield calendarEvent.destroyRecord();
+          }
+        } catch (e) {
+          // silently ignore calendar event error
+        }
+
         if (this.current.contact || this.current.building) {
           yield this._updateContactAndBuilding.perform(null, null);
           this.current.contact = null;

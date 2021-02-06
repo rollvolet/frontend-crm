@@ -36,5 +36,4 @@ export default class IndexController extends Controller {
       yield this.model.rollbackAttributes(); // undo delete-state
     }
   }
-
 }

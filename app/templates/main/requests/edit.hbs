@@ -1,18 +1,23 @@
 <Case::Tabs />
 
-{{#if this.case.isLoadingCurrentCase}}
-  <div class="case--main-panel skeleton">
-    <PaperProgressCircular @diameter={{25}} />
+{{#unless this.case.isLoadingCurrentCase}}
+  <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="lg:col-span-2">
+      <div class="space-y-4">
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+          <Request::DetailPanel
+            @model={{this.model}}
+            @onDelete={{perform this.delete}}
+            @isDisabledEdit={{this.isDisabledEdit}}
+            @isEnabledDelete={{this.isEnabledDelete}} />
+        </div>
+      </div>
+    </div>
+    <div class="lg:col-span-1">
+      <Case::CustomerPanel @model={{null}} />
+    </div>
+    <div class="lg:col-span-3">
+      {{outlet}}
+    </div>
   </div>
-{{else}}
-  <div class="case--main-panel">
-    <Request::Panel
-      @model={{@model}}
-      @editMode={{this.editMode}}
-      @onOpenEdit={{fn (mut this.editMode) true}}
-      @onCloseEdit={{fn (mut this.editMode) false}}
-    />
-  </div>
-{{/if}}
-
-<LiquidOutlet />
+{{/unless}}
