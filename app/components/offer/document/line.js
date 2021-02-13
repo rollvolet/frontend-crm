@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { task } from 'ember-concurrency-decorators';
 import { get, set } from '@ember/object';
 
 export default class OfferDocumentLineComponent extends Component {
