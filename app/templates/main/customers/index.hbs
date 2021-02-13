@@ -26,56 +26,113 @@
           <table class="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
-                <th class="px-2 py-3 bg-gray-200 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+                <DataTable::Th
+                  @field="number"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="pl-4 pr-2 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
                   Nr.
-                </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                </DataTable::Th>
+                <DataTable::Th
+                  @field="name"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Naam
-                </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                </DataTable::Th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Straat
                 </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                  Postcode
-                </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                <DataTable::Th
+                  @field="postal-code"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  P.code
+                </DataTable::Th>
+                <DataTable::Th
+                  @field="city"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Gemeente
-                </th>
+                </DataTable::Th>
                 <th class="px-6 py-3 bg-gray-200 rounded-tr-lg"></th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              {{#each this.model as |row|}}
-                <tr>
-                  <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                    {{row.number}}
+              {{#if this.isLoadingModel}}
+                <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    <PrintName @model={{row}} />
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-28 bg-gray-300"></div>
                   </td>
-                  <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.address1}}
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-36 bg-gray-300"></div>
                   </td>
-                  <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.postalCode}}
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{row.city}}
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-32 bg-gray-300"></div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <LinkTo @route="main.customers.edit" @model={{row}}
-                      class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      Bekijk
-                    </LinkTo>
+                  <td>
+                  </td>
+                </tr>
+                <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-36 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-48 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-24 bg-gray-300"></div>
+                  </td>
+                  <td>
                   </td>
                 </tr>
               {{else}}
-                <tr>
-                  <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
-                    Geen klanten gevonden.
-                  </td>
-                </tr>
-              {{/each}}
+                {{#each this.model as |row|}}
+                  <tr>
+                    <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      {{row.number}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <PrintName @model={{row}} />
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                      {{row.address1}}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                      {{row.postalCode}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{row.city}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <LinkTo @route="main.customers.edit" @model={{row}}
+                        class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                        Bekijk
+                      </LinkTo>
+                    </td>
+                  </tr>
+                {{else}}
+                  <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
+                      Geen klanten gevonden.
+                    </td>
+                  </tr>
+                {{/each}}
+              {{/if}}
             </tbody>
           </table>
         </div>
@@ -89,11 +146,6 @@
     @onPrevious={{this.previousPage}}
     @onNext={{this.nextPage}}
     @onSelectPage={{this.selectPage}} />
-        {{!-- <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
-             <ThSortable @field="name" @currentSorting={{this.sort}} @label="Naam" />
-             <ThSortable @field="address" @currentSorting={{this.sort}} @label="Straat" />
-             <ThSortable @field="postal-code" @currentSorting={{this.sort}} @label="Postcode" />
-             <ThSortable @field="city" @currentSorting={{this.sort}} @label="Gemeente" /> --}}
 </div>
 
 <LiquidOutlet />
