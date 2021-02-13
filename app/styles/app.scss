@@ -25,7 +25,7 @@ $color-red: (
 $md-autocomplete-item-height: 36px !default;
 
 @import 'ember-paper';
-@import 'ember-paper-data-table';
+/*@import 'ember-paper-data-table';*/
 
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
 html, body {
@@ -49,26 +49,10 @@ $ember-power-select-highlighted-background: paper-color($primary, '200') !defaul
 @import 'scss/error';
 @import 'scss/resource-pages';
 @import 'scss/case-pages';
-@import 'scss/data-tables';
+/*@import 'scss/data-tables'; */
 @import 'scss/rich-text-editor';
 
 /* Default style overwrites */
-table {
-  margin-bottom: 8px;
-  max-width: 100%;
-  width: 100%;
-  border-spacing: 0;
-  border-radius: 2px;
-
-  td, th {
-    padding: 12px 16px;
-    text-align: left;
-  }
-
-  tbody tr:nth-child(odd) {
-    background-color: lighten(paper-color($primary, '100'), 1);
-  }
-}
 
 [data-ember-action]:not(:disabled),
 tr.clickable,
