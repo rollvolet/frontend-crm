@@ -1,0 +1,14 @@
+<th class="group" ...attributes
+  role="button"
+  {{on "click" this.updateSort}}>
+  {{#if this.isAscending}}
+    {{svg-jar "heroicons-sm-arrow-narrow-down" class="sm:-ml-4 sm:inline h-3 w-3 text-gray-900"}}
+  {{else if this.isDescending}}
+    {{svg-jar "heroicons-sm-arrow-narrow-up" class="sm:-ml-4 sm:inline h-3 w-3 text-gray-900"}}
+  {{else}}
+    {{svg-jar "heroicons-sm-switch-vertical" class="sm:-ml-4 sm:inline h-4 w-4 text-gray-400 group-hover:text-gray-700"}}
+  {{/if}}
+  <span class="group-hover:text-gray-900">
+    {{yield}}
+  </span>
+</th>
