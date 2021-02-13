@@ -1,30 +1,99 @@
-<div class="layout-row layout-align-space-between-center">
-  <h1 class="text-3xl font-bold font-display my-6">Klanten</h1>
-  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @onClick={{transition-to "main.customers.new"}}>
-    {{paper-icon "add"}}
-    <PaperTooltip>Maak nieuwe klant</PaperTooltip>
-  </PaperButton>
+<div class="md:flex md:items-center md:justify-between">
+  <div class="flex-1 min-w-0">
+    <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
+      Klanten
+    </h2>
+  </div>
+  <div class="mt-4 flex flex-grow-0  md:mt-0 md:ml-4">
+    <LinkTo @route="main.customers.new"
+      class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+      Nieuw
+    </LinkTo>
+  </div>
 </div>
 
-<Customer::DataTableFilter @number={{this.number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{fn this.applyFilter}} />
+<div class="mt-8 bg-white shadow rounded-lg">
+  <div class="p-4 sm:px-6 lg:px-8">
+    <Customer::DataTableFilter @number={{this.number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{fn this.applyFilter}} />
+  </div>
+</div>
 
-<DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
-  <t.content as |c|>
-    <c.header>
-      <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
-      <ThSortable @field="name" @currentSorting={{this.sort}} @label="Naam" />
-      <ThSortable @field="address" @currentSorting={{this.sort}} @label="Straat" />
-      <ThSortable @field="postal-code" @currentSorting={{this.sort}} @label="Postcode" />
-      <ThSortable @field="city" @currentSorting={{this.sort}} @label="Gemeente" />
-    </c.header>
-    <c.body as |row|>
-      <td>{{row.number}}</td>
-      <td><PrintName @model={{row}} /></td>
-      <td>{{row.address1}}</td>
-      <td>{{row.postalCode}}</td>
-      <td>{{row.city}}</td>
-    </c.body>
-  </t.content>
-</DataTable>
+<div class="mt-8 bg-white shadow rounded-lg">
+  <div class="flex flex-col">
+    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="overflow-hidden border-b border-gray-200">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th class="px-2 py-3 bg-gray-200 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+                  Nr.
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  Naam
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  Straat
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  Postcode
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  Gemeente
+                </th>
+                <th class="px-6 py-3 bg-gray-200 rounded-tr-lg"></th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {{#each this.model as |row|}}
+                <tr>
+                  <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                    {{row.number}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <PrintName @model={{row}} />
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{row.address1}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{row.postalCode}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{row.city}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <LinkTo @route="main.customers.edit" @model={{row}}
+                      class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      Bekijk
+                    </LinkTo>
+                  </td>
+                </tr>
+              {{else}}
+                <tr>
+                  <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
+                    Geen klanten gevonden.
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <DataTable::Pagination
+    @page={{this.page}}
+    @size={{this.size}}
+    @total={{this.model.meta.count}}
+    @onPrevious={{this.previousPage}}
+    @onNext={{this.nextPage}}
+    @onSelectPage={{this.selectPage}} />
+        {{!-- <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
+             <ThSortable @field="name" @currentSorting={{this.sort}} @label="Naam" />
+             <ThSortable @field="address" @currentSorting={{this.sort}} @label="Straat" />
+             <ThSortable @field="postal-code" @currentSorting={{this.sort}} @label="Postcode" />
+             <ThSortable @field="city" @currentSorting={{this.sort}} @label="Gemeente" /> --}}
+</div>
 
 <LiquidOutlet />
