@@ -1,57 +1,166 @@
-<div class="data-table-filters">
-  <div class="data-table-filters--title">{{paper-icon "search"}} Zoeken</div>
-  <div class="layout-row flex layout-align-space-between-start">
-    <div class="layout-column">
-      <div class="layout-row data-table-filter--line">
-        <div class="layout-column data-table-filter--group">
-          <div class="data-table-filters--group-title"></div>
-          <div class="layout-row data-table-filters--group-fields">
-            <PaperInput @label="Nummer" @value={{this.filter.number}} @onChange={{perform this.debounceFilter "number"}} @class="small" {{did-insert this.autofocus}}/>
-          </div>
-        </div>
-        <div class="layout-column data-table-filter--group">
-          <div class="data-table-filters--group-title">Klant</div>
-          <div class="layout-row data-table-filters--group-fields">
-            <PaperInput @label="Naam" @value={{this.filter.cName}} @onChange={{perform this.debounceFilter "cName"}} />
-            <PaperInput @label="Straat" @value={{this.filter.cStreet}} @onChange={{perform this.debounceFilter "cStreet"}} @class="large" />
-            <PaperInput @label="Postcode" @value={{this.filter.cPostalCode}} @onChange={{perform this.debounceFilter "cPostalCode"}} @class="small" />
-            <PaperInput @label="Gemeente" @value={{this.filter.cCity}} @onChange={{perform this.debounceFilter "cCity"}} />
-            <PaperInput @label="Telefoon" @value={{this.filter.cTelephone}} @onChange={{perform this.debounceFilter "cTelephone"}} />
-          </div>
-        </div>
+<div class="pt-4 pb-6 px-4 sm:px-6">
+  <div class="flex justify-between items-center">
+    <div class="flex items-center">
+      {{svg-jar "heroicons-md-search" class="flex-shrink-0 mr-2 h-4 w-4 text-gray-500"}}
+      <h4 class="text-gray-700 text-sm uppercase tracking-wide">
+        Zoeken
+      </h4>
+    </div>
+    <div>
+      <button type="button"
+        onClick={{this.resetFilters}}
+        class="inline-flex items-center text-sm text-gray-700 underline lg:no-underline hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+        {{svg-jar "heroicons-sm-filter" class="-ml-0.5 mr-2 h-4 w-4 text-gray-400"}}
+        Wis alle filters
+      </button>
+    </div>
+  </div>
+  <div class="mt-4 grid sm:grid-cols-12 gap-4">
+    <div class="sm:col-span-2 lg:col-span-1">
+      <label for="filter-number" class="block text-sm font-medium text-gray-700">
+        Nummer
+      </label>
+      <Input
+        @id="filter-number"
+        @type="text"
+        @value={{this.filter.number}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "number")}}
+        {{did-insert this.autofocus}} />
+    </div>
+    <div class="sm:col-span-2">
+      <label for="filter-visitor" class="block text-sm font-medium text-gray-700">
+        Bezoeker
+      </label>
+      <Input
+        @id="filter-visitor"
+        @type="text"
+        @value={{this.filter.visitor}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "visitor")}} />
+    </div>
+    <div class="sm:col-span-4 relative flex items-end mb-2">
+      <div class="flex flex-none items-center h-5">
+        <InputField::Switch
+          @value={{this.filter.withoutOffer}}
+          @onChange={{fn this.setFilter "withoutOffer"}} />
       </div>
-      <div class="layout-row data-table-filter--line">
-        <div class="layout-column data-table-filter--group">
-          <div class="data-table-filters--group-title"></div>
-          <div class="layout-row data-table-filters--group-fields">
-            <PaperInput @label="Bezoeker" @value={{this.filter.visitor}} @onChange={{perform this.debounceFilter "visitor"}} @class="small" />
-          </div>
-        </div>
-        <div class="layout-column data-table-filter--group">
-          <div class="data-table-filters--group-title">Gebouw</div>
-          <div class="layout-row data-table-filters--group-fields">
-            <PaperInput @label="Naam" @value={{this.filter.bName}} @onChange={{perform this.debounceFilter "bName"}} />
-            <PaperInput @label="Straat" @value={{this.filter.bStreet}} @onChange={{perform this.debounceFilter "bStreet"}} @class="large" />
-            <PaperInput @label="Postcode" @value={{this.filter.bPostalCode}} @onChange={{perform this.debounceFilter "bPostalCode"}} @class="small" />
-            <PaperInput @label="Gemeente" @value={{this.filter.bCity}} @onChange={{perform this.debounceFilter "bCity"}} />
-          </div>
-        </div>
-        <div class="layout-column data-table-filter--group">
-          <div class="data-table-filters--group-title"></div>
-          <div class="layout-row data-table-filters--group-fields">
-            <PaperSwitch @value={{this.filter.withoutOffer}} @primary={{true}} @onChange={{fn this.setFilter "withoutOffer"}}>
-              Zonder offerte
-            </PaperSwitch>
-          </div>
-        </div>
+      <div class="ml-3 text-sm leading-5">
+        <label for="without-offer" class="font-medium text-gray-700">Zonder offerte</label>
       </div>
     </div>
-
-    <div class="data-table-filters--reset">
-      <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
-        {{paper-icon "close"}}
-        <PaperTooltip>Wis filters</PaperTooltip>
-      </PaperButton>
+  </div>
+  <div class="mt-4 grid sm:grid-cols-12 gap-4 bg-gray-50 p-4 rounded">
+    <div class="sm:col-span-2 lg:col-span-1">
+      <div class="text-gray-500 text-sm uppercase tracking-wide">
+        Klant
+      </div>
+    </div>
+    <div class="sm:col-span-5 lg:col-span-3">
+      <label for="filter-customer-name" class="block text-sm font-medium text-gray-700">
+        Naam
+      </label>
+      <Input
+        @id="filter-customer-name"
+        @type="text"
+        @value={{this.filter.cName}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "cName")}} />
+    </div>
+    <div class="sm:col-span-5 lg:col-span-3">
+      <label for="filter-customer-street" class="block text-sm font-medium text-gray-700">
+        Straat
+      </label>
+      <Input
+        @id="filter-customer-street"
+        @type="text"
+        @value={{this.filter.cStreet}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "cStreet")}} />
+    </div>
+    <div class="sm:col-span-2 lg:col-span-1">
+      <label for="filter-customer-postal-code" class="block text-sm font-medium text-gray-700">
+        Postcode
+      </label>
+      <Input
+        @id="filter-customer-postal-code"
+        @type="text"
+        @value={{this.filter.cPostalCode}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "cPostalCode")}} />
+    </div>
+    <div class="sm:col-span-5 lg:col-span-2">
+      <label for="filter-customer-city" class="block text-sm font-medium text-gray-700">
+        Gemeente
+      </label>
+      <Input
+        @id="filter-customer-city"
+        @type="text"
+        @value={{this.filter.cCity}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "cCity")}} />
+    </div>
+    <div class="sm:col-span-5 lg:col-span-2">
+      <label for="filter-customer-telephone" class="block text-sm font-medium text-gray-700">
+        Telefoon
+      </label>
+      <Input
+        @id="filter-customer-telephone"
+        @type="text"
+        @value={{this.filter.cTelephone}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "cTelephone")}} />
+    </div>
+  </div>
+  <div class="mt-3 grid sm:grid-cols-12 gap-4 bg-gray-50 p-4 rounded">
+    <div class="sm:col-span-2 lg:col-span-1">
+      <div class="text-gray-500 text-sm uppercase tracking-wide">
+        Gebouw
+      </div>
+    </div>
+    <div class="sm:col-span-5 lg:col-span-3">
+      <label for="filter-building-name" class="block text-sm font-medium text-gray-700">
+        Naam
+      </label>
+      <Input
+        @id="filter-building-name"
+        @type="text"
+        @value={{this.filter.bName}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "bName")}} />
+    </div>
+    <div class="sm:col-span-5 lg:col-span-3">
+      <label for="filter-building-street" class="block text-sm font-medium text-gray-700">
+        Straat
+      </label>
+      <Input
+        @id="filter-building-street"
+        @type="text"
+        @value={{this.filter.bStreet}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "bStreet")}} />
+    </div>
+    <div class="sm:col-span-2 lg:col-span-1">
+      <label for="filter-building-postal-code" class="block text-sm font-medium text-gray-700">
+        Postcode
+      </label>
+      <Input
+        @id="filter-building-postal-code"
+        @type="text"
+        @value={{this.filter.bPostalCode}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "bPostalCode")}} />
+    </div>
+    <div class="sm:col-span-5 lg:col-span-2">
+      <label for="filter-building-city" class="block text-sm font-medium text-gray-700">
+        Gemeente
+      </label>
+      <Input
+        @id="filter-building-city"
+        @type="text"
+        @value={{this.filter.bCity}}
+        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "input" (perform this.debounceFilter "bCity")}} />
     </div>
   </div>
 </div>
