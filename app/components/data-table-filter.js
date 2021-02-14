@@ -18,7 +18,10 @@ export default class DataTableFilterComponent extends Component {
   }
 
   @restartableTask
-  *debounceFilter(key, value) {
+  *debounceFilter(key, event) {
+    // TODO remove value = event once all data filters are refactored
+    // not to use PaperInput anymore
+    const value = event.target ? event.target.value : event;
     this.filter.set(key, value);
     yield timeout(500);
     this.onChange(this.filter);
@@ -38,7 +41,9 @@ export default class DataTableFilterComponent extends Component {
 
   @action
   autofocus(element) {
-    const inputEl = element.querySelector('input');
+    // TODO remove element.querySelector('input ) once all data filters are refactored
+    // not to use PaperInput anymore
+    const inputEl = element.tagName == 'INPUT' ? element : element.querySelector('input');
     if (inputEl) {
       // If we don't delay .focus(), another element seems to gain the final focus
       // By postponing the .focus() action 1ms, the correct input element gets focus

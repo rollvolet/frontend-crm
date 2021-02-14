@@ -1,24 +1,30 @@
-<div class="md:flex md:items-center md:justify-between">
+<div class="flex items-center justify-between">
   <div class="flex-1 min-w-0">
     <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
       Klanten
     </h2>
   </div>
-  <div class="mt-4 flex flex-grow-0  md:mt-0 md:ml-4">
+  <div class="flex flex-grow-0">
     <LinkTo @route="main.customers.new"
       class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+      {{svg-jar "heroicons-md-plus" class="-ml-1 mr-2 h-5 w-5"}}
       Nieuw
     </LinkTo>
   </div>
 </div>
 
-<div class="mt-8 bg-white shadow rounded-lg">
-  <div class="p-4 sm:px-6 lg:px-8">
-    <Customer::DataTableFilter @number={{this.number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{fn this.applyFilter}} />
-  </div>
+<div class="mt-6 bg-white shadow rounded-lg">
+  <Customer::DataTableFilter
+    @number={{this.number}}
+    @name={{this.name}}
+    @street={{this.street}}
+    @postalCode={{this.postalCode}}
+    @city={{this.city}}
+    @telephone={{this.telephone}}
+    @onChange={{fn this.applyFilter}} />
 </div>
 
-<div class="mt-8 bg-white shadow rounded-lg">
+<div class="mt-6 bg-white shadow rounded-lg">
   <div class="flex flex-col">
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -106,7 +112,7 @@
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                       {{row.number}}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900">
                       <PrintName @model={{row}} />
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
@@ -115,7 +121,7 @@
                     <td class="px-6 py-4 text-sm text-gray-500">
                       {{row.postalCode}}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td class="px-6 py-4 text-sm text-gray-500">
                       {{row.city}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
