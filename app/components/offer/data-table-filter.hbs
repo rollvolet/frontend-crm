@@ -28,7 +28,7 @@
         {{on "input" (perform this.debounceFilter "requestNumber")}}
         {{did-insert this.autofocus}} />
     </div>
-    <div class="sm:col-span-2 lg:col-span-1">
+    <div class="sm:col-span-4 md:col-span-2">
       <label for="filter-offer-number" class="block text-sm font-medium text-gray-700">
         Offertenr.
       </label>
@@ -39,7 +39,7 @@
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "offerNumber")}} />
     </div>
-    <div class="sm:col-span-2">
+    <div class="sm:col-span-4 md:col-span-2">
       <label for="filter-visitor" class="block text-sm font-medium text-gray-700">
         Bezoeker
       </label>
@@ -50,7 +50,7 @@
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "visitor")}} />
     </div>
-    <div class="sm:col-span-2">
+    <div class="sm:col-span-4 md:col-span-2">
       <label for="filter-reference" class="block text-sm font-medium text-gray-700">
         Referentie
       </label>
@@ -61,14 +61,14 @@
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "reference")}} />
     </div>
-    <div class="sm:col-span-4 relative flex items-end mb-2">
+    <div class="sm:col-span-6 md:col-span-4 relative flex items-end mb-2">
       <div class="flex flex-none items-center h-5">
         <InputField::Switch
           @value={{this.filter.withoutOrder}}
           @onChange={{fn this.setFilter "withoutOrder"}} />
       </div>
       <div class="ml-3 text-sm leading-5">
-        <label for="without-offer" class="font-medium text-gray-700">Zonder bestelling</label>
+        <label for="without-order" class="font-medium text-gray-700">Zonder bestelling</label>
       </div>
     </div>
   </div>

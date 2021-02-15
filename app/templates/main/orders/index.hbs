@@ -1,45 +1,211 @@
-<h1 class="text-3xl font-bold font-display my-6">Bestellingen</h1>
+<div class="flex items-center justify-between">
+  <div class="flex-1 min-w-0">
+    <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
+      Bestellingen
+    </h2>
+  </div>
+</div>
 
-<div class="orders-data-table">
-  <Order::DataTableFilter @offerNumber={{this.offerNumber}} @reference={{this.reference}} @visitor={{this.visitor}} @requestNumber={{this.requestNumber}} @cName={{this.cName}} @cStreet={{this.cStreet}} @cPostalCode={{this.cPostalCode}} @cCity={{this.cCity}} @cTelephone={{this.cTelephone}} @bName={{this.bName}} @bPostalCode={{this.bPostalCode}} @bCity={{this.bCity}} @bStreet={{this.bStreet}} @withoutInvoice={{this.withoutInvoice}} @onlyNotCanceled={{this.onlyNotCanceled}} @onChange={{fn this.applyFilter}} />
+<div class="mt-6 bg-white shadow rounded-lg">
+  <Order::DataTableFilter
+    @offerNumber={{this.offerNumber}}
+    @reference={{this.reference}}
+    @visitor={{this.visitor}}
+    @requestNumber={{this.requestNumber}}
+    @cName={{this.cName}}
+    @cStreet={{this.cStreet}}
+    @cPostalCode={{this.cPostalCode}}
+    @cCity={{this.cCity}}
+    @cTelephone={{this.cTelephone}}
+    @bName={{this.bName}}
+    @bPostalCode={{this.bPostalCode}}
+    @bCity={{this.bCity}}
+    @bStreet={{this.bStreet}}
+    @withoutInvoice={{this.withoutInvoice}}
+    @onlyNotCanceled={{this.onlyNotCanceled}}
+    @onChange={{this.applyFilter}} />
+</div>
 
-  <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
-    <t.content as |c|>
-      <c.header>
-        <th>Aanvraag</th>
-        <ThSortable @field="offer-number" @currentSorting={{this.sort}} @label="Offerte" />
-        <ThSortable @field="order-date" @currentSorting={{this.sort}} @label="Datum" />
-        <th>Bezoeker</th>
-        <th></th>
-        <th>Naam</th>
-        <th>Straat</th>
-        <th>Postcode</th>
-        <th>Gemeente</th>
-      </c.header>
-      <c.body as |row|>
-        <td>{{row.requestNumber}}</td>
-        <td>{{row.offerNumber}}</td>
-        <td><FmtDate @value={{row.orderDate}} /></td>
-        <td>{{row.offer.request.visitor}}</td>
-        {{#if row.building}}
-          <td>{{paper-icon "home"}}</td>
-          <td>
-            {{row.building.printName}}
-            <span class="text-fade">(<PrintName @model={{row.customer}} />)</span>
-          </td>
-          <td>{{row.building.address1}}</td>
-          <td>{{row.building.postalCode}}</td>
-          <td>{{row.building.city}}</td>
-        {{else}}
-          <td>{{paper-icon "person"}}</td>
-          <td><PrintName @model={{row.customer}} /></td>
-          <td>{{row.customer.address1}}</td>
-          <td>{{row.customer.postalCode}}</td>
-          <td>{{row.customer.city}}</td>
-        {{/if}}
-      </c.body>
-    </t.content>
-  </DataTable>
+<div class="mt-6 bg-white shadow rounded-lg">
+  <div class="flex flex-col">
+    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="overflow-hidden border-b border-gray-200">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+                  AD
+                </th>
+                <DataTable::Th
+                  @field="offer-number"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-6 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Offertenr.
+                </DataTable::Th>
+                <DataTable::Th
+                  @field="order-date"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Datum
+                </DataTable::Th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Bezoek
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Naam
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Straat
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  P.Code
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Gemeente
+                </th>
+                <th class="px-6 py-3 bg-gray-200 rounded-tr-lg"></th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {{#if this.isLoadingModel}}
+                <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-14 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-28 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-36 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-32 bg-gray-300"></div>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+                <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-36 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-48 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-24 bg-gray-300"></div>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              {{else}}
+                {{#each this.model as |row|}}
+                  <tr>
+                    <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      {{row.requestNumber}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      {{row.offerNumber}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <FmtDate @value={{row.orderDate}} />
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                      {{row.offer.request.visitor}}
+                    </td>
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                      <div class="flex">
+                        {{#if row.building}}
+                          {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                          <div class="space-y-1">
+                            {{#if row.building.printName}}
+                              <div>
+                                {{row.building.printName}}
+                              </div>
+                            {{else}}
+                              <div class="text-gray-400 italic font-normal">
+                                Naamloos
+                              </div>
+                            {{/if}}
+                            <div class="text-gray-400 text-xs"><PrintName @model={{row.customer}} /></div>
+                          </div>
+                        {{else}}
+                          {{#if row.customer}}
+                            {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                            <PrintName @model={{row.customer}} />
+                          {{else}}
+                            {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
+                            <span class="text-gray-400 italic">Geen klant gekoppeld</span>
+                          {{/if}}
+                        {{/if}}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                      {{if row.building row.building.address1 row.customer.address1}}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                      {{if row.building row.building.postalCode row.customer.postalCode}}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                      {{if row.building row.building.city row.customer.city}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <LinkTo @route="main.case.order.edit" @models={{array row.customer.id row.id}}
+                        class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                        Bekijk
+                      </LinkTo>
+                    </td>
+                  </tr>
+                {{else}}
+                  <tr>
+                    <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">
+                      Geen bestellingen gevonden.
+                    </td>
+                  </tr>
+                {{/each}}
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <DataTable::Pagination
+    @page={{this.page}}
+    @size={{this.size}}
+    @total={{this.model.meta.count}}
+    @onPrevious={{this.previousPage}}
+    @onNext={{this.nextPage}}
+    @onSelectPage={{this.selectPage}} />
 </div>
 
 <LiquidOutlet />
