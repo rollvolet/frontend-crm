@@ -1,26 +1,15 @@
-import { action } from '@ember/object';
 import Controller from '@ember/controller';
-import DefaultQueryParams from 'ember-data-table/mixins/default-query-params';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import applyFilterParams from '../../../utils/apply-filter-params';
 
-export default class IndexController extends Controller.extend(DefaultQueryParams) {
-  size = 25;
-  sort = '-date';
-  isCancelled = 0;
-  hasInvoice = 0;
-  isPlanned = -1;
-
-  @action
-  clickRow(row, e) {
-    if (e.target.getAttribute('role') != 'button') {
-      const customerId = row.get('customer.id');
-      const interventionId = row.get('id');
-      if (customerId)
-        this.transitionToRoute('main.case.intervention.edit', customerId, interventionId);
-      else
-        this.transitionToRoute('main.interventions.edit', interventionId);
-    }
-  }
+export default class IndexController extends Controller {
+  @tracked page = 0;
+  @tracked size = 25;
+  @tracked sort = '-date';
+  @tracked isCancelled = 0;
+  @tracked hasInvoice = 0;
+  @tracked isPlanned = -1;
 
   @action
   applyFilter(filter) {
@@ -29,6 +18,21 @@ export default class IndexController extends Controller.extend(DefaultQueryParam
 
   @action
   toggleDescription(row) {
-    row.set('expandDescription', !row.expandDescription);
+    row.set('isExpandedDescription', !row.isExpandedDescription);
+  }
+
+  @action
+  previousPage() {
+    this.selectPage(this.page - 1);
+  }
+
+  @action
+  nextPage() {
+    this.selectPage(this.page + 1);
+  }
+
+  @action
+  selectPage(page) {
+    this.page = page;
   }
 }

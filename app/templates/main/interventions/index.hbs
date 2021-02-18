@@ -1,12 +1,19 @@
-<div class="layout-row layout-align-space-between-center">
-  <h1 class="text-3xl font-bold font-display my-6">Interventies</h1>
-  <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @onClick={{transition-to "main.interventions.new"}}>
-    {{paper-icon "add"}}
-    <PaperTooltip>Maak nieuwe interventie</PaperTooltip>
-  </PaperButton>
+<div class="flex items-center justify-between">
+  <div class="flex-1 min-w-0">
+    <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
+      Interventies
+    </h2>
+  </div>
+  <div class="flex flex-grow-0">
+    <LinkTo @route="main.customers.new"
+      class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+      {{svg-jar "heroicons-md-plus" class="-ml-1 mr-2 h-5 w-5"}}
+      Nieuw
+    </LinkTo>
+  </div>
 </div>
 
-<div class="interventions-data-table">
+<div class="mt-6 bg-white shadow rounded-lg">
   <Intervention::DataTableFilter
     @number={{this.number}}
     @cName={{this.cName}}
@@ -21,49 +28,198 @@
     @isCancelled={{this.isCancelled}}
     @hasInvoice={{this.hasInvoice}}
     @isPlanned={{this.isPlanned}}
-    @onChange={{fn this.applyFilter}} />
+    @onChange={{this.applyFilter}} />
+</div>
 
-  <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{fn this.clickRow}} as |t|>
-    <t.content as |c|>
-      <c.header>
-        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
-        <ThSortable @field="date" @currentSorting={{this.sort}} @label="Datum" />
-        <ThSortable @field="planning-event.date" @currentSorting={{this.sort}} @label="Planning" />
-        <th># pers.</th>
-        <th></th>
-        <th>Naam</th>
-        <th>Straat</th>
-        <th>Postcode</th>
-        <th>Gemeente</th>
-        <th>Beschrijving</th>
-      </c.header>
-      <c.body as |row|>
-        <td>{{row.id}}</td>
-        <td><FmtDate @value={{row.date}} /></td>
-        <td><FmtDate @value={{row.planningEvent.date}} /></td>
-        <td>{{row.nbOfPersons}}</td>
-        {{#if row.building}}
-          <td>{{paper-icon "home"}}</td>
-          <td>
-            {{row.building.printName}}
-            <span class="text-fade">(<PrintName @model={{row.customer}} />)</span>
-          </td>
-          <td>{{row.building.address1}}</td>
-          <td>{{row.building.postalCode}}</td>
-          <td>{{row.building.city}}</td>
-        {{else}}
-          <td>{{#if row.customer}}{{paper-icon "person"}}{{else}}{{paper-icon "link off"}}{{/if}}</td>
-          <td><PrintName @model={{row.customer}} /></td>
-          <td>{{row.customer.address1}}</td>
-          <td>{{row.customer.postalCode}}</td>
-          <td>{{row.customer.city}}</td>
-        {{/if}}
-        <td class="{{unless row.expandDescription "truncate"}}" role="button" {{on "click" (fn this.toggleDescription row)}}>
-          {{row.description}}
-        </td>
-      </c.body>
-    </t.content>
-  </DataTable>
+<div class="mt-6 bg-white shadow rounded-lg">
+  <div class="flex flex-col">
+    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="overflow-hidden border-b border-gray-200">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <DataTable::Th
+                  @field="number"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="pl-4 pr-2 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+                  Nr.
+                </DataTable::Th>
+                <DataTable::Th
+                  @field="date"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Datum
+                </DataTable::Th>
+                <DataTable::Th
+                  @field="planning-event.date"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Planning
+                </DataTable::Th>
+                <th class="px-2 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                  #p
+                </th>
+                <th class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Naam
+                </th>
+                <th class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Adres
+                </th>
+                <th class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Beschrijving
+                </th>
+                <th class="px-4 py-3 bg-gray-200 rounded-tr-lg"></th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {{#if this.isLoadingModel}}
+                <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-4 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-28 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-36 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-32 bg-gray-300"></div>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+                <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-4 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-36 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-48 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-32 bg-gray-300"></div>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              {{else}}
+                {{#each this.model as |row|}}
+                  <tr>
+                    <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                      {{row.id}}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <FmtDate @value={{row.date}} />
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <FmtDate @value={{row.planningEvent.date}} />
+                    </td>
+                    <td class="px-2 py-4 text-sm text-gray-500">
+                      {{row.nbOfPersons}}
+                    </td>
+                    <td class="px-4 py-4 text-sm font-medium text-gray-900">
+                      <div class="flex">
+                        {{#if row.building}}
+                          {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                          <div class="space-y-1">
+                            {{#if row.building.printName}}
+                              <div>
+                                {{row.building.printName}}
+                              </div>
+                            {{else}}
+                              <div class="text-gray-400 italic font-normal">
+                                Naamloos
+                              </div>
+                            {{/if}}
+                            <div class="text-gray-400 text-xs"><PrintName @model={{row.customer}} /></div>
+                          </div>
+                        {{else}}
+                          {{#if row.customer}}
+                            {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                            <PrintName @model={{row.customer}} />
+                          {{else}}
+                            {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
+                            <span class="text-gray-400 italic">Geen klant gekoppeld</span>
+                          {{/if}}
+                        {{/if}}
+                      </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <div>
+                        {{if row.building row.building.address1 row.customer.address1}}
+                      </div>
+                      <div>
+                        {{#if row.building}}
+                          {{row.building.postalCode}} {{row.building.city}}
+                        {{else}}
+                          {{row.customer.postalCode}} {{row.customer.city}}
+                        {{/if}}
+                      </div>
+                    </td>
+                    <td class="px-4 py-4 text-xs text-gray-500 {{unless row.isExpandedDescription "truncate"}}"
+                      {{on "click" (fn this.toggleDescription row)}} role="button">
+                      {{row.description}}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      {{#if row.customer}}
+                        <LinkTo @route="main.case.intervention.edit" @models={{array row.customer.id row.id}}
+                          class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                          Bekijk
+                        </LinkTo>
+                      {{else}}
+                        <LinkTo @route="main.interventions.edit" @model={{row.id}}
+                          class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                          Bekijk
+                        </LinkTo>
+                      {{/if}}
+                    </td>
+                  </tr>
+                {{else}}
+                  <tr>
+                    <td colspan="10" class="px-4 py-4 text-center text-sm text-gray-500">
+                      Geen interventies gevonden.
+                    </td>
+                  </tr>
+                {{/each}}
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <DataTable::Pagination
+    @page={{this.page}}
+    @size={{this.size}}
+    @total={{this.model.meta.count}}
+    @onPrevious={{this.previousPage}}
+    @onNext={{this.nextPage}}
+    @onSelectPage={{this.selectPage}} />
 </div>
 
 <LiquidOutlet />
