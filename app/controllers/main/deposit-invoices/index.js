@@ -9,13 +9,6 @@ export default class IndexController extends Controller {
   @tracked sort = '-number';
 
   @action
-  clickRow(row) {
-    const customerId = row.get('customer.id');
-    const orderId = row.get('order.id');
-    this.transitionToRoute('main.case.order.edit.deposit-invoices', customerId, orderId);
-  }
-
-  @action
   applyFilter(filter) {
     applyFilterParams.bind(this)(filter);
   }
