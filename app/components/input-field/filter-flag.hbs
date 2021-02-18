@@ -1,16 +1,26 @@
-<div class="radio radio--filter-flag">
-  {{#if @label}}
-    <div class="radio--group-label">{{@label}}</div>
-  {{/if}}
-  {{#each this.options as |option|}}
-    <div>
-      <input type="radio"
-        id={{option.id}}
-        name={{this.group}}
-        value={{option.value}}
-        checked={{eq @value option.value}}
+{{#if @label}}
+  <label for={{this.group}} class="block text-sm font-medium text-gray-700">
+    {{@label}}
+  </label>
+{{/if}}
+<ul
+  role="radiogroup"
+  aria-labelledby={{this.group}}
+  class="mt-1 relative inline-flex shadow-sm rounded-md">
+  {{#each this.options as |option index|}}
+    {{#let (eq @value option.value) as |isChecked|}}
+      <li
+        tabindex={{if isChecked "0" "-1"}}
+        role="radio"
+        id={{concat "radiogroup-option-" option.id}}
+        aria-checked={{if isChecked "true" "false"}}
+        class="px-4 py-2 cursor-pointer border border-gray-300 text-xs text-gray-700 uppercase focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-red-200 focus:border-red-200 focus:z-10
+        {{if (eq index 0) "rounded-l-md" "-ml-px"}}
+        {{if (eq index this.nbOfOptions) "rounded-r-md"}}
+        {{if isChecked "bg-gray-100 font-medium" "bg-white"}}"
         {{on "click" (fn @onChange option.value)}}>
-      <label for={{option.id}}>{{option.label}}</label>
-    </div>
+        {{option.label}}
+      </li>
+    {{/let}}
   {{/each}}
-</div>
+</ul>
