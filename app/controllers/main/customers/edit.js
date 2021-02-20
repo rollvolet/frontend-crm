@@ -2,14 +2,9 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 
 export default class EditController extends Controller {
-  queryParams = ['editMode', 'selectedTab'];
+  queryParams = ['editMode', 'tab'];
   editMode = false;
-  selectedTab = 2; // requests tab
-
-  @action
-  setTab(tab) {
-    this.set('selectedTab', tab);
-  }
+  tab = 'requests';
 
   @action
   openEdit() {

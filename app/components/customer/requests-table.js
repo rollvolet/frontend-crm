@@ -5,50 +5,35 @@ import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency-decorators';
 
 export default class RequestsTable extends FilterComponent {
-  @service router
-  @service store
+  @service router;
+  @service store;
 
-  @tracked requests = []
+  @tracked page = 0;
+  @tracked size = 10;
+  @tracked sort = '-request-date';
+  @tracked requests = [];
 
   constructor() {
     super(...arguments);
     this.initFilter(['number', 'name', 'postalCode', 'city', 'street']);
-    this.filter.set('page', 0);
-    this.filter.set('size', 10);
-    this.filter.set('sort', '-request-date');
-
-    // Setup observers for 2-way binded values of ember-data-table
-    this.filter.addObserver('page', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
-    this.filter.addObserver('size', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
-    this.filter.addObserver('sort', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
     this.search.perform(this.filter);
   }
 
+  // @overwrite
   onChange(filter) {
-    if (filter.page != 0)
-      filter.set('page', 0); // search will be triggered by onDataTableParamChange()
-    else
-      this.search.perform(filter);
-  }
-
-  onDataTableParamChange() {
-    this.search.perform(this.filter);
-  }
-
-  willDestroy() {
-    this.filter.removeObserver('page', this, 'onDataTableParamChange');
-    this.filter.removeObserver('size', this, 'onDataTableParamChange');
-    this.filter.removeObserver('sort', this, 'onDataTableParamChange');
+    if (this.page != 0)
+      this.page = 0;
+    this.search.perform(filter);
   }
 
   @restartableTask
   *search(filter) {
     this.requests = yield this.store.query('request', {
       page: {
-        size: filter.size,
-        number: filter.page
+        size: this.size,
+        number: this.page
       },
-      sort: filter.sort,
+      sort: this.sort,
       include: 'building',
       filter: {
         customer: {
@@ -66,13 +51,24 @@ export default class RequestsTable extends FilterComponent {
   }
 
   @action
-  clickRow(row) {
-    const requestId = row.get('id');
-    this.router.transitionTo('main.case.request.edit', this.args.customer, requestId);
+  previousPage() {
+    this.selectPage(this.page - 1);
   }
 
   @action
-  openNewRequest() {
-    this.router.transitionTo('main.case.request.new', this.args.customer);
+  nextPage() {
+    this.selectPage(this.page + 1);
+  }
+
+  @action
+  selectPage(page) {
+    this.page = page;
+    this.search.perform(this.filter);
+  }
+
+  @action
+  setSort(sort) {
+    this.sort = sort;
+    this.search.perform(this.filter);
   }
 }
