@@ -1,0 +1,124 @@
+<div class="px-4 space-y-1">
+  <div class="h-8 w-auto text-3xl text-white font-display font-bold">
+    Klantenbeheer
+  </div>
+  <div class="text-xs text-red-100 font-bold">
+    v{{app-version versionOnly=true}}
+  </div>
+</div>
+
+<div class="mt-5 2xl:mt-3 flex-1 h-0 overflow-y-auto">
+  <nav class="px-2 space-y-8">
+    <div class="space-y-1">
+      <LinkTo @route="main.index"
+        @activeClass="active-main-nav"
+        class="text-red-100 group flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
+        {{svg-jar "heroicons-md-home" class="mr-4 h-6 w-6 text-red-300"}}
+        Home
+      </LinkTo>
+
+      <LinkTo @route="main.customers.index"
+        @query={{hash page=0 number=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined}}
+        @activeClass="active-main-nav"
+        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+        {{svg-jar "heroicons-md-users" class="mr-4 h-6 w-6 text-red-300"}}
+        Klanten
+      </LinkTo>
+
+      <LinkTo @route="main.requests.index"
+        @query={{hash page=0 number=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutOffer=undefined}}
+        @activeClass="active-main-nav"
+        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+        {{svg-jar "heroicons-md-annotation" class="mr-4 h-6 w-6 text-red-300"}}
+        Aanvragen
+      </LinkTo>
+
+      <LinkTo @route="main.interventions.index"
+        @query={{hash page=0 number=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasInvoice=0 isCancelled=0 isPlanned=-1}}
+        @activeClass="active-main-nav"
+        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+        {{svg-jar "heroicons-md-cog" class="mr-4 h-6 w-6 text-red-300"}}
+        Interventies
+      </LinkTo>
+
+      <LinkTo @route="main.offers.index"
+        @query={{hash page=0 number=undefined reference=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutOrder=undefined}}
+        @activeClass="active-main-nav"
+        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+        {{svg-jar "heroicons-md-calculator" class="mr-4 h-6 w-6 text-red-300"}}
+        Offertes
+      </LinkTo>
+
+      <LinkTo @route="main.orders.index"
+        @query={{hash page=0 reference=undefined offerNumber=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutInvoice=undefined onlyNotCanceled=undefined}}
+        @activeClass="active-main-nav"
+        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+        {{svg-jar "heroicons-md-shopping-cart" class="mr-4 h-6 w-6 text-red-300"}}
+        Bestellingen
+      </LinkTo>
+
+      <LinkTo @route="main.deposit-invoices.index"
+        @query={{hash page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined}}
+        @activeClass="active-main-nav"
+        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+        {{svg-jar "heroicons-md-receipt-tax" class="mr-4 h-6 w-6 text-red-300"}}
+        Voorschotfacturen
+      </LinkTo>
+
+      <LinkTo @route="main.invoices.index"
+        @query={{hash page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined}}
+        @activeClass="active-main-nav"
+        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+        {{svg-jar "heroicons-md-currency-euro" class="mr-4 h-6 w-6 text-red-300"}}
+        Facturen
+      </LinkTo>
+    </div>
+    <div class="space-y-1">
+      <LinkTo @route="main.reports.outstanding-jobs.index"
+        @activeClass="active-main-nav"
+        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+        {{svg-jar "heroicons-md-calendar" class="mr-4 h-6 w-6 text-red-300"}}
+        Uit te voeren werken
+      </LinkTo>
+      <div class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+        {{svg-jar "heroicons-md-chart-bar" class="mr-4 h-6 w-6 text-red-300"}}
+        Rapporten
+      </div>
+      <div class="space-y-1">
+        <LinkTo @route="main.accountancy.exports"
+          @query={{hash page=0}}
+          @activeClass="active-main-nav"
+          class="text-red-100 w-full flex items-center pl-12 pr-2 py-2 text-sm font-medium text-red-100 rounded-md hover:text-white hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
+          Export boekhouding
+        </LinkTo>
+        {{#if this.userInfo.hasBoardRole}}
+          <LinkTo @route="main.reports.revenue"
+            @activeClass="active-main-nav"
+            class="text-red-100 w-full flex items-center pl-12 pr-2 py-2 text-sm font-medium text-red-100 rounded-md hover:text-white hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
+            Omzet
+          </LinkTo>
+        {{/if}}
+      </div>
+    </div>
+  </nav>
+</div>
+<div class="flex flex-none border-t border-red-800 px-4 pt-4">
+  <div class="flex items-center">
+    <div class="flex-shrink-0">
+      <span class="inline-block h-10 w-10 rounded-full overflow-hidden bg-red-100">
+        {{svg-jar "placeholder-avatar" class="h-full w-full text-red-400"}}
+      </span>
+    </div>
+    <div class="ml-3">
+      <div class="text-base font-medium leading-none text-red-100">{{this.userInfo.name}}</div>
+    </div>
+  </div>
+  <div class="px-2" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+    <button type="button"
+      onClick={{@onLogout}}
+      class="block w-full px-3 py-2 rounded-md text-red-100 text-left text-base font-medium hover:text-white hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600"
+      role="menuitem">
+      Log uit
+    </button>
+  </div>
+</div>
