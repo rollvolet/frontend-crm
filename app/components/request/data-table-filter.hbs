@@ -23,7 +23,7 @@
       <Input
         @id="filter-number"
         @type="text"
-        @value={{this.filter.number}}
+        value={{this.filter.number}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "number")}}
         {{did-insert this.autofocus}} />
@@ -35,7 +35,7 @@
       <Input
         @id="filter-visitor"
         @type="text"
-        @value={{this.filter.visitor}}
+        value={{this.filter.visitor}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "visitor")}} />
     </div>
@@ -63,7 +63,7 @@
       <Input
         @id="filter-customer-name"
         @type="text"
-        @value={{this.filter.cName}}
+        value={{this.filter.cName}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "cName")}} />
     </div>
@@ -74,7 +74,7 @@
       <Input
         @id="filter-customer-street"
         @type="text"
-        @value={{this.filter.cStreet}}
+        value={{this.filter.cStreet}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "cStreet")}} />
     </div>
@@ -85,7 +85,7 @@
       <Input
         @id="filter-customer-postal-code"
         @type="text"
-        @value={{this.filter.cPostalCode}}
+        value={{this.filter.cPostalCode}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "cPostalCode")}} />
     </div>
@@ -96,7 +96,7 @@
       <Input
         @id="filter-customer-city"
         @type="text"
-        @value={{this.filter.cCity}}
+        value={{this.filter.cCity}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "cCity")}} />
     </div>
@@ -107,7 +107,7 @@
       <Input
         @id="filter-customer-telephone"
         @type="text"
-        @value={{this.filter.cTelephone}}
+        value={{this.filter.cTelephone}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "cTelephone")}} />
     </div>
@@ -125,7 +125,7 @@
       <Input
         @id="filter-building-name"
         @type="text"
-        @value={{this.filter.bName}}
+        value={{this.filter.bName}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "bName")}} />
     </div>
@@ -136,7 +136,7 @@
       <Input
         @id="filter-building-street"
         @type="text"
-        @value={{this.filter.bStreet}}
+        value={{this.filter.bStreet}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "bStreet")}} />
     </div>
@@ -147,7 +147,7 @@
       <Input
         @id="filter-building-postal-code"
         @type="text"
-        @value={{this.filter.bPostalCode}}
+        value={{this.filter.bPostalCode}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "bPostalCode")}} />
     </div>
@@ -158,7 +158,7 @@
       <Input
         @id="filter-building-city"
         @type="text"
-        @value={{this.filter.bCity}}
+        value={{this.filter.bCity}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "bCity")}} />
     </div>
