@@ -8,47 +8,32 @@ export default class CustomerInterventionsTableComponent extends FilterComponent
   @service router
   @service store
 
+  @tracked page = 0;
+  @tracked size = 10;
+  @tracked sort = '-date';
   @tracked interventions = []
 
   constructor() {
     super(...arguments);
     this.initFilter(['number', 'name', 'postalCode', 'city', 'street']);
-    this.filter.set('page', 0);
-    this.filter.set('size', 10);
-    this.filter.set('sort', '-date');
-
-    // Setup observers for 2-way binded values of ember-data-table
-    this.filter.addObserver('page', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
-    this.filter.addObserver('size', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
-    this.filter.addObserver('sort', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
     this.search.perform(this.filter);
   }
 
+  // @overwrite
   onChange(filter) {
-    if (filter.page != 0)
-      filter.set('page', 0); // search will be triggered by onDataTableParamChange()
-    else
-      this.search.perform(filter);
-  }
-
-  onDataTableParamChange() {
-    this.search.perform(this.filter);
-  }
-
-  willDestroy() {
-    this.filter.removeObserver('page', this, 'onDataTableParamChange');
-    this.filter.removeObserver('size', this, 'onDataTableParamChange');
-    this.filter.removeObserver('sort', this, 'onDataTableParamChange');
+    if (this.page != 0)
+      this.page = 0;
+    this.search.perform(filter);
   }
 
   @restartableTask
   *search(filter) {
     this.interventions = yield this.store.query('intervention', {
       page: {
-        size: filter.size,
-        number: filter.page
+        size: this.size,
+        number: this.page
       },
-      sort: filter.sort,
+      sort: this.sort,
       include: 'building',
       filter: {
         customer: {
@@ -66,14 +51,24 @@ export default class CustomerInterventionsTableComponent extends FilterComponent
   }
 
   @action
-  clickRow(row) {
-    const interventionId = row.get('id');
-    this.router.transitionTo('main.case.intervention.edit', this.args.customer, interventionId);
+  previousPage() {
+    this.selectPage(this.page - 1);
   }
 
+  @action
+  nextPage() {
+    this.selectPage(this.page + 1);
+  }
 
   @action
-  openNewIntervention() {
-    this.router.transitionTo('main.case.intervention.new', this.args.customer);
+  selectPage(page) {
+    this.page = page;
+    this.search.perform(this.filter);
+  }
+
+  @action
+  setSort(sort) {
+    this.sort = sort;
+    this.search.perform(this.filter);
   }
 }
