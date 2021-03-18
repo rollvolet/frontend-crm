@@ -28,7 +28,7 @@ export default class VisitDetailViewComponent extends Component {
 
   @keepLatestTask
   *synchronize() {
-    yield fetch(`/api/orders/${this.args.model.id}/planning-event`, {
+    yield fetch(`/api/requests/${this.args.model.id}/calendar-event`, {
       method: 'PUT'
     });
     yield this.loadCalendarEvent.perform();
