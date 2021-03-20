@@ -1,14 +1,13 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 import applyFilterParams from '../../../utils/apply-filter-params';
 
 export default class IndexController extends Controller {
-  @tracked page = 0;
-  @tracked size = 25;
-  @tracked sort = '-order-date';
-  @tracked withoutInvoice = false; // enforce boolean datatype
-  @tracked onlyNotCanceled = false; // enforce boolean datatype
+  page = 0;
+  size = 25;
+  sort = '-order-date';
+  withoutInvoice = false; // enforce boolean datatype
+  onlyNotCanceled = false; // enforce boolean datatype
 
   @action
   applyFilter(filter) {
@@ -27,6 +26,6 @@ export default class IndexController extends Controller {
 
   @action
   selectPage(page) {
-    this.page = page;
+    this.set('page', page);
   }
 }
