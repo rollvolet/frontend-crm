@@ -1,49 +1,258 @@
-<div class="invoices-table">
-  <div class="data-table-filters">
-    <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-    <PaperInput @label="Nummer" @value={{this.filter.number}} @onChange={{perform this.debounceFilter "number"}} @class="small" />
-    <PaperInput @label="Referentie" @value={{this.filter.reference}} @onChange={{perform this.debounceFilter "reference"}} @class="small" />
-    <PaperInput @label="Gebouw" @value={{this.filter.name}} @onChange={{perform this.debounceFilter "name"}} />
-    <PaperInput @label="Straat" @value={{this.filter.street}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
-    <PaperInput @label="Postcode" @value={{this.filter.postalCode}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
-    <PaperInput @label="Gemeente" @value={{this.filter.city}} @onChange={{perform this.debounceFilter "city"}} />
-    <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
-      {{paper-icon "close"}}
-      <PaperTooltip>Wis filters</PaperTooltip>
-    </PaperButton>
-  </div>
-
-  <DataTable @content={{this.invoices}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen facturen" @onClickRow={{fn this.clickRow}} @page={{this.filter.page}} @size={{this.filter.size}} @sort={{this.filter.sort}} as |t|>
-    <t.content as |c|>
-      <c.header>
-        <ThSortable @field="number" @currentSorting={{this.filter.sort}} @label="Nr" />
-        <ThSortable @field="reference" @currentSorting={{this.filter.sort}} @label="Referentie" />
-        <ThSortable @field="invoice-date" @currentSorting={{this.filter.sort}} @label="Datum" />
-        <th>Gebouw</th>
-        <th>Straat</th>
-        <th>Postcode</th>
-        <th>Gemeente</th>
-      </c.header>
-      <c.body as |row|>
-        <td>{{format-invoice-number row.number}}</td>
-        <td>{{row.reference}}</td>
-        <td><FmtDate @value={{row.invoiceDate}} /></td>
-        <td>{{row.building.printName}}</td>
-        <td>{{row.building.address1}}</td>
-        <td>{{row.building.postalCode}}</td>
-        <td>{{row.building.city}}</td>
-      </c.body>
-    </t.content>
-  </DataTable>
-
-  {{#if @customer.name}}
-    <div class="layout-row layout-align-end">
-      <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.openNewInvoice}}>
-        {{paper-icon "add"}}
-        <PaperTooltip>Maak nieuwe factuur</PaperTooltip>
-      </PaperButton>
+<div class="space-y-4">
+  <div class="mx-4 sm:mx-6 lg:mx-8 space-y-4 xl:flex xl:flex-row-reverse xl:space-x-8 xl:space-x-reverse xl:items-start xl:space-y-0">
+    {{#if @customer.name}}
+      <div class="text-right xl:mt-4">
+        <LinkTo @route="main.case.invoice.new"
+          @model={{@customer}}
+          class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+          {{svg-jar "heroicons-md-plus" class="-ml-1 mr-2 h-5 w-5"}}
+          Nieuw
+        </LinkTo>
+      </div>
+    {{/if}}
+    <div class="p-4 lg:px-6 space-y-4 lg:flex lg:items-start lg:space-x-12 lg:space-y-0 bg-gray-50 rounded">
+      <div class="flex items-center">
+        {{svg-jar "heroicons-md-search" class="flex-shrink-0 mr-2 h-4 w-4 text-gray-500"}}
+        <h4 class="text-gray-700 text-sm uppercase tracking-wide">
+          Zoeken
+        </h4>
+      </div>
+      <div class="grid sm:grid-cols-5 lg:grid-cols-7 gap-4">
+        <div class="sm:col-span-2 xl:col-span-1">
+          <label for="dt-filter-number" class="block text-sm font-medium text-gray-700">
+            Nummer
+          </label>
+          <Input
+            @id="dt-filter-number"
+            @type="text"
+            value={{this.filter.number}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "number")}} />
+        </div>
+        <div class="sm:col-span-2">
+          <label for="dt-filter-reference" class="block text-sm font-medium text-gray-700">
+            Referentie
+          </label>
+          <Input
+            @id="dt-filter-reference"
+            @type="text"
+            value={{this.filter.reference}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "reference")}} />
+        </div>
+        <div class="sm:col-span-2 lg:col-start-1">
+          <label for="dt-filter-building-name" class="block text-sm font-medium text-gray-700">
+            Gebouw
+          </label>
+          <Input
+            @id="dt-filter-building-name"
+            @type="text"
+            value={{this.filter.name}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "name")}} />
+        </div>
+        <div class="sm:col-span-3 lg:col-span-2">
+          <label for="dt-filter-building-street" class="block text-sm font-medium text-gray-700">
+            Straat
+          </label>
+          <Input
+            @id="dt-filter-building-street"
+            @type="text"
+            value={{this.filter.street}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "street")}} />
+        </div>
+        <div class="">
+          <label for="dt-filter-building-postal-code" class="block text-sm font-medium text-gray-700">
+            Postcode
+          </label>
+          <Input
+            @id="dt-filter-building-postal-code"
+            @type="text"
+            value={{this.filter.postalCode}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "postalCode")}} />
+        </div>
+        <div class="sm:col-span-2">
+          <label for="dt-filter-building-city" class="block text-sm font-medium text-gray-700">
+            Gemeente
+          </label>
+          <Input
+            @id="dt-filter-building-city"
+            @type="text"
+            value={{this.filter.city}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "city")}} />
+        </div>
+      </div>
+      <div class="flex-shrink-0">
+        <button type="button"
+          onClick={{this.resetFilters}}
+        class="inline-flex items-center text-sm text-gray-700 underline lg:no-underline hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+          {{svg-jar "heroicons-sm-filter" class="-ml-0.5 mr-2 h-4 w-4 text-gray-400"}}
+          Wis filters
+        </button>
+      </div>
     </div>
-  {{else}}
-    <WarningMessage @message="Klant heeft geen naam. Er kan geen nieuwe factuur gemaakt worden." />
-  {{/if}}
+  </div>
+  <div class="-my-2 overflow-x-auto">
+    <div class="py-2 align-middle inline-block min-w-full">
+      <div class="overflow-hidden border-b border-gray-200">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <DataTable::Th
+                @field="number"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="pl-4 pr-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Nr.
+              </DataTable::Th>
+              <DataTable::Th
+                @field="invoice-date"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Datum
+              </DataTable::Th>
+              <DataTable::Th
+                @field="reference"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Referentie
+              </DataTable::Th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Gebouw
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Straat
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                P.Code
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Gemeente
+              </th>
+              <th class="px-6 py-3 bg-gray-50"></th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {{#if this.search.isRunning}}
+              <tr class="animate-pulse">
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-16 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-18 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-28 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-36 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-32 bg-gray-300"></div>
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr class="animate-pulse">
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-16 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-14 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-36 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-48 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-24 bg-gray-300"></div>
+                </td>
+                <td>
+                </td>
+              </tr>
+            {{else}}
+              {{#each this.invoices as |row|}}
+                <tr>
+                  <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                    {{format-invoice-number row.number}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <FmtDate @value={{row.invoiceDate}} />
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{row.reference}}
+                  </td>
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                    <div class="flex">
+                      {{#if row.building}}
+                        {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                        <div class="space-y-1">
+                          {{#if row.building.printName}}
+                            <div>
+                              {{row.building.printName}}
+                            </div>
+                          {{else}}
+                            <div class="text-gray-400 italic font-normal">
+                              Naamloos
+                            </div>
+                          {{/if}}
+                        </div>
+                      {{/if}}
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{row.building.address1}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{row.building.postalCode}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{row.building.city}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <LinkTo @route="main.case.invoice.edit" @models={{array @customer row.id}}
+                      class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      Bekijk
+                    </LinkTo>
+                  </td>
+                </tr>
+            {{else}}
+                <tr>
+                  <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">
+                    Nog geen facturen
+                  </td>
+                </tr>
+              {{/each}}
+            {{/if}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <DataTable::Pagination
+      @page={{this.page}}
+      @size={{this.size}}
+      @total={{this.invoices.meta.count}}
+      @onPrevious={{this.previousPage}}
+      @onNext={{this.nextPage}}
+      @onSelectPage={{this.selectPage}} />
+  </div>
 </div>
