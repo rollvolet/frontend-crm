@@ -20,10 +20,6 @@ export default class OfferPanelsComponent extends Component {
     return this.args.model.offerlines.mapBy('vatRate').uniqBy('code').length > 1;
   }
 
-  get order() {
-    return this.case.current && this.case.current.order;
-  }
-
   @task
   *delete() {
     try {

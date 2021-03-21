@@ -14,6 +14,10 @@ export default class OfferDetailPanelComponent extends Component {
     return this.case.current && this.case.current.request;
   }
 
+  get invoice() {
+    return this.case.current && this.case.current.invoice;
+  }
+
   get visitor() {
     return this.case.visitor;
   }
@@ -29,7 +33,7 @@ export default class OfferDetailPanelComponent extends Component {
         if (changedAttributes[field]) {
           if (this.invoice) {
             debug(`Syncing ${field} of invoice with updated ${field} of offer`);
-            this.invoice[field] = this.model[field];
+            this.invoice[field] = this.args.model[field];
             yield this.invoice.save();
           }
           requiresOrderReload = true;

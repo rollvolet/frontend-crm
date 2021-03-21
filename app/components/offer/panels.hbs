@@ -8,7 +8,7 @@
   </div>
 {{else}}
   <div class="space-y-4">
-    {{#if this.order}}
+    {{#if this.case.current.order}}
       <AlertMessage::Warning
         @message="De offerte is reeds besteld. Er zijn geen wijzigingen meer mogelijk."
         class="shadow" />
