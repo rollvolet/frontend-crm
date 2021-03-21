@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 
 export default class MainInterventionsEditRoute extends Route {
   model(params) {
-    return this.store.loadRecord('intervention', params.intervention_id, {
+    return this.store.findRecord('intervention', params.intervention_id, {
       include: 'customer'
     });
   }

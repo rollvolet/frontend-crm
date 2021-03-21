@@ -1,0 +1,302 @@
+<div class="divide-y divide-y-200">
+  {{!-- Card header --}}
+  <div class="px-6 pt-6 pb-4">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center">
+        <h2 class="text-2xl font-bold font-display text-gray-900">
+          Bestelling {{@model.offerNumber}}
+        </h2>
+        {{#if this.editMode}}
+          <SaveStatusIcon
+            @model={{@model}}
+            @task={{this.save}}
+            class="ml-2" />
+        {{/if}}
+      </div>
+      <div class="flex flex-none space-x-4">
+        {{#if this.editMode}}
+          {{#if @isEnabledDelete}}
+            <button type="button"
+              onClick={{@onDelete}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-trash" class="h-6 w-6"}}
+            </button>
+          {{/if}}
+          <button type="button"
+            onClick={{this.closeEdit}}
+            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
+          </button>
+        {{else}}
+          {{#unless @isDisabledEdit}}
+            <button type="button"
+              onClick={{this.openEdit}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
+            </button>
+          {{/unless}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  {{!-- Card content --}}
+  <div class="p-6">
+    {{#if this.editMode}}
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
+          <div>
+            <InputField::Date
+              @label="Datum"
+              @value={{@model.orderDate}}
+              @onChange={{queue (fn (mut @model.orderDate)) (perform this.save)}} />
+          </div>
+          <div class="lg:col-start-1">
+            <InputField::Date
+              @label="Verwacht"
+              @value={{@model.expectedDate}}
+              @onChange={{queue (fn (mut @model.expectedDate)) (perform this.save)}} />
+          </div>
+          <div>
+            <InputField::Date
+              @label="Vereist"
+              @value={{@model.requiredDate}}
+              @onChange={{queue (fn (mut @model.requiredDate)) (perform this.save)}} />
+          </div>
+          <div>
+            <InputField::EmployeeSelect
+              @label="Bezoeker"
+              @value={{this.visitor}}
+              @isOnRoad={{true}}
+              @isTechnician={{true}}
+              @onSelectionChange={{queue this.setVisitor (perform this.save)}} />
+          </div>
+          <div>
+            <label for="reference" class="block text-sm font-medium text-gray-700">
+              Referentie klant
+            </label>
+            <Input
+              @id="reference"
+              @type="text"
+              @value={{@model.reference}}
+              class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+              {{on "focusout" (perform this.save)}} />
+          </div>
+          <div class="lg:col-span-2">
+            <div class="flex items-baseline space-x-2">
+              <div>
+                <InputField::DecimalInput
+                  @label="Werkuren"
+                  @value={{@model.scheduledHours}}
+                  @errors={{v-get @model "scheduledHours" "messages"}}
+                  @onChange={{queue (fn (mut @model.scheduledHours)) (perform this.save)}}
+                  class="block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+              </div>
+              <div class="text-sm text-gray-700 whitespace-nowrap">
+                x
+              </div>
+              <div>
+                <InputField::DecimalInput
+                  @label="Personen"
+                  @value={{@model.scheduledNbOfPersons}}
+                  @errors={{v-get @model "scheduledNbOfPersons" "messages"}}
+                  @onChange={{queue (fn (mut @model.scheduledNbOfPersons)) (perform this.save)}}
+                  class="block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+              </div>
+              <div class="text-sm text-gray-700 whitespace-nowrap">
+                = {{@model.scheduledTotal}} uur
+              </div>
+            </div>
+          </div>
+          <div class="col-span-2">
+            <InputField::EmployeeSelect
+              @label="Voorgestelde techniekers"
+              @value={{@model.technicians}}
+              @multiple={{true}}
+              @isOnRoad={{true}}
+              @isTechnician={{true}}
+              @isAdministrative={{true}}
+              @sort={{array "functionSort:desc"}}
+              @onSelectionChange={{queue this.setTechnicians (perform this.save)}} />
+          </div>
+        </div>
+        <div class="space-y-6">
+          <Planning::DetailEdit
+            @model={{@model}}
+            @saveTask={{this.planEvent}} />
+          <div role="group" aria-labelledby="label-executions" class="space-y-4">
+            <div id="label-executions" class="font-medium text-sm text-gray-700">
+              Uitvoering
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <Input
+                  @id="execution-opt-installation"
+                  @type="radio"
+                  @value="installation"
+                  name="execution-opt-group"
+                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
+                  checked={{eq @model.execution "installation"}}
+                  {{on "input" (queue this.setExecution (perform this.save))}} />
+                <label for="execution-opt-installation" class="ml-3 block text-sm font-medium text-gray-700">
+                  {{order-execution 'installation'}}
+                </label>
+              </div>
+              <div class="flex items-center">
+                <Input
+                  @id="execution-opt-delivery"
+                  @type="radio"
+                  @value="delivery"
+                  name="execution-opt-group"
+                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
+                  checked={{eq @model.execution "delivery"}}
+                  {{on "input" (queue this.setExecution (perform this.save))}} />
+                <label for="execution-opt-delivery" class="ml-3 block text-sm font-medium text-gray-700">
+                  {{order-execution 'delivery'}}
+                </label>
+              </div>
+              <div class="flex items-center">
+                <Input
+                  @id="execution-opt-pickup"
+                  @type="radio"
+                  @value="pickup"
+                  name="execution-opt-group"
+                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
+                  checked={{eq @model.execution "pickup"}}
+                  {{on "input" (queue this.setExecution (perform this.save))}} />
+                <label for="execution-opt-pickup" class="ml-3 block text-sm font-medium text-gray-700">
+                  {{order-execution 'pickup'}}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center">
+              <div class="font-medium text-sm text-gray-700">
+                Productiebon
+              </div>
+              <div class="ml-2">
+                {{#if @model.hasProductionTicket}}
+                  {{svg-jar "heroicons-md-check-circle" class="h-5 w-5 text-green-500"}}
+                {{else}}
+                  {{svg-jar "heroicons-md-x-circle" class="h-5 w-5 text-red-500"}}
+                {{/if}}
+              </div>
+            </div>
+            <ProductionTicketButtons @model={{@model}} />
+          </div>
+          <div>
+            <div class="font-medium text-sm text-gray-700">
+              Status
+            </div>
+            <div class="mt-4 space-y-4">
+              <InputField::Checkbox
+                @id="product-ready-checkbox"
+                @label="Product klaar"
+                @value={{@model.isReady}}
+                @onChange={{queue (fn (mut @model.isReady)) (perform this.save)}} />
+              <InputField::Checkbox
+                @id="is-canceled-checkbox"
+                @label="Afgesloten"
+                @value={{@model.canceled}}
+                @onChange={{queue this.setCanceledStatus (perform this.save)}} />
+            </div>
+          </div>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="comment" class="block text-sm font-medium text-gray-700">
+            Opmerking
+          </label>
+          <Textarea
+            @id="comment"
+            @value={{@model.comment}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            rows="5"
+            {{on "focusout" (perform this.save)}} />
+        </div>
+      </div>
+    {{else}}
+      <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
+        <div class="space-y-1">
+          <DetailListItem @label="Datum">
+            <dl class="space-y-1">
+              <DetailListSubitem @label="Bestelling">
+                <FmtDate @value={{@model.orderDate}} />
+              </DetailListSubitem>
+              <DetailListSubitem @label="Verwacht">
+                <FmtDate @value={{@model.expectedDate}} />
+              </DetailListSubitem>
+              <DetailListSubitem @label="Vereist">
+                <FmtDate @value={{@model.requiredDate}} />
+              </DetailListSubitem>
+            </dl>
+          </DetailListItem>
+          <DetailListItem @label="Bezoeker">
+            {{this.request.visitor}}
+          </DetailListItem>
+          <DetailListItem @label="Referentie">
+            {{@model.reference}}
+          </DetailListItem>
+          <DetailListItem @label="Werkuren" @displayRow={{true}}>
+            <FmtDecimal @value={{@model.scheduledHours}} /> uur x
+            <span class="{{if this.isNbOfPersonsWarning "warning-inline"}}">{{@model.scheduledNbOfPersons}} man</span>
+            = {{@model.scheduledTotal}} uur
+          </DetailListItem>
+          <DetailListItem @label="Techniekers">
+            {{#if this.technicianNames.length}}
+              {{join ", " this.technicianNames}}
+            {{else}}
+              -
+            {{/if}}
+          </DetailListItem>
+          {{#if @model.isMasteredByAccess}}
+            <DetailListItem @label="Bedrag">
+              <FmtCurrency @value={{@model.amount}} />
+            </DetailListItem>
+            <DetailListItem @label="BTW tarief">
+              {{@model.vatRate.name}} BTW
+            </DetailListItem>
+          {{/if}}
+        </div>
+        <div class="mb-4 sm:mb-0">
+          <div class="mb-4">
+            <Planning::DetailView @model={{@model}} />
+          </div>
+          <DetailListItem @label="Uitvoering">
+            <PaperRadioGroup @groupValue={{readonly @model.execution}} @onChange={{null}} as |group|>
+              <group.radio @value="installation">{{order-execution 'installation'}}</group.radio>
+              <group.radio @value="delivery">{{order-execution 'delivery'}}</group.radio>
+              <group.radio @value="pickup">{{order-execution 'pickup'}}</group.radio>
+            </PaperRadioGroup>
+          </DetailListItem>
+          <DetailListItem @label="Productiebon" class="layout-align-start-center">
+            <div class="layout-row layout-align-start-center">
+              <div>{{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
+              <ProductionTicketButtons @model={{@model}} />
+            </div>
+          </DetailListItem>
+          <DetailListItem @label="Product klaar">
+            {{paper-icon (if @model.isReady "check_box" "check_box_outline_blank")}}
+          </DetailListItem>
+          <DetailListItem @label="Afgesloten">
+            {{paper-icon (if @model.canceled "check_box" "check_box_outline_blank")}}
+            {{#if @model.canceled}}
+              <DetailListSubitem @label="Reden">
+                {{#if @model.cancellationReason}}
+                  <span class="html-body">{{@model.cancellationReason}}</span>
+                {{else}}
+                  -
+                {{/if}}
+              </DetailListSubitem>
+            {{/if}}
+          </DetailListItem>
+        </div>
+        <div class="sm:col-span-2">
+          <DetailListItem @label="Opmerking">
+            <span class="whitespace-pre-wrap">{{@model.comment}}</span>
+          </DetailListItem>
+        </div>
+      </dl>
+    {{/if}}
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="divide-y divide-y-200">
+  {{!-- Card header --}}
+  <div class="px-6 pt-6 pb-4">
+    <div class="sm:flex sm:justify-between sm:items-center">
+      <h2 class="text-2xl font-bold font-display text-gray-900">
+        Documenten
+      </h2>
+    </div>
+  </div>
+
+  {{!-- Card content --}}
+  <div class="px-6 pt-4 pb-6 space-y-6">
+    <ul class="divide-y divide-gray-200">
+      <li class="py-4 flex justify-between">
+        <div class="flex flex-grow-0 items-center">
+          {{svg-jar "heroicons-md-document-text" class="h-6 w-6 text-gray-400"}}
+          <span class="ml-2 text-sm font-medium text-gray-900">Orderbevestiging</span>
+        </div>
+        <div class="ml-3 flex flex-none space-x-4 sm:mt-0 sm:ml-4">
+          <button type="button"
+            onClick={{this.downloadOrderDocument}}
+            class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded-md text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+            {{svg-jar "heroicons-md-eye" class="-ml-0.5 mr-1 h-4 w-4"}}
+            Bekijken
+          </button>
+          {{#unless @model.isMasteredByAccess}}
+            <button type="button"
+              onClick={{perform this.generateOrderDocument}}
+            class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded-md text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+              {{#if this.generateOrderDocument.isRunning}}
+                {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
+              {{else}}
+                {{svg-jar "heroicons-md-play" class="-ml-0.5 mr-1 h-4 w-4"}}
+                Maken
+              {{/if}}
+            </button>
+          {{/unless}}
+        </div>
+      </li>
+      <li class="py-4 flex justify-between">
+        <div class="flex flex-grow-0 items-center">
+          {{svg-jar "heroicons-md-document-text" class="h-6 w-6 text-gray-400"}}
+          <span class="ml-2 text-sm font-medium text-gray-900">Leveringsbon</span>
+        </div>
+        <div class="ml-3 flex flex-none space-x-4 sm:mt-0 sm:ml-4">
+          <button type="button"
+            onClick={{this.downloadOrderDocument}}
+            class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded-md text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+            {{svg-jar "heroicons-md-eye" class="-ml-0.5 mr-1 h-4 w-4"}}
+            Bekijken
+          </button>
+          {{#unless @model.isMasteredByAccess}}
+            <button type="button"
+              onClick={{perform this.generateDeliveryNote}}
+            class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded-md text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+              {{#if this.generateDeliveryNote.isRunning}}
+                {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
+              {{else}}
+                {{svg-jar "heroicons-md-play" class="-ml-0.5 mr-1 h-4 w-4"}}
+                Maken
+              {{/if}}
+            </button>
+          {{/unless}}
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

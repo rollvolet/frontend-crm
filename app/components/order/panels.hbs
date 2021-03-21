@@ -1,0 +1,54 @@
+{{#if (or this.delete.isRunning @model.isDeleted)}}
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het verwijderen..." />
+  </div>
+{{else if (and (not @model.id) @model.isSaving)}}
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het aanmaken..." />
+  </div>
+{{else}}
+  <div class="space-y-4">
+    {{#if this.case.current.invoice}}
+      <AlertMessage::Warning
+        @message="De factuur is reeds opgemaakt. Er zijn geen wijzigingen meer mogelijk."
+        class="shadow" />
+    {{else if @model.isMasteredByAccess}}
+      <AlertMessage::Warning
+        @message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."
+        class="shadow" />
+    {{/if}}
+
+    {{!-- Details panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Order::DetailPanel
+        @model={{@model}}
+        @onDelete={{perform this.delete}}
+        @isDisabledEdit={{this.isDisabledEdit}}
+        @isEnabledDelete={{this.isEnabledDelete}} />
+    </div>
+
+    {{!-- Products panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      {{#if this.loadData.isRunning}}
+        TODO: loading state
+      {{else}}
+        <Order::ProductPanel
+          @model={{@model}}
+          @deposits={{@deposits}}
+          @depositInvoices={{@depositInvoices}}
+          @isDisabledEdit={{this.isDisabledEdit}} />
+      {{/if}}
+    </div>
+
+    {{!-- Documents panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Order::DocumentPanel @model={{@model}} />
+    </div>
+
+    {{!-- Interventions panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Order::InterventionPanel @order={{@model}} />
+    </div>
+
+  </div>
+{{/if}}

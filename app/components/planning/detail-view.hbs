@@ -1,0 +1,74 @@
+{{#if this.loadCalendarEvent.isRunning}}
+  <div class="p-6 bg-gray-100 rounded-lg">
+    <div class="space-y-4 animate-pulse">
+      <div class="h-8 w-1/2 bg-gray-300 rounded"></div>
+      <div class="h-8 bg-gray-300 rounded"></div>
+    </div>
+  </div>
+{{else}}
+  <div class="p-4 bg-gray-100 rounded-lg
+    {{if this.isNotAvailableInCalendar "relative border-2 border-dashed border-red-500" }}">
+    {{#if this.isNotAvailableInCalendar}}
+      <div class="absolute -bottom-3 -right-3 rounded shadow px-2 py-1 bg-red-600 text-white text-sm">
+        Niet gevonden in de agenda
+      </div>
+    {{/if}}
+    {{#if @model.planningDate}}
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <div class="flex flex-row items-center">
+            <div class="flex-none">
+              {{svg-jar "heroicons-md-calendar" class="h-5 w-5 text-gray-500"}}
+            </div>
+            <div class="ml-3 text-lg font-semibold text-gray-600">
+              Planning
+            </div>
+          </div>
+          <div>
+            {{#unless @model.isPlanningMasteredByAccess}}
+              <button type="button"
+                onClick={{this.synchronize}}
+                class="text-gray-500 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+                {{svg-jar "heroicons-md-refresh" class="h-5 w-5"}}
+                <EmberTooltip @text="Stuur wijzigingen naar agenda" @side="bottom" />
+              </button>
+            {{/unless}}
+          </div>
+        </div>
+        <dl class="-ml-12 text-sm">
+          <DetailListItem @label="Datum">
+            <FmtDate @value={{@model.planningDate}} />
+          </DetailListItem>
+          <DetailListItem @label="Agenda">
+            {{#if this.isNotAvailableInCalendar}}
+              Niet gevonden
+            {{else}}
+              {{this.calendarSubject}}
+            {{/if}}
+          </DetailListItem>
+        </dl>
+        {{#if @model.isPlanningMasteredByAccess}}
+          <div class="text-xs text-gray-400 italic text-right">
+            Beheerd door Access
+          </div>
+        {{/if}}
+      </div>
+    {{else}}
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <div class="flex flex-row items-center">
+            <div class="flex-none">
+              {{svg-jar "heroicons-md-calendar" class="h-5 w-5 text-gray-500"}}
+            </div>
+            <div class="ml-3 text-lg font-semibold text-gray-600">
+              Planning
+            </div>
+          </div>
+        </div>
+        <div class="pl-8 italic text-gray-400">
+          Nog niet gepland
+        </div>
+      </div>
+    {{/if}}
+  </div>
+{{/if}}
