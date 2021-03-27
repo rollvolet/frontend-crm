@@ -9,23 +9,31 @@
 </div>
 
 <div class="data-table-filters">
-  <div class="data-table-filters--title">{{paper-icon "search"}} Filteren</div>
+  <div class="data-table-filters--title">
+    {{paper-icon "search"}} Filteren
+  </div>
   <div class="data-table-filters--fields layout-row flex layout-align-start">
-    <InputField::EmployeeSelect
-      @label="Bezoeker"
-      @value={{this.visitor}}
-      @isTechnician={{true}}
-      @isOnRoad={{true}}
-      @onSelectionChange={{this.selectVisitor}}
-      class="md-input-wrapper large" />
+    <div class="u-vertical-center u-margin-right-normal u-text-large">
+      <div>{{@model.meta.count}}</div>
+      <div>resultaten</div>
+    </div>
 
-    <div>
-      <PaperInput
-        @label="Besteldatum na"
-        @value={{this.orderDate}}
-        @type="date"
-        @onChange={{fn (mut this.orderDate)}}
-        @class="default u-rel-top-normal" />
+    <div class="layout-column">
+      <InputField::EmployeeSelect
+        @label="Bezoeker"
+        @value={{this.visitor}}
+        @isTechnician={{true}}
+        @isOnRoad={{true}}
+        @onSelectionChange={{this.selectVisitor}}
+        class="md-input-wrapper large" />
+      <div>
+        <PaperInput
+          @label="Besteldatum na"
+          @value={{this.orderDate}}
+          @type="date"
+          @onChange={{fn (mut this.orderDate)}}
+          @class="default u-rel-top-normal" />
+      </div>
     </div>
 
     <InputField::FilterFlag @label="Productiebon"
@@ -43,6 +51,32 @@
       @value={{this.isProductReady}}
       @onChange={{fn (mut this.isProductReady)}}
     />
+
+    <div class="layout-column">
+      <div class="u-rel-top-neg-xsmall">
+        <label class="power-select--label">Sorteren</label>
+        <div class="md-input-wrapper large">
+          <PowerSelect
+            @options={{this.sortFieldOptions}}
+            @selected={{this.sortField}}
+            @searchEnabled={{false}}
+            @onChange={{this.setSortField}}
+            @renderInPlace={{true}} as |option select|>
+            {{option.label}}
+          </PowerSelect>
+        </div>
+        <div class="md-input-wrapper large">
+          <PowerSelect
+            @options={{this.sortDirectionOptions}}
+            @selected={{this.sortDirection}}
+            @searchEnabled={{false}}
+            @onChange={{this.setSortDirection}}
+            @renderInPlace={{true}} as |option select|>
+            {{option.label}}
+          </PowerSelect>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -102,17 +136,17 @@
           {{paper-icon (if row.hasProductionTicket "check_box" "check_box_outline_blank")}}
         </td>
         <td>
-          <div>
+          <div class="u-nowrap">
             <PaperTooltip>Verwacht</PaperTooltip>
             <span class="note note--info">Vw </span>
             <FmtDate @value={{row.expectedDate}} />
           </div>
-          <div>
+          <div class="u-nowrap">
             <PaperTooltip>Vereist</PaperTooltip>
             <span class="note note--info">Ve </span>
             <FmtDate @value={{row.requiredDate}} />
           </div>
-          <div>
+          <div class="u-nowrap">
             <PaperTooltip>Gepland</PaperTooltip>
             <span class="note note--info">Pl </span>
             <FmtDate @value={{row.planningDate}} />

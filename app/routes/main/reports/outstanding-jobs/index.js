@@ -10,12 +10,25 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
   queryParams = {
     page: { refreshModel: true },
     size: { refreshModel: true },
+    sort: { refreshModel: true },
     visitorName: { refreshModel: true },
     orderDate: { refreshModel: true }, // format yyyy-mm-dd
     hasProductionTicket: { refreshModel: true },
     execution: { refreshModel: true },
     isProductReady: { refreshModel: true },
   }
+
+  sortFieldOptions = [
+    { label: 'Besteldatum', value: 'order-date' },
+    { label: 'Verwachte datum', value: 'expected-date' },
+    { label: 'Vereiste datum', value: 'required-date' },
+    { label: 'Geplande datum', value: 'planning-date' }
+  ];
+
+  sortDirectionOptions = [
+    { label: 'Nieuwste eerst', value: 'desc' },
+    { label: 'Oudste eerst', value: 'asc' }
+  ];
 
   constructor() {
     super(...arguments);
@@ -39,6 +52,7 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     const searchParams = new URLSearchParams(Object.entries({
       'page[size]': params.size,
       'page[number]': params.page,
+      'sort': params.sort,
     }));
 
     if (params.visitorName)
@@ -69,7 +83,7 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     const count = response.meta.count;
     const pagination = getPaginationMetadata(response.meta.page.number, response.meta.page.size, count);
 
-    // Preload selected visitor value for ember-power-select
+    // Preload selected values value for ember-power-select
     if (params.visitorName) {
       let visitors = this.store.peekAll('employee');
       if (!visitors.length)
@@ -77,6 +91,15 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
       this.visitor = visitors.find(e => e.firstName == params.visitorName);
     } else {
       this.visitor = null;
+    }
+    if (params.sort) {
+      if (params.sort.startsWith('-')) {
+        this.sortDirection = this.sortDirectionOptions.find(o => o.value == 'desc');
+        this.sortField = this.sortFieldOptions.find(o => o.value == params.sort.slice(1));
+      } else {
+        this.sortDirection = this.sortDirectionOptions.find(o => o.value == 'asc');
+        this.sortField = this.sortFieldOptions.find(o => o.value == params.sort);
+      }
     }
 
     this.lastParams.commit();
@@ -92,7 +115,13 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
 
   setupController(controller) {
     super.setupController(...arguments);
+
+    controller.sortDirectionOptions = this.sortDirectionOptions;
+    controller.sortFieldOptions = this.sortFieldOptions;
+
     controller.visitor = this.visitor;
+    controller.sortDirection = this.sortDirection;
+    controller.sortField = this.sortField;
 
     if (controller.page != this.lastParams.committed.page) {
       controller.set('page', this.lastParams.committed.page);
