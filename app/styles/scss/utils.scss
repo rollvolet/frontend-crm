@@ -42,6 +42,18 @@ h6 .note-fade {
   color: paper-color('grey', '800');
 }
 
+.u-text-large {
+  font-size: 1.5rem;
+}
+
+.truncate {
+  max-width: 300px;
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .note-message {
   font-style: italic;
 }
@@ -55,8 +67,16 @@ h6 .note-fade {
   }
 }
 
+.u-text-center {
+  text-align: center;
+}
+
 .u-text-right {
   text-align: right;
+}
+
+.u-nowrap {
+  white-space: nowrap;
 }
 
 .u-bold {
@@ -65,6 +85,10 @@ h6 .note-fade {
 
 .u-margin-top-small {
   margin-top: 10px;
+}
+
+.u-margin-top-normal {
+  margin-top: 20px;
 }
 
 .u-margin-bottom-small {
@@ -77,6 +101,10 @@ h6 .note-fade {
 
 .u-margin-right-small {
   margin-right: 10px;
+}
+
+.u-margin-right-normal {
+  margin-right: 20px;
 }
 
 .u-margin-left-normal {
@@ -92,6 +120,11 @@ h6 .note-fade {
   top: 2px;
 }
 
+.u-rel-top-xsmall {
+  position: relative;
+  top: 4px;
+}
+
 .u-rel-top-small {
   position: relative;
   top: 9px;
@@ -100,6 +133,11 @@ h6 .note-fade {
 .u-rel-top-normal {
   position: relative;
   top: 13px;
+}
+
+.u-rel-top-neg-xsmall {
+  position: relative;
+  top: -4px;
 }
 
 .u-rel-top-neg-small {
@@ -118,4 +156,11 @@ h6 .note-fade {
 
 .u-vspacer-small {
   min-height: 10px;
+}
+
+.u-vertical-center {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
