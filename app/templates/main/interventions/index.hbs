@@ -181,7 +181,7 @@
                         {{/if}}
                       </div>
                     </td>
-                    <td class="px-4 py-4 text-xs text-gray-500 {{unless row.isExpandedDescription "truncate"}}"
+                    <td class="px-4 py-4 text-xs text-gray-500 {{unless row.isExpandedDescription "block w-96 whitespace-nowrap overflow-hidden overflow-ellipsis"}}"
                       {{on "click" (fn this.toggleDescription row)}} role="button">
                       {{row.description}}
                     </td>
