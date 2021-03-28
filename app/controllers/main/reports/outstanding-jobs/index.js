@@ -9,6 +9,7 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
 
   page = 0;
   size = 100;
+  sort = 'order-date';
   hasProductionTicket = -1;
   execution = 'na';
   isProductReady = -1;
@@ -20,7 +21,12 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
     { label: 'af te halen', value: 'pickup', id: `no-${guidFor(this)}` }
   ];
 
+  @tracked sortDirectionOptions; // initialized in route
+  @tracked sortFieldOptions; // initialized in route
+
   @tracked visitor;
+  @tracked sortField;
+  @tracked sortDirection;
 
   constructor() {
     super(...arguments);
@@ -63,4 +69,17 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
     row.expandComment = !row.expandComment;
   }
 
+  @action
+  setSortField(option) {
+    this.sortField = option;
+    const sort = this.sortDirection.value == 'desc' ? `-${this.sortField.value}` : this.sortField.value;
+    this.set('sort', sort);
+  }
+
+  @action
+  setSortDirection(option) {
+    this.sortDirection = option;
+    const sort = this.sortDirection.value == 'desc' ? `-${this.sortField.value}` : this.sortField.value;
+    this.set('sort', sort);
+  }
 }
