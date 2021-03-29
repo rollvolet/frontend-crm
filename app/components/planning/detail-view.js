@@ -29,8 +29,7 @@ export default class PlanningDetailViewComponent extends Component {
     return this.loadCalendarEvent.lastSuccessful
       && !this.args.model.isPlanningMasteredByAccess
       && this.args.model.isPlanned
-      && isEmpty(this.calendarSubject)
-      && !this.planEvent.isRunning;
+      && isEmpty(this.calendarSubject);
   }
 
   @keepLatestTask

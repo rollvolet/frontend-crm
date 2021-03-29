@@ -1,0 +1,42 @@
+{{#if (or this.delete.isRunning this.model.isDeleted)}}
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het verwijderen..." />
+  </div>
+{{else if (and (not this.model.id) this.model.isSaving)}}
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het aanmaken..." />
+  </div>
+{{else}}
+  <div class="space-y-4">
+    {{#if this.hasInvoice}}
+      <AlertMessage::Warning
+        @message="Er is reeds een factuur gemaakt. Er zijn geen wijzigingen meer mogelijk."
+        class="shadow" />
+    {{else if this.model.isCancelled}}
+      <AlertMessage::Warning
+        @message="De interventie is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
+        class="shadow" />
+    {{/if}}
+
+    {{!-- Details panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Intervention::DetailPanel
+        @model={{@model}}
+        @onDelete={{perform this.delete}}
+        @isDisabledEdit={{this.isDisabledEdit}}
+        @isEnabledDelete={{this.isEnabledDelete}} />
+    </div>
+
+    {{!-- Order panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Intervention::OrderPanel
+        @model={{@model}} />
+    </div>
+
+    {{!-- Follow-up request --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Intervention::RequestPanel
+        @model={{@model}} />
+    </div>
+  </div>
+{{/if}}

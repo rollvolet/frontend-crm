@@ -26,14 +26,14 @@ export default class IndexController extends Controller {
       if (calendarEvent)
         yield calendarEvent.destroyRecord();
       yield this.model.destroyRecord();
-
-      if (customer)
-        this.transitionToRoute('main.customers.edit', customer);
-      else
-        this.transitionToRoute('main.requests.index');
     } catch (e) {
       warn(`Something went wrong while destroying request ${this.model.id}`, { id: 'destroy-failure' });
       yield this.model.rollbackAttributes(); // undo delete-state
+    } finally {
+      if (customer)
+        this.router.transitionTo('main.customers.edit', customer);
+      else
+        this.router.transitionTo('main.requests.index');
     }
   }
 }
