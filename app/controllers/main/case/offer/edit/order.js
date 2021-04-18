@@ -116,7 +116,7 @@ export default class OrderController extends Controller {
   }
 
   @action
-  async cancel() {
+  cancel() {
     this.model.forEach(o => o.isOrdered = false);
     const customer = this.case.current.customer;
     this.transitionToRoute('main.case.offer.edit', customer, this.offer.id);

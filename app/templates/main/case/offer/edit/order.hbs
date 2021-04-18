@@ -1,65 +1,98 @@
-<div class="layout-row layout-align-space-between-center">
-  <div class="layout-row layout-align-start-center">
-    <h2 class="text-2xl font-bold font-display my-4">
-      Selecteer producten voor bestelling AD{{this.offer.requestNumber}} {{this.visitor.initials}} - {{this.offer.number}}
-    </h2>
-  </div>
-</div>
-
-{{#if (or this.updateOfferVatRate.isRunning this.createOrder.isRunning)}}
-  <div>
-    <PaperProgressLinear />
-    <p>Bestelling aanmaken...</p>
-  </div>
-{{else}}
-  {{#if this.hasMixedVatRates}}
-    <div class="u-margin-top-small">
-      <WarningMessage @message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
+<div class="bg-white shadow rounded-lg overflow-hidden">
+  <div class="divide-y divide-y-200">
+    {{!-- Card header --}}
+    <div class="px-6 pt-6 pb-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold font-display text-gray-900">
+            Bestelling maken voor AD{{this.offer.requestNumber}} {{this.visitor.initials}}
+          </h2>
+          <p class="text-sm text-gray-400">
+            Selecteer de producten om toe te voegen aan de bestelling
+          </p>
+        </div>
+      </div>
     </div>
-  {{/if}}
-  <p>Klik op 1 of meer lijnen om toe te voegen aan de bestelling</p>
-  {{#if @model.length}}
-    <div class="case--order--offerlines-selection">
-      {{#each @model as |offerline|}}
-        <div role="button" class="case--order--offerlines-selection--offerline layout-row layout-align-start-center
-          {{if offerline.isOrdered "case--order--offerlines-selection--offerline--ordered"}}"
-          {{on "click" (toggle "isOrdered" offerline)}}
-        >
-          <div class="col col--is-ordered">
-            {{#liquid-if offerline.isOrdered class="move-up"}}
-              {{paper-icon "check" size=28}}
-            {{else}}
-              {{paper-icon "close" size=28}}
-            {{/liquid-if}}
+  </div>
+
+  {{!-- Card content --}}
+  <div class="px-6 py-4 space-y-6">
+    {{#if (or this.updateOfferVatRate.isRunning this.createOrder.isRunning)}}
+      <div class="h-32">
+        <LoadingSpinner @label="Bestelling aanmaken..." />
+      </div>
+    {{else}}
+      {{#if this.hasMixedVatRates}}
+        <div class="">
+          <AlertMessage::Warning
+            @message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden."
+            class="shadow" />
+        </div>
+      {{/if}}
+      {{#if @model.length}}
+        <ul class="space-y-2">
+          {{#each @model as |offerline|}}
+            <li class="px-4 sm:py-6 sm:px-6 flex justify-between border rounded-md {{if offerline.isOrdered "text-red-600 border-red-300 bg-red-50" "text-gray-500 border-gray-200"}}"
+              {{on "click" (toggle "isOrdered" offerline)}}>
+              <div class="flex space-x-4 items-start">
+                <div>
+                  <input
+                    type="checkbox"
+                    checked={{offerline.isOrdered}}
+                    class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
+                </div>
+                <div>
+                  {{{offerline.description}}}
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="font-medium">
+                  <FmtCurrency @value={{offerline.amount}} />
+                </div>
+                <div class="text-sm">
+                  + {{offerline.vatRate.rate}}% btw
+                </div>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+        <div class="px-2 flex justify-end space-x-4 items-baseline">
+          <div class="font-medium text-gray-500">
+            Totaal
           </div>
-          <div class="col col--description">{{{offerline.description}}}</div>
-          <div class="col col--amount"><FmtCurrency @value={{offerline.amount}} /></div>
-          <div class="col col--rate">{{offerline.vatRate.rate}}%</div>
-      </div>
-      {{/each}}
-      <div class="case--order--offerlines-selection--total layout-row layout-align-start-center">
-        <div class="col col--label">Totaal bestelling</div>
-        <div class="col col--amount"><FmtCurrency @value={{this.orderedAmount}} /> + BTW</div>
-      </div>
-    </div>
-  {{else}}
-    <div class="u-margin-top-small">
-      <WarningMessage @message="Voeg producten toe aan de offerte alvorens u een bestelling kan opstellen." />
-    </div>
-  {{/if}}
-{{/if}}
-
-<div class="layout-row layout-align-end-center">
-  <PaperButton @onClick={{fn this.cancel}}>Annuleer</PaperButton>
-  {{#if this.isDisabledCreate}}
-    <PaperButton @primary={{true}} @raised={{true}} @onClick={{null}} @disabled={{true}}>
-      Ga verder
-    </PaperButton>
-  {{else}}
-    <PaperButton @primary={{true}} @raised={{true}} @onClick={{perform this.createOrder}}>
-      Ga verder
-    </PaperButton>
-  {{/if}}
+          <div class="text-lg font-medium text-red-600">
+            <FmtCurrency @value={{this.orderedAmount}} /> + BTW
+          </div>
+        </div>
+        <div class=" px-2 flex justify-end space-x-2">
+          <button type="button"
+            onClick={{this.cancel}}
+            class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+            Annuleren
+          </button>
+          {{#if this.isDisabledCreate}}
+            <button type="button"
+              disabled="disabled"
+              class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-gray-400 bg-gray-100">
+              Ga verder
+              {{svg-jar "heroicons-md-chevron-right" class="ml-2 -mr-1 h-5 w-5"}}
+            </button>
+          {{else}}
+            <button type="button"
+              onClick={{perform this.createOrder}}
+              class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              Ga verder
+              {{svg-jar "heroicons-md-chevron-right" class="ml-2 -mr-1 h-5 w-5"}}
+            </button>
+          {{/if}}
+        </div>
+      {{else}}
+        <p class="text-gray-400 italic">
+          Er zijn nog geen producten toegevoegd aan de offerte. Voeg producten toe alvorens u een bestelling kan opstellen.
+        </p>
+      {{/if}}
+    {{/if}}
+  </div>
 </div>
 
 {{#if this.showIncompatibleVatRatesDialog}}

@@ -14,7 +14,7 @@ export default class OrderRoute extends Route {
 
   model() {
     const offer = this.modelFor('main.case.offer.edit');
-    return offer.load('offerlines');
+    return offer.offerlines;
   }
 
   setupController(controller) {

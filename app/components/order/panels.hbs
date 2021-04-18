@@ -29,15 +29,13 @@
 
     {{!-- Products panel --}}
     <div class="bg-white shadow rounded-lg overflow-hidden">
-      {{#if this.loadData.isRunning}}
-        TODO: loading state
-      {{else}}
+      {{#unless this.loadData.isRunning}}
         <Order::ProductPanel
           @model={{@model}}
           @deposits={{@deposits}}
           @depositInvoices={{@depositInvoices}}
           @isDisabledEdit={{this.isDisabledEdit}} />
-      {{/if}}
+      {{/unless}}
     </div>
 
     {{!-- Documents panel --}}
