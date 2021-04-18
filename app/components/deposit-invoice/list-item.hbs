@@ -46,7 +46,14 @@
         </div>
       {{/unless}}
       {{#if this.isExpanded}}
-        <div class="mt-6">
+        <div class="mt-6"
+          {{css-transition
+              enterClass="opacity-0 -translate-y-1/4"
+              enterActiveClass="-z-10 transition ease-linear duration-300 transform"
+              enterToClass="opacity-100 translate-y-0"
+              leaveClass="opacity-100 translate-y-0"
+              leaveActiveClass="-z-10 transition ease-linear duration-300 transform"
+              leaveToClass="opacity-0 -translate-y-1/4"}}>
           {{#if this.editMode}}
             {{#if this.isLimitedUpdateOnly}}
               {{#if @model.isBooked}}

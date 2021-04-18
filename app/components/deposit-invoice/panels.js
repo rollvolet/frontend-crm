@@ -68,7 +68,7 @@ export default class DepositInvoicePanelsComponent extends Component {
       certificateClosed: false,
       reference: offer.reference,
       order: this.order,
-      baseAmount: 200,
+      baseAmount: 0,
       vatRate,
       customer,
       contact,
