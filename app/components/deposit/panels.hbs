@@ -1,14 +1,4 @@
 <div class="space-y-4">
-  {{#if this.invoice}}
-    <AlertMessage::Warning
-      @message="De factuur is reeds opgemaakt. Er zijn geen wijzigingen meer mogelijk."
-      class="shadow" />
-  {{else if this.order.isMasteredByAccess}}
-    <AlertMessage::Warning
-      @message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."
-      class="shadow" />
-  {{/if}}
-
   <div class="bg-white shadow rounded-lg overflow-hidden">
     <div class="divide-y divide-y-200">
       {{!-- Card header --}}

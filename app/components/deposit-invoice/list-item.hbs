@@ -11,23 +11,25 @@
     </div>
     <div class="flex-grow">
       <div class="space-y-1 sm:flex sm:items-center sm:justify-between sm:space-y-0">
-        <p class="font-semibold text-gray-700">
-          {{#if @model.isCreditNote}}
-            Creditnota {{format-invoice-number @model.number}}
-          {{else}}
-            Voorschotfactuur {{format-invoice-number @model.number}}
+        <div class="flex">
+          <p class="font-semibold text-gray-700">
+            {{#if @model.isCreditNote}}
+              Creditnota {{format-invoice-number @model.number}}
+            {{else}}
+              Voorschotfactuur {{format-invoice-number @model.number}}
+            {{/if}}
+          </p>
+          {{#if @model.isBooked}}
+            <p class="ml-2 items-center inline-flex text-xs text-blue-800">
+              {{svg-jar "heroicons-md-clipboard-check" class="flex-shrink-0 h-5 w-5"}}
+              <EmberTooltip @text="Geboekt" @side="bottom" />
+            </p>
           {{/if}}
-        </p>
+        </div>
         <div class="sm:ml-2 sm:flex-shrink-0 sm:flex sm:flex-none">
           <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{if @model.isPaid "bg-green-100 text-green-800" "bg-red-100 text-red-800"}}">
             {{#if @model.isPaid}}Betaald{{else}}Niet betaald{{/if}}
           </p>
-          {{#if @model.bookingDate}}
-            <p class="ml-2">
-              {{svg-jar "heroicons-sm-lock-closed" class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400"}}
-              <EmberTooltip @text="Geboekt" @side="bottom" />
-            </p>
-          {{/if}}
         </div>
       </div>
       {{#unless this.editMode}}
@@ -262,23 +264,21 @@
               </button>
             {{/unless}}
             {{#unless @isDisabledEdit}}
-              {{#unless @hasFinalInvoice}}
-                {{#unless @model.isCreditNote}}
-                  <button type="button"
-                    onClick={{perform @credit @model}}
+              {{#unless @model.isCreditNote}}
+                <button type="button"
+                  onClick={{perform @credit @model}}
                 class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-                    {{svg-jar "heroicons-md-receipt-refund" class="-ml-0.5 mr-2 h-4 w-4"}}
-                    Crediteren
-                  </button>
-                {{/unless}}
+                  {{svg-jar "heroicons-md-receipt-refund" class="-ml-0.5 mr-2 h-4 w-4"}}
+                  Crediteren
+                </button>
               {{/unless}}
-              <button type="button"
-                onClick={{this.openEdit}}
-                class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-                {{svg-jar "heroicons-md-pencil" class="-ml-0.5 mr-2 h-4 w-4"}}
-                Wijzigen
-              </button>
             {{/unless}}
+            <button type="button"
+              onClick={{this.openEdit}}
+                class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-pencil" class="-ml-0.5 mr-2 h-4 w-4"}}
+              Wijzigen
+            </button>
           </div>
         </div>
       {{/if}}
