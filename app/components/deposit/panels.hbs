@@ -1,0 +1,43 @@
+<div class="space-y-4">
+  <div class="bg-white shadow rounded-lg overflow-hidden">
+    <div class="divide-y divide-y-200">
+      {{!-- Card header --}}
+      <div class="px-6 pt-6 pb-4">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center">
+            <h2 class="text-2xl font-bold font-display text-gray-900">
+              Voorschotten
+            </h2>
+          </div>
+          <div class="flex flex-none space-x-4">
+            {{#unless this.isDisabledEdit}}
+              <button type="button"
+                onClick={{perform this.createNewDeposit}}
+                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+                {{svg-jar "heroicons-md-plus-sm" class="-ml-1 mr-2 h-5 w-5"}}
+                Nieuw
+              </button>
+            {{/unless}}
+          </div>
+        </div>
+      </div>
+
+      {{!-- Card content --}}
+      <div class="p-6">
+        {{#if this.loadData.isRunning}}
+          <div class="flex w-full h-full justify-center items-center">
+            {{svg-jar "loading-circle" class="animate-spin -ml-1 mr-3 h-5 w-5 text-red-600"}}
+          </div>
+        {{else}}
+          {{#each this.deposits as |deposit|}}
+            V {{deposit.paymentDate}}
+          {{else}}
+            <p class="italic text-gray-400 text-sm">
+              Nog geen voorschotten toegevoegd
+            </p>
+          {{/each}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>

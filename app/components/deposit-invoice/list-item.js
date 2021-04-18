@@ -1,29 +1,24 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
-import { keepLatestTask, task } from 'ember-concurrency-decorators';
+import { task } from 'ember-concurrency-decorators';
 import { warn } from '@ember/debug';
 
 export default class DepositInvoiceListItemComponent extends Component {
-  @service documentGeneration
+  @service documentGeneration;
 
-  @tracked vatRate
-  @tracked showMissingCertificateDialog = false
+  @tracked isExpanded = false;
+  @tracked editMode = false;
+  @tracked showMissingCertificateDialog = false;
 
-  constructor() {
-    super(...arguments);
-    this.loadData.perform();
-  }
-
-  @keepLatestTask
-  *loadData() {
-    const model = yield this.args.model;
-    this.vatRate = yield model.load('vatRate');
+  get fieldId() {
+    return `${guidFor(this)}`;
   }
 
   get vatPercentage() {
-    return this.vatRate && this.vatRate.rate / 100;
+    return this.args.vatRate.rate / 100;
   }
 
   get baseAmount() {
@@ -34,8 +29,16 @@ export default class DepositInvoiceListItemComponent extends Component {
     return this.baseAmount * this.vatPercentage;
   }
 
-  get hasFinalInvoice() {
-    return this.args.invoice;
+  get isLimitedUpdateOnly() {
+    return this.args.model.isBooked || this.args.hasFinalInvoice;
+  }
+
+  @task
+  *save() {
+    const { validations } = yield this.args.model.validate();
+    if (validations.isValid) {
+      yield this.args.model.save();
+    }
   }
 
   @task
@@ -56,6 +59,22 @@ export default class DepositInvoiceListItemComponent extends Component {
   @action
   downloadInvoiceDocument() {
     this.documentGeneration.downloadInvoiceDocument(this.args.model);
+  }
+
+  @action
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded;
+  }
+
+  @action
+  openEdit() {
+    this.isExpanded = true;
+    this.editMode = true;
+  }
+
+  @action
+  closeEdit() {
+    this.editMode = false;
   }
 
   @action

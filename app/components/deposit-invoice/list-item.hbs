@@ -1,93 +1,285 @@
-<div class="case--deposit-invoices--detail-panel">
-  <PaperDivider />
-  <div class="layout-row layout-align-space-between-center">
-    <div class="layout-row layout-align-start-center">
-      <h3 class="text-xl font-bold font-display my-3">Voorschotfactuur {{format-invoice-number @model.number}}</h3>
-      {{#if @model.isPaid}}
-        <div class="u-margin-left-normal badge badge--success">Betaald</div>
-      {{else}}
-        <div class="u-margin-left-normal badge badge--failure">Niet betaald</div>
-      {{/if}}
+<li class="pl-2 pr-4 py-4 sm:pl-4 sm:pr-6">
+  <div class="flex">
+    <div class="flex-none mt-0.5">
+      <button type="button"
+        onClick={{this.toggleExpand}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+        {{svg-jar
+            (if this.isExpanded "heroicons-md-chevron-down" "heroicons-md-chevron-right")
+            class="flex-shrink-0 mr-1.5 h-5 w-5"}}
+      </button>
     </div>
-    <div>
-      {{#if this.generateInvoiceDocument.isRunning}}
-        <PaperProgressCircular @diameter={{18}} />
-      {{else}}
-        <PaperButton @onClick={{fn this.downloadInvoiceDocument}} @iconButton={{true}}>
-          {{paper-icon "find in page"}}
-          <PaperTooltip>Voorschotfactuur bekijken</PaperTooltip>
-        </PaperButton>
-        <PaperButton @onClick={{perform this.generateInvoiceDocument}} @iconButton={{true}}>
-          {{paper-icon "restore page"}}
-          <PaperTooltip>Voorschotfactuur maken</PaperTooltip>
-        </PaperButton>
-        {{#if (not @isDisabledEdit)}}
-          <PaperButton @onClick={{fn @edit @model}} @iconButton={{true}}>
-            {{paper-icon "edit mode"}}
-            <PaperTooltip>Bewerken</PaperTooltip>
-          </PaperButton>
-          {{#if (not this.hasFinalInvoice)}}
-            {{#unless @model.isCreditNote}}
-              <PaperButton @onClick={{perform @credit @model}} @iconButton={{true}}>
-                {{paper-icon "remove shopping cart"}}
-                <PaperTooltip>Crediteer voorschotfactuur</PaperTooltip>
-              </PaperButton>
-            {{/unless}}
-            {{#if @isEnabledDelete}}
-              <PaperButton @onClick={{perform @remove @model}} @iconButton={{true}}>
-                {{paper-icon "delete"}}
-                <PaperTooltip>Verwijderen</PaperTooltip>
-              </PaperButton>
-            {{/if}}
+    <div class="flex-grow">
+      <div class="space-y-1 sm:flex sm:items-center sm:justify-between sm:space-y-0">
+        <p class="font-semibold text-gray-700">
+          {{#if @model.isCreditNote}}
+            Creditnota {{format-invoice-number @model.number}}
+          {{else}}
+            Voorschotfactuur {{format-invoice-number @model.number}}
           {{/if}}
-        {{/if}}
+        </p>
+        <div class="sm:ml-2 sm:flex-shrink-0 sm:flex sm:flex-none">
+          <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{if @model.isPaid "bg-green-100 text-green-800" "bg-red-100 text-red-800"}}">
+            {{#if @model.isPaid}}Betaald{{else}}Niet betaald{{/if}}
+          </p>
+          {{#if @model.bookingDate}}
+            <p class="ml-2">
+              {{svg-jar "heroicons-sm-lock-closed" class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400"}}
+              <EmberTooltip @text="Geboekt" @side="bottom" />
+            </p>
+          {{/if}}
+        </div>
+      </div>
+      {{#unless this.editMode}}
+        <div class="mt-2 sm:flex sm:justify-between">
+          <div class="sm:flex sm:flex-grow">
+            <p class="flex flex-none items-center text-sm text-gray-500">
+              {{svg-jar "heroicons-md-calendar" class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"}}
+              <FmtDate @value={{@model.invoiceDate}} />
+            </p>
+          </div>
+          <div class="mt-2 flex flex-none items-center text-sm text-gray-500 sm:mt-0">
+            <p class="flex items-center text-sm text-gray-500">
+              <FmtCurrency @value={{this.baseAmount}} /> + {{@vatRate.rate}}% btw
+            </p>
+          </div>
+        </div>
+      {{/unless}}
+      {{#if this.isExpanded}}
+        <div class="mt-6">
+          {{#if this.editMode}}
+            {{#if this.isLimitedUpdateOnly}}
+              {{#if @model.isBooked}}
+                <AlertMessage::Warning
+                  @message="De factuur is reeds geboekt. Enkel beperkte wijzigingen zijn nog mogelijk."
+                  class="py-2 my-4" />
+              {{else if @hasFinalInvoice}}
+                <AlertMessage::Warning
+                  @message="De eindfactuur is reeds opgemaakt. Enkel beperkte wijzigingen zijn nog mogelijk."
+                  class="py-2 my-4" />
+              {{/if}}
+            {{/if}}
+            <div class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 xl:grid-cols-4">
+              {{#unless this.isLimitedUpdateOnly}}
+                <div>
+                  <InputField::Date
+                    @label="Factuurdatum"
+                    @value={{@model.invoiceDate}}
+                    @onChange={{queue (fn (mut @model.invoiceDate)) (perform this.save)}}
+                    class="mt-1" />
+                </div>
+                <div class="xl:col-start-4">
+                  <InputField::Checkbox
+                    @id={{concat this.fieldId "-is-creditnote-checkbox"}}
+                    @label="Creditnota"
+                    @value={{@model.isCreditNote}}
+                    @onChange={{queue (fn (mut @model.isCreditNote)) (perform this.save)}} />
+                </div>
+                <div class="col-start-1">
+                  <InputField::Date
+                    @label="Vervaldag"
+                    @value={{@model.dueDate}}
+                    @onChange={{queue (fn (mut @model.dueDate)) (perform this.save)}}
+                    class="mt-1" />
+                </div>
+              {{/unless}}
+              <div>
+                <InputField::Date
+                  @label="Betaald"
+                  @value={{@model.paymentDate}}
+                  @onChange={{queue (fn (mut @model.paymentDate)) (perform this.save)}}
+                  class="mt-1" />
+              </div>
+              <div>
+                <label for="reference" class="block text-sm font-medium text-gray-700">
+                  Referentie klant
+                </label>
+                <Input
+                  @id={{concat this.fieldId "-reference"}}
+                  @type="text"
+                  @value={{@model.reference}}
+                  class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                  {{on "focusout" (perform this.save)}} />
+              </div>
+              {{#unless this.isLimitedUpdateOnly}}
+                <div>
+                  <InputField::DecimalInput
+                    @label="Bedrag"
+                    @value={{@model.baseAmount}}
+                    @errors={{v-get @model "baseAmount" "messages"}}
+                    @onChange={{queue (fn (mut @model.baseAmount)) (perform this.save)}}
+                    class="mt-1 block w-32 sm:text-sm pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+                </div>
+                <div>
+                  <label class="text-sm font-medium text-gray-700">
+                    BTW
+                  </label>
+                  <div class="mt-1 text-sm text-gray-900">
+                    <FmtCurrency @value={{this.baseAmountVat}} /> ({{@vatRate.rate}}%)
+                  </div>
+                </div>
+              {{/unless}}
+              <div class="sm:col-span-2 xl:col-span-4">
+                <label for="comment" class="block text-sm font-medium text-gray-700">
+                  Opmerking
+                </label>
+                <Textarea
+                  @id={{concat this.fieldId "-comment"}}
+                  @value={{@model.comment}}
+                  class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                  rows="5"
+                  {{on "focusout" (perform this.save)}} />
+              </div>
+            </div>
+          {{else}}
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 xl:grid-cols-4">
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">
+                  Vervaldag
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <FmtDate @value={{@model.dueDate}} />
+                </dd>
+              </div>
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">
+                  Geboekt
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <FmtDate @value={{@model.bookingDate}} />
+                </dd>
+              </div>
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">
+                  Betaald
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <FmtDate @value={{@model.paymentDate}} />
+                </dd>
+              </div>
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">
+                  Referentie
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{@model.reference}}
+                </dd>
+              </div>
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">
+                  Nettobedrag
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <FmtCurrency @value={{this.baseAmount}} />
+                </dd>
+              </div>
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">
+                  BTW bedrag
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <FmtCurrency @value={{this.baseAmountVat}} />
+                </dd>
+              </div>
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">
+                  Betaalreferentie
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{format-bank-reference @model.bankReference}}
+                </dd>
+              </div>
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">
+                  BTW attest
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <Certificate::InlineEdit @model={{@model}} />
+                </dd>
+              </div>
+              <div class="sm:col-span-2 xl:col-span-4">
+                <dt class="text-sm font-medium text-gray-500">
+                  Opmerking
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{#if @model.comment}}
+                    <p class="whitespace-pre-wrap">
+                      {{@model.comment}}
+                    </p>
+                  {{else}}
+                    <p class="italic text-gray-400 text-xs">
+                      Geen opmerking
+                    </p>
+                  {{/if}}
+                </dd>
+              </div>
+            </dl>
+          {{/if}}
+        </div>
+      {{/if}}
+      {{#if this.editMode}}
+        <div class="mt-6 space-x-2 flex justify-end">
+          <SaveStatusIcon @model={{@model}} @task={{this.save}} />
+          <button type="button"
+            onClick={{this.closeEdit}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            {{svg-jar "heroicons-md-logout" class="h-5 w-5"}}
+          </button>
+        </div>
+      {{else}}
+        <div class="mt-6 sm:flex sm:justify-between">
+          <div>
+            <button type="button"
+              onClick={{this.toggleExpand}}
+              class="text-xs text-gray-500 underline hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+              {{#if this.isExpanded}}Toon minder{{else}}Toon meer{{/if}}
+            </button>
+          </div>
+          <div class="mt-2 space-x-0 space-y-2 flex flex-col sm:mt-0 sm:flex-none sm:flex-row sm:space-x-2 sm:space-y-0">
+            <button type="button"
+              onClick={{this.downloadInvoiceDocument}}
+                class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-eye" class="-ml-0.5 mr-2 h-4 w-4"}}
+              Bekijken
+            </button>
+            {{#unless @model.isMasteredByAccess}}
+              <button type="button"
+                onClick={{perform this.generateInvoiceDocument}}
+              class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+                {{#if this.generateInvoiceDocument.isRunning}}
+                  {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-4 w-14"}}
+                {{else}}
+                  {{svg-jar "heroicons-md-play" class="-ml-0.5 mr-2 h-4 w-4"}}
+                  Maken
+                {{/if}}
+              </button>
+            {{/unless}}
+            {{#unless @isDisabledEdit}}
+              {{#unless @hasFinalInvoice}}
+                {{#unless @model.isCreditNote}}
+                  <button type="button"
+                    onClick={{perform @credit @model}}
+                class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+                    {{svg-jar "heroicons-md-receipt-refund" class="-ml-0.5 mr-2 h-4 w-4"}}
+                    Crediteren
+                  </button>
+                {{/unless}}
+              {{/unless}}
+              <button type="button"
+                onClick={{this.openEdit}}
+                class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+                {{svg-jar "heroicons-md-pencil" class="-ml-0.5 mr-2 h-4 w-4"}}
+                Wijzigen
+              </button>
+            {{/unless}}
+          </div>
+        </div>
       {{/if}}
     </div>
   </div>
+</li>
 
-  <div class="layout-row layout-xs-column layout-align-space-between">
-    <div class="case--left-panel case--deposit-invoice--entry flex-100 layout-column">
-      <DetailListItem @label="Factuurdatum">
-        <FmtDate @value={{@model.invoiceDate}} />
-      </DetailListItem>
-      <DetailListItem @label="Vervaldag">
-        <FmtDate @value={{@model.dueDate}} />
-      </DetailListItem>
-      <DetailListItem @label="Geboekt">
-        <FmtDate @value={{@model.bookingDate}} />
-      </DetailListItem>
-      <DetailListItem @label="Betaald">
-        <FmtDate @value={{@model.paymentDate}} />
-      </DetailListItem>
-      <DetailListItem @label="Referentie">
-        {{@model.reference}}
-      </DetailListItem>
-      <DetailListItem @label="Opmerking">
-        <span class="html-body">{{@model.comment}}</span>
-      </DetailListItem>
-    </div>
-    <div class="case--right-panel flex-noshrink layout-column">
-      <DetailListItem @label="Creditnota">
-        {{paper-icon (if @model.isCreditNote "check_box" "check_box_outline_blank")}}
-      </DetailListItem>
-      <DetailListItem @label="Nettobedrag">
-        <FmtCurrency @value={{this.baseAmount}} />
-      </DetailListItem>
-      <DetailListItem @label="BTW">
-        <FmtCurrency @value={{await this.baseAmountVat}} />
-      </DetailListItem>
-      <DetailListItem @label="Betaalref.">
-        {{format-bank-reference @model.bankReference}}
-      </DetailListItem>
-      {{#if @model.certificateRequired}}
-        <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
-          <Certificate::InlineEdit @model={{@model}} />
-        </DetailListItem>
-      {{/if}}
-    </div>
-  </div>
-</div>
-
+{{!-- TODO replace with TailwindCSS --}}
 <Certificate::Dialog
   @show={{this.showMissingCertificateDialog}}
   @model={{@model}}

@@ -1,0 +1,73 @@
+<div class="space-y-4">
+  {{#if this.invoice}}
+    <AlertMessage::Warning
+      @message="De factuur is reeds opgemaakt. Er zijn geen wijzigingen meer mogelijk."
+      class="shadow" />
+  {{else if this.order.isMasteredByAccess}}
+    <AlertMessage::Warning
+      @message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."
+      class="shadow" />
+  {{/if}}
+
+  <div class="bg-white shadow rounded-lg overflow-hidden">
+    <div class="divide-y divide-y-200">
+      {{!-- Card header --}}
+      <div class="px-6 pt-6 pb-4">
+        <div class="space-y-2 sm:flex sm:justify-between sm:items-center sm:space-y-0">
+          <h2 class="text-2xl font-bold font-display text-gray-900">
+            Voorschotfacturen
+          </h2>
+          <div class="sm:flex sm:flex-none">
+            {{#unless this.isDisabledEdit}}
+              <button type="button"
+                onClick={{perform this.createNewDepositInvoice}}
+                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+                {{svg-jar "heroicons-md-plus-sm" class="-ml-1 mr-2 h-5 w-5"}}
+                Nieuw
+              </button>
+            {{/unless}}
+          </div>
+        </div>
+      </div>
+
+      {{!-- Card content --}}
+      <div class="p-6">
+        {{#if @model.length}}
+          <dl class="rounded-lg bg-white grid grid-cols-2 divide-x">
+            <div class="flex flex-col p-4 text-center">
+              <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+                Netto
+              </dt>
+              <dd class="order-1 text-lg font-medium text-red-700">
+                <FmtCurrency @value={{this.totalAmount}} />
+              </dd>
+            </div>
+            <div class="flex flex-col p-4 text-center">
+              <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+                {{this.vatRate.rate}}% BTW
+              </dt>
+              <dd class="order-1 text-lg font-medium text-red-700">
+                <FmtCurrency @value={{this.totalVat}} />
+              </dd>
+            </div>
+          </dl>
+          <ul class="divide-y divide-gray-200">
+            {{#each @model as |depositInvoice|}}
+              <DepositInvoice::ListItem
+                @model={{depositInvoice}}
+                @vatRate={{this.vatRate}}
+                @hasFinalInvoice={{this.invoice}}
+                @credit={{this.createNewCreditNoteForDepositInvoice}}
+                @isDisabledEdit={{this.isDisabledEdit}}
+                @isEnabledDelete={{this.isEnabledDelete}} />
+            {{/each}}
+          </ul>
+        {{else}}
+          <p class="italic text-gray-400 text-sm">
+            Nog geen voorschotfacturen toegevoegd
+          </p>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>
