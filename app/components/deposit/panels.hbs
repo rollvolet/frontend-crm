@@ -1,4 +1,14 @@
 <div class="space-y-4">
+  {{#if this.invoice}}
+    <AlertMessage::Warning
+      @message="De factuur is reeds opgemaakt. Er zijn geen wijzigingen meer mogelijk."
+      class="shadow" />
+  {{else if this.order.isMasteredByAccess}}
+    <AlertMessage::Warning
+      @message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."
+      class="shadow" />
+  {{/if}}
+
   <div class="bg-white shadow rounded-lg overflow-hidden">
     <div class="divide-y divide-y-200">
       {{!-- Card header --}}
@@ -24,18 +34,30 @@
 
       {{!-- Card content --}}
       <div class="p-6">
-        {{#if this.loadData.isRunning}}
-          <div class="flex w-full h-full justify-center items-center">
-            {{svg-jar "loading-circle" class="animate-spin -ml-1 mr-3 h-5 w-5 text-red-600"}}
-          </div>
+        {{#if @model.length}}
+          <dl class="rounded-lg bg-white grid grid-cols-1 divide-x">
+            <div class="flex flex-row justify-center items-center p-4 space-x-4 text-center">
+              <dt class="text-sm leading-6 font-medium text-gray-500 truncate">
+                Totaal
+              </dt>
+              <dd class="text-lg font-medium text-red-700">
+                <FmtCurrency @value={{this.totalAmount}} />
+              </dd>
+            </div>
+          </dl>
+          <ul class="divide-y divide-gray-200">
+            {{#each @model as |deposit|}}
+              <Deposit::ListItem
+                @model={{deposit}}
+                @hasFinalInvoice={{this.invoice}}
+                @onDelete={{perform this.deleteDeposit}}
+                @isDisabledEdit={{this.isDisabledEdit}} />
+            {{/each}}
+          </ul>
         {{else}}
-          {{#each this.deposits as |deposit|}}
-            V {{deposit.paymentDate}}
-          {{else}}
-            <p class="italic text-gray-400 text-sm">
-              Nog geen voorschotten toegevoegd
-            </p>
-          {{/each}}
+          <p class="italic text-gray-400 text-sm">
+            Nog geen voorschotten toegevoegd
+          </p>
         {{/if}}
       </div>
     </div>

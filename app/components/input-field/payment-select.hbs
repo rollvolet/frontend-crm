@@ -1,5 +1,9 @@
+{{#if @label}}
+  <label for="payment-select" class="block text-sm font-medium text-gray-700">
+    {{@label}}
+  </label>
+{{/if}}
 <div ...attributes>
-  <label class="power-select--label">{{this.label}}</label>
   <PowerSelect
     @placeholder={{this.placeholder}}
     @searchPlaceholder="Typ om te zoeken"
@@ -7,12 +11,11 @@
     @selected={{@value}}
     @searchEnabled={{true}}
     @searchField="name"
-    @onChange={{fn @onSelectionChange}}
+    @onChange={{@onSelectionChange}}
     @noMatchesMessage="Geen resultaten"
     @allowClear={{true}} as |option select|
   >
     {{highlight-substr option.name select.lastSearchedText}}
   </PowerSelect>
-
   <MdErrorMessages @errors={{@errors}} />
 </div>

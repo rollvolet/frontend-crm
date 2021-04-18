@@ -1,9 +1,10 @@
 <div class="space-y-4">
   <DepositInvoice::Panels
-    @model={{@model}}
+    @model={{@model.depositInvoices}}
     @didCreateDepositInvoice={{this.updateList}} />
   <Deposit::Panels
-    @model={{this.order}} />
+    @model={{@model.deposits}}
+    @didCreateDeposit={{this.updateList}} />
 </div>
 
 <LiquidOutlet />

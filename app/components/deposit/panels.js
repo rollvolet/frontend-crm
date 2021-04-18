@@ -1,24 +1,11 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { keepLatestTask, task } from 'ember-concurrency-decorators';
-import { tracked } from '@glimmer/tracking';
+import { task } from 'ember-concurrency-decorators';
+import sum from '../../utils/math/sum';
 
 export default class DepositPanelsComponent extends Component {
   @service case;
   @service store;
-
-  @tracked deposits = [];
-
-  constructor() {
-    super(...arguments);
-    this.loadData.perform();
-  }
-
-  @keepLatestTask
-  *loadData() {
-    const deposits = yield this.args.model.deposits;
-    this.deposits = deposits.toArray();
-  }
 
   get customer() {
     return this.case.current && this.case.current.customer;
@@ -36,23 +23,27 @@ export default class DepositPanelsComponent extends Component {
     return this.order.isMasteredByAccess || this.invoice;
   }
 
+  get totalAmount() {
+    return sum(this.args.model.mapBy('arithmeticAmount'));
+  }
+
   @task
   *createNewDeposit() {
     const deposit = this.store.createRecord('deposit', {
       customer: this.customer,
       order: this.order,
-      paymentDate: new Date()
+      paymentDate: new Date(),
+      amount: 0
     });
     const { validations } = yield deposit.validate();
     if (validations.isValid)
       yield deposit.save();
 
-    this.deposits.pushObject(deposit);
+    this.args.didCreateDeposit();
   }
 
   @task
-  *removeDeposit(deposit) {
-    this.deposits.removeObject(deposit);
+  *deleteDeposit(deposit) {
     yield deposit.destroyRecord();
   }
 }
