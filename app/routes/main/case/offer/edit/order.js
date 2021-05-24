@@ -22,4 +22,9 @@ export default class OrderRoute extends Route {
     const offer = this.modelFor('main.case.offer.edit');
     controller.set('offer', offer);
   }
+
+  resetController(controller) {
+    const offerlines = controller.model;
+    offerlines.forEach(line => line.isOrdered = false);
+  }
 }
