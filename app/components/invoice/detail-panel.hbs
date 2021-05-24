@@ -1,0 +1,217 @@
+<div class="divide-y divide-y-200">
+  {{!-- Card header --}}
+  <div class="px-6 pt-6 pb-4">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center">
+        <h2 class="text-2xl font-bold font-display text-gray-900">
+          Factuur {{format-invoice-number @model.number}}
+        </h2>
+        {{#if this.editMode}}
+          <SaveStatusIcon
+            @model={{@model}}
+            @task={{this.save}}
+            class="ml-2" />
+        {{else}}
+          {{#if @model.isPaid}}
+            <span class="ml-4 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+              Betaald
+            </span>
+          {{else}}
+            <span class="ml-4 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
+              Niet betaald
+            </span>
+          {{/if}}
+        {{/if}}
+      </div>
+      <div class="flex flex-none space-x-4">
+        {{#if this.editMode}}
+          {{#if @isEnabledDelete}}
+            <button type="button"
+              onClick={{@onDelete}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-trash" class="h-6 w-6"}}
+            </button>
+          {{/if}}
+          <button type="button"
+            onClick={{this.closeEdit}}
+            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
+          </button>
+        {{else}}
+          {{#unless @isDisabledEdit}}
+            <button type="button"
+              onClick={{this.openEdit}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
+            </button>
+          {{/unless}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  {{!-- Card content --}}
+  <div class="p-6">
+    {{#if this.editMode}}
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {{#if @model.isBooked}}
+          <div class="md:col-span-2">
+            <label for="reference" class="block text-sm font-medium text-gray-700">
+              Referentie klant
+            </label>
+            <Input
+              @id="reference"
+              @type="text"
+              @value={{@model.reference}}
+              class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+              {{on "focusout" (perform this.save)}} />
+          </div>
+          <div>
+            <InputField::Date
+              @label="Betaald"
+              @value={{@model.paymentDate}}
+              @onChange={{queue (fn (mut @model.paymentDate)) (perform this.save)}}
+              class="mt-1" />
+          </div>
+          <div>
+            <label for="booking-date" class="block text-sm font-medium text-gray-700">
+              Geboekt
+            </label>
+            <div class="mt-2 text-gray-900">
+              <FmtDate @value={{@model.bookingDate}} />
+            </div>
+          </div>
+        {{else}}
+          <div>
+            <InputField::Checkbox
+              @id="is-creditnote-checkbox"
+              @label="Creditnota"
+              @value={{@model.isCreditNote}}
+              @onChange={{queue (fn (mut @model.isCreditNote)) (perform this.save)}} />
+          </div>
+          {{#if (or @model.isIsolated @model.intervention)}}
+            <div>
+              <InputField::VatRateSelect
+                @value={{@model.vatRate}}
+                @label="BTW tarief"
+                @onSelectionChange={{queue (fn this.setVatRate) (perform this.save)}}
+                @allowClear={{false}}
+                class="mt-1" />
+            </div>
+          {{/if}}
+          <div class="md:col-span-2">
+            <label for="reference" class="block text-sm font-medium text-gray-700">
+              Referentie klant
+            </label>
+            <Input
+              @id="reference"
+              @type="text"
+              @value={{@model.reference}}
+              class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+              {{on "focusout" (perform this.save)}} />
+          </div>
+          <div class="col-start-1">
+            <InputField::Date
+              @label="Factuurdatum"
+              @value={{@model.invoiceDate}}
+              @onChange={{queue (fn (mut @model.invoiceDate)) (perform this.save)}}
+              class="mt-1" />
+          </div>
+          <div>
+            <InputField::Date
+              @label="Vervaldag"
+              @value={{@model.dueDate}}
+              @onChange={{queue (fn (mut @model.dueDate)) (perform this.save)}}
+              class="mt-1" />
+          </div>
+          <div>
+            <InputField::Date
+              @label="Betaald"
+              @value={{@model.paymentDate}}
+              @onChange={{queue (fn (mut @model.paymentDate)) (perform this.save)}}
+              class="mt-1" />
+          </div>
+          <div>
+            <label for="booking-date" class="block text-sm font-medium text-gray-700">
+              Geboekt
+            </label>
+            <div class="mt-2 text-gray-900">
+              <FmtDate @value={{@model.bookingDate}} />
+            </div>
+          </div>
+        {{/if}}
+        <div class="sm:col-span-2 lg:col-span-4">
+          <label for="comment" class="block text-sm font-medium text-gray-700">
+            Opmerking (niet zichtbaar in document)
+          </label>
+          <Textarea
+            @id="comment"
+            @value={{@model.comment}}
+            class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            rows="5"
+            {{on "focusout" (perform this.save)}} />
+        </div>
+      </div>
+    {{else}}
+      <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
+        <div class="space-y-1">
+          <DetailListItem @label="Datum">
+            <DetailListSubitem @label="Factuurdatum">
+              <FmtDate @value={{@model.invoiceDate}} />
+            </DetailListSubitem>
+            <DetailListSubitem @label="Vervaldag">
+              <FmtDate @value={{@model.dueDate}} />
+            </DetailListSubitem>
+            <DetailListSubitem @label="Geboekt">
+              <FmtDate @value={{@model.bookingDate}} />
+            </DetailListSubitem>
+            <DetailListSubitem @label="Betaald">
+              <FmtDate @value={{@model.paymentDate}} />
+            </DetailListSubitem>
+          </DetailListItem>
+          <DetailListItem @label="Referentie">
+            {{@model.reference}}
+          </DetailListItem>
+        </div>
+        <div>
+          <DetailListItem @label="Creditnota">
+            {{paper-icon (if @model.isCreditNote "check_box" "check_box_outline_blank")}}
+          </DetailListItem>
+          <DetailListItem @label="Betaalref.">
+            {{format-bank-reference @model.bankReference}}
+          </DetailListItem>
+          {{#if @model.certificateRequired}}
+            <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
+              <Certificate::InlineEdit @model={{@model}} />
+            </DetailListItem>
+          {{/if}}
+          {{#unless @model.isIsolated}}
+            <DetailListItem @label="Productiebon">
+              {{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}
+              {{#if @model.hasProductionTicket}}
+                <span {{on "click" this.downloadProductionTicket}} role="button">
+                  {{paper-icon "find in page"}}
+                  <PaperTooltip>Productiebon bekijken</PaperTooltip>
+                </span>
+              {{/if}}
+            </DetailListItem>
+          {{/unless}}
+          <DetailListItem @label="Techniekers" {{on "click" this.openWorkingHoursDialog}}>
+            {{#if this.technicianNames.length}}
+              {{join ", " this.technicianNames}} {{paper-icon "info" size=18}}
+            {{else}}
+              - {{paper-icon "add circle" size=18}}
+            {{/if}}
+          </DetailListItem>
+        </div>
+        <div class="sm:col-span-2">
+          <DetailListItem @label="Opmerking">
+            <span class="whitespace-pre-wrap">{{@model.comment}}</span>
+          </DetailListItem>
+        </div>
+      </dl>
+    {{/if}}
+  </div>
+</div>
+
+<WorkingHoursDialog @show={{this.showWorkingHoursDialog}} @model={{@model}} />

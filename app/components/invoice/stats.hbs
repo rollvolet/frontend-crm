@@ -1,0 +1,40 @@
+<dl class="rounded-lg bg-white grid grid-cols-2 divide-x sm:grid-cols-4">
+  <div class="flex flex-col p-4 text-center {{unless this.order "sm:col-start-2"}}">
+    <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+      Netto
+    </dt>
+    <dd class="order-1 text-lg font-medium text-red-700">
+      <FmtCurrency @value={{this.totalAmount}} />
+    </dd>
+  </div>
+  <div class="flex flex-col p-4 text-center">
+    <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+      {{this.vatRate.rate}}% BTW
+    </dt>
+    <dd class="order-1 text-lg font-medium text-red-700">
+      <FmtCurrency @value={{this.totalVat}} />
+    </dd>
+  </div>
+  {{#if this.order}}
+    <div class="flex flex-col p-4 text-center">
+      <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+        <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model}}>
+          Voorschotfacturen
+        </LinkTo>
+      </dt>
+      <dd class="order-1 text-lg font-medium text-red-700">
+        <FmtCurrency @value={{this.depositInvoicesAmount}} />
+      </dd>
+    </div>
+    <div class="flex flex-col p-4 text-center">
+      <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+        <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model}}>
+          Voorschotten
+        </LinkTo>
+      </dt>
+      <dd class="order-1 text-lg font-medium text-red-700">
+        <FmtCurrency @value={{this.depositsAmount}} />
+      </dd>
+    </div>
+  {{/if}}
+</dl>

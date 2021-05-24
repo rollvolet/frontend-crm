@@ -1,0 +1,43 @@
+{{#if (or this.delete.isRunning @model.isDeleted)}}
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het verwijderen..." />
+  </div>
+{{else if (and (not @model.id) @model.isSaving)}}
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het aanmaken..." />
+  </div>
+{{else}}
+  <div class="space-y-4">
+    {{#if @model.isBooked}}
+      <AlertMessage::Warning
+        @message="De factuur is reeds geboekt. Enkel beperkte wijzigingen zijn nog mogelijk."
+        class="shadow" />
+    {{else if @model.isMasteredByAccess}}
+      <AlertMessage::Warning
+        @message="De factuur is aangemaakt in Access en kan hier niet gewijzigd worden."
+        class="shadow" />
+    {{/if}}
+
+    {{!-- Details panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Invoice::DetailPanel
+        @model={{@model}}
+        @onDelete={{perform this.delete}}
+        @onChangeVatRate={{perform this.updateInvoicelinesVatRate}}
+        @isDisabledEdit={{this.isDisabledEdit}}
+        @isEnabledDelete={{this.isEnabledDelete}} />
+    </div>
+
+    {{!-- Product panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Invoice::ProductPanel
+        @model={{@model}}
+        @isDisabledEdit={{this.isDisabledEdit}} />
+    </div>
+
+    {{!-- Calculation panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Invoice::CalculationPanel @model={{@model}} />
+    </div>
+  </div>
+{{/if}}
