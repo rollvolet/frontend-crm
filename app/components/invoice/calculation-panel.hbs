@@ -57,8 +57,9 @@
 
                   <tr>
                     <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      {{on "click" this.openSupplementsDialog}} role="button">
-                      Extra's {{paper-icon "info" size=18}}
+                      {{on "click" this.openSupplementsModal}} role="button">
+                      Extra's
+                      {{svg-jar "heroicons-sm-information-circle" class="h-4 w-4 text-gray-400 inline"}}
                     </td>
                     <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                       <FmtCurrency @value={{this.supplementsAmount}} />
@@ -174,4 +175,9 @@
   </div>
 </div>
 
-<InvoiceSupplementsDialog @show={{this.showSupplementsDialog}} @model={{@model}} />
+{{#if this.isOpenSupplementsModal}}
+  <Invoice::SupplementsModal
+    @model={{@model}}
+    @onClose={{this.closeSupplementsModal}}
+  />
+{{/if}}

@@ -10,7 +10,7 @@ export default class InvoiceCalculationPanelComponent extends Component {
   @service case
   @service router
 
-  @tracked showSupplementsDialog = false
+  @tracked isOpenSupplementsModal = false
   @tracked vatRate
   @tracked invoicelines = [];
   @tracked supplements = [];
@@ -108,7 +108,12 @@ export default class InvoiceCalculationPanelComponent extends Component {
   }
 
   @action
-  openSupplementsDialog() {
-    this.showSupplementsDialog = true;
+  openSupplementsModal() {
+    this.isOpenSupplementsModal = true;
+  }
+
+  @action
+  closeSupplementsModal() {
+    this.isOpenSupplementsModal = false;
   }
 }
