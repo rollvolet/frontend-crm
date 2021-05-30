@@ -209,11 +209,12 @@
               {{/if}}
             </DetailListItem>
           {{/unless}}
-          <DetailListItem @label="Techniekers" {{on "click" this.openWorkingHoursDialog}}>
+          <DetailListItem @label="Techniekers" {{on "click" this.openWorkingHoursModal}} class="cursor-pointer">
             {{#if this.technicianNames.length}}
-              {{join ", " this.technicianNames}} {{paper-icon "info" size=18}}
+              {{join ", " this.technicianNames}}
+              {{svg-jar "heroicons-sm-information-circle" class="h-4 w-4 text-gray-400 inline"}}
             {{else}}
-              - {{paper-icon "add circle" size=18}}
+              - {{svg-jar "heroicons-sm-plus-circle" class="h-4 w-4 text-gray-400 inline"}}
             {{/if}}
           </DetailListItem>
         </div>
@@ -227,4 +228,9 @@
   </div>
 </div>
 
-<WorkingHoursDialog @show={{this.showWorkingHoursDialog}} @model={{@model}} />
+{{#if this.isOpenWorkingHoursModal}}
+  <Invoice::WorkingHoursModal
+    @model={{@model}}
+    @onClose={{this.closeWorkingHoursModal}}
+  />
+{{/if}}

@@ -10,7 +10,7 @@ export default class InvoiceDetailPanelComponent extends Component {
   @service documentGeneration;
 
   @tracked editMode = false;
-  @tracked showWorkingHoursDialog = false;
+  @tracked isOpenWorkingHoursModal = false;
   @tracked workingHours = [];
 
   constructor() {
@@ -85,7 +85,12 @@ export default class InvoiceDetailPanelComponent extends Component {
   }
 
   @action
-  openWorkingHoursDialog() {
-    this.showWorkingHoursDialog = true;
+  openWorkingHoursModal() {
+    this.isOpenWorkingHoursModal = true;
+  }
+
+  @action
+  closeWorkingHoursModal() {
+    this.isOpenWorkingHoursModal = false;
   }
 }
