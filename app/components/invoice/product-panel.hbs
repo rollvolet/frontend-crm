@@ -30,14 +30,14 @@
 
   {{!-- Card content --}}
   <div class="p-6 space-y-6">
+    <div class="mx-auto">
+      <Invoice::Stats @model={{@model}} />
+    </div>
     {{#if @model.isMasteredByAccess}}
-      <div class="text-gray-400">
+      <p class="italic text-gray-400 text-sm">
         De factuur is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.
-      </div>
+      </p>
     {{else}}
-      <div class="mx-auto">
-        <Invoice::Stats @model={{@model}} />
-      </div>
       <div>
         <ul>
           {{#each this.sortedInvoicelines as |line|}}

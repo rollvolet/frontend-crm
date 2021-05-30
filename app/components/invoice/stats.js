@@ -27,7 +27,10 @@ export default class InvoiceStatsComponent extends Component {
   }
 
   get totalAmount() {
-    return sum(this.invoicelines.map(line => line.arithmeticAmount));
+    if (this.args.model.isMasteredByAccess)
+      return this.args.model.baseAmount;
+    else
+      return sum(this.invoicelines.map(line => line.arithmeticAmount));
   }
 
   get vatPercentage() {

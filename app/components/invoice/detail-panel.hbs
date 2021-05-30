@@ -12,13 +12,10 @@
             @task={{this.save}}
             class="ml-2" />
         {{else}}
-          {{#if @model.isPaid}}
-            <span class="ml-4 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-              Betaald
-            </span>
-          {{else}}
-            <span class="ml-4 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
-              Niet betaald
+          {{#if @model.isBooked}}
+            <span class="ml-2 items-center inline-flex text-xs text-blue-800">
+              {{svg-jar "heroicons-md-clipboard-check" class="flex-shrink-0 h-5 w-5"}}
+              <EmberTooltip @text="Geboekt" @side="bottom" />
             </span>
           {{/if}}
         {{/if}}
@@ -38,6 +35,15 @@
             {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
           </button>
         {{else}}
+          {{#if @model.isPaid}}
+            <span class="ml-4 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+              Betaald
+            </span>
+          {{else}}
+            <span class="ml-4 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
+              Niet betaald
+            </span>
+          {{/if}}
           {{#unless @isDisabledEdit}}
             <button type="button"
               onClick={{this.openEdit}}
@@ -173,10 +179,17 @@
             {{@model.reference}}
           </DetailListItem>
         </div>
-        <div>
+        <div class="space-y-1">
           <DetailListItem @label="Creditnota">
             {{paper-icon (if @model.isCreditNote "check_box" "check_box_outline_blank")}}
           </DetailListItem>
+          {{#if @model.isIsolated}}
+            <DetailListItem @label="BTW tarief">
+              {{#if @model.vatRate}}
+                {{@model.vatRate.name}} BTW
+              {{/if}}
+            </DetailListItem>
+          {{/if}}
           <DetailListItem @label="Betaalref.">
             {{format-bank-reference @model.bankReference}}
           </DetailListItem>
