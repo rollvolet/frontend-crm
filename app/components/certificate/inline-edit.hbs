@@ -2,11 +2,12 @@
   <Certificate::Buttons
     @model={{@model}}
     @iconButton={{true}}
-    @onRecycle={{fn this.openRecycle}} />
+    @onRecycle={{this.openRecycleModal}} />
 </div>
 
-<Certificate::Dialog
-  @show={{this.showRecycleDialog}}
-  @model={{@model}}
-  @onClose={{fn this.closeDialog}}
-  @showRecycle={{true}} />
+{{#if this.isOpenRecycleModal}}
+  <Certificate::SearchModal
+    @model={{@model}}
+    @onRecycle={{perform this.recycleCertificate}}
+    @onClose={{this.closeRecycleModal}} />
+{{/if}}

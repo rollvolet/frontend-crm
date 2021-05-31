@@ -13,7 +13,7 @@ export default class CertificateRecycleComponent extends FilterComponent {
 
   constructor() {
     super(...arguments);
-    this.initFilter(['number', 'reference', 'cName', 'cPostalCode', 'cCity', 'cStreet', 'cTelephone', 'bName', 'bPostalCode', 'bCity', 'bStreet']);
+    this.initFilter(['number', 'offerNumber', 'requestNumber', 'reference', 'cName', 'cPostalCode', 'cCity', 'cStreet', 'cTelephone', 'bName', 'bPostalCode', 'bCity', 'bStreet']);
     this.filter.set('page', 0);
     this.filter.set('size', 10);
     this.filter.set('sort', '-number');
