@@ -1,0 +1,28 @@
+{{#if (or this.delete.isRunning @model.isDeleted)}}
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het verwijderen..." />
+  </div>
+{{else if (and (not @model.id) @model.isSaving)}}
+  <div class="h-32">
+    <LoadingSpinner @label="Aan het aanmaken..." />
+  </div>
+{{else}}
+  <div class="space-y-4">
+    {{!-- Detail panel --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Customer::DetailPanel
+        @model={{@model}}
+        @scope="customer"
+        @isEnabledDelete={{this.isEnabledDelete}}
+        @onDelete={{perform this.delete}}
+      />
+    </div>
+
+    {{!-- Case panel (requests, offers, ...) --}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <Customer::CasePanel
+        @model={{@model}}
+        @selectedTab={{@selectedTab}} />
+    </div>
+  </div>
+{{/if}}

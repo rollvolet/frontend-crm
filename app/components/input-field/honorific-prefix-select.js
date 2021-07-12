@@ -14,16 +14,12 @@ export default class HonorificPrefixSelect extends Component {
     this.honorificPrefixes = this.store.peekAll('honorific-prefix');
   }
 
-  get label() {
-    return this.args.label || 'Aanspreektitel';
-  }
-
   get required() {
     return this.args.required || false;
   }
 
   get placeholder() {
-    return this.required ? `${this.label} *` : this.label;
+    return this.required ? `${this.args.label} *` : this.args.label;
   }
 
   get options() {

@@ -1,10 +1,14 @@
-<PaperInput
-  @textarea={{true}}
-  @class={{this.size}}
-  @label={{this.label}}
-  @value={{this.value}}
-  @errors={{this.errors}}
-  @passThru={{hash rows=3 maxRows=3}}
-  @onChange={{fn (mut this.value)}}
-  @onBlur={{fn this.blur}}
-/>
+{{#if @label}}
+  <label for={{this.elementId}} class="block text-sm font-medium text-gray-700">
+    {{@label}}
+  </label>
+{{/if}}
+<Textarea
+  @id={{this.elementId}}
+  value={{this.value}}
+  class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+  rows={{this.rows}}
+  {{on "change" this.setValue}}
+  {{on "focusout" this.formatAddressLines}}
+  ...attributes />
+{{!-- TODO display error --}}

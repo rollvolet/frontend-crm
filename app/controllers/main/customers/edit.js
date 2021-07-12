@@ -6,7 +6,7 @@ export default class EditController extends Controller {
   tab = 'requests';
 
   @action
-  onRemove() {
+  goToCustomerIndex() {
     this.transitionToRoute('main.customers.index');
   }
 }

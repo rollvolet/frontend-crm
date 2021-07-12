@@ -2,21 +2,22 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { warn } from '@ember/debug';
+import { guidFor } from '@ember/object/internals';
 
 export default class InputFieldAddressInputComponent extends Component {
-  @tracked value
+  @tracked value;
 
   constructor() {
     super(...arguments);
     this.updateValue([this.args.address1, this.args.address2, this.args.address3]);
   }
 
-  get size() {
-    return this.args.size || 'xxlarge';
+  get elementId() {
+    return `address-input-${guidFor(this)}`;
   }
 
-  get label() {
-    return this.args.label || 'Straat';
+  get rows() {
+    return this.args.rows || 3;
   }
 
   get errors() {
@@ -41,7 +42,12 @@ export default class InputFieldAddressInputComponent extends Component {
   }
 
   @action
-  blur() {
+  setValue(event) {
+    this.value = event.target.value;
+  }
+
+  @action
+  formatAddressLines() {
     const lines = (this.value || '').split('\n');
     if (lines.length > 3)
       warn('Only 3 lines are allowed in the address text area', { id: 'input.too-many-address-lines' });
@@ -56,6 +62,6 @@ export default class InputFieldAddressInputComponent extends Component {
 
     const formattedLines = lines.map(l => formatAddressLine(l));
     this.updateValue(formattedLines);
-    this.args.onBlur(formattedLines);
+    this.args.onChange(formattedLines);
   }
 }

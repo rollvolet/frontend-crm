@@ -1,13 +1,6 @@
-<div class="space-y-4">
-  {{!-- Detail panel --}}
-  <div class="bg-white shadow rounded-lg overflow-hidden">
-    <Customer::DetailPanel @model={{this.model}} />
-  </div>
-
-  {{!-- Case panel (requests, offers, ...) --}}
-  <div class="bg-white shadow rounded-lg overflow-hidden">
-    <Customer::CasePanel @model={{this.model}} @selectedTab={{this.tab}} />
-  </div>
-</div>
+<Customer::Panels
+  @model={{@model}}
+  @selectedTab={{this.tab}}
+  @onDidDelete={{this.goToCustomerIndex}} />
 
 <LiquidOutlet />

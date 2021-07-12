@@ -1,8 +1,15 @@
-<PaperInput
-  @label={{@label}}
-  @value={{this.formattedValue}}
-  @errors={{@errors}}
-  @onChange={{fn this.updateValue}}
-  @onBlur={{fn @onBlur}}
-  @class={{@class}}
-/>
+<div>
+  {{#if @label}}
+    <label for={{this.elementId}} class="block text-sm font-medium text-gray-700">
+      {{@label}}
+    </label>
+  {{/if}}
+  <Input
+    @id={{this.elementId}}
+    @type="text"
+    value={{this.formattedValue}}
+    class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+    {{on "change" this.updateValue}}
+    {{on "focusout" @onBlur}}
+    ...attributes />
+</div>
