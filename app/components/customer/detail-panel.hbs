@@ -1,0 +1,122 @@
+<div class="divide-y divide-y-200">
+  {{!-- Card header --}}
+  <div class="px-6 pt-6 pb-4">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center">
+        <h2 class="text-2xl font-bold font-display text-gray-900">
+          <span class="text-gray-400 mr-2">{{@model.number}}</span>
+          <PrintName @model={{@model}} />
+        </h2>
+        {{#if this.editMode}}
+          <SaveStatusIcon
+            @model={{@model}}
+            @task={{this.save}}
+            class="ml-2" />
+        {{/if}}
+      </div>
+      <div class="flex flex-none space-x-4">
+        {{#if this.editMode}}
+          <button type="button"
+            onClick={{this.closeEdit}}
+            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
+          </button>
+        {{else}}
+          <button type="button"
+            onClick={{this.openEdit}}
+                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
+          </button>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  {{!-- Card content --}}
+  <div class="p-6">
+    {{#if this.editMode}}
+      <CustomerEntityEditForm @scope="customer" @model={{@model}} @onClose={{fn this.closeEdit}} @onRemove={{fn this.onRemove}}>
+        <h1 class="text-3xl font-bold font-display my-6">Bewerk klant <span class="small-text-fade">[{{@model.number}}]</span></h1>
+      </CustomerEntityEditForm>
+    {{else}}
+      <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <div class="space-y-1">
+          <DetailListItem @label={{if @model.isCompany "Bedrijf" "Naam"}}>
+            <div>
+              {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
+              {{@model.prefix}} {{@model.name}} {{@model.suffix}}
+              {{#if (not @model.printInFront)}}{{@model.honorificPrefix.name}}{{/if}}
+            </div>
+            <div><FmtVatNumber @value={{@model.vatNumber}} /></div>
+          </DetailListItem>
+
+          <DetailListItem @label="Adres">
+            <div>{{@model.address1}}</div>
+            <div>{{@model.address2}}</div>
+            <div>{{@model.address3}}</div>
+            <div>{{@model.postalCode}} {{@model.city}}</div>
+            <div>{{@model.country.name}}</div>
+          </DetailListItem>
+
+          <DetailListItem @label="Taal">
+            {{@model.language.name}}
+          </DetailListItem>
+
+          <DetailListItem @label="Tags">
+            {{this.joinedTagNames}}
+          </DetailListItem>
+        </div>
+
+        <div class="space-y-1">
+          <DetailListItem @label="Telefoon">
+            {{#each @model.telephones as |tel|}}
+              <div>
+                {{tel.telephoneType.name}}
+                {{format-phone (get (await tel.country) 'telephonePrefix') tel.area tel.number}}
+                {{#if tel.memo}}({{tel.memo}}){{/if}}
+              </div>
+            {{/each}}
+          </DetailListItem>
+
+          <DetailListItem @label="E-mail">
+            <div><FmtEmail @value={{@model.email}} /></div>
+            <div><FmtEmail @value={{@model.email2}} /></div>
+            <div>{{@model.url}}</div>
+          </DetailListItem>
+        </div>
+
+        <div class="sm:col-span-2">
+          <DetailListItem @label="Opmerking">
+            {{#if @model.comment}}
+              <span class="whitespace-pre-wrap">{{@model.comment}}</span>
+            {{else}}
+              Geen opmerkingen
+            {{/if}}
+          </DetailListItem>
+        </div>
+
+        <div class="sm:col-span-2">
+          <DetailListItem @label="Memo">
+            <div>
+              <button class="text-gray-400 text-sm"
+                {{on "click" this.toggleMemo}}>
+                {{#if this.isMemoExpanded}}
+                  Sluiten {{svg-jar "heroicons-sm-chevron-up" class="h-4 w-4 inline"}}
+                {{else}}
+                  Openen {{svg-jar "heroicons-sm-chevron-down" class="h-4 w-4 inline"}}
+                {{/if}}
+              </button>
+            </div>
+            {{#if @model.memo}}
+              {{#if this.isMemoExpanded}}
+                <span class="whitespace-pre-wrap">{{@model.memo}}</span>
+              {{/if}}
+            {{else}}
+              Geen memo
+            {{/if}}
+          </DetailListItem>
+        </div>
+      </dl>
+    {{/if}}
+  </div>
+</div>
