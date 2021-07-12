@@ -1,79 +1,12 @@
 <div class="space-y-4">
   {{!-- Detail panel --}}
   <div class="bg-white shadow rounded-lg overflow-hidden">
-    <Customer::DetailPanel @model={{@model}} />
+    <Customer::DetailPanel @model={{this.model}} />
   </div>
 
   {{!-- Case panel (requests, offers, ...) --}}
   <div class="bg-white shadow rounded-lg overflow-hidden">
-    <div class="block">
-      <div class="px-4 border-b border-gray-300">
-        <nav class="-mb-px flex flex-wrap md:flex-nowrap space-x-8" aria-label="Tabs">
-          <LinkTo @route="main.customers.edit"
-            @model={{this.model}}
-            @query={{hash tab="requests"}}
-            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
-            Aanvragen
-          </LinkTo>
-          <LinkTo @route="main.customers.edit"
-            @model={{this.model}}
-            @query={{hash tab="interventions"}}
-            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
-            Interventies
-          </LinkTo>
-          <LinkTo @route="main.customers.edit"
-            @model={{this.model}}
-            @query={{hash tab="offers"}}
-            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
-            Offertes
-          </LinkTo>
-          <LinkTo @route="main.customers.edit"
-            @model={{this.model}}
-            @query={{hash tab="orders"}}
-            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
-            Bestellingen
-          </LinkTo>
-          <LinkTo @route="main.customers.edit"
-            @model={{this.model}}
-            @query={{hash tab="deposit-invoices"}}
-            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
-            Voorschotfacturen
-          </LinkTo>
-          <LinkTo @route="main.customers.edit"
-            @model={{this.model}}
-            @query={{hash tab="invoices"}}
-            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
-            Facturen
-          </LinkTo>
-        </nav>
-      </div>
-    </div>
-
-    <div class="mt-4">
-      {{#if (eq this.tab 0)}}
-        <Customer::ContactsPanel @customer={{@model}} />
-      {{else if (eq this.tab 1)}}
-        <Customer::BuildingsPanel @customer={{@model}} />
-      {{else if (eq this.tab "requests")}}
-        <Customer::RequestsTable @customer={{@model}} />
-      {{else if (eq this.tab "interventions")}}
-        <Customer::InterventionsTable @customer={{@model}} />
-      {{else if (eq this.tab "offers")}}
-        <Customer::OffersTable @customer={{@model}} />
-      {{else if (eq this.tab "orders")}}
-        <Customer::OrdersTable @customer={{@model}} />
-      {{else if (eq this.tab "deposit-invoices")}}
-        <Customer::DepositInvoicesTable @customer={{@model}} />
-      {{else if (eq this.tab "invoices")}}
-        <Customer::InvoicesTable @customer={{@model}} />
-      {{/if}}
-    </div>
+    <Customer::CasePanel @model={{this.model}} @selectedTab={{this.tab}} />
   </div>
 </div>
 
