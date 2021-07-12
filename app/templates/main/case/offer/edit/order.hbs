@@ -32,14 +32,17 @@
       {{#if @model.length}}
         <ul class="space-y-2">
           {{#each @model as |offerline|}}
-            <li class="px-4 sm:py-6 sm:px-6 flex justify-between border rounded-md {{if offerline.isOrdered "text-red-600 border-red-300 bg-red-50" "text-gray-500 border-gray-200"}}"
+            <li role="button"
+              class="px-4 sm:py-6 sm:px-6 flex justify-between border rounded-md {{if offerline.isOrdered "text-red-600 border-red-300 bg-red-50" "text-gray-500 border-gray-200"}}"
               {{on "click" (toggle "isOrdered" offerline)}}>
               <div class="flex space-x-4 items-start">
                 <div>
-                  <input
+                  {{! template-lint-disable no-nested-interactive}}
+                  <input disabled
                     type="checkbox"
                     checked={{offerline.isOrdered}}
                     class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
+                  {{! template-lint-enable no-nested-interactive}}
                 </div>
                 <div>
                   {{{offerline.description}}}
