@@ -66,15 +66,15 @@
 }
 
 .ember-power-select-option {
-  @apply py-1 text-sm;
+  @apply py-1 text-sm text-gray-900;
 }
 
 .ember-power-select-option[aria-current="true"] {
-  @apply bg-gray-200 text-black;
+  @apply bg-gray-200 text-gray-900;
 }
 
 .ember-power-select-option[aria-selected="true"] {
-  @apply bg-red-100 text-black;
+  @apply bg-red-100 text-gray-900;
 }
 
 .ember-power-select-trigger-multiple-input {

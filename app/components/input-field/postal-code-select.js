@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { timeout } from 'ember-concurrency';
 import { keepLatestTask } from 'ember-concurrency-decorators';
+import { later } from '@ember/runloop';
 
 export default class PostalCodeSelect extends Component {
   @service store
@@ -12,6 +13,7 @@ export default class PostalCodeSelect extends Component {
   @tracked value
   @tracked postalCodes = []
   @tracked showCreateModal = false;
+  @tracked showModalContent = true;
   @tracked newCode
   @tracked newCity
 
@@ -82,8 +84,23 @@ export default class PostalCodeSelect extends Component {
     });
     this.value = postalCode;
     this.args.onSelectionChange(postalCode.code, postalCode.name);
-    this.showCreateModal = false;
+    this.closeCreateNewModal();
     this.newCode = null;
     this.newCity = null;
+  }
+
+
+  @action
+  openCreateNewModal() {
+    this.showCreateModal = true;
+    this.showModalContent = true;
+  }
+
+  @action
+  closeCreateNewModal() {
+    this.showModalContent = false;
+    later(this, function() {
+      this.showCreateModal = false;
+    }, 200); // delay to finish leave CSS animation
   }
 }

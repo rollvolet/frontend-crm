@@ -161,17 +161,6 @@ md-checkbox .checkbox-tooltip {
   font-size: 0.8em;
 }
 
-.ember-power-select-dropdown {
-  .add-new-option {
-    text-align: center;
-    background-color: paper-color('grey', '200');
-
-    &:hover {
-      background-color: paper-color($primary, '200');
-    }
-  }
-}
-
 .radio .radio--group-label,
 label.power-select--label {
   font-size: 12px;
