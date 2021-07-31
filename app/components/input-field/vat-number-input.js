@@ -17,8 +17,8 @@ export default class VatNumberInputComponent extends Component {
   }
 
   @action
-  updateValue(value) {
-    const deformattedValue = deformatVatNumber(value);
+  updateValue(event) {
+    const deformattedValue = deformatVatNumber(event.target.value);
     this.args.onChange(deformattedValue);
   }
 }

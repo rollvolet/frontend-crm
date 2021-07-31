@@ -45,15 +45,16 @@
           </div>
         </div>
         {{#if @model.isCompany}}
-          <InputField::VatNumberInput
-            @label="BTW nummer"
-            @value={{@model.vatNumber}}
-            @onChange={{fn (mut @model.vatNumber)}}
-            @onBlur={{perform @onSave}}
-            class="mt-1" />
-          {{#if this.isDuplicateVatNumber}}
-            <DuplicateVatNumberWarning @customer={{@model}} />
-          {{/if}}
+          <div>
+            <InputField::VatNumberInput
+              @label="BTW nummer"
+              @value={{@model.vatNumber}}
+              @onChange={{fn (mut @model.vatNumber)}}
+              @onBlur={{@onSave}}
+              @showDuplicateVatError={{this.isDuplicateVatNumber}}
+              @customer={{@model}}
+              class="mt-1" />
+          </div>
         {{/if}}
       {{/if}}
       <div class="col-start-1">

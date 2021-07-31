@@ -1,0 +1,10 @@
+<p id="vat-number-error" class="mt-2 text-xs text-red-600">
+  {{#if this.duplicate}}
+    <LinkTo @route="main.customers.edit" @model={{this.duplicate.id}} class="underline">
+      Klant {{#if this.duplicate.printPrefix}}{{this.duplicate.prefix}}{{/if}} {{this.duplicate.name}} {{#if this.duplicate.printSuffix}}{{this.duplicate.suffix}} {{/if}}[{{this.duplicate.number}}]
+    </LinkTo>
+    heeft dit BTW-nummer al.
+  {{else}}
+    Er is al een klant met dit BTW-nummer
+  {{/if}}
+</p>
