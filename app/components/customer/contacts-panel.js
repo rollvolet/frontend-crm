@@ -4,23 +4,10 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default class ContactsPanel extends Component {
-  @service store
-  @service configuration
+  @service store;
+  @service configuration;
 
-  @tracked state = 'list' // one of 'list', 'detail', 'edit'
-  @tracked selectedContact = null
-
-  get displayList() {
-    return this.state == 'list';
-  }
-
-  get displayDetail() {
-    return this.state == 'detail';
-  }
-
-  get displayEdit() {
-    return this.state == 'edit';
-  }
+  @tracked selectedContact = null;
 
   createNewContact() {
     return this.store.createRecord('contact', {
@@ -35,35 +22,18 @@ export default class ContactsPanel extends Component {
 
   @action
   openDetail(contact) {
-    if (this.state != 'edit') {
-      this.selectedContact = contact;
-      this.state = 'detail';
-    } // else: edit is opened. Nothing should happen
+    this.selectedContact = contact;
   }
 
   @action
   closeDetail() {
-    this.state = 'list';
     this.selectedContact = null;
   }
 
   @action
   async openCreate() {
     const contact = this.createNewContact();
-    this.state = 'edit';
     this.selectedContact = contact;
     try { await contact.save(); } catch(e) {} // eslint-disable-line no-empty
-  }
-
-  @action
-  openEdit(contact) {
-    this.selectedContact = contact;
-    this.state = 'edit';
-  }
-
-  @action
-  closeEdit() {
-    this.state = 'list';
-    this.selectedContact = null;
   }
 }

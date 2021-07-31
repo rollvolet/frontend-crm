@@ -3,6 +3,20 @@
     <nav class="-mb-px flex flex-wrap md:flex-nowrap space-x-8" aria-label="Tabs">
       <LinkTo @route="main.customers.edit"
         @model={{@model}}
+        @query={{hash tab="contacts"}}
+        @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+        class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+        Contacten
+      </LinkTo>
+      <LinkTo @route="main.customers.edit"
+        @model={{@model}}
+        @query={{hash tab="buildings"}}
+        @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
+        class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+        Gebouwen
+      </LinkTo>
+      <LinkTo @route="main.customers.edit"
+        @model={{@model}}
         @query={{hash tab="requests"}}
         @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
@@ -48,9 +62,9 @@
 </div>
 
 <div class="mt-4">
-  {{#if (eq @selectedTab 0)}}
+  {{#if (eq @selectedTab "contacts")}}
     <Customer::ContactsPanel @customer={{@model}} />
-  {{else if (eq @selectedTab 1)}}
+  {{else if (eq @selectedTab "buildings")}}
     <Customer::BuildingsPanel @customer={{@model}} />
   {{else if (eq @selectedTab "requests")}}
     <Customer::RequestsTable @customer={{@model}} />

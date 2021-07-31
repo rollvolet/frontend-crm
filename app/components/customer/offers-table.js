@@ -5,13 +5,13 @@ import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency-decorators';
 
 export default class OffersTable extends FilterComponent {
-  @service router
-  @service store
+  @service router;
+  @service store;
 
   @tracked page = 0;
   @tracked size = 10;
   @tracked sort = '-offer-date';
-  @tracked offers = []
+  @tracked offers = [];
 
   constructor() {
     super(...arguments);

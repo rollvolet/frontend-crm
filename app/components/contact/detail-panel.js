@@ -2,21 +2,12 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { keepLatestTask } from 'ember-concurrency-decorators';
-import { isBlank } from '@ember/utils';
 
-export default class CustomerDetailPanelComponent extends Component {
+export default class ContactDetailPanelComponent extends Component {
   @tracked editMode = false;
-
-  constructor() {
-    super(...arguments);
-    this.editMode = isBlank(this.args.model.name);
-  }
 
   @keepLatestTask
   *save() {
-    if (this.args.model.name)
-      this.args.model.name = this.args.model.name.toUpperCase();
-
     const { validations } = yield this.args.model.validate();
     if (validations.isValid)
       yield this.args.model.save();

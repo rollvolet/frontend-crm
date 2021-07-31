@@ -1,0 +1,84 @@
+<dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+  <div class="space-y-1">
+    <DetailListItem @label={{if @model.isCompany "Bedrijf" "Naam"}}>
+      <div>
+        {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
+        {{@model.prefix}} {{@model.name}} {{@model.suffix}}
+        {{#if (not @model.printInFront)}}{{@model.honorificPrefix.name}}{{/if}}
+      </div>
+      <div><FmtVatNumber @value={{@model.vatNumber}} /></div>
+    </DetailListItem>
+
+    <DetailListItem @label="Adres">
+      <div>{{@model.address1}}</div>
+      <div>{{@model.address2}}</div>
+      <div>{{@model.address3}}</div>
+      <div>{{@model.postalCode}} {{@model.city}}</div>
+      <div>{{@model.country.name}}</div>
+    </DetailListItem>
+
+    <DetailListItem @label="Taal">
+      {{@model.language.name}}
+    </DetailListItem>
+
+    {{#if this.isScopeCustomer}}
+      <DetailListItem @label="Tags">
+        {{this.joinedTagNames}}
+      </DetailListItem>
+    {{/if}}
+  </div>
+
+  <div class="space-y-1">
+    <DetailListItem @label="Telefoon">
+      {{#each @model.telephones as |tel|}}
+        <div>
+          {{tel.telephoneType.name}}
+          {{format-phone (get (await tel.country) 'telephonePrefix') tel.area tel.number}}
+          {{#if tel.memo}}({{tel.memo}}){{/if}}
+        </div>
+      {{/each}}
+    </DetailListItem>
+
+    <DetailListItem @label="E-mail">
+      <div><FmtEmail @value={{@model.email}} /></div>
+      <div><FmtEmail @value={{@model.email2}} /></div>
+    </DetailListItem>
+
+    <DetailListItem @label="Website">
+      {{@model.url}}
+    </DetailListItem>
+  </div>
+
+  <div>
+    <DetailListItem @label="Opmerking">
+      {{#if @model.comment}}
+        <span class="whitespace-pre-wrap">{{@model.comment}}</span>
+      {{else}}
+        Geen opmerkingen
+      {{/if}}
+    </DetailListItem>
+  </div>
+  {{#if this.isScopeCustomer}}
+    <div>
+      <DetailListItem @label="Memo">
+        {{#if @model.memo}}
+          <div>
+            <button class="text-gray-400 text-sm"
+              {{on "click" this.toggleMemo}}>
+              {{#if this.isMemoExpanded}}
+                Sluiten {{svg-jar "heroicons-sm-chevron-up" class="h-4 w-4 inline"}}
+              {{else}}
+                Openen {{svg-jar "heroicons-sm-chevron-down" class="h-4 w-4 inline"}}
+              {{/if}}
+            </button>
+          </div>
+          {{#if this.isMemoExpanded}}
+            <span class="whitespace-pre-wrap">{{@model.memo}}</span>
+          {{/if}}
+        {{else}}
+          Geen memo
+        {{/if}}
+      </DetailListItem>
+    </div>
+  {{/if}}
+</dl>
