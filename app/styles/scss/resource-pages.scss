@@ -29,44 +29,6 @@
   }
 }
 
-
-/* Customer pages */
-.resource-details {
-  .left-column {
-    margin-right: 50px;
-  }
-
-  .resource-details--section {
-    margin-bottom: 20px;
-
-    .category-icon {
-      margin-right: 10px;
-    }
-
-    &.resource-details--section-name {
-      md-icon {
-        position: relative;
-        top: -4px;
-      }
-    }
-
-    &.resource-details--section-audit {
-      color: paper-color('grey');
-      font-style: italic;
-      font-size: 0.8em;
-
-      span.divider {
-        margin-left: 10px;
-        margin-right: 10px;
-      }
-    }
-
-    &.resource-details--section-comment {
-
-    }
-  }
-}
-
 /* Accountancy exports */
 .export-panel {
   padding: 20px;

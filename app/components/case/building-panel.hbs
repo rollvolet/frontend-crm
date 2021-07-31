@@ -1,21 +1,21 @@
-<div class="resource-details">
-  <DetailIconListItem @icon="person" @label="Naam" @class="resource-details--section-name">
+<div class="space-y-4">
+  <DetailIconListItem @icon="person" @label="Naam">
     {{@model.printName}}
   </DetailIconListItem>
 
-  <DetailIconListItem @icon="location on" @label="Adres" @class="resource-details--section-address">
+  <DetailIconListItem @icon="location on" @label="Adres">
     <div>{{@model.address1}}</div>
     <div>{{@model.address2}}</div>
     <div>{{@model.address3}}</div>
     <div>{{@model.postalCode}} {{@model.city}}</div>
   </DetailIconListItem>
 
-  <DetailIconListItem @icon="mail outline" @label="E-mail" @class="resource-details--section-contact">
+  <DetailIconListItem @icon="mail outline" @label="E-mail">
     <div><FmtEmail @value={{@model.email}} /></div>
     <div><FmtEmail @value={{@model.email2}} /></div>
   </DetailIconListItem>
 
-  <DetailIconListItem @icon="phone" @label="Telefoon" @class="resource-details--section-telephone">
+  <DetailIconListItem @icon="phone" @label="Telefoon">
     {{#each @model.telephones as |tel|}}
       <div>
         {{tel.telephoneType.name}}:

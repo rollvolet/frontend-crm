@@ -27,8 +27,8 @@
         </h2>
       </div>
       <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:grid-cols-1">
-        <div class="resource-details">
-          <DetailIconListItem @icon={{if @model.isCompany "business" "person"}} @label={{if @model.isCompany "Bedrijf" "Naam"}} @class="resource-details--section-name">
+        <div class="space-y-4">
+          <DetailIconListItem @icon={{if @model.isCompany "business" "person"}} @label={{if @model.isCompany "Bedrijf" "Naam"}}>
             <div>
               {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
               {{@model.prefix}} {{@model.name}} {{@model.suffix}}
@@ -37,7 +37,7 @@
             <div><FmtVatNumber @value={{@model.vatNumber}} /></div>
           </DetailIconListItem>
 
-          <DetailIconListItem @icon="location on" @label="Adres" @class="resource-details--section-address">
+          <DetailIconListItem @icon="location on" @label="Adres">
             <div>{{@model.address1}}</div>
             <div>{{@model.address2}}</div>
             <div>{{@model.address3}}</div>
@@ -45,11 +45,11 @@
             <div>{{@model.country.name}}</div>
           </DetailIconListItem>
 
-          <DetailIconListItem @icon="language" @label="Taal" @class="resource-details--section-language">
+          <DetailIconListItem @icon="language" @label="Taal">
             {{@model.language.name}}
           </DetailIconListItem>
 
-          <DetailIconListItem @icon="phone" @label="Telefoon" @class="resource-details--section-telephone">
+          <DetailIconListItem @icon="phone" @label="Telefoon">
             {{#each @model.telephones as |tel|}}
               <div>
                 {{tel.telephoneType.name}}:
@@ -59,7 +59,7 @@
             {{/each}}
           </DetailIconListItem>
 
-          <DetailIconListItem @icon="mail outline" @label="E-mail" @class="resource-details--section-contact">
+          <DetailIconListItem @icon="mail outline" @label="E-mail">
             <div><FmtEmail @value={{@model.email}} /></div>
             <div><FmtEmail @value={{@model.email2}} /></div>
             <div>{{@model.url}}</div>
@@ -87,7 +87,7 @@
                     onClick={{this.toggleBuildingEdit}}
               class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                     {{svg-jar "heroicons-md-pencil" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
-                    <span>Bewerk</span>
+                    <span>Selecteer</span>
                   </button>
                 {{/if}}
               </div>
@@ -102,7 +102,7 @@
                   class="mt-1" />
               {{else}}
                 {{#if this.building}}
-                  <BuildingDetailCard @model={{this.building}} />
+                  <Case::BuildingPanel @model={{this.building}} />
                 {{else}}
                   <div class="italic text-gray-400">
                     Geen gebouw gekoppeld
@@ -132,7 +132,7 @@
                     onClick={{this.toggleContactEdit}}
               class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                     {{svg-jar "heroicons-md-pencil" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
-                    <span>Bewerk</span>
+                    <span>Selecteer</span>
                   </button>
                 {{/if}}
               </div>
@@ -147,7 +147,7 @@
                   class="mt-1" />
               {{else}}
                 {{#if this.contact}}
-                  <ContactDetailCard @model={{this.contact}} />
+                  <Case::ContactPanel @model={{this.contact}} />
                 {{else}}
                   <div class="italic text-gray-400">
                     Geen contact gekoppeld
