@@ -1,15 +1,10 @@
-{{#liquid-if this.displayList class="data-table-selection"}}
-  <Customer::BuildingsTable @customer={{@customer}} @onClickRow={{fn this.openDetail}} @onEdit={{fn this.openEdit}} />
-  <div class="layout-row layout-align-end">
-    <PaperButton @primary={{true}} @fab={{true}} @raised={{true}} @mini={{true}} @onClick={{fn this.openCreate}}>
-      {{paper-icon "add"}}
-      <PaperTooltip>Voeg nieuw gebouw toe</PaperTooltip>
-    </PaperButton>
-  </div>
-{{else if this.displayDetail}}
-  <BuildingDetailPanel @model={{this.selectedBuilding}} @onClose={{fn this.closeDetail}} @onEdit={{fn this.openEdit}} />
-{{else if this.displayEdit}}
-  <CustomerEntityEditForm @scope="building" @model={{this.selectedBuilding}} @onClose={{fn this.closeEdit}} @onRemove={{fn this.closeEdit}}>
-    <h3 class="text-xl font-bold font-display my-3">Gebouw</h3>
-  </CustomerEntityEditForm>
-{{/liquid-if}}
+{{#if this.selectedBuilding}}
+  <Building::DetailPanel
+    @model={{this.selectedBuilding}}
+    @onCloseDetail={{this.closeDetail}} />
+{{else}}
+  <Customer::BuildingsTable
+    @customer={{@customer}}
+    @onOpenDetail={{this.openDetail}}
+    @onCreateNew={{this.openCreate}} />
+{{/if}}

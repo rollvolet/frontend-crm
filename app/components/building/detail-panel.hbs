@@ -1,0 +1,45 @@
+<div class="mb-4 flex divide-x divide-gray-200">
+  <div class="pl-1 flex-shrink-0 flex-grow-0 flex flex-col items-center {{unless this.editMode "justify-between"}}">
+    {{#if this.editMode}}
+      <SaveStatusIcon
+        @model={{@model}}
+        @task={{this.save}} />
+      <button type="button"
+        onClick={{this.closeEdit}}
+        class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+        {{svg-jar "heroicons-md-logout" class="h-5 w-5 transform rotate-180"}}
+      </button>
+    {{else}}
+      <button type="button"
+        onClick={{@onCloseDetail}}
+        class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+        {{svg-jar "heroicons-md-chevron-left" class="h-5 w-5"}}
+      </button>
+      <button type="button"
+        onClick={{this.openEdit}}
+        class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+        {{svg-jar "heroicons-md-pencil" class="h-5 w-5"}}
+      </button>
+    {{/if}}
+  </div>
+  <div>
+    {{#if this.editMode}}
+      <div class="mx-8 my-2">
+        <CustomerEntity::Form
+          @model={{@model}}
+          @scope="building"
+          @onSave={{perform this.save}} />
+      </div>
+    {{else}}
+      <h2 class="mx-4 text-xl font-bold font-display text-gray-900">
+        <span class="text-gray-400 mr-1">{{@model.number}}</span>
+        <PrintName @model={{@model}} />
+      </h2>
+      <div class="m-4">
+        <CustomerEntity::Detail
+          @model={{@model}}
+          @scope="building" />
+      </div>
+    {{/if}}
+  </div>
+</div>

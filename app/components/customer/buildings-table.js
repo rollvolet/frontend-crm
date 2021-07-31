@@ -1,52 +1,39 @@
+import { action } from '@ember/object';
 import FilterComponent from '../data-table-filter';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency-decorators';
 
 export default class BuildingsTable extends FilterComponent {
-  @service store
+  @service router;
+  @service store;
 
-  @tracked buildings
+  @tracked page = 0;
+  @tracked size = 10;
+  @tracked sort = 'number';
+  @tracked buildings = [];
 
   constructor() {
     super(...arguments);
     this.initFilter(['number', 'name', 'postalCode', 'city', 'street', 'telephone']);
-    this.filter.set('page', 0);
-    this.filter.set('size', 10);
-    this.filter.set('sort', 'name');
-
-    // Setup observers for 2-way binded values of ember-data-table
-    this.filter.addObserver('page', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
-    this.filter.addObserver('size', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
-    this.filter.addObserver('sort', this, 'onDataTableParamChange'); // eslint-disable-line ember/no-observers
     this.search.perform(this.filter);
   }
 
+  // @overwrite
   onChange(filter) {
-    if (filter.page != 0)
-      filter.set('page', 0); // search will be triggered by onDataTableParamChange()
-    else
-      this.search.perform(filter);
-  }
-
-  onDataTableParamChange() {
-    this.search.perform(this.filter);
-  }
-
-  willDestroy() {
-    this.filter.removeObserver('page', this, 'onDataTableParamChange');
-    this.filter.removeObserver('size', this, 'onDataTableParamChange');
-    this.filter.removeObserver('sort', this, 'onDataTableParamChange');
+    if (this.page != 0)
+      this.page = 0;
+    this.search.perform(filter);
   }
 
   @restartableTask
   *search(filter) {
     this.buildings = yield this.store.query('building', {
       page: {
-        size: filter.size,
-        number: filter.page
+        size: this.size,
+        number: this.page
       },
-      sort: filter.sort,
+      sort: this.sort,
       include: 'country,language,honorific-prefix',
       filter: {
         customer: {
@@ -60,5 +47,27 @@ export default class BuildingsTable extends FilterComponent {
         telephone: filter.telephone
       }
     });
+  }
+
+  @action
+  previousPage() {
+    this.selectPage(this.page - 1);
+  }
+
+  @action
+  nextPage() {
+    this.selectPage(this.page + 1);
+  }
+
+  @action
+  selectPage(page) {
+    this.page = page;
+    this.search.perform(this.filter);
+  }
+
+  @action
+  setSort(sort) {
+    this.sort = sort;
+    this.search.perform(this.filter);
   }
 }

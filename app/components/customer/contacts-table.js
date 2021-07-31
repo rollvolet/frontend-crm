@@ -10,7 +10,7 @@ export default class ContactsTable extends FilterComponent {
 
   @tracked page = 0;
   @tracked size = 10;
-  @tracked sort = 'name';
+  @tracked sort = 'number';
   @tracked contacts = [];
 
   constructor() {

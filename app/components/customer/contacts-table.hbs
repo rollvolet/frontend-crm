@@ -28,55 +28,55 @@
             {{on "input" (perform this.debounceFilter "number")}} />
         </div>
         <div class="sm:col-span-2">
-          <label for="dt-filter-building-name" class="block text-sm font-medium text-gray-700">
+          <label for="dt-filter-contact-name" class="block text-sm font-medium text-gray-700">
             Naam
           </label>
           <Input
-            @id="dt-filter-building-name"
+            @id="dt-filter-contact-name"
             @type="text"
             value={{this.filter.name}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "name")}} />
         </div>
         <div class="sm:col-span-3 lg:col-start-1 lg:col-span-2">
-          <label for="dt-filter-building-street" class="block text-sm font-medium text-gray-700">
+          <label for="dt-filter-contact-street" class="block text-sm font-medium text-gray-700">
             Straat
           </label>
           <Input
-            @id="dt-filter-building-street"
+            @id="dt-filter-contact-street"
             @type="text"
             value={{this.filter.street}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "street")}} />
         </div>
         <div class="">
-          <label for="dt-filter-building-postal-code" class="block text-sm font-medium text-gray-700">
+          <label for="dt-filter-contact-postal-code" class="block text-sm font-medium text-gray-700">
             Postcode
           </label>
           <Input
-            @id="dt-filter-building-postal-code"
+            @id="dt-filter-contact-postal-code"
             @type="text"
             value={{this.filter.postalCode}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "postalCode")}} />
         </div>
         <div class="sm:col-span-2">
-          <label for="dt-filter-building-city" class="block text-sm font-medium text-gray-700">
+          <label for="dt-filter-contact-city" class="block text-sm font-medium text-gray-700">
             Gemeente
           </label>
           <Input
-            @id="dt-filter-building-city"
+            @id="dt-filter-contact-city"
             @type="text"
             value={{this.filter.city}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "city")}} />
         </div>
         <div class="sm:col-span-2">
-          <label for="dt-filter-building-phone" class="block text-sm font-medium text-gray-700">
+          <label for="dt-filter-contact-phone" class="block text-sm font-medium text-gray-700">
             Telefoon
           </label>
           <Input
-            @id="dt-filter-building-phone"
+            @id="dt-filter-contact-phone"
             @type="text"
             value={{this.filter.telephone}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"

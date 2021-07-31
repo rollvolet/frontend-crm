@@ -1,44 +1,274 @@
-<div class="buildings-table">
-  <div class="data-table-filters">
-    <div class="data-table-filters--title">{{paper-icon "search"}}</div>
-    <PaperInput @label="Nummer" @value={{this.filter.number}} @onChange={{perform this.debounceFilter "number"}} @class="small" />
-    <PaperInput @label="Naam" @value={{this.filter.name}} @onChange={{perform this.debounceFilter "name"}} />
-    <PaperInput @label="Straat" @value={{this.filter.street}} @onChange={{perform this.debounceFilter "street"}} @class="large" />
-    <PaperInput @label="Postcode" @value={{this.filter.postalCode}} @onChange={{perform this.debounceFilter "postalCode"}} @class="small" />
-    <PaperInput @label="Gemeente" @value={{this.filter.city}} @onChange={{perform this.debounceFilter "city"}} />
-    <PaperInput @label="Telefoon" @value={{this.filter.telephone}} @onChange={{perform this.debounceFilter "telephone"}} />
-    <PaperButton @iconButton={{true}} @onClick={{fn this.resetFilters}}>
-      {{paper-icon "close"}}
-      <PaperTooltip>Wis filters</PaperTooltip>
-    </PaperButton>
+<div class="space-y-4">
+  <div class="mx-4 sm:mx-6 lg:mx-8 space-y-4 xl:flex xl:flex-row-reverse xl:space-x-8 xl:space-x-reverse xl:items-start xl:space-y-0">
+    <div class="text-right xl:mt-4">
+      <button
+        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+        {{on "click" @onCreateNew}}>
+        {{svg-jar "heroicons-md-plus" class="-ml-1 mr-2 h-5 w-5"}}
+        Nieuw
+      </button>
+    </div>
+    <div class="p-4 lg:px-6 space-y-4 lg:flex lg:items-start lg:space-x-12 lg:space-y-0 bg-gray-50 rounded">
+      <div class="flex items-center">
+        {{svg-jar "heroicons-md-search" class="flex-shrink-0 mr-2 h-4 w-4 text-gray-500"}}
+        <h4 class="text-gray-700 text-sm uppercase tracking-wide">
+          Zoeken
+        </h4>
+      </div>
+      <div class="grid sm:grid-cols-5 lg:grid-cols-7 gap-4">
+        <div class="sm:col-span-2 xl:col-span-1">
+          <label for="dt-filter-number" class="block text-sm font-medium text-gray-700">
+            Nummer
+          </label>
+          <Input
+            @id="dt-filter-number"
+            @type="text"
+            value={{this.filter.number}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "number")}} />
+        </div>
+        <div class="sm:col-span-2">
+          <label for="dt-filter-building-name" class="block text-sm font-medium text-gray-700">
+            Naam
+          </label>
+          <Input
+            @id="dt-filter-building-name"
+            @type="text"
+            value={{this.filter.name}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "name")}} />
+        </div>
+        <div class="sm:col-span-3 lg:col-start-1 lg:col-span-2">
+          <label for="dt-filter-building-street" class="block text-sm font-medium text-gray-700">
+            Straat
+          </label>
+          <Input
+            @id="dt-filter-building-street"
+            @type="text"
+            value={{this.filter.street}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "street")}} />
+        </div>
+        <div class="">
+          <label for="dt-filter-building-postal-code" class="block text-sm font-medium text-gray-700">
+            Postcode
+          </label>
+          <Input
+            @id="dt-filter-building-postal-code"
+            @type="text"
+            value={{this.filter.postalCode}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "postalCode")}} />
+        </div>
+        <div class="sm:col-span-2">
+          <label for="dt-filter-building-city" class="block text-sm font-medium text-gray-700">
+            Gemeente
+          </label>
+          <Input
+            @id="dt-filter-building-city"
+            @type="text"
+            value={{this.filter.city}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "city")}} />
+        </div>
+        <div class="sm:col-span-2">
+          <label for="dt-filter-building-phone" class="block text-sm font-medium text-gray-700">
+            Telefoon
+          </label>
+          <Input
+            @id="dt-filter-building-phone"
+            @type="text"
+            value={{this.filter.telephone}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "telephone")}} />
+        </div>
+      </div>
+      <div class="flex-shrink-0">
+        <button type="button"
+          onClick={{this.resetFilters}}
+        class="inline-flex items-center text-sm text-gray-700 underline lg:no-underline hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+          {{svg-jar "heroicons-sm-filter" class="-ml-0.5 mr-2 h-4 w-4 text-gray-400"}}
+          Wis filters
+        </button>
+      </div>
+    </div>
   </div>
 
-  <DataTable @content={{this.buildings}} @isLoading={{not this.search.isIdle}} @noDataMessage="Geen gebouwen" @onClickRow={{@onClickRow}} @page={{this.filter.page}} @size={{this.filter.size}} @sort={{this.filter.sort}} as |t|>
-    <t.content as |c|>
-      <c.header>
-        <ThSortable @field="number" @currentSorting={{this.filter.sort}} @label="Nr" />
-        <th>Aanspreking</th>
-        <th>Prefix</th>
-        <ThSortable @field="name" @currentSorting={{this.filter.sort}} @label="Naam" />
-        <ThSortable @field="address" @currentSorting={{this.filter.sort}} @label="Straat" />
-        <ThSortable @field="postal-code" @currentSorting={{this.filter.sort}} @label="Postcode" />
-        <ThSortable @field="city" @currentSorting={{this.filter.sort}} @label="Gemeente" />
-        <th>Land</th>
-        <th>Taal</th>
-        <th></th>
-      </c.header>
-      <c.body as |row|>
-        <td>{{row.number}}</td>
-        <td>{{row.honorificPrefix.name}}</td>
-        <td>{{row.prefix}}</td>
-        <td>{{row.name}}</td>
-        <td>{{row.address}}</td>
-        <td>{{row.postalCode}}</td>
-        <td>{{row.city}}</td>
-        <td>{{row.country.name}}</td>
-        <td>{{row.language.name}}</td>
-        <td {{on "click" (fn @onEdit row)}} role="button">{{paper-icon "mode edit"}}</td>
-      </c.body>
-    </t.content>
-  </DataTable>
+  <div class="-my-2 overflow-x-auto">
+    <div class="py-2 align-middle inline-block min-w-full">
+      <div class="overflow-hidden border-b border-gray-200">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <DataTable::Th
+                @field="number"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="pl-4 pr-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Nr.
+              </DataTable::Th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Aanspreking
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Prefix
+              </th>
+              <DataTable::Th
+                @field="name"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Naam
+              </DataTable::Th>
+              <DataTable::Th
+                @field="address"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Straat
+              </DataTable::Th>
+              <DataTable::Th
+                @field="postal-code"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                P.Code
+              </DataTable::Th>
+              <DataTable::Th
+                @field="city"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Gemeente
+              </DataTable::Th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Land
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Taal
+              </th>
+              <th class="px-6 py-3 bg-gray-50"></th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {{#if this.search.isRunning}}
+              <tr class="animate-pulse">
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-18 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-20 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-28 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-36 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-32 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr class="animate-pulse">
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-16 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-14 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-16 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-36 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-48 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-24 bg-gray-300"></div>
+                </td>
+                <td>
+                </td>
+              </tr>
+            {{else}}
+              {{#each this.buildings as |row|}}
+                <tr>
+                  <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                    {{row.number}}
+                  </td>
+                  <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                    {{row.honorificPrefix.name}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-900">
+                    {{row.prefix}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-900">
+                    {{row.name}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{row.address}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{row.postalCode}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{row.city}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{row.country.name}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{row.language.name}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button {{on "click" (fn @onOpenDetail row)}}
+                      class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      Bekijk
+                    </button>
+                  </td>
+                </tr>
+              {{else}}
+                <tr>
+                  <td colspan="10" class="px-6 py-4 text-center text-sm text-gray-500">
+                    Nog geen gebouwen
+                  </td>
+                </tr>
+              {{/each}}
+            {{/if}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <DataTable::Pagination
+      @page={{this.page}}
+      @size={{this.size}}
+      @total={{this.buildings.meta.count}}
+      @onPrevious={{this.previousPage}}
+      @onNext={{this.nextPage}}
+      @onSelectPage={{this.selectPage}} />
+  </div>
 </div>
