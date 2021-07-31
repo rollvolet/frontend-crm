@@ -1,4 +1,4 @@
-<div class="space-y-4">
+<div class="space-y-4" {{did-update (perform this.search this.filter) @customer}}>
   <div class="mx-4 sm:mx-6 lg:mx-8">
     {{#unless @customer.name}}
       <AlertMessage::Warning

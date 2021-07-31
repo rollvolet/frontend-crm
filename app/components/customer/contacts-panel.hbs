@@ -1,10 +1,12 @@
-{{#if this.selectedContact}}
-  <Contact::DetailPanel
-    @model={{this.selectedContact}}
-    @onCloseDetail={{this.closeDetail}} />
-{{else}}
-  <Customer::ContactsTable
-    @customer={{@customer}}
-    @onOpenDetail={{this.openDetail}}
-    @onCreateNew={{this.openCreate}} />
-{{/if}}
+<div {{did-update this.closeDetail @customer}}>
+  {{#if this.selectedContact}}
+    <Contact::DetailPanel
+      @model={{this.selectedContact}}
+      @onCloseDetail={{this.closeDetail}} />
+  {{else}}
+    <Customer::ContactsTable
+      @customer={{@customer}}
+      @onOpenDetail={{this.openDetail}}
+      @onCreateNew={{this.openCreate}} />
+  {{/if}}
+</div>

@@ -1,10 +1,12 @@
-{{#if this.selectedBuilding}}
-  <Building::DetailPanel
-    @model={{this.selectedBuilding}}
-    @onCloseDetail={{this.closeDetail}} />
-{{else}}
-  <Customer::BuildingsTable
-    @customer={{@customer}}
-    @onOpenDetail={{this.openDetail}}
-    @onCreateNew={{this.openCreate}} />
-{{/if}}
+<div {{did-update this.closeDetail @customer}}>
+  {{#if this.selectedBuilding}}
+    <Building::DetailPanel
+      @model={{this.selectedBuilding}}
+      @onCloseDetail={{this.closeDetail}} />
+  {{else}}
+    <Customer::BuildingsTable
+      @customer={{@customer}}
+      @onOpenDetail={{this.openDetail}}
+      @onCreateNew={{this.openCreate}} />
+  {{/if}}
+</div>
