@@ -1,0 +1,184 @@
+<div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+  <h3 class="text-lg leading-6 font-medium text-gray-900">
+    Facturen
+  </h3>
+</div>
+<div class="px-4 space-y-6">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle inline-block min-w-full sm:px-2">
+      <div class="overflow-hidden border-b border-gray-200">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <th class="px-6 py-3 bg-gray-50 rounded-tl-lg"></th>
+              <DataTable::Th
+                @field="number"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{fn (mut this.sort)}}
+                class="px-6 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Nr.
+              </DataTable::Th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                AD
+              </th>
+              <DataTable::Th
+                @field="invoice-date"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{fn (mut this.sort)}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Datum
+              </DataTable::Th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Naam
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Straat
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                P.Code
+              </th>
+              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Gemeente
+              </th>
+              <th class="px-6 py-3 bg-gray-50 rounded-tr-lg"></th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {{#if this.loadData.isRunning}}
+              <tr class="animate-pulse">
+                <td class="py-2 px-4">
+                  <div class="h-8 w-4 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-16 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-14 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-28 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-36 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-32 bg-gray-300"></div>
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr class="animate-pulse">
+                <td class="py-2 px-4">
+                  <div class="h-8 w-4 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-16 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-16 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-36 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-48 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-24 bg-gray-300"></div>
+                </td>
+                <td>
+                </td>
+              </tr>
+            {{else}}
+              {{#each this.invoices as |row|}}
+                <tr>
+                  <td class="px-2 py-4 text-sm text-gray-500">
+                    {{#let (if row.isPaid "text-green-600" "text-red-600") as |color|}}
+                      {{svg-jar "heroicons-sm-currency-euro" class=(concat "h-4 w-4 mx-auto " color)}}
+                    {{/let}}
+                  </td>
+                  <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{format-invoice-number row.number}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{row.order.requestNumber}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <FmtDate @value={{row.invoiceDate}} />
+                  </td>
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                    <div class="flex">
+                      {{#if row.building}}
+                        {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                        <div class="space-y-1">
+                          {{#if row.building.printName}}
+                            <div>
+                              {{row.building.printName}}
+                            </div>
+                          {{else}}
+                            <div class="text-gray-400 italic font-normal">
+                              Naamloos
+                            </div>
+                          {{/if}}
+                          <div class="text-gray-400 text-xs"><PrintName @model={{row.customer}} /></div>
+                        </div>
+                      {{else}}
+                        {{#if row.customer}}
+                          {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                          <PrintName @model={{row.customer}} />
+                        {{else}}
+                          {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
+                          <span class="text-gray-400 italic">Geen klant gekoppeld</span>
+                        {{/if}}
+                      {{/if}}
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{if row.building row.building.address1 row.customer.address1}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{if row.building row.building.postalCode row.customer.postalCode}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{if row.building row.building.city row.customer.city}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <LinkTo @route="main.case.invoice.edit" @models={{array row.customer.id row.id}}
+                      class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      Bekijk
+                    </LinkTo>
+                  </td>
+                </tr>
+            {{else}}
+                <tr>
+                  <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">
+                    Geen facturen gevonden.
+                  </td>
+                </tr>
+              {{/each}}
+            {{/if}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <DataTable::Pagination
+    @page={{this.page}}
+    @size={{this.size}}
+    @total={{this.invoices.meta.count}}
+    @onPrevious={{this.previousPage}}
+    @onNext={{this.nextPage}}
+    @onSelectPage={{this.selectPage}} />
+</div>

@@ -1,20 +1,30 @@
 import Controller from '@ember/controller';
-import DefaultQueryParams from 'ember-data-table/mixins/default-query-params';
 import { task } from 'ember-concurrency-decorators';
-import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 
-export default class ExportsController extends Controller.extend(DefaultQueryParams) {
+export default class ExportsController extends Controller {
+  page = 0;
   size = 10;
   sort = '-date';
 
-  @tracked isInvoicesExpanded = false
-  @tracked isHistoryExpanded = true
-
   @task
-  *onExport(accountancyExport) {
+  *runExport(accountancyExport) {
     yield accountancyExport.save();
     this.send('refreshModel');
-    this.isInvoicesExpanded = false;
-    this.isHistoryExpanded = true;
+  }
+
+  @action
+  previousPage() {
+    this.selectPage(this.page - 1);
+  }
+
+  @action
+  nextPage() {
+    this.selectPage(this.page + 1);
+  }
+
+  @action
+  selectPage(page) {
+    this.set('page', page);
   }
 }

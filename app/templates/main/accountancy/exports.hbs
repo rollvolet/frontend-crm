@@ -1,67 +1,89 @@
-<div class="layout-row layout-align-space-between-center">
-  <h1 class="text-3xl font-bold font-display my-6">
-    Exports naar boekhouding
-    <span class="note-fade">Genereer een export voor de boekhouding van facturen die nog niet geboekt zijn.</span>
-  </h1>
+<div>
+  <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
+    Exporteer naar boekhouding
+  </h2>
+  <p class="mt-2 text-gray-500 text-sm">
+    Genereer een export voor de boekhouding van facturen die nog niet geboekt zijn.
+  </p>
 </div>
 
-<AccountancyExportForm @onExport={{perform this.onExport}} />
-
-<h2 class="text-2xl font-bold font-display my-4" {{on "click" (toggle "isInvoicesExpanded" this)}} role="button">
-  Bekijk facturen
-  {{#if this.isInvoicesExpanded}}
-    {{paper-icon "expand_less"}}
-  {{else}}
-    {{paper-icon "expand_more"}}
-    <span class="note-fade">Klik om een overzicht van de facturen te bekijken.</span>
-  {{/if}}
-</h2>
-{{#liquid-if this.isInvoicesExpanded class="expand-more"}}
-  <InvoicesTable @size={{50}} />
-{{/liquid-if}}
-
-<div class="u-spacer-large"></div>
-
-<h2 class="text-2xl font-bold font-display my-4" {{on "click" (toggle "isHistoryExpanded" this)}} role="button">
-  Export historiek
-  {{#if this.isHistoryExpanded}}
-    {{paper-icon "expand_less"}}
-  {{else}}
-    {{paper-icon "expand_more"}}
-    <span class="note-fade">Klik om een historiek van de exports te bekijken.</span>
-  {{/if}}
-</h2>
-{{#liquid-if this.isHistoryExpanded class="expand-more"}}
-  <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} as |t|>
-    <t.content as |c|>
-      <c.header>
-        <ThSortable @field="date" @currentSorting={{this.sort}} @label="Datum export" />
-        <th>Van</th>
-        <th>Tot</th>
-        <th>Test</th>
-      </c.header>
-      <c.body as |row|>
-        <td><FmtDate @value={{row.date}} /></td>
-        <td>
-          {{#if row.fromNumber}}
-            {{format-invoice-number row.fromNumber}}
-          {{else}}
-            <FmtDate @value={{row.fromDate}} />
-          {{/if}}
-        </td>
-        <td>
-          {{#if row.untilNumber}}
-            {{format-invoice-number row.untilNumber}}
-          {{else}}
-            <FmtDate @value={{row.untilDate}} />
-          {{/if}}
-        </td>
-        <td>
-          {{#if row.isDryRun}}
-            {{paper-icon "done"}}
-          {{/if}}
-        </td>
-      </c.body>
-    </t.content>
-  </DataTable>
-{{/liquid-if}}
+<div class="grid xl:grid-cols-2 gap-4">
+  <div class="mt-6 bg-white shadow rounded-lg h-80">
+    <AccountancyExport::Form @onExport={{perform this.runExport}} />
+  </div>
+  <div class="mt-6 bg-white shadow rounded-lg h-80 overflow-y-auto">
+    <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+      <h3 class="text-lg leading-6 font-medium text-gray-900">
+        Uitgevoerde exports
+      </h3>
+    </div>
+    <div class="px-4 space-y-6">
+      <ul class="divide-y divide-gray-200">
+        {{#if this.runExport.isRunning}}
+          <li class="relative bg-white py-5 px-4">
+            <div class="flex justify-between space-x-3">
+              <div class="min-w-0 flex-1">
+                <div class="space-y-1">
+                  <span class="absolute inset-0" aria-hidden="true"></span>
+                  <p class="animate-pulse h-5 w-2/3 bg-gray-300">
+                  </p>
+                  <p class="animate-pulse h-4 w-1/2 bg-gray-300">
+                  </p>
+                </div>
+              </div>
+              <div class="flex-grow-0">
+                <span class="animate-pulse inline-flex h-4 w-10 rounded-full bg-gray-300">
+                </span>
+              </div>
+            </div>
+          </li>
+        {{/if}}
+        {{#each this.model as |row|}}
+          <li class="relative bg-white py-5 px-4">
+            <div class="flex justify-between space-x-3">
+              <div class="min-w-0 flex-1">
+                <div>
+                  <span class="absolute inset-0" aria-hidden="true"></span>
+                  <p class="text-sm font-medium text-gray-900 truncate">
+                    Export
+                    {{#if row.fromNumber}}
+                      van {{format-invoice-number row.fromNumber}}
+                    {{/if}}
+                    {{#if row.untilNumber}}
+                      tot {{format-invoice-number row.untilNumber}}
+                    {{/if}}
+                  </p>
+                  <p class="text-sm text-gray-500 truncate">
+                    Uitgevoerd op <FmtDate @value={{row.date}} @format="LLL" />
+                  </p>
+                </div>
+              </div>
+              <div class="flex-grow-0">
+                {{#if row.isDryRun}}
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    Test
+                  </span>
+                {{else}}
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    Uitgevoerd
+                  </span>
+                {{/if}}
+              </div>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+      <DataTable::Pagination
+        @page={{this.page}}
+        @size={{this.size}}
+        @total={{this.model.meta.count}}
+        @onPrevious={{this.previousPage}}
+        @onNext={{this.nextPage}}
+        @onSelectPage={{this.selectPage}}
+        class="sm-px-2-important" />
+    </div>
+  </div>
+  <div class="col-span-2 mt-6 bg-white shadow rounded-lg">
+    <Invoice::Table />
+  </div>
+</div>

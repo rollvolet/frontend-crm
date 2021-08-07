@@ -1,0 +1,78 @@
+<div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+  <h3 class="text-lg leading-6 font-medium text-gray-900">
+    Nieuwe export
+  </h3>
+</div>
+<form class="p-6">
+  <div class="space-y-4 sm:flex sm:items-center sm:space-x-4 sm:space-y-0">
+    <div class="text-sm font-medium text-gray-700">
+      Exporteer facturen
+    </div>
+    <div class="relative w-32 border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-red-200 focus-within:border-red-200">
+      <label for="from-number" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">
+        {{if this.multipleExportEnabled "Van" "Nummer"}}
+      </label>
+      <Input
+        @id="from-number"
+        @type="text"
+        name="from-number"
+        value={{this.formattedFromNumber}}
+        placeholder="30/0001"
+        class="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
+        {{on "input" this.setFromNumber}} />
+    </div>
+    {{#if this.multipleExportEnabled}}
+      <div class="hidden sm:block text-sm font-medium text-gray-700">
+        -
+      </div>
+      <div class="relative w-32 border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-red-200 focus-within:border-red-200">
+        <label for="until-number" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">
+          Tot
+        </label>
+        <Input
+          @id="until-number"
+          @type="text"
+          name="until-number"
+          placeholder="30/0439"
+          value={{this.formattedUntilNumber}}
+          class="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
+          {{on "input" this.setUntilNumber}} />
+      </div>
+    {{/if}}
+  </div>
+  <div class="mt-6">
+    <InputField::Checkbox
+      @id="multiple-export-checkbox"
+      @label="Exporteer meerdere facturen"
+      @value={{this.multipleExportEnabled}}
+      @onChange={{this.toggleMultipleExportEnabled}} />
+  </div>
+  <div class="mt-6">
+    <InputField::Checkbox
+      @id="dryrun-checkbox"
+      @label="Facturen niet markeren als 'geboekt' in de databank (om te testen)"
+      @value={{this.model.isDryRun}}
+      @onChange={{fn (mut this.model.isDryRun)}} />
+  </div>
+
+  <div class="mt-12 flex justify-end">
+    {{#if this.isExportDisabled}}
+      <button type="button" disabled
+        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-gray-700 bg-gray-100">
+        {{#if this.startExport.isRunning}}
+          {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
+        {{else}}
+          {{svg-jar "heroicons-md-play" class="-ml-1 mr-2 h-5 w-5"}}
+          Uitvoeren
+        {{/if}}
+      </button>
+    {{else}}
+      <button type="button"
+        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+        {{on "click" (perform this.startExport)}}>
+        {{svg-jar "heroicons-md-play" class="-ml-1 mr-2 h-5 w-5"}}
+        Uitvoeren
+      </button>
+    {{/if}}
+  </div>
+</form>

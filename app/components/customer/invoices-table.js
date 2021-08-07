@@ -5,13 +5,13 @@ import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency-decorators';
 
 export default class InvoicesTable extends FilterComponent {
-  @service router
-  @service store
+  @service router;
+  @service store;
 
   @tracked page = 0;
   @tracked size = 10;
   @tracked sort = '-number';
-  @tracked invoices = []
+  @tracked invoices = [];
 
   constructor() {
     super(...arguments);

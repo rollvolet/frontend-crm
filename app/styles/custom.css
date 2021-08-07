@@ -101,3 +101,12 @@
 md-input-container .md-input:focus {
   @apply ring-0;
 }
+
+
+/** Utils to overwrite CSS embedded in components */
+@media (min-width: 640px) {
+  .sm-px-2-important {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+}
