@@ -1,170 +1,335 @@
-<div class="layout-row layout-align-space-between-center">
-  <h1 class="text-3xl font-bold font-display my-6">Uit te voeren werken</h1>
-  <div>
-    <PaperButton @onClick={{fn this.print}} @iconButton={{true}}>
-    {{paper-icon "print"}}
-      <PaperTooltip>Print view</PaperTooltip>
-    </PaperButton>
+<div class="flex items-center justify-between">
+  <div class="flex-1 min-w-0">
+    <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
+      Uit te voeren werken
+    </h2>
+  </div>
+  <div class="flex flex-grow-0">
   </div>
 </div>
 
-<div class="data-table-filters">
-  <div class="data-table-filters--title">
-    {{paper-icon "search"}} Filteren
-  </div>
-  <div class="data-table-filters--fields layout-row flex layout-align-start">
-    <div class="u-vertical-center u-margin-right-normal u-text-large">
-      <div>{{@model.meta.count}}</div>
-      <div>resultaten</div>
-    </div>
-
-    <div class="layout-column">
-      <InputField::EmployeeSelect
-        @label="Bezoeker"
-        @value={{this.visitor}}
-        @isTechnician={{true}}
-        @isOnRoad={{true}}
-        @onSelectionChange={{this.selectVisitor}}
-        class="md-input-wrapper large" />
-      <div>
-        <PaperInput
-          @label="Besteldatum na"
-          @value={{this.orderDate}}
-          @type="date"
-          @onChange={{fn (mut this.orderDate)}}
-          @class="default u-rel-top-normal" />
+<div class="mt-6 bg-white shadow rounded-lg">
+  <div class="pt-4 pb-6 px-4 space-y-4 sm:px-6">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center">
+        {{svg-jar "heroicons-md-search" class="flex-shrink-0 mr-2 h-4 w-4 text-gray-500"}}
+        <h4 class="text-gray-700 text-sm uppercase tracking-wide">
+          Zoeken
+        </h4>
       </div>
     </div>
-
-    <InputField::FilterFlag @label="Productiebon"
-      @value={{this.hasProductionTicket}}
-      @onChange={{fn (mut this.hasProductionTicket)}}
-    />
-
-    <InputField::FilterFlag @label="Uitvoering"
-      @value={{this.execution}}
-      @options={{this.executionOptions}}
-      @onChange={{fn (mut this.execution)}}
-    />
-
-    <InputField::FilterFlag @label="Product klaar"
-      @value={{this.isProductReady}}
-      @onChange={{fn (mut this.isProductReady)}}
-    />
-
-    <div class="layout-column">
-      <div class="u-rel-top-neg-xsmall">
-        <label class="power-select--label">Sorteren</label>
-        <div class="md-input-wrapper large">
-          <PowerSelect
-            @options={{this.sortFieldOptions}}
-            @selected={{this.sortField}}
-            @searchEnabled={{false}}
-            @onChange={{this.setSortField}}
-            @renderInPlace={{true}} as |option select|>
-            {{option.label}}
-          </PowerSelect>
+    <div class="grid sm:grid-cols-4 gap-6">
+      <div class="-mt-2 space-y-3">
+        <div class="flex items-center space-x-2">
+          <div class="text-center text-2xl font-bold text-gray-900">{{@model.meta.count}}</div>
+          <div class="text-center text-lg text-gray-500">resultaten</div>
         </div>
-        <div class="md-input-wrapper large">
-          <PowerSelect
-            @options={{this.sortDirectionOptions}}
-            @selected={{this.sortDirection}}
-            @searchEnabled={{false}}
-            @onChange={{this.setSortDirection}}
-            @renderInPlace={{true}} as |option select|>
-            {{option.label}}
-          </PowerSelect>
+        <div>
+          <label for="sorting" class="block text-sm font-medium text-gray-700">
+            Sorteren
+          </label>
+          <div class="mt-1">
+            <PowerSelect
+              @options={{this.sortFieldOptions}}
+              @selected={{this.sortField}}
+              @searchEnabled={{false}}
+              @onChange={{this.setSortField}}
+              @renderInPlace={{true}} as |option select|>
+              {{option.label}}
+            </PowerSelect>
+          </div>
+          <div class="mt-1">
+            <PowerSelect
+              @options={{this.sortDirectionOptions}}
+              @selected={{this.sortDirection}}
+              @searchEnabled={{false}}
+              @onChange={{this.setSortDirection}}
+              @renderInPlace={{true}} as |option select|>
+              {{option.label}}
+            </PowerSelect>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <InputField::EmployeeSelect
+            @label="Bezoeker"
+            @value={{this.visitor}}
+            @isTechnician={{true}}
+            @isOnRoad={{true}}
+            @onSelectionChange={{this.selectVisitor}}
+            class="mt-1" />
+        </div>
+        <div>
+          <InputField::FilterFlag @label="Productiebon"
+            @value={{this.hasProductionTicket}}
+            @onChange={{fn (mut this.hasProductionTicket)}} />
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <InputField::Date
+            @label="Besteldatum na"
+            @value={{this.orderDateObject}}
+            @onChange={{this.setOrderDate}}
+            class="mt-1" />
+        </div>
+        <div>
+          <InputField::FilterFlag @label="Product klaar"
+            @value={{this.isProductReady}}
+            @onChange={{fn (mut this.isProductReady)}} />
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div role="group" aria-labelledby="label-executions" class="space-y-2">
+          <div id="label-executions" class="font-medium text-sm text-gray-700">
+            Uitvoering
+          </div>
+          {{#each this.executionOptions as |option|}}
+            <div class="flex items-center">
+              <Input
+                @id="execution-opt-{{option.id}}"
+                @type="radio"
+                @value={{option.value}}
+                name="execution-opt-group"
+                class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
+                checked={{eq this.execution option.value}}
+                {{on "input" this.selectExecution}} />
+              <label for="execution-opt-{{option.id}}" class="ml-3 block text-sm font-medium text-gray-700">
+                {{option.label}}
+              </label>
+            </div>
+          {{/each}}
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="data-table--outstanding-jobs">
-  <DataTable
-    @content={{@model}}
-    @onClickRow={{this.goToOrder}}
-    @isLoading={{this.isLoadingModel}}
-    @noDataMessage="Geen resultaten"
+<div class="mt-6 bg-white shadow rounded-lg">
+  <div class="flex flex-col">
+    <div class="-my-2 sm:-mx-6 lg:-mx-8">
+      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="border-b border-gray-200">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th class="pl-4 pr-2 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  AD
+                </th>
+
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Bez.
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Besteldat.
+                </th>
+                <th class="px-3 py-3 bg-gray-200 whitespace-nowrap text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Kl. nr.
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Klant
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Gemeente
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Uitvoering
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Pr. bon
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Planning
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Uren
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Klaar?
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">
+                  Opmerking
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {{#if this.isLoadingModel}}
+                <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-24 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-14 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-28 bg-gray-300"></div>
+                  </td>
+                  <td>
+                    <div class="h-8 w-20 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-18 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-24 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-18 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td>
+                    <div class="h-8 w-20 bg-gray-300"></div>
+                  </td>
+                </tr>
+                <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-24 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-14 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-24 bg-gray-300"></div>
+                  </td>
+                  <td>
+                    <div class="h-8 w-24 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-28 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td>
+                    <div class="h-8 w-20 bg-gray-300"></div>
+                  </td>
+                </tr>
+              {{else}}
+                {{#each this.model as |row|}}
+                  <tr>
+                    <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
+                      <LinkTo @route="main.case.order.edit" @models={{array row.customerNumber row.orderId}}
+                        class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                        AD{{row.requestId}}
+                      </LinkTo>
+                    </td>
+                    <td class="px-3 py-2 text-xs text-gray-500">
+                      {{row.visitor}}
+                    </td>
+                    <td class="px-3 py-2 text-xs font-medium text-gray-900">
+                      <FmtDate @value={{row.orderDate}} />
+                    </td>
+                    <td class="px-3 py-2 text-xs font-medium text-gray-900">
+                      {{row.customerNumber}}
+                    </td>
+                    <td class="px-3 py-2 text-xs font-medium text-gray-900">
+                      {{row.customerName}}
+                      <br>{{row.customerAddress1}}
+                      {{#if row.buildingAddress1}}
+                        <br>{{row.buildingAddress1}}
+                      {{/if}}
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+                      <br>
+                      {{row.customerPostalCode}} {{row.customerCity}}
+                      {{#if row.buildingCity}}
+                        <br>{{row.buildingPostalCode}} {{row.buildingCity}}
+                      {{/if}}
+                    </td>
+                    <td class="px-3 py-2 text-xs text-gray-500">
+                      {{#if row.mustBeDelivered}}
+                        {{order-execution 'delivery'}}
+                      {{else if row.mustBeInstalled}}
+                        {{order-execution 'installation'}}
+                      {{else}}
+                        {{order-execution 'pickup'}}
+                      {{/if}}
+                    </td>
+                    <td class="px-3 py-2 text-center text-xs text-gray-400">
+                      {{#if row.hasProductionTicket}}
+                        {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
+                      {{else}}
+                        -
+                      {{/if}}
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+                      <div>
+                        <span class="text-gray-400 italic inline-block w-5">Vw</span>
+                        <FmtDate @value={{row.expectedDate}} />
+                      </div>
+                      <div>
+                        <span class="text-gray-400 italic inline-block w-5">Ve</span>
+                        <FmtDate @value={{row.requiredDate}} />
+                      </div>
+                      <div>
+                        <span class="text-gray-400 italic inline-block w-5">Pl</span>
+                        <FmtDate @value={{row.planningDate}} />
+                      </div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+                      {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
+                      {{#each row.techniciansList as |technician|}}
+                        <br>{{technician}}
+                      {{/each}}
+                    </td>
+                    <td class="px-3 py-2 text-center text-xs text-gray-400">
+                      {{#if row.productIsReady}}
+                        {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
+                      {{else}}
+                        -
+                      {{/if}}
+                    </td>
+                    <td class="px-3 py-2 text-xs text-gray-500 max-w-xs {{unless row.expandComment "truncate"}}"
+                      {{on "click" (fn this.toggleComment row)}}>
+                      {{row.comment}}
+                    </td>
+                  </tr>
+                {{else}}
+                  <tr>
+                    <td colspan="12" class="px-6 py-4 text-center text-sm text-gray-500">
+                      Geen uit te voeren werken.
+                    </td>
+                  </tr>
+                {{/each}}
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <DataTable::Pagination
     @page={{this.page}}
     @size={{this.size}}
-    as |t|>
-    <t.content as |c|>
-      <c.header>
-        <th>Aanvraag</th>
-        <th>Bezoeker</th>
-        <th>Besteldatum</th>
-        <th>Kl. Nr.</th>
-        <th>Klant</th>
-        <th>Gemeente</th>
-        <th>Uitvoering</th>
-        <th>Pr.bon</th>
-        <th>Planning</th>
-        <th>Uren</th>
-        <th>Klaar?</th>
-        <th>Opmerking</th>
-      </c.header>
-      <c.body as |row|>
-        <td>AD{{row.requestId}}</td>
-        <td>{{row.visitor}}</td>
-        <td><FmtDate @value={{row.orderDate}} /></td>
-        <td>{{row.customerNumber}}</td>
-        <td>
-          {{row.customerName}}
-          <br>{{row.customerAddress1}}
-          {{#if row.buildingAddress1}}
-            <br>{{row.buildingAddress1}}
-          {{/if}}
-        </td>
-        <td>
-          <br>
-          {{row.customerPostalCode}} {{row.customerCity}}
-          {{#if row.buildingCity}}
-            <br>{{row.buildingPostalCode}} {{row.buildingCity}}
-          {{/if}}
-        </td>
-        <td>
-          {{#if row.mustBeDelivered}}
-            {{order-execution 'delivery'}}
-          {{else if row.mustBeInstalled}}
-            {{order-execution 'installation'}}
-          {{else}}
-            {{order-execution 'pickup'}}
-          {{/if}}
-        </td>
-        <td>
-          {{paper-icon (if row.hasProductionTicket "check_box" "check_box_outline_blank")}}
-        </td>
-        <td>
-          <div class="u-nowrap">
-            <PaperTooltip>Verwacht</PaperTooltip>
-            <span class="note note--info">Vw </span>
-            <FmtDate @value={{row.expectedDate}} />
-          </div>
-          <div class="u-nowrap">
-            <PaperTooltip>Vereist</PaperTooltip>
-            <span class="note note--info">Ve </span>
-            <FmtDate @value={{row.requiredDate}} />
-          </div>
-          <div class="u-nowrap">
-            <PaperTooltip>Gepland</PaperTooltip>
-            <span class="note note--info">Pl </span>
-            <FmtDate @value={{row.planningDate}} />
-          </div>
-        </td>
-        <td>
-          {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
-          {{#each row.techniciansList as |technician|}}
-            <br>{{technician}}
-          {{/each}}
-        </td>
-        <td>
-          {{paper-icon (if row.productIsReady "check_box" "check_box_outline_blank")}}
-        </td>
-        <td class="{{unless row.expandComment "truncate"}}" role="button" {{on "click" (fn this.toggleComment row)}}>
-          {{row.comment}}
-        </td>
-      </c.body>
-    </t.content>
-  </DataTable>
+    @total={{this.model.meta.count}}
+    @onPrevious={{this.previousPage}}
+    @onNext={{this.nextPage}}
+    @onSelectPage={{this.selectPage}} />
 </div>
