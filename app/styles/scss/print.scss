@@ -14,36 +14,14 @@
     display: block;
   }
 
-  /* Safari scales page down so width of 100vw fits on the page */
-  .print\:w-screen {
-    width: auto !important;
-  }
-
-  .hide-on-print {
-    display: none;
-  }
-
-  .display-on-print {
-    display: block;
-  }
-
-  md-toolbar {
-    display: none;
-  }
-
-  .main-container {
-    overflow: hidden;
-
-    .main-outlet {
-      margin: 0;
-      padding: 0;
-      min-width: unset;
-      font-size: 10pt;
-    }
+  .main-outlet {
+    margin: 0;
+    padding: 0;
+    min-width: unset;
+    font-size: 10pt;
   }
 
   .table {
-    display: table;
     border-spacing: 2px;
   }
 

@@ -7,6 +7,9 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
         display: ['Nunito', 'Inter var', ...defaultTheme.fontFamily.sans]
+      },
+      screens: {
+        'print': {'raw': 'print'} // => @media print { ... }
       }
     },
   },

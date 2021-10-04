@@ -5,6 +5,12 @@
     </h2>
   </div>
   <div class="flex flex-grow-0">
+    <LinkTo @route="main.reports.outstanding-jobs.print"
+      @query={{hash visitorName=this.visitorName orderDate=this.orderDate hasProductionTicket=this.hasProductionTicket execution=this.execution isProductReady=this.isProductReady}}
+      class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+      {{svg-jar "heroicons-md-printer" class="-ml-1 mr-2 h-5 w-5"}}
+      Afdrukken
+    </LinkTo>
   </div>
 </div>
 

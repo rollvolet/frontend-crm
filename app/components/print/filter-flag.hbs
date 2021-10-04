@@ -1,6 +1,10 @@
 {{#if (eq @value -1)}}
   n.v.t.
 {{else}}
-  {{paper-icon (if @value "check_box" "check_box_outline_blank")}}
+  {{#if @value}}
+    {{svg-jar "heroicons-sm-check" class="h-4 w-4 text-gray-500"}}
+  {{else}}
+    -
+  {{/if}}
 {{/if}}
 {{yield}}

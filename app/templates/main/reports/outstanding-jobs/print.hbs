@@ -1,32 +1,67 @@
-<h1 class="text-3xl font-bold font-display my-6">Uit te voeren werken</h1>
-
-<div>
-  <span>Bezoeker: {{if this.visitorName this.visitorName " - "}}</span> |
-  <span>Vanaf: {{#if this.orderDate}}{{moment-format this.orderDate 'DD/MM/YY'}}{{else}} - {{/if}}</span> |
-  <span>Productiebon: <Print::FilterFlag @value={{this.hasProductionTicket}} /></span> |
-  <span>Uitvoering:
-    {{#if (eq this.execution "delivery")}}
-      {{order-execution 'delivery'}}
-    {{else if (eq this.execution "installation")}}
-      {{order-execution 'installation'}}
-    {{else if (eq this.execution "take-out")}}
-      {{order-execution 'pickup'}}
-    {{else}}
-      n.v.t.
-    {{/if}}
-  </span> |
-  <span>Product klaar: <Print::FilterFlag @value={{this.isProductReady}} /></span>
+<div class="flex items-center justify-between print:w-screen">
+  <div class="flex-1 min-w-0">
+    <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
+      Uit te voeren werken
+    </h2>
+  </div>
+  <div class="flex flex-grow-0">
+  </div>
 </div>
 
-<div class="hide-on-print u-margin-top-small">
-  <InfoMessage>
-    <div>
-      Het rapport om te printen is voorbereid. Het is normaal dat u hier geen resultaten ziet. Gebruik de print-functie van de browser (Ctrl+P) om dit rapport te printen.
+<div class="mt-6 bg-white shadow rounded-lg">
+  <div class="pt-4 pb-6 px-4 space-y-8 sm:px-6">
+    <dl class="grid grid-cols-5 justify-between items-center print:space-x-4 print:w-max">
+      <div>
+        <dt class="font-semibold">Bezoeker:</dt>
+        <dd>{{if this.visitorName this.visitorName " - "}}</dd>
+      </div>
+      <div>
+        <dt class="font-semibold">Vanaf:</dt>
+        <dd>
+          {{#if this.orderDate}}
+            {{moment-format this.orderDate 'DD/MM/YY'}}
+          {{else}}
+            -
+          {{/if}}
+        </dd>
+      </div>
+      <div>
+        <dt class="font-semibold">Productiebon:</dt>
+        <dd>
+          <Print::FilterFlag @value={{this.hasProductionTicket}} />
+        </dd>
+      </div>
+      <div>
+        <dt class="font-semibold">Uitvoering:</dt>
+        <dd>
+          {{#if (eq this.execution "delivery")}}
+            {{order-execution 'delivery'}}
+          {{else if (eq this.execution "installation")}}
+            {{order-execution 'installation'}}
+          {{else if (eq this.execution "take-out")}}
+            {{order-execution 'pickup'}}
+          {{else}}
+            n.v.t.
+          {{/if}}
+        </dd>
+      </div>
+      <div>
+        <dt class="font-semibold">Product klaar:</dt>
+        <dd>
+          <Print::FilterFlag @value={{this.isProductReady}} />
+        </dd>
+      </div>
+    </dl>
+
+    <div class="print:hidden">
+      <div class="italic text-sm">
+        Het rapport om te printen is voorbereid. Het is normaal dat u hier geen resultaten ziet. Gebruik de print-functie van de browser (Ctrl+P) om dit rapport te printen.
+      </div>
     </div>
-  </InfoMessage>
+  </div>
 </div>
 
-<div class="display-on-print table table-striped report-outstanding-jobs">
+<div class="hidden print:table print:w-screen table table-striped report-outstanding-jobs overflow-visible">
   <div class="header">
     <div class="row">
       <div>Aanvraag</div>
@@ -98,7 +133,11 @@
         {{/if}}
       </div>
       <div>
-        {{paper-icon (if row.hasProductionTicket "check_box" "check_box_outline_blank")}}
+        {{#if row.hasProductionTicket}}
+          {{svg-jar "heroicons-sm-check" class="h-4 w-4 text-gray-500"}}
+        {{else}}
+          -
+        {{/if}}
       </div>
       <div class="center">
         {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}}T
@@ -107,7 +146,11 @@
         {{/each}}
       </div>
       <div>
-        {{paper-icon (if row.productIsReady "check_box" "check_box_outline_blank")}}
+        {{#if row.productIsReady}}
+          {{svg-jar "heroicons-sm-check" class="h-4 w-4 text-gray-500"}}
+        {{else}}
+          -
+        {{/if}}
       </div>
     </div>
   {{/each}}

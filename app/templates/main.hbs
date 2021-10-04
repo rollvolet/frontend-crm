@@ -45,9 +45,9 @@
     </div>
   </div>
 
-  <div class="flex flex-col w-0 flex-1 overflow-hidden">
+  <div class="flex flex-col w-0 flex-1 overflow-hidden print:overflow-visible">
     {{!-- Top toolbar on mobile and small screens --}}
-    <div class="2xl:hidden relative z-10 flex flex-none h-16 bg-red-700 shadow">
+    <div class="2xl:hidden print:hidden relative z-10 flex flex-none h-16 bg-red-700 shadow">
       <button type="button"
         onClick={{this.openMenu}}
         class="px-4 border-r border-red-800 text-red-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -81,7 +81,7 @@
     </div>
 
     {{!-- Main outlet --}}
-    <main class="flex-1 relative overflow-y-auto focus:outline-none main-outlet" tabindex="0">
+    <main class="flex-1 relative overflow-y-auto print:overflow-visible focus:outline-none main-outlet" tabindex="0">
       <div class="mx-auto px-4 py-6 sm:px-6 lg:px-8">
         {{#if this.configuration.preloadStaticLists.isRunning}}
           <div class="fixed inset-0 w-full h-screen">
