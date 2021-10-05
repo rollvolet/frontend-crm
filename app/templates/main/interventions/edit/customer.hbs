@@ -1,31 +1,158 @@
-<h2 class="text-2xl font-bold font-display my-4">Koppel klant aan interventie</h2>
+<div class="flex items-center justify-between">
+  <div class="flex-1 min-w-0">
+    <h2 class="text-xl font-bold leading-7 font-display text-gray-900 sm:text-2xl sm:truncate">
+      Koppel klant aan interventie
+    </h2>
+  </div>
+  <div class="flex flex-grow-0">
+  </div>
+</div>
 
 {{#if this.linkCustomerToIntervention.isRunning}}
-  <div>
-    <PaperProgressLinear />
-    <p>Klant koppelen aan interventie...</p>
+  <div class="mt-6">
+    <LoadingSpinner @label="Klant koppelen aan interventie..." />
   </div>
 {{else}}
-  <Customer::DataTableFilter @number={{this.number}} @name={{this.name}} @street={{this.street}} @postalCode={{this.postalCode}} @city={{this.city}} @telephone={{this.telephone}} @onChange={{fn this.applyFilter}} />
+  <div class="mt-6 bg-white shadow rounded-lg">
+    <Customer::DataTableFilter
+      @number={{this.number}}
+      @name={{this.name}}
+      @street={{this.street}}
+      @postalCode={{this.postalCode}}
+      @city={{this.city}}
+      @telephone={{this.telephone}}
+      @onChange={{this.applyFilter}} />
+  </div>
 
-  <DataTable @content={{@model}} @isLoading={{this.isLoadingModel}} @noDataMessage="Geen resultaten" @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @onClickRow={{perform this.linkCustomerToIntervention}} as |t|>
-    <t.content as |c|>
-      <c.header>
-        <ThSortable @field="number" @currentSorting={{this.sort}} @label="Nr" />
-        <ThSortable @field="name" @currentSorting={{this.sort}} @label="Naam" />
-        <ThSortable @field="address" @currentSorting={{this.sort}} @label="Straat" />
-        <ThSortable @field="postal-code" @currentSorting={{this.sort}} @label="Postcode" />
-        <ThSortable @field="city" @currentSorting={{this.sort}} @label="Gemeente" />
-      </c.header>
-      <c.body as |row|>
-        <td>{{row.number}}</td>
-        <td><PrintName @model={{row}} /></td>
-        <td>{{row.address1}}</td>
-        <td>{{row.postalCode}}</td>
-        <td>{{row.city}}</td>
-      </c.body>
-    </t.content>
-  </DataTable>
+  <div class="mt-6 bg-white shadow rounded-lg">
+    <div class="flex flex-col">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="overflow-hidden border-b border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <DataTable::Th
+                    @field="number"
+                    @currentSort={{this.sort}}
+                    @onUpdateSort={{fn (mut this.sort)}}
+                    class="pl-4 pr-2 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+                    Nr.
+                  </DataTable::Th>
+                  <DataTable::Th
+                    @field="name"
+                    @currentSort={{this.sort}}
+                    @onUpdateSort={{fn (mut this.sort)}}
+                    class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Naam
+                  </DataTable::Th>
+                  <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Straat
+                  </th>
+                  <DataTable::Th
+                    @field="postal-code"
+                    @currentSort={{this.sort}}
+                    @onUpdateSort={{fn (mut this.sort)}}
+                    class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    P.code
+                  </DataTable::Th>
+                  <DataTable::Th
+                    @field="city"
+                    @currentSort={{this.sort}}
+                    @onUpdateSort={{fn (mut this.sort)}}
+                    class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Gemeente
+                  </DataTable::Th>
+                  <th class="px-6 py-3 bg-gray-200 rounded-tr-lg"></th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                {{#if this.isLoadingModel}}
+                  <tr class="animate-pulse">
+                    <td class="py-2 px-4">
+                      <div class="h-8 w-12 bg-gray-300"></div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="h-8 w-28 bg-gray-300"></div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="h-8 w-36 bg-gray-300"></div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="h-8 w-12 bg-gray-300"></div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="h-8 w-32 bg-gray-300"></div>
+                    </td>
+                    <td>
+                    </td>
+                  </tr>
+                  <tr class="animate-pulse">
+                    <td class="py-2 px-4">
+                      <div class="h-8 w-12 bg-gray-300"></div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="h-8 w-36 bg-gray-300"></div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="h-8 w-48 bg-gray-300"></div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="h-8 w-12 bg-gray-300"></div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="h-8 w-24 bg-gray-300"></div>
+                    </td>
+                    <td>
+                    </td>
+                  </tr>
+                {{else}}
+                  {{#each this.model as |row|}}
+                    <tr>
+                      <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                        {{row.number}}
+                      </td>
+                      <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                        <PrintName @model={{row}} />
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-500">
+                        {{row.address1}}
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-500">
+                        {{row.postalCode}}
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-500">
+                        {{row.city}}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+                          {{on "click" (perform this.linkCustomerToIntervention row)}}>
+                          Koppel
+                        </button>
+                      </td>
+                    </tr>
+                  {{else}}
+                    <tr>
+                      <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
+                        Geen klanten gevonden.
+                      </td>
+                    </tr>
+                  {{/each}}
+                {{/if}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <DataTable::Pagination
+      @page={{this.page}}
+      @size={{this.size}}
+      @total={{this.model.meta.count}}
+      @onPrevious={{this.previousPage}}
+      @onNext={{this.nextPage}}
+      @onSelectPage={{this.selectPage}} />
+  </div>
 {{/if}}
 
-<LiquidOutlet />
+{{outlet}}
