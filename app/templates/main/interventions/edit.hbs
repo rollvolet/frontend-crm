@@ -4,6 +4,11 @@
   <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
     <div class="lg:col-span-2">
       <div class="space-y-4">
+        {{#if this.model.isCancelled}}
+          <AlertMessage::Warning
+            @message="De interventie is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
+            class="shadow" />
+        {{/if}}
         <div class="bg-white shadow rounded-lg overflow-hidden">
           <Intervention::DetailPanel
             @model={{this.model}}
