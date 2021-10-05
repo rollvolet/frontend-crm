@@ -1,10 +1,11 @@
-<div class="layout-row layout-align-space-between-center">
-  <div class="layout-row layout-align-start-center">
-    <h2 class="text-2xl font-bold font-display my-4">Factuur</h2>
+<div class="flex items-center justify-between">
+  <div class="flex-1 min-w-0">
+    <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
+      Factuur
+    </h2>
   </div>
 </div>
 
 <div>
-  <PaperProgressLinear />
-  <p>Nieuwe factuur aan het maken...</p>
+  <LoadingSpinner @label="Nieuwe factuur aan het maken..." />
 </div>
