@@ -63,14 +63,14 @@
                     leaveActiveClass="transition ease-in duration-75"
                     leaveToClass="transform opacity-0 scale-95"}}>
                 <div class="py-1" role="none">
-                  {{#unless this.hasInvoice}}
+                  {{#if (and (not this.hasInvoice) this.isLinkedToCustomer)}}
                     <LinkTo role="menuitem" tabindex="-1"
                       @route="main.case.intervention.edit.invoice"
                       @models={{array this.case.current.customerId @model.id}}
                       class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
                       Factuur opstellen
                     </LinkTo>
-                  {{/unless}}
+                  {{/if}}
                   {{#if @model.isCancelled}}
                     <div role="menuitem" tabindex="-1"
                       {{on "click" this.uncancelIntervention}}
