@@ -28,11 +28,12 @@ export default class MainReportsRevenueRoute extends Route {
     }));
 
     endpoint.search = urlParams.toString();
-    const response = await (await fetch(endpoint), {
+    const response = await fetch(endpoint, {
       headers: new Headers({
         Accept: 'application/json'
       })
-    }).json();
-    return response.data.map(item => new MonthlySalesEntry(item.attributes));
+    });
+    const json = await response.json();
+    return json.data.map(item => new MonthlySalesEntry(item.attributes));
   }
 }

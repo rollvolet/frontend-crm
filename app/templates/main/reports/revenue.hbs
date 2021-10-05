@@ -1,32 +1,58 @@
-<div class="layout-row layout-align-space-between-center">
-  <h1 class="text-3xl font-bold font-display my-6">Omzet</h1>
+<div class="flex items-center justify-between">
+  <div class="flex-1 min-w-0">
+    <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
+      Omzet
+    </h2>
+  </div>
+  <div class="flex flex-grow-0">
+  </div>
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th class="u-text-right">Maand</th>
-      {{#each this.years as |year|}}
-        <th class="u-text-right">{{year}}</th>
-      {{/each}}
-    </tr>
-  </thead>
-  <tbody>
-    {{#each this.matrix as |row|}}
-      <tr>
-        <td class="u-text-right">{{row.month}}</td>
-        {{#each row.entries as |entry|}}
-          <td class="u-text-right"><FmtCurrency @value={{entry.amount}} /></td>
-        {{/each}}
-      </tr>
-    {{/each}}
-    <tr class="u-bold">
-      <td class="u-text-right">Totaal</td>
-      {{#each this.totals as |total|}}
-        <td class="u-text-right"><FmtCurrency @value={{total}} /></td>
-      {{/each}}
-    </tr>
-  </tbody>
-</table>
+<div class="mt-6 flex flex-col">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle inline-block sm:px-6 lg:px-8">
+      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+        <table class="divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Maand
+              </th>
+              {{#each this.years as |year|}}
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {{year}}
+                </th>
+              {{/each}}
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {{#each this.matrix as |row|}}
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
+                  {{row.month}}
+                </td>
+                {{#each row.entries as |entry|}}
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900">
+                    <FmtCurrency @value={{entry.amount}} />
+                  </td>
+                {{/each}}
+              </tr>
+            {{/each}}
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900">
+                Totaal
+              </td>
+              {{#each this.totals as |total|}}
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900">
+                  <FmtCurrency @value={{total}} />
+                </td>
+              {{/each}}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
 {{outlet}}
