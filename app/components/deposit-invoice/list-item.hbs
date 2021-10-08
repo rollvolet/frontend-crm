@@ -286,9 +286,10 @@
   </div>
 </li>
 
-{{!-- TODO replace with TailwindCSS --}}
-<Certificate::Dialog
-  @show={{this.showMissingCertificateDialog}}
-  @model={{@model}}
-  @onClose={{fn this.closeCertificateDialog}}
-  @onGenerateInvoiceDocument={{perform this.generateInvoiceDocument}} />
+{{#if this.showMissingCertificateDialog}}
+  <Certificate::MissingCertificateModal
+    @model={{@model}}
+    @onClose={{this.closeCertificateDialog}}
+    @onGenerateInvoiceDocument={{perform this.generateInvoiceDocument}}
+  />
+{{/if}}
