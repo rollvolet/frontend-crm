@@ -126,7 +126,8 @@
                         {{row.city}}
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+                        <button type="button"
+                          class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
                           {{on "click" (perform this.linkCustomerToRequest row)}}>
                           Koppel
                         </button>
