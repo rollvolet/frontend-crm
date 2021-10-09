@@ -55,6 +55,7 @@
             {{#if this.isOpenOptionsMenu}}
               <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
                 {{on-click-outside this.closeOptionsMenu}}
+                {{!-- TODO make CSS transition work on leave --}}
                 {{css-transition
                     enterClass="transform opacity-0 scale-95"
                     enterActiveClass="transition ease-out duration-100"
