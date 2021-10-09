@@ -5,13 +5,15 @@ import { inject as service } from '@ember/service';
 import { all } from 'ember-concurrency';
 import { task } from 'ember-concurrency-decorators';
 import { debug } from '@ember/debug';
+import { later } from '@ember/runloop';
 import sum from '../../../../../utils/math/sum';
 
 export default class OrderController extends Controller {
   @service case
   @service store
 
-  @tracked showIncompatibleVatRatesDialog = false;
+  @tracked isOpenIncompatibleVatRatesModal = false;
+  @tracked showIncompatibleVatRatesModalContent = false;
 
   get request() {
     return this.case.current && this.case.current.request;
@@ -47,7 +49,7 @@ export default class OrderController extends Controller {
 
   @task
   *updateOfferVatRate() {
-    this.closeIncompatibleVatRatesDialog();
+    this.closeIncompatibleVatRatesModal();
     this.offer.vatRate = this.orderedVatRate;
     yield this.offer.save();
     yield this.createOrder.perform();
@@ -58,7 +60,7 @@ export default class OrderController extends Controller {
     let vatRate = yield this.offer.get('vatRate');
 
     if (vatRate && this.orderedVatRate && this.orderedVatRate.get('id') != vatRate.get('id')) {
-      this.showIncompatibleVatRatesDialog = true;
+      this.openIncompatibleVatRatesModal();
     } else {
       if (!vatRate) {
         vatRate = this.orderedVatRate;
@@ -122,8 +124,16 @@ export default class OrderController extends Controller {
     this.transitionToRoute('main.case.offer.edit', customer, this.offer.id);
   }
 
+  openIncompatibleVatRatesModal() {
+    this.isOpenIncompatibleVatRatesModal = true;
+    this.showIncompatibleVatRatesModalContent = true;
+  }
+
   @action
-  closeIncompatibleVatRatesDialog() {
-    this.showIncompatibleVatRatesDialog = false;
+  closeIncompatibleVatRatesModal() {
+    this.showIncompatibleVatRatesModalContent = false;
+    later(this, function() {
+      this.isOpenIncompatibleVatRatesModal = false;
+    }, 200); // delay to finish leave CSS animation
   }
 }
