@@ -250,14 +250,14 @@
               </div>
             {{/each}}
           </DetailListItem>
-          <DetailListItem @label="Productiebon">
+          <DetailListItem @label="Productiebon" class="items-center">
             <ProductionTicket::InlineEdit @model={{@model}} />
           </DetailListItem>
-          <DetailListItem @label="Product klaar">
-            {{paper-icon (if @model.isReady "check_box" "check_box_outline_blank")}}
+          <DetailListItem @label="Product klaar" class="items-center">
+            <Util::DisplayCheckbox @value={{@model.isReady}} />
           </DetailListItem>
-          <DetailListItem @label="Afgesloten">
-            {{paper-icon (if @model.canceled "check_box" "check_box_outline_blank")}}
+          <DetailListItem @label="Afgesloten" class="items-center">
+            <Util::DisplayCheckbox @value={{@model.canceled}} />
             {{#if @model.canceled}}
               <DetailListSubitem @label="Reden">
                 {{#if @model.cancellationReason}}

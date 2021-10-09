@@ -180,8 +180,8 @@
           </DetailListItem>
         </div>
         <div class="space-y-1">
-          <DetailListItem @label="Creditnota">
-            {{paper-icon (if @model.isCreditNote "check_box" "check_box_outline_blank")}}
+          <DetailListItem @label="Creditnota" class="items-center">
+            <Util::DisplayCheckbox @value={{@model.isCreditNote}} />
           </DetailListItem>
           {{#if @model.isIsolated}}
             <DetailListItem @label="BTW tarief">
@@ -199,12 +199,12 @@
             </DetailListItem>
           {{/if}}
           {{#unless @model.isIsolated}}
-            <DetailListItem @label="Productiebon">
-              {{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}
+            <DetailListItem @label="Productiebon" class="items-center">
+              <Util::DisplayAvailability @value={{@model.hasProductionTicket}} />
               {{#if @model.hasProductionTicket}}
                 <span {{on "click" this.downloadProductionTicket}} role="button">
                   {{paper-icon "find in page"}}
-                  <PaperTooltip>Productiebon bekijken</PaperTooltip>
+                  <EmberTooltip @text="Productiebon bekijken" />
                 </span>
               {{/if}}
             </DetailListItem>

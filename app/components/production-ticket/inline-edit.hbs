@@ -3,11 +3,7 @@
 {{else}}
   <div class="flex items-center">
     <div>
-      {{#if @model.hasProductionTicket}}
-        {{svg-jar "heroicons-md-check" class="h-5 w-5 text-green-500"}}
-      {{else}}
-        {{svg-jar "heroicons-md-ban" class="h-5 w-5 text-red-500"}}
-      {{/if}}
+      <Util::DisplayAvailability @value={{@model.hasProductionTicket}} />
     </div>
     <div class="ml-3 relative inline-block text-left">
       <div>
