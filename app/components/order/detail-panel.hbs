@@ -151,15 +151,10 @@
               <div class="font-semibold text-sm text-gray-700">
                 Productiebon
               </div>
-              <div class="ml-2">
-                {{#if @model.hasProductionTicket}}
-                  {{svg-jar "heroicons-md-check-circle" class="h-5 w-5 text-green-500"}}
-                {{else}}
-                  {{svg-jar "heroicons-md-x-circle" class="h-5 w-5 text-red-500"}}
-                {{/if}}
+              <div>
+                <ProductionTicket::InlineEdit @model={{@model}} />
               </div>
             </div>
-            <ProductionTicketButtons @model={{@model}} />
           </div>
           <div>
             <div class="font-semibold text-sm text-gray-700">
@@ -255,11 +250,8 @@
               </div>
             {{/each}}
           </DetailListItem>
-          <DetailListItem @label="Productiebon" class="layout-align-start-center">
-            <div class="layout-row layout-align-start-center">
-              <div>{{paper-icon (if @model.hasProductionTicket "check_box" "check_box_outline_blank")}}</div>
-              <ProductionTicketButtons @model={{@model}} />
-            </div>
+          <DetailListItem @label="Productiebon">
+            <ProductionTicket::InlineEdit @model={{@model}} />
           </DetailListItem>
           <DetailListItem @label="Product klaar">
             {{paper-icon (if @model.isReady "check_box" "check_box_outline_blank")}}

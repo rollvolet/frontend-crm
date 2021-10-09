@@ -21,8 +21,8 @@ export default class CertificateInlineEditComponent extends Component {
       this.generateTemplate,
       this.deleteCertificate,
       this.uploadCertificate,
-      this.recycleCertificate]
-      .find(task => task.isRunning);
+      this.recycleCertificate
+    ].find(task => task.isRunning);
   }
 
   @task
