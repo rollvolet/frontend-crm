@@ -4,9 +4,16 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency-decorators';
 import { debug } from '@ember/debug';
+import { guidFor } from '@ember/object/internals';
 
 export default class OrderDetailPanelComponent extends Component {
   @service case
+
+  executionOptions = [
+    { label: 'te leveren', value: 'delivery', id: `delivery-${guidFor(this)}` },
+    { label: 'te plaatsen', value: 'installation', id: `installation-${guidFor(this)}` },
+    { label: 'af te halen', value: 'pickup', id: `pickup-${guidFor(this)}` }
+  ];
 
   @tracked editMode = false;
 

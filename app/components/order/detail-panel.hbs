@@ -125,54 +125,30 @@
             @model={{@model}}
             @saveTask={{this.planEvent}} />
           <div role="group" aria-labelledby="label-executions" class="space-y-4">
-            <div id="label-executions" class="font-medium text-sm text-gray-700">
+            <div id="label-executions" class="font-semibold text-sm text-gray-700">
               Uitvoering
             </div>
             <div class="space-y-4">
-              <div class="flex items-center">
-                <Input
-                  @id="execution-opt-installation"
-                  @type="radio"
-                  @value="installation"
-                  name="execution-opt-group"
-                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
-                  checked={{eq @model.execution "installation"}}
-                  {{on "input" (queue this.setExecution (perform this.save))}} />
-                <label for="execution-opt-installation" class="ml-3 block text-sm font-medium text-gray-700">
-                  {{order-execution 'installation'}}
-                </label>
-              </div>
-              <div class="flex items-center">
-                <Input
-                  @id="execution-opt-delivery"
-                  @type="radio"
-                  @value="delivery"
-                  name="execution-opt-group"
-                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
-                  checked={{eq @model.execution "delivery"}}
-                  {{on "input" (queue this.setExecution (perform this.save))}} />
-                <label for="execution-opt-delivery" class="ml-3 block text-sm font-medium text-gray-700">
-                  {{order-execution 'delivery'}}
-                </label>
-              </div>
-              <div class="flex items-center">
-                <Input
-                  @id="execution-opt-pickup"
-                  @type="radio"
-                  @value="pickup"
-                  name="execution-opt-group"
-                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
-                  checked={{eq @model.execution "pickup"}}
-                  {{on "input" (queue this.setExecution (perform this.save))}} />
-                <label for="execution-opt-pickup" class="ml-3 block text-sm font-medium text-gray-700">
-                  {{order-execution 'pickup'}}
-                </label>
-              </div>
+              {{#each this.executionOptions as |option|}}
+                <div class="flex items-center">
+                  <Input
+                    @id="execution-opt-{{option.id}}"
+                    @type="radio"
+                    @value={{option.value}}
+                    name="execution-opt-group"
+                    class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
+                    checked={{eq @model.execution option.value}}
+                    {{on "input" (queue this.setExecution (perform this.save))}} />
+                  <label for="execution-opt-{{option.id}}" class="ml-3 block text-sm font-medium text-gray-700">
+                    {{capitalize option.label}}
+                  </label>
+                </div>
+              {{/each}}
             </div>
           </div>
           <div>
             <div class="flex items-center">
-              <div class="font-medium text-sm text-gray-700">
+              <div class="font-semibold text-sm text-gray-700">
                 Productiebon
               </div>
               <div class="ml-2">
@@ -186,7 +162,7 @@
             <ProductionTicketButtons @model={{@model}} />
           </div>
           <div>
-            <div class="font-medium text-sm text-gray-700">
+            <div class="font-semibold text-sm text-gray-700">
               Status
             </div>
             <div class="mt-4 space-y-4">
@@ -263,11 +239,21 @@
             <Planning::DetailView @model={{@model}} />
           </div>
           <DetailListItem @label="Uitvoering">
-            <PaperRadioGroup @groupValue={{readonly @model.execution}} @onChange={{null}} as |group|>
-              <group.radio @value="installation">{{order-execution 'installation'}}</group.radio>
-              <group.radio @value="delivery">{{order-execution 'delivery'}}</group.radio>
-              <group.radio @value="pickup">{{order-execution 'pickup'}}</group.radio>
-            </PaperRadioGroup>
+            {{#each this.executionOptions as |option|}}
+              <div class="flex items-center mb-2">
+                <Input
+                  @id="execution-opt-{{option.id}}"
+                  @type="radio"
+                  @value={{option.value}}
+                  name="execution-opt-group"
+                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
+                  checked={{eq @model.execution option.value}}
+                  disabled="true" />
+                <label for="execution-opt-{{option.id}}" class="ml-3 block text-sm font-medium text-gray-700">
+                  {{capitalize option.label}}
+                </label>
+              </div>
+            {{/each}}
           </DetailListItem>
           <DetailListItem @label="Productiebon" class="layout-align-start-center">
             <div class="layout-row layout-align-start-center">
