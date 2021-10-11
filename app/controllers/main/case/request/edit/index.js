@@ -5,6 +5,7 @@ import { warn } from '@ember/debug';
 
 export default class IndexController extends Controller {
   @service case;
+  @service router;
 
   get isDisabledEdit() {
     return this.case.current && this.case.current.offer != null;

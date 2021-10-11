@@ -5,6 +5,7 @@ import { task } from 'ember-concurrency-decorators';
 
 export default class MainInterventionsEditController extends Controller {
   @service case;
+  @service router;
 
   get isDisabledEdit() {
     return this.hasInvoice || this.model.isCancelled;
