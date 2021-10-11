@@ -181,8 +181,8 @@
         </div>
       </div>
     {{else}}
-      <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-        <div class="space-y-1">
+      <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <div class="space-y-2">
           <DetailListItem @label="Datum">
             <FmtDate @value={{@model.date}} />
           </DetailListItem>
@@ -204,7 +204,7 @@
             {{#if this.technicianNames.length}}
               {{join ", " this.technicianNames}}
             {{else}}
-              -
+              {{svg-jar "heroicons-md-minus-sm" class="h-5 w-5 text-gray-500"}}
             {{/if}}
           </DetailListItem>
         </div>
@@ -218,7 +218,7 @@
             </DetailListItem>
           {{/if}}
         </div>
-        <div class="sm:col-span-2">
+        <div class="sm:col-span-2 space-y-2">
           <DetailListItem @label="Beschrijving">
             <span class="whitespace-pre-wrap">{{@model.description}}</span>
           </DetailListItem>

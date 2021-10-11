@@ -187,20 +187,18 @@
         </div>
       </div>
     {{else}}
-      <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-        <div class="space-y-1">
+      <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <div class="space-y-2">
           <DetailListItem @label="Datum">
-            <dl class="space-y-1">
-              <DetailListSubitem @label="Bestelling">
-                <FmtDate @value={{@model.orderDate}} />
-              </DetailListSubitem>
-              <DetailListSubitem @label="Verwacht">
-                <FmtDate @value={{@model.expectedDate}} />
-              </DetailListSubitem>
-              <DetailListSubitem @label="Vereist">
-                <FmtDate @value={{@model.requiredDate}} />
-              </DetailListSubitem>
-            </dl>
+            <DetailListSubitem @label="Bestelling">
+              <FmtDate @value={{@model.orderDate}} />
+            </DetailListSubitem>
+            <DetailListSubitem @label="Verwacht">
+              <FmtDate @value={{@model.expectedDate}} />
+            </DetailListSubitem>
+            <DetailListSubitem @label="Vereist">
+              <FmtDate @value={{@model.requiredDate}} />
+            </DetailListSubitem>
           </DetailListItem>
           <DetailListItem @label="Bezoeker">
             {{this.request.visitor}}
@@ -229,7 +227,7 @@
             </DetailListItem>
           {{/if}}
         </div>
-        <div class="mb-4 sm:mb-0">
+        <div class="mb-4 sm:mb-0 space-y-2">
           <div class="mb-4">
             <Planning::DetailView @model={{@model}} />
           </div>

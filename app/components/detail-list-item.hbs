@@ -1,8 +1,8 @@
 <div class="flex flex-auto flex-shrink-0" ...attributes>
-  <dt class="flex-none w-32 pr-4 text-right font-semibold text-gray-500">
+  <dt class="flex-none w-{{this.width}} pr-4 text-sm text-right font-medium text-gray-500">
     {{@label}}
   </dt>
-  <dd class="{{if this.displayRow "flex-row" "flex-col"}} text-gray-900">
+  <dd class="{{if this.displayRow "flex-row" "flex-col"}} text-sm text-gray-900 space-y-2">
     {{yield}}
   </dd>
 </div>

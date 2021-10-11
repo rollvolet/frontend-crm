@@ -1,21 +1,21 @@
 <div class="space-y-4">
-  <DetailIconListItem @icon="person" @label="Naam">
+  <DetailListItem @width={{20}} @label="Naam">
     {{@model.printName}}
-  </DetailIconListItem>
+  </DetailListItem>
 
-  <DetailIconListItem @icon="location on" @label="Adres">
+  <DetailListItem @width={{20}} @label="Adres">
     <div>{{@model.address1}}</div>
     <div>{{@model.address2}}</div>
     <div>{{@model.address3}}</div>
     <div>{{@model.postalCode}} {{@model.city}}</div>
-  </DetailIconListItem>
+  </DetailListItem>
 
-  <DetailIconListItem @icon="mail outline" @label="E-mail">
+  <DetailListItem @width={{20}} @label="E-mail">
     <div><FmtEmail @value={{@model.email}} /></div>
     <div><FmtEmail @value={{@model.email2}} /></div>
-  </DetailIconListItem>
+  </DetailListItem>
 
-  <DetailIconListItem @icon="phone" @label="Telefoon">
+  <DetailListItem @width={{20}} @label="Telefoon">
     {{#each @model.telephones as |tel|}}
       <div>
         {{tel.telephoneType.name}}:
@@ -23,5 +23,5 @@
         {{#if tel.memo}}({{tel.memo}}){{/if}}
       </div>
     {{/each}}
-  </DetailIconListItem>
+  </DetailListItem>
 </div>

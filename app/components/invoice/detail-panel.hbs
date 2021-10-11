@@ -159,8 +159,8 @@
         </div>
       </div>
     {{else}}
-      <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-        <div class="space-y-1">
+      <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <div class="space-y-2">
           <DetailListItem @label="Datum">
             <DetailListSubitem @label="Factuurdatum">
               <FmtDate @value={{@model.invoiceDate}} />
@@ -179,7 +179,7 @@
             {{@model.reference}}
           </DetailListItem>
         </div>
-        <div class="space-y-1">
+        <div class="space-y-2">
           <DetailListItem @label="Creditnota" class="items-center">
             <Util::DisplayCheckbox @value={{@model.isCreditNote}} />
           </DetailListItem>
@@ -213,12 +213,15 @@
               </div>
             </DetailListItem>
           {{/unless}}
-          <DetailListItem @label="Techniekers" {{on "click" this.openWorkingHoursModal}} class="cursor-pointer">
+          <DetailListItem
+            @label="Techniekers"
+            {{on "click" this.openWorkingHoursModal}}
+            class="cursor-pointer">
             {{#if this.technicianNames.length}}
               {{join ", " this.technicianNames}}
-              {{svg-jar "heroicons-sm-information-circle" class="h-4 w-4 text-gray-400 inline"}}
+              {{svg-jar "heroicons-sm-information-circle" class="h-5 w-5 text-gray-400 inline"}}
             {{else}}
-              - {{svg-jar "heroicons-sm-plus-circle" class="h-4 w-4 text-gray-400 inline"}}
+              {{svg-jar "heroicons-sm-plus-circle" class="h-5 w-5 text-gray-400 inline"}}
             {{/if}}
           </DetailListItem>
         </div>

@@ -33,28 +33,28 @@
           </div>
         {{else}}
           <div class="space-y-4">
-            <DetailIconListItem @icon={{if @model.isCompany "business" "person"}} @label={{if @model.isCompany "Bedrijf" "Naam"}}>
+            <DetailListItem @width={{20}} @label={{if @model.isCompany "Bedrijf" "Naam"}}>
               <div>
                 {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
                 {{@model.prefix}} {{@model.name}} {{@model.suffix}}
                 {{#if (not @model.printInFront)}}{{@model.honorificPrefix.name}}{{/if}}
               </div>
               <div><FmtVatNumber @value={{@model.vatNumber}} /></div>
-            </DetailIconListItem>
+            </DetailListItem>
 
-            <DetailIconListItem @icon="location on" @label="Adres">
+            <DetailListItem @width={{20}} @label="Adres">
               <div>{{@model.address1}}</div>
               <div>{{@model.address2}}</div>
               <div>{{@model.address3}}</div>
               <div>{{@model.postalCode}} {{@model.city}}</div>
               <div>{{@model.country.name}}</div>
-            </DetailIconListItem>
+            </DetailListItem>
 
-            <DetailIconListItem @icon="language" @label="Taal">
+            <DetailListItem @width={{20}} @label="Taal">
               {{@model.language.name}}
-            </DetailIconListItem>
+            </DetailListItem>
 
-            <DetailIconListItem @icon="phone" @label="Telefoon">
+            <DetailListItem @width={{20}} @label="Telefoon">
               {{#each @model.telephones as |tel|}}
                 <div>
                   {{tel.telephoneType.name}}:
@@ -62,13 +62,13 @@
                   {{#if tel.memo}}({{tel.memo}}){{/if}}
                 </div>
               {{/each}}
-            </DetailIconListItem>
+            </DetailListItem>
 
-            <DetailIconListItem @icon="mail outline" @label="E-mail">
+            <DetailListItem @width={{20}} @label="E-mail">
               <div><FmtEmail @value={{@model.email}} /></div>
               <div><FmtEmail @value={{@model.email2}} /></div>
               <div>{{@model.url}}</div>
-            </DetailIconListItem>
+            </DetailListItem>
           </div>
           <div class="space-y-6">
             <div class="">
@@ -109,7 +109,7 @@
                   {{#if this.building}}
                     <Case::BuildingPanel @model={{this.building}} />
                   {{else}}
-                    <div class="italic text-gray-400">
+                    <div class="italic text-sm text-gray-400">
                       Geen gebouw gekoppeld
                     </div>
                   {{/if}}
@@ -154,7 +154,7 @@
                   {{#if this.contact}}
                     <Case::ContactPanel @model={{this.contact}} />
                   {{else}}
-                    <div class="italic text-gray-400">
+                    <div class="italic text-sm text-gray-400">
                       Geen contact gekoppeld
                     </div>
                   {{/if}}
@@ -165,7 +165,7 @@
         {{/if}}
       </div>
       <div class="px-6 py-4">
-        <div class="text-sm text-gray-400 italic">
+        <div class="italic text-xs text-gray-400">
           Aangemaakt: {{moment-format @model.created}}
         </div>
       </div>
