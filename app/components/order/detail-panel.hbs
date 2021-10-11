@@ -208,7 +208,7 @@
           </DetailListItem>
           <DetailListItem @label="Werkuren" @displayRow={{true}}>
             <FmtDecimal @value={{@model.scheduledHours}} /> uur x
-            <span class="{{if this.isNbOfPersonsWarning "warning-inline"}}">{{@model.scheduledNbOfPersons}} man</span>
+            <span class="{{if this.isNbOfPersonsWarning "px-1 py-0.5 text-red-700 bg-red-100"}}">{{@model.scheduledNbOfPersons}} man</span>
             = {{@model.scheduledTotal}} uur
           </DetailListItem>
           <DetailListItem @label="Techniekers">

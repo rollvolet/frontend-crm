@@ -198,7 +198,9 @@
             {{@model.employee.firstName}}
           </DetailListItem>
           <DetailListItem @label="Aantal pers.">
-            <span class="{{if this.isNbOfPersonsWarning "warning-inline"}}">{{@model.nbOfPersons}} man</span>
+            {{#if @model.nbOfPersons}}
+              <span class="{{if this.isNbOfPersonsWarning "px-1 py-0.5 text-red-700 bg-red-100"}}">{{@model.nbOfPersons}} man</span>
+            {{/if}}
           </DetailListItem>
           <DetailListItem @label="Techniekers">
             {{#if this.technicianNames.length}}

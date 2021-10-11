@@ -25,7 +25,6 @@ $color-red: (
 $md-autocomplete-item-height: 36px !default;
 
 @import 'ember-paper';
-/*@import 'ember-paper-data-table';*/
 
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
 html, body {
@@ -33,87 +32,10 @@ html, body {
 }
 
 @import 'tailwind';
-
-/* material variables are spread in the SCSS files of https://github.com/angular/material */
-
-/* $ember-power-select-material-active-color: paper-color($primary) !default;
-$ember-power-select-highlighted-background: paper-color($primary, '200') !default;
-@import 'ember-power-select/themes/material';
-@import "ember-power-select";
-*/
-
-@import 'scss/layout';
+@import 'custom';
 @import 'scss/print';
-@import 'scss/utils';
-@import 'scss/input-fields';
-@import 'scss/error';
-@import 'scss/resource-pages';
-@import 'scss/case-pages';
-/*@import 'scss/data-tables'; */
-@import 'scss/rich-text-editor';
-
-/* Default style overwrites */
-
-[data-ember-action]:not(:disabled),
-tr.clickable,
-.clickable,
-[role=button] {
-  cursor: pointer;
-}
-
-md-tabs md-ink-bar, md-tabs.md-default-theme md-ink-bar {
-  background-color: paper-color($primary);
-}
-
-md-input-container .md-errors-spacer {
-  display: none;
-}
-
-.data-table-pagination md-input-container {
-  top: -1px;
-}
-
-.paper-input-error {
-  font-size: 12px;
-  color: RGB(var(--warn-A700));
-}
-
-.ember-power-select-trigger {
-  background: #ffffff00; /* transparent */
-}
-
-.md-panel.md-tooltip {
-  background-color: #FFF;
-  color: $base-color;
-  font-size: 0.9em;
-  border: 1px solid $base-color;
-}
-
-md-progress-circular.md-progress-white path {
-  stroke: white;
-}
 
 /* Edit pages */
-
-.badge {
-  padding: 5px 7px;
-  border-radius: 7px;
-  color: #FFF;
-
-  &.badge--dot {
-    height: 10px;
-    width: 10px;
-    padding: 0;
-  }
-
-  &.badge--success {
-    background-color: paper-color('green');
-  }
-
-  &.badge--failure {
-    background-color: paper-color('red');
-  }
-}
 
 .telephone-edit-table {
   td {
@@ -129,14 +51,3 @@ md-progress-circular.md-progress-white path {
     }
   }
 }
-
-.link-action {
-  text-decoration: underline;
-  color: paper-color($primary);
-
-  md-icon {
-    color: paper-color($primary);
-  }
-}
-
-@import 'custom';
