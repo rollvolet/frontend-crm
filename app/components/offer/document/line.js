@@ -10,6 +10,10 @@ export default class OfferDocumentLineComponent extends Component {
     return get(this.args.model, this.args.field);
   }
 
+  get showPlaceholder() {
+    return this.args.placeholder && !this.value;
+  }
+
   @action
   setValue(value) {
     set(this.args.model, this.args.field, value);

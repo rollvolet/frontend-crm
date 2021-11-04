@@ -18,9 +18,15 @@
 {{else}}
   <div class="px-4 py-4" ...attributes>
     <div class="flex flex-row justify-between">
-      <div class="text-sm text-gray-900">
-        {{{this.value}}}
-      </div>
+      {{#if this.showPlaceholder}}
+        <div class="italic text-sm text-gray-400">
+          {{@placeholder}}
+        </div>
+      {{else}}
+        <div class="text-sm text-gray-900">
+          {{{this.value}}}
+        </div>
+      {{/if}}
       {{#unless @isDisabledEdit}}
         <div class="flex-grow-0 flex-auto flex items-end">
           <button type="button"

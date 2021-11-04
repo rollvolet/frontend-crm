@@ -60,6 +60,16 @@ export default class InvoiceProductPanelComponent extends Component {
   }
 
   @task
+  *saveDocumentline() {
+    if (this.args.model.hasDirtyAttributes) {
+      const { validations } = yield this.args.model.validate();
+      if (validations.isValid) {
+        yield this.args.model.save();
+      }
+    }
+  }
+
+  @task
   *generateInvoiceDocument() {
     if (!this.args.model.isCreditNote && !this.showMissingCertificateDialog
         && this.args.model.certificateRequired && !this.args.model.certificateReceived) {
