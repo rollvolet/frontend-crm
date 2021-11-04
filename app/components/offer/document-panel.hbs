@@ -40,7 +40,7 @@
         De offerte is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.
       </div>
     {{else}}
-      <Offer::Document::Line
+      <Document::Line
         @model={{@model}}
         @field="documentIntro"
         @saveTask={{this.saveDocumentline}}
@@ -83,7 +83,7 @@
           </div>
         {{/unless}}
       </section>
-      <Offer::Document::Line
+      <Document::Line
         @model={{@model}}
         @field="documentOutro"
         @saveTask={{this.saveDocumentline}}

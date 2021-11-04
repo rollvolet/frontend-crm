@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { get, set } from '@ember/object';
 
-export default class OfferDocumentLineComponent extends Component {
+export default class DocumentLineComponent extends Component {
   @tracked editMode = false;
 
   get value() {
