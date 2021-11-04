@@ -8,7 +8,7 @@ const digitsOnly = /\D/g;
 
 @classic
 @tagName('tr')
-export default class TelephoneEditFormLine extends Component {
+export default class CustomerEntityTelephonesTableAddLine extends Component {
   @service store
 
   @computed('model.number')
@@ -29,6 +29,13 @@ export default class TelephoneEditFormLine extends Component {
     }
   }
 
+  @computed('model.{isError,validations.isInvalid}', 'saveTask.last')
+  get canBeSaved() {
+    return !this.model.validations.isInvalid
+      && !this.model.isError
+      && !this.saveTask.last.isError;
+  }
+
   @action
   setArea(area) {
     if (area)
@@ -37,7 +44,8 @@ export default class TelephoneEditFormLine extends Component {
   }
 
   @action
-  setNumber(number) {
+  setNumber(event) {
+    let number = event.target.value;
     if (number)
       number = number.replace(digitsOnly, '');
     this.model.set('number', number);

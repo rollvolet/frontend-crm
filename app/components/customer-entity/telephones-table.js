@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
-import EmberObject, { computed } from '@ember/object';
+import EmberObject, { computed, action } from '@ember/object';
 import { sort } from '@ember/object/computed';
 import { task, hash } from 'ember-concurrency';
 
@@ -19,7 +19,7 @@ const _copyTelephone = function(telephone) {
 };
 
 @classic
-export default class TelephoneEditForm extends Component {
+export default class CustomerEntityTelephonesTable extends Component {
   @service store
 
   @service configuration
@@ -28,16 +28,9 @@ export default class TelephoneEditForm extends Component {
   telephonesSort = Object.freeze(['order', 'id'])
   errorMessages = A()
 
-  @computed('newTelephone', 'updatedNewTelephone')
+  @computed('newTelephone')
   get isDisabledCreateNew() {
-    if (this.newTelephone) {
-      return this.newTelephone.validations.isInvalid
-        || this.newTelephone.isError
-        || this.updateNewTelephone.isRunning
-        || this.updateNewTelephone.last.isError;
-    }
-
-    return false;
+    return this.newTelephone;
   }
 
   @sort('displayTelephones', 'telephonesSort') sortedTelephones
@@ -72,12 +65,16 @@ export default class TelephoneEditForm extends Component {
 
   @task(function * () {
     if (this.newTelephone) {
-      yield this.newTelephone.destroyRecord();
-      // TODO: Fix when Ember Data allows creation of already deleted ID
-      // See https://github.com/emberjs/data/issues/4972
-      //  and https://github.com/emberjs/data/issues/5006
-      // this.store._removeFromIdMap(this.model._internalModel);
-      this.set('newTelephone', null);
+      this.updateNewTelephone.cancelAll();
+      try {
+        yield this.newTelephone.destroyRecord();
+      } finally {
+        // TODO: Fix when Ember Data allows creation of already deleted ID
+        // See https://github.com/emberjs/data/issues/4972
+        //  and https://github.com/emberjs/data/issues/5006
+        // this.store._removeFromIdMap(this.model._internalModel);
+        this.set('newTelephone', null);
+      }
     }
   })
   removeNewTelephone;
@@ -153,4 +150,14 @@ export default class TelephoneEditForm extends Component {
     }
   }).keepLatest()
   updateNewTelephone; // cannot patch phone. Create new and remove old phone.
+
+  @action
+  async closeNewTelephone() {
+    if (this.newTelephone) {
+      await this.updateNewTelephone.perform();
+      const copiedTelephone = _copyTelephone(this.newTelephone);
+      this.displayTelephones.pushObject(copiedTelephone);
+      this.set('newTelephone', null);
+    }
+  }
 }

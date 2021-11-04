@@ -13,15 +13,11 @@ export default class TelephoneTypeSelect extends Component {
     this.options = types.filter(t => ['TEL', 'FAX'].includes(t.name));
   }
 
-  get label() {
-    return this.args.label || 'Type';
-  }
-
   get required() {
     return this.args.required || false;
   }
 
   get placeholder() {
-    return this.required ? `${this.label} *` : this.label;
+    return this.required && this.args.label ? `${this.args.label} *` : this.args.label;
   }
 }

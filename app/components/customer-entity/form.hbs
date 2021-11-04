@@ -177,43 +177,51 @@
       </p>
     </div>
 
-    <div class="pt-6 sm:pt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      <div>
-        <label for="customer-mail" class="block text-sm font-medium text-gray-700">
-          Email
-        </label>
-        <Input
-          @id="customer-mail"
-          @type="text"
-          @value={{@model.email}}
-          class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-          {{on "focusout" @onSave}} />
+    <div class="space-y-4">
+      <div class="pt-6 sm:pt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <label for="customer-mail" class="block text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <Input
+            @id="customer-mail"
+            @type="text"
+            @value={{@model.email}}
+            class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "focusout" @onSave}} />
+        </div>
+        <div>
+          <label for="customer-mail2" class="block text-sm font-medium text-gray-700">
+            Email 2
+          </label>
+          <Input
+            @id="customer-mail2"
+            @type="text"
+            @value={{@model.email2}}
+            class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "focusout" @onSave}} />
+        </div>
+        <div>
+          <label for="customer-website" class="block text-sm font-medium text-gray-700">
+            Website
+          </label>
+          <Input
+            @id="customer-website"
+            @type="text"
+            @value={{@model.url}}
+            class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "focusout" @onSave}} />
+        </div>
       </div>
       <div>
-        <label for="customer-mail2" class="block text-sm font-medium text-gray-700">
-          Email 2
+        <label for="customer-telephones" class="block text-sm font-medium text-gray-700">
+          Telefoonnummers
         </label>
-        <Input
-          @id="customer-mail2"
-          @type="text"
-          @value={{@model.email2}}
-          class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-          {{on "focusout" @onSave}} />
-      </div>
-      <div>
-        <label for="customer-website" class="block text-sm font-medium text-gray-700">
-          Website
-        </label>
-        <Input
-          @id="customer-website"
-          @type="text"
-          @value={{@model.url}}
-          class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-          {{on "focusout" @onSave}} />
+        <div class="mt-1">
+          <CustomerEntity::TelephonesTable @model={{@model}} />
+        </div>
       </div>
     </div>
-    {{!-- TODO add phone numbers list with delete --}}
-    {{!-- TODO add creation of new phone number --}}
   </section>
 
   <section class="space-y-8 divide-y divide-gray-200 sm:space-y-5">

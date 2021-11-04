@@ -12,10 +12,6 @@ export default class TelephonePrefixSelect extends Component {
     this.options = this.store.peekAll('country');
   }
 
-  get label() {
-    return this.args.label || 'Land';
-  }
-
   get required() {
     return this.args.required || false;
   }
