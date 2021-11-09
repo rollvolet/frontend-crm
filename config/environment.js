@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'rollvolet-crm',
     environment,
@@ -13,8 +13,8 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
@@ -36,12 +36,6 @@ module.exports = function(environment) {
           scope: 'offline_access User.Read Calendars.ReadWrite.Shared Files.ReadWrite.All',
           redirectUri: 'http://localhost:4200/torii/redirect.html'
         }
-      }
-    },
-    'ember-paper': {
-      'paper-toaster': {
-        position: 'bottom left',
-        duration: 5000
       }
     }
   };
