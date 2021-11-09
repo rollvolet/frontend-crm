@@ -37,6 +37,9 @@ module.exports = function (environment) {
           redirectUri: 'http://localhost:4200/torii/redirect.html'
         }
       }
+    },
+    emberKeyboard: {
+      disableInputsInitializer: true
     }
   };
 
