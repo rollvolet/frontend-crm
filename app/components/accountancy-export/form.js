@@ -3,7 +3,10 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency-decorators';
-import { deformatInvoiceNumber, formatInvoiceNumber } from '../../helpers/format-invoice-number';
+import {
+  deformatInvoiceNumber,
+  formatInvoiceNumber,
+} from '../../helpers/format-invoice-number';
 
 export default class AccountancyExportForm extends Component {
   @service store;
@@ -47,8 +50,9 @@ export default class AccountancyExportForm extends Component {
     const number = deformatInvoiceNumber(event.target.value);
     this.model.fromNumber = number;
 
-    if (!this.multipleExportEnabled)
+    if (!this.multipleExportEnabled) {
       this.model.untilNumber = number;
+    }
   }
 
   @action
