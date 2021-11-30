@@ -51,8 +51,8 @@
     <InputField::Checkbox
       @id="dryrun-checkbox"
       @label="Facturen niet markeren als 'geboekt' in de databank (om te testen)"
-      @value={{this.model.isDryRun}}
-      @onChange={{fn (mut this.model.isDryRun)}} />
+      @value={{this.isDryRun}}
+      @onChange={{fn (mut this.isDryRun)}} />
   </div>
 
   <div class="mt-12 flex justify-end">

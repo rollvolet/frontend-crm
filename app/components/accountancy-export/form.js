@@ -12,6 +12,7 @@ export default class AccountancyExportForm extends Component {
   @service store;
 
   @tracked multipleExportEnabled = true;
+  @tracked isDryRun = false;
   @tracked model;
 
   constructor() {
@@ -32,15 +33,14 @@ export default class AccountancyExportForm extends Component {
   }
 
   resetModel() {
-    const isDryRun = this.model && this.model.isDryRun; // reuse value of latest export
     this.model = this.store.createRecord('accountancy-export', {
       date: new Date(),
-      isDryRun,
     });
   }
 
   @task
   *startExport() {
+    this.model.isDryRun = this.isDryRun;
     yield this.args.onExport(this.model);
     this.resetModel();
   }
