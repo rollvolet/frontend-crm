@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class InputFieldCheckboxComponent extends Component {
-  @tracked checkValue;
+  @tracked checkedValue;
 
   constructor() {
     super(...arguments);

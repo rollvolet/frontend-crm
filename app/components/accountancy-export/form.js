@@ -29,9 +29,10 @@ export default class AccountancyExportForm extends Component {
   }
 
   resetModel() {
+    const isDryRun = this.model && this.model.isDryRun; // reuse value of latest export
     this.model = this.store.createRecord('accountancy-export', {
       date: new Date(),
-      isDryRun: false
+      isDryRun,
     });
   }
 
