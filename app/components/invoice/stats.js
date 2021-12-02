@@ -27,10 +27,11 @@ export default class InvoiceStatsComponent extends Component {
   }
 
   get totalAmount() {
-    if (this.args.model.isMasteredByAccess)
+    if (this.args.model.isMasteredByAccess) {
       return this.args.model.baseAmount;
-    else
-      return sum(this.invoicelines.map(line => line.arithmeticAmount));
+    } else {
+      return sum(this.invoicelines.map((line) => line.arithmeticAmount));
+    }
   }
 
   get vatPercentage() {
@@ -43,10 +44,10 @@ export default class InvoiceStatsComponent extends Component {
   }
 
   get depositsAmount() {
-    return sum(this.deposits.map(deposit => deposit.arithmeticAmount));
+    return sum(this.deposits.map((deposit) => deposit.arithmeticAmount));
   }
 
   get depositInvoicesAmount() {
-    return sum(this.depositInvoices.map(depositInvoice => depositInvoice.arithmeticAmount));
+    return sum(this.depositInvoices.map((depositInvoice) => depositInvoice.arithmeticAmount));
   }
 }

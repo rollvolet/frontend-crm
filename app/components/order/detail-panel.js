@@ -7,12 +7,12 @@ import { debug } from '@ember/debug';
 import { guidFor } from '@ember/object/internals';
 
 export default class OrderDetailPanelComponent extends Component {
-  @service case
+  @service case;
 
   executionOptions = [
     { label: 'te leveren', value: 'delivery', id: `delivery-${guidFor(this)}` },
     { label: 'te plaatsen', value: 'installation', id: `installation-${guidFor(this)}` },
-    { label: 'af te halen', value: 'pickup', id: `pickup-${guidFor(this)}` }
+    { label: 'af te halen', value: 'pickup', id: `pickup-${guidFor(this)}` },
   ];
 
   @tracked editMode = false;
@@ -26,9 +26,7 @@ export default class OrderDetailPanelComponent extends Component {
   }
 
   get technicianNames() {
-    return this.args.model.technicians
-      .sortBy('firstName')
-      .mapBy('firstName');
+    return this.args.model.technicians.sortBy('firstName').mapBy('firstName');
   }
 
   get isNbOfPersonsWarning() {
@@ -55,14 +53,15 @@ export default class OrderDetailPanelComponent extends Component {
 
       yield this.args.model.save();
 
-      if (requiresOfferReload)
+      if (requiresOfferReload) {
         yield this.args.model.belongsTo('offer').reload();
+      }
     }
 
     const changedAttributesOnRequest = this.request.changedAttributes();
-    if (changedAttributesOnRequest['visitor'])
+    if (changedAttributesOnRequest['visitor']) {
       yield this.request.save();
-
+    }
   }
 
   @task
@@ -79,18 +78,20 @@ export default class OrderDetailPanelComponent extends Component {
     this.args.model.mustBeInstalled = false;
     this.args.model.mustBeDelivered = false;
 
-    if (execution == 'installation')
+    if (execution == 'installation') {
       this.args.model.mustBeInstalled = true;
-    else if (execution == 'delivery')
+    } else if (execution == 'delivery') {
       this.args.model.mustBeDelivered = true;
+    }
   }
 
   @action
   setCanceledStatus(value) {
     this.args.model.canceled = value;
 
-    if (!value)
+    if (!value) {
       this.args.model.cancellationReason = null;
+    }
   }
 
   @action

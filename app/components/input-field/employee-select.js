@@ -2,24 +2,28 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 
 export default class EmployeeSelect extends Component {
-  @service store
+  @service store;
 
   get employees() {
     let employees = this.store.peekAll('employee');
 
-    if (this.isActive)
-      employees = employees.filter(e => e.active);
+    if (this.isActive) {
+      employees = employees.filter((e) => e.active);
+    }
 
-    const enabledFilters = ['isTechnician', 'isAdministrative', 'isOnRoad'].filter(key => this[key]);
+    const enabledFilters = ['isTechnician', 'isAdministrative', 'isOnRoad'].filter(
+      (key) => this[key]
+    );
     if (enabledFilters.length) {
-      const matches = function(employee) {
+      const matches = function (employee) {
         for (let key of enabledFilters) {
-          if (employee[key])
+          if (employee[key]) {
             return true;
+          }
         }
         return false;
       };
-      employees = employees.filter(e => matches(e));
+      employees = employees.filter((e) => matches(e));
     }
 
     return employees;

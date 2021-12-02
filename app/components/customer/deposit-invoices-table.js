@@ -5,13 +5,13 @@ import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency-decorators';
 
 export default class DepositInvoicesTable extends FilterComponent {
-  @service router
-  @service store
+  @service router;
+  @service store;
 
   @tracked page = 0;
   @tracked size = 10;
   @tracked sort = '-number';
-  @tracked depositInvoices = []
+  @tracked depositInvoices = [];
 
   constructor() {
     super(...arguments);
@@ -20,8 +20,7 @@ export default class DepositInvoicesTable extends FilterComponent {
   }
 
   onChange(filter) {
-    if (this.page != 0)
-      this.page = 0;
+    if (this.page != 0) this.page = 0;
     this.search.perform(filter);
   }
 
@@ -30,13 +29,13 @@ export default class DepositInvoicesTable extends FilterComponent {
     this.depositInvoices = yield this.store.query('depositInvoice', {
       page: {
         size: this.size,
-        number: this.page
+        number: this.page,
       },
       sort: this.sort,
       include: 'order,building',
       filter: {
         customer: {
-          number: this.args.customer.number
+          number: this.args.customer.number,
         },
         number: filter.number,
         reference: filter.reference,
@@ -44,12 +43,11 @@ export default class DepositInvoicesTable extends FilterComponent {
           name: filter.name,
           'postal-code': filter.postalCode,
           city: filter.city,
-          street: filter.street
-        }
-      }
+          street: filter.street,
+        },
+      },
     });
   }
-
 
   @action
   previousPage() {

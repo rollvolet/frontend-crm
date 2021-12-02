@@ -26,9 +26,7 @@ export default class InterventionDetailPanelComponent extends Component {
   }
 
   get technicianNames() {
-    return this.args.model.technicians
-      .sortBy('firstName')
-      .mapBy('firstName');
+    return this.args.model.technicians.sortBy('firstName').mapBy('firstName');
   }
 
   get isNbOfPersonsWarning() {
@@ -53,20 +51,21 @@ export default class InterventionDetailPanelComponent extends Component {
     let requiresPlanningEventReload = false;
     if (validations.isValid) {
       const changedAttributes = this.args.model.changedAttributes();
-      if (changedAttributes['comment'])
+      if (changedAttributes['comment']) {
         requiresPlanningEventReload = true;
+      }
       yield this.args.model.save();
     }
 
-    if (requiresPlanningEventReload)
+    if (requiresPlanningEventReload) {
       yield this.args.model.belongsTo('planningEvent').reload();
+    }
   }
 
   @keepLatestTask
   *savePlanningEvent() {
     const { validations } = yield this.planningEvent.validate();
-    if (validations.isValid)
-      yield this.planningEvent.save();
+    if (validations.isValid) yield this.planningEvent.save();
   }
 
   @keepLatestTask
@@ -90,7 +89,7 @@ export default class InterventionDetailPanelComponent extends Component {
       contact,
       building,
       employee,
-      origin
+      origin,
     });
 
     yield intervention.save();

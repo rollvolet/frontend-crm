@@ -8,22 +8,22 @@ const Validations = buildValidations({
   amount: [
     validator('presence', true),
     validator('number', {
-      positive: true
-    })
-  ]
+      positive: true,
+    }),
+  ],
 });
 
 export default class DepositModel extends Model.extend(Validations, LoadableModel) {
-  @attr sequenceNumber
-  @attr('number') amount
-  @attr('date-midnight') paymentDate
+  @attr sequenceNumber;
+  @attr('number') amount;
+  @attr('date-midnight') paymentDate;
 
-  @belongsTo('customer') customer
-  @belongsTo('order') order
-  @belongsTo('invoice') invoice
-  @belongsTo('payment') payment
+  @belongsTo('customer') customer;
+  @belongsTo('order') order;
+  @belongsTo('invoice') invoice;
+  @belongsTo('payment') payment;
 
-  @dateString('paymentDate') paymentDateStr
+  @dateString('paymentDate') paymentDateStr;
 
   get arithmeticAmount() {
     return this.amount;

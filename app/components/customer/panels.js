@@ -21,10 +21,12 @@ export default class CustomerPanelsComponent extends Component {
   *delete() {
     try {
       const telephones = yield this.args.model.telephones;
-      yield all(telephones.map(t => t.destroyRecord()));
+      yield all(telephones.map((t) => t.destroyRecord()));
       yield this.args.model.destroyRecord();
     } catch (e) {
-      warn(`Something went wrong while destroying customer ${this.args.model.id}`, { id: 'destroy-failure' });
+      warn(`Something went wrong while destroying customer ${this.args.model.id}`, {
+        id: 'destroy-failure',
+      });
     } finally {
       this.args.onDidDelete();
     }

@@ -16,8 +16,9 @@ export default class InputFieldVatNumberInputDuplicateError extends Component {
   @keepLatestTask
   *loadData() {
     if (this.args.customer) {
-      const duplicate = this.store.peekAll('customer')
-            .find(c => c.id != this.args.customer.id && c.vatNumber == this.args.customer.vatNumber);
+      const duplicate = this.store
+        .peekAll('customer')
+        .find((c) => c.id != this.args.customer.id && c.vatNumber == this.args.customer.vatNumber);
 
       if (duplicate) {
         this.duplicate = duplicate;
@@ -25,12 +26,13 @@ export default class InputFieldVatNumberInputDuplicateError extends Component {
         const duplicates = yield this.store.query('customer', {
           page: { size: 1 },
           filter: {
-            'vat-number': this.args.customer.vatNumber
-          }
+            'vat-number': this.args.customer.vatNumber,
+          },
         });
 
-        if (duplicates.length)
+        if (duplicates.length) {
           this.duplicate = duplicates.firstObject;
+        }
       }
     }
   }

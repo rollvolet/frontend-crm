@@ -19,7 +19,16 @@ export default class Case {
   @tracked order = null;
   @tracked invoice = null;
 
-  constructor({ customerId, contactId, buildingId, interventionId, requestId, offerId, orderId, invoiceId }) {
+  constructor({
+    customerId,
+    contactId,
+    buildingId,
+    interventionId,
+    requestId,
+    offerId,
+    orderId,
+    invoiceId,
+  }) {
     this.customerId = customerId;
     this.contactId = contactId;
     this.buildingId = buildingId;

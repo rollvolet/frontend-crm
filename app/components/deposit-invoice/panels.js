@@ -72,12 +72,11 @@ export default class DepositInvoicePanelsComponent extends Component {
       vatRate,
       customer,
       contact,
-      building
+      building,
     });
 
     const { validations } = yield depositInvoice.validate();
-    if (validations.isValid)
-      yield depositInvoice.save();
+    if (validations.isValid) yield depositInvoice.save();
 
     this.args.didCreateDepositInvoice();
   }
@@ -100,12 +99,11 @@ export default class DepositInvoicePanelsComponent extends Component {
       vatRate: this.vatRate,
       customer: this.customer,
       contact: this.contact,
-      building: this.building
+      building: this.building,
     });
 
     const { validations } = yield creditNote.validate();
-    if (validations.isValid)
-      yield creditNote.save();
+    if (validations.isValid) yield creditNote.save();
 
     this.args.didCreateDepositInvoice();
   }

@@ -28,7 +28,8 @@ export default class UserInfoService extends Service {
   }
 
   @keepLatestTask
-  *fetchUserInfo() { // eslint-disable-line require-yield
+  *fetchUserInfo() {
+    // eslint-disable-line require-yield
     if (this.session.isAuthenticated) {
       const sessionData = this.session.data.authenticated.data;
       this.name = sessionData.attributes.name;
@@ -49,7 +50,7 @@ export default class UserInfoService extends Service {
       if (this.username) {
         const firstName = this.username.split(' ')[0].toLowerCase();
         const employees = await this.store.findAll('employee'); // TODO convert to query
-        const employee = employees.find(e => e.firstName.toLowerCase() == firstName);
+        const employee = employees.find((e) => e.firstName.toLowerCase() == firstName);
         this.set('employee', employee);
       } else {
         this.set('employee', null);

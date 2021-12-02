@@ -7,52 +7,52 @@ const Validations = buildValidations({
   orderDate: validator('presence', true),
   scheduledHours: validator('number', {
     allowBlank: true,
-    positive: true
+    positive: true,
   }),
   scheduledNbOfPersons: validator('number', {
     allowBlank: true,
-    positive: true
-  })
+    positive: true,
+  }),
 });
 
 export default class OrderModel extends Model.extend(Validations, LoadableModel) {
-  @attr('date-midnight') orderDate
-  @attr amount
-  @attr offerNumber
-  @attr requestNumber
-  @attr reference
-  @attr('boolean') depositRequired
-  @attr('boolean') hasProductionTicket
-  @attr('boolean') mustBeInstalled
-  @attr('boolean') mustBeDelivered
-  @attr('boolean') isReady
-  @attr('date-midnight') expectedDate
-  @attr('date-midnight') requiredDate
-  @attr('number') scheduledHours
-  @attr('number') scheduledNbOfPersons
-  @attr comment
-  @attr('boolean') canceled
-  @attr cancellationReason
-  @attr('date-midnight') planningDate
-  @attr planningId
-  @attr planningMsObjectId
+  @attr('date-midnight') orderDate;
+  @attr amount;
+  @attr offerNumber;
+  @attr requestNumber;
+  @attr reference;
+  @attr('boolean') depositRequired;
+  @attr('boolean') hasProductionTicket;
+  @attr('boolean') mustBeInstalled;
+  @attr('boolean') mustBeDelivered;
+  @attr('boolean') isReady;
+  @attr('date-midnight') expectedDate;
+  @attr('date-midnight') requiredDate;
+  @attr('number') scheduledHours;
+  @attr('number') scheduledNbOfPersons;
+  @attr comment;
+  @attr('boolean') canceled;
+  @attr cancellationReason;
+  @attr('date-midnight') planningDate;
+  @attr planningId;
+  @attr planningMsObjectId;
 
-  @belongsTo('offer') offer
-  @belongsTo('invoice') invoice
-  @belongsTo('customer') customer
-  @belongsTo('contact') contact
-  @belongsTo('building') building
-  @belongsTo('vat-rate') vatRate
-  @hasMany('deposit') deposits
-  @hasMany('deposit-invoices') depositInvoices
-  @hasMany('invoiceline') invoicelines
-  @hasMany('interventions') interventions
-  @hasMany('employee', { inverse: null }) technicians
+  @belongsTo('offer') offer;
+  @belongsTo('invoice') invoice;
+  @belongsTo('customer') customer;
+  @belongsTo('contact') contact;
+  @belongsTo('building') building;
+  @belongsTo('vat-rate') vatRate;
+  @hasMany('deposit') deposits;
+  @hasMany('deposit-invoices') depositInvoices;
+  @hasMany('invoiceline') invoicelines;
+  @hasMany('interventions') interventions;
+  @hasMany('employee', { inverse: null }) technicians;
 
-  @dateString('orderDate') orderDateStr
-  @dateString('expectedDate') expectedDateStr
-  @dateString('requiredDate') requiredDateStr
-  @dateString('planningDate') planningDateStr
+  @dateString('orderDate') orderDateStr;
+  @dateString('expectedDate') expectedDateStr;
+  @dateString('requiredDate') requiredDateStr;
+  @dateString('planningDate') planningDateStr;
 
   get scheduledTotal() {
     return this.scheduledHours * this.scheduledNbOfPersons;

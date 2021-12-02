@@ -18,14 +18,14 @@ export default DS.JSONAPISerializer.extend(DataTableSerializerMixin, {
   createPageMeta(data) {
     let meta = {};
 
-    Object.keys(data).forEach(type => {
+    Object.keys(data).forEach((type) => {
       const link = data[type];
       meta[type] = {};
 
       //extracts from '/path?foo=bar&baz=foo' the string: foo=bar&baz=foo
       const query = (link && link.split(/\?(.+)/)[1]) || '';
 
-      query.split('&').forEach(pairs => {
+      query.split('&').forEach((pairs) => {
         const [param, value] = pairs.split('=');
 
         if (decodeURIComponent(param) === 'page[number]') {
@@ -33,9 +33,7 @@ export default DS.JSONAPISerializer.extend(DataTableSerializerMixin, {
         } else if (decodeURIComponent(param) === 'page[size]') {
           meta[type].size = parseInt(value);
         }
-
       });
-
     });
 
     return meta;
@@ -56,5 +54,5 @@ export default DS.JSONAPISerializer.extend(DataTableSerializerMixin, {
     }
 
     return result;
-  }
+  },
 });

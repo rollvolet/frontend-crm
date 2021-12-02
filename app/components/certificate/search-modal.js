@@ -19,14 +19,25 @@ export default class CertificateSearchModalComponent extends FilterComponent {
 
   constructor() {
     super(...arguments);
-    this.initFilter(['number', 'reference', 'cName', 'cPostalCode', 'cCity', 'cStreet', 'cTelephone', 'bName', 'bPostalCode', 'bCity', 'bStreet']);
+    this.initFilter([
+      'number',
+      'reference',
+      'cName',
+      'cPostalCode',
+      'cCity',
+      'cStreet',
+      'cTelephone',
+      'bName',
+      'bPostalCode',
+      'bCity',
+      'bStreet',
+    ]);
     this.filter.set('cName', this.case.current.customer && this.case.current.customer.name);
     this.search.perform(this.filter);
   }
 
   onChange(filter) {
-    if (this.page != 0)
-      this.page = 0;
+    if (this.page != 0) this.page = 0;
     this.search.perform(filter);
   }
 
@@ -37,42 +48,45 @@ export default class CertificateSearchModalComponent extends FilterComponent {
       number: filter.number,
       offer: {
         number: filter.offerNumber,
-        'request-number': filter.requestNumber
+        'request-number': filter.requestNumber,
       },
       customer: {
         name: filter.cName,
         'postal-code': filter.cPostalCode,
         city: filter.cCity,
-        street: filter.cStreet
+        street: filter.cStreet,
       },
       building: {
         name: filter.bName,
         'postal-code': filter.bPostalCode,
         city: filter.bCity,
-        street: filter.bStreet
-      }
+        street: filter.bStreet,
+      },
     };
 
-    if (!isBlank(filter.reference))
-      apiFilter['reference'] = filter.reference;
+    if (!isBlank(filter.reference)) apiFilter['reference'] = filter.reference;
 
     this.invoices = yield this.store.query(this.scope, {
       page: {
         size: this.size,
-        number: this.page
+        number: this.page,
       },
       sort: this.sort,
       include: 'building',
-      filter: apiFilter
+      filter: apiFilter,
     });
   }
 
   @action
   closeModal() {
     this.showModalContent = false;
-    later(this, function() {
-      this.args.onClose();
-    }, 200); // delay to finish leave CSS animation
+    later(
+      this,
+      function () {
+        this.args.onClose();
+      },
+      200
+    ); // delay to finish leave CSS animation
   }
 
   @action

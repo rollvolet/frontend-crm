@@ -24,14 +24,16 @@ export default class InputFieldAddressInputComponent extends Component {
     const errors = [];
     const lines = (this.value || '').split('\n');
     if (lines.length > 3)
-      errors.pushObject("Adres mag maximaal 3 lijnen bevatten. Enkel de 3 eerste lijnen zijn opgeslagen");
+      errors.pushObject(
+        'Adres mag maximaal 3 lijnen bevatten. Enkel de 3 eerste lijnen zijn opgeslagen'
+      );
     return errors;
   }
 
   updateValue(lines) {
     let value = '';
     let i = 0;
-    while(i < 3) {
+    while (i < 3) {
       if (lines[i]) {
         value += lines[i];
         value += '\n';
@@ -50,7 +52,9 @@ export default class InputFieldAddressInputComponent extends Component {
   formatAddressLines() {
     const lines = (this.value || '').split('\n');
     if (lines.length > 3)
-      warn('Only 3 lines are allowed in the address text area', { id: 'input.too-many-address-lines' });
+      warn('Only 3 lines are allowed in the address text area', {
+        id: 'input.too-many-address-lines',
+      });
 
     const formatAddressLine = function (line) {
       if (line && line.length) {
@@ -60,7 +64,7 @@ export default class InputFieldAddressInputComponent extends Component {
       }
     };
 
-    const formattedLines = lines.map(l => formatAddressLine(l));
+    const formattedLines = lines.map((l) => formatAddressLine(l));
     this.updateValue(formattedLines);
     this.args.onChange(formattedLines);
   }

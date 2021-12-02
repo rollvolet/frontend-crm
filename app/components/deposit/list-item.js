@@ -28,5 +28,4 @@ export default class DepositListItemComponent extends Component {
   closeEdit() {
     this.editMode = false;
   }
-
 }

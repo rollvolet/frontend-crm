@@ -4,9 +4,9 @@ import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency-decorators';
 
 export default class ContactSelect extends Component {
-  @service store
+  @service store;
 
-  @tracked options = []
+  @tracked options = [];
 
   constructor() {
     super(...arguments);
@@ -22,12 +22,11 @@ export default class ContactSelect extends Component {
         page: { size: 1000 },
         filter: {
           customer: {
-            number: this.args.customer.number
-          }
-        }
+            number: this.args.customer.number,
+          },
+        },
       });
     }
-
   }
 
   get required() {

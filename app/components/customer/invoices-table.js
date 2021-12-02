@@ -20,8 +20,7 @@ export default class InvoicesTable extends FilterComponent {
   }
 
   onChange(filter) {
-    if (this.page != 0)
-      this.page = 0;
+    if (this.page != 0) this.page = 0;
     this.search.perform(filter);
   }
 
@@ -30,13 +29,13 @@ export default class InvoicesTable extends FilterComponent {
     this.invoices = yield this.store.query('invoice', {
       page: {
         size: this.size,
-        number: this.page
+        number: this.page,
       },
       sort: this.sort,
       include: 'building',
       filter: {
         customer: {
-          number: this.args.customer.number
+          number: this.args.customer.number,
         },
         number: filter.number,
         reference: filter.reference,
@@ -44,9 +43,9 @@ export default class InvoicesTable extends FilterComponent {
           name: filter.name,
           'postal-code': filter.postalCode,
           city: filter.city,
-          street: filter.street
-        }
-      }
+          street: filter.street,
+        },
+      },
     });
   }
 

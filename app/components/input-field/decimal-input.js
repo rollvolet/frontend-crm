@@ -6,10 +6,10 @@ import formatDecimalInput from '../../utils/format-decimal-input';
 import deformatDecimalInput from '../../utils/deformat-decimal-input';
 
 export default class DecimalInputComponent extends Component {
-  @tracked formattedValue
+  @tracked formattedValue;
 
-  class = 'default'
-  isRequired = false
+  class = 'default';
+  isRequired = false;
 
   constructor() {
     super(...arguments);

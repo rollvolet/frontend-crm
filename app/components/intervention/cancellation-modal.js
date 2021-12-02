@@ -10,9 +10,13 @@ export default class InterventionCancellationModalComponent extends Component {
   @action
   closeModal() {
     this.showModalContent = false;
-    later(this, function() {
-      this.args.onClose();
-    }, 200); // delay to finish leave CSS animation
+    later(
+      this,
+      function () {
+        this.args.onClose();
+      },
+      200
+    ); // delay to finish leave CSS animation
   }
 
   @action

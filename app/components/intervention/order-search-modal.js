@@ -6,25 +6,32 @@ import { later } from '@ember/runloop';
 import { restartableTask } from 'ember-concurrency-decorators';
 
 export default class InterventionOrderSearchModalComponent extends FilterComponent {
-  @service router
-  @service store
+  @service router;
+  @service store;
 
   @tracked page = 0;
   @tracked size = 10;
   @tracked sort = '-order-date';
-  @tracked orders = []
+  @tracked orders = [];
 
   @tracked showModalContent = true;
 
   constructor() {
     super(...arguments);
-    this.initFilter(['requestNumber', 'offerNumber', 'reference', 'name', 'postalCode', 'city', 'street']);
+    this.initFilter([
+      'requestNumber',
+      'offerNumber',
+      'reference',
+      'name',
+      'postalCode',
+      'city',
+      'street',
+    ]);
     this.initSearch();
   }
 
   onChange(filter) {
-    if (this.page != 0)
-      this.page = 0;
+    if (this.page != 0) this.page = 0;
     this.search.perform(filter);
   }
 
@@ -39,7 +46,7 @@ export default class InterventionOrderSearchModalComponent extends FilterCompone
     this.orders = yield this.store.query('order', {
       page: {
         size: this.size,
-        number: this.page
+        number: this.page,
       },
       sort: this.sort,
       include: 'customer,offer',
@@ -48,21 +55,25 @@ export default class InterventionOrderSearchModalComponent extends FilterCompone
           name: filter.name,
           'postal-code': filter.postalCode,
           city: filter.city,
-          street: filter.street
+          street: filter.street,
         },
         'request-number': filter.requestNumber,
         'offer-number': filter.offerNumber,
         reference: filter.reference,
-      }
+      },
     });
   }
 
   @action
   closeModal() {
     this.showModalContent = false;
-    later(this, function() {
-      this.args.onClose();
-    }, 200); // delay to finish leave CSS animation
+    later(
+      this,
+      function () {
+        this.args.onClose();
+      },
+      200
+    ); // delay to finish leave CSS animation
   }
 
   @action

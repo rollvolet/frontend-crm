@@ -33,19 +33,19 @@ export default class InterventionRequestPanelComponent extends Component {
       requiresVisit: false,
       employee: firstName,
       origin: this.args.model,
-      customer
+      customer,
     });
     yield request.save();
 
     const body = {
       contactId: contact && contact.id,
       buildingId: building && building.id,
-      requestId: request.id
+      requestId: request.id,
     };
     yield updateContactAndBuildingRequest(body);
 
     this.router.transitionTo('main.requests.edit', request.id, {
-      queryParams: { editMode: true }
+      queryParams: { editMode: true },
     });
   }
 }

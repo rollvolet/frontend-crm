@@ -21,8 +21,7 @@ export default class RequestsTable extends FilterComponent {
 
   // @overwrite
   onChange(filter) {
-    if (this.page != 0)
-      this.page = 0;
+    if (this.page != 0) this.page = 0;
     this.search.perform(filter);
   }
 
@@ -31,22 +30,22 @@ export default class RequestsTable extends FilterComponent {
     this.requests = yield this.store.query('request', {
       page: {
         size: this.size,
-        number: this.page
+        number: this.page,
       },
       sort: this.sort,
       include: 'building',
       filter: {
         customer: {
-          number: this.args.customer.number
+          number: this.args.customer.number,
         },
         number: filter.number,
         building: {
           name: filter.name,
           'postal-code': filter.postalCode,
           city: filter.city,
-          street: filter.street
-        }
-      }
+          street: filter.street,
+        },
+      },
     });
   }
 

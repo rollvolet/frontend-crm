@@ -32,8 +32,12 @@ export default class MainController extends Controller {
   @action
   closeMenu() {
     this.showMenuContent = false;
-    later(this, function() {
-      this.isOpenMenu = false;
-    }, 300); // delay to finish leave CSS animation
+    later(
+      this,
+      function () {
+        this.isOpenMenu = false;
+      },
+      300
+    ); // delay to finish leave CSS animation
   }
 }

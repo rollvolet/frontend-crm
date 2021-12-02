@@ -18,15 +18,17 @@ export default class EditController extends Controller {
   *delete() {
     try {
       const calendarEvent = yield this.model.calendarEvent;
-      if (calendarEvent)
+      if (calendarEvent) {
         yield calendarEvent.destroyRecord();
+      }
       yield this.model.destroyRecord();
 
       this.transitionToRoute('main.requests.index');
     } catch (e) {
-      warn(`Something went wrong while destroying request ${this.model.id}`, { id: 'destroy-failure' });
+      warn(`Something went wrong while destroying request ${this.model.id}`, {
+        id: 'destroy-failure',
+      });
       yield this.model.rollbackAttributes(); // undo delete-state
     }
   }
-
 }

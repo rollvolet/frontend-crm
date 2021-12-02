@@ -30,7 +30,9 @@ export default class MainInterventionsEditController extends Controller {
       yield this.model.destroyRecord();
       this.router.transitionTo('main.interventions.index');
     } catch (e) {
-      warn(`Something went wrong while destroying intervention ${this.model.id}`, { id: 'destroy-failure' });
+      warn(`Something went wrong while destroying intervention ${this.model.id}`, {
+        id: 'destroy-failure',
+      });
       yield this.model.rollbackAttributes(); // undo delete-state
     }
   }

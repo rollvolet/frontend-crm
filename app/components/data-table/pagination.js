@@ -33,7 +33,7 @@ export default class DataTablePaginationComponent extends Component {
   }
 
   get lastPage() {
-    return Math.floor((this.args.total - 1)/ this.size); // page is zero-based
+    return Math.floor((this.args.total - 1) / this.size); // page is zero-based
   }
 
   get nbOfPages() {
@@ -48,15 +48,17 @@ export default class DataTablePaginationComponent extends Component {
    * [1, more, 5, 6, ~7~, 8, 9, 10]
    * [1, more, 3, 4, ~5~, 6, 7, more, 10]
    * [1, more, 7, 8, ~9~, 10]
-  */
+   */
   get pages() {
     if (this.nbOfPages > 0) {
       if (this.args.page == this.firstPage || this.args.page == this.lastPage) {
         const x = this.firstPage;
-        const leftWindow = [x, x + 1, x + 2].filter(i => i <= this.lastPage);
+        const leftWindow = [x, x + 1, x + 2].filter((i) => i <= this.lastPage);
         const y = this.lastPage;
-        const rightWindow = [y - 2, y - 1, y].filter(i => i >= this.firstPage);
-        const pages = [...leftWindow, ...rightWindow].uniq().sort(function(a, b) { return a - b; });
+        const rightWindow = [y - 2, y - 1, y].filter((i) => i >= this.firstPage);
+        const pages = [...leftWindow, ...rightWindow].uniq().sort(function (a, b) {
+          return a - b;
+        });
         if (pages.length == 6 && pages[2] < pages[3] - 1) {
           return [...leftWindow, more, ...rightWindow];
         } else {
@@ -64,7 +66,9 @@ export default class DataTablePaginationComponent extends Component {
         }
       } else {
         const x = this.args.page;
-        const currentPageWindow = [x - 2, x - 1, x, x + 1, x + 2].filter(i => i >= this.firstPage && i <= this.lastPage);
+        const currentPageWindow = [x - 2, x - 1, x, x + 1, x + 2].filter(
+          (i) => i >= this.firstPage && i <= this.lastPage
+        );
         let prepend = [];
         let append = [];
         if (currentPageWindow.length) {

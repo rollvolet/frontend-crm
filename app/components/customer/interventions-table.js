@@ -5,13 +5,13 @@ import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency-decorators';
 
 export default class CustomerInterventionsTableComponent extends FilterComponent {
-  @service router
-  @service store
+  @service router;
+  @service store;
 
   @tracked page = 0;
   @tracked size = 10;
   @tracked sort = '-date';
-  @tracked interventions = []
+  @tracked interventions = [];
 
   constructor() {
     super(...arguments);
@@ -21,8 +21,7 @@ export default class CustomerInterventionsTableComponent extends FilterComponent
 
   // @overwrite
   onChange(filter) {
-    if (this.page != 0)
-      this.page = 0;
+    if (this.page != 0) this.page = 0;
     this.search.perform(filter);
   }
 
@@ -31,22 +30,22 @@ export default class CustomerInterventionsTableComponent extends FilterComponent
     this.interventions = yield this.store.query('intervention', {
       page: {
         size: this.size,
-        number: this.page
+        number: this.page,
       },
       sort: this.sort,
       include: 'building',
       filter: {
         customer: {
-          number: this.args.customer.number
+          number: this.args.customer.number,
         },
         number: filter.number,
         building: {
           name: filter.name,
           'postal-code': filter.postalCode,
           city: filter.city,
-          street: filter.street
-        }
-      }
+          street: filter.street,
+        },
+      },
     });
   }
 

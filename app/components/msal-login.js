@@ -20,14 +20,15 @@ export default class MsalLoginComponent extends Component {
     try {
       this.isAuthenticating = true;
       await this.session.authenticate('authenticator:torii', 'azure-ad2-oauth2');
-    } catch(e) {
+    } catch (e) {
       warn(JSON.stringify(e), { id: 'authentication.failure' });
-      if (e.errors && e.errors.length && e.errors[0].title)
+      if (e.errors && e.errors.length && e.errors[0].title) {
         this.errorMessage = e.errors[0].title;
-      else if (e.status == 403)
+      } else if (e.status == 403) {
         this.errorMessage = 'U hebt geen toegang tot de applicatie';
-      else
+      } else {
         this.errorMessage = 'Er is iets misgelopen. Probeer opnieuw.';
+      }
     } finally {
       this.isAuthenticating = false;
     }

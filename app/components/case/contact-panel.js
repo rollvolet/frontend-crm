@@ -11,8 +11,7 @@ export default class CaseContactPanelComponent extends Component {
   @keepLatestTask
   *save() {
     const { validations } = yield this.args.model.validate();
-    if (validations.isValid)
-      yield this.args.model.save();
+    if (validations.isValid) yield this.args.model.save();
   }
 
   @action
@@ -24,8 +23,12 @@ export default class CaseContactPanelComponent extends Component {
   @action
   closeEditModal() {
     this.showModalContent = false;
-    later(this, function() {
-      this.isOpenEditModal = false;
-    }, 200); // delay to finish leave CSS animation
+    later(
+      this,
+      function () {
+        this.isOpenEditModal = false;
+      },
+      200
+    ); // delay to finish leave CSS animation
   }
 }

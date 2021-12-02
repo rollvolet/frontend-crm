@@ -5,7 +5,7 @@ import { isEmpty } from '@ember/utils';
 import { keepLatestTask } from 'ember-concurrency-decorators';
 
 export default class VisitDetailViewComponent extends Component {
-  @tracked calendarEvent
+  @tracked calendarEvent;
 
   constructor() {
     super(...arguments);
@@ -20,7 +20,7 @@ export default class VisitDetailViewComponent extends Component {
   *loadCalendarEvent() {
     try {
       this.calendarEvent = yield this.args.model.calendarEvent;
-    } catch(e) {
+    } catch (e) {
       // Something went wrong
     }
   }
@@ -31,8 +31,8 @@ export default class VisitDetailViewComponent extends Component {
       method: 'PUT',
       headers: new Headers({
         Accept: 'application/json',
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     });
     yield this.loadCalendarEvent.perform();
   }

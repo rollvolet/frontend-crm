@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency-decorators';
 
 export default class PlanningEventDetailViewComponent extends Component {
-  @service case
+  @service case;
 
   constructor() {
     super(...arguments);

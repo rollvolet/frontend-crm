@@ -24,7 +24,7 @@ module.exports = function (environment) {
     moment: {
       includeLocales: ['nl'],
       outputFormat: 'DD-MM-YYYY hh:mm:ss',
-      allowEmpty: true
+      allowEmpty: true,
     },
     torii: {
       disableRedirectInitializer: true,
@@ -34,13 +34,13 @@ module.exports = function (environment) {
           apiKey: '73f6618e-be24-4ab5-a1da-4f368448fd96',
           // scope  'offline_access' is required to get a refresh token together with the access token
           scope: 'offline_access User.Read Calendars.ReadWrite.Shared Files.ReadWrite.All',
-          redirectUri: 'http://localhost:4200/torii/redirect.html'
-        }
-      }
+          redirectUri: 'http://localhost:4200/torii/redirect.html',
+        },
+      },
     },
     emberKeyboard: {
-      disableInputsInitializer: true
-    }
+      disableInputsInitializer: true,
+    },
   };
 
   if (environment === 'development') {

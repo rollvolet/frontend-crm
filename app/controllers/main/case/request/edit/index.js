@@ -24,17 +24,21 @@ export default class IndexController extends Controller {
     const customer = this.case.current.customer;
     try {
       const calendarEvent = yield this.model.calendarEvent;
-      if (calendarEvent)
+      if (calendarEvent) {
         yield calendarEvent.destroyRecord();
+      }
       yield this.model.destroyRecord();
     } catch (e) {
-      warn(`Something went wrong while destroying request ${this.model.id}`, { id: 'destroy-failure' });
+      warn(`Something went wrong while destroying request ${this.model.id}`, {
+        id: 'destroy-failure',
+      });
       yield this.model.rollbackAttributes(); // undo delete-state
     } finally {
-      if (customer)
+      if (customer) {
         this.router.transitionTo('main.customers.edit', customer);
-      else
+      } else {
         this.router.transitionTo('main.requests.index');
+      }
     }
   }
 }

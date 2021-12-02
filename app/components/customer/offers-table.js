@@ -15,14 +15,21 @@ export default class OffersTable extends FilterComponent {
 
   constructor() {
     super(...arguments);
-    this.initFilter(['requestNumber', 'number', 'reference', 'name', 'postalCode', 'city', 'street']);
+    this.initFilter([
+      'requestNumber',
+      'number',
+      'reference',
+      'name',
+      'postalCode',
+      'city',
+      'street',
+    ]);
     this.search.perform(this.filter);
   }
 
   // @overwrite
   onChange(filter) {
-    if (this.page != 0)
-      this.page = 0;
+    if (this.page != 0) this.page = 0;
     this.search.perform(filter);
   }
 
@@ -31,13 +38,13 @@ export default class OffersTable extends FilterComponent {
     this.offers = yield this.store.query('offer', {
       page: {
         size: this.size,
-        number: this.page
+        number: this.page,
       },
       sort: this.sort,
       include: 'building,request',
       filter: {
         customer: {
-          number: this.args.customer.number
+          number: this.args.customer.number,
         },
         'request-number': filter.requestNumber,
         number: filter.number,
@@ -46,9 +53,9 @@ export default class OffersTable extends FilterComponent {
           name: filter.name,
           'postal-code': filter.postalCode,
           city: filter.city,
-          street: filter.street
-        }
-      }
+          street: filter.street,
+        },
+      },
     });
   }
 

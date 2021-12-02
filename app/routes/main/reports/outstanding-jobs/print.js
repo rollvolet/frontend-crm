@@ -9,17 +9,18 @@ export default class MainReportsOutstandingJobsPrintRoute extends Route {
     hasProductionTicket: { refreshModel: true },
     execution: { refreshModel: true },
     isProductReady: { refreshModel: true },
-  }
+  };
 
   async model(params) {
     const endpoint = new URL(`/api/reports/outstanding-jobs`, window.location.origin);
-    const searchParams = new URLSearchParams(Object.entries({
-      'page[size]': 5000, // for printing we need all entries
-      'page[number]': 0
-    }));
+    const searchParams = new URLSearchParams(
+      Object.entries({
+        'page[size]': 5000, // for printing we need all entries
+        'page[number]': 0,
+      })
+    );
 
-    if (params.visitorName)
-      searchParams.append('filter[visitor]', params.visitorName);
+    if (params.visitorName) searchParams.append('filter[visitor]', params.visitorName);
 
     if (params.execution == 'delivery') {
       searchParams.append('filter[mustBeDelivered]', 1);
@@ -35,8 +36,7 @@ export default class MainReportsOutstandingJobsPrintRoute extends Route {
       searchParams.append('filter[mustBeInstalled]', -1);
     }
 
-    if (params.orderDate)
-      searchParams.append('filter[orderDate]', params.orderDate);
+    if (params.orderDate) searchParams.append('filter[orderDate]', params.orderDate);
 
     searchParams.append('filter[hasProductionTicket]', params.hasProductionTicket);
     searchParams.append('filter[isProductReady]', params.isProductReady);
@@ -45,23 +45,23 @@ export default class MainReportsOutstandingJobsPrintRoute extends Route {
 
     const response = await fetch(endpoint, {
       headers: new Headers({
-        Accept: 'application/json'
-      })
+        Accept: 'application/json',
+      }),
     });
     const json = await response.json();
-    const entries = json.data.map(item => new OutstandingJob(item.attributes));
+    const entries = json.data.map((item) => new OutstandingJob(item.attributes));
 
     return entries;
   }
 
   async afterModel(model) {
     let visitors = this.store.peekAll('employee');
-    if (!visitors.length)
+    if (!visitors.length) {
       visitors = await this.store.findAll('employee');
+    }
     model.forEach((row) => {
-      const visitor = visitors.find(e => e.firstName == row.visitor);
+      const visitor = visitors.find((e) => e.firstName == row.visitor);
       row.visitorInitials = visitor && visitor.initials;
     });
   }
-
 }

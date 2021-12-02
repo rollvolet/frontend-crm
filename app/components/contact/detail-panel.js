@@ -9,8 +9,7 @@ export default class ContactDetailPanelComponent extends Component {
   @keepLatestTask
   *save() {
     const { validations } = yield this.args.model.validate();
-    if (validations.isValid)
-      yield this.args.model.save();
+    if (validations.isValid) yield this.args.model.save();
   }
 
   @action

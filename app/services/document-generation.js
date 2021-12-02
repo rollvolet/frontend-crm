@@ -2,7 +2,6 @@ import Service from '@ember/service';
 import fetch, { Headers } from 'fetch';
 
 export default class DocumentGenerationService extends Service {
-
   // Document generation
 
   async visitReport(request) {
@@ -36,26 +35,32 @@ export default class DocumentGenerationService extends Service {
   }
 
   async invoiceDocument(invoice) {
-    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    const resource =
+      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     await this._generate(`/api/${resource}/${invoice.get('id')}/documents`);
     this.downloadInvoiceDocument(invoice);
   }
 
   async certificateTemplate(invoice) {
-    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    const resource =
+      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     await this._generate(`/api/${resource}/${invoice.get('id')}/certificates`);
     this.downloadCertificateTemplate(invoice);
   }
 
   async recycleCertificate(sourceInvoice, targetInvoice) {
-    const resource = targetInvoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    const resource =
+      targetInvoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     const body = {
       id: sourceInvoice.get('id'),
-      type: sourceInvoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices'
+      type:
+        sourceInvoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices',
     };
-    await this._generate(`/api/${resource}/${targetInvoice.get('id')}/certificate-recyclations`, JSON.stringify(body));
+    await this._generate(
+      `/api/${resource}/${targetInvoice.get('id')}/certificate-recyclations`,
+      JSON.stringify(body)
+    );
   }
-
 
   // Document uploads
 
@@ -65,7 +70,8 @@ export default class DocumentGenerationService extends Service {
   }
 
   uploadCertificate(invoice, file) {
-    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    const resource =
+      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     return file.upload(`/api/${resource}/${invoice.id}/certificate`);
   }
 
@@ -74,14 +80,15 @@ export default class DocumentGenerationService extends Service {
   deleteProductionTicket(model) {
     const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
     return fetch(`/api/${resource}/${model.id}/production-ticket`, {
-      method: 'DELETE'
+      method: 'DELETE',
     });
   }
 
   deleteCertificate(invoice) {
-    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    const resource =
+      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     return fetch(`/api/${resource}/${invoice.id}/certificate`, {
-      method: 'DELETE'
+      method: 'DELETE',
     });
   }
 
@@ -114,22 +121,27 @@ export default class DocumentGenerationService extends Service {
   downloadProductionTicket(order, options) {
     const defaultOptions = { watermark: false };
     const opts = Object.assign({}, defaultOptions, options);
-    const query = Object.keys(opts).map(k => `${k}=${opts[k]}`).join('&');
+    const query = Object.keys(opts)
+      .map((k) => `${k}=${opts[k]}`)
+      .join('&');
     this._openInNewTab(`/api/files/production-tickets/${order.get('id')}?${query}`);
   }
 
   downloadInvoiceDocument(invoice) {
-    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    const resource =
+      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}`);
   }
 
   downloadCertificateTemplate(invoice) {
-    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    const resource =
+      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}/certificate-template`);
   }
 
   downloadCertificate(invoice) {
-    const resource = invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
+    const resource =
+      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
     this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}/certificate`);
   }
 
@@ -139,15 +151,16 @@ export default class DocumentGenerationService extends Service {
       method: 'POST',
       headers: new Headers({
         Accept: 'application/pdf',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }),
-      body: body
+      body: body,
     });
 
-    if (result.ok)
+    if (result.ok) {
       return result;
-    else
+    } else {
       throw result;
+    }
   }
 
   _openInNewTab(href) {

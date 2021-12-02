@@ -22,11 +22,12 @@ export default class DataTableThComponent extends Component {
   */
   @action
   updateSort() {
-    if (this.isAscending)
+    if (this.isAscending) {
       this.args.onUpdateSort(`-${this.dasherizedField}`);
-    else if (this.isDescending)
+    } else if (this.isDescending) {
       this.args.onUpdateSort('');
-    else
+    } else {
       this.args.onUpdateSort(this.dasherizedField);
+    }
   }
 }

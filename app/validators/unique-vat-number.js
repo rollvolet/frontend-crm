@@ -7,14 +7,14 @@ class UniqueVatNumber extends BaseValidator {
   @service
   store;
 
-  async validate(value, options, model/*, attribute*/) {
+  async validate(value, options, model /*, attribute*/) {
     if (value && model.changedAttributes().vatNumber) {
       if (value.length > 2) {
         const customers = await this.store.query('customer', {
           page: { size: 1 },
           filter: {
-            'vat-number': value
-          }
+            'vat-number': value,
+          },
         });
 
         if (customers.length && customers.firstObject.id != model.id)
@@ -39,9 +39,9 @@ UniqueVatNumber.reopenClass({
    * @param {Unknown} options     Options passed into your validator
    * @return {Array}
    */
-  getDependentsFor(attribute/*, options */) {
+  getDependentsFor(attribute /*, options */) {
     return [attribute];
-  }
+  },
 });
 
 export default UniqueVatNumber;

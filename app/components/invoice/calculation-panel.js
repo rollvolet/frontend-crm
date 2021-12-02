@@ -7,11 +7,11 @@ import { all } from 'ember-concurrency';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceCalculationPanelComponent extends Component {
-  @service case
-  @service router
+  @service case;
+  @service router;
 
-  @tracked isOpenSupplementsModal = false
-  @tracked vatRate
+  @tracked isOpenSupplementsModal = false;
+  @tracked vatRate;
   @tracked invoicelines = [];
   @tracked supplements = [];
   @tracked depositInvoices = [];
@@ -31,11 +31,13 @@ export default class InvoiceCalculationPanelComponent extends Component {
 
     // Load data that is already loaded by the invoice/panel component
     this.invoicelines = yield model.load('invoicelines', { backgroundReload: false });
-    yield all(this.invoicelines.map(async (line) => {
-      await line.load('order');
-      await line.load('invoice');
-      await line.load('vatRate');
-    }));
+    yield all(
+      this.invoicelines.map(async (line) => {
+        await line.load('order');
+        await line.load('invoice');
+        await line.load('vatRate');
+      })
+    );
 
     // Load data that is not yet loaded
     this.supplements = yield model.load('supplements');
@@ -52,10 +54,11 @@ export default class InvoiceCalculationPanelComponent extends Component {
   }
 
   get baseAmount() {
-    if (this.args.model.baseAmount)
+    if (this.args.model.baseAmount) {
       return this.args.model.baseAmount;
-    else
+    } else {
       return sum(this.invoicelines.mapBy('arithmeticAmount'));
+    }
   }
 
   get baseAmountVat() {

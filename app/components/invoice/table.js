@@ -22,10 +22,10 @@ export default class InvoiceTableComponent extends Component {
     this.invoices = yield this.store.query('invoice', {
       page: {
         size: this.size,
-        number: this.page
+        number: this.page,
       },
       sort: this.sort,
-      include: 'customer,building'
+      include: 'customer,building',
     });
   }
 

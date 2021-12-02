@@ -21,7 +21,7 @@ export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
     bName: { refreshModel: true },
     bPostalCode: { refreshModel: true },
     bCity: { refreshModel: true },
-    bStreet: { refreshModel: true }
+    bStreet: { refreshModel: true },
   };
 
   mergeQueryOptions(params) {
@@ -37,15 +37,15 @@ export default class IndexRoute extends Route.extend(DataTableRouteMixin) {
           'postal-code': params.cPostalCode,
           city: params.cCity,
           street: params.cStreet,
-          telephone: params.cTelephone
+          telephone: params.cTelephone,
         },
         building: {
           name: params.bName,
           'postal-code': params.bPostalCode,
           city: params.bCity,
-          street: params.bStreet
-        }
-      }
+          street: params.bStreet,
+        },
+      },
     };
   }
 }

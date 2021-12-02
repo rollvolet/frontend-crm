@@ -4,10 +4,10 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
 export default class CalendarPeriodSelect extends Component {
-  @service store
+  @service store;
 
-  @tracked options = []
-  @tracked selected
+  @tracked options = [];
+  @tracked selected;
 
   constructor() {
     super(...arguments);
@@ -19,11 +19,10 @@ export default class CalendarPeriodSelect extends Component {
       { name: 'Vanaf', value: 'vanaf' },
       { name: 'Uur', value: 'bepaald uur' },
       { name: 'Uur (stipt)', value: 'stipt uur' },
-      { name: 'Rond uur', value: 'benaderend uur' }
+      { name: 'Rond uur', value: 'benaderend uur' },
     ];
-    this.selected = this.options.find(o => o.value == this.args.value);
+    this.selected = this.options.find((o) => o.value == this.args.value);
   }
-
 
   get required() {
     return this.args.required || false;

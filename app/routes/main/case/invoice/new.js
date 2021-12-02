@@ -4,7 +4,7 @@ import moment from 'moment';
 export default class NewRoute extends Route {
   async model() {
     const customer = this.modelFor('main.case');
-    const vatRate = this.store.peekAll('vat-rate').find(v => v.rate == 21);
+    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
 
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
@@ -18,7 +18,7 @@ export default class NewRoute extends Route {
       isCreditNote: false,
       hasProductionTicket: false,
       customer,
-      vatRate
+      vatRate,
     });
 
     return invoice.save();
@@ -28,8 +28,8 @@ export default class NewRoute extends Route {
     const customer = this.modelFor('main.case');
     this.transitionTo('main.case.invoice.edit', customer, model, {
       queryParams: {
-        editMode: true
-      }
+        editMode: true,
+      },
     });
   }
 }

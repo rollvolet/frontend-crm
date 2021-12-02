@@ -23,8 +23,12 @@ export default class InvoicelineDetailComponent extends Component {
   }
 
   get showUnsavedWarning() {
-    return !this.editMode &&
-      (this.args.model.validations.isInvalid || this.args.model.isNew || this.args.model.hasDirtyAttributes);
+    return (
+      !this.editMode &&
+      (this.args.model.validations.isInvalid ||
+        this.args.model.isNew ||
+        this.args.model.hasDirtyAttributes)
+    );
   }
 
   @action

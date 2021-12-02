@@ -5,8 +5,8 @@ import { all } from 'ember-concurrency';
 import { warn } from '@ember/debug';
 
 export default class OfferPanelsComponent extends Component {
-  @service case
-  @service router
+  @service case;
+  @service router;
 
   get isDisabledEdit() {
     return this.args.model.isMasteredByAccess || this.case.current.order != null;
@@ -23,12 +23,14 @@ export default class OfferPanelsComponent extends Component {
   @task
   *delete() {
     try {
-      yield all(this.offerlines.map(t => t.destroyRecord()));
+      yield all(this.offerlines.map((t) => t.destroyRecord()));
       this.case.updateRecord('offer', null);
       yield this.args.model.destroyRecord();
       this.router.transitionTo('main.case.request.edit', this.case.current.request.id);
     } catch (e) {
-      warn(`Something went wrong while destroying offer ${this.args.model.id}`, { id: 'destroy-failure' });
+      warn(`Something went wrong while destroying offer ${this.args.model.id}`, {
+        id: 'destroy-failure',
+      });
       yield this.args.model.rollbackAttributes(); // undo delete-state
       this.case.updateRecord('offer', this.args.model);
     }

@@ -6,7 +6,7 @@ export default class InputFieldFilterFlagComponent extends Component {
   defaultOptions = [
     { label: 'ja', value: 1, id: `yes-${guidFor(this)}` },
     { label: 'nvt', value: -1, id: `nvt-${guidFor(this)}` },
-    { label: 'nee', value: 0, id: `no-${guidFor(this)}` }
+    { label: 'nee', value: 0, id: `no-${guidFor(this)}` },
   ];
 
   get group() {

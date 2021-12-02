@@ -5,7 +5,7 @@ import config from '../config/environment';
 import { tracked } from '@glimmer/tracking';
 
 export default class AppStateService extends Service {
-  @service router
+  @service router;
 
   @tracked lastError = null;
   @tracked lastSuccessUrl = null;
@@ -18,7 +18,7 @@ export default class AppStateService extends Service {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         data: {
@@ -32,10 +32,10 @@ export default class AppStateService extends Service {
             'current-path': this.lastSuccessUrl,
             type: error.name || 'XHR',
             message: error.message || `[${error.status}] ${error.statusText}`,
-            stack: error.stack || error.url
-          }
-        }
-      })
+            stack: error.stack || error.url,
+          },
+        },
+      }),
     });
   }
 }

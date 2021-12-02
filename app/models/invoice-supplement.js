@@ -3,16 +3,16 @@ import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
   nbOfPieces: validator('number', {
-    positive: true
-  })
+    positive: true,
+  }),
 });
 
 export default class InvoiceSupplementModel extends Model.extend(Validations) {
-  @attr sequenceNumber
-  @attr('number') nbOfPieces
-  @attr('number') amount
-  @attr description
+  @attr sequenceNumber;
+  @attr('number') nbOfPieces;
+  @attr('number') amount;
+  @attr description;
 
-  @belongsTo('invoice') invoice
-  @belongsTo('product-unit') unit
+  @belongsTo('invoice') invoice;
+  @belongsTo('product-unit') unit;
 }

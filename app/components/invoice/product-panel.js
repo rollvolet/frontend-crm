@@ -17,16 +17,18 @@ export default class InvoiceProductPanelComponent extends Component {
   }
 
   @keepLatestTask
-  *loadData() {
-
-  }
+  *loadData() {}
 
   get sortedInvoicelines() {
     return this.args.model.invoicelines.sortBy('sequenceNumber');
   }
 
   get isEnabledAddingInvoicelines() {
-    return !this.args.model.isBooked && this.args.model.vatRate.get('id') != null && !this.args.isDisabledEdit;
+    return (
+      !this.args.model.isBooked &&
+      this.args.model.vatRate.get('id') != null &&
+      !this.args.isDisabledEdit
+    );
   }
 
   @task
@@ -37,25 +39,24 @@ export default class InvoiceProductPanelComponent extends Component {
     const invoiceline = this.store.createRecord('invoiceline', {
       sequenceNumber: number + 1,
       invoice: this.args.model,
-      vatRate: vatRate
+      vatRate: vatRate,
     });
 
     const { validations } = yield invoiceline.validate();
-    if (validations.isValid)
-      invoiceline.save();
+    if (validations.isValid) invoiceline.save();
   }
 
   @task
   *saveInvoiceline(invoiceline) {
     const { validations } = yield invoiceline.validate();
-    if (validations.isValid)
-      yield invoiceline.save();
+    if (validations.isValid) yield invoiceline.save();
   }
 
   @task
   *deleteInvoiceline(invoiceline) {
-    if (!invoiceline.isNew)
+    if (!invoiceline.isNew) {
       invoiceline.rollbackAttributes();
+    }
     yield invoiceline.destroyRecord();
   }
 
@@ -71,15 +72,21 @@ export default class InvoiceProductPanelComponent extends Component {
 
   @task
   *generateInvoiceDocument() {
-    if (!this.args.model.isCreditNote && !this.showMissingCertificateDialog
-        && this.args.model.certificateRequired && !this.args.model.certificateReceived) {
+    if (
+      !this.args.model.isCreditNote &&
+      !this.showMissingCertificateDialog &&
+      this.args.model.certificateRequired &&
+      !this.args.model.certificateReceived
+    ) {
       this.showMissingCertificateDialog = true;
     } else {
       this.showMissingCertificateDialog = false;
       try {
         yield this.documentGeneration.invoiceDocument(this.args.model);
       } catch (e) {
-        warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
+        warn(`Something went wrong while generating the invoice document`, {
+          id: 'document-generation-failure',
+        });
       }
     }
   }

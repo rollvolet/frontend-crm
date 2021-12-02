@@ -2,8 +2,18 @@ import Controller from '@ember/controller';
 import sum from '../../../utils/math/sum';
 
 const MONTHS = [
-  'januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli',
-  'augustus', 'september', 'oktober', 'november', 'december'
+  'januari',
+  'februari',
+  'maart',
+  'april',
+  'mei',
+  'juni',
+  'juli',
+  'augustus',
+  'september',
+  'oktober',
+  'november',
+  'december',
 ];
 
 export default class MainReportsRevenueController extends Controller {
@@ -15,7 +25,7 @@ export default class MainReportsRevenueController extends Controller {
     for (let i = 0; i < this.months.length; i++) {
       matrix[i] = { month: MONTHS[this.months[i] - 1], entries: [] };
       for (let j = 0; j < this.years.length; j++) {
-        const entry = this.model.find(e => e.month == this.months[i] && e.year == this.years[j]);
+        const entry = this.model.find((e) => e.month == this.months[i] && e.year == this.years[j]);
         matrix[i].entries[j] = entry;
       }
     }
@@ -24,7 +34,7 @@ export default class MainReportsRevenueController extends Controller {
 
   get totals() {
     return this.years.map((year) => {
-      const amounts = this.model.filter(e => e.year == year).map(e => e && e.amount);
+      const amounts = this.model.filter((e) => e.year == year).map((e) => e && e.amount);
       return sum(amounts);
     });
   }

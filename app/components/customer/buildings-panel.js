@@ -16,7 +16,7 @@ export default class BuildingsPanel extends Component {
       printSuffix: true,
       language: this.configuration.defaultLanguage,
       country: this.configuration.defaultCountry,
-      customer: this.args.customer
+      customer: this.args.customer,
     });
   }
 
@@ -34,6 +34,8 @@ export default class BuildingsPanel extends Component {
   async openCreate() {
     const building = this.createNewBuilding();
     this.selectedBuilding = building;
-    try { await building.save(); } catch(e) {} // eslint-disable-line no-empty
+    try {
+      await building.save();
+    } catch (e) {} // eslint-disable-line no-empty
   }
 }

@@ -35,7 +35,7 @@ export default class InvoiceWorkingHoursModalComponent extends Component {
     const workingHour = this.store.createRecord('working-hour', {
       date: this.newWorkingHourDate,
       employee: this.newWorkingHourTechnician,
-      invoice: this.args.model
+      invoice: this.args.model,
     });
 
     const { validations } = yield workingHour.validate();
@@ -47,7 +47,9 @@ export default class InvoiceWorkingHoursModalComponent extends Component {
         this.newWorkingHourDate = this.defaultDate;
         this.newWorkingHourTechnician = null;
       } catch (e) {
-        warn(`Something went wrong while saving working hour for invoice ${this.model.id}`, { id: 'save-failure' });
+        warn(`Something went wrong while saving working hour for invoice ${this.model.id}`, {
+          id: 'save-failure',
+        });
       }
     }
   }
@@ -60,8 +62,12 @@ export default class InvoiceWorkingHoursModalComponent extends Component {
   @action
   closeModal() {
     this.showModalContent = false;
-    later(this, function() {
-      this.args.onClose();
-    }, 200); // delay to finish leave CSS animation
+    later(
+      this,
+      function () {
+        this.args.onClose();
+      },
+      200
+    ); // delay to finish leave CSS animation
   }
 }

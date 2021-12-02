@@ -56,8 +56,9 @@ export default class InvoiceDetailPanelComponent extends Component {
 
       yield this.args.model.save();
 
-      if (this.order && requiresOfferReload)
+      if (this.order && requiresOfferReload) {
         yield this.order.belongsTo('offer').reload();
+      }
     }
   }
 

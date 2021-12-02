@@ -6,10 +6,11 @@ import deformatVatNumber from '../../utils/deformat-vat-number';
 
 export default class VatNumberInputComponent extends Component {
   get formattedValue() {
-    if (this.args.value)
+    if (this.args.value) {
       return formatVatNumber(this.args.value);
-    else
+    } else {
       return 'BE 0';
+    }
   }
 
   get elementId() {

@@ -5,9 +5,9 @@ import { tracked } from '@glimmer/tracking';
 import { composeId } from '../../models/honorific-prefix';
 
 export default class HonorificPrefixSelect extends Component {
-  @service store
+  @service store;
 
-  @tracked honorificPrefixes = []
+  @tracked honorificPrefixes = [];
 
   constructor() {
     super(...arguments);
@@ -24,22 +24,27 @@ export default class HonorificPrefixSelect extends Component {
 
   get options() {
     if (this.honorificPrefixes && this.args.language.get('id')) {
-      return this.honorificPrefixes.filter(p => {
+      return this.honorificPrefixes.filter((p) => {
         return p.name && p.languageId == this.args.language.get('id');
       });
     } else {
-      return this.honorificPrefixes.filter(p => p.name);
+      return this.honorificPrefixes.filter((p) => p.name);
     }
   }
 
   @action
   updateSelection() {
-    if (this.args.value.get('entityId') && this.args.language.get('id')
-        && this.args.value.get('languageId') != this.args.language.get('id')) {
+    if (
+      this.args.value.get('entityId') &&
+      this.args.language.get('id') &&
+      this.args.value.get('languageId') != this.args.language.get('id')
+    ) {
       // the language changed while a prefix has already been selected
-      const honorificPrefix = this.honorificPrefixes.find(p => {
+      const honorificPrefix = this.honorificPrefixes.find((p) => {
         // Find same prefix in the new language
-        return p.get('id') == composeId(this.args.value.get('entityId'), this.args.language.get('id'));
+        return (
+          p.get('id') == composeId(this.args.value.get('entityId'), this.args.language.get('id'))
+        );
       });
       this.args.onSelectionChange(honorificPrefix);
     }

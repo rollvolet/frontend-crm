@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
 export default class NewRoute extends Route {
-  @service configuration
+  @service configuration;
 
   model() {
     const customer = this.store.createRecord('customer', {
@@ -11,7 +11,7 @@ export default class NewRoute extends Route {
       printPrefix: true,
       printSuffix: true,
       language: this.configuration.defaultLanguage,
-      country: this.configuration.defaultCountry
+      country: this.configuration.defaultCountry,
     });
 
     return customer.save();

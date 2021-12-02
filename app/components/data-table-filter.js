@@ -27,7 +27,7 @@ export default class DataTableFilterComponent extends Component {
 
   @action
   resetFilters() {
-    this.filterKeys.forEach(key => this.filter.set(key, undefined));
+    this.filterKeys.forEach((key) => this.filter.set(key, undefined));
     this.onChange(this.filter);
   }
 

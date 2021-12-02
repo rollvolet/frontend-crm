@@ -41,13 +41,15 @@ export default class OfferDetailPanelComponent extends Component {
       }
       yield this.args.model.save();
 
-      if (requiresOrderReload)
+      if (requiresOrderReload) {
         yield this.args.model.belongsTo('order').reload();
+      }
     }
 
     const changedAttributesOnRequest = this.request.changedAttributes();
-    if (changedAttributesOnRequest['visitor'])
+    if (changedAttributesOnRequest['visitor']) {
       yield this.request.save();
+    }
   }
 
   @action
@@ -64,5 +66,4 @@ export default class OfferDetailPanelComponent extends Component {
   closeEdit() {
     this.editMode = false;
   }
-
 }

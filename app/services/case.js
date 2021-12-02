@@ -15,30 +15,30 @@ const regexMap = {
   interventionId: /case\/\d+\/intervention\/(\d+)/i,
   offerId: /case\/\d+\/offer\/(\d+)/i,
   orderId: /case\/\d+\/order\/(\d+)/i,
-  invoiceId: /case\/\d+\/invoice\/(\d+)/i
+  invoiceId: /case\/\d+\/invoice\/(\d+)/i,
 };
 
-const calcQueryParam = function(routeUrl, key, regexKey) {
+const calcQueryParam = function (routeUrl, key, regexKey) {
   if (!regexKey) regexKey = key;
   const regex = regexMap[regexKey];
   const matches = routeUrl.match(regex);
-  assert("Expected 1 full match and 1 group capture", matches && matches.length == 2);
+  assert('Expected 1 full match and 1 group capture', matches && matches.length == 2);
   return `${key}=${matches[1]}`;
 };
 
 export default class CaseService extends Service.extend(Evented) {
-  @service router
-  @service store
+  @service router;
+  @service store;
 
-  @tracked isInvalid = false
-  @tracked current = null
+  @tracked isInvalid = false;
+  @tracked current = null;
 
   get visitorName() {
     return this.current && this.current.request && this.current.request.visitor;
   }
 
   get visitor() {
-    return this.store.peekAll('employee').find(e => e.firstName == this.visitorName);
+    return this.store.peekAll('employee').find((e) => e.firstName == this.visitorName);
   }
 
   get isLoadingCurrentCase() {
@@ -86,7 +86,7 @@ export default class CaseService extends Service.extend(Evented) {
     const response = yield fetch(`/api/cases?${queryParam}`, {
       headers: new Headers({
         Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/vnd.api+json'
+        'Content-Type': 'application/vnd.api+json',
       }),
     });
 
@@ -100,7 +100,7 @@ export default class CaseService extends Service.extend(Evented) {
         interventionId: responseBody.interventionId && `${responseBody.interventionId}`,
         offerId: responseBody.offerId && `${responseBody.offerId}`,
         orderId: responseBody.orderId && `${responseBody.orderId}`,
-        invoiceId: responseBody.invoiceId && `${responseBody.invoiceId}`
+        invoiceId: responseBody.invoiceId && `${responseBody.invoiceId}`,
       });
     } else {
       throw response;
@@ -109,11 +109,20 @@ export default class CaseService extends Service.extend(Evented) {
 
   @keepLatestTask()
   *loadRecords() {
-    const isRecordLoaded = function(currentId, currentResource) {
+    const isRecordLoaded = function (currentId, currentResource) {
       return currentId && currentResource && currentId == currentResource.id;
     };
 
-    const promises = ['customer', 'contact', 'building', 'request', 'intervention', 'offer', 'order', 'invoice'].map(async (type) => {
+    const promises = [
+      'customer',
+      'contact',
+      'building',
+      'request',
+      'intervention',
+      'offer',
+      'order',
+      'invoice',
+    ].map(async (type) => {
       const idProp = `${type}Id`;
       const currentId = this.current[idProp];
       const currentResource = this.current[type];
@@ -122,8 +131,9 @@ export default class CaseService extends Service.extend(Evented) {
         if (!isRecordLoaded(currentId, currentResource)) {
           let record = this.store.peekRecord(type, currentId);
 
-          if (!record)
+          if (!record) {
             record = await this.store.loadRecord(type, currentId);
+          }
 
           this.current[type] = record;
         }
@@ -195,7 +205,7 @@ export default class CaseService extends Service.extend(Evented) {
       reloadPromises.push(this.current.order.belongsTo('contact').reload());
 
       const depositInvoices = yield this.current.order.get('depositInvoices');
-      depositInvoices.forEach( depositInvoice => {
+      depositInvoices.forEach((depositInvoice) => {
         reloadPromises.push(depositInvoice.belongsTo('contact').reload());
       });
     }
@@ -223,7 +233,7 @@ export default class CaseService extends Service.extend(Evented) {
       reloadPromises.push(this.current.order.belongsTo('building').reload());
 
       const depositInvoices = yield this.current.order.get('depositInvoices');
-      depositInvoices.forEach( depositInvoice => {
+      depositInvoices.forEach((depositInvoice) => {
         reloadPromises.push(depositInvoice.belongsTo('building').reload());
       });
     }
@@ -243,7 +253,7 @@ export default class CaseService extends Service.extend(Evented) {
       interventionId: this.current.interventionId,
       offerId: this.current.offerId,
       orderId: this.current.orderId,
-      invoiceId: this.current.invoiceId
+      invoiceId: this.current.invoiceId,
     };
     yield updateContactAndBuildingRequest(body);
   }

@@ -25,6 +25,6 @@ export default class OrderRoute extends Route {
 
   resetController(controller) {
     const offerlines = controller.model;
-    offerlines.forEach(line => line.isOrdered = false);
+    offerlines.forEach((line) => (line.isOrdered = false));
   }
 }

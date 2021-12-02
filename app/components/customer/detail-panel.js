@@ -14,12 +14,12 @@ export default class CustomerDetailPanelComponent extends Component {
 
   @keepLatestTask
   *save() {
-    if (this.args.model.name)
+    if (this.args.model.name) {
       this.args.model.name = this.args.model.name.toUpperCase();
+    }
 
     const { validations } = yield this.args.model.validate();
-    if (validations.isValid)
-      yield this.args.model.save();
+    if (validations.isValid) yield this.args.model.save();
   }
 
   @action

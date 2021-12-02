@@ -2,13 +2,13 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
 export default class MainInterventionsNewRoute extends Route {
-  @service userInfo
+  @service userInfo;
 
   async model() {
     const employee = await this.userInfo.getEmployee();
     const intervention = this.store.createRecord('intervention', {
       date: new Date(),
-      employee
+      employee,
     });
 
     return intervention.save();
@@ -16,7 +16,7 @@ export default class MainInterventionsNewRoute extends Route {
 
   afterModel(model) {
     this.transitionTo('main.interventions.edit', model, {
-      queryParams: { editMode: true }
+      queryParams: { editMode: true },
     });
   }
 }

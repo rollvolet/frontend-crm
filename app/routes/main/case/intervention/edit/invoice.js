@@ -3,12 +3,12 @@ import { inject as service } from '@ember/service';
 import moment from 'moment';
 
 export default class InvoiceRoute extends Route {
-  @service case
-  @service store
+  @service case;
+  @service store;
 
   async model() {
     const intervention = this.modelFor('main.case.intervention.edit');
-    const vatRate = this.store.peekAll('vat-rate').find(v => v.rate == 6);
+    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 6);
     const customer = this.modelFor('main.case');
     const contact = await intervention.contact;
     const building = await intervention.building;
@@ -29,7 +29,7 @@ export default class InvoiceRoute extends Route {
       customer,
       contact,
       building,
-      vatRate
+      vatRate,
     });
 
     return invoice.save();
@@ -41,7 +41,7 @@ export default class InvoiceRoute extends Route {
 
     const customer = this.modelFor('main.case');
     this.transitionTo('main.case.invoice.edit', customer, model, {
-      queryParams: { editMode: true }
+      queryParams: { editMode: true },
     });
   }
 }

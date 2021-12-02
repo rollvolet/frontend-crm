@@ -27,8 +27,9 @@ export default class CustomerEntityFormComponent extends Component {
   @action
   setCustomerType(event) {
     this.args.model.isCompany = event.target.value == 'company';
-    if (!this.args.model.isCompany)
+    if (!this.args.model.isCompany) {
       this.args.model.vatNumber = null;
+    }
   }
 
   @action

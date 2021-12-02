@@ -18,13 +18,14 @@ export default class CustomerEntityDetailComponent extends Component {
   }
 
   get joinedTagNames() {
-    return this.tags.map(t => t.name).join(', ');
+    return this.tags.map((t) => t.name).join(', ');
   }
 
   @keepLatestTask
   *loadData() {
-    if (this.isScopeCustomer)
+    if (this.isScopeCustomer) {
       this.tags = yield this.args.model.tags;
+    }
   }
 
   @action

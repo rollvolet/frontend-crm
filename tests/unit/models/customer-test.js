@@ -3,10 +3,10 @@ import { setupTest } from 'ember-qunit';
 
 import { run } from '@ember/runloop';
 
-module('Unit | Model | customer', function(hooks) {
+module('Unit | Model | customer', function (hooks) {
   setupTest(hooks);
 
-  test('it exists', function(assert) {
+  test('it exists', function (assert) {
     let model = run(() => this.owner.lookup('service:store').createRecord('customer'));
     // let store = this.store();
     assert.ok(!!model);

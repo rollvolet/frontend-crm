@@ -8,7 +8,8 @@ export default class MainRoute extends Route {
   beforeModel(transition) {
     const isAuthenticated = this.session.requireAuthentication(transition, 'login');
 
-    if (isAuthenticated)
+    if (isAuthenticated) {
       this.userInfo.fetchUserInfo.perform();
+    }
   }
 }

@@ -16,7 +16,7 @@ export default class ContactsPanel extends Component {
       printSuffix: true,
       language: this.configuration.defaultLanguage,
       country: this.configuration.defaultCountry,
-      customer: this.args.customer
+      customer: this.args.customer,
     });
   }
 
@@ -34,6 +34,8 @@ export default class ContactsPanel extends Component {
   async openCreate() {
     const contact = this.createNewContact();
     this.selectedContact = contact;
-    try { await contact.save(); } catch(e) {} // eslint-disable-line no-empty
+    try {
+      await contact.save();
+    } catch (e) {} // eslint-disable-line no-empty
   }
 }

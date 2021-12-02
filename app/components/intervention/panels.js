@@ -30,13 +30,16 @@ export default class InterventionPanelsComponent extends Component {
       }
       yield this.args.model.destroyRecord();
     } catch (e) {
-      warn(`Something went wrong while destroying intervention ${this.args.model.id}`, { id: 'destroy-failure' });
+      warn(`Something went wrong while destroying intervention ${this.args.model.id}`, {
+        id: 'destroy-failure',
+      });
       yield this.args.model.rollbackAttributes(); // undo delete-state
     } finally {
-      if (customer)
+      if (customer) {
         this.router.transitionTo('main.customers.edit', customer);
-      else
+      } else {
         this.router.transitionTo('main.interventions.index');
+      }
     }
   }
 }

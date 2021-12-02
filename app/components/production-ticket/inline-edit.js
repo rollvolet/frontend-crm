@@ -16,11 +16,9 @@ export default class ProductionTicketInlineEditComponent extends Component {
   }
 
   get isProcessing() {
-    return [
-      this.generateTemplate,
-      this.deleteProductionTicket,
-      this.uploadProductionTicket
-    ].find(task => task.isRunning);
+    return [this.generateTemplate, this.deleteProductionTicket, this.uploadProductionTicket].find(
+      (task) => task.isRunning
+    );
   }
 
   @task
@@ -45,9 +43,10 @@ export default class ProductionTicketInlineEditComponent extends Component {
       this.args.model.hasProductionTicket = true;
       yield this.args.model.save();
     } catch (e) {
-      warn(`Error while uploading production ticket: ${e.message || JSON.stringify(e)}`, { id: 'failure.upload' } );
-      if (file.queue)
-        file.queue.remove(file);
+      warn(`Error while uploading production ticket: ${e.message || JSON.stringify(e)}`, {
+        id: 'failure.upload',
+      });
+      if (file.queue) file.queue.remove(file);
       this.args.model.hasProductionTicket = false;
       throw e;
     }

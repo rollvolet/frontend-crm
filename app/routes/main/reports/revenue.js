@@ -4,36 +4,39 @@ import { inject as service } from '@ember/service';
 import MonthlySalesEntry from '../../../classes/monthly-sales-entry';
 
 export default class MainReportsRevenueRoute extends Route {
-  @service userInfo
+  @service userInfo;
 
   queryParams = {
     fromYear: {
-      refreshModel: true
+      refreshModel: true,
     },
     toYear: {
-      refreshModel: true
-    }
+      refreshModel: true,
+    },
   };
 
   beforeModel() {
-    if (!this.userInfo.hasBoardRole)
+    if (!this.userInfo.hasBoardRole) {
       this.transitionTo('forbidden');
+    }
   }
 
   async model(params) {
     const endpoint = new URL(`/api/reports/revenue`, window.location.origin);
-    const urlParams = new URLSearchParams(Object.entries({
-      fromYear: params.fromYear,
-      toYear: params.toYear
-    }));
+    const urlParams = new URLSearchParams(
+      Object.entries({
+        fromYear: params.fromYear,
+        toYear: params.toYear,
+      })
+    );
 
     endpoint.search = urlParams.toString();
     const response = await fetch(endpoint, {
       headers: new Headers({
-        Accept: 'application/json'
-      })
+        Accept: 'application/json',
+      }),
     });
     const json = await response.json();
-    return json.data.map(item => new MonthlySalesEntry(item.attributes));
+    return json.data.map((item) => new MonthlySalesEntry(item.attributes));
   }
 }

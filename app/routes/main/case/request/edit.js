@@ -5,7 +5,7 @@ export default class EditRoute extends Route {
     return this.store.loadRecord('request', params.request_id, {
       // We must include customer such that it is also included in PATCH requests to /request/:id.
       // Otherwise the customer will be unlinked from the request after a PATCH request
-      include: 'customer'
+      include: 'customer',
     });
   }
 }

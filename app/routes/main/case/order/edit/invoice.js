@@ -8,8 +8,9 @@ export default class InvoiceRoute extends Route {
   beforeModel(transition) {
     const order = this.modelFor('main.case.order.edit');
 
-    if (order.isMasteredByAccess)
+    if (order.isMasteredByAccess) {
       transition.abort();
+    }
   }
 
   async model() {
@@ -37,15 +38,17 @@ export default class InvoiceRoute extends Route {
       customer,
       contact,
       building,
-      vatRate
+      vatRate,
     });
 
     await invoice.save();
 
-    await Promise.all(invoicelines.map(invoiceline => {
-      invoiceline.invoice = invoice;
-      invoiceline.save();
-    }));
+    await Promise.all(
+      invoicelines.map((invoiceline) => {
+        invoiceline.invoice = invoice;
+        invoiceline.save();
+      })
+    );
 
     return invoice;
   }

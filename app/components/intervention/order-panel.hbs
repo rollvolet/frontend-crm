@@ -59,7 +59,7 @@
           <div class="space-y-6">
             <DetailListItem @label="Productiebon" class="items-baseline">
               {{#if this.order.hasProductionTicket}}
-                <button onClick={{this.downloadProductionTicket}}>
+                <button onClick={{this.downloadProductionTicket}} type="button">
                   {{svg-jar "heroicons-md-document-search" class="h-6 w-6 text-gray-400"}}
                 </button>
               {{else}}

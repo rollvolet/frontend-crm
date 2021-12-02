@@ -8,42 +8,42 @@ const Validations = buildValidations({
   baseAmount: [
     validator('presence', true),
     validator('number', {
-      positive: true
-    })
+      positive: true,
+    }),
   ],
   // Enable validation once https://github.com/offirgolan/ember-cp-validations/issues/651 is fixed
   // vatRate: validator('presence', true)
 });
 
 export default class InvoiceModel extends Model.extend(Validations, LoadableModel) {
-  @attr number
-  @attr('date-midnight') invoiceDate
-  @attr('date-midnight') dueDate
-  @attr('date-midnight') bookingDate
-  @attr('date-midnight') paymentDate
-  @attr('date-midnight') cancellationDate
-  @attr baseAmount
-  @attr('boolean') certificateRequired
-  @attr('boolean') certificateReceived
-  @attr('boolean') certificateClosed
-  @attr('boolean') isCreditNote
-  @attr comment
-  @attr qualification
-  @attr documentOutro
-  @attr reference
+  @attr number;
+  @attr('date-midnight') invoiceDate;
+  @attr('date-midnight') dueDate;
+  @attr('date-midnight') bookingDate;
+  @attr('date-midnight') paymentDate;
+  @attr('date-midnight') cancellationDate;
+  @attr baseAmount;
+  @attr('boolean') certificateRequired;
+  @attr('boolean') certificateReceived;
+  @attr('boolean') certificateClosed;
+  @attr('boolean') isCreditNote;
+  @attr comment;
+  @attr qualification;
+  @attr documentOutro;
+  @attr reference;
 
-  @belongsTo('order') order
-  @belongsTo('invoice') invoice
-  @belongsTo('customer') customer
-  @belongsTo('contact') contact
-  @belongsTo('building') building
-  @belongsTo('vat-rate') vatRate
+  @belongsTo('order') order;
+  @belongsTo('invoice') invoice;
+  @belongsTo('customer') customer;
+  @belongsTo('contact') contact;
+  @belongsTo('building') building;
+  @belongsTo('vat-rate') vatRate;
 
-  @dateString('invoiceDate') invoiceDateStr
-  @dateString('dueDate') dueDateStr
-  @dateString('bookingDate') bookingDateStr
-  @dateString('paymentDate') paymentDateStr
-  @dateString('cancellationDate') cancellationDateStr
+  @dateString('invoiceDate') invoiceDateStr;
+  @dateString('dueDate') dueDateStr;
+  @dateString('bookingDate') bookingDateStr;
+  @dateString('paymentDate') paymentDateStr;
+  @dateString('cancellationDate') cancellationDateStr;
 
   get arithmeticAmount() {
     return this.isCreditNote ? this.baseAmount * -1.0 : this.baseAmount;
@@ -60,9 +60,8 @@ export default class InvoiceModel extends Model.extend(Validations, LoadableMode
   get bankReference() {
     const base = this.isCreditNote ? 8000000000 : 5000000000;
     const ref = base + this.number;
-    let modulo = `${(ref % 97)}`.padStart(2, '0');
-    if (modulo == '00')
-      modulo = '97';
+    let modulo = `${ref % 97}`.padStart(2, '0');
+    if (modulo == '00') modulo = '97';
     return `${ref}${modulo}`.padStart(12, '0');
   }
 

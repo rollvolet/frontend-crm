@@ -33,11 +33,10 @@ export default class DepositPanelsComponent extends Component {
       customer: this.customer,
       order: this.order,
       paymentDate: new Date(),
-      amount: 0
+      amount: 0,
     });
     const { validations } = yield deposit.validate();
-    if (validations.isValid)
-      yield deposit.save();
+    if (validations.isValid) yield deposit.save();
 
     this.args.didCreateDeposit();
   }

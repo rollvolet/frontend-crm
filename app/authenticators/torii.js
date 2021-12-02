@@ -6,9 +6,9 @@ const toriiProvider = 'azure-ad2-oauth2';
 
 /**
  * Azure AD 2.0 OAuth2 authenticator
-*/
+ */
 export default class Torii extends ToriiAuthenticator {
-  @service torii
+  @service torii;
 
   async authenticate() {
     // get authorization code through Torii
@@ -19,11 +19,11 @@ export default class Torii extends ToriiAuthenticator {
       method: 'POST',
       headers: new Headers({
         Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/vnd.api+json'
+        'Content-Type': 'application/vnd.api+json',
       }),
       body: JSON.stringify({
-        authorizationCode: data.authorizationCode
-      })
+        authorizationCode: data.authorizationCode,
+      }),
     });
 
     if (result.ok) {
@@ -40,8 +40,8 @@ export default class Torii extends ToriiAuthenticator {
     await fetch('/sessions/current', {
       method: 'DELETE',
       headers: new Headers({
-        Accept: 'application/vnd.api+json'
-      })
+        Accept: 'application/vnd.api+json',
+      }),
     });
     return response;
   }
@@ -51,8 +51,8 @@ export default class Torii extends ToriiAuthenticator {
     const result = await fetch(`/sessions/current`, {
       method: 'GET',
       headers: new Headers({
-        Accept: 'application/vnd.api+json'
-      })
+        Accept: 'application/vnd.api+json',
+      }),
     });
 
     if (result.ok) {

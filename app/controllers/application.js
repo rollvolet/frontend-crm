@@ -4,7 +4,7 @@ import Ember from 'ember';
 import { debug } from '@ember/debug';
 
 export default class ApplicationController extends Controller {
-  @service appState
+  @service appState;
 
   init() {
     super.init(...arguments);
@@ -14,11 +14,13 @@ export default class ApplicationController extends Controller {
   }
 
   handleApplicationError(error) {
-    const shouldBeIgnored = function(error) {
-      return error.isInternalError ||
-        (error.isAdapterError
-          && error.errors.length
-          && Math.floor(error.errors[0].status / 100) == 4);
+    const shouldBeIgnored = function (error) {
+      return (
+        error.isInternalError ||
+        (error.isAdapterError &&
+          error.errors.length &&
+          Math.floor(error.errors[0].status / 100) == 4)
+      );
     };
 
     if (shouldBeIgnored(error)) {

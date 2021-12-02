@@ -23,7 +23,7 @@ export default class OrderStatsComponent extends Component {
   }
 
   get totalAmount() {
-    return sum(this.invoicelines.map(line => line.arithmeticAmount));
+    return sum(this.invoicelines.map((line) => line.arithmeticAmount));
   }
 
   get vatPercentage() {
@@ -36,10 +36,10 @@ export default class OrderStatsComponent extends Component {
   }
 
   get depositsAmount() {
-    return sum(this.deposits.map(deposit => deposit.arithmeticAmount));
+    return sum(this.deposits.map((deposit) => deposit.arithmeticAmount));
   }
 
   get depositInvoicesAmount() {
-    return sum(this.depositInvoices.map(depositInvoice => depositInvoice.arithmeticAmount));
+    return sum(this.depositInvoices.map((depositInvoice) => depositInvoice.arithmeticAmount));
   }
 }

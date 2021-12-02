@@ -6,39 +6,46 @@ const Validations = buildValidations({
     validator('presence', true),
     validator('length', {
       min: 2,
-      max: 4
-    })
+      max: 4,
+    }),
   ],
   number: [
     validator('presence', true),
     validator('length', {
-      min: 6
-    })
+      min: 6,
+    }),
   ],
   telephoneType: validator('presence', {
     presence: true,
-    message: 'Maak een keuze'
+    message: 'Maak een keuze',
   }),
-  country:  validator('presence', {
+  country: validator('presence', {
     presence: true,
-    message: 'Maak een keuze'
-  })
+    message: 'Maak een keuze',
+  }),
 });
 
 export default class Telephone extends Model.extend(Validations) {
-  @attr area
-  @attr number
-  @attr memo
-  @attr order
+  @attr area;
+  @attr number;
+  @attr memo;
+  @attr order;
 
-  @belongsTo('country') country
-  @belongsTo('telephone-type') telephoneType
-  @belongsTo('customer') customer
-  @belongsTo('contact') contact
-  @belongsTo('building') building
+  @belongsTo('country') country;
+  @belongsTo('telephone-type') telephoneType;
+  @belongsTo('customer') customer;
+  @belongsTo('contact') contact;
+  @belongsTo('building') building;
 
   get isBlank() {
-    return !(this.area || this.number || this.memo || this.order || this.get('country.id') || this.get('telephoneType.id'));
+    return !(
+      this.area ||
+      this.number ||
+      this.memo ||
+      this.order ||
+      this.get('country.id') ||
+      this.get('telephoneType.id')
+    );
   }
 
   hasDirtyRelations() {

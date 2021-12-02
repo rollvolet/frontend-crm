@@ -21,8 +21,8 @@ export default class CertificateInlineEditComponent extends Component {
       this.generateTemplate,
       this.deleteCertificate,
       this.uploadCertificate,
-      this.recycleCertificate
-    ].find(task => task.isRunning);
+      this.recycleCertificate,
+    ].find((task) => task.isRunning);
   }
 
   @task
@@ -47,9 +47,10 @@ export default class CertificateInlineEditComponent extends Component {
       this.args.model.certificateReceived = true;
       yield this.args.model.save();
     } catch (e) {
-      warn(`Error while uploading certificate: ${e.message || JSON.stringify(e)}`, { id: 'failure.upload' } );
-      if (file.queue)
-        file.queue.remove(file);
+      warn(`Error while uploading certificate: ${e.message || JSON.stringify(e)}`, {
+        id: 'failure.upload',
+      });
+      if (file.queue) file.queue.remove(file);
       this.args.model.certificateReceived = false;
       throw e;
     }
@@ -63,7 +64,9 @@ export default class CertificateInlineEditComponent extends Component {
       this.args.model.certificateReceived = true;
       yield this.args.model.save();
     } catch (e) {
-      warn(`Error while recycling certificate: ${e.message || JSON.stringify(e)}`, { id: 'failure.recycle' } );
+      warn(`Error while recycling certificate: ${e.message || JSON.stringify(e)}`, {
+        id: 'failure.recycle',
+      });
       this.args.model.certificateReceived = false;
       throw e;
     }

@@ -3,7 +3,7 @@ import { formatCurrency } from 'ember-dynamic-format-currency/helpers/format-cur
 export default function formatDecimalInput(value) {
   if (value) {
     const fmtValue = formatCurrency([value, 2, '', ' ', ',']).string;
-    return fmtValue.replace(/(&nbsp;)/g, ' ').trim();  // replace &nbsp;
+    return fmtValue.replace(/(&nbsp;)/g, ' ').trim(); // replace &nbsp;
   } else {
     return value;
   }

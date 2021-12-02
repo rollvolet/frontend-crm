@@ -24,9 +24,9 @@ export default class RequestDetailPanelComponent extends Component {
   *loadData() {
     const model = this.args.model;
     if (model.employee)
-      this.employee = this.store.peekAll('employee').find(e => e.firstName == model.employee);
+      this.employee = this.store.peekAll('employee').find((e) => e.firstName == model.employee);
     if (model.visitor)
-      this.visitor = this.store.peekAll('employee').find(e => e.firstName == model.visitor);
+      this.visitor = this.store.peekAll('employee').find((e) => e.firstName == model.visitor);
 
     this.calendarEvent = yield model.calendarEvent;
   }
@@ -64,11 +64,13 @@ export default class RequestDetailPanelComponent extends Component {
         this.calendarEvent = this.store.createRecord('calendar-event', {
           request: this.args.model,
           visitDate: new Date(),
-          period: 'GD'
+          period: 'GD',
         });
         yield this.saveCalendarEvent.perform();
       } catch (e) {
-        warn(`Something went wrong while saving calendar event for request ${this.args.model.id}`, { id: 'create-failure' });
+        warn(`Something went wrong while saving calendar event for request ${this.args.model.id}`, {
+          id: 'create-failure',
+        });
         this.args.model.requiresVisit = false;
         this.save.perform();
       }
@@ -78,7 +80,9 @@ export default class RequestDetailPanelComponent extends Component {
         this.args.model.calendarEvent = null;
         this.calendarEvent = null;
       } catch (e) {
-        warn(`Something went wrong while destroying calendar event ${this.calendarEvent.id}`, { id: 'destroy-failure' });
+        warn(`Something went wrong while destroying calendar event ${this.calendarEvent.id}`, {
+          id: 'destroy-failure',
+        });
         debug(e);
       }
     }
@@ -87,8 +91,7 @@ export default class RequestDetailPanelComponent extends Component {
   @task
   *saveCalendarEvent() {
     const { validations } = yield this.calendarEvent.validate();
-    if (validations.isValid)
-      yield this.calendarEvent.save();
+    if (validations.isValid) yield this.calendarEvent.save();
   }
 
   @action

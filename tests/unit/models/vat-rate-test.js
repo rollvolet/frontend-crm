@@ -3,10 +3,10 @@ import { setupTest } from 'ember-qunit';
 
 import { run } from '@ember/runloop';
 
-module('Unit | Model | vat rate', function(hooks) {
+module('Unit | Model | vat rate', function (hooks) {
   setupTest(hooks);
 
-  test('it exists', function(assert) {
+  test('it exists', function (assert) {
     let model = run(() => this.owner.lookup('service:store').createRecord('vat-rate'));
     // let store = this.store();
     assert.ok(!!model);

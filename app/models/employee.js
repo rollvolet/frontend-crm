@@ -1,14 +1,14 @@
 import Model, { attr, hasMany } from '@ember-data/model';
 
 export default class EmployeeClass extends Model {
-  @attr type
-  @attr firstName
-  @attr lastName
-  @attr initials
-  @attr comment
-  @attr active
-  @attr function
-  @hasMany('working-hour') workingHours
+  @attr type;
+  @attr firstName;
+  @attr lastName;
+  @attr initials;
+  @attr comment;
+  @attr active;
+  @attr function;
+  @hasMany('working-hour') workingHours;
 
   get functionSort() {
     return this.function ? this.function : 'Z';

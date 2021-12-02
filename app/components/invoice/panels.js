@@ -14,9 +14,11 @@ export default class InvoicePanelsComponent extends Component {
   @task
   *updateInvoicelinesVatRate(vatRate) {
     const invoicelines = yield this.args.model.invoicelines;
-    yield all(invoicelines.map((invoiceline) => {
-      invoiceline.vatRate = vatRate;
-      return invoiceline.save();
-    }));
+    yield all(
+      invoicelines.map((invoiceline) => {
+        invoiceline.vatRate = vatRate;
+        return invoiceline.save();
+      })
+    );
   }
 }

@@ -11,8 +11,10 @@ export default class OrderDocumentPanelComponent extends Component {
   *generateOrderDocument() {
     try {
       yield this.documentGeneration.orderDocument(this.args.model);
-    } catch(e) {
-      warn(`Something went wrong while generating the order document`, { id: 'document-generation-failure' });
+    } catch (e) {
+      warn(`Something went wrong while generating the order document`, {
+        id: 'document-generation-failure',
+      });
     }
   }
 
@@ -20,8 +22,10 @@ export default class OrderDocumentPanelComponent extends Component {
   *generateDeliveryNote() {
     try {
       yield this.documentGeneration.deliveryNote(this.args.model);
-    } catch(e) {
-      warn(`Something went wrong while generating the delivery note`, { id: 'document-generation-failure' });
+    } catch (e) {
+      warn(`Something went wrong while generating the delivery note`, {
+        id: 'document-generation-failure',
+      });
     }
   }
 

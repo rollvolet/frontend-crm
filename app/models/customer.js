@@ -8,22 +8,23 @@ const Validations = buildValidations({
   url: validator('format', { type: 'url', allowBlank: true }),
   language: validator('presence', {
     presence: true,
-    message: 'Kies een geldige taal'
+    message: 'Kies een geldige taal',
   }),
   country: validator('presence', {
     presence: true,
-    message: 'Kies een geldig land'
+    message: 'Kies een geldig land',
   }),
   vatNumber: [
     validator('inline', {
-      validate(value/*, options, model, attribute*/) {
+      validate(value /*, options, model, attribute*/) {
         if (value && value.length >= 2) {
           const country = value.substr(0, 2);
           if (country.toUpperCase() == 'BE') {
             const number = value.substr(2);
 
-            if (number.length != 10)
+            if (number.length != 10) {
               return 'BTW nummer moet exact 10 cijfers bevatten';
+            }
 
             const firstPart = parseInt(number.substr(0, 8));
             const secondPart = parseInt(number.substr(8));
@@ -34,49 +35,52 @@ const Validations = buildValidations({
           }
         }
         return true;
-      }
+      },
     }),
-    validator('unique-vat-number')
-  ]
+    validator('unique-vat-number'),
+  ],
 });
 
 export default class CustomerModel extends Model.extend(Validations, LoadableModel) {
-  @attr dataId
-  @attr number
-  @attr name
-  @attr address1
-  @attr address2
-  @attr address3
-  @attr postalCode
-  @attr city
-  @attr isCompany
-  @attr vatNumber
-  @attr prefix
-  @attr suffix
-  @attr email
-  @attr email2
-  @attr url
-  @attr printPrefix
-  @attr printSuffix
-  @attr printInFront
-  @attr comment
-  @attr memo
+  @attr dataId;
+  @attr number;
+  @attr name;
+  @attr address1;
+  @attr address2;
+  @attr address3;
+  @attr postalCode;
+  @attr city;
+  @attr isCompany;
+  @attr vatNumber;
+  @attr prefix;
+  @attr suffix;
+  @attr email;
+  @attr email2;
+  @attr url;
+  @attr printPrefix;
+  @attr printSuffix;
+  @attr printInFront;
+  @attr comment;
+  @attr memo;
   @attr('date', {
-    defaultValue() { return new Date(); }
-  }) created
+    defaultValue() {
+      return new Date();
+    },
+  })
+  created;
 
-  @hasMany('contact') contacts
-  @hasMany('building') buildings
-  @belongsTo('country') country
-  @belongsTo('language') language
-  @belongsTo('honorific-prefix') honorificPrefix
-  @hasMany('telephone') telephones
-  @hasMany('request') requests
-  @hasMany('intervention') interventions
-  @hasMany('offer') offers
-  @hasMany('order') orders
-  @hasMany('deposit') deposits
-  @hasMany('deposit-invoice') depositInvoices
-  @hasMany('invoice') invoices
-  @hasMany('tag') tags
+  @hasMany('contact') contacts;
+  @hasMany('building') buildings;
+  @belongsTo('country') country;
+  @belongsTo('language') language;
+  @belongsTo('honorific-prefix') honorificPrefix;
+  @hasMany('telephone') telephones;
+  @hasMany('request') requests;
+  @hasMany('intervention') interventions;
+  @hasMany('offer') offers;
+  @hasMany('order') orders;
+  @hasMany('deposit') deposits;
+  @hasMany('deposit-invoice') depositInvoices;
+  @hasMany('invoice') invoices;
+  @hasMany('tag') tags;
 }

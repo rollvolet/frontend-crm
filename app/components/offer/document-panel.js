@@ -5,8 +5,8 @@ import { task } from 'ember-concurrency-decorators';
 import { warn } from '@ember/debug';
 
 export default class OfferDocumentPanelComponent extends Component {
-  @service documentGeneration
-  @service store
+  @service documentGeneration;
+  @service store;
 
   get sortedOfferlines() {
     return this.args.model.offerlines.sortBy('sequenceNumber');
@@ -16,20 +16,22 @@ export default class OfferDocumentPanelComponent extends Component {
   *generateOfferDocument() {
     try {
       yield this.documentGeneration.offerDocument(this.args.model);
-    } catch(e) {
-      warn(`Something went wrong while generating the offer document`, { id: 'document-generation-failure' });
+    } catch (e) {
+      warn(`Something went wrong while generating the offer document`, {
+        id: 'document-generation-failure',
+      });
     }
   }
 
   @task
   *addOfferline() {
     const offerlines = yield this.args.model.offerlines;
-    const number = offerlines.length ? Math.max(...offerlines.map(l => l.sequenceNumber)) : 0;
+    const number = offerlines.length ? Math.max(...offerlines.map((l) => l.sequenceNumber)) : 0;
     const vatRate = yield this.args.model.vatRate;
     const offerline = this.store.createRecord('offerline', {
       sequenceNumber: number + 1,
       offer: this.args.model,
-      vatRate: vatRate
+      vatRate: vatRate,
     });
 
     if (this.args.model.isMasteredByAccess) {
@@ -50,8 +52,9 @@ export default class OfferDocumentPanelComponent extends Component {
 
   @task
   *deleteOfferline(offerline) {
-    if (!offerline.isNew)
+    if (!offerline.isNew) {
       offerline.rollbackAttributes();
+    }
     yield offerline.destroyRecord();
   }
 
@@ -69,5 +72,4 @@ export default class OfferDocumentPanelComponent extends Component {
   downloadOfferDocument() {
     this.documentGeneration.downloadOfferDocument(this.args.model);
   }
-
 }

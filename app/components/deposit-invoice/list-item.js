@@ -43,15 +43,21 @@ export default class DepositInvoiceListItemComponent extends Component {
 
   @task
   *generateInvoiceDocument() {
-    if (!this.args.model.isCreditNote && !this.showMissingCertificateDialog
-        && this.args.model.certificateRequired && !this.args.model.certificateReceived) {
+    if (
+      !this.args.model.isCreditNote &&
+      !this.showMissingCertificateDialog &&
+      this.args.model.certificateRequired &&
+      !this.args.model.certificateReceived
+    ) {
       this.showMissingCertificateDialog = true;
     } else {
       this.showMissingCertificateDialog = false;
       try {
         yield this.documentGeneration.invoiceDocument(this.args.model);
       } catch (e) {
-        warn(`Something went wrong while generating the invoice document`, { id: 'document-generation-failure' });
+        warn(`Something went wrong while generating the invoice document`, {
+          id: 'document-generation-failure',
+        });
       }
     }
   }

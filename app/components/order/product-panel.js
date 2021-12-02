@@ -35,25 +35,24 @@ export default class OrderProductPanelComponent extends Component {
     const invoiceline = this.store.createRecord('invoiceline', {
       sequenceNumber: number + 1,
       order: this.args.model,
-      vatRate: this.vatRate
+      vatRate: this.vatRate,
     });
 
     const { validations } = yield invoiceline.validate();
-    if (validations.isValid)
-      invoiceline.save();
+    if (validations.isValid) invoiceline.save();
   }
 
   @task
   *saveInvoiceline(invoiceline) {
     const { validations } = yield invoiceline.validate();
-    if (validations.isValid)
-      yield invoiceline.save();
+    if (validations.isValid) yield invoiceline.save();
   }
 
   @task
   *deleteInvoiceline(invoiceline) {
-    if (!invoiceline.isNew)
+    if (!invoiceline.isNew) {
       invoiceline.rollbackAttributes();
+    }
     yield invoiceline.destroyRecord();
   }
 }

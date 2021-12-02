@@ -9,8 +9,8 @@ import { later } from '@ember/runloop';
 import sum from '../../../../../utils/math/sum';
 
 export default class OrderController extends Controller {
-  @service case
-  @service store
+  @service case;
+  @service store;
 
   @tracked isOpenIncompatibleVatRatesModal = false;
   @tracked showIncompatibleVatRatesModalContent = false;
@@ -64,7 +64,11 @@ export default class OrderController extends Controller {
     } else {
       if (!vatRate) {
         vatRate = this.orderedVatRate;
-        debug(`Offer doesn't have a VAT rate yet. Updating VAT rate to ordered VAT rate ${this.orderedVatRate.get(`code`)}.`);
+        debug(
+          `Offer doesn't have a VAT rate yet. Updating VAT rate to ordered VAT rate ${this.orderedVatRate.get(
+            `code`
+          )}.`
+        );
         this.offer.vatRate = vatRate;
         yield this.offer.save();
       }
@@ -91,7 +95,7 @@ export default class OrderController extends Controller {
         customer,
         contact,
         building,
-        vatRate
+        vatRate,
       });
 
       yield order.save();
@@ -102,14 +106,14 @@ export default class OrderController extends Controller {
           description: offerline.description,
           amount: offerline.amount,
           vatRate,
-          order
+          order,
         });
         await orderline.save();
       });
       yield all(invoicelines);
 
       this.transitionToRoute('main.case.order.edit', customer, order, {
-        queryParams: { editMode: true }
+        queryParams: { editMode: true },
       });
 
       // update case to display the new order tab
@@ -119,7 +123,7 @@ export default class OrderController extends Controller {
 
   @action
   cancel() {
-    this.model.forEach(o => o.isOrdered = false);
+    this.model.forEach((o) => (o.isOrdered = false));
     const customer = this.case.current.customer;
     this.transitionToRoute('main.case.offer.edit', customer, this.offer.id);
   }
@@ -132,8 +136,12 @@ export default class OrderController extends Controller {
   @action
   closeIncompatibleVatRatesModal() {
     this.showIncompatibleVatRatesModalContent = false;
-    later(this, function() {
-      this.isOpenIncompatibleVatRatesModal = false;
-    }, 200); // delay to finish leave CSS animation
+    later(
+      this,
+      function () {
+        this.isOpenIncompatibleVatRatesModal = false;
+      },
+      200
+    ); // delay to finish leave CSS animation
   }
 }

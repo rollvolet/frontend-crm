@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
 export default class NewRoute extends Route {
-  @service userInfo
+  @service userInfo;
 
   async model() {
     const customer = this.modelFor('main.case');
@@ -12,7 +12,7 @@ export default class NewRoute extends Route {
       requestDate: new Date(),
       requiresVisit: false,
       customer: customer,
-      employee: firstName
+      employee: firstName,
     });
 
     return request.save();
@@ -21,7 +21,7 @@ export default class NewRoute extends Route {
   afterModel(model) {
     const customer = this.modelFor('main.case');
     this.transitionTo('main.case.request.edit', customer, model, {
-      queryParams: { editMode: true }
+      queryParams: { editMode: true },
     });
   }
 }

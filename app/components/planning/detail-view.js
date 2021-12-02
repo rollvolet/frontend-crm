@@ -6,9 +6,9 @@ import { isEmpty } from '@ember/utils';
 import { keepLatestTask } from 'ember-concurrency-decorators';
 
 export default class PlanningDetailViewComponent extends Component {
-  @service case
+  @service case;
 
-  @tracked calendarEvent
+  @tracked calendarEvent;
 
   constructor() {
     super(...arguments);
@@ -26,21 +26,26 @@ export default class PlanningDetailViewComponent extends Component {
   }
 
   get isNotAvailableInCalendar() {
-    return this.loadCalendarEvent.lastSuccessful
-      && !this.args.model.isPlanningMasteredByAccess
-      && this.args.model.isPlanned
-      && isEmpty(this.calendarSubject);
+    return (
+      this.loadCalendarEvent.lastSuccessful &&
+      !this.args.model.isPlanningMasteredByAccess &&
+      this.args.model.isPlanned &&
+      isEmpty(this.calendarSubject)
+    );
   }
 
   @keepLatestTask
   *loadCalendarEvent() {
     if (this.args.model.isPlanned) {
-      const result = yield fetch(`/api/calendars/planning/${this.args.model.planningMsObjectId}/subject`, {
-        headers: new Headers({
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        })
-      });
+      const result = yield fetch(
+        `/api/calendars/planning/${this.args.model.planningMsObjectId}/subject`,
+        {
+          headers: new Headers({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          }),
+        }
+      );
 
       if (result.ok) {
         const { subject } = yield result.json();
@@ -60,12 +65,13 @@ export default class PlanningDetailViewComponent extends Component {
       method: 'PUT',
       headers: new Headers({
         Accept: 'application/json',
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     });
 
-    if (this.isNotAvailableInCalendar)
+    if (this.isNotAvailableInCalendar) {
       yield this.args.model.reload(); // order.planningMsObjectId will be updated
+    }
 
     yield this.loadCalendarEvent.perform();
   }

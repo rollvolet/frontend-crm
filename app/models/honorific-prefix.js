@@ -1,9 +1,9 @@
 import Model, { attr, hasMany } from '@ember-data/model';
 
 export default class HonorificPrefixModel extends Model {
-  @attr name
+  @attr name;
 
-  @hasMany('customer') customers
+  @hasMany('customer') customers;
 
   get entityId() {
     return this.id.substring(0, this.id.indexOf('-'));
@@ -14,7 +14,7 @@ export default class HonorificPrefixModel extends Model {
   }
 }
 
-const composeId = function(entityId, languageId) {
+const composeId = function (entityId, languageId) {
   return `${entityId}-${languageId}`;
 };
 

@@ -10,14 +10,14 @@ module.exports = function (defaults) {
         parser: require('postcss-scss'),
         plugins: [
           require('@csstools/postcss-sass'),
-          require('tailwindcss')('./app/styles/tailwind.config.js')
-        ]
-      }
+          require('tailwindcss')('./app/styles/tailwind.config.js'),
+        ],
+      },
     },
     flatpickr: {
       locales: ['nl'],
-      theme: 'material_red'
-    }
+      theme: 'material_red',
+    },
   });
 
   return app.toTree();

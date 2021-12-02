@@ -8,26 +8,26 @@ const Validations = buildValidations({
     validator('presence', true),
     validator('number', {
       integer: true,
-      gt: 0
-    })
+      gt: 0,
+    }),
   ],
   untilNumber: [
     validator('presence', true),
     validator('number', {
       integer: true,
-      gt: 0
-    })
-  ]
+      gt: 0,
+    }),
+  ],
 });
 
 export default class AccountancyExport extends Model.extend(Validations) {
-  @attr('date') date
-  @attr('date') fromDate
-  @attr('date') untilDate
-  @attr fromNumber
-  @attr untilNumber
-  @attr isDryRun
+  @attr('date') date;
+  @attr('date') fromDate;
+  @attr('date') untilDate;
+  @attr fromNumber;
+  @attr untilNumber;
+  @attr isDryRun;
 
-  @dateString('fromDate') fromDateStr
-  @dateString('untilDate') untilDateStr
+  @dateString('fromDate') fromDateStr;
+  @dateString('untilDate') untilDateStr;
 }

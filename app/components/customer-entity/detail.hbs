@@ -63,8 +63,7 @@
       <DetailListItem @label="Memo">
         {{#if @model.memo}}
           <div>
-            <button class="text-gray-400 text-sm"
-              {{on "click" this.toggleMemo}}>
+            <button class="text-gray-400 text-sm" type="button" {{on "click" this.toggleMemo}}>
               {{#if this.isMemoExpanded}}
                 Sluiten {{svg-jar "heroicons-sm-chevron-up" class="h-4 w-4 inline"}}
               {{else}}

@@ -8,14 +8,14 @@ import { keepLatestTask } from 'ember-concurrency-decorators';
 import { later } from '@ember/runloop';
 
 export default class PostalCodeSelect extends Component {
-  @service store
+  @service store;
 
-  @tracked value
-  @tracked postalCodes = []
+  @tracked value;
+  @tracked postalCodes = [];
   @tracked showCreateModal = false;
   @tracked showModalContent = true;
-  @tracked newCode
-  @tracked newCity
+  @tracked newCode;
+  @tracked newCity;
 
   constructor() {
     super(...arguments);
@@ -23,14 +23,16 @@ export default class PostalCodeSelect extends Component {
     this.postalCodes = this.store.peekAll('postal-code');
 
     if (this.args.postalCode && this.args.city) {
-      const value = this.postalCodes.find(o => o.code == this.args.postalCode && o.name == this.args.city.toUpperCase());
+      const value = this.postalCodes.find(
+        (o) => o.code == this.args.postalCode && o.name == this.args.city.toUpperCase()
+      );
 
       if (value) {
         this.value = value;
       } else {
         const postalCode = this.store.createRecord('postal-code', {
           code: this.args.postalCode,
-          name: this.args.city.toUpperCase()
+          name: this.args.city.toUpperCase(),
         });
         this.value = postalCode;
       }
@@ -64,23 +66,26 @@ export default class PostalCodeSelect extends Component {
   @keepLatestTask
   *search(term) {
     yield timeout(100);
-    return this.postalCodes.filter(p => p.search.toLowerCase().includes(term)).slice(0, this.size);
+    return this.postalCodes
+      .filter((p) => p.search.toLowerCase().includes(term))
+      .slice(0, this.size);
   }
 
   @action
   selectValue(value) {
     this.value = value;
-    if (value)
+    if (value) {
       this.args.onSelectionChange(value.code, value.name);
-    else
+    } else {
       this.args.onSelectionChange(undefined, undefined);
+    }
   }
 
   @action
   addOption() {
     const postalCode = this.store.createRecord('postal-code', {
       code: this.newCode,
-      name: this.newCity.toUpperCase()
+      name: this.newCity.toUpperCase(),
     });
     this.value = postalCode;
     this.args.onSelectionChange(postalCode.code, postalCode.name);
@@ -88,7 +93,6 @@ export default class PostalCodeSelect extends Component {
     this.newCode = null;
     this.newCity = null;
   }
-
 
   @action
   openCreateNewModal() {
@@ -99,8 +103,12 @@ export default class PostalCodeSelect extends Component {
   @action
   closeCreateNewModal() {
     this.showModalContent = false;
-    later(this, function() {
-      this.showCreateModal = false;
-    }, 200); // delay to finish leave CSS animation
+    later(
+      this,
+      function () {
+        this.showCreateModal = false;
+      },
+      200
+    ); // delay to finish leave CSS animation
   }
 }
