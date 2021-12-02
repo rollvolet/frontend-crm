@@ -27,7 +27,7 @@
     <div class="grid sm:grid-cols-4 gap-6">
       <div class="-mt-2 space-y-3">
         <div class="flex items-center space-x-2">
-          <div class="text-center text-2xl font-bold text-gray-900">{{@model.meta.count}}</div>
+          <div class="text-center text-2xl font-bold text-gray-900">{{@model.jobs.meta.count}}</div>
           <div class="text-center text-lg text-gray-500">resultaten</div>
         </div>
         <div>
@@ -147,9 +147,17 @@
                 </th>
                 <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Planning
+                  <br>
+                  <span class="lowercase text-gray-400">
+                    {{@model.report.numberOverdue}} over tijd
+                  </span>
                 </th>
                 <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Uren
+                  <br>
+                  <span class="lowercase text-gray-400">
+                    {{@model.report.totalHours}}u
+                  </span>
                 </th>
                 <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Klaar?
@@ -238,7 +246,7 @@
                   </td>
                 </tr>
               {{else}}
-                {{#each this.model as |row|}}
+                {{#each this.model.jobs as |row|}}
                   <tr>
                     <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
                       <LinkTo @route="main.case.order.edit" @models={{array row.customerNumber row.orderId}}
@@ -292,7 +300,9 @@
                       </div>
                       <div>
                         <span class="text-gray-400 italic inline-block w-5">Ve</span>
-                        <FmtDate @value={{row.requiredDate}} />
+                        <span class="{{if row.isOverdue "bg-red-200"}}">
+                          <FmtDate @value={{row.requiredDate}} />
+                        </span>
                       </div>
                       <div>
                         <span class="text-gray-400 italic inline-block w-5">Pl</span>
@@ -335,7 +345,7 @@
   <DataTable::Pagination
     @page={{this.page}}
     @size={{this.size}}
-    @total={{this.model.meta.count}}
+    @total={{this.model.jobs.meta.count}}
     @onPrevious={{this.previousPage}}
     @onNext={{this.nextPage}}
     @onSelectPage={{this.selectPage}} />

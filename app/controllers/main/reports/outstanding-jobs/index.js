@@ -20,7 +20,7 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
     { label: 'n.v.t.', value: 'na', id: `na-${guidFor(this)}` },
     { label: 'te leveren', value: 'delivery', id: `delivery-${guidFor(this)}` },
     { label: 'te plaatsen', value: 'installation', id: `installation-${guidFor(this)}` },
-    { label: 'af te halen', value: 'pickup', id: `pickup-${guidFor(this)}` }
+    { label: 'af te halen', value: 'pickup', id: `pickup-${guidFor(this)}` },
   ];
 
   @tracked sortDirectionOptions; // initialized in route
@@ -68,8 +68,8 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
         orderDate: this.orderDate,
         hasProductionTicket: this.hasProductionTicket,
         execution: this.execution,
-        isProductReady: this.isProductReady
-      }
+        isProductReady: this.isProductReady,
+      },
     });
   }
 
@@ -96,14 +96,20 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
   @action
   setSortField(option) {
     this.sortField = option;
-    const sort = this.sortDirection.value == 'desc' ? `-${this.sortField.value}` : this.sortField.value;
-    this.set('sort', sort);
+    this.set('sort', this.getSortValue());
   }
 
   @action
   setSortDirection(option) {
     this.sortDirection = option;
-    const sort = this.sortDirection.value == 'desc' ? `-${this.sortField.value}` : this.sortField.value;
-    this.set('sort', sort);
+    this.set('sort', this.getSortValue());
+  }
+
+  getSortValue() {
+    if (this.sortDirection.value == 'desc') {
+      return `-${this.sortField.value}`;
+    } else {
+      return this.sortField.value;
+    }
   }
 }

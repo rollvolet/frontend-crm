@@ -2,7 +2,9 @@ import Route from '@ember/routing/route';
 import { action } from '@ember/object';
 import ArrayProxy from '@ember/array/proxy';
 import fetch, { Headers } from 'fetch';
+import { hash } from 'rsvp';
 import OutstandingJob from '../../../../classes/outstanding-job';
+import OutstandingJobReport from '../../../../classes/outstanding-job-report';
 import getPaginationMetadata from '../../../../utils/get-pagination-metadata';
 import Snapshot from '../../../../utils/snapshot';
 
@@ -16,18 +18,18 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     hasProductionTicket: { refreshModel: true },
     execution: { refreshModel: true },
     isProductReady: { refreshModel: true },
-  }
+  };
 
   sortFieldOptions = [
     { label: 'Besteldatum', value: 'order-date' },
     { label: 'Verwachte datum', value: 'expected-date' },
     { label: 'Vereiste datum', value: 'required-date' },
-    { label: 'Geplande datum', value: 'planning-date' }
+    { label: 'Geplande datum', value: 'planning-date' },
   ];
 
   sortDirectionOptions = [
     { label: 'Nieuwste eerst', value: 'desc' },
-    { label: 'Oudste eerst', value: 'asc' }
+    { label: 'Oudste eerst', value: 'asc' },
   ];
 
   constructor() {
@@ -44,77 +46,73 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
 
     this.lastParams.stageLive(params);
 
-    if (this.lastParams.anyFieldChanged(Object.keys(params).filter((key) => key !== 'page'))) {
+    // Reset page number if any of the filters has changed
+    const paramHasChanged = this.lastParams.anyFieldChanged(
+      Object.keys(params).filter((key) => key !== 'page')
+    );
+    if (paramHasChanged) {
       params.page = 0;
     }
 
-    const endpoint = new URL(`/api/reports/outstanding-jobs`, window.location.origin);
-    const searchParams = new URLSearchParams(Object.entries({
-      'page[size]': params.size,
-      'page[number]': params.page,
-      'sort': params.sort,
-    }));
+    const jobsEndpoint = new URL('/api/reports/outstanding-jobs', window.location.origin);
+    const reportEndpoint = new URL('/api/reports/outstanding-job-report', window.location.origin);
 
-    if (params.visitorName)
-      searchParams.append('filter[visitor]', params.visitorName);
+    const searchParams = this.getSearchParams(params);
+    jobsEndpoint.search = searchParams.toString();
+    reportEndpoint.search = searchParams.toString();
 
-    if (params.execution == 'delivery') {
-      searchParams.append('filter[mustBeDelivered]', 1);
-      searchParams.append('filter[mustBeInstalled]', 0);
-    } else if (params.execution == 'installation') {
-      searchParams.append('filter[mustBeDelivered]', 0);
-      searchParams.append('filter[mustBeInstalled]', 1);
-    } else if (params.execution == 'pickup') {
-      searchParams.append('filter[mustBeDelivered]', 0);
-      searchParams.append('filter[mustBeInstalled]', 0);
-    } else {
-      searchParams.append('filter[mustBeDelivered]', -1);
-      searchParams.append('filter[mustBeInstalled]', -1);
-    }
-
-    searchParams.append('filter[orderDate]', params.orderDate);
-    searchParams.append('filter[hasProductionTicket]', params.hasProductionTicket);
-    searchParams.append('filter[isProductReady]', params.isProductReady);
-
-    endpoint.search = searchParams.toString();
-
-    const response = await fetch(endpoint, {
+    const jobsResponse = await fetch(jobsEndpoint, {
       headers: new Headers({
-        Accept: 'application/json'
-      })
+        Accept: 'application/json',
+      }),
     });
-    const json = await response.json();
-    const entries = json.data.map(item => new OutstandingJob(item.attributes));
+    const json = await jobsResponse.json();
+    const entries = json.data.map((item) => new OutstandingJob(item.attributes));
     const count = json.meta.count;
-    const pagination = getPaginationMetadata(json.meta.page.number, json.meta.page.size, count);
+    const page = json.meta.page;
+    const pagination = getPaginationMetadata(page.number, page.size, count);
+
+    const outstandingJobs = ArrayProxy.create({
+      content: entries,
+      meta: {
+        count,
+        pagination,
+      },
+    });
+
+    const reportResponse = await fetch(reportEndpoint, {
+      headers: new Headers({
+        Accept: 'application/json',
+      }),
+    });
+    const report = new OutstandingJobReport((await reportResponse.json()).data.attributes);
 
     // Preload selected values value for ember-power-select
     if (params.visitorName) {
       let visitors = this.store.peekAll('employee');
-      if (!visitors.length)
+      if (!visitors.length) {
         visitors = await this.store.findAll('employee');
-      this.visitor = visitors.find(e => e.firstName == params.visitorName);
+      }
+      this.visitor = visitors.find((e) => e.firstName == params.visitorName);
     } else {
       this.visitor = null;
     }
+
     if (params.sort) {
       if (params.sort.startsWith('-')) {
-        this.sortDirection = this.sortDirectionOptions.find(o => o.value == 'desc');
-        this.sortField = this.sortFieldOptions.find(o => o.value == params.sort.slice(1));
+        this.sortDirection = this.sortDirectionOptions.find((o) => o.value == 'desc');
+        this.sortField = this.sortFieldOptions.find((o) => o.value == params.sort.slice(1));
       } else {
-        this.sortDirection = this.sortDirectionOptions.find(o => o.value == 'asc');
-        this.sortField = this.sortFieldOptions.find(o => o.value == params.sort);
+        this.sortDirection = this.sortDirectionOptions.find((o) => o.value == 'asc');
+        this.sortField = this.sortFieldOptions.find((o) => o.value == params.sort);
       }
     }
 
     this.lastParams.commit();
 
-    return ArrayProxy.create({
-      content: entries,
-      meta: {
-        count,
-        pagination
-      }
+    return hash({
+      jobs: outstandingJobs,
+      report,
     });
   }
 
@@ -137,13 +135,44 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
   loading(transition) {
     const controller = this.controllerFor(this.routeName);
     controller.set('isLoadingModel', true);
-    transition.promise.finally(function() {
+    transition.promise.finally(function () {
       controller.set('isLoadingModel', false);
     });
 
     return true; // bubble the loading event
   }
 
-  async afterModel() {
+  getSearchParams(params) {
+    const searchParams = new URLSearchParams(
+      Object.entries({
+        'page[size]': params.size,
+        'page[number]': params.page,
+        sort: params.sort,
+      })
+    );
+
+    if (params.visitorName) {
+      searchParams.append('filter[visitor]', params.visitorName);
+    }
+
+    if (params.execution == 'delivery') {
+      searchParams.append('filter[mustBeDelivered]', 1);
+      searchParams.append('filter[mustBeInstalled]', 0);
+    } else if (params.execution == 'installation') {
+      searchParams.append('filter[mustBeDelivered]', 0);
+      searchParams.append('filter[mustBeInstalled]', 1);
+    } else if (params.execution == 'pickup') {
+      searchParams.append('filter[mustBeDelivered]', 0);
+      searchParams.append('filter[mustBeInstalled]', 0);
+    } else {
+      searchParams.append('filter[mustBeDelivered]', -1);
+      searchParams.append('filter[mustBeInstalled]', -1);
+    }
+
+    searchParams.append('filter[orderDate]', params.orderDate);
+    searchParams.append('filter[hasProductionTicket]', params.hasProductionTicket);
+    searchParams.append('filter[isProductReady]', params.isProductReady);
+
+    return searchParams;
   }
 }
