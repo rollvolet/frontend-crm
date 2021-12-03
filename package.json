@@ -96,7 +96,7 @@
     "prettier": "^2.2.1",
     "qunit": "^2.13.0",
     "qunit-dom": "^1.6.0",
-    "tailwindcss": "^2.0.2",
+    "tailwindcss": "^2.2.19",
     "torii": "https://github.com/jmonster/torii.git#bbbd0ba317da193039193e47295224d2290b8443",
     "torii-azure-ad2-provider": "^1.0.5"
   },
