@@ -66,7 +66,7 @@ export default class PostalCodeSelect extends Component {
   *search(term) {
     yield timeout(100);
     return this.postalCodes
-      .filter((p) => p.search.toLowerCase().includes(term))
+      .filter((p) => p.search.toLowerCase().includes(term.toLowerCase()))
       .slice(0, this.size);
   }
 
