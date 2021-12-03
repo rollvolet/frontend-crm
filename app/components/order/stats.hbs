@@ -4,7 +4,7 @@
       Netto
     </dt>
     <dd class="order-1 text-lg font-medium text-red-700">
-      <FmtCurrency @value={{this.totalAmount}} />
+      <Fmt::Currency @value={{this.totalAmount}} />
     </dd>
   </div>
   <div class="flex flex-col p-4 text-center">
@@ -12,7 +12,7 @@
       {{this.vatRate.rate}}% BTW
     </dt>
     <dd class="order-1 text-lg font-medium text-red-700">
-      <FmtCurrency @value={{this.totalVat}} />
+      <Fmt::Currency @value={{this.totalVat}} />
     </dd>
   </div>
   <div class="flex flex-col p-4 text-center">
@@ -22,7 +22,7 @@
       </LinkTo>
     </dt>
     <dd class="order-1 text-lg font-medium text-red-700">
-      <FmtCurrency @value={{this.depositInvoicesAmount}} />
+      <Fmt::Currency @value={{this.depositInvoicesAmount}} />
     </dd>
   </div>
   <div class="flex flex-col p-4 text-center">
@@ -32,7 +32,7 @@
       </LinkTo>
     </dt>
     <dd class="order-1 text-lg font-medium text-red-700">
-      <FmtCurrency @value={{this.depositsAmount}} />
+      <Fmt::Currency @value={{this.depositsAmount}} />
     </dd>
   </div>
 </dl>

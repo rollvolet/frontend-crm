@@ -43,7 +43,7 @@
         <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
           <div class="space-y-1">
             <DetailListItem @label="Datum">
-              <FmtDate @value={{this.request.requestDate}} />
+              <Fmt::Date @value={{this.request.requestDate}} />
             </DetailListItem>
             <DetailListItem @label="Bezoeker">
               {{this.request.visitor}}

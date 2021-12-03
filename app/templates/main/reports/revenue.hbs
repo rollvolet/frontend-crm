@@ -33,7 +33,7 @@
                 </td>
                 {{#each row.entries as |entry|}}
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900">
-                    <FmtCurrency @value={{entry.amount}} />
+                    <Fmt::Currency @value={{entry.amount}} />
                   </td>
                 {{/each}}
               </tr>
@@ -44,7 +44,7 @@
               </td>
               {{#each this.totals as |total|}}
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900">
-                  <FmtCurrency @value={{total}} />
+                  <Fmt::Currency @value={{total}} />
                 </td>
               {{/each}}
             </tr>

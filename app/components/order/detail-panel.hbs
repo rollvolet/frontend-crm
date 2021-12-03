@@ -191,13 +191,13 @@
         <div class="space-y-2">
           <DetailListItem @label="Datum">
             <DetailListSubitem @label="Bestelling">
-              <FmtDate @value={{@model.orderDate}} />
+              <Fmt::Date @value={{@model.orderDate}} />
             </DetailListSubitem>
             <DetailListSubitem @label="Verwacht">
-              <FmtDate @value={{@model.expectedDate}} />
+              <Fmt::Date @value={{@model.expectedDate}} />
             </DetailListSubitem>
             <DetailListSubitem @label="Vereist">
-              <FmtDate @value={{@model.requiredDate}} />
+              <Fmt::Date @value={{@model.requiredDate}} />
             </DetailListSubitem>
           </DetailListItem>
           <DetailListItem @label="Bezoeker">
@@ -207,7 +207,7 @@
             {{@model.reference}}
           </DetailListItem>
           <DetailListItem @label="Werkuren" @displayRow={{true}}>
-            <FmtDecimal @value={{@model.scheduledHours}} /> uur x
+            <Fmt::Decimal @value={{@model.scheduledHours}} /> uur x
             <span class="{{if this.isNbOfPersonsWarning "px-1 py-0.5 text-red-700 bg-red-100"}}">{{@model.scheduledNbOfPersons}} man</span>
             = {{@model.scheduledTotal}} uur
           </DetailListItem>
@@ -220,7 +220,7 @@
           </DetailListItem>
           {{#if @model.isMasteredByAccess}}
             <DetailListItem @label="Bedrag">
-              <FmtCurrency @value={{@model.amount}} />
+              <Fmt::Currency @value={{@model.amount}} />
             </DetailListItem>
             <DetailListItem @label="BTW tarief">
               {{@model.vatRate.name}} BTW

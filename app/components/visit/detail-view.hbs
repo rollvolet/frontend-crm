@@ -37,7 +37,7 @@
         </div>
         <dl class="-ml-12 text-sm">
           <DetailListItem @label="Datum">
-            <FmtDate @value={{this.calendarEvent.visitDate}} />
+            <Fmt::Date @value={{this.calendarEvent.visitDate}} />
           </DetailListItem>
           <DetailListItem @label="Agenda">
             {{#if this.isNotAvailableInCalendar}}

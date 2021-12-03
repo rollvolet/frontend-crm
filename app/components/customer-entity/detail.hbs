@@ -6,7 +6,7 @@
         {{@model.prefix}} {{@model.name}} {{@model.suffix}}
         {{#unless @model.printInFront}}{{@model.honorificPrefix.name}}{{/unless}}
       </div>
-      <div><FmtVatNumber @value={{@model.vatNumber}} /></div>
+      <div><Fmt::VatNumber @value={{@model.vatNumber}} /></div>
     </DetailListItem>
 
     <DetailListItem @label="Adres">
@@ -40,8 +40,8 @@
     </DetailListItem>
 
     <DetailListItem @label="E-mail">
-      <div><FmtEmail @value={{@model.email}} /></div>
-      <div><FmtEmail @value={{@model.email2}} /></div>
+      <div><Fmt::Email @value={{@model.email}} /></div>
+      <div><Fmt::Email @value={{@model.email2}} /></div>
     </DetailListItem>
 
     <DetailListItem @label="Website">

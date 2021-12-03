@@ -50,7 +50,7 @@
         <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
           <div class="space-y-1">
             <DetailListItem @label="Datum">
-              <FmtDate @value={{this.order.orderDate}} />
+              <Fmt::Date @value={{this.order.orderDate}} />
             </DetailListItem>
             <DetailListItem @label="Referentie">
               {{this.order.reference}}

@@ -59,7 +59,7 @@
                     {{#each this.sortedWorkingHours as |workingHour|}}
                       <tr>
                         <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                          <FmtDate @value={{workingHour.date}} />
+                          <Fmt::Date @value={{workingHour.date}} />
                         </td>
                         <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                           {{workingHour.employee.firstName}}

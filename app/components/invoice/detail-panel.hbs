@@ -84,7 +84,7 @@
               Geboekt
             </label>
             <div class="mt-2 text-gray-900">
-              <FmtDate @value={{@model.bookingDate}} />
+              <Fmt::Date @value={{@model.bookingDate}} />
             </div>
           </div>
         {{else}}
@@ -142,7 +142,7 @@
               Geboekt
             </label>
             <div class="mt-2 text-gray-900">
-              <FmtDate @value={{@model.bookingDate}} />
+              <Fmt::Date @value={{@model.bookingDate}} />
             </div>
           </div>
         {{/if}}
@@ -163,16 +163,16 @@
         <div class="space-y-2">
           <DetailListItem @label="Datum">
             <DetailListSubitem @label="Factuurdatum">
-              <FmtDate @value={{@model.invoiceDate}} />
+              <Fmt::Date @value={{@model.invoiceDate}} />
             </DetailListSubitem>
             <DetailListSubitem @label="Vervaldag">
-              <FmtDate @value={{@model.dueDate}} />
+              <Fmt::Date @value={{@model.dueDate}} />
             </DetailListSubitem>
             <DetailListSubitem @label="Geboekt">
-              <FmtDate @value={{@model.bookingDate}} />
+              <Fmt::Date @value={{@model.bookingDate}} />
             </DetailListSubitem>
             <DetailListSubitem @label="Betaald">
-              <FmtDate @value={{@model.paymentDate}} />
+              <Fmt::Date @value={{@model.paymentDate}} />
             </DetailListSubitem>
           </DetailListItem>
           <DetailListItem @label="Referentie">

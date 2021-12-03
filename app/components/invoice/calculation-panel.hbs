@@ -44,11 +44,11 @@
                       Basis
                     </td>
                     <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      <FmtCurrency @value={{this.baseAmount}} />
+                      <Fmt::Currency @value={{this.baseAmount}} />
                     </td>
                     <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                       {{#if this.baseAmount}}
-                        <FmtCurrency @value={{this.baseAmountVat}} />
+                        <Fmt::Currency @value={{this.baseAmountVat}} />
                       {{/if}}
                     </td>
                     <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -62,11 +62,11 @@
                       {{svg-jar "heroicons-sm-information-circle" class="h-4 w-4 text-gray-400 inline"}}
                     </td>
                     <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      <FmtCurrency @value={{this.supplementsAmount}} />
+                      <Fmt::Currency @value={{this.supplementsAmount}} />
                     </td>
                     <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                       {{#if this.baseAmount}}
-                        <FmtCurrency @value={{this.supplementsVat}} />
+                        <Fmt::Currency @value={{this.supplementsVat}} />
                       {{/if}}
                     </td>
                     <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -79,11 +79,11 @@
                         Totaal {{#if this.intervention}}interventie{{else}}bestelling{{/if}}
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                        <FmtCurrency @value={{this.totalOrderAmount}} />
+                        <Fmt::Currency @value={{this.totalOrderAmount}} />
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                         {{#if this.baseAmount}}
-                          <FmtCurrency @value={{this.totalOrderVat}} />
+                          <Fmt::Currency @value={{this.totalOrderVat}} />
                         {{/if}}
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -104,10 +104,10 @@
                         {{/if}}
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                        &minus; <FmtCurrency @value={{this.depositInvoicesAmount}} />
+                        &minus; <Fmt::Currency @value={{this.depositInvoicesAmount}} />
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                        &minus; <FmtCurrency @value={{this.depositInvoicesVat}} />
+                        &minus; <Fmt::Currency @value={{this.depositInvoicesVat}} />
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                       </td>
@@ -119,13 +119,13 @@
                       Subtotaal
                     </td>
                     <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      <FmtCurrency @value={{this.totalNetAmount}} />
+                      <Fmt::Currency @value={{this.totalNetAmount}} />
                     </td>
                     <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      <FmtCurrency @value={{this.totalVat}} />
+                      <Fmt::Currency @value={{this.totalVat}} />
                     </td>
                     <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      <FmtCurrency @value={{this.totalGrossAmount}} />
+                      <Fmt::Currency @value={{this.totalGrossAmount}} />
                     </td>
                   </tr>
 
@@ -148,7 +148,7 @@
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                        &minus; <FmtCurrency @value={{this.depositsAmount}} />
+                        &minus; <Fmt::Currency @value={{this.depositsAmount}} />
                       </td>
                     </tr>
                   {{/unless}}
@@ -162,7 +162,7 @@
                     <td class="px-6 py-2 text-xs font-semibold text-gray-700 uppercase tracking-wider">
                     </td>
                     <td class="px-6 py-2 text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                      <FmtCurrency @value={{this.totalToPay}} />
+                      <Fmt::Currency @value={{this.totalToPay}} />
                     </td>
                   </tr>
                 {{/if}}

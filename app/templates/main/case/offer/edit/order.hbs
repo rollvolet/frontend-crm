@@ -50,7 +50,7 @@
               </div>
               <div class="text-right">
                 <div class="font-medium">
-                  <FmtCurrency @value={{offerline.amount}} />
+                  <Fmt::Currency @value={{offerline.amount}} />
                 </div>
                 <div class="text-sm">
                   + {{offerline.vatRate.rate}}% btw
@@ -64,7 +64,7 @@
             Totaal
           </div>
           <div class="text-lg font-medium text-red-600">
-            <FmtCurrency @value={{this.orderedAmount}} /> + BTW
+            <Fmt::Currency @value={{this.orderedAmount}} /> + BTW
           </div>
         </div>
         <div class=" px-2 flex justify-end space-x-2">

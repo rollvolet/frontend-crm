@@ -37,12 +37,12 @@
           <div class="sm:flex sm:flex-grow">
             <p class="flex flex-none items-center text-sm text-gray-500">
               {{svg-jar "heroicons-md-calendar" class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"}}
-              <FmtDate @value={{@model.invoiceDate}} />
+              <Fmt::Date @value={{@model.invoiceDate}} />
             </p>
           </div>
           <div class="mt-2 flex flex-none items-center text-sm text-gray-500 sm:mt-0">
             <p class="flex items-center text-sm text-gray-500">
-              <FmtCurrency @value={{this.baseAmount}} /> + {{@vatRate.rate}}% btw
+              <Fmt::Currency @value={{this.baseAmount}} /> + {{@vatRate.rate}}% btw
             </p>
           </div>
         </div>
@@ -124,7 +124,7 @@
                     BTW
                   </label>
                   <div class="mt-1 text-sm text-gray-900">
-                    <FmtCurrency @value={{this.baseAmountVat}} /> ({{@vatRate.rate}}%)
+                    <Fmt::Currency @value={{this.baseAmountVat}} /> ({{@vatRate.rate}}%)
                   </div>
                 </div>
               {{/unless}}
@@ -147,7 +147,7 @@
                   Vervaldag
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
-                  <FmtDate @value={{@model.dueDate}} />
+                  <Fmt::Date @value={{@model.dueDate}} />
                 </dd>
               </div>
               <div class="sm:col-span-1">
@@ -155,7 +155,7 @@
                   Geboekt
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
-                  <FmtDate @value={{@model.bookingDate}} />
+                  <Fmt::Date @value={{@model.bookingDate}} />
                 </dd>
               </div>
               <div class="sm:col-span-1">
@@ -163,7 +163,7 @@
                   Betaald
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
-                  <FmtDate @value={{@model.paymentDate}} />
+                  <Fmt::Date @value={{@model.paymentDate}} />
                 </dd>
               </div>
               <div class="sm:col-span-1">
@@ -179,7 +179,7 @@
                   Nettobedrag
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
-                  <FmtCurrency @value={{this.baseAmount}} />
+                  <Fmt::Currency @value={{this.baseAmount}} />
                 </dd>
               </div>
               <div class="sm:col-span-1">
@@ -187,7 +187,7 @@
                   BTW bedrag
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
-                  <FmtCurrency @value={{this.baseAmountVat}} />
+                  <Fmt::Currency @value={{this.baseAmountVat}} />
                 </dd>
               </div>
               <div class="sm:col-span-1">

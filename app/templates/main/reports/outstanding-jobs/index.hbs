@@ -258,7 +258,7 @@
                       {{row.visitor}}
                     </td>
                     <td class="px-3 py-2 text-xs font-medium text-gray-900">
-                      <FmtDate @value={{row.orderDate}} />
+                      <Fmt::Date @value={{row.orderDate}} />
                     </td>
                     <td class="px-3 py-2 text-xs font-medium text-gray-900">
                       {{row.customerNumber}}
@@ -296,17 +296,17 @@
                     <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
                       <div>
                         <span class="text-gray-400 italic inline-block w-5">Vw</span>
-                        <FmtDate @value={{row.expectedDate}} />
+                        <Fmt::Date @value={{row.expectedDate}} />
                       </div>
                       <div>
                         <span class="text-gray-400 italic inline-block w-5">Ve</span>
                         <span class="{{if row.isOverdue "bg-red-200"}}">
-                          <FmtDate @value={{row.requiredDate}} />
+                          <Fmt::Date @value={{row.requiredDate}} />
                         </span>
                       </div>
                       <div>
                         <span class="text-gray-400 italic inline-block w-5">Pl</span>
-                        <FmtDate @value={{row.planningDate}} />
+                        <Fmt::Date @value={{row.planningDate}} />
                       </div>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">

@@ -184,11 +184,11 @@
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="space-y-2">
           <DetailListItem @label="Datum">
-            <FmtDate @value={{@model.date}} />
+            <Fmt::Date @value={{@model.date}} />
           </DetailListItem>
           {{#if @model.cancellationDate}}
             <DetailListItem @label="Afgesloten">
-              <FmtDate @value={{@model.cancellationDate}} />
+              <Fmt::Date @value={{@model.cancellationDate}} />
             </DetailListItem>
           {{/if}}
           <DetailListItem @label="Aanmelding">

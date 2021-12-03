@@ -100,11 +100,11 @@
         </div>
         <div class="space-y-2 sm:order-1">
           <DetailListItem @label="Datum">
-            <FmtDate @value={{@model.offerDate}} />
+            <Fmt::Date @value={{@model.offerDate}} />
           </DetailListItem>
           {{#if @model.isMasteredByAccess}}
             <DetailListItem @label="Bedrag">
-              <FmtCurrency @value={{@model.amount}} />
+              <Fmt::Currency @value={{@model.amount}} />
             </DetailListItem>
           {{/if}}
           <DetailListItem @label="BTW tarief">

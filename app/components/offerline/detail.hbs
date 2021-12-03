@@ -30,7 +30,7 @@
         </div>
       {{else}}
         <div class="text-sm text-gray-900 font-semibold">
-          <FmtCurrency @value={{@model.amount}} />
+          <Fmt::Currency @value={{@model.amount}} />
         </div>
         <div class="ml-1 text-sm text-gray-900 font-semibold">
           + {{@model.vatRate.rate}}% btw
