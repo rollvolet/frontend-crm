@@ -7,7 +7,7 @@
             {{svg-jar "loading-circle" class="animate-spin h-5 w-5 mx-auto"}}
           {{else}}
             {{#if this.model.requestId}}
-              AD {{this.model.requestId}} {{this.visitor.initials}}
+              AD {{format-request-number this.model.requestId}} {{this.visitor.initials}}
             {{else if this.model.interventionId}}
               IR {{this.model.interventionId}}
             {{else}}

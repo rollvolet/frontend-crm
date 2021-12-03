@@ -215,7 +215,7 @@
                       {{#each this.orders as |row|}}
                         <tr>
                           <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                            {{row.requestNumber}}
+                            {{format-request-number row.requestNumber}}
                           </td>
                           <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                             {{row.offerNumber}}

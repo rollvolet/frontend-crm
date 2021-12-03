@@ -251,7 +251,7 @@
                     <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
                       <LinkTo @route="main.case.order.edit" @models={{array row.customerNumber row.orderId}}
                         class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                        AD{{row.requestId}}
+                        AD{{format-request-number row.requestId}}
                       </LinkTo>
                     </td>
                     <td class="px-3 py-2 text-xs text-gray-500">

@@ -5,7 +5,7 @@
       <div class="space-y-1">
         <div class="flex items-center">
           <h2 class="text-2xl font-bold font-display text-gray-900">
-            Aanvraag {{#if this.request}}AD{{this.request.id}}{{/if}}
+            Aanvraag {{#if this.request}}AD{{format-request-number this.request.id}}{{/if}}
           </h2>
           {{#if this.request}}
             <LinkTo @route="main.requests.edit" @model={{this.request.id}}

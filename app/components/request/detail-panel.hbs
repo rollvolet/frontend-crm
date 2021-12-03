@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center">
       <div class="flex items-center">
         <h2 class="text-2xl font-bold font-display text-gray-900">
-          Aanvraag {{@model.id}} {{this.visitor.initials}}
+          Aanvraag {{format-request-number @model.id}} {{this.visitor.initials}}
         </h2>
         {{#if this.editMode}}
           <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
