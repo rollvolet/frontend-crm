@@ -85,7 +85,7 @@
       <div class="mx-auto px-4 py-6 sm:px-6 lg:px-8">
         {{#if this.configuration.preloadStaticLists.isRunning}}
           <div class="fixed inset-0 w-full h-screen">
-            <LoadingSpinner @label="Applicatie initialiseren..." />
+            <Util::LoadingSpinner @label="Applicatie initialiseren..." />
           </div>
         {{else if this.configuration.preloadStaticLists.isError}}
           <div class="fixed inset-0 flex w-full h-screen justify-center items-center">

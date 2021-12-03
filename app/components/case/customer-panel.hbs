@@ -23,38 +23,38 @@
           </div>
         </div>
         <h2 class="text-2xl font-bold font-display text-gray-900">
-          <PrintName @model={{@model}} />
+          <Fmt::CustomerName @model={{@model}} />
         </h2>
       </div>
       <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:grid-cols-1">
         {{#if this.unlinkCustomer.isRunning}}
           <div>
-            <LoadingSpinner @label="Klant ontkoppelen..." />
+            <Util::LoadingSpinner @label="Klant ontkoppelen..." />
           </div>
         {{else}}
           <div class="space-y-4">
-            <DetailListItem @width={{20}} @label={{if @model.isCompany "Bedrijf" "Naam"}}>
+            <Util::DetailItem @width={{20}} @label={{if @model.isCompany "Bedrijf" "Naam"}}>
               <div>
                 {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
                 {{@model.prefix}} {{@model.name}} {{@model.suffix}}
                 {{#unless @model.printInFront}}{{@model.honorificPrefix.name}}{{/unless}}
               </div>
               <div><Fmt::VatNumber @value={{@model.vatNumber}} /></div>
-            </DetailListItem>
+            </Util::DetailItem>
 
-            <DetailListItem @width={{20}} @label="Adres">
+            <Util::DetailItem @width={{20}} @label="Adres">
               <div>{{@model.address1}}</div>
               <div>{{@model.address2}}</div>
               <div>{{@model.address3}}</div>
               <div>{{@model.postalCode}} {{@model.city}}</div>
               <div>{{@model.country.name}}</div>
-            </DetailListItem>
+            </Util::DetailItem>
 
-            <DetailListItem @width={{20}} @label="Taal">
+            <Util::DetailItem @width={{20}} @label="Taal">
               {{@model.language.name}}
-            </DetailListItem>
+            </Util::DetailItem>
 
-            <DetailListItem @width={{20}} @label="Telefoon">
+            <Util::DetailItem @width={{20}} @label="Telefoon">
               {{#each @model.telephones as |tel|}}
                 <div>
                   {{tel.telephoneType.name}}:
@@ -62,13 +62,13 @@
                   {{#if tel.memo}}({{tel.memo}}){{/if}}
                 </div>
               {{/each}}
-            </DetailListItem>
+            </Util::DetailItem>
 
-            <DetailListItem @width={{20}} @label="E-mail">
+            <Util::DetailItem @width={{20}} @label="E-mail">
               <div><Fmt::Email @value={{@model.email}} /></div>
               <div><Fmt::Email @value={{@model.email2}} /></div>
               <div>{{@model.url}}</div>
-            </DetailListItem>
+            </Util::DetailItem>
           </div>
           <div class="space-y-6">
             <div class="">

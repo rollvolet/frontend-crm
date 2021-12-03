@@ -1,35 +1,35 @@
 <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
   <div class="space-y-2">
-    <DetailListItem @label={{if @model.isCompany "Bedrijf" "Naam"}}>
+    <Util::DetailItem @label={{if @model.isCompany "Bedrijf" "Naam"}}>
       <div>
         {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
         {{@model.prefix}} {{@model.name}} {{@model.suffix}}
         {{#unless @model.printInFront}}{{@model.honorificPrefix.name}}{{/unless}}
       </div>
       <div><Fmt::VatNumber @value={{@model.vatNumber}} /></div>
-    </DetailListItem>
+    </Util::DetailItem>
 
-    <DetailListItem @label="Adres">
+    <Util::DetailItem @label="Adres">
       <div>{{@model.address1}}</div>
       <div>{{@model.address2}}</div>
       <div>{{@model.address3}}</div>
       <div>{{@model.postalCode}} {{@model.city}}</div>
       <div>{{@model.country.name}}</div>
-    </DetailListItem>
+    </Util::DetailItem>
 
-    <DetailListItem @label="Taal">
+    <Util::DetailItem @label="Taal">
       {{@model.language.name}}
-    </DetailListItem>
+    </Util::DetailItem>
 
     {{#if this.isScopeCustomer}}
-      <DetailListItem @label="Tags">
+      <Util::DetailItem @label="Tags">
         {{this.joinedTagNames}}
-      </DetailListItem>
+      </Util::DetailItem>
     {{/if}}
   </div>
 
   <div class="space-y-2">
-    <DetailListItem @label="Telefoon">
+    <Util::DetailItem @label="Telefoon">
       {{#each @model.telephones as |tel|}}
         <div>
           {{tel.telephoneType.name}}
@@ -37,30 +37,30 @@
           {{#if tel.memo}}({{tel.memo}}){{/if}}
         </div>
       {{/each}}
-    </DetailListItem>
+    </Util::DetailItem>
 
-    <DetailListItem @label="E-mail">
+    <Util::DetailItem @label="E-mail">
       <div><Fmt::Email @value={{@model.email}} /></div>
       <div><Fmt::Email @value={{@model.email2}} /></div>
-    </DetailListItem>
+    </Util::DetailItem>
 
-    <DetailListItem @label="Website">
+    <Util::DetailItem @label="Website">
       {{@model.url}}
-    </DetailListItem>
+    </Util::DetailItem>
   </div>
 
   <div>
-    <DetailListItem @label="Opmerking">
+    <Util::DetailItem @label="Opmerking">
       {{#if @model.comment}}
         <span class="whitespace-pre-wrap">{{@model.comment}}</span>
       {{else}}
         Geen opmerkingen
       {{/if}}
-    </DetailListItem>
+    </Util::DetailItem>
   </div>
   {{#if this.isScopeCustomer}}
     <div>
-      <DetailListItem @label="Memo">
+      <Util::DetailItem @label="Memo">
         {{#if @model.memo}}
           <div>
             <button class="text-gray-400 text-sm" type="button" {{on "click" this.toggleMemo}}>
@@ -77,7 +77,7 @@
         {{else}}
           Geen memo
         {{/if}}
-      </DetailListItem>
+      </Util::DetailItem>
     </div>
   {{/if}}
 </dl>

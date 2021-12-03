@@ -7,10 +7,7 @@
           Interventie {{@model.id}}
         </h2>
         {{#if this.editMode}}
-          <SaveStatusIcon
-            @model={{@model}}
-            @task={{this.save}}
-            class="ml-2" />
+          <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
         {{/if}}
       </div>
       <div class="flex flex-none space-x-4">
@@ -183,50 +180,50 @@
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="space-y-2">
-          <DetailListItem @label="Datum">
+          <Util::DetailItem @label="Datum">
             <Fmt::Date @value={{@model.date}} />
-          </DetailListItem>
+          </Util::DetailItem>
           {{#if @model.cancellationDate}}
-            <DetailListItem @label="Afgesloten">
+            <Util::DetailItem @label="Afgesloten">
               <Fmt::Date @value={{@model.cancellationDate}} />
-            </DetailListItem>
+            </Util::DetailItem>
           {{/if}}
-          <DetailListItem @label="Aanmelding">
+          <Util::DetailItem @label="Aanmelding">
             {{@model.wayOfEntry.name}}
-          </DetailListItem>
-          <DetailListItem @label="Bediende">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Bediende">
             {{@model.employee.firstName}}
-          </DetailListItem>
-          <DetailListItem @label="Aantal pers.">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Aantal pers.">
             {{#if @model.nbOfPersons}}
               <span class="{{if this.isNbOfPersonsWarning "px-1 py-0.5 text-red-700 bg-red-100"}}">{{@model.nbOfPersons}} man</span>
             {{/if}}
-          </DetailListItem>
-          <DetailListItem @label="Techniekers">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Techniekers">
             {{#if this.technicianNames.length}}
               {{join ", " this.technicianNames}}
             {{else}}
               {{svg-jar "heroicons-md-minus-sm" class="h-5 w-5 text-gray-500"}}
             {{/if}}
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
         <div class="space-y-6">
           {{#unless this.loadData.isRunning}}
             <PlanningEvent::DetailView @model={{this.planningEvent}} />
           {{/unless}}
           {{#if @model.cancellationReason}}
-            <DetailListItem @label="Reden van afsluiten">
+            <Util::DetailItem @label="Reden van afsluiten">
               <span class="html-body">{{@model.cancellationReason}}</span>
-            </DetailListItem>
+            </Util::DetailItem>
           {{/if}}
         </div>
         <div class="sm:col-span-2 space-y-2">
-          <DetailListItem @label="Beschrijving">
+          <Util::DetailItem @label="Beschrijving">
             <span class="whitespace-pre-wrap">{{@model.description}}</span>
-          </DetailListItem>
-          <DetailListItem @label="Opmerking">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Opmerking">
             <span class="whitespace-pre-wrap">{{@model.comment}}</span>
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
       </dl>
     {{/if}}

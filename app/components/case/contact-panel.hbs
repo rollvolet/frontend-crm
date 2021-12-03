@@ -1,21 +1,21 @@
 <div class="space-y-2">
-  <DetailListItem @width={{20}} @label="Naam">
+  <Util::DetailItem @width={{20}} @label="Naam">
     {{@model.printName}}
-  </DetailListItem>
+  </Util::DetailItem>
 
-  <DetailListItem @width={{20}} @label="Adres">
+  <Util::DetailItem @width={{20}} @label="Adres">
     <div>{{@model.address1}}</div>
     <div>{{@model.address2}}</div>
     <div>{{@model.address3}}</div>
     <div>{{@model.postalCode}} {{@model.city}}</div>
-  </DetailListItem>
+  </Util::DetailItem>
 
-  <DetailListItem @width={{20}} @label="E-mail">
+  <Util::DetailItem @width={{20}} @label="E-mail">
     <div><Fmt::Email @value={{@model.email}} /></div>
     <div><Fmt::Email @value={{@model.email2}} /></div>
-  </DetailListItem>
+  </Util::DetailItem>
 
-  <DetailListItem @width={{20}} @label="Telefoon">
+  <Util::DetailItem @width={{20}} @label="Telefoon">
     {{#each @model.telephones as |tel|}}
       <div>
         {{tel.telephoneType.name}}:
@@ -23,7 +23,7 @@
         {{#if tel.memo}}({{tel.memo}}){{/if}}
       </div>
     {{/each}}
-  </DetailListItem>
+  </Util::DetailItem>
 </div>
 
 <div class="flex justify-end">
@@ -62,10 +62,7 @@
               leaveActiveClass="ease-in duration-200"
               leaveToClass="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}}>
           <div class="absolute top-0 right-0 pt-4 pr-4">
-            <SaveStatusIcon
-              @model={{@model}}
-              @task={{this.save}}
-              class="mb-0.5" />
+            <Util::SaveStatus @model={{@model}} @task={{this.save}} class="mb-0.5" />
             <button type="button"
               onClick={{this.closeEditModal}}
           class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">

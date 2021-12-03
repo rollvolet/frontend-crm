@@ -49,15 +49,15 @@
       {{#if this.order}}
         <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
           <div class="space-y-1">
-            <DetailListItem @label="Datum">
+            <Util::DetailItem @label="Datum">
               <Fmt::Date @value={{this.order.orderDate}} />
-            </DetailListItem>
-            <DetailListItem @label="Referentie">
+            </Util::DetailItem>
+            <Util::DetailItem @label="Referentie">
               {{this.order.reference}}
-            </DetailListItem>
+            </Util::DetailItem>
           </div>
           <div class="space-y-6">
-            <DetailListItem @label="Productiebon" class="items-baseline">
+            <Util::DetailItem @label="Productiebon" class="items-baseline">
               {{#if this.order.hasProductionTicket}}
                 <button onClick={{this.downloadProductionTicket}} type="button">
                   {{svg-jar "heroicons-md-document-search" class="h-6 w-6 text-gray-400"}}
@@ -67,7 +67,7 @@
                   Niet beschikbaar
                 </div>
               {{/if}}
-            </DetailListItem>
+            </Util::DetailItem>
           </div>
         </dl>
       {{else}}

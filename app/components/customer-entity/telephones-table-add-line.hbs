@@ -43,7 +43,7 @@
 </td>
 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
   <div class="flex items-center justify-end">
-    <SaveStatusIcon @model={{@model}} @task={{@saveTask}} />
+    <Util::SaveStatus @model={{@model}} @task={{@saveTask}} />
     {{#if this.canBeSaved}}
       <button type="button"
         class="ml-2 text-green-700 hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-200"

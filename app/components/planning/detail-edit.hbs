@@ -9,10 +9,7 @@
         <div class="ml-3 text-lg font-semibold text-gray-600">
           Planning
         </div>
-        <SaveStatusIcon
-          @model={{@model}}
-          @task={{@saveTask}}
-          class="ml-2" />
+        <Util::SaveStatus @model={{@model}} @task={{@saveTask}} class="ml-2" />
       </div>
       <div>
         <button type="button"

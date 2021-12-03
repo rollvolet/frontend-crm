@@ -19,7 +19,7 @@
   <div class="px-6 py-4 space-y-6">
     {{#if (or this.updateOfferVatRate.isRunning this.createOrder.isRunning)}}
       <div class="h-32">
-        <LoadingSpinner @label="Bestelling aanmaken..." />
+        <Util::LoadingSpinner @label="Bestelling aanmaken..." />
       </div>
     {{else}}
       {{#if this.hasMixedVatRates}}

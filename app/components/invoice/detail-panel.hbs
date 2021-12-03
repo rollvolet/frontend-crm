@@ -7,10 +7,7 @@
           Factuur {{format-invoice-number @model.number}}
         </h2>
         {{#if this.editMode}}
-          <SaveStatusIcon
-            @model={{@model}}
-            @task={{this.save}}
-            class="ml-2" />
+          <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
         {{else}}
           {{#if @model.isBooked}}
             <span class="ml-2 items-center inline-flex text-xs text-blue-800">
@@ -161,45 +158,45 @@
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="space-y-2">
-          <DetailListItem @label="Datum">
-            <DetailListSubitem @label="Factuurdatum">
+          <Util::DetailItem @label="Datum">
+            <Util::DetailSubitem @label="Factuurdatum">
               <Fmt::Date @value={{@model.invoiceDate}} />
-            </DetailListSubitem>
-            <DetailListSubitem @label="Vervaldag">
+            </Util::DetailSubitem>
+            <Util::DetailSubitem @label="Vervaldag">
               <Fmt::Date @value={{@model.dueDate}} />
-            </DetailListSubitem>
-            <DetailListSubitem @label="Geboekt">
+            </Util::DetailSubitem>
+            <Util::DetailSubitem @label="Geboekt">
               <Fmt::Date @value={{@model.bookingDate}} />
-            </DetailListSubitem>
-            <DetailListSubitem @label="Betaald">
+            </Util::DetailSubitem>
+            <Util::DetailSubitem @label="Betaald">
               <Fmt::Date @value={{@model.paymentDate}} />
-            </DetailListSubitem>
-          </DetailListItem>
-          <DetailListItem @label="Referentie">
+            </Util::DetailSubitem>
+          </Util::DetailItem>
+          <Util::DetailItem @label="Referentie">
             {{@model.reference}}
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
         <div class="space-y-2">
-          <DetailListItem @label="Creditnota" class="items-center">
+          <Util::DetailItem @label="Creditnota" class="items-center">
             <Util::DisplayCheckbox @value={{@model.isCreditNote}} />
-          </DetailListItem>
+          </Util::DetailItem>
           {{#if @model.isIsolated}}
-            <DetailListItem @label="BTW tarief">
+            <Util::DetailItem @label="BTW tarief">
               {{#if @model.vatRate}}
                 {{@model.vatRate.name}} BTW
               {{/if}}
-            </DetailListItem>
+            </Util::DetailItem>
           {{/if}}
-          <DetailListItem @label="Betaalref.">
+          <Util::DetailItem @label="Betaalref.">
             {{format-bank-reference @model.bankReference}}
-          </DetailListItem>
+          </Util::DetailItem>
           {{#if @model.certificateRequired}}
-            <DetailListItem @label="BTW-attest" @class="layout-align-start-center">
+            <Util::DetailItem @label="BTW-attest" @class="layout-align-start-center">
               <Certificate::InlineEdit @model={{@model}} />
-            </DetailListItem>
+            </Util::DetailItem>
           {{/if}}
           {{#unless @model.isIsolated}}
-            <DetailListItem @label="Productiebon" class="items-center">
+            <Util::DetailItem @label="Productiebon" class="items-center">
               <div class="flex items-center">
                 <Util::DisplayAvailability @value={{@model.hasProductionTicket}} />
                 {{#if @model.hasProductionTicket}}
@@ -211,24 +208,21 @@
                   </button>
                 {{/if}}
               </div>
-            </DetailListItem>
+            </Util::DetailItem>
           {{/unless}}
-          <DetailListItem
-            @label="Techniekers"
-            {{on "click" this.openWorkingHoursModal}}
-            class="cursor-pointer">
+          <Util::DetailItem @label="Techniekers" {{on "click" this.openWorkingHoursModal}} class="cursor-pointer">
             {{#if this.technicianNames.length}}
               {{join ", " this.technicianNames}}
               {{svg-jar "heroicons-sm-information-circle" class="h-5 w-5 text-gray-400 inline"}}
             {{else}}
               {{svg-jar "heroicons-sm-plus-circle" class="h-5 w-5 text-gray-400 inline"}}
             {{/if}}
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
         <div class="sm:col-span-2">
-          <DetailListItem @label="Opmerking">
+          <Util::DetailItem @label="Opmerking">
             <span class="whitespace-pre-wrap">{{@model.comment}}</span>
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
       </dl>
     {{/if}}

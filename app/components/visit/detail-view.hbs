@@ -36,16 +36,16 @@
           </div>
         </div>
         <dl class="-ml-12 text-sm">
-          <DetailListItem @label="Datum">
+          <Util::DetailItem @label="Datum">
             <Fmt::Date @value={{this.calendarEvent.visitDate}} />
-          </DetailListItem>
-          <DetailListItem @label="Agenda">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Agenda">
             {{#if this.isNotAvailableInCalendar}}
               Niet gevonden
             {{else}}
               {{this.calendarEvent.calendarSubject}}
             {{/if}}
-          </DetailListItem>
+          </Util::DetailItem>
         </dl>
         {{#if this.calendarEvent.isMasteredByAccess}}
           <div class="text-xs text-gray-400 italic text-right">

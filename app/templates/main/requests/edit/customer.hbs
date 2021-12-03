@@ -11,7 +11,7 @@
 
 {{#if this.linkCustomerToRequest.isRunning}}
   <div class="mt-6">
-    <LoadingSpinner @label="Klant koppelen aan interventie..." />
+    <Util::LoadingSpinner @label="Klant koppelen aan interventie..." />
   </div>
 {{else}}
   <div class="mt-6 bg-white shadow rounded-lg">
@@ -114,7 +114,7 @@
                         {{row.number}}
                       </td>
                       <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                        <PrintName @model={{row}} />
+                        <Fmt::CustomerName @model={{row}} />
                       </td>
                       <td class="px-6 py-4 text-sm text-gray-500">
                         {{row.address1}}

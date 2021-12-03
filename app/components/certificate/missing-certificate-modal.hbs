@@ -81,7 +81,7 @@
         </div>
         {{#if this.isAddingCertificate}}
           <div class="mt-12 sm:mt-8">
-            <LoadingSpinner @label="Bezig..." class="text-gray-500 text-sm" />
+            <Util::LoadingSpinner @label="Bezig..." class="text-gray-500 text-sm" />
           </div>
         {{else}}
           {{#if this.certificateAttemptExecuted}}

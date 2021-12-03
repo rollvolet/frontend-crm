@@ -7,10 +7,7 @@
           Aanvraag {{@model.id}} {{this.visitor.initials}}
         </h2>
         {{#if this.editMode}}
-          <SaveStatusIcon
-            @model={{@model}}
-            @task={{this.save}}
-            class="ml-2" />
+          <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
         {{/if}}
       </div>
       <div class="flex flex-none space-x-4">
@@ -127,26 +124,26 @@
           <Visit::DetailView @model={{@model}} />
         </div>
         <div class="space-y-2 sm:order-1">
-          <DetailListItem @label="Datum">
+          <Util::DetailItem @label="Datum">
             <Fmt::Date @value={{@model.requestDate}} />
-          </DetailListItem>
-          <DetailListItem @label="Aanmelding">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Aanmelding">
             {{@model.wayOfEntry.name}}
-          </DetailListItem>
-          <DetailListItem @label="Bediende">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Bediende">
             {{@model.employee}}
-          </DetailListItem>
-          <DetailListItem @label="Bezoek nodig" class="items-center">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Bezoek nodig" class="items-center">
             <Util::DisplayCheckbox @value={{@model.requiresVisit}} />
-          </DetailListItem>
-          <DetailListItem @label="Bezoeker">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Bezoeker">
             {{@model.visitor}}
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
         <div class="sm:col-span-2 sm:order-3">
-          <DetailListItem @label="Opmerking">
+          <Util::DetailItem @label="Opmerking">
             <span class="whitespace-pre-wrap">{{@model.comment}}</span>
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
       </dl>
     {{/if}}

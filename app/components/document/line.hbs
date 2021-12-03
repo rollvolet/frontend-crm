@@ -7,7 +7,7 @@
       @onChange={{this.setValue}}
       @focusOut={{perform @saveTask}} />
     <div class="absolute bottom-0 right-0 px-4 py-2">
-      <SaveStatusIcon @model={{@model}} @task={{@saveTask}} />
+      <Util::SaveStatus @model={{@model}} @task={{@saveTask}} />
       <button type="button"
         onClick={{this.closeEdit}}
                 class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">

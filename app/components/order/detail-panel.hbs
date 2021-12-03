@@ -7,10 +7,7 @@
           Bestelling {{@model.offerNumber}}
         </h2>
         {{#if this.editMode}}
-          <SaveStatusIcon
-            @model={{@model}}
-            @task={{this.save}}
-            class="ml-2" />
+          <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
         {{/if}}
       </div>
       <div class="flex flex-none space-x-4">
@@ -189,49 +186,49 @@
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="space-y-2">
-          <DetailListItem @label="Datum">
-            <DetailListSubitem @label="Bestelling">
+          <Util::DetailItem @label="Datum">
+            <Util::DetailSubitem @label="Bestelling">
               <Fmt::Date @value={{@model.orderDate}} />
-            </DetailListSubitem>
-            <DetailListSubitem @label="Verwacht">
+            </Util::DetailSubitem>
+            <Util::DetailSubitem @label="Verwacht">
               <Fmt::Date @value={{@model.expectedDate}} />
-            </DetailListSubitem>
-            <DetailListSubitem @label="Vereist">
+            </Util::DetailSubitem>
+            <Util::DetailSubitem @label="Vereist">
               <Fmt::Date @value={{@model.requiredDate}} />
-            </DetailListSubitem>
-          </DetailListItem>
-          <DetailListItem @label="Bezoeker">
+            </Util::DetailSubitem>
+          </Util::DetailItem>
+          <Util::DetailItem @label="Bezoeker">
             {{this.request.visitor}}
-          </DetailListItem>
-          <DetailListItem @label="Referentie">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Referentie">
             {{@model.reference}}
-          </DetailListItem>
-          <DetailListItem @label="Werkuren" @displayRow={{true}}>
+          </Util::DetailItem>
+          <Util::DetailItem @label="Werkuren" @displayRow={{true}}>
             <Fmt::Decimal @value={{@model.scheduledHours}} /> uur x
             <span class="{{if this.isNbOfPersonsWarning "px-1 py-0.5 text-red-700 bg-red-100"}}">{{@model.scheduledNbOfPersons}} man</span>
             = {{@model.scheduledTotal}} uur
-          </DetailListItem>
-          <DetailListItem @label="Techniekers">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Techniekers">
             {{#if this.technicianNames.length}}
               {{join ", " this.technicianNames}}
             {{else}}
               -
             {{/if}}
-          </DetailListItem>
+          </Util::DetailItem>
           {{#if @model.isMasteredByAccess}}
-            <DetailListItem @label="Bedrag">
+            <Util::DetailItem @label="Bedrag">
               <Fmt::Currency @value={{@model.amount}} />
-            </DetailListItem>
-            <DetailListItem @label="BTW tarief">
+            </Util::DetailItem>
+            <Util::DetailItem @label="BTW tarief">
               {{@model.vatRate.name}} BTW
-            </DetailListItem>
+            </Util::DetailItem>
           {{/if}}
         </div>
         <div class="mb-4 sm:mb-0 space-y-2">
           <div class="mb-4">
             <Planning::DetailView @model={{@model}} />
           </div>
-          <DetailListItem @label="Uitvoering">
+          <Util::DetailItem @label="Uitvoering">
             {{#each this.executionOptions as |option|}}
               <div class="flex items-center mb-2">
                 <Input
@@ -247,30 +244,30 @@
                 </label>
               </div>
             {{/each}}
-          </DetailListItem>
-          <DetailListItem @label="Productiebon" class="items-center">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Productiebon" class="items-center">
             <ProductionTicket::InlineEdit @model={{@model}} />
-          </DetailListItem>
-          <DetailListItem @label="Product klaar" class="items-center">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Product klaar" class="items-center">
             <Util::DisplayCheckbox @value={{@model.isReady}} />
-          </DetailListItem>
-          <DetailListItem @label="Afgesloten" class="items-center">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Afgesloten" class="items-center">
             <Util::DisplayCheckbox @value={{@model.canceled}} />
             {{#if @model.canceled}}
-              <DetailListSubitem @label="Reden">
+              <Util::DetailSubitem @label="Reden">
                 {{#if @model.cancellationReason}}
                   <span class="html-body">{{@model.cancellationReason}}</span>
                 {{else}}
                   -
                 {{/if}}
-              </DetailListSubitem>
+              </Util::DetailSubitem>
             {{/if}}
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
         <div class="sm:col-span-2">
-          <DetailListItem @label="Opmerking">
+          <Util::DetailItem @label="Opmerking">
             <span class="whitespace-pre-wrap">{{@model.comment}}</span>
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
       </dl>
     {{/if}}

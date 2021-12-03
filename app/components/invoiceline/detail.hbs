@@ -52,7 +52,7 @@
         </div>
       {{/if}}
       <div class="absolute bottom-0 right-0 px-4 py-2">
-        <SaveStatusIcon @model={{@model}} @task={{@saveTask}} />
+        <Util::SaveStatus @model={{@model}} @task={{@saveTask}} />
         {{#if this.editPriceMode}}
           <button type="button"
             onClick={{@onDelete}}

@@ -7,10 +7,7 @@
           Offerte {{@model.number}}
         </h2>
         {{#if this.editMode}}
-          <SaveStatusIcon
-            @model={{@model}}
-            @task={{this.save}}
-            class="ml-2" />
+          <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
         {{/if}}
       </div>
       <div class="flex flex-none space-x-4">
@@ -99,30 +96,30 @@
           <Visit::DetailView @model={{this.request}} />
         </div>
         <div class="space-y-2 sm:order-1">
-          <DetailListItem @label="Datum">
+          <Util::DetailItem @label="Datum">
             <Fmt::Date @value={{@model.offerDate}} />
-          </DetailListItem>
+          </Util::DetailItem>
           {{#if @model.isMasteredByAccess}}
-            <DetailListItem @label="Bedrag">
+            <Util::DetailItem @label="Bedrag">
               <Fmt::Currency @value={{@model.amount}} />
-            </DetailListItem>
+            </Util::DetailItem>
           {{/if}}
-          <DetailListItem @label="BTW tarief">
+          <Util::DetailItem @label="BTW tarief">
             {{#if @model.vatRate}}
               {{@model.vatRate.name}} BTW
             {{/if}}
-          </DetailListItem>
-          <DetailListItem @label="Bezoeker">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Bezoeker">
             {{this.request.visitor}}
-          </DetailListItem>
-          <DetailListItem @label="Referentie">
+          </Util::DetailItem>
+          <Util::DetailItem @label="Referentie">
             {{@model.reference}}
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
         <div class="sm:col-span-2 sm:order-3">
-          <DetailListItem @label="Opmerking">
+          <Util::DetailItem @label="Opmerking">
             <span class="whitespace-pre-wrap">{{@model.comment}}</span>
-          </DetailListItem>
+          </Util::DetailItem>
         </div>
       </dl>
     {{/if}}

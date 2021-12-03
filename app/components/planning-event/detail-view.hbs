@@ -28,16 +28,16 @@
         </div>
       </div>
       <dl class="-ml-12 text-sm">
-        <DetailListItem @label="Datum">
+        <Util::DetailItem @label="Datum">
           <Fmt::Date @value={{@model.date}} />
-        </DetailListItem>
-        <DetailListItem @label="Agenda">
+        </Util::DetailItem>
+        <Util::DetailItem @label="Agenda">
           {{#if @model.isNotAvailableInCalendar}}
             Niet gevonden
           {{else}}
             {{@model.subject}}
           {{/if}}
-        </DetailListItem>
+        </Util::DetailItem>
       </dl>
     </div>
   {{else}}

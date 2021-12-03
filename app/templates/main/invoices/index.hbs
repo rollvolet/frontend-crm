@@ -155,12 +155,12 @@
                                 Naamloos
                               </div>
                             {{/if}}
-                            <div class="text-gray-400 text-xs"><PrintName @model={{row.customer}} /></div>
+                            <div class="text-gray-400 text-xs"><Fmt::CustomerName @model={{row.customer}} /></div>
                           </div>
                         {{else}}
                           {{#if row.customer}}
                             {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
-                            <PrintName @model={{row.customer}} />
+                            <Fmt::CustomerName @model={{row.customer}} />
                           {{else}}
                             {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
                             <span class="text-gray-400 italic">Geen klant gekoppeld</span>

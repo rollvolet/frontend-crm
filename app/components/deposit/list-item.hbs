@@ -18,7 +18,7 @@
           {{else}}
             {{#if this.editMode}}
               <div class="space-x-2 flex justify-end">
-                <SaveStatusIcon @model={{@model}} @task={{this.save}} />
+                <Util::SaveStatus @model={{@model}} @task={{this.save}} />
                 <button type="button"
                   onClick={{this.closeEdit}}
                 class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">

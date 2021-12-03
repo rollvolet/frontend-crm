@@ -1,10 +1,10 @@
 {{#if (or this.delete.isRunning @model.isDeleted)}}
   <div class="h-32">
-    <LoadingSpinner @label="Aan het verwijderen..." />
+    <Util::LoadingSpinner @label="Aan het verwijderen..." />
   </div>
 {{else if (and (not @model.id) @model.isSaving)}}
   <div class="h-32">
-    <LoadingSpinner @label="Aan het aanmaken..." />
+    <Util::LoadingSpinner @label="Aan het aanmaken..." />
   </div>
 {{else}}
   <div class="space-y-4">
