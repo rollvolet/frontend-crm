@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { later } from '@ember/runloop';
-import { keepLatestTask } from 'ember-concurrency-decorators';
+import { keepLatestTask } from 'ember-concurrency';
 
 export default class CaseBuildingPanelComponent extends Component {
   @tracked isOpenEditModal = false;

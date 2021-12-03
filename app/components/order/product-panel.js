@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { keepLatestTask, task } from 'ember-concurrency-decorators';
+import { keepLatestTask, task } from 'ember-concurrency';
 
 export default class OrderProductPanelComponent extends Component {
   @service router;

@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { isEmpty } from '@ember/utils';
-import { task } from 'ember-concurrency-decorators';
-import { all } from 'ember-concurrency';
+import { all, task } from 'ember-concurrency';
 import { warn } from '@ember/debug';
 
 export default class CustomerPanelsComponent extends Component {

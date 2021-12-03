@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
-import { keepLatestTask } from 'ember-concurrency-decorators';
+import { keepLatestTask } from 'ember-concurrency';
 
 export default class InputFieldVatNumberInputDuplicateError extends Component {
   @service store;

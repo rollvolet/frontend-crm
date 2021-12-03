@@ -1,8 +1,8 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { keepLatestTask } from 'ember-concurrency-decorators';
 import { isBlank } from '@ember/utils';
+import { keepLatestTask } from 'ember-concurrency';
 
 export default class CustomerDetailPanelComponent extends Component {
   @tracked editMode = false;

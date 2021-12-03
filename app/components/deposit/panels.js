@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { task } from 'ember-concurrency-decorators';
 import sum from '../../utils/math/sum';
+import { task } from 'ember-concurrency';
 
 export default class DepositPanelsComponent extends Component {
   @service case;

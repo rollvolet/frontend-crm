@@ -2,10 +2,10 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { task, enqueueTask } from 'ember-concurrency-decorators';
 import { later } from '@ember/runloop';
 import { warn } from '@ember/debug';
 import { guidFor } from '@ember/object/internals';
+import { task, enqueueTask } from 'ember-concurrency';
 
 export default class CertificateMissingCertificateModalComponent extends Component {
   @service documentGeneration;

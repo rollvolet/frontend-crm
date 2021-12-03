@@ -3,8 +3,8 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { later } from '@ember/runloop';
-import { task } from 'ember-concurrency-decorators';
 import { warn } from '@ember/debug';
+import { task } from 'ember-concurrency';
 
 export default class InvoiceWorkingHoursModalComponent extends Component {
   @service store;

@@ -1,8 +1,8 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
-import { task } from 'ember-concurrency-decorators';
 import { action } from '@ember/object';
 import applyFilterParams from '../../../../utils/apply-filter-params';
+import { task } from 'ember-concurrency';
 
 export default class CustomerController extends Controller {
   @tracked page = 0;

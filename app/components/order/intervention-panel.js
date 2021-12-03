@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { task } from 'ember-concurrency-decorators';
 import updateContactAndBuildingRequest from '../../utils/api/update-contact-and-building';
+import { task } from 'ember-concurrency';
 
 export default class OrderInterventionPanelComponent extends Component {
   @service case;

@@ -65,7 +65,7 @@ export default class CustomerEntityTelephonesTable extends Component {
 
   @task(function * () {
     if (this.newTelephone) {
-      this.updateNewTelephone.cancelAll();
+      yield this.updateNewTelephone.cancelAll();
       try {
         yield this.newTelephone.destroyRecord();
       } finally {

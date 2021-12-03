@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
-import { task } from 'ember-concurrency-decorators';
+import { task } from 'ember-concurrency';
 
 export default class MainInterventionsEditController extends Controller {
   @service case;

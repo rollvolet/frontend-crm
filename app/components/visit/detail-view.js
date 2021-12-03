@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import fetch, { Headers } from 'fetch';
 import { tracked } from '@glimmer/tracking';
 import { isEmpty } from '@ember/utils';
-import { keepLatestTask } from 'ember-concurrency-decorators';
+import { keepLatestTask } from 'ember-concurrency';
 
 export default class VisitDetailViewComponent extends Component {
   @tracked calendarEvent;

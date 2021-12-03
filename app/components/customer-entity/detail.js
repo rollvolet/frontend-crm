@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { keepLatestTask } from 'ember-concurrency-decorators';
+import { keepLatestTask } from 'ember-concurrency';
 
 export default class CustomerEntityDetailComponent extends Component {
   @tracked scope = this.args.scope || 'customer'; // one of 'customer', 'contact', 'building'

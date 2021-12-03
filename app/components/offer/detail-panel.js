@@ -2,8 +2,8 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { task } from 'ember-concurrency-decorators';
 import { debug } from '@ember/debug';
+import { task } from 'ember-concurrency';
 
 export default class OfferDetailPanelComponent extends Component {
   @service case;

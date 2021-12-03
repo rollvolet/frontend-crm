@@ -2,8 +2,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { keepLatestTask } from 'ember-concurrency-decorators';
-import { all } from 'ember-concurrency';
+import { all, keepLatestTask } from 'ember-concurrency';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceCalculationPanelComponent extends Component {

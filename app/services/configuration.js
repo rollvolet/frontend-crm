@@ -1,7 +1,6 @@
 import Service, { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
-import { all } from 'ember-concurrency';
-import { dropTask } from 'ember-concurrency-decorators';
+import { all, dropTask } from 'ember-concurrency';
 
 export default class ConfigurationService extends Service {
   @service store;

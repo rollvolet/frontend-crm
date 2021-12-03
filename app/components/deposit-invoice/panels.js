@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { keepLatestTask, task } from 'ember-concurrency-decorators';
 import { tracked } from '@glimmer/tracking';
 import moment from 'moment';
 import sum from '../../utils/math/sum';
+import { keepLatestTask, task } from 'ember-concurrency';
 
 export default class DepositInvoicePanelsComponent extends Component {
   @service case;

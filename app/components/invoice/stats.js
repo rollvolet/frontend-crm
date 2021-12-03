@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
-import { keepLatestTask } from 'ember-concurrency-decorators';
 import { tracked } from '@glimmer/tracking';
 import sum from '../../utils/math/sum';
+import { keepLatestTask } from 'ember-concurrency';
 
 export default class InvoiceStatsComponent extends Component {
   @tracked vatRate;

@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { task } from 'ember-concurrency-decorators';
-import { all } from 'ember-concurrency';
+import { all, task } from 'ember-concurrency';
 import { warn } from '@ember/debug';
 
 export default class OrderPanelsComponent extends Component {

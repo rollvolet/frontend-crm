@@ -3,8 +3,8 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { later } from '@ember/runloop';
-import { restartableTask } from 'ember-concurrency-decorators';
 import { isBlank } from '@ember/utils';
+import { restartableTask } from 'ember-concurrency';
 
 export default class CertificateSearchModalComponent extends FilterComponent {
   @service store;

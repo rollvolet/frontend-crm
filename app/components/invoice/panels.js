@@ -1,6 +1,5 @@
 import Component from '@glimmer/component';
-import { task } from 'ember-concurrency-decorators';
-import { all } from 'ember-concurrency';
+import { all, task } from 'ember-concurrency';
 
 export default class InvoicePanelsComponent extends Component {
   get isDisabledEdit() {

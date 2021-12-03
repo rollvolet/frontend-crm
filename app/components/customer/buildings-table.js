@@ -2,7 +2,7 @@ import { action } from '@ember/object';
 import FilterComponent from '../data-table-filter';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { restartableTask } from 'ember-concurrency-decorators';
+import { restartableTask } from 'ember-concurrency';
 
 export default class BuildingsTable extends FilterComponent {
   @service router;

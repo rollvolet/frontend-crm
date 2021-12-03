@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import EmberObject, { action } from '@ember/object';
-import { restartableTask } from 'ember-concurrency-decorators';
-import { timeout } from 'ember-concurrency';
+import { timeout, restartableTask } from 'ember-concurrency';
 
 export default class DataTableFilterComponent extends Component {
   initFilter(filterKeys) {

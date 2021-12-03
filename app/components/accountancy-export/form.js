@@ -2,8 +2,8 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { task } from 'ember-concurrency-decorators';
 import { deformatInvoiceNumber, formatInvoiceNumber } from '../../helpers/format-invoice-number';
+import { task } from 'ember-concurrency';
 
 export default class AccountancyExportForm extends Component {
   @service store;

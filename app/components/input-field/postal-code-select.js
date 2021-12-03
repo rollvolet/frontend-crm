@@ -3,8 +3,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
-import { timeout } from 'ember-concurrency';
-import { keepLatestTask } from 'ember-concurrency-decorators';
+import { timeout, keepLatestTask } from 'ember-concurrency';
 import { later } from '@ember/runloop';
 
 export default class PostalCodeSelect extends Component {

@@ -3,8 +3,8 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
-import { task } from 'ember-concurrency-decorators';
 import { warn } from '@ember/debug';
+import { task } from 'ember-concurrency';
 
 export default class DepositInvoiceListItemComponent extends Component {
   @service documentGeneration;

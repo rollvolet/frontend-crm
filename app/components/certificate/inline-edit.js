@@ -2,9 +2,9 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { enqueueTask, task } from 'ember-concurrency-decorators';
 import { warn } from '@ember/debug';
 import { guidFor } from '@ember/object/internals';
+import { enqueueTask, task } from 'ember-concurrency';
 
 export default class CertificateInlineEditComponent extends Component {
   @service documentGeneration;

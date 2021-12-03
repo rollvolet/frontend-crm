@@ -3,7 +3,7 @@ import fetch, { Headers } from 'fetch';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { isEmpty } from '@ember/utils';
-import { keepLatestTask } from 'ember-concurrency-decorators';
+import { keepLatestTask } from 'ember-concurrency';
 
 export default class PlanningDetailViewComponent extends Component {
   @service case;
