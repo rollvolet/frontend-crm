@@ -8,13 +8,16 @@ import moment from 'moment';
 export default class MainReportsOutstandingJobsIndexController extends Controller {
   @service router;
 
-  page = 0;
-  size = 100;
-  sort = 'order-date';
+  @tracked page = 0;
+  @tracked size = 100;
+  @tracked sort = 'order-date';
 
-  hasProductionTicket = -1;
-  execution = 'na';
-  isProductReady = -1;
+  @tracked hasProductionTicket = -1;
+  @tracked execution = 'na';
+  @tracked isProductReady = -1;
+  @tracked visitor;
+  @tracked visitorName;
+  @tracked orderDate;
 
   executionOptions = [
     { label: 'n.v.t.', value: 'na', id: `na-${guidFor(this)}` },
@@ -26,7 +29,6 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
   @tracked sortDirectionOptions; // initialized in route
   @tracked sortFieldOptions; // initialized in route
 
-  @tracked visitor;
   @tracked sortField;
   @tracked sortDirection;
 
@@ -35,7 +37,7 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
     if (!this.orderDate) {
       const orderDate = new Date();
       orderDate.setYear(orderDate.getFullYear() - 1);
-      this.set('orderDate', orderDate.toISOString().substr(0, 10));
+      this.orderDate = orderDate.toISOString().substr(0, 10);
     }
   }
 
@@ -46,18 +48,18 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
   @action
   selectVisitor(employee) {
     this.visitor = employee;
-    this.set('visitorName', employee && employee.firstName);
+    this.visitorName = employee && employee.firstName;
   }
 
   @action
   selectExecution(event) {
-    this.set('execution', event.target.value);
+    this.execution = event.target.value;
   }
 
   @action
   setOrderDate(date) {
     const orderDate = date.toISOString().substr(0, 10); // yyyy-mm-dd
-    this.set('orderDate', orderDate);
+    this.orderDate = orderDate;
   }
 
   @action
@@ -90,19 +92,19 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
 
   @action
   selectPage(page) {
-    this.set('page', page);
+    this.page = page;
   }
 
   @action
   setSortField(option) {
     this.sortField = option;
-    this.set('sort', this.getSortValue());
+    this.sort = this.getSortValue();
   }
 
   @action
   setSortDirection(option) {
     this.sortDirection = option;
-    this.set('sort', this.getSortValue());
+    this.sort = this.getSortValue();
   }
 
   getSortValue() {

@@ -28,8 +28,8 @@ export default class UserInfoService extends Service {
   }
 
   @keepLatestTask
+  // eslint-disable-next-line require-yield
   *fetchUserInfo() {
-    // eslint-disable-line require-yield
     if (this.session.isAuthenticated) {
       const sessionData = this.session.data.authenticated.data;
       this.name = sessionData.attributes.name;
@@ -51,9 +51,9 @@ export default class UserInfoService extends Service {
         const firstName = this.username.split(' ')[0].toLowerCase();
         const employees = await this.store.findAll('employee'); // TODO convert to query
         const employee = employees.find((e) => e.firstName.toLowerCase() == firstName);
-        this.set('employee', employee);
+        this.employee = employee;
       } else {
-        this.set('employee', null);
+        this.employee = null;
       }
     }
     return this.employee;

@@ -1,11 +1,12 @@
 import Controller from '@ember/controller';
+import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency-decorators';
 import { action } from '@ember/object';
 
 export default class ExportsController extends Controller {
-  page = 0;
-  size = 10;
-  sort = '-date';
+  @tracked page = 0;
+  @tracked size = 10;
+  @tracked sort = '-date';
 
   @task
   *runExport(accountancyExport) {
@@ -25,6 +26,6 @@ export default class ExportsController extends Controller {
 
   @action
   selectPage(page) {
-    this.set('page', page);
+    this.page = page;
   }
 }

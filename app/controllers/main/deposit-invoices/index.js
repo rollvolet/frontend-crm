@@ -1,11 +1,12 @@
 import Controller from '@ember/controller';
 import applyFilterParams from '../../../utils/apply-filter-params';
+import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class IndexController extends Controller {
-  page = 0;
-  size = 25;
-  sort = '-number';
+  @tracked page = 0;
+  @tracked size = 25;
+  @tracked sort = '-number';
 
   @action
   applyFilter(filter) {
@@ -24,6 +25,6 @@ export default class IndexController extends Controller {
 
   @action
   selectPage(page) {
-    this.set('page', page);
+    this.page = page;
   }
 }

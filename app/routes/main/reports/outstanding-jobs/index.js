@@ -127,7 +127,7 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     controller.sortField = this.sortField;
 
     if (controller.page != this.lastParams.committed.page) {
-      controller.set('page', this.lastParams.committed.page);
+      controller.page = this.lastParams.committed.page;
     }
   }
 
