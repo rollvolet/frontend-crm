@@ -37,7 +37,7 @@
               <div>
                 {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
                 {{@model.prefix}} {{@model.name}} {{@model.suffix}}
-                {{#if (not @model.printInFront)}}{{@model.honorificPrefix.name}}{{/if}}
+                {{#unless @model.printInFront}}{{@model.honorificPrefix.name}}{{/unless}}
               </div>
               <div><FmtVatNumber @value={{@model.vatNumber}} /></div>
             </DetailListItem>

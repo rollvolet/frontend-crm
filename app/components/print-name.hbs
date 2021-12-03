@@ -2,4 +2,4 @@
 {{#if @model.printPrefix}}{{@model.prefix}}{{/if}}
 {{@model.name}}
 {{#if @model.printSuffix}}{{@model.suffix}}{{/if}}
-{{#if (not @model.printInFront)}}{{@model.honorificPrefix.name}}{{/if}}
+{{#unless @model.printInFront}}{{@model.honorificPrefix.name}}{{/unless}}

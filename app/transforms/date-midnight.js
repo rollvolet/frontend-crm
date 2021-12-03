@@ -1,6 +1,6 @@
-import DS from 'ember-data';
+import Transform from '@ember-data/serializer/transform';
 
-export default DS.Transform.extend({
+export default class DateMidnightTransform extends Transform {
   deserialize(serialized) {
     let type = typeof serialized;
 
@@ -21,7 +21,7 @@ export default DS.Transform.extend({
     } else {
       return null;
     }
-  },
+  }
 
   serialize(date) {
     if (date instanceof Date && !isNaN(date)) {
@@ -30,5 +30,5 @@ export default DS.Transform.extend({
     } else {
       return null;
     }
-  },
-});
+  }
+}

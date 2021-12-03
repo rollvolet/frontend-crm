@@ -1,5 +1,6 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
+import { get } from '@ember/object';
 
 const Validations = buildValidations({
   area: [
@@ -43,13 +44,13 @@ export default class Telephone extends Model.extend(Validations) {
       this.number ||
       this.memo ||
       this.order ||
-      this.get('country.id') ||
-      this.get('telephoneType.id')
+      get('this.country.id') ||
+      get('this.telephoneType.id')
     );
   }
 
   hasDirtyRelations() {
     let [_, telephoneTypeId, countryId] = this.id.split('-'); // eslint-disable-line no-unused-vars
-    return this.get('telephoneType.id') != telephoneTypeId || this.get('country.id') != countryId;
+    return get('this.telephoneType.id') != telephoneTypeId || get('this.country.id') != countryId;
   }
 }

@@ -1,7 +1,9 @@
-import DS from 'ember-data';
+import JSONAPISerializer from '@ember-data/serializer/json-api';
 import DataTableSerializerMixin from 'ember-data-table/mixins/serializer';
 
-export default DS.JSONAPISerializer.extend(DataTableSerializerMixin, {
+export default class ApplicationJSONAPISerializer extends JSONAPISerializer.extend(
+  DataTableSerializerMixin
+) {
   /**
      Transforms link URLs to objects containing metadata
      E.g.
@@ -37,13 +39,13 @@ export default DS.JSONAPISerializer.extend(DataTableSerializerMixin, {
     });
 
     return meta;
-  },
+  }
 
   /**
       Parse the links in the JSONAPI response and convert to a meta-object
    */
   normalizeArrayResponse(store, primaryModelClass, payload) {
-    const result = this._super(...arguments);
+    const result = super.normalizeArrayResponse(...arguments);
     result.meta = result.meta || {};
 
     if (payload.links) {
@@ -54,5 +56,5 @@ export default DS.JSONAPISerializer.extend(DataTableSerializerMixin, {
     }
 
     return result;
-  },
-});
+  }
+}
