@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 const Validations = buildValidations({
   email: validator('format', { type: 'email', allowBlank: true }),
@@ -41,7 +40,7 @@ const Validations = buildValidations({
   ],
 });
 
-export default class CustomerModel extends Model.extend(Validations, LoadableModel) {
+export default class CustomerModel extends Model.extend(Validations) {
   @attr dataId;
   @attr number;
   @attr name;

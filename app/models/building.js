@@ -1,5 +1,4 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
@@ -10,7 +9,7 @@ const Validations = buildValidations({
   country: validator('presence', true),
 });
 
-export default class BuildingModel extends Model.extend(Validations, LoadableModel) {
+export default class BuildingModel extends Model.extend(Validations) {
   @attr name;
   @attr address1;
   @attr address2;

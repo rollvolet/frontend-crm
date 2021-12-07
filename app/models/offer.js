@@ -1,14 +1,13 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
-import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 const Validations = buildValidations({
   offerlines: validator('has-many'),
   offerDate: validator('presence', true),
 });
 
-export default class OfferModel extends Model.extend(Validations, LoadableModel) {
+export default class OfferModel extends Model.extend(Validations) {
   @attr number;
   @attr sequenceNumber;
   @attr requestNumber;

@@ -131,7 +131,7 @@ export default class CaseService extends Service.extend(Evented) {
           let record = this.store.peekRecord(type, currentId);
 
           if (!record) {
-            record = await this.store.loadRecord(type, currentId);
+            record = await this.store.findRecord(type, currentId);
           }
 
           this.current[type] = record;

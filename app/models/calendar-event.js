@@ -1,5 +1,4 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
-import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
 
@@ -30,7 +29,7 @@ const Validations = buildValidations({
   }),
 });
 
-export default class CalendarEventModel extends Model.extend(Validations, LoadableModel) {
+export default class CalendarEventModel extends Model.extend(Validations) {
   @attr('date-midnight') visitDate;
   @attr period;
   @attr fromHour;

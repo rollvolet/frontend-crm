@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
@@ -37,7 +36,7 @@ const Validations = buildValidations({
   }),
 });
 
-export default class PlanningEventModel extends Model.extend(Validations, LoadableModel) {
+export default class PlanningEventModel extends Model.extend(Validations) {
   @attr('date-midnight') date;
   @attr msObjectId;
   @attr subject;

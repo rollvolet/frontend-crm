@@ -25,23 +25,18 @@ export default class InvoiceCalculationPanelComponent extends Component {
   *loadData() {
     const model = yield this.args.model;
 
-    // Load data that is already included in the main/case/invoice/edit route's model hook
-    this.vatRate = yield model.load('vatRate', { backgroundReload: false });
-
-    // Load data that is already loaded by the invoice/panel component
-    this.invoicelines = yield model.load('invoicelines', { backgroundReload: false });
+    this.vatRate = yield model.vatRate;
+    this.invoicelines = yield model.invoicelines;
     yield all(
       this.invoicelines.map(async (line) => {
-        await line.load('order');
-        await line.load('invoice');
-        await line.load('vatRate');
+        await line.order;
+        await line.invoice;
+        await line.vatRate;
       })
     );
-
-    // Load data that is not yet loaded
-    this.supplements = yield model.load('supplements');
-    this.depositInvoices = yield model.load('depositInvoices');
-    this.deposits = yield model.load('deposits');
+    this.supplements = yield model.supplements;
+    this.depositInvoices = yield model.depositInvoices;
+    this.deposits = yield model.deposits;
   }
 
   get intervention() {

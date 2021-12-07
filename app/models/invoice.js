@@ -1,7 +1,6 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { dateString } from '../utils/date-string';
-import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 const Validations = buildValidations({
   invoiceDate: validator('presence', true),
@@ -13,7 +12,7 @@ const Validations = buildValidations({
   // vatRate: validator('presence', true)
 });
 
-export default class InvoiceModel extends Model.extend(Validations, LoadableModel) {
+export default class InvoiceModel extends Model.extend(Validations) {
   @attr number;
   @attr('date-midnight') invoiceDate;
   @attr('date-midnight') dueDate;
