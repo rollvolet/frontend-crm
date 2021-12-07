@@ -45,7 +45,6 @@
     "ember-cli-inject-live-reload": "^2.0.2",
     "ember-cli-moment-shim": "^3.8.0",
     "ember-cli-postcss": "^7.0.0",
-    "ember-cli-release": "^1.0.0-beta.2",
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-string-helpers": "^6.1.0",
@@ -95,6 +94,7 @@
     "prettier": "^2.2.1",
     "qunit": "^2.13.0",
     "qunit-dom": "^1.6.0",
+    "release-it": "^14.11.8",
     "tailwindcss": "^2.2.19",
     "torii": "https://github.com/jmonster/torii.git#bbbd0ba317da193039193e47295224d2290b8443",
     "torii-azure-ad2-provider": "^1.0.5"
