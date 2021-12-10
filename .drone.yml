@@ -35,7 +35,6 @@ trigger:
     exclude:
       - pull_request
 ---
----
 kind: pipeline
 type: docker
 name: push-latest-build
@@ -97,6 +96,6 @@ trigger:
 
 ---
 kind: signature
-hmac: c1b7a6204319f177c27e2518f53ee68c9b4ac01e0eb2eba4680141575dcc7b8e
+hmac: 4658877b42024ec9185c04dbbc13acb45be25d5cf9b905e8eee642f583319125
 
 ...
