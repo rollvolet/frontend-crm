@@ -1,43 +1,87 @@
 <div class="grid border {{if this.showUnsavedWarning "border-red-500 border-2 border-dashed" "border-gray-200"}} rounded">
   <div class="bg-gray-200 rounded-t px-4 py-2 flex justify-between items-center">
-    <div class="flex-grow-0 flex-auto bg-gray-200 flex items-center justify-center text-gray-500 font-semibold">
+    <div class="bg-gray-200 text-gray-500 font-semibold">
       {{@model.sequenceNumber}}
     </div>
-    <div class="pl-4 space-x-1 flex flex-col sm:flex-row justify-end items-end sm:items-baseline">
-      {{#if this.editMode}}
-        <div class="relative shadow-sm rounded-md">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <span class="text-gray-500 sm:text-sm">
-              &euro;
-            </span>
+    <div class="flex flex-col sm:flex-row justify-end items-end sm:items-center sm:space-x-2">
+      <div class="pl-4 space-x-1 flex flex-col sm:flex-row justify-end items-end {{if this.editMode "sm:items-baseline" "sm:items-center"}}">
+        {{#if this.editMode}}
+          <div class="relative shadow-sm rounded-md">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="text-gray-500 sm:text-sm">
+                &euro;
+              </span>
+            </div>
+            <InputField::DecimalInput
+              @value={{@model.amount}}
+              @errors={{v-get @model "amount" "messages"}}
+              @onChange={{queue (fn (mut @model.amount)) (perform @saveTask @model)}}
+              class="block w-32 sm:text-sm pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
           </div>
-          <InputField::DecimalInput
-            @value={{@model.amount}}
-            @errors={{v-get @model "amount" "messages"}}
-            @onChange={{queue (fn (mut @model.amount)) (perform @saveTask @model)}}
-            class="block w-32 sm:text-sm pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
-        </div>
-        <div class="text-gray-900 sm:text-sm">
-          +
-        </div>
-        <InputField::VatRateSelect
-          @value={{@model.vatRate}}
-          @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform @saveTask @model)}}
-          @allowClear={{false}}
-          class="w-36" />
-        <div class="text-gray-900 sm:text-sm">
-          btw
-        </div>
-      {{else}}
-        <div class="text-sm text-gray-900 font-semibold">
-          <Fmt::Currency @value={{@model.amount}} />
-        </div>
-        <div class="ml-1 text-sm text-gray-900 font-semibold">
-          + {{@model.vatRate.rate}}% btw
-        </div>
-      {{/if}}
+          <div class="text-gray-900 sm:text-sm">
+            +
+          </div>
+          <InputField::VatRateSelect
+            @value={{@model.vatRate}}
+            @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform @saveTask @model)}}
+            @allowClear={{false}}
+            class="w-36" />
+          <div class="text-gray-900 sm:text-sm">
+            btw
+          </div>
+        {{else}}
+          <div class="text-sm text-gray-900 font-semibold">
+            <Fmt::Currency @value={{@model.amount}} />
+          </div>
+          <div class="ml-1 text-sm text-gray-900 font-semibold">
+            + {{@model.vatRate.rate}}% btw
+          </div>
+        {{/if}}
+      </div>
+      {{#unless @model.isNew}}
+        <button type="button"
+          class="p-1 rounded-full {{if this.isShownCalculation "bg-gray-100 text-red-400" "text-gray-500 hover:text-red-400 hover:bg-gray-100"}} focus:outline-none focus:ring-2 focus:ring-red-200"
+          {{on "click" this.toggleCalculation}}>
+          {{svg-jar "heroicons-md-calculator" class="h-5 w-5"}}
+          <EmberTooltip @text="Toon berekening" />
+        </button>
+      {{/unless}}
     </div>
   </div>
+  {{#if this.isShownCalculation}}
+    <div class="px-4 py-2 space-y-4 bg-gray-50 border-b border-gray-200">
+      <div class="space-y-2">
+        {{#each this.calculationLines as |line|}}
+          <CalculationLine::Detail
+            @model={{line}}
+            @initialEditMode={{line.isNew}}
+            @onDelete={{perform this.deleteCalculationLine line}} />
+        {{else}}
+          <p class="mt-2 text-sm text-gray-600 text-center italic">
+            Er is nog geen berekening toegevoegd.
+          </p>
+        {{/each}}
+      </div>
+      <div class="flex justify-between">
+        <div>
+          {{#if this.calculationLines}}
+            <span class="text-sm font-semibold text-gray-600">
+              Totaal berekening:
+            </span>
+            <span class="text-sm font-semibold text-gray-600">
+              <Fmt::Currency @value={{this.totalCalculationAmount}} />
+            </span>
+          {{/if}}
+        </div>
+        <button type="button"
+          class="flex text-sm text-gray-600 font-medium underline hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+          {{on "click" (perform this.addCalculationLine)}}>
+          {{svg-jar "heroicons-sm-plus" class="-ml-1 h-5 w-5"}}
+          <span>Lijn toevoegen</span>
+        </button>
+      </div>
+    </div>
+  {{/if}}
   {{#if this.editMode}}
     <div class="relative" ...attributes>
       <InputField::RichTextArea
@@ -49,13 +93,13 @@
       <div class="absolute bottom-0 right-0 px-4 py-2">
         <Util::SaveStatus @model={{@model}} @task={{@saveTask}} />
         <button type="button"
-          onClick={{@onDelete}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+          {{on "click" (fn @onDelete this.calculationLines)}}>
           {{svg-jar "heroicons-md-trash" class="h-5 w-5"}}
         </button>
         <button type="button"
-          onClick={{this.closeEdit}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+          {{on "click" this.closeEdit}}>
           {{svg-jar "heroicons-md-logout" class="h-5 w-5"}}
         </button>
       </div>
@@ -69,8 +113,8 @@
         {{#unless @isDisabledEdit}}
           <div class="flex-grow-0 flex-auto flex items-end">
             <button type="button"
-              onClick={{this.openEdit}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+              {{on "click" this.openEdit}}>
               {{svg-jar "heroicons-md-pencil" class="h-5 w-5"}}
             </button>
           </div>

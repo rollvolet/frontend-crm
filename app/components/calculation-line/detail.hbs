@@ -1,0 +1,54 @@
+<div class="py-2 border-b border-gray-200 flex justify-between items-center">
+  {{#if this.editMode}}
+    <div class="mr-4 w-full">
+      <label for="description" class="block text-sm font-medium text-gray-700">
+        Beschrijving
+      </label>
+      <Input
+        @id={{concat "description-" this.fieldId}}
+        @type="text"
+        @value={{@model.description}}
+        class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "focusout" (perform this.save)}} />
+    </div>
+    <div class="flex items-center space-x-4">
+      <div>
+        <InputField::DecimalInput
+          @label="Bedrag"
+          @value={{@model.amount}}
+          @errors={{v-get @model "amount" "messages"}}
+          @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
+          class="mt-1 block w-32 sm:text-sm pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+      </div>
+      <div class="flex flex-col space-y-2">
+        <button type="button"
+          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+          {{on "click" this.closeEdit}}>
+          {{svg-jar "heroicons-md-logout" class="h-5 w-5"}}
+        </button>
+        <Util::SaveStatus @model={{@model}} @task={{this.save}} class="-ml-0.5" />
+      </div>
+    </div>
+  {{else}}
+    <div class="text-sm text-gray-600">
+      {{@model.description}}
+    </div>
+    <div class="flex items-center space-x-4">
+      <div class="text-sm text-gray-600">
+        <Fmt::Currency @value={{@model.amount}} />
+      </div>
+      <div>
+        <button type="button"
+          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+          {{on "click" this.openEdit}}>
+          {{svg-jar "heroicons-md-pencil" class="h-4 w-4"}}
+        </button>
+        <button type="button"
+          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+          {{on "click" @onDelete}}>
+          {{svg-jar "heroicons-md-trash" class="h-4 w-4"}}
+        </button>
+      </div>
+    </div>
+  {{/if}}
+</div>

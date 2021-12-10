@@ -4,10 +4,10 @@
     <EmberTooltip @text="Aan het opslaan" />
   {{else}}
     {{#if @model.validations.isInvalid}}
-      {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-500"}}
+      {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-400"}}
       <EmberTooltip @text="Ongeldig" />
     {{else if (or @model.isError @task.last.isError)}}
-      {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-500"}}
+      {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-400"}}
       <EmberTooltip @text="Fout bij het opslaan" />
     {{else}}
       {{svg-jar "heroicons-md-check-circle" class="h-5 w-5 text-green-500"}}

@@ -4,7 +4,6 @@ import { validator, buildValidations } from 'ember-cp-validations';
 const Validations = buildValidations({
   amount: validator('presence', true),
   vatRate: validator('presence', true),
-  description: validator('presence', true),
 });
 
 export default class OfferlineModel extends Model.extend(Validations) {
@@ -15,7 +14,13 @@ export default class OfferlineModel extends Model.extend(Validations) {
   @belongsTo('vat-rate') vatRate;
   @belongsTo('offer') offer;
 
+  // @hasMany('calculation-line') calculationLines;
+
   get arithmeticAmount() {
     return this.amount;
+  }
+
+  get url() {
+    return `http://data.rollvolet.be/offerlines/${this.id}`;
   }
 }
