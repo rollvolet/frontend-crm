@@ -26,7 +26,7 @@ export default class ContactModel extends Model.extend(Validations) {
   @attr printInFront;
   @attr comment;
   @attr number;
-  @attr('date', {
+  @attr('datetime', {
     defaultValue() {
       return new Date();
     },

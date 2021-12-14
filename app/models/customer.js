@@ -61,7 +61,7 @@ export default class CustomerModel extends Model.extend(Validations) {
   @attr printInFront;
   @attr comment;
   @attr memo;
-  @attr('date', {
+  @attr('datetime', {
     defaultValue() {
       return new Date();
     },

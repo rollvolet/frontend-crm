@@ -26,7 +26,7 @@ export default class BuildingModel extends Model.extend(Validations) {
   @attr printInFront;
   @attr comment;
   @attr number;
-  @attr('date', {
+  @attr('datetime', {
     defaultValue() {
       return new Date();
     },

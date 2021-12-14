@@ -21,9 +21,9 @@ const Validations = buildValidations({
 });
 
 export default class AccountancyExport extends Model.extend(Validations) {
-  @attr('date') date;
-  @attr('date') fromDate;
-  @attr('date') untilDate;
+  @attr('datetime') date;
+  @attr('datetime') fromDate;
+  @attr('datetime') untilDate;
   @attr fromNumber;
   @attr untilNumber;
   @attr isDryRun;

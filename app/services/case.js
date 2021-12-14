@@ -1,7 +1,7 @@
 import Service, { inject as service } from '@ember/service';
 import fetch, { Headers } from 'fetch';
 import { assert, warn } from '@ember/debug';
-import Case from '../models/case';
+import CaseDispatcher from '../models/case-dispatcher';
 import { all, keepLatestTask, task } from 'ember-concurrency';
 import Evented from '@ember/object/evented';
 import { tracked } from '@glimmer/tracking';
@@ -30,7 +30,7 @@ export default class CaseService extends Service.extend(Evented) {
   @service store;
 
   @tracked isInvalid = false;
-  @tracked current = null;
+  @tracked current = null; // case-dispatcher
 
   get visitorName() {
     return this.current && this.current.request && this.current.request.visitor;
@@ -82,7 +82,7 @@ export default class CaseService extends Service.extend(Evented) {
     else if (currentRoute.includes('case.invoice'))
       queryParam = calcQueryParam(currentUrl, 'invoiceId');
 
-    const response = yield fetch(`/api/cases?${queryParam}`, {
+    const response = yield fetch(`/api/cases/current?${queryParam}`, {
       headers: new Headers({
         Accept: 'application/vnd.api+json',
         'Content-Type': 'application/vnd.api+json',
@@ -91,7 +91,7 @@ export default class CaseService extends Service.extend(Evented) {
 
     if (response.ok) {
       const responseBody = yield response.json();
-      return new Case({
+      return new CaseDispatcher({
         customerId: responseBody.customerId && `${responseBody.customerId}`,
         contactId: responseBody.contactId && `${responseBody.contactId}`,
         buildingId: responseBody.buildingId && `${responseBody.buildingId}`,
