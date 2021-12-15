@@ -1,44 +1,48 @@
-<div class="px-6 pt-6 pb-4">
-  <div class="flex justify-start items-center">
+<div class="px-6 py-6">
+  <div class="flex justify-between items-center">
     <h3 class="text-xl font-semibold text-gray-900">
       Bijlagen
     </h3>
-  </div>
-  <div class="mt-4">
-    <ul class="border border-gray-200 rounded-md">
-      {{#each this.attachments as |attachment index|}}
-        <li class="pl-3 pr-4 py-3 flex items-center justify-between {{if (gt index 0) "border-t border-gray-200"}}">
-          {{svg-jar "heroicons-sm-paper-clip" class="h-5 w-5 text-gray-400"}}
-          <div class="ml-2 flex-1 w-0">
-            <button type="button"
-              class="text-gray-900 text-sm truncate hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-              {{on "click" (perform this.downloadAttachment attachment)}}>
-              {{attachment.filename}}
-            </button>
-            <span class="ml-2 text-xs text-gray-400">
-              {{attachment.humanReadableSize}}
-            </span>
-          </div>
-          <button type="button"
-            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-            {{on "click" (perform this.deleteAttachment attachment)}}>
-            {{svg-jar "heroicons-md-trash" class="h-5 w-5"}}
-          </button>
-        </li>
-      {{/each}}
-    </ul>
-  </div>
-  <div class="mt-4 flex justify-end">
     <FileUpload
       @name="case-attachment"
-      class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+      class="inline-flex items-center px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200 cursor-pointer"
       @onfileadd={{perform this.uploadAttachment}}
       as |queue|>
       {{#if (or queue.files.length this.uploadAttachment.isRunning)}}
         {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
       {{else}}
-        Laad bijlage op
+        Voeg bijlage toe
       {{/if}}
     </FileUpload>
+  </div>
+  <div class="mt-4">
+    {{#if this.attachments}}
+      <ul class="border border-gray-200 rounded-md">
+        {{#each this.attachments as |attachment index|}}
+          <li class="pl-3 pr-4 py-3 flex items-center justify-between {{if (gt index 0) "border-t border-gray-200"}}">
+            {{svg-jar "heroicons-sm-paper-clip" class="h-5 w-5 text-gray-400"}}
+            <div class="ml-2 flex-1 w-0">
+              <button type="button"
+                class="text-gray-900 text-sm truncate hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+                {{on "click" (perform this.downloadAttachment attachment)}}>
+                {{attachment.filename}}
+              </button>
+              <span class="ml-2 text-xs text-gray-400">
+                {{attachment.humanReadableSize}}
+              </span>
+            </div>
+            <button type="button"
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+              {{on "click" (perform this.deleteAttachment attachment)}}>
+              {{svg-jar "heroicons-md-trash" class="h-5 w-5"}}
+            </button>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <div class="italic text-sm text-gray-400">
+        Geen bijlagen toegevoegd
+      </div>
+    {{/if}}
   </div>
 </div>
