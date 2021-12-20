@@ -47,8 +47,8 @@ export default class UserInfoService extends Service {
 
   async getEmployee() {
     if (this.employee === undefined) {
-      if (this.username) {
-        const firstName = this.username.split(' ')[0].toLowerCase();
+      if (this.name) {
+        const firstName = this.name.split(' ')[0].toLowerCase();
         const employees = await this.store.findAll('employee'); // TODO convert to query
         const employee = employees.find((e) => e.firstName.toLowerCase() == firstName);
         this.employee = employee;
