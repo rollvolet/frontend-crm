@@ -28,12 +28,14 @@ export default class InterventionRequestPanelComponent extends Component {
     const building = this.case.current.building;
     const employee = yield this.args.model.employee;
     const firstName = employee ? employee.firstName : null;
+    const wayOfEntry = this.store.peekAll('way-of-entry').find((e) => e.position == '1');
     const request = this.store.createRecord('request', {
       requestDate: new Date(),
       requiresVisit: false,
       employee: firstName,
       origin: this.args.model,
       customer,
+      wayOfEntry,
     });
     yield request.save();
 
