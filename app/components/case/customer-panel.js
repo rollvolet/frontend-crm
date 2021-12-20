@@ -8,6 +8,8 @@ export default class CaseCustomerPanelComponent extends Component {
   @service case;
   @service router;
 
+  @tracked isCommentExpanded = false;
+  @tracked isMemoExpanded = false;
   @tracked isEnabledEditBuilding = false;
   @tracked isEnabledEditContact = false;
 
@@ -42,6 +44,16 @@ export default class CaseCustomerPanelComponent extends Component {
       this.router.transitionTo('main.requests.edit', this.case.current.request.id);
     else if (this.case.current.intervention)
       this.router.transitionTo('main.interventions.edit', this.case.current.intervention.id);
+  }
+
+  @action
+  toggleComment() {
+    this.isCommentExpanded = !this.isCommentExpanded;
+  }
+
+  @action
+  toggleMemo() {
+    this.isMemoExpanded = !this.isMemoExpanded;
   }
 
   @action

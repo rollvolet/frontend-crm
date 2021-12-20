@@ -31,7 +31,7 @@ export default class CaseAttachmentsPanelComponent extends Component {
     const caseId = this.args.caseDispatcher.identifier;
     try {
       yield file.upload(`/cases/${caseId}/attachments`);
-      yield timeout(500); // make sure async cache got invalidated in backend
+      yield timeout(1000); // make sure async cache got invalidated in backend
       yield this.loadAttachments.perform();
     } catch (e) {
       warn(`Error while uploading attachment: ${e.message || JSON.stringify(e)}`, {
