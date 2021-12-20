@@ -57,7 +57,9 @@ export default class OfferlineDetailComponent extends Component {
   @task
   *deleteCalculationLine(calculationLine) {
     this.calculationLines.removeObject(calculationLine);
-    yield calculationLine.destroyRecord();
+    if (!calculationLine.isDeleted) {
+      yield calculationLine.destroyRecord();
+    }
   }
 
   @action
