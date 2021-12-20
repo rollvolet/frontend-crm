@@ -1,18 +1,14 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
 
 export default class CaseTabsComponent extends Component {
   @service case;
   @service router;
   @service store;
 
-  @tracked isEditRoute;
-
   constructor() {
     super(...arguments);
     this.case.initCase.perform();
-    this.isEditRoute = this.router.currentRoute.queryParams.editMode == 'true';
 
     this.router.on('routeWillChange', (transition) => {
       const target = transition.to.name;
@@ -27,7 +23,6 @@ export default class CaseTabsComponent extends Component {
       if (target.startsWith('main.case') && this.case.isInvalid) {
         this.case.initCase.perform();
       }
-      this.isEditRoute = this.router.currentRoute.queryParams.editMode == 'true';
     });
   }
 
@@ -45,17 +40,12 @@ export default class CaseTabsComponent extends Component {
 
   get canCreateNewOffer() {
     return (
-      !this.isEditRoute &&
-      this.model &&
-      this.model.customerId &&
-      this.model.requestId &&
-      this.model.offerId == null
+      this.model && this.model.customerId && this.model.requestId && this.model.offerId == null
     );
   }
 
   get canCreateNewOrder() {
     return (
-      !this.isEditRoute &&
       this.model &&
       this.model.offerId &&
       this.model.orderId == null &&
@@ -79,6 +69,6 @@ export default class CaseTabsComponent extends Component {
       this.model.invoiceId == null &&
       !this.model.intervention.isCancelled;
 
-    return !this.isEditRoute && (canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention);
+    return (canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention);
   }
 }

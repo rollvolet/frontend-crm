@@ -40,8 +40,6 @@ export default class InvoiceRoute extends Route {
     this.case.updateRecord('invoice', model);
 
     const customer = this.modelFor('main.case');
-    this.transitionTo('main.case.invoice.edit', customer, model, {
-      queryParams: { editMode: true },
-    });
+    this.transitionTo('main.case.invoice.edit', customer, model);
   }
 }

@@ -111,9 +111,7 @@ export default class OrderController extends Controller {
       });
       yield all(invoicelines);
 
-      this.transitionToRoute('main.case.order.edit', customer, order, {
-        queryParams: { editMode: true },
-      });
+      this.transitionToRoute('main.case.order.edit', customer, order);
 
       // update case to display the new order tab
       this.case.updateRecord('order', order);

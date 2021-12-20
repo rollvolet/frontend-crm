@@ -17,8 +17,6 @@ export default class NewRoute extends Route {
   }
 
   afterModel(model) {
-    this.transitionTo('main.requests.edit', model, {
-      queryParams: { editMode: true },
-    });
+    this.transitionTo('main.requests.edit', model);
   }
 }

@@ -26,10 +26,6 @@ export default class NewRoute extends Route {
 
   afterModel(model) {
     const customer = this.modelFor('main.case');
-    this.transitionTo('main.case.invoice.edit', customer, model, {
-      queryParams: {
-        editMode: true,
-      },
-    });
+    this.transitionTo('main.case.invoice.edit', customer, model);
   }
 }

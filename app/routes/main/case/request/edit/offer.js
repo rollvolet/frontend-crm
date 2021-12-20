@@ -34,8 +34,6 @@ export default class OfferRoute extends Route {
     this.case.updateRecord('offer', model);
 
     const customer = this.modelFor('main.case');
-    this.transitionTo('main.case.offer.edit', customer, model, {
-      queryParams: { editMode: true },
-    });
+    this.transitionTo('main.case.offer.edit', customer, model);
   }
 }

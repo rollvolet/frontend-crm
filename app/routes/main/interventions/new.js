@@ -15,8 +15,6 @@ export default class MainInterventionsNewRoute extends Route {
   }
 
   afterModel(model) {
-    this.transitionTo('main.interventions.edit', model, {
-      queryParams: { editMode: true },
-    });
+    this.transitionTo('main.interventions.edit', model);
   }
 }
