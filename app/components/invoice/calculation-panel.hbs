@@ -132,16 +132,7 @@
                   {{#unless @model.isIsolated}}
                     <tr>
                       <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {{#if @model.order}}
-                          <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model.order.id}}>
-                            Betaalde voorschotten
-                            <span class="text-gray-400 relative -top-0.5">
-                              {{svg-jar "heroicons-sm-external-link" class="inline h-4 w-4"}}
-                            </span>
-                          </LinkTo>
-                        {{else}}
-                          Betaalde voorschotten
-                        {{/if}}
+                        Betaalde voorschotten
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                       </td>
