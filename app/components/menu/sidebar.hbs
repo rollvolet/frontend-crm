@@ -75,6 +75,7 @@
     </div>
     <div class="space-y-1">
       <LinkTo @route="main.reports.outstanding-jobs.index"
+        @query={{hash page=0 visitorName=undefined orderDate=undefined hasProductionTicket="-1" isProductReady="-1" execution="na" sort="order-date"}}
         @activeClass="active-main-nav"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-calendar" class="mr-4 h-6 w-6 text-red-300"}}
