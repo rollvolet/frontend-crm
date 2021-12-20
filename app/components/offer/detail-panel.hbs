@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center">
       <div class="flex items-center">
         <h2 class="text-2xl font-bold font-display text-gray-900">
-          Offerte {{@model.number}}
+          Details
         </h2>
         {{#if this.editMode}}
           <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
@@ -98,6 +98,9 @@
         <div class="space-y-2 sm:order-1">
           <Util::DetailItem @label="Datum">
             <Fmt::Date @value={{@model.offerDate}} />
+          </Util::DetailItem>
+          <Util::DetailItem @label="Offertenummer">
+            {{@model.number}}
           </Util::DetailItem>
           {{#if @model.isMasteredByAccess}}
             <Util::DetailItem @label="Bedrag">
