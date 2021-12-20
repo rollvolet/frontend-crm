@@ -22,7 +22,8 @@ export default class OfferPanelsComponent extends Component {
   @task
   *delete() {
     try {
-      yield all(this.offerlines.map((t) => t.destroyRecord()));
+      const offerlines = yield this.args.model.offerlines;
+      yield all(offerlines.map((t) => t.destroyRecord()));
       this.case.updateRecord('offer', null);
       yield this.args.model.destroyRecord();
       this.router.transitionTo('main.case.request.edit', this.case.current.request.id);
