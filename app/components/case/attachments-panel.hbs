@@ -7,7 +7,7 @@
       <FileUpload
         @name="case-attachment"
         class="inline-flex items-center px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200 cursor-pointer"
-        @onfileadd={{perform this.uploadAttachment}}
+        @onFileAdd={{perform this.uploadAttachment}}
         as |queue|>
         {{#if (or queue.files.length this.uploadAttachment.isRunning)}}
           {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}

@@ -63,7 +63,7 @@
                 @name={{this.uploadFieldName}}
                 @accept="application/pdf"
                 class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
-                @onfileadd={{perform this.uploadCertificate}}
+                @onFileAdd={{perform this.uploadCertificate}}
                 as |queue|>
                 {{#if queue.files.length}}
                   {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
