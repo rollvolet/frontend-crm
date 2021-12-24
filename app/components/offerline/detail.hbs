@@ -6,17 +6,8 @@
     <div class="flex flex-col sm:flex-row justify-end items-end sm:items-center sm:space-x-2">
       <div class="pl-4 space-x-1 flex flex-col sm:flex-row justify-end items-end {{if this.editMode "sm:items-baseline" "sm:items-center"}}">
         {{#if this.editMode}}
-          <div class="relative shadow-sm rounded-md">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <span class="text-gray-500 sm:text-sm">
-                &euro;
-              </span>
-            </div>
-            <InputField::DecimalInput
-              @value={{@model.amount}}
-              @errors={{v-get @model "amount" "messages"}}
-              @onChange={{queue (fn (mut @model.amount)) (perform @saveTask @model)}}
-              class="block w-32 sm:text-sm pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+          <div class="text-sm text-gray-900 font-semibold">
+            <Fmt::Currency @value={{@model.amount}} />
           </div>
           <div class="text-gray-900 sm:text-sm">
             +
@@ -69,6 +60,7 @@
             <CalculationLine::Detail
               @model={{line}}
               @initialEditMode={{line.isNew}}
+              @onSave={{perform this.updateOfferAmount}}
               @onDelete={{perform this.deleteCalculationLine line}} />
           {{else}}
             <tr>
@@ -79,17 +71,7 @@
           {{/each}}
         </tbody>
       </table>
-      <div class="flex justify-between">
-        <div>
-          {{#if this.calculationLines}}
-            <span class="text-sm font-semibold text-gray-600">
-              Totaal berekening:
-            </span>
-            <span class="text-sm font-semibold text-gray-600">
-              <Fmt::Currency @value={{this.totalCalculationAmount}} />
-            </span>
-          {{/if}}
-        </div>
+      <div class="flex justify-end">
         <button type="button"
           class="flex text-sm text-gray-600 font-medium underline hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
           {{on "click" (perform this.addCalculationLine)}}>

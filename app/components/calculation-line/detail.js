@@ -21,6 +21,7 @@ export default class CalculationLineDetailComponent extends Component {
     const { validations } = yield this.args.model.validate();
     if (validations.isValid) {
       yield this.args.model.save();
+      yield this.args.onSave();
     }
   }
 

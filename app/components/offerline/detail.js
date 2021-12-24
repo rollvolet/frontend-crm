@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { task } from 'ember-concurrency';
+import { task, keepLatestTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import sum from '../../utils/math/sum';
@@ -40,6 +40,15 @@ export default class OfferlineDetailComponent extends Component {
     this.calculationLines = calculationLines.toArray();
   }
 
+  @keepLatestTask
+  *updateOfferAmount() {
+    const amount = this.totalCalculationAmount;
+    this.args.model.amount = amount;
+    if (this.args.model.hasDirtyAttributes) {
+      yield this.args.model.save(); // only save if total amount has changed
+    }
+  }
+
   @task
   *addCalculationLine() {
     const calculationLine = this.store.createRecord('calculation-line', {
@@ -52,6 +61,7 @@ export default class OfferlineDetailComponent extends Component {
     }
 
     this.calculationLines.pushObject(calculationLine);
+    this.updateOfferAmount.perform();
   }
 
   @task
@@ -60,6 +70,7 @@ export default class OfferlineDetailComponent extends Component {
     if (!calculationLine.isDeleted) {
       yield calculationLine.destroyRecord();
     }
+    this.updateOfferAmount.perform();
   }
 
   @action
