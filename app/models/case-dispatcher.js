@@ -44,8 +44,8 @@ export default class CaseDispatcher {
       return `AD-${this.requestId}`;
     } else if (this.interventionId) {
       return `IR-${this.interventionId}`;
-    } else if (this.invoiceId) {
-      return this.invoiceId; // isolated invoice
+    } else if (this.invoice) {
+      return `F-${this.invoice.number}`; // isolated invoice
     } else {
       throw new Error(
         'Cannot determine unique identifier for case. Case is in an unsupported state.'
