@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
-import { enqueueTask, task, timeout } from 'ember-concurrency';
+import { enqueueTask, keepLatestTask, task, timeout } from 'ember-concurrency';
 import fetch, { Headers } from 'fetch';
 
 export default class CaseAttachmentsPanelComponent extends Component {
@@ -15,7 +15,7 @@ export default class CaseAttachmentsPanelComponent extends Component {
     this.loadAttachments.perform();
   }
 
-  @task
+  @keepLatestTask
   *loadAttachments() {
     this.attachments = yield this.store.query('file', {
       'filter[case][:uri:]': this.args.caseDispatcher.uri,
@@ -26,7 +26,7 @@ export default class CaseAttachmentsPanelComponent extends Component {
     });
   }
 
-  @enqueueTask
+  @enqueueTask({ maxConcurrency: 3 })
   *uploadAttachment(file) {
     const caseId = this.args.caseDispatcher.identifier;
     try {
@@ -46,6 +46,7 @@ export default class CaseAttachmentsPanelComponent extends Component {
 
   @task
   *deleteAttachment(file) {
+    file.deleteRecord(); // mark as deleted in ember-data store
     const result = yield fetch(`/files/${file.id}`, {
       method: 'DELETE',
       headers: new Headers({

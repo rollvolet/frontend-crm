@@ -8,6 +8,7 @@
         @name="case-attachment"
         class="inline-flex items-center px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200 cursor-pointer"
         @onFileAdd={{perform this.uploadAttachment}}
+        @multiple={{true}}
         as |queue|>
         {{#if (or queue.files.length this.uploadAttachment.isRunning)}}
           {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
@@ -35,8 +36,13 @@
             </div>
             <button type="button"
               class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+              disabled={{attachment.isDeleted}}
               {{on "click" (perform this.deleteAttachment attachment)}}>
-              {{svg-jar "heroicons-md-trash" class="h-5 w-5"}}
+              {{#if attachment.isDeleted}}
+                {{svg-jar "loading-circle" class="animate-spin h-5 w-5"}}
+              {{else}}
+                {{svg-jar "heroicons-md-trash" class="h-5 w-5"}}
+              {{/if}}
             </button>
           </li>
         {{/each}}
