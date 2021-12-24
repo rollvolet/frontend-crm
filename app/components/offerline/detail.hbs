@@ -49,19 +49,36 @@
     </div>
   </div>
   {{#if this.isShownCalculation}}
-    <div class="px-4 py-2 space-y-4 bg-gray-50 border-b border-gray-200">
-      <div class="space-y-2">
-        {{#each this.calculationLines as |line|}}
-          <CalculationLine::Detail
-            @model={{line}}
-            @initialEditMode={{line.isNew}}
-            @onDelete={{perform this.deleteCalculationLine line}} />
-        {{else}}
-          <p class="mt-2 text-sm text-gray-600 text-center italic">
-            Er is nog geen berekening toegevoegd.
-          </p>
-        {{/each}}
-      </div>
+    <div class="px-4 py-2 space-y-4 bg-gray-50 border-b border-gray-200 overflow-auto">
+      <table class="w-full table-fixed divide-y divide-gray-200">
+        <thead>
+          <tr>
+            <th scope="col" class="pr-4 py-3 text-xs tracking-wider text-gray-500 font-medium uppercase w-56 sm:w-auto">
+              Beschrijving
+            </th>
+            <th scope="col" class="px-4 py-3 text-xs tracking-wider text-gray-500 font-medium uppercase w-32">
+              Bedrag
+            </th>
+            <th scope="col" class="py-3 text-xs tracking-wider text-gray-500 font-medium uppercase w-12">
+              {{!-- buttons --}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each this.calculationLines as |line|}}
+            <CalculationLine::Detail
+              @model={{line}}
+              @initialEditMode={{line.isNew}}
+              @onDelete={{perform this.deleteCalculationLine line}} />
+          {{else}}
+            <tr>
+              <td colspan="3">
+                Er is nog geen berekening toegevoegd
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
       <div class="flex justify-between">
         <div>
           {{#if this.calculationLines}}
