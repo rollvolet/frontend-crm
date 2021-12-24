@@ -6,12 +6,14 @@
         onClick={{this.closeEdit}}
         class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
         {{svg-jar "heroicons-md-logout" class="h-5 w-5 transform rotate-180"}}
+        <EmberTooltip @text="Sluiten" />
       </button>
     {{else}}
       <button type="button"
         onClick={{@onCloseDetail}}
         class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
         {{svg-jar "heroicons-md-chevron-left" class="h-5 w-5"}}
+        <EmberTooltip @text="Terug" />
       </button>
       <button type="button"
         onClick={{this.openEdit}}
