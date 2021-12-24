@@ -15,7 +15,9 @@ export default class OfferlineDetailComponent extends Component {
   constructor() {
     super(...arguments);
     this.editMode = this.args.model.isNew;
-    this.loadData.perform();
+    this.loadData.perform().then(() => {
+      this.isShownCalculation = this.calculationLines.any((l) => l.validations.isInvalid);
+    });
   }
 
   get showUnsavedWarning() {
@@ -45,7 +47,7 @@ export default class OfferlineDetailComponent extends Component {
     const amount = this.totalCalculationAmount;
     this.args.model.amount = amount;
     if (this.args.model.hasDirtyAttributes) {
-      yield this.args.model.save(); // only save if total amount has changed
+      yield this.args.model.save(); // only save if total amount of offer has changed
     }
   }
 

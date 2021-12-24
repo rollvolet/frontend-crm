@@ -50,13 +50,16 @@
       <section>
         <ul>
           {{#each this.sortedOfferlines as |line|}}
-            <li class="py-2">
-              <Offerline::Detail
-                @model={{line}}
-                @saveTask={{this.saveOfferline}}
-                @onDelete={{perform this.deleteOfferline line}}
-                @isDisabledEdit={{@isDisabledEdit}} />
-            </li>
+            {{#unless line.underConstruction}}
+              {{!-- Workaround to postpone rendering of offerline until calculation line is created --}}
+              <li class="py-2">
+                <Offerline::Detail
+                  @model={{line}}
+                  @saveTask={{this.saveOfferline}}
+                  @onDelete={{perform this.deleteOfferline line}}
+                  @isDisabledEdit={{@isDisabledEdit}} />
+              </li>
+            {{/unless}}
           {{else}}
             <li class="py-2">
               <div class="grid border border-gray-200 rounded">

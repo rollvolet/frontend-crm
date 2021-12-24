@@ -59,12 +59,11 @@
           {{#each this.calculationLines as |line|}}
             <CalculationLine::Detail
               @model={{line}}
-              @initialEditMode={{line.isNew}}
               @onSave={{perform this.updateOfferAmount}}
               @onDelete={{perform this.deleteCalculationLine line}} />
           {{else}}
             <tr>
-              <td colspan="3">
+              <td colspan="3" class="py-4 text-sm text-gray-400 italic">
                 Er is nog geen berekening toegevoegd
               </td>
             </tr>

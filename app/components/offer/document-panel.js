@@ -34,13 +34,25 @@ export default class OfferDocumentPanelComponent extends Component {
       amount: 0,
       vatRate: vatRate,
     });
+    // Workaround to postpone rendering of offerline until calculation line is created
+    offerline.set('underConstruction', true);
 
     if (this.args.model.isMasteredByAccess) {
       this.args.model.amount = 0; // make sure offer is no longer mastered by Access
       this.args.model.save();
     }
 
-    this.saveOfferline.perform(offerline);
+    yield this.saveOfferline.perform(offerline);
+
+    if (!offerline.isNew) {
+      const calculationLine = this.store.createRecord('calculation-line', {
+        offerline: offerline.url,
+      });
+      // no validation in frontend since calculation line needs to be persisted in backend,
+      // even without description/amount. Otherwise it will not appear in the list.
+      yield calculationLine.save();
+      offerline.set('underConstruction', false);
+    }
   }
 
   @task
