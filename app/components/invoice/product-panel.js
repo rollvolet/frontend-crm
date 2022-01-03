@@ -4,12 +4,14 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task, keepLatestTask } from 'ember-concurrency';
+import sum from '../../utils/math/sum';
 
 export default class InvoiceProductPanelComponent extends Component {
   @service documentGeneration;
   @service store;
 
   @tracked showMissingCertificateDialog = false;
+  @tracked invoicelines = [];
 
   constructor() {
     super(...arguments);
@@ -17,10 +19,18 @@ export default class InvoiceProductPanelComponent extends Component {
   }
 
   @keepLatestTask
-  *loadData() {}
+  *loadData() {
+    // TODO use this.args.model.invoicelines once the relation is defined
+    const invoicelines = yield this.store.query('invoiceline', {
+      'filter[invoice]': this.args.model.url,
+      sort: 'sequence-number',
+      page: { size: 100 },
+    });
+    this.invoicelines = invoicelines.toArray();
+  }
 
   get sortedInvoicelines() {
-    return this.args.model.invoicelines.sortBy('sequenceNumber');
+    return this.invoicelines.sortBy('sequenceNumber');
   }
 
   get isEnabledAddingInvoicelines() {
@@ -33,31 +43,39 @@ export default class InvoiceProductPanelComponent extends Component {
 
   @task
   *addInvoiceline() {
-    const lastInvoiceline = this.sortedInvoicelines.lastObject;
-    const number = lastInvoiceline ? lastInvoiceline.sequenceNumber : 0;
+    const number = this.invoicelines.length
+      ? Math.max(...this.invoicelines.map((l) => l.sequenceNumber))
+      : 0;
     const vatRate = yield this.args.model.vatRate;
     const invoiceline = this.store.createRecord('invoiceline', {
       sequenceNumber: number + 1,
-      invoice: this.args.model,
+      invoice: this.args.model.url,
       vatRate: vatRate,
     });
 
-    const { validations } = yield invoiceline.validate();
-    if (validations.isValid) invoiceline.save();
+    // save invoiceline and update invoicelines total amount on invoice
+    yield this.saveInvoiceline.perform(invoiceline);
+
+    this.invoicelines.pushObject(invoiceline);
   }
 
   @task
   *saveInvoiceline(invoiceline) {
     const { validations } = yield invoiceline.validate();
-    if (validations.isValid) yield invoiceline.save();
+    if (validations.isValid) {
+      yield invoiceline.save();
+      yield this.updateInvoicelinesTotalAmount.perform();
+    }
   }
 
   @task
   *deleteInvoiceline(invoiceline) {
+    this.invoicelines.removeObject(invoiceline);
     if (!invoiceline.isNew) {
       invoiceline.rollbackAttributes();
     }
     yield invoiceline.destroyRecord();
+    yield this.updateInvoicelinesTotalAmount.perform();
   }
 
   @task
@@ -94,5 +112,18 @@ export default class InvoiceProductPanelComponent extends Component {
   @action
   downloadInvoiceDocument() {
     this.documentGeneration.downloadInvoiceDocument(this.args.model);
+  }
+
+  @keepLatestTask
+  *updateInvoicelinesTotalAmount() {
+    const invoicelinesAmount = sum(this.invoicelines.map((line) => line.arithmeticAmount));
+    this.args.model.baseAmount = invoicelinesAmount;
+    if (this.args.model.hasDirtyAttributes) {
+      // only save if baseAmount actually changed
+      const { validations } = yield this.args.model.validate();
+      if (validations.isValid) {
+        yield this.args.model.save();
+      }
+    }
   }
 }

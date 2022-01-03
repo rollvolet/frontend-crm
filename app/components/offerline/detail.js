@@ -10,14 +10,11 @@ export default class OfferlineDetailComponent extends Component {
 
   @tracked editMode = false;
   @tracked isShownCalculation = false;
-  @tracked calculationLines = [];
 
   constructor() {
     super(...arguments);
     this.editMode = this.args.model.isNew;
-    this.loadData.perform().then(() => {
-      this.isShownCalculation = this.calculationLines.any((l) => l.validations.isInvalid);
-    });
+    this.loadData.perform();
   }
 
   get showUnsavedWarning() {
@@ -29,32 +26,26 @@ export default class OfferlineDetailComponent extends Component {
     );
   }
 
-  get totalCalculationAmount() {
-    return sum(this.calculationLines.map((line) => line.amount));
-  }
-
   @task
   *loadData() {
-    // TODO use this.args.model.calculationLines once the relation is defined
-    const calculationLines = yield this.store.query('calculation-line', {
-      'filter[offerline]': this.args.model.url,
-    });
-    this.calculationLines = calculationLines.toArray();
+    const calculationLines = yield this.args.model.calculationLines;
+    this.isShownCalculation = calculationLines.any((l) => l.validations.isInvalid);
   }
 
   @keepLatestTask
-  *updateOfferAmount() {
-    const amount = this.totalCalculationAmount;
-    this.args.model.amount = amount;
+  *updateOfferlineAmount() {
+    const calculationLines = yield this.args.model.calculationLines;
+    const totalAmount = sum(calculationLines.map((line) => line.amount));
+    this.args.model.amount = totalAmount;
     if (this.args.model.hasDirtyAttributes) {
-      yield this.args.model.save(); // only save if total amount of offer has changed
+      yield this.args.model.save(); // only save if total amount of offerline has changed
     }
   }
 
   @task
   *addCalculationLine() {
     const calculationLine = this.store.createRecord('calculation-line', {
-      offerline: this.args.model.url,
+      offerline: this.args.model,
     });
 
     const { validations } = yield calculationLine.validate();
@@ -62,17 +53,15 @@ export default class OfferlineDetailComponent extends Component {
       yield calculationLine.save();
     }
 
-    this.calculationLines.pushObject(calculationLine);
-    this.updateOfferAmount.perform();
+    this.updateOfferlineAmount.perform();
   }
 
   @task
   *deleteCalculationLine(calculationLine) {
-    this.calculationLines.removeObject(calculationLine);
     if (!calculationLine.isDeleted) {
       yield calculationLine.destroyRecord();
     }
-    this.updateOfferAmount.perform();
+    this.updateOfferlineAmount.perform();
   }
 
   @action

@@ -63,6 +63,10 @@
         De offerte is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.
       </div>
     {{else}}
+      {{#if this.hasMixedVatRates}}
+        <AlertMessage::Info
+          @message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
+      {{/if}}
       <Document::Line
         @model={{@model}}
         @field="documentIntro"
@@ -73,16 +77,13 @@
       <section>
         <ul>
           {{#each this.sortedOfferlines as |line|}}
-            {{#unless line.underConstruction}}
-              {{!-- Workaround to postpone rendering of offerline until calculation line is created --}}
-              <li class="py-2">
-                <Offerline::Detail
-                  @model={{line}}
-                  @saveTask={{this.saveOfferline}}
-                  @onDelete={{perform this.deleteOfferline line}}
-                  @isDisabledEdit={{@isDisabledEdit}} />
-              </li>
-            {{/unless}}
+            <li class="py-2">
+              <Offerline::Detail
+                @model={{line}}
+                @saveTask={{this.saveOfferline}}
+                @onDelete={{perform this.deleteOfferline line}}
+                @isDisabledEdit={{@isDisabledEdit}} />
+            </li>
           {{else}}
             <li class="py-2">
               <div class="grid border border-gray-200 rounded">

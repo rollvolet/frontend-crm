@@ -9,6 +9,7 @@ export default class OrderProductPanelComponent extends Component {
   @service documentGeneration;
 
   @tracked vatRate;
+  @tracked invoicelines = [];
 
   constructor() {
     super(...arguments);
@@ -18,10 +19,18 @@ export default class OrderProductPanelComponent extends Component {
   @keepLatestTask
   *loadData() {
     this.vatRate = yield this.args.model.vatRate;
+
+    // TODO use this.args.model.invoicelines once the relation is defined
+    const invoicelines = yield this.store.query('invoiceline', {
+      'filter[order]': this.args.model.url,
+      sort: 'sequence-number',
+      page: { size: 100 },
+    });
+    this.invoicelines = invoicelines.toArray();
   }
 
   get sortedInvoicelines() {
-    return this.args.model.invoicelines.sortBy('sequenceNumber');
+    return this.invoicelines.sortBy('sequenceNumber');
   }
 
   get isEnabledAddingInvoicelines() {
@@ -30,26 +39,29 @@ export default class OrderProductPanelComponent extends Component {
 
   @task
   *addInvoiceline() {
-    const lastInvoiceline = this.sortedInvoicelines.lastObject;
-    const number = lastInvoiceline ? lastInvoiceline.sequenceNumber : 0;
+    const number = this.invoicelines.length
+      ? Math.max(...this.invoicelines.map((l) => l.sequenceNumber))
+      : 0;
     const invoiceline = this.store.createRecord('invoiceline', {
       sequenceNumber: number + 1,
-      order: this.args.model,
+      order: this.args.model.url,
       vatRate: this.vatRate,
     });
 
-    const { validations } = yield invoiceline.validate();
-    if (validations.isValid) invoiceline.save();
+    yield this.saveInvoiceline.perform(invoiceline);
   }
 
   @task
   *saveInvoiceline(invoiceline) {
     const { validations } = yield invoiceline.validate();
-    if (validations.isValid) yield invoiceline.save();
+    if (validations.isValid) {
+      invoiceline.save();
+    }
   }
 
   @task
   *deleteInvoiceline(invoiceline) {
+    this.invoicelines.removeObject(invoiceline);
     if (!invoiceline.isNew) {
       invoiceline.rollbackAttributes();
     }

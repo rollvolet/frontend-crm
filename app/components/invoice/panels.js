@@ -6,13 +6,14 @@ export default class InvoicePanelsComponent extends Component {
     return this.args.model.isMasteredByAccess;
   }
 
-  get isEnabledDelete() {
-    return false;
-  }
-
   @task
   *updateInvoicelinesVatRate(vatRate) {
-    const invoicelines = yield this.args.model.invoicelines;
+    // TODO use this.args.model.invoicelines once the relation is defined
+    const invoicelines = yield this.store.query('invoiceline', {
+      'filter[invoice]': this.args.model.url,
+      sort: 'sequence-number',
+      page: { size: 100 },
+    });
     yield all(
       invoicelines.map((invoiceline) => {
         invoiceline.vatRate = vatRate;

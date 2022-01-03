@@ -3,16 +3,37 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
-import { task, all } from 'ember-concurrency';
+import { task, all, keepLatestTask } from 'ember-concurrency';
 
 export default class OfferDocumentPanelComponent extends Component {
   @service documentGeneration;
   @service store;
 
   @tracked versionEditMode = false;
+  @tracked offerlines = [];
+
+  constructor() {
+    super(...arguments);
+    this.loadData.perform();
+  }
 
   get sortedOfferlines() {
-    return this.args.model.offerlines.sortBy('sequenceNumber');
+    return this.offerlines.sortBy('sequenceNumber');
+  }
+
+  get hasMixedVatRates() {
+    return this.offerlines.mapBy('vatRate').uniqBy('code').length > 1;
+  }
+
+  @keepLatestTask
+  *loadData() {
+    // TODO use this.args.model.offerlines once the relation is defined
+    const offerlines = yield this.store.query('offerline', {
+      'filter[offer]': this.args.model.url,
+      sort: 'sequence-number',
+      page: { size: 100 },
+    });
+    this.offerlines = offerlines.toArray();
   }
 
   @task
@@ -28,17 +49,16 @@ export default class OfferDocumentPanelComponent extends Component {
 
   @task
   *addOfferline() {
-    const offerlines = yield this.args.model.offerlines;
-    const number = offerlines.length ? Math.max(...offerlines.map((l) => l.sequenceNumber)) : 0;
+    const number = this.offerlines.length
+      ? Math.max(...this.offerlines.map((l) => l.sequenceNumber))
+      : 0;
     const vatRate = yield this.args.model.vatRate;
     const offerline = this.store.createRecord('offerline', {
       sequenceNumber: number + 1,
-      offer: this.args.model,
+      offer: this.args.model.url,
       amount: 0,
       vatRate: vatRate,
     });
-    // Workaround to postpone rendering of offerline until calculation line is created
-    offerline.set('underConstruction', true);
 
     if (this.args.model.isMasteredByAccess) {
       this.args.model.amount = 0; // make sure offer is no longer mastered by Access
@@ -49,13 +69,14 @@ export default class OfferDocumentPanelComponent extends Component {
 
     if (!offerline.isNew) {
       const calculationLine = this.store.createRecord('calculation-line', {
-        offerline: offerline.url,
+        offerline: offerline,
       });
       // no validation in frontend since calculation line needs to be persisted in backend,
       // even without description/amount. Otherwise it will not appear in the list.
       yield calculationLine.save();
-      offerline.set('underConstruction', false);
     }
+
+    this.offerlines.pushObject(offerline);
   }
 
   @task
@@ -67,12 +88,12 @@ export default class OfferDocumentPanelComponent extends Component {
   }
 
   @task
-  *deleteOfferline(offerline, calculationLines) {
+  *deleteOfferline(offerline) {
+    this.offerlines.removeObject(offerline);
     if (!offerline.isNew) {
       offerline.rollbackAttributes();
     }
-    // TODO get calculationLines as relation from offerline instead of argument
-    // once relation has been defined
+    const calculationLines = yield offerline.calculationLines;
     yield all(calculationLines.map((line) => line.destroyRecord()));
     yield offerline.destroyRecord();
   }

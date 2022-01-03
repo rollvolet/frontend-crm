@@ -11,7 +11,9 @@
   {{!-- Card content --}}
   <div class="p-6 space-y-6">
     <div class="mx-auto">
-      <Order::Stats @model={{@model}} />
+      <Order::Stats
+        @model={{@model}}
+        @invoicelines={{this.invoicelines}} />
     </div>
     {{#if @model.isMasteredByAccess}}
       <div class="text-gray-400">

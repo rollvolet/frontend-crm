@@ -14,7 +14,12 @@ export default class OrderRoute extends Route {
 
   model() {
     const offer = this.modelFor('main.case.offer.edit');
-    return offer.offerlines;
+    // TODO use offer.offerlines once the relation is defined
+    return this.store.query('offerline', {
+      'filter[offer]': offer.url,
+      sort: 'sequence-number',
+      page: { size: 100 },
+    });
   }
 
   setupController(controller) {

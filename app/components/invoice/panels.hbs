@@ -1,8 +1,4 @@
-{{#if (or this.delete.isRunning @model.isDeleted)}}
-  <div class="h-32">
-    <Util::LoadingSpinner @label="Aan het verwijderen..." />
-  </div>
-{{else if (and (not @model.id) @model.isSaving)}}
+{{#if (and (not @model.id) @model.isSaving)}}
   <div class="h-32">
     <Util::LoadingSpinner @label="Aan het aanmaken..." />
   </div>
@@ -22,10 +18,8 @@
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <Invoice::DetailPanel
         @model={{@model}}
-        @onDelete={{perform this.delete}}
         @onChangeVatRate={{perform this.updateInvoicelinesVatRate}}
-        @isDisabledEdit={{this.isDisabledEdit}}
-        @isEnabledDelete={{this.isEnabledDelete}} />
+        @isDisabledEdit={{this.isDisabledEdit}} />
     </div>
 
     {{!-- Product panel --}}

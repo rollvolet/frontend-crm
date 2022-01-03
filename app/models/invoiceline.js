@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { tracked } from '@glimmer/tracking';
 
 const Validations = buildValidations({
   amount: validator('presence', true),
@@ -12,14 +11,21 @@ export default class InvoicelineModel extends Model.extend(Validations) {
   @attr sequenceNumber;
   @attr description;
   @attr('number') amount;
+  @attr order;
+  @attr invoice;
 
   @belongsTo('vat-rate') vatRate;
-  @belongsTo('order') order;
-  @belongsTo('invoice') invoice;
+  // @belongsTo('order') order;
+  // @belongsTo('invoice') invoice;
 
   get arithmeticAmount() {
     return this.amount;
   }
 
-  @tracked isSupplement;
+  // Indicates whether line is added on the invoice after the order had already been finished
+  get isSupplement() {
+    // TODO enable once invoice is defined as a relation on invoiceline
+    // return this.invoice.get('order.id') && !this.order;
+    return false;
+  }
 }

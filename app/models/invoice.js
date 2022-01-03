@@ -38,7 +38,7 @@ export default class InvoiceModel extends Model.extend(Validations) {
   @hasMany('invoice-supplement') supplements;
   @hasMany('deposit') deposits;
   @hasMany('deposit-invoice') depositInvoices;
-  @hasMany('invoiceline') invoicelines;
+  // @hasMany('invoiceline') invoicelines;
   @hasMany('working-hour') workingHours;
 
   get isIsolated() {
@@ -66,5 +66,9 @@ export default class InvoiceModel extends Model.extend(Validations) {
       (!this.isIsolated && this.order.get('isMasteredByAccess')) ||
       (this.isIsolated && this.baseAmount)
     );
+  }
+
+  get url() {
+    return `http://data.rollvolet.be/invoices/${this.id}`;
   }
 }

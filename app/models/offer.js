@@ -2,7 +2,7 @@ import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
-  offerlines: validator('has-many'),
+  // offerlines: validator('has-many'),
   offerDate: validator('presence', true),
 });
 
