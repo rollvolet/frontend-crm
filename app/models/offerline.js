@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
@@ -10,17 +10,14 @@ export default class OfferlineModel extends Model.extend(Validations) {
   @attr sequenceNumber;
   @attr description;
   @attr('number') amount;
+  @attr offer;
 
   @belongsTo('vat-rate') vatRate;
-  @belongsTo('offer') offer;
+  // @belongsTo('offer') offer;
 
-  // @hasMany('calculation-line') calculationLines;
+  @hasMany('calculation-line') calculationLines;
 
   get arithmeticAmount() {
     return this.amount;
-  }
-
-  get url() {
-    return `http://data.rollvolet.be/offerlines/${this.id}`;
   }
 }

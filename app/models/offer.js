@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
@@ -24,11 +24,13 @@ export default class OfferModel extends Model.extend(Validations) {
   @belongsTo('contact') contact;
   @belongsTo('building') building;
   @belongsTo('vat-rate') vatRate;
-  @hasMany('offerline') offerlines;
-
   // @hasMany('offerline') offerlines;
 
   get isMasteredByAccess() {
     return this.amount;
+  }
+
+  get url() {
+    return `http://data.rollvolet.be/offers/${this.id}`;
   }
 }

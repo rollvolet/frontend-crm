@@ -1,4 +1,4 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 import { isPresent } from '@ember/utils';
 
@@ -23,5 +23,5 @@ export default class CalculationLineModel extends Model.extend(Validations) {
   @attr description;
   @attr offerline;
 
-  // @belongsTo('offerline') offerline;
+  @belongsTo('offerline') offerline;
 }
