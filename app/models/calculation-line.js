@@ -20,6 +20,11 @@ const Validations = buildValidations({
 
 export default class CalculationLineModel extends Model.extend(Validations) {
   @attr amount;
+  @attr('string', {
+    defaultValue() {
+      return 'EUR';
+    },
+  }) currency;
   @attr description;
   @attr offerline;
 

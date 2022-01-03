@@ -15,14 +15,15 @@ export default class OfferPanelsComponent extends Component {
     return !this.args.model.isMasteredByAccess && this.case.current.order == null;
   }
 
-  get hasMixedVatRates() {
-    return this.args.model.offerlines.mapBy('vatRate').uniqBy('code').length > 1;
-  }
-
   @task
   *delete() {
     try {
-      const offerlines = yield this.args.model.offerlines;
+      // TODO use this.args.model.offerlines once the relation is defined
+      const offerlines = yield this.store.query('offerline', {
+        'filter[offer]': this.args.model.url,
+        sort: 'sequence-number',
+        page: { size: 100 },
+      });
       yield all(offerlines.map((t) => t.destroyRecord()));
       this.case.updateRecord('offer', null);
       yield this.args.model.destroyRecord();

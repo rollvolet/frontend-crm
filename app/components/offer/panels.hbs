@@ -16,10 +16,6 @@
       <AlertMessage::Warning
         @message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden."
         class="shadow" />
-    {{else if this.hasMixedVatRates}}
-      <AlertMessage::Info
-        @message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden."
-        class="shadow" />
     {{/if}}
 
     {{!-- Details panel --}}
