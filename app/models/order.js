@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   orderDate: validator('presence', true),
@@ -47,11 +46,6 @@ export default class OrderModel extends Model.extend(Validations) {
   @hasMany('invoiceline') invoicelines;
   @hasMany('interventions') interventions;
   @hasMany('employee', { inverse: null }) technicians;
-
-  @dateString('orderDate') orderDateStr;
-  @dateString('expectedDate') expectedDateStr;
-  @dateString('requiredDate') requiredDateStr;
-  @dateString('planningDate') planningDateStr;
 
   get scheduledTotal() {
     return this.scheduledHours * this.scheduledNbOfPersons;

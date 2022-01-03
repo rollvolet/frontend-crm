@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   paymentDate: validator('presence', true),
@@ -21,8 +20,6 @@ export default class DepositModel extends Model.extend(Validations) {
   @belongsTo('order') order;
   @belongsTo('invoice') invoice;
   @belongsTo('payment') payment;
-
-  @dateString('paymentDate') paymentDateStr;
 
   get arithmeticAmount() {
     return this.amount;

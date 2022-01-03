@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   offerlines: validator('has-many'),
@@ -27,7 +26,7 @@ export default class OfferModel extends Model.extend(Validations) {
   @belongsTo('vat-rate') vatRate;
   @hasMany('offerline') offerlines;
 
-  @dateString('offerDate') offerDateStr;
+  // @hasMany('offerline') offerlines;
 
   get isMasteredByAccess() {
     return this.amount;

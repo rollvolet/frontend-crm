@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   period: validator('inline', {
@@ -46,8 +45,6 @@ export default class PlanningEventModel extends Model.extend(Validations) {
   @attr('boolean') isNotAvailableInCalendar;
 
   @belongsTo('intervention') intervention;
-
-  @dateString('date') dateStr;
 
   get isPlanned() {
     return this.msObjectId != null;

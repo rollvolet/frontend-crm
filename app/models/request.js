@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   requestDate: validator('presence', true),
@@ -21,6 +20,4 @@ export default class RequestModel extends Model.extend(Validations) {
   @belongsTo('calendar-event') calendarEvent;
   @belongsTo('offer') offer;
   @belongsTo('intervention') origin;
-
-  @dateString('requestDate') requestDateStr;
 }

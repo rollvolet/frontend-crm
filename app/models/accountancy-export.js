@@ -1,6 +1,5 @@
 import Model, { attr } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   date: validator('presence', true),
@@ -27,7 +26,4 @@ export default class AccountancyExport extends Model.extend(Validations) {
   @attr fromNumber;
   @attr untilNumber;
   @attr isDryRun;
-
-  @dateString('fromDate') fromDateStr;
-  @dateString('untilDate') untilDateStr;
 }

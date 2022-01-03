@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   date: validator('presence', true),
@@ -28,9 +27,6 @@ export default class InterventionModel extends Model.extend(Validations) {
   @belongsTo('planning-event') planningEvent;
   @belongsTo('employee', { inverse: null }) employee;
   @hasMany('employee', { inverse: null }) technicians;
-
-  @dateString('date') dateStr;
-  @dateString('cancellationDate') cancellationDateStr;
 
   get isCancelled() {
     return this.cancellationDate;

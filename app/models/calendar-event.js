@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   visitDate: validator('presence', true),
@@ -40,8 +39,6 @@ export default class CalendarEventModel extends Model.extend(Validations) {
   @attr msObjectId;
 
   @belongsTo('request') request;
-
-  @dateString('visitDate') visitDateStr;
 
   get isMastered() {
     return this.msObjectId != null;

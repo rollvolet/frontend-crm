@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
-import { dateString } from '../utils/date-string';
 
 const Validations = buildValidations({
   invoiceDate: validator('presence', true),
@@ -41,12 +40,6 @@ export default class InvoiceModel extends Model.extend(Validations) {
   @hasMany('deposit-invoice') depositInvoices;
   @hasMany('invoiceline') invoicelines;
   @hasMany('working-hour') workingHours;
-
-  @dateString('invoiceDate') invoiceDateStr;
-  @dateString('dueDate') dueDateStr;
-  @dateString('bookingDate') bookingDateStr;
-  @dateString('paymentDate') paymentDateStr;
-  @dateString('cancellationDate') cancellationDateStr;
 
   get isIsolated() {
     return this.order.get('id') == null && this.intervention.get('id') == null;
