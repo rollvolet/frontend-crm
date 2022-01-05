@@ -29,6 +29,11 @@ export default class InvoiceModel extends Model.extend(Validations) {
   @attr qualification;
   @attr documentOutro;
   @attr reference;
+  @attr('string', {
+    defaultValue() {
+      return 'RKB';
+    },
+  }) origin;
 
   @belongsTo('order') order;
   @belongsTo('invoice') invoice;
@@ -58,6 +63,6 @@ export default class InvoiceModel extends Model.extend(Validations) {
   }
 
   get isMasteredByAccess() {
-    return this.order.get('isMasteredByAccess');
+    return this.origin == 'Access';
   }
 }
