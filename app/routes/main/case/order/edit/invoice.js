@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
+import sum from '../../../../../utils/math/sum';
 
 export default class InvoiceRoute extends Route {
   @service case;
@@ -28,10 +29,12 @@ export default class InvoiceRoute extends Route {
 
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+    const baseAmount = sum(invoicelines.map((line) => line.arithmeticAmount));
 
     const invoice = this.store.createRecord('invoice', {
       invoiceDate,
       dueDate,
+      baseAmount,
       certificateRequired: vatRate.rate == 6,
       certificateReceived: false,
       certificateClosed: false,
