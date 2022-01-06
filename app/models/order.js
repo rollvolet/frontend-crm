@@ -43,7 +43,7 @@ export default class OrderModel extends Model.extend(Validations) {
   @belongsTo('vat-rate') vatRate;
   @hasMany('deposit') deposits;
   @hasMany('deposit-invoices') depositInvoices;
-  @hasMany('invoiceline') invoicelines;
+  // @hasMany('invoiceline') invoicelines;
   @hasMany('interventions') interventions;
   @hasMany('employee', { inverse: null }) technicians;
 
@@ -67,5 +67,9 @@ export default class OrderModel extends Model.extend(Validations) {
 
   get isPlanningMasteredByAccess() {
     return this.planningId;
+  }
+
+  get url() {
+    return `http://data.rollvolet.be/orders/${this.id}`;
   }
 }

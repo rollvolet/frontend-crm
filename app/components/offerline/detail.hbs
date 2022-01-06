@@ -50,9 +50,11 @@
             <th scope="col" class="px-4 py-3 text-xs tracking-wider text-gray-500 font-medium uppercase w-32">
               Bedrag
             </th>
-            <th scope="col" class="py-3 text-xs tracking-wider text-gray-500 font-medium uppercase w-12">
-              {{!-- buttons --}}
-            </th>
+            {{#unless @isDisabledEdit}}
+              <th scope="col" class="py-3 text-xs tracking-wider text-gray-500 font-medium uppercase w-12">
+                {{!-- buttons --}}
+              </th>
+            {{/unless}}
           </tr>
         </thead>
         <tbody>
@@ -60,7 +62,8 @@
             <CalculationLine::Detail
               @model={{line}}
               @onSave={{perform this.updateOfferlineAmount}}
-              @onDelete={{perform this.deleteCalculationLine line}} />
+              @onDelete={{perform this.deleteCalculationLine line}}
+              @isDisabledEdit={{@isDisabledEdit}} />
           {{else}}
             <tr>
               <td colspan="3" class="py-4 text-sm text-gray-400 italic">

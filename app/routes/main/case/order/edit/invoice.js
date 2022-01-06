@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
+import sum from '../../../../../utils/math/sum';
 
 export default class InvoiceRoute extends Route {
   @service case;
@@ -15,7 +16,12 @@ export default class InvoiceRoute extends Route {
 
   async model() {
     const order = this.modelFor('main.case.order.edit');
-    const invoicelines = await order.invoicelines;
+    // TODO use order.invoicelines once the relation is defined
+    const invoicelines = await this.store.query('invoiceline', {
+      'filter[order]': order.url,
+      sort: 'sequence-number',
+      page: { size: 100 },
+    });
     const vatRate = await order.vatRate;
     const customer = await order.customer;
     const contact = await order.contact;
@@ -23,10 +29,12 @@ export default class InvoiceRoute extends Route {
 
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+    const baseAmount = sum(invoicelines.map((line) => line.arithmeticAmount));
 
     const invoice = this.store.createRecord('invoice', {
       invoiceDate,
       dueDate,
+      baseAmount,
       certificateRequired: vatRate.rate == 6,
       certificateReceived: false,
       certificateClosed: false,
@@ -45,7 +53,7 @@ export default class InvoiceRoute extends Route {
 
     await Promise.all(
       invoicelines.map((invoiceline) => {
-        invoiceline.invoice = invoice;
+        invoiceline.invoice = invoice.url;
         invoiceline.save();
       })
     );

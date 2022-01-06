@@ -28,6 +28,11 @@ export default class InvoiceModel extends Model.extend(Validations) {
   @attr qualification;
   @attr documentOutro;
   @attr reference;
+  @attr('string', {
+    defaultValue() {
+      return 'RKB';
+    },
+  }) origin;
 
   @belongsTo('order') order;
   @belongsTo('intervention') intervention;
@@ -38,7 +43,7 @@ export default class InvoiceModel extends Model.extend(Validations) {
   @hasMany('invoice-supplement') supplements;
   @hasMany('deposit') deposits;
   @hasMany('deposit-invoice') depositInvoices;
-  @hasMany('invoiceline') invoicelines;
+  // @hasMany('invoiceline') invoicelines;
   @hasMany('working-hour') workingHours;
 
   get isIsolated() {
@@ -62,9 +67,10 @@ export default class InvoiceModel extends Model.extend(Validations) {
   }
 
   get isMasteredByAccess() {
-    return (
-      (!this.isIsolated && this.order.get('isMasteredByAccess')) ||
-      (this.isIsolated && this.baseAmount)
-    );
+    return this.origin == 'Access';
+  }
+
+  get url() {
+    return `http://data.rollvolet.be/invoices/${this.id}`;
   }
 }

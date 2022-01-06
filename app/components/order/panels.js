@@ -23,7 +23,12 @@ export default class OrderPanelsComponent extends Component {
   @task
   *delete() {
     try {
-      const invoicelines = yield this.args.model.invoicelines;
+      // TODO use this.args.model.invoicelines once the relation is defined
+      const invoicelines = yield this.store.query('invoiceline', {
+        'filter[order]': this.args.model.url,
+        sort: 'sequence-number',
+        page: { size: 100 },
+      });
       yield all(invoicelines.map((t) => t.destroyRecord()));
       this.case.updateRecord('order', null);
       yield this.args.model.destroyRecord();

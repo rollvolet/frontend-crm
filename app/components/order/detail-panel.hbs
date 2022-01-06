@@ -216,14 +216,6 @@
               -
             {{/if}}
           </Util::DetailItem>
-          {{#if @model.isMasteredByAccess}}
-            <Util::DetailItem @label="Bedrag">
-              <Fmt::Currency @value={{@model.amount}} />
-            </Util::DetailItem>
-            <Util::DetailItem @label="BTW tarief">
-              {{@model.vatRate.name}} BTW
-            </Util::DetailItem>
-          {{/if}}
         </div>
         <div class="mb-4 sm:mb-0 space-y-2">
           <div class="mb-4">

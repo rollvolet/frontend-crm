@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { all, keepLatestTask } from 'ember-concurrency';
+import { keepLatestTask } from 'ember-concurrency';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceCalculationPanelComponent extends Component {
@@ -11,7 +11,6 @@ export default class InvoiceCalculationPanelComponent extends Component {
 
   @tracked isOpenSupplementsModal = false;
   @tracked vatRate;
-  @tracked invoicelines = [];
   @tracked supplements = [];
   @tracked depositInvoices = [];
   @tracked deposits = [];
@@ -26,14 +25,6 @@ export default class InvoiceCalculationPanelComponent extends Component {
     const model = yield this.args.model;
 
     this.vatRate = yield model.vatRate;
-    this.invoicelines = yield model.invoicelines;
-    yield all(
-      this.invoicelines.map(async (line) => {
-        await line.order;
-        await line.invoice;
-        await line.vatRate;
-      })
-    );
     this.supplements = yield model.supplements;
     this.depositInvoices = yield model.depositInvoices;
     this.deposits = yield model.deposits;
@@ -48,11 +39,8 @@ export default class InvoiceCalculationPanelComponent extends Component {
   }
 
   get baseAmount() {
-    if (this.args.model.baseAmount) {
-      return this.args.model.baseAmount;
-    } else {
-      return sum(this.invoicelines.mapBy('arithmeticAmount'));
-    }
+    // in case of Access a fixed number, otherwise the sum of the invoicelines
+    return this.args.model.baseAmount;
   }
 
   get baseAmountVat() {

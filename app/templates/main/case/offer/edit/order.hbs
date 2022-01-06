@@ -7,7 +7,7 @@
           <h2 class="text-2xl font-bold font-display text-gray-900">
             Bestelling maken voor AD{{format-request-number this.offer.requestNumber}} {{this.visitor.initials}}
           </h2>
-          <p class="text-sm text-gray-400">
+          <p class="mt-1 text-sm text-gray-400">
             Selecteer de producten om toe te voegen aan de bestelling
           </p>
         </div>
@@ -33,7 +33,7 @@
         <ul class="space-y-2">
           {{#each @model as |offerline|}}
             <li role="button"
-              class="px-4 sm:py-6 sm:px-6 flex justify-between border rounded-md {{if offerline.isOrdered "text-red-600 border-red-300 bg-red-50" "text-gray-500 border-gray-200"}}"
+              class="px-4 sm:py-6 sm:px-6 flex justify-between border rounded-md text-sm {{if offerline.isOrdered "text-red-600 border-red-300 bg-red-50" "text-gray-500 border-gray-200"}}"
               {{on "click" (toggle "isOrdered" offerline)}}>
               <div class="flex space-x-4 items-start">
                 <div>
@@ -49,10 +49,10 @@
                 </div>
               </div>
               <div class="text-right">
-                <div class="font-medium">
+                <div class="font-semibold">
                   <Fmt::Currency @value={{offerline.amount}} />
                 </div>
-                <div class="text-sm">
+                <div class="text-xs">
                   + {{offerline.vatRate.rate}}% btw
                 </div>
               </div>

@@ -5,7 +5,6 @@ import { keepLatestTask } from 'ember-concurrency';
 
 export default class OrderStatsComponent extends Component {
   @tracked vatRate;
-  @tracked invoicelines = [];
   @tracked deposits = [];
   @tracked depositInvoices = [];
 
@@ -17,13 +16,12 @@ export default class OrderStatsComponent extends Component {
   @keepLatestTask
   *loadData() {
     this.vatRate = yield this.args.model.vatRate;
-    this.invoicelines = yield this.args.model.invoicelines;
     this.deposits = yield this.args.model.deposits;
     this.depositInvoices = yield this.args.model.depositInvoices;
   }
 
   get totalAmount() {
-    return sum(this.invoicelines.map((line) => line.arithmeticAmount));
+    return sum(this.args.invoicelines.map((line) => line.arithmeticAmount));
   }
 
   get vatPercentage() {

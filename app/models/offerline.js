@@ -3,6 +3,7 @@ import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
   amount: validator('presence', true),
+  currency: validator('presence', true),
   vatRate: validator('presence', true),
 });
 

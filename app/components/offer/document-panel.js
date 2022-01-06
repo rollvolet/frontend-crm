@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
-import { task, all } from 'ember-concurrency';
+import { task, all, keepLatestTask } from 'ember-concurrency';
 
 export default class OfferDocumentPanelComponent extends Component {
   @service documentGeneration;
@@ -25,7 +25,7 @@ export default class OfferDocumentPanelComponent extends Component {
     return this.offerlines.mapBy('vatRate').uniqBy('code').length > 1;
   }
 
-  @task
+  @keepLatestTask
   *loadData() {
     // TODO use this.args.model.offerlines once the relation is defined
     const offerlines = yield this.store.query('offerline', {

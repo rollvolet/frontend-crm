@@ -100,14 +100,14 @@ export default class OrderController extends Controller {
       yield order.save();
 
       const invoicelines = this.orderedOfferlines.map(async (offerline) => {
-        const orderline = this.store.createRecord('invoiceline', {
+        const invoiceline = this.store.createRecord('invoiceline', {
           sequenceNumber: offerline.sequenceNumber,
           description: offerline.description,
           amount: offerline.amount,
           vatRate,
-          order,
+          order: order.url,
         });
-        await orderline.save();
+        await invoiceline.save();
       });
       yield all(invoicelines);
 
