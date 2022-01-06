@@ -9,7 +9,7 @@ export default class CalculationLineDetailComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.editMode = this.args.model.validations.isInvalid;
+    this.editMode = !this.args.isDisabledEdit && this.args.model.validations.isInvalid;
   }
 
   get fieldId() {

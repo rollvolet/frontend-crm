@@ -9,7 +9,7 @@
           @id={{concat "description-" this.fieldId}}
           @type="text"
           @value={{@model.description}}
-          class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm text-gray-600 border-gray-300 rounded-md"
+          class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm text-gray-700 border-gray-300 rounded-md"
           {{on "focusout" (perform this.save)}} />
       </div>
     </td>
@@ -26,7 +26,7 @@
           @value={{@model.amount}}
           @errors={{v-get @model "amount" "messages"}}
           @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
-          class="mt-1 block w-full sm:text-sm text-gray-600 pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+          class="mt-1 block w-full sm:text-sm text-gray-700 pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
       </div>
     </td>
     <td class="py-4 text-right">
@@ -40,23 +40,25 @@
       </span>
     </td>
   {{else}}
-    <td class="pr-4 py-2 text-sm text-gray-600">
+    <td class="pr-4 py-2 text-sm text-gray-700">
       {{@model.description}}
     </td>
-    <td class="px-4 py-2 text-sm text-gray-600">
+    <td class="px-4 py-2 text-sm text-gray-700">
       <Fmt::Currency @value={{@model.amount}} />
     </td>
-    <td class="py-2 text-right">
-      <button type="button"
-        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-        {{on "click" this.openEdit}}>
-        {{svg-jar "heroicons-md-pencil" class="h-5 w-5"}}
-      </button>
-      <button type="button"
-        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-        {{on "click" @onDelete}}>
-        {{svg-jar "heroicons-md-trash" class="h-5 w-5"}}
-      </button>
-    </td>
+    {{#unless @isDisabledEdit}}
+      <td class="py-2 text-right">
+        <button type="button"
+          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+          {{on "click" this.openEdit}}>
+          {{svg-jar "heroicons-md-pencil" class="h-5 w-5"}}
+        </button>
+        <button type="button"
+          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+          {{on "click" @onDelete}}>
+          {{svg-jar "heroicons-md-trash" class="h-5 w-5"}}
+        </button>
+      </td>
+    {{/unless}}
   {{/if}}
 </tr>
