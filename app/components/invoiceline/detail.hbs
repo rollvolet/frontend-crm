@@ -1,11 +1,13 @@
 <div class="grid border {{if this.showUnsavedWarning "border-red-500 border-2 border-dashed" "border-gray-200"}} rounded">
   <div class="bg-gray-200 rounded-t px-4 py-2 flex justify-between items-center">
-    <div class="flex-grow-0 flex-auto flex">
-      <div class="text-gray-500 font-semibold">
-        {{#if @model.sequenceNumber}}{{@model.sequenceNumber}}{{/if}}
-      </div>
+    <div class="flex-grow-0 flex-auto flex space-x-2">
+      {{#if @model.sequenceNumber}}
+        <div class="text-gray-500 font-semibold">
+          {{@model.sequenceNumber}}
+        </div>
+      {{/if}}
       {{#if @model.isSupplement}}
-        <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-800 uppercase tracking-wide">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-800 uppercase tracking-wide">
           Extra
         </span>
       {{/if}}
