@@ -10,19 +10,15 @@
 
   {{!-- Card content --}}
   <div class="p-6 space-y-6">
+    <div class="mx-auto">
+      <Order::Stats
+        @model={{@model}}
+        @invoicelines={{this.invoicelines}} />
+    </div>
     {{#if @model.isMasteredByAccess}}
-      <Util::DetailItem @label="Bedrag" @width={{8}}>
-        <Fmt::Currency @value={{@model.amount}} /> + {{@model.vatRate.name}} BTW
-      </Util::DetailItem>
-      <div class="italic text-gray-400 text-sm">
-        De bestelling is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.
-      </div>
+      <AlertMessage::Warning
+        @message="De bestelling is aangemaakt in Access. De inhoud kan hier niet weergegeven worden." />
     {{else}}
-      <div class="mx-auto">
-        <Order::Stats
-          @model={{@model}}
-          @invoicelines={{this.invoicelines}} />
-      </div>
       <div>
         <ul>
           {{#each this.sortedInvoicelines as |line|}}
