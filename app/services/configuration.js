@@ -23,7 +23,6 @@ export default class ConfigurationService extends Service {
       'way-of-entry',
       'employee',
       'payment',
-      'product-unit',
     ];
     yield all(entities.map((e) => this.store.findAll(e)));
   }

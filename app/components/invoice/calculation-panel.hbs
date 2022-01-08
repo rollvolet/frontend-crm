@@ -39,40 +39,6 @@
                     </td>
                   </tr>
                 {{else}}
-                  <tr>
-                    <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Basis
-                    </td>
-                    <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      <Fmt::Currency @value={{this.baseAmount}} />
-                    </td>
-                    <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      {{#if this.baseAmount}}
-                        <Fmt::Currency @value={{this.baseAmountVat}} />
-                      {{/if}}
-                    </td>
-                    <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      {{on "click" this.openSupplementsModal}} role="button">
-                      Extra's
-                      {{svg-jar "heroicons-sm-information-circle" class="h-4 w-4 text-gray-400 inline"}}
-                    </td>
-                    <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      <Fmt::Currency @value={{this.supplementsAmount}} />
-                    </td>
-                    <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                      {{#if this.baseAmount}}
-                        <Fmt::Currency @value={{this.supplementsVat}} />
-                      {{/if}}
-                    </td>
-                    <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                    </td>
-                  </tr>
-
                   {{#unless @model.isIsolated}}
                     <tr>
                       <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -82,18 +48,17 @@
                         <Fmt::Currency @value={{this.totalOrderAmount}} />
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                        {{#if this.baseAmount}}
+                        {{#if this.totalOrderAmount}}
                           <Fmt::Currency @value={{this.totalOrderVat}} />
                         {{/if}}
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                       </td>
                     </tr>
-
                     <tr>
                       <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                         {{#if @model.order}}
-                          <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model.order.id}} class="">
+                          <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model.order.id}}>
                             Voorschotfacturen
                             <span class="text-gray-400 relative -top-0.5">
                               {{svg-jar "heroicons-sm-external-link" class="inline h-4 w-4"}}
@@ -112,8 +77,8 @@
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                       </td>
                     </tr>
-
                   {{/unless}}
+
                   <tr class="border-t">
                     <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Subtotaal
@@ -165,10 +130,3 @@
     </div>
   </div>
 </div>
-
-{{#if this.isOpenSupplementsModal}}
-  <Invoice::SupplementsModal
-    @model={{@model}}
-    @onClose={{this.closeSupplementsModal}}
-  />
-{{/if}}

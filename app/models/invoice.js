@@ -40,7 +40,6 @@ export default class InvoiceModel extends Model.extend(Validations) {
   @belongsTo('contact') contact;
   @belongsTo('building') building;
   @belongsTo('vat-rate') vatRate;
-  @hasMany('invoice-supplement') supplements;
   @hasMany('deposit') deposits;
   @hasMany('deposit-invoice') depositInvoices;
   // @hasMany('invoiceline') invoicelines;

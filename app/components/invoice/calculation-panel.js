@@ -1,6 +1,5 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { keepLatestTask } from 'ember-concurrency';
 import sum from '../../utils/math/sum';
@@ -9,9 +8,7 @@ export default class InvoiceCalculationPanelComponent extends Component {
   @service case;
   @service router;
 
-  @tracked isOpenSupplementsModal = false;
   @tracked vatRate;
-  @tracked supplements = [];
   @tracked depositInvoices = [];
   @tracked deposits = [];
 
@@ -25,7 +22,6 @@ export default class InvoiceCalculationPanelComponent extends Component {
     const model = yield this.args.model;
 
     this.vatRate = yield model.vatRate;
-    this.supplements = yield model.supplements;
     this.depositInvoices = yield model.depositInvoices;
     this.deposits = yield model.deposits;
   }
@@ -38,25 +34,8 @@ export default class InvoiceCalculationPanelComponent extends Component {
     return this.vatRate && this.vatRate.rate / 100;
   }
 
-  get baseAmount() {
-    // in case of Access a fixed number, otherwise the sum of the invoicelines
-    return this.args.model.baseAmount;
-  }
-
-  get baseAmountVat() {
-    return this.baseAmount * this.vatPercentage;
-  }
-
-  get supplementsAmount() {
-    return sum(this.supplements.mapBy('amount'));
-  }
-
-  get supplementsVat() {
-    return this.supplementsAmount * this.vatPercentage;
-  }
-
   get totalOrderAmount() {
-    return this.baseAmount + this.supplementsAmount;
+    return this.args.model.baseAmount;
   }
 
   get totalOrderVat() {
@@ -90,15 +69,5 @@ export default class InvoiceCalculationPanelComponent extends Component {
 
   get totalToPay() {
     return this.totalGrossAmount - this.depositsAmount;
-  }
-
-  @action
-  openSupplementsModal() {
-    this.isOpenSupplementsModal = true;
-  }
-
-  @action
-  closeSupplementsModal() {
-    this.isOpenSupplementsModal = false;
   }
 }
