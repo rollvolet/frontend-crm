@@ -6,7 +6,7 @@
                 class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
         {{svg-jar
             (if this.isExpanded "heroicons-md-chevron-down" "heroicons-md-chevron-right")
-            class="flex-shrink-0 mr-1.5 h-5 w-5"}}
+            class="shrink-0 mr-1.5 h-5 w-5"}}
       </button>
     </div>
     <div class="flex-grow">
@@ -21,12 +21,12 @@
           </p>
           {{#if @model.isBooked}}
             <p class="ml-2 items-center inline-flex text-xs text-blue-800">
-              {{svg-jar "heroicons-md-clipboard-check" class="flex-shrink-0 h-5 w-5"}}
+              {{svg-jar "heroicons-md-clipboard-check" class="shrink-0 h-5 w-5"}}
               <EmberTooltip @text="Geboekt" @side="bottom" />
             </p>
           {{/if}}
         </div>
-        <div class="sm:ml-2 sm:flex-shrink-0 sm:flex sm:flex-none">
+        <div class="sm:ml-2 sm:shrink-0 sm:flex sm:flex-none">
           <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{if @model.isPaid "bg-green-100 text-green-800" "bg-red-100 text-red-800"}}">
             {{#if @model.isPaid}}Betaald{{else}}Niet betaald{{/if}}
           </p>
@@ -36,7 +36,7 @@
         <div class="mt-2 sm:flex sm:justify-between">
           <div class="sm:flex sm:flex-grow">
             <p class="flex flex-none items-center text-sm text-gray-500">
-              {{svg-jar "heroicons-md-calendar" class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"}}
+              {{svg-jar "heroicons-md-calendar" class="shrink-0 mr-1.5 h-5 w-5 text-gray-400"}}
               <Fmt::Date @value={{@model.invoiceDate}} />
             </p>
           </div>

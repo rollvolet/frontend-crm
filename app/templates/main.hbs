@@ -31,7 +31,7 @@
           </div>
           <Menu::Sidebar @onLogout={{this.logout}} />
         </div>
-        <div class="flex-shrink-0 w-14" aria-hidden="true">
+        <div class="shrink-0 w-14" aria-hidden="true">
           {{!-- Dummy element to force sidebar to shrink to fit close icon --}}
         </div>
       {{/if}}
@@ -39,7 +39,7 @@
   {{/if}}
 
   {{!-- Static menu for xl-screens --}}
-  <div class="hidden bg-red-700 2xl:flex 2xl:flex-shrink-0">
+  <div class="hidden bg-red-700 2xl:flex 2xl:shrink-0">
     <div class="flex flex-col w-72 pt-5 pb-4">
       <Menu::Sidebar @onLogout={{this.logout}} />
     </div>
@@ -59,7 +59,7 @@
         <div class="hidden md:block">
           <div class="flex items-center justify-end ml-6">
             <div class="flex items-center">
-              <div class="flex-shrink-0">
+              <div class="shrink-0">
                 <span class="inline-block h-6 w-6 rounded-full bg-red-100 overflow-hidden">
                   {{svg-jar "placeholder-avatar" class="h-full w-full text-red-400"}}
                 </span>
@@ -92,7 +92,7 @@
           <div class="fixed inset-0 flex w-full h-screen justify-center items-center">
             <div class="rounded-md bg-red-50 p-4">
               <div class="flex">
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                   {{svg-jar "heroicons-sm-x-circle" class="h-5 w-5 text-red-400"}}
                 </div>
                 <div class="ml-3">

@@ -11,7 +11,7 @@
   <nav class="px-2 space-y-8">
     <div class="space-y-1">
       <LinkTo @route="main.index"
-        @activeClass="active-main-nav"
+        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 group flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-home" class="mr-4 h-6 w-6 text-red-300"}}
         Home
@@ -19,7 +19,7 @@
 
       <LinkTo @route="main.customers.index"
         @query={{hash page=0 number=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined}}
-        @activeClass="active-main-nav"
+        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-users" class="mr-4 h-6 w-6 text-red-300"}}
         Klanten
@@ -27,7 +27,7 @@
 
       <LinkTo @route="main.requests.index"
         @query={{hash page=0 number=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutOffer=undefined}}
-        @activeClass="active-main-nav"
+        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-annotation" class="mr-4 h-6 w-6 text-red-300"}}
         Aanvragen
@@ -35,7 +35,7 @@
 
       <LinkTo @route="main.interventions.index"
         @query={{hash page=0 number=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasInvoice=0 isCancelled=0 isPlanned=-1}}
-        @activeClass="active-main-nav"
+        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-cog" class="mr-4 h-6 w-6 text-red-300"}}
         Interventies
@@ -43,7 +43,7 @@
 
       <LinkTo @route="main.offers.index"
         @query={{hash page=0 number=undefined reference=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutOrder=undefined}}
-        @activeClass="active-main-nav"
+        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-calculator" class="mr-4 h-6 w-6 text-red-300"}}
         Offertes
@@ -51,7 +51,7 @@
 
       <LinkTo @route="main.orders.index"
         @query={{hash page=0 reference=undefined offerNumber=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined withoutInvoice=undefined onlyNotCanceled=undefined}}
-        @activeClass="active-main-nav"
+        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-shopping-cart" class="mr-4 h-6 w-6 text-red-300"}}
         Bestellingen
@@ -59,7 +59,7 @@
 
       <LinkTo @route="main.deposit-invoices.index"
         @query={{hash page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined}}
-        @activeClass="active-main-nav"
+        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-receipt-tax" class="mr-4 h-6 w-6 text-red-300"}}
         Voorschotfacturen
@@ -67,7 +67,7 @@
 
       <LinkTo @route="main.invoices.index"
         @query={{hash page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined}}
-        @activeClass="active-main-nav"
+        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-currency-euro" class="mr-4 h-6 w-6 text-red-300"}}
         Facturen
@@ -76,7 +76,7 @@
     <div class="space-y-1">
       <LinkTo @route="main.reports.outstanding-jobs.index"
         @query={{hash page=0 visitorName=undefined orderDate=undefined hasProductionTicket="-1" isProductReady="-1" execution="na" sort="order-date"}}
-        @activeClass="active-main-nav"
+        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-calendar" class="mr-4 h-6 w-6 text-red-300"}}
         Uit te voeren werken
@@ -88,13 +88,13 @@
       <div class="space-y-1">
         <LinkTo @route="main.accountancy.exports"
           @query={{hash page=0}}
-          @activeClass="active-main-nav"
+          @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
           class="text-red-100 w-full flex items-center pl-12 pr-2 py-2 text-sm font-medium text-red-100 rounded-md hover:text-white hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
           Export boekhouding
         </LinkTo>
         {{#if this.userInfo.hasBoardRole}}
           <LinkTo @route="main.reports.revenue"
-            @activeClass="active-main-nav"
+            @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
             class="text-red-100 w-full flex items-center pl-12 pr-2 py-2 text-sm font-medium text-red-100 rounded-md hover:text-white hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
             Omzet
           </LinkTo>
@@ -105,7 +105,7 @@
 </div>
 <div class="flex flex-none border-t border-red-800 px-4 pt-4">
   <div class="flex items-center">
-    <div class="flex-shrink-0">
+    <div class="shrink-0">
       <span class="inline-block h-10 w-10 rounded-full overflow-hidden bg-red-100">
         {{svg-jar "placeholder-avatar" class="h-full w-full text-red-400"}}
       </span>

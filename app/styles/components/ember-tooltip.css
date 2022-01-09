@@ -1,0 +1,26 @@
+@layer components {
+  .ember-tooltip {
+    @apply bg-yellow-50 text-yellow-600 text-xs rounded;
+    text-shadow: none;
+  }
+
+  .ember-tooltip[x-placement^="bottom"] .ember-tooltip-arrow {
+    --tw-border-opacity: 1;
+    border-bottom-color: rgba(254, 243, 199, var(--tw-border-opacity));
+  }
+
+  .ember-tooltip[x-placement^="top"] .ember-tooltip-arrow {
+    --tw-border-opacity: 1;
+    border-top-color: rgba(254, 243, 199, var(--tw-border-opacity));
+  }
+
+  .ember-tooltip[x-placement^="left"] .ember-tooltip-arrow {
+    --tw-border-opacity: 1;
+    border-left-color: rgba(254, 243, 199, var(--tw-border-opacity));
+  }
+
+  .ember-tooltip[x-placement^="right"] .ember-tooltip-arrow {
+    --tw-border-opacity: 1;
+    border-right-color: rgba(254, 243, 199, var(--tw-border-opacity));
+  }
+}
