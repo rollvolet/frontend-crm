@@ -3,7 +3,8 @@ import { exec } from 'pell';
 
 const defaultOptions = {
   classes: {
-    actionbar: 'pell-actionbar mt-1',
+    actionbar: 'pell-actionbar p-1 bg-transparent',
+    selected: 'bg-gray-100',
   },
   actions: [
     'bold',

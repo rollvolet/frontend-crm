@@ -10,7 +10,7 @@ module.exports = {
     './tests/**/*.{hbs,js,ts,html}'
   ],
   safelist: [
-    'ember-tooltip',
+    { pattern: /^ember-tooltip.*/ },
     { pattern: /^ember-power-select.*/ }
   ],
   theme: {
@@ -25,11 +25,19 @@ module.exports = {
       },
       screens: {
         'print': {'raw': 'print'} // => @media print { ... }
-      }
+      },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-bullets': theme('colors.gray[500]'),
+          }
+        }
+      })
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
   ]
 };
