@@ -10,5 +10,5 @@ export default function applyFilterParams(filter) {
     }
     this.set(key, value);
   }
-  this.set('page', 0); // reset page to 0 on new search
+  this.page = 0; // reset page to 0 on new search
 }

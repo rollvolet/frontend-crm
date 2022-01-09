@@ -35,9 +35,9 @@
       <Input
         @id="filter-offer-number"
         @type="text"
-        value={{this.filter.offerNumber}}
+        value={{this.filter.number}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "offerNumber")}} />
+        {{on "input" (perform this.debounceFilter "number")}} />
     </div>
     <div class="sm:col-span-4 md:col-span-2">
       <label for="filter-visitor" class="block text-sm font-medium text-gray-700">
