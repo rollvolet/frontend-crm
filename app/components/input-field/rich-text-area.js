@@ -32,7 +32,7 @@ export default class InputFieldRichTextAreaComponent extends Component {
   get options() {
     const customOptions = this.args.options || {};
     const options = Object.assign({}, defaultOptions, customOptions);
-    options.classes.content = `pell-content ${this.args.textAreaHeight || 'h-48'}`;
+    options.classes.content = `pell-content ${this.args.textAreaHeight || 'h-full'}`;
     return options;
   }
 }
