@@ -104,8 +104,12 @@
     "torii": "https://github.com/jmonster/torii.git#bbbd0ba317da193039193e47295224d2290b8443",
     "torii-azure-ad2-provider": "^1.0.5"
   },
+  "overrides": {
+    "@embroider/macros": "0.50.2",
+    "@embroider/shared-internals": "0.50.2"
+  },
   "engines": {
-    "node": "10.* || >= 12"
+    "node": ">= 16"
   },
   "ember": {
     "edition": "octane"
