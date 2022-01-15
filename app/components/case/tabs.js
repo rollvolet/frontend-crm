@@ -69,6 +69,6 @@ export default class CaseTabsComponent extends Component {
       this.model.invoiceId == null &&
       !this.model.intervention.isCancelled;
 
-    return (canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention);
+    return canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention;
   }
 }

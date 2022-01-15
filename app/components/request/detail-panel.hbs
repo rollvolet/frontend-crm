@@ -94,7 +94,7 @@
             <div class="relative flex items-end">
               <div class="flex grow-0 items-center h-5">
                 <Input
-                  @id="requires-visit"
+                  id="requires-visit"
                   @type="checkbox"
                   @checked={{@model.requiresVisit}}
                 disabled={{this.hasVisitMasteredByAccess}}
@@ -112,7 +112,7 @@
             Opmerking
           </label>
           <Textarea
-            @id="comment"
+            id="comment"
             @value={{@model.comment}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             rows="5"

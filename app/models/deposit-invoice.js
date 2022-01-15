@@ -33,7 +33,8 @@ export default class InvoiceModel extends Model.extend(Validations) {
     defaultValue() {
       return 'RKB';
     },
-  }) origin;
+  })
+  origin;
 
   @belongsTo('order') order;
   @belongsTo('invoice') invoice;

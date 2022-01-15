@@ -15,7 +15,7 @@
           <div class="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-4">
             <div class="flex items-center">
               <Input
-                @id="customer-type--individual"
+                id="customer-type--individual"
                 @type="radio"
                 @value="individual"
                 name="customer-type"
@@ -28,7 +28,7 @@
             </div>
             <div class="flex items-center">
               <Input
-                @id="customer-type--company"
+                id="customer-type--company"
                 @type="radio"
                 @value="company"
                 name="customer-type"
@@ -74,7 +74,7 @@
           Prefix
         </label>
         <Input
-          @id="customer-prefix"
+          id="customer-prefix"
           @type="text"
           @value={{@model.prefix}}
           class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -91,7 +91,7 @@
           Naam
         </label>
         <Input
-          @id="customer-name"
+          id="customer-name"
           @type="text"
           @value={{@model.name}}
           class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -102,7 +102,7 @@
           Suffix
         </label>
         <Input
-          @id="customer-suffix"
+          id="customer-suffix"
           @type="text"
           @value={{@model.suffix}}
           class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -131,7 +131,7 @@
           @address1={{@model.address1}}
           @address2={{@model.address2}}
           @address3={{@model.address3}}
-          @onChange={{queue (fn this.setAddress) @onSave}}
+          @onChange={{queue this.setAddress @onSave}}
           class="mt-1" />
       </div>
 
@@ -141,7 +141,7 @@
           @postalCode={{@model.postalCode}}
           @city={{@model.city}}
           @titleize={{not this.isScopeCustomer}}
-          @onSelectionChange={{queue (fn this.setPostalCode) @onSave}}
+          @onSelectionChange={{queue this.setPostalCode @onSave}}
           class="mt-1" />
       </div>
       <div>
@@ -175,7 +175,7 @@
             Email
           </label>
           <Input
-            @id="customer-mail"
+            id="customer-mail"
             @type="text"
             @value={{@model.email}}
             class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -186,7 +186,7 @@
             Email 2
           </label>
           <Input
-            @id="customer-mail2"
+            id="customer-mail2"
             @type="text"
             @value={{@model.email2}}
             class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -197,7 +197,7 @@
             Website
           </label>
           <Input
-            @id="customer-website"
+            id="customer-website"
             @type="text"
             @value={{@model.url}}
             class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -228,7 +228,7 @@
           Opmerking (zichtbaar)
         </label>
         <Textarea
-          @id="comment"
+          id="comment"
           @value={{@model.comment}}
           class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
           rows="5"
@@ -240,7 +240,7 @@
             Memo (verborgen)
           </label>
           <Textarea
-            @id="memo"
+            id="memo"
             @value={{@model.memo}}
             class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             rows="5"

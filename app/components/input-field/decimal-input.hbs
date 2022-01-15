@@ -4,6 +4,6 @@
   </label>
 {{/if}}
 <Input ...attributes
-  @id={{this.fieldId}}
+  id={{this.fieldId}}
   @value={{this.formattedValue}}
   {{on "focusout" (fn this.updateValue this.formattedValue)}} />

@@ -4,7 +4,7 @@
       {{svg-jar "heroicons-sm-exclamation" class="h-5 w-5 text-yellow-400"}}
     </div>
     <div class="ml-3">
-      {{#if hasBlock}}
+      {{#if (has-block)}}
         {{yield}}
       {{else}}
         {{#if @title}}

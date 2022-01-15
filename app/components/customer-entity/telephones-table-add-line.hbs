@@ -12,20 +12,20 @@
 </td>
 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
   <Input
-    @id="telephone-area"
+    id="telephone-area"
     @type="text"
     @value={{@model.area}}
     class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-16 sm:text-sm border-gray-300 rounded-md"
-    {{on "input" (fn this.setArea)}}
+    {{on "input" this.setArea}}
     {{on "focusout" (perform @saveTask)}} />
 </td>
 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
   <Input
-    @id="telephone-number"
+    id="telephone-number"
     @type="text"
     value={{this.formattedNumber}}
     class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-28 sm:text-sm border-gray-300 rounded-md"
-    {{on "input" (fn this.setNumber)}}
+    {{on "input" this.setNumber}}
     {{on "focusout" (perform @saveTask)}} />
   {{#if this.errorMessages}}
     <p class="mt-2 text-xs text-red-600">
@@ -35,7 +35,7 @@
 </td>
 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
   <Input
-    @id="telephone-memo"
+    id="telephone-memo"
     @type="text"
     @value={{@model.memo}}
     class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"

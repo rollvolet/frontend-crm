@@ -7,7 +7,7 @@
   <PowerSelect
     @placeholder={{@label}}
     @selected={{this.value}}
-    @onChange={{fn this.selectValue}}
+    @onChange={{this.selectValue}}
     @options={{this.options}}
     @searchEnabled={{true}}
     @search={{perform this.search}}
@@ -74,7 +74,7 @@
                   Postcode
                 </label>
                 <Input
-                  @id="postal-code"
+                  id="postal-code"
                   @type="text"
                   @value={{this.newCode}}
                   class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md" />
@@ -84,7 +84,7 @@
                   Gemeente
                 </label>
                 <Input
-                  @id="city"
+                  id="city"
                   @type="text"
                   @value={{this.newCity}}
                   class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md" />

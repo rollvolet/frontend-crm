@@ -14,7 +14,8 @@ export default class InvoicelineModel extends Model.extend(Validations) {
     defaultValue() {
       return 'EUR';
     },
-  }) currency;
+  })
+  currency;
   @attr type;
   @attr description;
   @attr('number') amount;

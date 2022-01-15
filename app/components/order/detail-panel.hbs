@@ -74,7 +74,7 @@
               Referentie klant
             </label>
             <Input
-              @id="reference"
+              id="reference"
               @type="text"
               @value={{@model.reference}}
               class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -130,7 +130,7 @@
               {{#each this.executionOptions as |option|}}
                 <div class="flex items-center">
                   <Input
-                    @id="execution-opt-{{option.id}}"
+                    id="execution-opt-{{option.id}}"
                     @type="radio"
                     @value={{option.value}}
                     name="execution-opt-group"
@@ -177,7 +177,7 @@
             Opmerking
           </label>
           <Textarea
-            @id="comment"
+            id="comment"
             @value={{@model.comment}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             rows="5"
@@ -225,7 +225,7 @@
             {{#each this.executionOptions as |option|}}
               <div class="flex items-center mb-2">
                 <Input
-                  @id="execution-opt-{{option.id}}"
+                  id="execution-opt-{{option.id}}"
                   @type="radio"
                   @value={{option.value}}
                   name="execution-opt-group"

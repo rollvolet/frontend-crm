@@ -13,7 +13,8 @@ export default class OfferlineModel extends Model.extend(Validations) {
     defaultValue() {
       return 'EUR';
     },
-  }) currency;
+  })
+  currency;
   @attr description;
   @attr('number') amount;
   @attr offer;

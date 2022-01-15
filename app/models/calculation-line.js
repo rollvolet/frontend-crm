@@ -24,7 +24,8 @@ export default class CalculationLineModel extends Model.extend(Validations) {
     defaultValue() {
       return 'EUR';
     },
-  }) currency;
+  })
+  currency;
   @attr description;
   @attr offerline;
 
