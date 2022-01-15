@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { action } from '@ember/object';
 import ArrayProxy from '@ember/array/proxy';
+import { inject as service } from '@ember/service';
 import fetch, { Headers } from 'fetch';
 import { hash } from 'rsvp';
 import OutstandingJob from '../../../../classes/outstanding-job';
@@ -9,6 +10,8 @@ import getPaginationMetadata from '../../../../utils/get-pagination-metadata';
 import Snapshot from '../../../../utils/snapshot';
 
 export default class MainReportsOutstandingJobsIndexRoute extends Route {
+  @service store;
+
   queryParams = {
     page: { refreshModel: true },
     size: { refreshModel: true },

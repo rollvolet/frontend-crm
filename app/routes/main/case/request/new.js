@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 
 export default class NewRoute extends Route {
   @service userInfo;
+  @service store;
 
   async model() {
     const customer = this.modelFor('main.case');

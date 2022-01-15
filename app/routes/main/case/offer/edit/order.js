@@ -1,7 +1,10 @@
 import Route from '@ember/routing/route';
 import { debug } from '@ember/debug';
+import { inject as service } from '@ember/service';
 
 export default class OrderRoute extends Route {
+  @service store;
+
   async beforeModel() {
     const offer = this.modelFor('main.case.offer.edit');
     const order = await offer.order;

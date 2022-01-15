@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 
 export default class MainInterventionsNewRoute extends Route {
   @service userInfo;
+  @service store;
 
   async model() {
     const employee = await this.userInfo.getEmployee();

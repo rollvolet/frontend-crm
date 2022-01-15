@@ -5,6 +5,7 @@ import sum from '../../../../../utils/math/sum';
 
 export default class InvoiceRoute extends Route {
   @service case;
+  @service store;
 
   beforeModel(transition) {
     const order = this.modelFor('main.case.order.edit');

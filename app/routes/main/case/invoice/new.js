@@ -1,7 +1,10 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 import moment from 'moment';
 
 export default class NewRoute extends Route {
+  @service store;
+
   async model() {
     const customer = this.modelFor('main.case');
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);

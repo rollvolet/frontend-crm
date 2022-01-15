@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 
 export default class NewRoute extends Route {
   @service configuration;
+  @service store;
 
   model() {
     const customer = this.store.createRecord('customer', {

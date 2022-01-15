@@ -1,8 +1,11 @@
 import Route from '@ember/routing/route';
-import OutstandingJob from '../../../../classes/outstanding-job';
+import { inject as service } from '@ember/service';
 import fetch, { Headers } from 'fetch';
+import OutstandingJob from '../../../../classes/outstanding-job';
 
 export default class MainReportsOutstandingJobsPrintRoute extends Route {
+  @service store;
+
   queryParams = {
     visitorName: { refreshModel: true },
     orderDate: { refreshModel: true }, // format yyyy-mm-dd

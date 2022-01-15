@@ -1,8 +1,11 @@
 import Route from '@ember/routing/route';
 import { action } from '@ember/object';
 import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
 
 export default class DepositInvoicesRoute extends Route {
+  @service store;
+
   model() {
     const order = this.modelFor('main.case.order.edit');
     const depositInvoices = this.store.query('depositInvoice', {
