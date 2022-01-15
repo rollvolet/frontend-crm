@@ -1,6 +1,8 @@
 import JSONAPISerializer from '@ember-data/serializer/json-api';
 import DataTableSerializerMixin from 'ember-data-table/mixins/serializer';
+import classic from 'ember-classic-decorator';
 
+@classic
 export default class ApplicationJSONAPISerializer extends JSONAPISerializer.extend(
   DataTableSerializerMixin
 ) {

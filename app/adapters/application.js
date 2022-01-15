@@ -1,5 +1,7 @@
 import JSONAPIAdapter from '@ember-data/adapter/json-api';
+import classic from 'ember-classic-decorator';
 
+@classic
 export default class ApplicationAdapter extends JSONAPIAdapter {
   namespace = 'api';
 

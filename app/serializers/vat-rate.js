@@ -1,5 +1,7 @@
 import ApplicationSerializer from './application';
+import classic from 'ember-classic-decorator';
 
+@classic
 export default class VatRateSerializer extends ApplicationSerializer {
   normalize(typeClass, hash) {
     // TODO remove legacy ID conversion once VAT rates are fully migrated to triplestore

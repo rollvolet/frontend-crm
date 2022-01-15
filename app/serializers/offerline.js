@@ -1,5 +1,7 @@
 import ApplicationSerializer from './application';
+import classic from 'ember-classic-decorator';
 
+@classic
 export default class OfferlineSerializer extends ApplicationSerializer {
   serializeBelongsTo(snapshot, json, relationship) {
     // TODO remove legacy ID conversion once VAT rates are fully migrated to triplestore
