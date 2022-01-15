@@ -7,6 +7,9 @@ module.exports = function (defaults) {
       locales: ['nl'],
       theme: 'material_red',
     },
+    'ember-simple-auth': {
+      useSessionSetupMethod: true,
+    },
   });
 
   return app.toTree();

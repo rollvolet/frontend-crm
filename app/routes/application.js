@@ -3,8 +3,10 @@ import { inject as service } from '@ember/service';
 
 export default class ApplicationRoute extends Route {
   @service moment;
+  @service session;
 
-  beforeModel() {
+  async beforeModel() {
+    await this.session.setup();
     // TODO move to initializer
     this.moment.setLocale('nl');
   }
