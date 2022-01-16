@@ -1,25 +1,31 @@
-import Model, { attr } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 
-const Validations = buildValidations({
-  date: validator('presence', true),
-  fromNumber: [
-    validator('presence', true),
-    validator('number', {
-      integer: true,
-      gt: 0,
+export default class AccountancyExport extends ValidatedModel {
+  validators = {
+    date: new Validator('presence', {
+      presence: true,
     }),
-  ],
-  untilNumber: [
-    validator('presence', true),
-    validator('number', {
-      integer: true,
-      gt: 0,
-    }),
-  ],
-});
+    fromNumber: [
+      new Validator('presence', {
+        presence: true,
+      }),
+      new Validator('number', {
+        integer: true,
+        gt: 0,
+      }),
+    ],
+    untilNumber: [
+      new Validator('presence', {
+        presence: true,
+      }),
+      new Validator('number', {
+        integer: true,
+        gt: 0,
+      }),
+    ],
+  };
 
-export default class AccountancyExport extends Model.extend(Validations) {
   @attr('datetime') date;
   @attr('datetime') fromDate;
   @attr('datetime') untilDate;

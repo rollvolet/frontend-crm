@@ -1,19 +1,21 @@
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr, belongsTo, hasMany } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 
-const Validations = buildValidations({
-  orderDate: validator('presence', true),
-  scheduledHours: validator('number', {
-    allowBlank: true,
-    positive: true,
-  }),
-  scheduledNbOfPersons: validator('number', {
-    allowBlank: true,
-    positive: true,
-  }),
-});
+export default class OrderModel extends ValidatedModel {
+  validators = {
+    orderDate: new Validator('presence', {
+      presence: true,
+    }),
+    scheduledHours: new Validator('number', {
+      allowBlank: true,
+      positive: true,
+    }),
+    scheduledNbOfPersons: new Validator('number', {
+      allowBlank: true,
+      positive: true,
+    }),
+  };
 
-export default class OrderModel extends Model.extend(Validations) {
   @attr('date-midnight') orderDate;
   @attr amount;
   @attr offerNumber;

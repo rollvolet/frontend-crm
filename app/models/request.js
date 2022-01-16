@@ -1,11 +1,11 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr, belongsTo } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 
-const Validations = buildValidations({
-  requestDate: validator('presence', true),
-});
+export default class RequestModel extends ValidatedModel {
+  validators = {
+    requestDate: new Validator('presence', true),
+  };
 
-export default class RequestModel extends Model.extend(Validations) {
   @attr('date-midnight') requestDate;
   @attr requiresVisit;
   @attr comment;

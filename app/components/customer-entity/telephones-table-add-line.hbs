@@ -2,13 +2,13 @@
   <InputField::TelephoneTypeSelect
     @value={{@model.telephoneType}}
     @onSelectionChange={{queue (fn (mut @model.telephoneType)) (perform @saveTask)}}
-    @errors={{v-get @model "telephoneType" "messages"}} />
+    @errors={{@model.validations.attrs.telephoneType.messages}} />
 </td>
 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
   <InputField::TelephonePrefixSelect
     @value={{@model.country}}
     @onSelectionChange={{queue (fn (mut @model.country)) (perform @saveTask)}}
-    @errors={{v-get @model "country" "messages"}} />
+    @errors={{@model.validations.attrs.country.messages}} />
 </td>
 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
   <Input

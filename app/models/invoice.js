@@ -1,17 +1,19 @@
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr, belongsTo, hasMany } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 
-const Validations = buildValidations({
-  invoiceDate: validator('presence', true),
-  baseAmount: validator('number', {
-    allowBlank: true,
-    positive: true,
-  }),
-  // Enable validation once https://github.com/offirgolan/ember-cp-validations/issues/651 is fixed
-  // vatRate: validator('presence', true)
-});
+export default class InvoiceModel extends ValidatedModel {
+  validators = {
+    invoiceDate: new Validator('presence', {
+      presence: true,
+    }),
+    baseAmount: new Validator('number', {
+      allowBlank: true,
+      positive: true,
+    }),
+    // Enable validation once https://github.com/offirgolan/ember-cp-validations/issues/651 is fixed
+    // vatRate: new Validator('presence', { presence: true })
+  };
 
-export default class InvoiceModel extends Model.extend(Validations) {
   @attr number;
   @attr('date-midnight') invoiceDate;
   @attr('date-midnight') dueDate;

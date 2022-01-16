@@ -1,13 +1,19 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr, belongsTo } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 
-const Validations = buildValidations({
-  date: validator('presence', true),
-  invoice: validator('presence', true),
-  employee: validator('presence', true),
-});
+export default class WorkingHourModel extends ValidatedModel {
+  validators = {
+    date: new Validator('presence', {
+      presence: true,
+    }),
+    invoice: new Validator('presence', {
+      presence: true,
+    }),
+    employee: new Validator('presence', {
+      presence: true,
+    }),
+  };
 
-export default class WorkingHourModel extends Model.extend(Validations) {
   @attr('date-midnight') date;
   @belongsTo('invoice') invoice;
   @belongsTo('employee') employee;

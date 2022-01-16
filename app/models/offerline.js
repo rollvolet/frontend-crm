@@ -1,13 +1,19 @@
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr, belongsTo, hasMany } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 
-const Validations = buildValidations({
-  amount: validator('presence', true),
-  currency: validator('presence', true),
-  vatRate: validator('presence', true),
-});
+export default class OfferlineModel extends ValidatedModel {
+  validators = {
+    amount: new Validator('presence', {
+      presence: true,
+    }),
+    currency: new Validator('presence', {
+      presence: true,
+    }),
+    vatRate: new Validator('presence', {
+      presence: true,
+    }),
+  };
 
-export default class OfferlineModel extends Model.extend(Validations) {
   @attr sequenceNumber;
   @attr('string', {
     defaultValue() {

@@ -1,5 +1,5 @@
 <div class="inline-block" ...attributes>
-  {{#if @task.isRunning}}
+  {{#if (or @task.isRunning @model.isValidating)}}
     {{svg-jar "heroicons-md-refresh" class="h-5 w-5 text-blue-500"}}
     <EmberTooltip @text="Aan het opslaan" />
   {{else}}

@@ -1,17 +1,21 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr, belongsTo } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 
-const Validations = buildValidations({
-  paymentDate: validator('presence', true),
-  amount: [
-    validator('presence', true),
-    validator('number', {
-      positive: true,
+export default class DepositModel extends ValidatedModel {
+  validators = {
+    paymentDate: new Validator('presence', {
+      presence: true,
     }),
-  ],
-});
+    amount: [
+      new Validator('presence', {
+        presence: true,
+      }),
+      new Validator('number', {
+        positive: true,
+      }),
+    ],
+  };
 
-export default class DepositModel extends Model.extend(Validations) {
   @attr sequenceNumber;
   @attr('number') amount;
   @attr('date-midnight') paymentDate;

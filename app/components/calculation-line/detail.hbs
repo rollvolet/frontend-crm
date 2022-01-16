@@ -24,7 +24,7 @@
           @label="Bedrag"
           @hideLabel={{true}}
           @value={{@model.amount}}
-          @errors={{v-get @model "amount" "messages"}}
+          @errors={{@model.validations.attrs.amount.messages}}
           @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
           class="mt-1 block w-full sm:text-sm text-gray-700 pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
       </div>

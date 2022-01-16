@@ -1,12 +1,13 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr, belongsTo } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 
-const Validations = buildValidations({
-  // offerlines: validator('has-many'),
-  offerDate: validator('presence', true),
-});
+export default class OfferModel extends ValidatedModel {
+  validators = {
+    offerDate: new Validator('presence', {
+      presence: true,
+    }),
+  };
 
-export default class OfferModel extends Model.extend(Validations) {
   @attr number;
   @attr sequenceNumber;
   @attr requestNumber;

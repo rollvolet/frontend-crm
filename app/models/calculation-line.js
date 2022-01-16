@@ -1,24 +1,24 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr, belongsTo } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 import { isPresent } from '@ember/utils';
 
-const Validations = buildValidations({
-  offerline: validator('presence', true),
-  amount: validator('inline', {
-    dependentKeys: ['model.description'],
-    validate(value, options, model /*, attribute*/) {
-      return isPresent(value) || isPresent(model.description);
-    },
-  }),
-  description: validator('inline', {
-    dependentKeys: ['model.amount'],
-    validate(value, options, model /*, attribute*/) {
-      return isPresent(value) || isPresent(model.amount);
-    },
-  }),
-});
+export default class CalculationLineModel extends ValidatedModel {
+  validators = {
+    offerline: new Validator('presence', {
+      presence: true,
+    }),
+    amount: new Validator('inline', {
+      validate(value, options, model /*, attribute*/) {
+        return isPresent(value) || isPresent(model.description);
+      },
+    }),
+    description: new Validator('inline', {
+      validate(value, options, model /*, attribute*/) {
+        return isPresent(value) || isPresent(model.amount);
+      },
+    }),
+  };
 
-export default class CalculationLineModel extends Model.extend(Validations) {
   @attr amount;
   @attr('string', {
     defaultValue() {

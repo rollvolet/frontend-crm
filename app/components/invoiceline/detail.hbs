@@ -22,7 +22,7 @@
           </div>
           <InputField::DecimalInput
             @value={{@model.amount}}
-            @errors={{v-get @model "amount" "messages"}}
+            @errors={{@model.validations.attrs.amount.messages}}
             @onChange={{queue (fn (mut @model.amount)) (perform @saveTask @model)}}
             class="block w-32 sm:text-sm pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
         </div>

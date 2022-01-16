@@ -1,32 +1,36 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr, belongsTo } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 import { get } from '@ember/object';
 
-const Validations = buildValidations({
-  area: [
-    validator('presence', true),
-    validator('length', {
-      min: 2,
-      max: 4,
+export default class TelephoneModel extends ValidatedModel {
+  validators = {
+    area: [
+      new Validator('presence', {
+        presence: true,
+      }),
+      new Validator('length', {
+        min: 2,
+        max: 4,
+      }),
+    ],
+    number: [
+      new Validator('presence', {
+        presence: true,
+      }),
+      new Validator('length', {
+        min: 6,
+      }),
+    ],
+    telephoneType: new Validator('presence', {
+      presence: true,
+      message: 'Maak een keuze',
     }),
-  ],
-  number: [
-    validator('presence', true),
-    validator('length', {
-      min: 6,
+    country: new Validator('presence', {
+      presence: true,
+      message: 'Maak een keuze',
     }),
-  ],
-  telephoneType: validator('presence', {
-    presence: true,
-    message: 'Maak een keuze',
-  }),
-  country: validator('presence', {
-    presence: true,
-    message: 'Maak een keuze',
-  }),
-});
+  };
 
-export default class Telephone extends Model.extend(Validations) {
   @attr area;
   @attr number;
   @attr memo;

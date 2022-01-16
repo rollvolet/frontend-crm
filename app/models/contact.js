@@ -1,15 +1,21 @@
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import { validator, buildValidations } from 'ember-cp-validations';
+import { attr, belongsTo, hasMany } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 
-const Validations = buildValidations({
-  email: validator('format', { type: 'email', allowBlank: true }),
-  email2: validator('format', { type: 'email', allowBlank: true }),
-  url: validator('format', { type: 'url', allowBlank: true }),
-  language: validator('presence', true),
-  country: validator('presence', true),
-});
+export default class ContactModel extends ValidatedModel {
+  validators = {
+    email: new Validator('format', { type: 'email', allowBlank: true }),
+    email2: new Validator('format', { type: 'email', allowBlank: true }),
+    url: new Validator('format', { type: 'url', allowBlank: true }),
+    language: new Validator('presence', {
+      presence: true,
+      message: 'Kies een geldige taal',
+    }),
+    country: new Validator('presence', {
+      presence: true,
+      message: 'Kies een geldig land',
+    }),
+  };
 
-export default class ContactModel extends Model.extend(Validations) {
   @attr name;
   @attr address1;
   @attr address2;

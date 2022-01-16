@@ -86,7 +86,7 @@
                 <InputField::DecimalInput
                   @label="Werkuren"
                   @value={{@model.scheduledHours}}
-                  @errors={{v-get @model "scheduledHours" "messages"}}
+                  @errors={{@model.validations.attrs.scheduledHours.messages}}
                   @onChange={{queue (fn (mut @model.scheduledHours)) (perform this.save)}}
                   class="block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
               </div>
@@ -97,7 +97,7 @@
                 <InputField::DecimalInput
                   @label="Personen"
                   @value={{@model.scheduledNbOfPersons}}
-                  @errors={{v-get @model "scheduledNbOfPersons" "messages"}}
+                  @errors={{@model.validations.attrs.scheduledNbOfPersons.messages}}
                   @onChange={{queue (fn (mut @model.scheduledNbOfPersons)) (perform this.save)}}
                   class="block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
               </div>

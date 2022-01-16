@@ -5,9 +5,9 @@
     </label>
   {{/if}}
   <div class="mt-1 relative rounded-md shadow-sm">
-    <Input
+    <input
       id={{this.elementId}}
-      @type="text"
+      type="text"
       value={{this.formattedValue}}
       class="block w-full pr-10 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md {{if @showDuplicateVatError "border-red-300 text-red-900 placeholder-red-300"}}"
       aria-invalid={{@showDuplicateVatError}}
