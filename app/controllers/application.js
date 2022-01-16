@@ -6,11 +6,11 @@ import { debug } from '@ember/debug';
 export default class ApplicationController extends Controller {
   @service appState;
 
-  init() {
-    super.init(...arguments);
-    Ember.onerror = (error) => {
-       this.handleApplicationError(error);
-    };
+  constructor() {
+    super(...arguments);
+    // Ember.onerror = (error) => {
+    //   this.handleApplicationError(error);
+    // };
   }
 
   handleApplicationError(error) {

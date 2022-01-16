@@ -1,11 +1,26 @@
 import JSONAPISerializer from '@ember-data/serializer/json-api';
-import DataTableSerializerMixin from 'ember-data-table/mixins/serializer';
 import classic from 'ember-classic-decorator';
 
 @classic
-export default class ApplicationJSONAPISerializer extends JSONAPISerializer.extend(
-  DataTableSerializerMixin
-) {
+export default class ApplicationJSONAPISerializer extends JSONAPISerializer {
+  /**
+      Parse the links in the JSONAPI response and convert to a meta-object
+  */
+  normalizeQueryResponse(store, clazz, payload) {
+    const result = super.normalizeQueryResponse(...arguments);
+    result.meta = result.meta || {};
+
+    if (payload.links) {
+      result.meta.pagination = this.createPageMeta(payload.links);
+    }
+
+    if (payload.meta) {
+      result.meta.count = payload.meta.count;
+    }
+
+    return result;
+  }
+
   /**
      Transforms link URLs to objects containing metadata
      E.g.

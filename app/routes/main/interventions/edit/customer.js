@@ -1,7 +1,6 @@
-import Route from '@ember/routing/route';
-import DataTableRouteMixin from 'ember-data-table/mixins/route';
+import DataTableRoute from '../../../../utils/data-table-route';
 
-export default class MainInterventionsEditCustomerRoute extends Route.extend(DataTableRouteMixin) {
+export default class MainInterventionsEditCustomerRoute extends DataTableRoute {
   modelName = 'customer';
 
   queryParams = {
