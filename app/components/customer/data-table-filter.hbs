@@ -20,9 +20,9 @@
       <label for="filter-number" class="block text-sm font-medium text-gray-700">
         Nummer
       </label>
-      <Input
+      <input
         id="filter-number"
-        @type="text"
+        type="text"
         value={{this.filter.number}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "number")}} />
@@ -31,9 +31,9 @@
       <label for="filter-name" class="block text-sm font-medium text-gray-700">
         Naam
       </label>
-      <Input
+      <input
         id="filter-name"
-        @type="text"
+        type="text"
         value={{this.filter.name}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "name")}}
@@ -43,9 +43,9 @@
       <label for="filter-street" class="block text-sm font-medium text-gray-700">
         Straat
       </label>
-      <Input
+      <input
         id="filter-street"
-        @type="text"
+        type="text"
         value={{this.filter.street}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "street")}} />
@@ -54,9 +54,9 @@
       <label for="filter-postal-code" class="block text-sm font-medium text-gray-700">
         Postcode
       </label>
-      <Input
+      <input
         id="filter-postal-code"
-        @type="text"
+        type="text"
         value={{this.filter.postalCode}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "postalCode")}} />
@@ -65,9 +65,9 @@
       <label for="filter-city" class="block text-sm font-medium text-gray-700">
         Gemeente
       </label>
-      <Input
+      <input
         id="filter-city"
-        @type="text"
+        type="text"
         value={{this.filter.city}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "city")}} />
@@ -76,9 +76,9 @@
       <label for="filter-telephone" class="block text-sm font-medium text-gray-700">
         Telefoon
       </label>
-      <Input
+      <input
         id="filter-telephone"
-        @type="text"
+        type="text"
         value={{this.filter.telephone}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
         {{on "input" (perform this.debounceFilter "telephone")}} />

@@ -22,9 +22,9 @@
           <label for="dt-filter-number" class="block text-sm font-medium text-gray-700">
             Nummer
           </label>
-          <Input
+          <input
             id="dt-filter-number"
-            @type="text"
+            type="text"
             value={{this.filter.number}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "number")}} />
@@ -33,9 +33,9 @@
           <label for="dt-filter-reference" class="block text-sm font-medium text-gray-700">
             Referentie
           </label>
-          <Input
+          <input
             id="dt-filter-reference"
-            @type="text"
+            type="text"
             value={{this.filter.reference}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "reference")}} />
@@ -44,9 +44,9 @@
           <label for="dt-filter-building-name" class="block text-sm font-medium text-gray-700">
             Gebouw
           </label>
-          <Input
+          <input
             id="dt-filter-building-name"
-            @type="text"
+            type="text"
             value={{this.filter.name}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "name")}} />
@@ -55,9 +55,9 @@
           <label for="dt-filter-building-street" class="block text-sm font-medium text-gray-700">
             Straat
           </label>
-          <Input
+          <input
             id="dt-filter-building-street"
-            @type="text"
+            type="text"
             value={{this.filter.street}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "street")}} />
@@ -66,9 +66,9 @@
           <label for="dt-filter-building-postal-code" class="block text-sm font-medium text-gray-700">
             Postcode
           </label>
-          <Input
+          <input
             id="dt-filter-building-postal-code"
-            @type="text"
+            type="text"
             value={{this.filter.postalCode}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "postalCode")}} />
@@ -77,9 +77,9 @@
           <label for="dt-filter-building-city" class="block text-sm font-medium text-gray-700">
             Gemeente
           </label>
-          <Input
+          <input
             id="dt-filter-building-city"
-            @type="text"
+            type="text"
             value={{this.filter.city}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "city")}} />

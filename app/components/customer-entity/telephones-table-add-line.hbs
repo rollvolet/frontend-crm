@@ -11,18 +11,18 @@
     @errors={{@model.validations.attrs.country.messages}} />
 </td>
 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-  <Input
+  <input
     id="telephone-area"
-    @type="text"
-    @value={{@model.area}}
+    type="text"
+    value={{@model.area}}
     class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-16 sm:text-sm border-gray-300 rounded-md"
     {{on "input" this.setArea}}
     {{on "focusout" (perform @saveTask)}} />
 </td>
 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-  <Input
+  <input
     id="telephone-number"
-    @type="text"
+    type="text"
     value={{this.formattedNumber}}
     class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-28 sm:text-sm border-gray-300 rounded-md"
     {{on "input" this.setNumber}}

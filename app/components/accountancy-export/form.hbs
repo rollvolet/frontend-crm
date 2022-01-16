@@ -12,9 +12,9 @@
       <label for="from-number" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">
         {{if this.multipleExportEnabled "Van" "Nummer"}}
       </label>
-      <Input
+      <input
         id="from-number"
-        @type="text"
+        type="text"
         name="from-number"
         value={{this.formattedFromNumber}}
         placeholder="30/0001"
@@ -29,9 +29,9 @@
         <label for="until-number" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">
           Tot
         </label>
-        <Input
+        <input
           id="until-number"
-          @type="text"
+          type="text"
           name="until-number"
           placeholder="30/0439"
           value={{this.formattedUntilNumber}}

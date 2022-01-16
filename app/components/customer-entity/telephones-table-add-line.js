@@ -35,7 +35,8 @@ export default class CustomerEntityTelephonesTableAddLine extends Component {
   }
 
   @action
-  setArea(area) {
+  setArea(event) {
+    let area = event.target.value;
     if (area) area = area.replace(digitsOnly, '');
     this.model.set('area', area);
   }
