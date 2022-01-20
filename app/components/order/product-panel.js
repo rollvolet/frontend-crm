@@ -49,6 +49,8 @@ export default class OrderProductPanelComponent extends Component {
     });
 
     yield this.saveInvoiceline.perform(invoiceline);
+
+    this.invoicelines.pushObject(invoiceline);
   }
 
   @task
