@@ -8,6 +8,7 @@ export default class BuildingsPanel extends Component {
   @service configuration;
 
   @tracked selectedBuilding = null;
+  @tracked isNewBuilding = false;
 
   createNewBuilding() {
     return this.store.createRecord('building', {
@@ -28,12 +29,14 @@ export default class BuildingsPanel extends Component {
   @action
   closeDetail() {
     this.selectedBuilding = null;
+    this.isNewBuilding = false;
   }
 
   @action
   async openCreate() {
     const building = this.createNewBuilding();
     this.selectedBuilding = building;
+    this.isNewBuilding = true;
     try {
       await building.save();
     } catch (e) {} // eslint-disable-line no-empty

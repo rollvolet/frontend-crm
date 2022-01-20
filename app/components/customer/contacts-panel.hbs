@@ -2,6 +2,7 @@
   {{#if this.selectedContact}}
     <Contact::DetailPanel
       @model={{this.selectedContact}}
+      @initialEditMode={{this.isNewContact}}
       @onCloseDetail={{this.closeDetail}} />
   {{else}}
     <Customer::ContactsTable

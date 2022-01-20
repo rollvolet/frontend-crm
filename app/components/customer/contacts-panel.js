@@ -8,6 +8,7 @@ export default class ContactsPanel extends Component {
   @service configuration;
 
   @tracked selectedContact = null;
+  @tracked isNewContact = false;
 
   createNewContact() {
     return this.store.createRecord('contact', {
@@ -28,12 +29,14 @@ export default class ContactsPanel extends Component {
   @action
   closeDetail() {
     this.selectedContact = null;
+    this.isNewContact = false;
   }
 
   @action
   async openCreate() {
     const contact = this.createNewContact();
     this.selectedContact = contact;
+    this.isNewContact = true;
     try {
       await contact.save();
     } catch (e) {} // eslint-disable-line no-empty

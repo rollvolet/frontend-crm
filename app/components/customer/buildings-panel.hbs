@@ -2,6 +2,7 @@
   {{#if this.selectedBuilding}}
     <Building::DetailPanel
       @model={{this.selectedBuilding}}
+      @initialEditMode={{this.isNewBuilding}}
       @onCloseDetail={{this.closeDetail}} />
   {{else}}
     <Customer::BuildingsTable

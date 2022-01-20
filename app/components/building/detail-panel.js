@@ -4,7 +4,12 @@ import { action } from '@ember/object';
 import { keepLatestTask } from 'ember-concurrency';
 
 export default class BuildingDetailPanelComponent extends Component {
-  @tracked editMode = false;
+  @tracked editMode;
+
+  constructor() {
+    super(...arguments);
+    this.editMode = this.args.initialEditMode || false;
+  }
 
   @keepLatestTask
   *save() {
