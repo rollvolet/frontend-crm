@@ -29,60 +29,8 @@
           </div>
         {{/if}}
       </div>
-      {{#unless @model.isNew}}
-        <button type="button"
-          class="p-1 rounded-full {{if this.isShownCalculation "bg-gray-100 text-red-400" "text-gray-500 hover:text-red-400 hover:bg-gray-100"}} focus:outline-none focus:ring-2 focus:ring-red-200"
-          {{on "click" this.toggleCalculation}}>
-          {{svg-jar "heroicons-md-calculator" class="h-5 w-5"}}
-          <EmberTooltip @text="Toon berekening" />
-        </button>
-      {{/unless}}
     </div>
   </div>
-  {{#if this.isShownCalculation}}
-    <div class="px-4 py-2 space-y-4 bg-gray-50 border-b border-gray-200 overflow-auto">
-      <table class="w-full table-fixed divide-y divide-gray-200">
-        <thead>
-          <tr>
-            <th scope="col" class="pr-4 py-3 text-xs tracking-wider text-gray-500 font-medium uppercase w-56 sm:w-auto">
-              Beschrijving
-            </th>
-            <th scope="col" class="px-4 py-3 text-xs tracking-wider text-gray-500 font-medium uppercase w-32">
-              Bedrag
-            </th>
-            {{#unless @isDisabledEdit}}
-              <th scope="col" class="py-3 text-xs tracking-wider text-gray-500 font-medium uppercase w-12">
-                {{!-- buttons --}}
-              </th>
-            {{/unless}}
-          </tr>
-        </thead>
-        <tbody>
-          {{#each @model.calculationLines as |line|}}
-            <CalculationLine::Detail
-              @model={{line}}
-              @onSave={{perform this.updateOfferlineAmount}}
-              @onDelete={{perform this.deleteCalculationLine line}}
-              @isDisabledEdit={{@isDisabledEdit}} />
-          {{else}}
-            <tr>
-              <td colspan="3" class="py-4 text-sm text-gray-400 italic">
-                Er is nog geen berekening toegevoegd
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <div class="flex justify-end">
-        <button type="button"
-          class="flex text-sm text-gray-600 font-medium underline hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-          {{on "click" (perform this.addCalculationLine)}}>
-          {{svg-jar "heroicons-sm-plus" class="-ml-1 h-5 w-5"}}
-          <span>Lijn toevoegen</span>
-        </button>
-      </div>
-    </div>
-  {{/if}}
   {{#if this.editMode}}
     <div class="relative" ...attributes>
       <InputField::RichTextArea
@@ -123,4 +71,65 @@
       </div>
     </div>
   {{/if}}
+  <div class="px-4 py-2 bg-gray-50 border-t rounded-b border-gray-200 overflow-auto">
+    <div class="mt-1 flex items-center justify-between">
+      <div class="flex items-center text-xs tracking-wider text-gray-600 font-medium uppercase">
+        {{svg-jar "heroicons-md-calculator" class="text-gray-400 h-5 w-5"}}
+        <div class="ml-1">
+          Rekenblad
+        </div>
+      </div>
+      {{#unless @model.isNew}}
+        <button type="button"
+          class="p-1 rounded-full {{if this.isShownCalculation "bg-gray-100 text-red-400" "text-gray-400 hover:text-red-400 hover:bg-gray-100"}} focus:outline-none focus:ring-2 focus:ring-red-200"
+          {{on "click" this.toggleCalculation}}>
+          {{svg-jar
+              (if this.isShownCalculation "heroicons-md-chevron-up" "heroicons-md-chevron-down")
+              class="h-5 w-5"}}
+        </button>
+      {{/unless}}
+    </div>
+    {{#if this.isShownCalculation}}
+      <table class="w-full table-fixed divide-y divide-gray-200">
+        <thead>
+          <tr>
+            <th scope="col" class="pr-4 py-3 text-xs tracking-wider text-gray-500 font-medium w-56 sm:w-auto">
+              Beschrijving
+            </th>
+            <th scope="col" class="px-4 py-3 text-xs tracking-wider text-gray-500 font-medium w-32">
+              Bedrag
+            </th>
+            {{#unless @isDisabledEdit}}
+              <th scope="col" class="py-3 text-xs tracking-wider text-gray-500 font-medium w-12">
+                {{!-- buttons --}}
+              </th>
+            {{/unless}}
+          </tr>
+        </thead>
+        <tbody>
+          {{#each @model.calculationLines as |line|}}
+            <CalculationLine::Detail
+              @model={{line}}
+              @onSave={{perform this.updateOfferlineAmount}}
+              @onDelete={{perform this.deleteCalculationLine line}}
+              @isDisabledEdit={{@isDisabledEdit}} />
+          {{else}}
+            <tr>
+              <td colspan="3" class="py-4 text-sm text-gray-400 italic">
+                Er is nog geen berekening toegevoegd
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <div class="mt-4 flex justify-end">
+        <button type="button"
+          class="flex text-sm text-gray-600 font-medium underline hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+          {{on "click" (perform this.addCalculationLine)}}>
+          {{svg-jar "heroicons-sm-plus" class="-ml-1 h-5 w-5"}}
+          <span>Lijn toevoegen</span>
+        </button>
+      </div>
+    {{/if}}
+  </div>
 </div>
