@@ -1,7 +1,10 @@
 import Component from '@glimmer/component';
 import { all, task } from 'ember-concurrency';
+import { inject as service } from '@ember/service';
 
 export default class InvoicePanelsComponent extends Component {
+  @service store;
+
   get isDisabledEdit() {
     return this.args.model.isMasteredByAccess;
   }

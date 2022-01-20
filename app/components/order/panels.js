@@ -6,6 +6,7 @@ import { warn } from '@ember/debug';
 export default class OrderPanelsComponent extends Component {
   @service case;
   @service router;
+  @service store;
 
   get isDisabledEdit() {
     return this.args.model.isMasteredByAccess || this.case.current.invoice != null;
