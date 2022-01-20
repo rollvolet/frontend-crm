@@ -25,6 +25,10 @@ export default class OrderDetailPanelComponent extends Component {
     return this.case.current && this.case.current.invoice;
   }
 
+  get visitor() {
+    return this.case.visitor;
+  }
+
   get technicianNames() {
     return this.args.model.technicians.sortBy('firstName').mapBy('firstName');
   }
