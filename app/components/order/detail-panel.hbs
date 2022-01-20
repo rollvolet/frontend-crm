@@ -47,19 +47,22 @@
             <InputField::Date
               @label="Datum"
               @value={{@model.orderDate}}
-              @onChange={{queue (fn (mut @model.orderDate)) (perform this.save)}} />
+              @onChange={{queue (fn (mut @model.orderDate)) (perform this.save)}}
+              class="mt-1" />
           </div>
           <div class="lg:col-start-1">
             <InputField::Date
               @label="Verwacht"
               @value={{@model.expectedDate}}
-              @onChange={{queue (fn (mut @model.expectedDate)) (perform this.save)}} />
+              @onChange={{queue (fn (mut @model.expectedDate)) (perform this.save)}}
+              class="mt-1" />
           </div>
           <div>
             <InputField::Date
               @label="Vereist"
               @value={{@model.requiredDate}}
-              @onChange={{queue (fn (mut @model.requiredDate)) (perform this.save)}} />
+              @onChange={{queue (fn (mut @model.requiredDate)) (perform this.save)}}
+              class="mt-1" />
           </div>
           <div>
             <InputField::EmployeeSelect
@@ -67,7 +70,8 @@
               @value={{this.visitor}}
               @isOnRoad={{true}}
               @isTechnician={{true}}
-              @onSelectionChange={{queue this.setVisitor (perform this.save)}} />
+              @onSelectionChange={{queue this.setVisitor (perform this.save)}}
+              class="mt-1" />
           </div>
           <div>
             <label for="reference" class="block text-sm font-medium text-gray-700">
@@ -77,7 +81,7 @@
               id="reference"
               @type="text"
               @value={{@model.reference}}
-              class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+              class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
               {{on "focusout" (perform this.save)}} />
           </div>
           <div class="lg:col-span-2">
@@ -88,7 +92,7 @@
                   @value={{@model.scheduledHours}}
                   @errors={{@model.validations.attrs.scheduledHours.messages}}
                   @onChange={{queue (fn (mut @model.scheduledHours)) (perform this.save)}}
-                  class="block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+                  class="mt-1 block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
               </div>
               <div class="text-sm text-gray-700 whitespace-nowrap">
                 x
@@ -99,7 +103,7 @@
                   @value={{@model.scheduledNbOfPersons}}
                   @errors={{@model.validations.attrs.scheduledNbOfPersons.messages}}
                   @onChange={{queue (fn (mut @model.scheduledNbOfPersons)) (perform this.save)}}
-                  class="block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+                  class="mt-1 block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
               </div>
               <div class="text-sm text-gray-700 whitespace-nowrap">
                 = {{@model.scheduledTotal}} uur
@@ -115,7 +119,8 @@
               @isTechnician={{true}}
               @isAdministrative={{true}}
               @sort={{array "functionSort:desc"}}
-              @onSelectionChange={{queue this.setTechnicians (perform this.save)}} />
+              @onSelectionChange={{queue this.setTechnicians (perform this.save)}}
+              class="mt-1" />
           </div>
         </div>
         <div class="space-y-6">
@@ -149,7 +154,7 @@
               <div class="font-semibold text-sm text-gray-700">
                 Productiebon
               </div>
-              <div>
+              <div class="ml-3">
                 <ProductionTicket::InlineEdit @model={{@model}} />
               </div>
             </div>
@@ -179,7 +184,7 @@
           <Textarea
             id="comment"
             @value={{@model.comment}}
-            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             rows="5"
             {{on "focusout" (perform this.save)}} />
         </div>
