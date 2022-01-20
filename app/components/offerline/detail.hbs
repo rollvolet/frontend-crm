@@ -111,6 +111,7 @@
           {{#each @model.calculationLines as |line|}}
             <CalculationLine::Detail
               @model={{line}}
+              @initialEditMode={{@model.initialEditMode}}
               @onSave={{perform this.updateOfferlineAmount}}
               @onDelete={{perform this.deleteCalculationLine line}}
               @isDisabledEdit={{@isDisabledEdit}} />

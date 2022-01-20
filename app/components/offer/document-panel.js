@@ -59,6 +59,7 @@ export default class OfferDocumentPanelComponent extends Component {
       amount: 0,
       vatRate: vatRate,
     });
+    offerline.initialEditMode = true;
 
     if (this.args.model.isMasteredByAccess) {
       this.args.model.amount = 0; // make sure offer is no longer mastered by Access

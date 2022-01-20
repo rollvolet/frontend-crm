@@ -13,8 +13,8 @@ export default class OfferlineDetailComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.editMode = this.args.model.isNew;
-    this.loadData.perform();
+    this.editMode = this.args.model.initialEditMode;
+    this.isShownCalculation = this.args.model.initialEditMode;
   }
 
   get showUnsavedWarning() {
@@ -24,12 +24,6 @@ export default class OfferlineDetailComponent extends Component {
         this.args.model.isNew ||
         this.args.model.hasDirtyAttributes)
     );
-  }
-
-  @task
-  *loadData() {
-    const calculationLines = yield this.args.model.calculationLines;
-    this.isShownCalculation = calculationLines.any((l) => l.validations.isInvalid);
   }
 
   @keepLatestTask
@@ -72,6 +66,7 @@ export default class OfferlineDetailComponent extends Component {
   @action
   closeEdit() {
     this.editMode = false;
+    this.args.model.initialEditMode = false;
   }
 
   @action
