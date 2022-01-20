@@ -29,9 +29,9 @@
           class="mt-1 block w-full sm:text-sm text-gray-700 pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
       </div>
     </td>
-    <td class="py-4 text-right">
+    <td class="py-4 flex items-center space-x-1">
       <Util::SaveStatus @model={{@model}} @task={{this.save}} />
-      <span class="pt-2">
+      <span class="pt-1">
         <button type="button"
           class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
           {{on "click" this.closeEdit}}>

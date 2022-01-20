@@ -23,6 +23,9 @@ module.exports = {
         green: colors.emerald,
         yellow: colors.amber
       },
+      minHeight: (theme) => ({
+        ...theme('spacing')
+      }),
       screens: {
         'print': {'raw': 'print'} // => @media print { ... }
       },

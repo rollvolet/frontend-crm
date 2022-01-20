@@ -45,6 +45,7 @@
         <InputField::RichTextArea
           @value={{@model.description}}
           @class="w-full text-sm"
+          @textAreaHeight="h-full min-h-48"
           @onChange={{fn (mut @model.description)}}
           @focusOut={{perform @saveTask @model}} />
       {{else}}
