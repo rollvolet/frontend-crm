@@ -14,15 +14,10 @@
     </div>
     <div class="pl-4 space-x-1 flex flex-col sm:flex-row justify-end items-end sm:items-baseline">
       {{#if this.editPriceMode}}
-        <div class="relative shadow-sm rounded-md">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <span class="text-gray-500 sm:text-sm">
-              &euro;
-            </span>
-          </div>
+        <div>
           <InputField::DecimalInput
             @value={{@model.amount}}
-            @errors={{@model.validations.attrs.amount.messages}}
+            @leading="&euro;"
             @onChange={{queue (fn (mut @model.amount)) (perform @saveTask @model)}}
             class="block w-32 sm:text-sm pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
         </div>

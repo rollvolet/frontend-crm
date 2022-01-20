@@ -3,20 +3,22 @@
     {{@label}}
   </label>
 {{/if}}
-{{#if @errors}}
-  <Input ...attributes
-    id={{this.fieldId}}
-    @value={{this.formattedValue}}
-    {{on "focusout" (fn this.updateValue this.formattedValue)}}
-    class="border-red-300 text-red-900 placeholder-red-300" />
-  {{#each @errors as |error|}}
-    <p class="mt-2 text-xs text-red-600">
-      {{error}}
-    </p>
-  {{/each}}
-{{else}}
+<div class="{{if @leading "relative shadow-sm rounded-md"}}">
+  {{#if @leading}}
+    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+      <span class="text-gray-500 sm:text-sm">
+        {{@leading}}
+      </span>
+    </div>
+  {{/if}}
+
   <Input ...attributes
     id={{this.fieldId}}
     @value={{this.formattedValue}}
     {{on "focusout" (fn this.updateValue this.formattedValue)}} />
-{{/if}}
+</div>
+{{#each @errors as |error|}}
+  <p class="mt-2 text-xs text-red-600">
+    {{error}}
+  </p>
+{{/each}}
