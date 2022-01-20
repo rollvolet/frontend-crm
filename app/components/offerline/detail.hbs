@@ -57,9 +57,15 @@
   {{else}}
     <div class="px-4 py-4" ...attributes>
       <div class="flex flex-row justify-between">
-        <div class="text-sm text-gray-900 prose max-w-none">
-          {{{@model.description}}}
-        </div>
+        {{#if @model.description}}
+          <div class="text-sm text-gray-900 prose max-w-none">
+            {{{@model.description}}}
+          </div>
+        {{else}}
+          <div class="text-xs sm:text-sm text-gray-400 italic">
+            Nog geen beschrijving voor offerte toegevoegd
+          </div>
+        {{/if}}
         {{#unless @isDisabledEdit}}
           <div class="grow-0 flex-auto flex items-end">
             <button type="button"
