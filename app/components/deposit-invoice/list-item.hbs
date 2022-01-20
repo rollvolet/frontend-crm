@@ -2,8 +2,8 @@
   <div class="flex">
     <div class="flex-none mt-0.5">
       <button type="button"
-        onClick={{this.toggleExpand}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+        {{on "click" this.toggleExpand}}
+        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
         {{svg-jar
             (if this.isExpanded "heroicons-md-chevron-down" "heroicons-md-chevron-right")
             class="shrink-0 mr-1.5 h-5 w-5"}}
@@ -230,8 +230,8 @@
         <div class="mt-6 space-x-2 flex justify-end">
           <Util::SaveStatus @model={{@model}} @task={{this.save}} />
           <button type="button"
-            onClick={{this.closeEdit}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            {{on "click" this.closeEdit}}
+            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
             {{svg-jar "heroicons-md-logout" class="h-5 w-5"}}
             <EmberTooltip @text="Sluiten" />
           </button>
@@ -240,21 +240,21 @@
         <div class="mt-6 sm:flex sm:justify-between">
           <div>
             <button type="button"
-              onClick={{this.toggleExpand}}
+              {{on "click" this.toggleExpand}}
               class="text-xs text-gray-500 underline hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
               {{#if this.isExpanded}}Toon minder{{else}}Toon meer{{/if}}
             </button>
           </div>
           <div class="mt-2 space-x-0 space-y-2 flex flex-col sm:mt-0 sm:flex-none sm:flex-row sm:space-x-2 sm:space-y-0">
             <button type="button"
-              onClick={{this.downloadInvoiceDocument}}
-                class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+              {{on "click" this.downloadInvoiceDocument}}
+              class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-eye" class="-ml-0.5 mr-2 h-4 w-4"}}
               Bekijken
             </button>
             {{#unless @model.isMasteredByAccess}}
               <button type="button"
-                onClick={{perform this.generateInvoiceDocument}}
+                {{on "click" (perform this.generateInvoiceDocument)}}
               class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
                 {{#if this.generateInvoiceDocument.isRunning}}
                   {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-4 w-14"}}
@@ -267,16 +267,16 @@
             {{#unless @isDisabledEdit}}
               {{#unless @model.isCreditNote}}
                 <button type="button"
-                  onClick={{perform @credit @model}}
-                class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+                  {{on "click" (perform @onCredit @model)}}
+                  class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
                   {{svg-jar "heroicons-md-receipt-refund" class="-ml-0.5 mr-2 h-4 w-4"}}
                   Crediteren
                 </button>
               {{/unless}}
             {{/unless}}
             <button type="button"
-              onClick={{this.openEdit}}
-                class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+              {{on "click" this.openEdit}}
+              class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-pencil" class="-ml-0.5 mr-2 h-4 w-4"}}
               Wijzigen
             </button>

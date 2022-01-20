@@ -78,7 +78,7 @@ export default class DepositInvoicePanelsComponent extends Component {
     const { validations } = yield depositInvoice.validate();
     if (validations.isValid) yield depositInvoice.save();
 
-    this.args.didCreateDepositInvoice();
+    this.args.didCreateDepositInvoice(depositInvoice);
   }
 
   @task
@@ -105,6 +105,6 @@ export default class DepositInvoicePanelsComponent extends Component {
     const { validations } = yield creditNote.validate();
     if (validations.isValid) yield creditNote.save();
 
-    this.args.didCreateDepositInvoice();
+    this.args.didCreateDepositInvoice(creditNote);
   }
 }

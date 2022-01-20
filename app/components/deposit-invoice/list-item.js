@@ -9,9 +9,15 @@ import { task } from 'ember-concurrency';
 export default class DepositInvoiceListItemComponent extends Component {
   @service documentGeneration;
 
-  @tracked isExpanded = false;
-  @tracked editMode = false;
+  @tracked isExpanded;
+  @tracked editMode;
   @tracked showMissingCertificateDialog = false;
+
+  constructor() {
+    super(...arguments);
+    this.editMode = this.args.initialEditMode || false;
+    this.isExpanded = this.args.initialEditMode || false;
+  }
 
   get fieldId() {
     return `${guidFor(this)}`;
@@ -81,6 +87,7 @@ export default class DepositInvoiceListItemComponent extends Component {
   @action
   closeEdit() {
     this.editMode = false;
+    this.args.onCloseEdit(this.args.model);
   }
 
   @action
