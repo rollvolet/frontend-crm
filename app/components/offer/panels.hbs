@@ -22,6 +22,7 @@
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <Offer::DetailPanel
         @model={{@model}}
+        @initialEditMode={{@initialEditMode}}
         @onDelete={{perform this.delete}}
         @isDisabledEdit={{this.isDisabledEdit}}
         @isEnabledDelete={{this.isEnabledDelete}} />

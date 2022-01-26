@@ -10,6 +10,11 @@ export default class OfferDetailPanelComponent extends Component {
 
   @tracked editMode = false;
 
+  constructor() {
+    super(...arguments);
+    this.editMode = this.args.initialEditMode || false;
+  }
+
   get request() {
     return this.case.current && this.case.current.request;
   }
