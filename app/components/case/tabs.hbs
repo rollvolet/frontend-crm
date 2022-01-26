@@ -20,14 +20,16 @@
             <LinkTo @route="main.case.request.edit.index"
               @models={{array this.model.customerId this.model.requestId}}
               @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+              data-case-tab>
               Aanvraag
             </LinkTo>
           {{else}}
             <LinkTo @route="main.requests.edit"
               @model={{this.model.requestId}}
               @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+              data-case-tab>
               Aanvraag
             </LinkTo>
           {{/if}}
@@ -37,14 +39,16 @@
             <LinkTo @route="main.case.intervention.edit.index"
               @models={{array this.model.customerId this.model.interventionId}}
               @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+              data-case-tab>
               Interventie
             </LinkTo>
           {{else}}
             <LinkTo @route="main.interventions.edit"
               @model={{this.model.interventionId}}
               @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+              data-case-tab>
               Interventie
             </LinkTo>
           {{/if}}
@@ -53,7 +57,8 @@
           <LinkTo @route="main.case.offer.edit.index"
             @models={{array this.model.customerId this.model.offerId}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+            data-case-tab>
             Offerte
           </LinkTo>
         {{/if}}
@@ -61,13 +66,15 @@
           <LinkTo @route="main.case.order.edit.index"
             @models={{array this.model.customerId this.model.orderId}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+            data-case-tab>
             Bestelling
           </LinkTo>
           <LinkTo @route="main.case.order.edit.deposit-invoices"
             @models={{array this.model.customerId this.model.orderId}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+            data-case-tab>
             Voorschotten
           </LinkTo>
         {{/if}}
@@ -75,7 +82,8 @@
           <LinkTo @route="main.case.invoice.edit.index"
             @models={{array this.model.customerId this.model.invoiceId}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+            data-case-tab>
             Factuur
           </LinkTo>
         {{/if}}
@@ -84,7 +92,8 @@
           <LinkTo @route="main.case.request.edit.offer"
             @models={{array this.model.customerId this.model.requestId}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+            data-case-tab>
             {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
           </LinkTo>
         {{/if}}
@@ -92,7 +101,8 @@
           <LinkTo @route="main.case.offer.edit.order"
             @models={{array this.model.customerId this.model.offerId}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+            class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+            data-case-tab>
             {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
           </LinkTo>
         {{/if}}
@@ -101,14 +111,16 @@
             <LinkTo @route="main.case.order.edit.invoice"
               @models={{array this.model.customerId this.model.orderId}}
               @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-              class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+              class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+              data-case-tab>
               {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
             </LinkTo>
           {{else if this.model.interventionId}}
             <LinkTo @route="main.case.intervention.edit.invoice"
               @models={{array this.model.customerId this.model.interventionId}}
               @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-              class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t">
+              class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
+              data-case-tab>
               {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
             </LinkTo>
           {{/if}}

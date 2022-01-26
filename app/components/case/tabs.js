@@ -18,10 +18,13 @@ export default class CaseTabsComponent extends Component {
     });
 
     this.router.on('routeDidChange', (transition) => {
-      document.activeElement.blur(); // unfocus tab
+      const activeElement = document.activeElement;
+      if (activeElement && activeElement.hasAttribute('data-case-tab')) {
+        document.activeElement.blur(); // unfocus tab
+      }
       const target = transition.to.name;
-      if (target.startsWith('main.case') && this.case.isInvalid) {
-        this.case.initCase.perform();
+      if (target.startsWith('main.case')) {
+        this.case.reloadCase.perform();
       }
     });
   }

@@ -62,6 +62,29 @@ export default class CaseService extends Service.extend(Evented) {
   }
 
   @keepLatestTask()
+  *reloadCase() {
+    let mustReload = false;
+    if (this.isInvalid) {
+      mustReload = true;
+    } else if (this.current) {
+      // check if route params of current route are still the same as before
+      let routeParams = {};
+      let routeInfo = this.router.currentRoute;
+      while (routeInfo) {
+        routeParams = Object.assign(routeParams, routeInfo.params);
+        routeInfo = routeInfo.parent;
+      }
+      if (this.current.differsFrom(routeParams)) {
+        mustReload = true;
+      }
+    }
+
+    if (mustReload) {
+      yield this.initCase.perform();
+    }
+  }
+
+  @keepLatestTask()
   *loadCaseForCurrentRoute() {
     const currentRoute = this.router.currentRouteName;
     const currentUrl = this.router.currentURL;
