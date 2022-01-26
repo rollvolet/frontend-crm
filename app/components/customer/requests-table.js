@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
+import onlyNumericChars from '../../utils/only-numeric-chars';
 
 export default class RequestsTable extends FilterComponent {
   @service router;
@@ -27,6 +28,10 @@ export default class RequestsTable extends FilterComponent {
 
   @restartableTask
   *search(filter) {
+    if (filter.number) {
+      // TODO remove non-numeric characters
+    }
+
     this.requests = yield this.store.query('request', {
       page: {
         size: this.size,
@@ -38,7 +43,7 @@ export default class RequestsTable extends FilterComponent {
         customer: {
           number: this.args.customer.number,
         },
-        number: filter.number,
+        number: onlyNumericChars(filter.number),
         building: {
           name: filter.name,
           'postal-code': filter.postalCode,

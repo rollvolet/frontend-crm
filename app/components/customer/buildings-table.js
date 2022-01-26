@@ -3,6 +3,7 @@ import FilterComponent from '../data-table-filter';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
+import onlyNumericChars from '../../utils/only-numeric-chars';
 
 export default class BuildingsTable extends FilterComponent {
   @service router;
@@ -38,7 +39,7 @@ export default class BuildingsTable extends FilterComponent {
         customer: {
           number: this.args.customer.number,
         },
-        number: filter.number,
+        number: onlyNumericChars(filter.number),
         name: filter.name,
         'postal-code': filter.postalCode,
         city: filter.city,

@@ -1,4 +1,5 @@
 import DataTableRoute from '../../../utils/data-table-route';
+import onlyNumericChars from '../../../utils/only-numeric-chars';
 
 export default class MainOrdersIndexRoute extends DataTableRoute {
   modelName = 'order';
@@ -29,7 +30,7 @@ export default class MainOrdersIndexRoute extends DataTableRoute {
     return {
       include: 'customer,customer.honorific-prefix,building,offer',
       filter: {
-        'request-number': params.requestNumber,
+        'request-number': onlyNumericChars(params.requestNumber),
         'offer-number': params.offerNumber,
         reference: params.reference,
         invoice: !params.withoutInvoice,

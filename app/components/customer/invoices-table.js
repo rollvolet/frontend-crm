@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
+import onlyNumericChars from '../../utils/only-numeric-chars';
 
 export default class InvoicesTable extends FilterComponent {
   @service router;
@@ -37,7 +38,7 @@ export default class InvoicesTable extends FilterComponent {
         customer: {
           number: this.args.customer.number,
         },
-        number: filter.number,
+        number: onlyNumericChars(filter.number),
         reference: filter.reference,
         building: {
           name: filter.name,

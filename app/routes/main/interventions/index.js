@@ -1,4 +1,5 @@
 import DataTableRoute from '../../../utils/data-table-route';
+import onlyNumericChars from '../../../utils/only-numeric-chars';
 
 export default class MainInterventionsIndexRoute extends DataTableRoute {
   modelName = 'intervention';
@@ -27,7 +28,7 @@ export default class MainInterventionsIndexRoute extends DataTableRoute {
     return {
       include: 'customer,customer.honorific-prefix,building,planning-event',
       filter: {
-        number: params.number,
+        number: onlyNumericChars(params.number),
         isCancelled: params.isCancelled,
         hasInvoice: params.hasInvoice,
         isPlanned: params.isPlanned,
