@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 import onlyNumericChars from '../../utils/only-numeric-chars';
+import formatOfferNumber from '../../utils/format-offer-number';
 
 export default class OrdersTable extends FilterComponent {
   @service router;
@@ -47,7 +48,7 @@ export default class OrdersTable extends FilterComponent {
           number: this.args.customer.number,
         },
         'request-number': onlyNumericChars(filter.requestNumber),
-        'offer-number': filter.offerNumber,
+        'offer-number': formatOfferNumber(filter.offerNumber),
         reference: filter.reference,
         building: {
           name: filter.name,
