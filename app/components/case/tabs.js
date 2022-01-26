@@ -23,8 +23,8 @@ export default class CaseTabsComponent extends Component {
         document.activeElement.blur(); // unfocus tab
       }
       const target = transition.to.name;
-      if (target.startsWith('main.case') && this.case.isInvalid) {
-        this.case.initCase.perform();
+      if (target.startsWith('main.case')) {
+        this.case.reloadCase.perform();
       }
     });
   }

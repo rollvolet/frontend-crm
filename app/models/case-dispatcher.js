@@ -1,5 +1,16 @@
 import { tracked } from '@glimmer/tracking';
+import snakeToCamel from '../utils/snake-to-camel-string';
 
+const ATTRS = [
+  'customerId',
+  'contactId',
+  'buildingId',
+  'interventionId',
+  'requestId',
+  'offerId',
+  'orderId',
+  'invoiceId',
+];
 export default class CaseDispatcher {
   @tracked customerId = null;
   @tracked contactId = null;
@@ -19,24 +30,10 @@ export default class CaseDispatcher {
   @tracked order = null;
   @tracked invoice = null;
 
-  constructor({
-    customerId,
-    contactId,
-    buildingId,
-    interventionId,
-    requestId,
-    offerId,
-    orderId,
-    invoiceId,
-  }) {
-    this.customerId = customerId;
-    this.contactId = contactId;
-    this.buildingId = buildingId;
-    this.requestId = requestId;
-    this.interventionId = interventionId;
-    this.offerId = offerId;
-    this.orderId = orderId;
-    this.invoiceId = invoiceId;
+  constructor(params) {
+    for (let key of ATTRS) {
+      this[key] = params[key];
+    }
   }
 
   get identifier() {
@@ -55,5 +52,15 @@ export default class CaseDispatcher {
 
   get uri() {
     return `http://data.rollvolet.be/cases/${this.identifier}`;
+  }
+
+  differsFrom(other) {
+    for (let key of Object.keys(other)) {
+      const snakeKey = snakeToCamel(key);
+      if (ATTRS.includes(snakeKey) && other[key] !== this[snakeKey]) {
+        return true;
+      }
+    }
+    return false;
   }
 }
