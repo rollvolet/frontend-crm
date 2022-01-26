@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 export default class MainInterventionsNewRoute extends Route {
   @service userInfo;
   @service store;
+  @service router;
 
   async model() {
     const employee = await this.userInfo.getEmployee();
@@ -16,6 +17,6 @@ export default class MainInterventionsNewRoute extends Route {
   }
 
   afterModel(model) {
-    this.transitionTo('main.interventions.edit', model);
+    this.router.transitionTo('main.interventions.edit', model);
   }
 }

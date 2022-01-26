@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 
 export default class MainOrdersEditRoute extends Route {
   @service store;
+  @service router;
 
   model(params) {
     return this.store.findRecord('order', params.order_id, {
@@ -13,7 +14,7 @@ export default class MainOrdersEditRoute extends Route {
   async afterModel(model) {
     const customer = await model.customer;
     if (customer) {
-      this.transitionTo('main.case.order.edit', customer, model);
+      this.router.transitionTo('main.case.order.edit', customer, model);
     }
   }
 }

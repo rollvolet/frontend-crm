@@ -7,6 +7,7 @@ export default class OfferRoute extends Route {
   @service case;
   @service userInfo;
   @service store;
+  @service router;
 
   async beforeModel() {
     const request = this.modelFor('main.case.request.edit');
@@ -47,7 +48,7 @@ export default class OfferRoute extends Route {
     this.case.updateRecord('offer', model);
 
     const customer = this.modelFor('main.case');
-    this.transitionTo('main.case.offer.edit', customer, model, {
+    this.router.transitionTo('main.case.offer.edit', customer, model, {
       queryParams: { editMode: true },
     });
   }

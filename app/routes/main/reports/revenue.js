@@ -5,6 +5,7 @@ import MonthlySalesEntry from '../../../classes/monthly-sales-entry';
 
 export default class MainReportsRevenueRoute extends Route {
   @service userInfo;
+  @service router;
 
   queryParams = {
     fromYear: {
@@ -17,7 +18,7 @@ export default class MainReportsRevenueRoute extends Route {
 
   beforeModel() {
     if (!this.userInfo.hasBoardRole) {
-      this.transitionTo('forbidden');
+      this.router.transitionTo('forbidden');
     }
   }
 

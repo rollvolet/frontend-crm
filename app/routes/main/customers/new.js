@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 export default class NewRoute extends Route {
   @service configuration;
   @service store;
+  @service router;
 
   model() {
     const customer = this.store.createRecord('customer', {
@@ -19,6 +20,6 @@ export default class NewRoute extends Route {
   }
 
   afterModel(model) {
-    this.transitionTo('main.customers.edit', model);
+    this.router.transitionTo('main.customers.edit', model);
   }
 }

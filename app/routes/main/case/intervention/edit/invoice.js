@@ -5,6 +5,7 @@ import moment from 'moment';
 export default class InvoiceRoute extends Route {
   @service case;
   @service store;
+  @service router;
 
   async model() {
     const intervention = this.modelFor('main.case.intervention.edit');
@@ -40,6 +41,6 @@ export default class InvoiceRoute extends Route {
     this.case.updateRecord('invoice', model);
 
     const customer = this.modelFor('main.case');
-    this.transitionTo('main.case.invoice.edit', customer, model);
+    this.router.transitionTo('main.case.invoice.edit', customer, model);
   }
 }

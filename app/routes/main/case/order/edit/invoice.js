@@ -6,6 +6,7 @@ import sum from '../../../../../utils/math/sum';
 export default class InvoiceRoute extends Route {
   @service case;
   @service store;
+  @service router;
 
   beforeModel(transition) {
     const order = this.modelFor('main.case.order.edit');
@@ -64,7 +65,7 @@ export default class InvoiceRoute extends Route {
 
   afterModel(model) {
     const customer = this.modelFor('main.case');
-    this.transitionTo('main.case.invoice.edit', customer, model);
+    this.router.transitionTo('main.case.invoice.edit', customer, model);
 
     // update case to display the new invoice tab
     this.case.updateRecord('invoice', model);
