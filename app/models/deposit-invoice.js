@@ -25,9 +25,6 @@ export default class DepositInvoiceModel extends ValidatedModel {
   @attr('date-midnight') paymentDate;
   @attr('date-midnight') cancellationDate;
   @attr baseAmount;
-  @attr('boolean') certificateRequired;
-  @attr('boolean') certificateReceived;
-  @attr('boolean') certificateClosed;
   @attr('boolean') isCreditNote;
   @attr comment;
   @attr qualification;

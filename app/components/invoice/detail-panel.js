@@ -65,7 +65,6 @@ export default class InvoiceDetailPanelComponent extends Component {
   @action
   setVatRate(vatRate) {
     this.args.model.vatRate = vatRate;
-    this.args.model.certificateRequired = vatRate && vatRate.rate == 6;
     this.args.onChangeVatRate(vatRate);
   }
 

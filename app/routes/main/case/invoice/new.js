@@ -16,9 +16,6 @@ export default class NewRoute extends Route {
     const invoice = this.store.createRecord('invoice', {
       invoiceDate,
       dueDate,
-      certificateRequired: false,
-      certificateReceived: false,
-      certificateClosed: false,
       isCreditNote: false,
       hasProductionTicket: false,
       customer,

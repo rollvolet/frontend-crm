@@ -20,9 +20,6 @@ export default class InvoiceRoute extends Route {
     const invoice = this.store.createRecord('invoice', {
       invoiceDate,
       dueDate,
-      certificateRequired: vatRate.rate == 6,
-      certificateReceived: false,
-      certificateClosed: false,
       isCreditNote: false,
       hasProductionTicket: false,
       comment: intervention.comment,

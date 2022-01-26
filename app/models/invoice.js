@@ -21,9 +21,6 @@ export default class InvoiceModel extends ValidatedModel {
   @attr('date-midnight') paymentDate;
   @attr('date-midnight') cancellationDate;
   @attr baseAmount;
-  @attr('boolean') certificateRequired;
-  @attr('boolean') certificateReceived;
-  @attr('boolean') certificateClosed;
   @attr('boolean') isCreditNote;
   @attr('boolean') hasProductionTicket;
   @attr comment;
