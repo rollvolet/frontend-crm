@@ -38,12 +38,6 @@ export default class DataTableFilterComponent extends Component {
 
   @action
   autofocus(element) {
-    if (element) {
-      // If we don't delay .focus(), another element seems to gain the final focus
-      // By postponing the .focus() action 1ms, the correct input element gets focus
-      setTimeout(() => {
-        element.focus();
-      }, 1);
-    }
+    element.focus();
   }
 }
