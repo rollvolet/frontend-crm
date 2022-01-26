@@ -184,11 +184,6 @@
           <Util::DetailItem @label="Betaalref.">
             {{format-bank-reference @model.bankReference}}
           </Util::DetailItem>
-          {{#if @model.certificateRequired}}
-            <Util::DetailItem @label="BTW-attest" @class="layout-align-start-center">
-              <Certificate::InlineEdit @model={{@model}} />
-            </Util::DetailItem>
-          {{/if}}
           {{#unless @model.isIsolated}}
             <Util::DetailItem @label="Productiebon" class="items-center">
               <div class="flex items-center">

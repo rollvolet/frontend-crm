@@ -198,14 +198,6 @@
                   {{format-bank-reference @model.bankReference}}
                 </dd>
               </div>
-              <div class="sm:col-span-1">
-                <dt class="text-sm font-medium text-gray-500">
-                  BTW attest
-                </dt>
-                <dd class="mt-1 text-sm text-gray-900">
-                  <Certificate::InlineEdit @model={{@model}} />
-                </dd>
-              </div>
               <div class="sm:col-span-2 xl:col-span-4">
                 <dt class="text-sm font-medium text-gray-500">
                   Opmerking
@@ -286,11 +278,3 @@
     </div>
   </div>
 </li>
-
-{{#if this.showMissingCertificateDialog}}
-  <Certificate::MissingCertificateModal
-    @model={{@model}}
-    @onClose={{this.closeCertificateDialog}}
-    @onGenerateInvoiceDocument={{perform this.generateInvoiceDocument}}
-  />
-{{/if}}
