@@ -286,11 +286,3 @@
     </div>
   </div>
 </li>
-
-{{#if this.showMissingCertificateDialog}}
-  <Certificate::MissingCertificateModal
-    @model={{@model}}
-    @onClose={{this.closeCertificateDialog}}
-    @onGenerateInvoiceDocument={{perform this.generateInvoiceDocument}}
-  />
-{{/if}}
