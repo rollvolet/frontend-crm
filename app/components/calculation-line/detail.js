@@ -9,11 +9,20 @@ export default class CalculationLineDetailComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.editMode = !this.args.isDisabledEdit && this.args.initialEditMode;
+    this.initialValidation.perform();
   }
 
   get fieldId() {
     return guidFor(this);
+  }
+
+  @task
+  *initialValidation() {
+    // triggering validation such that invalid state is shown on the input fields
+    yield this.args.model.validate();
+    this.editMode =
+      !this.args.isDisabledEdit &&
+      (this.args.model.validations.isInvalid || this.args.initialEditMode);
   }
 
   @task

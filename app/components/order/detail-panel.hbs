@@ -134,10 +134,10 @@
             <div class="space-y-4">
               {{#each this.executionOptions as |option|}}
                 <div class="flex items-center">
-                  <Input
+                  <input
                     id="execution-opt-{{option.id}}"
-                    @type="radio"
-                    @value={{option.value}}
+                    type="radio"
+                    value={{option.value}}
                     name="execution-opt-group"
                     class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
                     checked={{eq @model.execution option.value}}
@@ -160,10 +160,17 @@
             </div>
           </div>
           <div>
+          </div>
+          <div>
             <div class="font-semibold text-sm text-gray-700">
               Status
             </div>
             <div class="mt-4 space-y-4">
+              <InputField::Checkbox
+                @id="deposit-required-checkbox"
+                @label="Voorschot nodig"
+                @value={{@model.depositRequired}}
+                @onChange={{queue (fn (mut @model.depositRequired)) (perform this.save)}} />
               <InputField::Checkbox
                 @id="product-ready-checkbox"
                 @label="Product klaar"
@@ -229,10 +236,10 @@
           <Util::DetailItem @label="Uitvoering">
             {{#each this.executionOptions as |option|}}
               <div class="flex items-center mb-2">
-                <Input
+                <input
                   id="execution-opt-{{option.id}}"
-                  @type="radio"
-                  @value={{option.value}}
+                  type="radio"
+                  value={{option.value}}
                   name="execution-opt-group"
                   class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
                   checked={{eq @model.execution option.value}}
@@ -245,6 +252,9 @@
           </Util::DetailItem>
           <Util::DetailItem @label="Productiebon" class="items-center">
             <ProductionTicket::InlineEdit @model={{@model}} />
+          </Util::DetailItem>
+          <Util::DetailItem @label="Voorschot nodig" class="items-center">
+            <Util::DisplayCheckbox @value={{@model.depositRequired}} />
           </Util::DetailItem>
           <Util::DetailItem @label="Product klaar" class="items-center">
             <Util::DisplayCheckbox @value={{@model.isReady}} />

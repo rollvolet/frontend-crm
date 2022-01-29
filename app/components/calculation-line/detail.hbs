@@ -25,7 +25,7 @@
           @hideLabel={{true}}
           @value={{@model.amount}}
           @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
-          class="mt-1 block w-full sm:text-sm text-gray-700 pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+          class="mt-1 block w-full sm:text-sm text-gray-700 pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200 {{if @model.validations.errors.amount.messages "border-red-500"}}" />
       </div>
     </td>
     <td class="py-4 flex items-center space-x-1">

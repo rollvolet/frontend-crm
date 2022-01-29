@@ -10,5 +10,6 @@ RUN npm run build
 
 FROM semtech/static-file-service:0.2.0
 
-COPY nginx/app.conf /config/app.conf
+COPY nginx/compression.conf /config/compression.conf
+COPY nginx/file-upload.conf /config/file-upload.conf
 COPY --from=builder /app/dist /data
