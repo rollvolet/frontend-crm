@@ -31,7 +31,7 @@ export default class CustomerEntityTelephonesTableAddLine extends Component {
 
   @computed('model.isError', 'model.validations.isInvalid', 'saveTask.last.isError')
   get canBeSaved() {
-    return !this.model.validations.isInvalid && !this.model.isError && !this.saveTask.last.isError;
+    return !this.model.validations?.isInvalid && !this.model.isError && !this.saveTask.last?.isError;
   }
 
   @action
