@@ -112,6 +112,9 @@
               {{@model.vatRate.name}} BTW
             {{/if}}
           </Util::DetailItem>
+          <Util::DetailItem @label="Aanmelding">
+            {{this.request.wayOfEntry.name}}
+          </Util::DetailItem>
           <Util::DetailItem @label="Bezoeker">
             {{this.request.visitor}}
           </Util::DetailItem>
