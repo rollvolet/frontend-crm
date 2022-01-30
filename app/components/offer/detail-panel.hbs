@@ -108,9 +108,7 @@
             </Util::DetailItem>
           {{/if}}
           <Util::DetailItem @label="BTW tarief">
-            {{#if @model.vatRate}}
-              {{@model.vatRate.name}} BTW
-            {{/if}}
+            {{format-vat-rate (await @model.vatRate)}}
           </Util::DetailItem>
           <Util::DetailItem @label="Aanmelding">
             {{this.request.wayOfEntry.name}}
