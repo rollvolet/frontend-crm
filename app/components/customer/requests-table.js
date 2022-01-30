@@ -75,4 +75,9 @@ export default class RequestsTable extends FilterComponent {
     this.sort = sort;
     this.search.perform(this.filter);
   }
+
+  @action
+  navigateToDetail(request) {
+    this.router.transitionTo('main.case.request.edit', this.args.customer, request.id);
+  }
 }

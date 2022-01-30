@@ -1,9 +1,12 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import applyFilterParams from '../../../utils/apply-filter-params';
 
 export default class IndexController extends Controller {
+  @service router;
+
   @tracked page = 0;
   @tracked size = 25;
   @tracked sort = '-date';
@@ -34,5 +37,18 @@ export default class IndexController extends Controller {
   @action
   selectPage(page) {
     this.page = page;
+  }
+
+  @action
+  async navigateToDetail(intervention, event) {
+    const isExpandableElement = event.srcElement?.hasAttribute('data-expandable');
+    if (!isExpandableElement) {
+      const customer = await intervention.customer;
+      if (customer) {
+        this.router.transitionTo('main.case.intervention.edit', customer.id, intervention.id);
+      } else {
+        this.router.transitionTo('main.interventions.edit', intervention.id);
+      }
+    }
   }
 }

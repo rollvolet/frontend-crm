@@ -81,4 +81,9 @@ export default class OrdersTable extends FilterComponent {
     this.sort = sort;
     this.search.perform(this.filter);
   }
+
+  @action
+  navigateToDetail(order) {
+    this.router.transitionTo('main.case.order.edit', this.args.customer, order.id);
+  }
 }

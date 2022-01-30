@@ -71,4 +71,9 @@ export default class CustomerInterventionsTableComponent extends FilterComponent
     this.sort = sort;
     this.search.perform(this.filter);
   }
+
+  @action
+  navigateToDetail(intervention) {
+    this.router.transitionTo('main.case.intervention.edit', this.args.customer, intervention.id);
+  }
 }

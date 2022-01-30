@@ -129,7 +129,7 @@
                 </tr>
               {{else}}
                 {{#each this.model as |row|}}
-                  <tr>
+                  <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                       {{format-request-number row.requestNumber}}
                     </td>
