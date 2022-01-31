@@ -14,13 +14,13 @@
         {{#if this.editMode}}
           {{#if @isEnabledDelete}}
             <button type="button"
-              onClick={{@onDelete}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{on "click" @onDelete}}
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-trash" class="h-6 w-6"}}
             </button>
           {{/if}}
           <button type="button"
-            onClick={{this.closeEdit}}
+            {{on "click" this.closeEdit}}
             class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
             {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
             <EmberTooltip @text="Sluiten" />
@@ -28,7 +28,7 @@
         {{else}}
           {{#if this.isLinkedToCustomer}}
             <button type="button"
-              onClick={{this.generateInterventionReport}}
+              {{on "click" this.generateInterventionReport}}
               class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-document-text" class="h-6 w-6"}}
               <EmberTooltip @text="Interventierapport" @side="bottom" />
@@ -36,7 +36,7 @@
           {{/if}}
           {{#unless @isDisabledEdit}}
             <button type="button"
-              onClick={{this.openEdit}}
+              {{on "click" this.openEdit}}
                 class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
             </button>
@@ -44,7 +44,7 @@
           <div class="relative inline-block text-left">
             <div>
               <button type="button"
-                onClick={{this.openOptionsMenu}}
+                {{on "click" this.openOptionsMenu}}
                 class="bg-white rounded-full flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-200" id="menu-button" aria-expanded="true" aria-haspopup="true">
                 <span class="sr-only">Open options</span>
                 {{svg-jar "heroicons-md-dots-vertical" class="h-6 w-6"}}
