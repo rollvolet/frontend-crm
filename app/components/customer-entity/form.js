@@ -19,11 +19,6 @@ export default class CustomerEntityFormComponent extends Component {
     return this.scope == 'customer';
   }
 
-  get isDuplicateVatNumber() {
-    const error = this.args.model.validations.attrs.vatNumber.error;
-    return error && error.type == 'unique-vat-number';
-  }
-
   @action
   setCustomerType(event) {
     this.args.model.isCompany = event.target.value == 'company';

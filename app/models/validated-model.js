@@ -1,7 +1,7 @@
 import Model from '@ember-data/model';
-import ObjectProxy from '@ember/object/proxy';
+import ArrayProxy from '@ember/array/proxy';
 import { validate } from 'ember-validators';
-import { isNone, typeOf } from '@ember/utils';
+import { typeOf } from '@ember/utils';
 import { keepLatestTask, all } from 'ember-concurrency';
 import Messages from '../validators/messages';
 import { isHTMLSafe } from '@ember/template';
@@ -22,27 +22,41 @@ export class Validator {
 }
 
 export class ValidationResult {
-  constructor(errors) {
+  constructor(model, errors) {
+    // create an errors object with an emtpy object for each attribute/relation
+    const keys = [
+      ...Array.from(model.attributes.keys()),
+      ...Array.from(model.relationshipsByName.keys()),
+    ];
+    this.errors = Object.assign(
+      {},
+      ...keys.map((key) => {
+        return { [key]: [] };
+      })
+    );
+
     if (errors && Object.keys(errors).length > 0) {
-      this.errors = {};
       for (const attribute in errors) {
-        errors[attribute].forEach((error) => {
-          error.message = this.createErrorMessage(error.type, error.value, error.options);
+        errors[attribute] = errors[attribute].map((error) => {
+          if (typeof error == 'string') {
+            return { message: error };
+          } else {
+            const message = this.createErrorMessage(error.type, error.value, error.options);
+            return Object.assign({}, error, { message });
+          }
         });
-        this.errors[attribute] = ObjectProxy.create({
+        this.errors[attribute] = ArrayProxy.create({
           content: errors[attribute],
           get messages() {
             return this.content.map((error) => error.message);
           },
         });
       }
-    } else {
-      this.errors = null;
     }
   }
 
   get isValid() {
-    return isNone(this.errors);
+    return Object.values(this.errors).every((attrErrors) => attrErrors.length == 0);
   }
 
   get isInvalid() {
@@ -50,12 +64,7 @@ export class ValidationResult {
   }
 
   get attrs() {
-    return ObjectProxy.create({
-      content: this.errors || {},
-      get: function (target, key) {
-        return target[key] || {};
-      },
-    });
+    return this.errors;
   }
 
   createErrorMessage(type, value, options = {}) {
@@ -83,7 +92,7 @@ export default class ValidatedModel extends Model {
       return this.validateTask.lastSuccessful.value.validations;
     } else {
       // validations haven't been executed yet. Return an empty ValidationResult.
-      return new ValidationResult();
+      return new ValidationResult(this.constructor);
     }
   }
 
@@ -116,6 +125,6 @@ export default class ValidatedModel extends Model {
       }
     }
 
-    return { validations: new ValidationResult(errors) };
+    return { validations: new ValidationResult(this.constructor, errors) };
   }
 }

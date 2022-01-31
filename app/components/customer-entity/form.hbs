@@ -48,7 +48,7 @@
               @value={{@model.vatNumber}}
               @onChange={{fn (mut @model.vatNumber)}}
               @onBlur={{@onSave}}
-              @showDuplicateVatError={{this.isDuplicateVatNumber}}
+              @errors={{@model.validations.attrs.vatNumber}}
               @customer={{@model}}
               class="mt-1" />
           </div>

@@ -17,6 +17,10 @@ export default class VatNumberInputComponent extends Component {
     return `vat-number-input-${guidFor(this)}`;
   }
 
+  get isDuplicateVatNumber() {
+    return this.args.errors.find((error) => error.type == 'uniqueVatNumber');
+  }
+
   @action
   updateValue(event) {
     const deformattedValue = deformatVatNumber(event.target.value);
