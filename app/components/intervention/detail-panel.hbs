@@ -184,11 +184,6 @@
           <Util::DetailItem @label="Datum">
             <Fmt::Date @value={{@model.date}} />
           </Util::DetailItem>
-          {{#if @model.cancellationDate}}
-            <Util::DetailItem @label="Afgesloten">
-              <Fmt::Date @value={{@model.cancellationDate}} />
-            </Util::DetailItem>
-          {{/if}}
           <Util::DetailItem @label="Aanmelding">
             {{@model.wayOfEntry.name}}
           </Util::DetailItem>
@@ -212,11 +207,18 @@
           {{#unless this.loadData.isRunning}}
             <PlanningEvent::DetailView @model={{this.planningEvent}} />
           {{/unless}}
-          {{#if @model.cancellationReason}}
-            <Util::DetailItem @label="Reden van afsluiten">
-              <span class="html-body">{{@model.cancellationReason}}</span>
-            </Util::DetailItem>
-          {{/if}}
+          <div class="space-y-2">
+            {{#if @model.cancellationDate}}
+              <Util::DetailItem @label="Afgesloten">
+                <Fmt::Date @value={{@model.cancellationDate}} />
+              </Util::DetailItem>
+            {{/if}}
+            {{#if @model.cancellationReason}}
+              <Util::DetailItem @label="Reden van afsluiten">
+                <span class="html-body">{{@model.cancellationReason}}</span>
+              </Util::DetailItem>
+            {{/if}}
+          </div>
         </div>
         <div class="sm:col-span-2 space-y-2">
           <Util::DetailItem @label="Beschrijving">
