@@ -8,23 +8,23 @@ export default class UserInfoService extends Service {
 
   @tracked name;
   @tracked username;
+  @tracked userGroups = [];
   @tracked employee;
-
-  get hasBoardRole() {
-    return this.hasRole('board');
-  }
-
-  get hasMemberRole() {
-    return this.hasRole('member');
-  }
-
-  hasRole(/*role*/) {
-    // TODO fix
-    return false;
-  }
 
   get isLoaded() {
     return this.fetchUserInfo.last && this.fetchUserInfo.last.isSuccessful;
+  }
+
+  get isAdmin() {
+    return this.userGroups.includes('http://data.rollvolet.be/user-groups/admin');
+  }
+
+  get isBoard() {
+    return this.userGroups.includes('http://data.rollvolet.be/user-groups/board');
+  }
+
+  get isEmployee() {
+    return this.userGroups.includes('http://data.rollvolet.be/user-groups/employee');
   }
 
   @keepLatestTask
@@ -34,15 +34,18 @@ export default class UserInfoService extends Service {
       const sessionData = this.session.data.authenticated.data;
       this.name = sessionData.attributes.name;
       this.username = sessionData.attributes.username;
+      this.userGroups = sessionData.attributes['user-groups'];
     } else {
       this.name = null;
       this.username = null;
+      this.userGroups = [];
     }
   }
 
   clearUserInfo() {
     this.name = null;
     this.username = null;
+    this.userGroups = [];
   }
 
   async getEmployee() {
