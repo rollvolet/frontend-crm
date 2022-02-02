@@ -1,6 +1,6 @@
-<tr class="h-16">
+<tr class="h-12">
   {{#if this.editMode}}
-    <td class="pr-4 py-2">
+    <td class="pr-4">
       <div class="w-full">
         <label for="description" class="sr-only block text-sm font-medium text-gray-700">
           Beschrijving
@@ -13,7 +13,7 @@
           {{on "focusout" (perform this.save)}} />
       </div>
     </td>
-    <td class="px-2 py-2">
+    <td class="px-2">
       <div class="relative shadow-sm rounded-md">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <span class="text-gray-500 sm:text-sm">
@@ -25,18 +25,25 @@
           @hideLabel={{true}}
           @value={{@model.amount}}
           @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
-          class="mt-1 block w-full sm:text-sm text-gray-700 pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200 {{if @model.validations.errors.amount.messages "border-red-500"}}" />
+          class="mt-1 block w-full sm:text-sm text-gray-700 pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200 {{if this.isAmountInvalid "border-red-500"}}" />
       </div>
     </td>
-    <td class="py-4 flex items-center space-x-1">
-      <Util::SaveStatus @model={{@model}} @task={{this.save}} />
-      <span class="pt-1">
-        <button type="button"
-          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-          {{on "click" this.closeEdit}}>
-          {{svg-jar "heroicons-md-logout" class="h-5 w-5"}}
-        </button>
-      </span>
+    <td class="align-middle">
+      <div class="flex items-center space-x-1">
+        <Util::SaveStatus
+          @model={{@model}}
+          @task={{this.save}}
+          @isInvalid={{this.isAmountInvalid}} />
+        {{#unless this.isAmountInvalid}}
+          <span class="pt-1">
+            <button type="button"
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+              {{on "click" this.closeEdit}}>
+              {{svg-jar "heroicons-md-logout" class="h-5 w-5"}}
+            </button>
+          </span>
+        {{/unless}}
+      </div>
     </td>
   {{else}}
     <td class="pr-4 py-2 text-sm text-gray-700">

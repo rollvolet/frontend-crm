@@ -6,9 +6,6 @@ export default class CalculationLineModel extends ValidatedModel {
     offerline: new Validator('presence', {
       presence: true,
     }),
-    amount: new Validator('presence', {
-      presence: true,
-    }),
   };
 
   @attr amount;

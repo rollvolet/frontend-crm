@@ -113,11 +113,12 @@
           </tr>
         </thead>
         <tbody>
-          {{#each @model.calculationLines as |line|}}
+          {{#each @model.calculationLines as |line index|}}
             <CalculationLine::Detail
               @model={{line}}
               @initialEditMode={{@model.initialEditMode}}
-              @onSave={{perform this.updateOfferlineAmount}}
+              @isAmountRequired={{eq index 0}}
+              @didSave={{perform this.updateOfferlineAmount}}
               @onDelete={{perform this.deleteCalculationLine line}}
               @isDisabledEdit={{@isDisabledEdit}} />
           {{else}}
