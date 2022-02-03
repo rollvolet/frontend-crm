@@ -13,7 +13,7 @@ export default class InvoicePanelsComponent extends Component {
   *updateInvoicelinesVatRate(vatRate) {
     // TODO use this.args.model.invoicelines once the relation is defined
     const invoicelines = yield this.store.query('invoiceline', {
-      'filter[invoice]': this.args.model.uri,
+      'filter[:exact:invoice]': this.args.model.uri,
       sort: 'sequence-number',
       page: { size: 100 },
     });
