@@ -15,21 +15,21 @@
         {{#if this.editMode}}
           {{#if @isEnabledDelete}}
             <button type="button"
-              onClick={{@onDelete}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{on "click" @onDelete}}
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-trash" class="h-6 w-6"}}
             </button>
           {{/if}}
           <button type="button"
-            onClick={{this.closeEdit}}
+            {{on "click" this.closeEdit}}
             class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
             {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
             <EmberTooltip @text="Sluiten" />
           </button>
         {{else}}
           <button type="button"
-            onClick={{this.openEdit}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            {{on "click" this.openEdit}}
+            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
             {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
           </button>
         {{/if}}

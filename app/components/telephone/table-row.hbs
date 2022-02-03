@@ -1,0 +1,60 @@
+<tr>
+  {{#if this.editMode}}
+    <td class="whitespace-nowrap text-sm text-gray-500">
+      <InputField::TelephonePrefixSelect
+        @value={{@model.country}}
+        @onSelectionChange={{queue (fn (mut @model.country)) (perform @saveTask @model)}} />
+    </td>
+    <td class="whitespace-nowrap text-sm text-gray-500">
+      <input
+        type="text"
+        value={{this.formattedValue}}
+        class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-28 sm:text-sm border-gray-300 rounded-md"
+        {{on "input" this.setValue}}
+        {{on "focusout" (perform @saveTask @model)}} />
+    </td>
+    <td class="whitespace-nowrap text-sm text-gray-500">
+      <Input
+        @type="text"
+        @value={{@model.note}}
+        class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        {{on "focusout" (perform @saveTask @model)}} />
+    </td>
+    <td class="align-middle">
+      <div class="flex items-center space-x-1">
+        <Util::SaveStatus
+          @model={{@model}}
+          @task={{@saveTask}} />
+        <span class="pt-1">
+          <button type="button"
+            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+            {{on "click" this.closeEdit}}>
+            {{svg-jar "heroicons-md-logout" class="h-5 w-5"}}
+          </button>
+        </span>
+      </div>
+    </td>
+  {{else}}
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+      {{@model.country.telephonePrefix}}
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+      {{format-phone-number @model.value}}
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+      {{@model.note}}
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+      <button type="button"
+        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+        {{on "click" @onDelete}}>
+        {{svg-jar "heroicons-md-trash" class="h-5 w-5"}}
+      </button>
+      <button type="button"
+        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+        {{on "click" this.openEdit}}>
+        {{svg-jar "heroicons-md-pencil" class="h-5 w-5"}}
+      </button>
+    </td>
+  {{/if}}
+</tr>

@@ -1,0 +1,8 @@
+{{#each @model as |tel|}}
+  <div>
+    {{format-phone tel.country.telephonePrefix tel.value}}
+    {{#if tel.note}}
+      <span class="text-gray-400">({{tel.note}})</span>
+    {{/if}}
+  </div>
+{{/each}}

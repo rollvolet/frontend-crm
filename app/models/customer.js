@@ -81,7 +81,7 @@ export default class CustomerModel extends ValidatedModel {
   @belongsTo('country') country;
   @belongsTo('language') language;
   @belongsTo('honorific-prefix') honorificPrefix;
-  @hasMany('telephone') telephones;
+  // @hasMany('telephone') telephones;
   @hasMany('request') requests;
   @hasMany('intervention') interventions;
   @hasMany('offer') offers;
@@ -90,4 +90,8 @@ export default class CustomerModel extends ValidatedModel {
   @hasMany('deposit-invoice') depositInvoices;
   @hasMany('invoice') invoices;
   @hasMany('tag') tags;
+
+  get uri() {
+    return `http://data.rollvolet.be/customers/${this.id}`;
+  }
 }

@@ -18,7 +18,6 @@ export default class ConfigurationService extends Service {
       'honorific-prefix',
       'language',
       'postal-code',
-      'telephone-type',
       'vat-rate',
       'way-of-entry',
       'employee',
@@ -36,14 +35,6 @@ export default class ConfigurationService extends Service {
   get defaultCountry() {
     const value = this.store.peekAll('country').find((c) => c.code == 'BE');
     warn("No default country with code 'BE' found", value != null, { id: 'no-default-value' });
-    return value;
-  }
-
-  get defaultTelephoneType() {
-    const value = this.store.peekAll('telephoneType').find((t) => t.name == 'TEL');
-    warn("No default telephone type with name 'TEL' found", value != null, {
-      id: 'no-default-value',
-    });
     return value;
   }
 }

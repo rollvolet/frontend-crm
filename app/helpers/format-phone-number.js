@@ -8,7 +8,7 @@ export function formatPhoneNumber([number]) {
       number = `${number.substr(0, 3)} ${number.substr(3, 2)} ${number.substr(5)}`;
   }
 
-  return `${number}`;
+  return number;
 }
 
 export default helper(formatPhoneNumber);

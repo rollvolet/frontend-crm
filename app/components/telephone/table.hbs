@@ -1,0 +1,82 @@
+<div class="space-y-4">
+  <div class="-my-2 overflow-x-auto">
+    <div class="py-2 align-middle inline-block min-w-full">
+      <div class="overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <th class="pl-4 pr-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Land
+              </th>
+              <th class="pl-4 pr-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Nummer
+              </th>
+              <th class="pl-4 pr-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Memo
+              </th>
+              <th class="px-6 py-3 bg-gray-50">
+                {{!-- Acties --}}
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {{#if this.sortedTelephones.isRunning}}
+              <tr class="animate-pulse">
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-18 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-20 bg-gray-300"></div>
+                </td>
+                <td>
+                </td>
+              </tr>
+              <tr class="animate-pulse">
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-14 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-16 bg-gray-300"></div>
+                </td>
+                <td>
+                </td>
+              </tr>
+            {{else}}
+              {{#each this.sortedTelephones as |telephone|}}
+                <Telephone::TableRow
+                  @model={{telephone}}
+                  @saveTask={{this.saveTelephone}}
+                  @onDelete={{perform this.deleteTelephone telephone}} />
+              {{else}}
+                <tr>
+                  <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                    Geen telefoonnummers
+                  </td>
+                </tr>
+              {{/each}}
+            {{/if}}
+          </tbody>
+        </table>
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center" aria-hidden="true">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+          <div class="relative flex justify-center">
+            <button type="button"
+              {{on "click" (perform this.addTelephone)}}
+              class="inline-flex items-center shadow-sm px-3 py-1 border border-gray-300 text-xs font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{svg-jar "heroicons-sm-plus" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
+              <span>Telefoon toevoegen</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
