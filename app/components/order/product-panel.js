@@ -22,7 +22,7 @@ export default class OrderProductPanelComponent extends Component {
 
     // TODO use this.args.model.invoicelines once the relation is defined
     const invoicelines = yield this.store.query('invoiceline', {
-      'filter[order]': this.args.model.url,
+      'filter[order]': this.args.model.uri,
       sort: 'sequence-number',
       page: { size: 100 },
     });
@@ -44,7 +44,7 @@ export default class OrderProductPanelComponent extends Component {
       : 0;
     const invoiceline = this.store.createRecord('invoiceline', {
       sequenceNumber: number + 1,
-      order: this.args.model.url,
+      order: this.args.model.uri,
       vatRate: this.vatRate,
     });
 

@@ -20,7 +20,7 @@ export default class InvoiceRoute extends Route {
     const order = this.modelFor('main.case.order.edit');
     // TODO use order.invoicelines once the relation is defined
     const invoicelines = await this.store.query('invoiceline', {
-      'filter[order]': order.url,
+      'filter[order]': order.uri,
       sort: 'sequence-number',
       page: { size: 100 },
     });
@@ -55,7 +55,7 @@ export default class InvoiceRoute extends Route {
 
     await Promise.all(
       invoicelines.map((invoiceline) => {
-        invoiceline.invoice = invoice.url;
+        invoiceline.invoice = invoice.uri;
         invoiceline.save();
       })
     );

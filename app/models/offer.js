@@ -31,7 +31,7 @@ export default class OfferModel extends ValidatedModel {
     return this.amount;
   }
 
-  get url() {
+  get uri() {
     return `http://data.rollvolet.be/offers/${this.id}`;
   }
 }

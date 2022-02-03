@@ -72,7 +72,7 @@ export default class InvoiceModel extends ValidatedModel {
     return this.origin == 'Access';
   }
 
-  get url() {
+  get uri() {
     return `http://data.rollvolet.be/invoices/${this.id}`;
   }
 }

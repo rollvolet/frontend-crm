@@ -26,7 +26,7 @@ export default class OrderPanelsComponent extends Component {
     try {
       // TODO use this.args.model.invoicelines once the relation is defined
       const invoicelines = yield this.store.query('invoiceline', {
-        'filter[order]': this.args.model.url,
+        'filter[order]': this.args.model.uri,
         sort: 'sequence-number',
         page: { size: 100 },
       });

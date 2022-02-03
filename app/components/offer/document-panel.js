@@ -29,7 +29,7 @@ export default class OfferDocumentPanelComponent extends Component {
   *loadData() {
     // TODO use this.args.model.offerlines once the relation is defined
     const offerlines = yield this.store.query('offerline', {
-      'filter[offer]': this.args.model.url,
+      'filter[offer]': this.args.model.uri,
       sort: 'sequence-number',
       page: { size: 100 },
     });
@@ -55,7 +55,7 @@ export default class OfferDocumentPanelComponent extends Component {
     const vatRate = yield this.args.model.vatRate;
     const offerline = this.store.createRecord('offerline', {
       sequenceNumber: number + 1,
-      offer: this.args.model.url,
+      offer: this.args.model.uri,
       amount: 0,
       vatRate: vatRate,
     });

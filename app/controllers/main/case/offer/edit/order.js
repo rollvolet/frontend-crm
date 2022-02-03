@@ -105,7 +105,7 @@ export default class OrderController extends Controller {
           description: offerline.description,
           amount: offerline.amount,
           vatRate,
-          order: order.url,
+          order: order.uri,
         });
         await invoiceline.save();
       });

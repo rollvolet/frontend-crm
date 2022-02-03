@@ -71,7 +71,7 @@ export default class OrderModel extends ValidatedModel {
     return this.planningId;
   }
 
-  get url() {
+  get uri() {
     return `http://data.rollvolet.be/orders/${this.id}`;
   }
 }
