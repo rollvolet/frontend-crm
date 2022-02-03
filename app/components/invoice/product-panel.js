@@ -21,7 +21,7 @@ export default class InvoiceProductPanelComponent extends Component {
   *loadData() {
     // TODO use this.args.model.invoicelines once the relation is defined
     const invoicelines = yield this.store.query('invoiceline', {
-      'filter[invoice]': this.args.model.url,
+      'filter[invoice]': this.args.model.uri,
       sort: 'sequence-number',
       page: { size: 100 },
     });
@@ -48,7 +48,7 @@ export default class InvoiceProductPanelComponent extends Component {
     const vatRate = yield this.args.model.vatRate;
     const invoiceline = this.store.createRecord('invoiceline', {
       sequenceNumber: number + 1,
-      invoice: this.args.model.url,
+      invoice: this.args.model.uri,
       vatRate: vatRate,
     });
 
