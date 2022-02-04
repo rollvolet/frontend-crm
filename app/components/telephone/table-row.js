@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { formatPhoneNumber } from '../../helpers/format-phone-number';
 
 const digitsOnly = /\D/g;
 
@@ -13,7 +14,7 @@ export default class TelephoneTableRowComponent extends Component {
   }
 
   get formattedValue() {
-    return this.args.model.value; // TODO add auto formatting?
+    return formatPhoneNumber([this.args.model.value]);
   }
 
   @action

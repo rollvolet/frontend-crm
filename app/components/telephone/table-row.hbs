@@ -4,13 +4,13 @@
       <InputField::TelephonePrefixSelect
         @value={{@model.country}}
         @onSelectionChange={{queue (fn (mut @model.country)) (perform @saveTask @model)}}
-        class="w-28" />
+        class="w-24" />
     </td>
     <td class="px-3 text-sm text-gray-500">
       <input
         type="text"
         value={{this.formattedValue}}
-        class="mt-1 w-32 shadow-sm focus:ring-red-200 focus:border-red-200 block sm:text-sm border-gray-300 rounded-md"
+        class="mt-1 w-36 shadow-sm focus:ring-red-200 focus:border-red-200 block sm:text-sm border-gray-300 rounded-md"
         {{on "input" this.setValue}}
         {{on "focusout" (perform @saveTask @model)}} />
     </td>
@@ -36,10 +36,10 @@
       </div>
     </td>
   {{else}}
-    <td class="w-28 px-3 py-4 text-sm text-gray-500">
+    <td class="w-24 px-3 py-4 text-sm text-gray-500 text-right">
       {{@model.country.telephonePrefix}}
     </td>
-    <td class="w-32 px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
+    <td class="w-36 px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
       {{format-phone-number @model.value}}
     </td>
     <td class="px-3 py-4 text-sm text-gray-500">
