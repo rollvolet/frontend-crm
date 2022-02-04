@@ -18,7 +18,7 @@ export default class OfferDocumentPanelComponent extends Component {
   }
 
   get sortedOfferlines() {
-    return this.offerlines.sortBy('sequenceNumber');
+    return this.offerlines.sortBy('position');
   }
 
   get hasMixedVatRates() {
@@ -30,7 +30,7 @@ export default class OfferDocumentPanelComponent extends Component {
     // TODO use this.args.model.offerlines once the relation is defined
     const offerlines = yield this.store.query('offerline', {
       'filter[:exact:offer]': this.args.model.uri,
-      sort: 'sequence-number',
+      sort: 'position',
       page: { size: 100 },
     });
     this.offerlines = offerlines.toArray();
@@ -49,12 +49,12 @@ export default class OfferDocumentPanelComponent extends Component {
 
   @task
   *addOfferline() {
-    const number = this.offerlines.length
-      ? Math.max(...this.offerlines.map((l) => l.sequenceNumber))
+    const position = this.offerlines.length
+      ? Math.max(...this.offerlines.map((l) => l.position))
       : 0;
     const vatRate = yield this.args.model.vatRate;
     const offerline = this.store.createRecord('offerline', {
-      sequenceNumber: number + 1,
+      position: position + 1,
       offer: this.args.model.uri,
       amount: 0,
       vatRate: vatRate,

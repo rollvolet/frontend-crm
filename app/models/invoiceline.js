@@ -17,7 +17,7 @@ export default class InvoicelineModel extends ValidatedModel {
     }),
   };
 
-  @attr sequenceNumber;
+  @attr position;
   @attr('string', {
     defaultValue() {
       return 'EUR';

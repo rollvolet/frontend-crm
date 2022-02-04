@@ -21,7 +21,7 @@ export default class OrderRoute extends Route {
     // TODO use offer.offerlines once the relation is defined
     return this.store.query('offerline', {
       'filter[offer]': offer.uri,
-      sort: 'sequence-number',
+      sort: 'position',
       page: { size: 100 },
     });
   }

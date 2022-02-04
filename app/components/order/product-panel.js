@@ -23,14 +23,14 @@ export default class OrderProductPanelComponent extends Component {
     // TODO use this.args.model.invoicelines once the relation is defined
     const invoicelines = yield this.store.query('invoiceline', {
       'filter[:exact:order]': this.args.model.uri,
-      sort: 'sequence-number',
+      sort: 'position',
       page: { size: 100 },
     });
     this.invoicelines = invoicelines.toArray();
   }
 
   get sortedInvoicelines() {
-    return this.invoicelines.sortBy('sequenceNumber');
+    return this.invoicelines.sortBy('position');
   }
 
   get isEnabledAddingInvoicelines() {
@@ -39,11 +39,11 @@ export default class OrderProductPanelComponent extends Component {
 
   @task
   *addInvoiceline() {
-    const number = this.invoicelines.length
-      ? Math.max(...this.invoicelines.map((l) => l.sequenceNumber))
+    const position = this.invoicelines.length
+      ? Math.max(...this.invoicelines.map((l) => l.position))
       : 0;
     const invoiceline = this.store.createRecord('invoiceline', {
-      sequenceNumber: number + 1,
+      position: position + 1,
       order: this.args.model.uri,
       vatRate: this.vatRate,
     });
