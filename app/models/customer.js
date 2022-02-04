@@ -92,6 +92,6 @@ export default class CustomerModel extends ValidatedModel {
   @hasMany('tag') tags;
 
   get uri() {
-    return `http://data.rollvolet.be/customers/${this.id}`;
+    return `http://data.rollvolet.be/customers/${this.dataId}`;
   }
 }
