@@ -1,27 +1,28 @@
-<tr>
+<tr class="h-14">
   {{#if this.editMode}}
-    <td class="whitespace-nowrap text-sm text-gray-500">
+    <td class="px-3 text-sm text-gray-500">
       <InputField::TelephonePrefixSelect
         @value={{@model.country}}
-        @onSelectionChange={{queue (fn (mut @model.country)) (perform @saveTask @model)}} />
+        @onSelectionChange={{queue (fn (mut @model.country)) (perform @saveTask @model)}}
+        class="w-28" />
     </td>
-    <td class="whitespace-nowrap text-sm text-gray-500">
+    <td class="px-3 text-sm text-gray-500">
       <input
         type="text"
         value={{this.formattedValue}}
-        class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-28 sm:text-sm border-gray-300 rounded-md"
+        class="mt-1 w-32 shadow-sm focus:ring-red-200 focus:border-red-200 block sm:text-sm border-gray-300 rounded-md"
         {{on "input" this.setValue}}
         {{on "focusout" (perform @saveTask @model)}} />
     </td>
-    <td class="whitespace-nowrap text-sm text-gray-500">
+    <td class="px-3 text-sm text-gray-500">
       <Input
         @type="text"
         @value={{@model.note}}
-        class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+        class="mt-1 w-full shadow-sm focus:ring-red-200 focus:border-red-200 block sm:text-sm border-gray-300 rounded-md"
         {{on "focusout" (perform @saveTask @model)}} />
     </td>
-    <td class="align-middle">
-      <div class="flex items-center space-x-1">
+    <td class="w-20 px-3 align-middle">
+      <div class="flex items-center justify-end space-x-1">
         <Util::SaveStatus
           @model={{@model}}
           @task={{@saveTask}} />
@@ -35,16 +36,16 @@
       </div>
     </td>
   {{else}}
-    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+    <td class="w-28 px-3 py-4 text-sm text-gray-500">
       {{@model.country.telephonePrefix}}
     </td>
-    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+    <td class="w-32 px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
       {{format-phone-number @model.value}}
     </td>
-    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+    <td class="px-3 py-4 text-sm text-gray-500">
       {{@model.note}}
     </td>
-    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+    <td class="w-20 px-3 py-4 text-right text-sm font-medium">
       <button type="button"
         class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
         {{on "click" @onDelete}}>
