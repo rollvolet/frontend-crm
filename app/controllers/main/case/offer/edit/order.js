@@ -101,7 +101,7 @@ export default class OrderController extends Controller {
 
       const invoicelines = this.orderedOfferlines.map(async (offerline) => {
         const invoiceline = this.store.createRecord('invoiceline', {
-          sequenceNumber: offerline.sequenceNumber,
+          position: offerline.position,
           description: offerline.description,
           amount: offerline.amount,
           vatRate,

@@ -22,7 +22,7 @@ export default class OfferPanelsComponent extends Component {
       // TODO use this.args.model.offerlines once the relation is defined
       const offerlines = yield this.store.query('offerline', {
         'filter[:exact:offer]': this.args.model.uri,
-        sort: 'sequence-number',
+        sort: 'position',
         page: { size: 100 },
       });
       yield all(offerlines.map((t) => t.destroyRecord()));

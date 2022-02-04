@@ -21,7 +21,7 @@ export default class InvoiceRoute extends Route {
     // TODO use order.invoicelines once the relation is defined
     const invoicelines = await this.store.query('invoiceline', {
       'filter[order]': order.uri,
-      sort: 'sequence-number',
+      sort: 'position',
       page: { size: 100 },
     });
     const vatRate = await order.vatRate;

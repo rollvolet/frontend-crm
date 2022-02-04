@@ -14,7 +14,7 @@ export default class OfferlineModel extends ValidatedModel {
     // vatRate: new Validator('presence', { presence: true })
   };
 
-  @attr sequenceNumber;
+  @attr position;
   @attr('string', {
     defaultValue() {
       return 'EUR';
