@@ -14,7 +14,7 @@
       @searchField="firstName"
       @onChange={{@onSelectionChange}}
       @noMatchesMessage="Geen resultaten"
-      @allowClear={{true}}
+      @allowClear={{this.allowClear}}
       as |option select|>
       {{highlight-substr option.firstName select.lastSearchedText}}
     </PowerSelectMultiple>
@@ -28,7 +28,7 @@
       @searchField="firstName"
       @onChange={{@onSelectionChange}}
       @noMatchesMessage="Geen resultaten"
-      @allowClear={{true}}
+      @allowClear={{this.allowClear}}
       as |option select|>
       {{highlight-substr option.firstName select.lastSearchedText}}
     </PowerSelect>

@@ -41,6 +41,10 @@ export default class EmployeeSelect extends Component {
     return this.args.required || false;
   }
 
+  get allowClear() {
+    return this.args.allowClear !== false; // default to true
+  }
+
   get placeholder() {
     return this.required && this.args.label ? `${this.args.label} *` : this.args.label;
   }
