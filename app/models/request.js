@@ -3,7 +3,9 @@ import ValidatedModel, { Validator } from './validated-model';
 
 export default class RequestModel extends ValidatedModel {
   validators = {
-    requestDate: new Validator('presence', true),
+    requestDate: new Validator('presence', {
+      presence: true,
+    }),
   };
 
   @attr('date-midnight') requestDate;
