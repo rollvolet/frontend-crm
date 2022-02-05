@@ -13,15 +13,15 @@
     <div class="divide-y divide-y-200">
       {{!-- Card header --}}
       <div class="px-6 pt-6 pb-4">
-        <div class="space-y-2 sm:flex sm:justify-between sm:items-center sm:space-y-0">
+        <div class="space-y-2 space-x-4 sm:flex sm:items-center sm:space-y-0">
           <h2 class="text-2xl font-bold font-display text-gray-900">
             Voorschotfacturen
           </h2>
-          <div class="sm:flex sm:flex-none">
+          <div>
             {{#unless this.isDisabledEdit}}
               <button type="button"
                 {{on "click" (perform this.createNewDepositInvoice)}}
-                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+                class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
                 {{svg-jar "heroicons-md-plus-sm" class="-ml-1 mr-2 h-5 w-5"}}
                 Nieuw
               </button>
