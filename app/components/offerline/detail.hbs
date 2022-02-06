@@ -119,21 +119,29 @@
           </tr>
         </thead>
         <tbody>
-          {{#each (sort-by "position" @model.calculationLines) as |line index|}}
-            <CalculationLine::Detail
-              @model={{line}}
-              @initialEditMode={{@model.initialEditMode}}
-              @isAmountRequired={{eq index 0}}
-              @didSave={{perform this.updateOfferlineAmount}}
-              @onDelete={{perform this.deleteCalculationLine line}}
-              @isDisabledEdit={{@isDisabledEdit}} />
-          {{else}}
+          {{#if this.loadData.isRunning}}
             <tr>
-              <td colspan="3" class="py-4 text-sm text-gray-400 italic">
-                Er is nog geen berekening toegevoegd
+              <td colspan="3" class="py-4 text-center">
+                <Util::LoadingSpinner @label="" />
               </td>
             </tr>
-          {{/each}}
+          {{else}}
+            {{#each (sort-by "position" @model.calculationLines) as |line index|}}
+              <CalculationLine::Detail
+                @model={{line}}
+                @initialEditMode={{@model.initialEditMode}}
+                @isAmountRequired={{eq index 0}}
+                @didSave={{perform this.updateOfferlineAmount}}
+                @onDelete={{perform this.deleteCalculationLine line}}
+                @isDisabledEdit={{@isDisabledEdit}} />
+            {{else}}
+              <tr>
+                <td colspan="3" class="py-4 text-sm text-gray-400 italic">
+                  Er is nog geen berekening toegevoegd
+                </td>
+              </tr>
+            {{/each}}
+          {{/if}}
         </tbody>
       </table>
       <div class="mt-4 flex justify-end">

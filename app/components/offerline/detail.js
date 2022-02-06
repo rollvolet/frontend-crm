@@ -15,6 +15,12 @@ export default class OfferlineDetailComponent extends Component {
     super(...arguments);
     this.editMode = this.args.model.initialEditMode;
     this.isShownCalculation = this.args.model.initialEditMode;
+    this.loadData.perform();
+  }
+
+  @keepLatestTask
+  *loadData() {
+    yield this.args.model.calculationLines; // used to show loading state in template
   }
 
   get showUnsavedWarning() {
