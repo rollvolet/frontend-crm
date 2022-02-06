@@ -38,8 +38,13 @@ export default class OfferlineDetailComponent extends Component {
 
   @task
   *addCalculationLine() {
+    const calculationLines = yield this.args.model.calculationLines;
+    const position = calculationLines.length
+      ? Math.max(...calculationLines.map((l) => l.position))
+      : 0;
     const calculationLine = this.store.createRecord('calculation-line', {
       offerline: this.args.model,
+      position: position + 1,
     });
 
     const { validations } = yield calculationLine.validate();
