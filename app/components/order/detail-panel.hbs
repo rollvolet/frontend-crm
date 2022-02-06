@@ -68,7 +68,7 @@
             <InputField::EmployeeSelect
               @label="Bezoeker"
               @value={{this.visitor}}
-              @isOnRoad={{true}}
+              @isAdministrative={{true}}
               @isTechnician={{true}}
               @onSelectionChange={{queue this.setVisitor (perform this.save)}}
               class="mt-1" />
@@ -115,10 +115,9 @@
               @label="Voorgestelde techniekers"
               @value={{@model.technicians}}
               @multiple={{true}}
-              @isOnRoad={{true}}
               @isTechnician={{true}}
               @isAdministrative={{true}}
-              @sort={{array "functionSort:desc"}}
+              @sort={{"type:desc"}}
               @onSelectionChange={{queue this.setTechnicians (perform this.save)}}
               class="mt-1" />
           </div>

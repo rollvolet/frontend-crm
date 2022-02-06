@@ -71,6 +71,7 @@ export default class OfferDocumentPanelComponent extends Component {
     if (!offerline.isNew) {
       const calculationLine = this.store.createRecord('calculation-line', {
         offerline: offerline,
+        position: 1,
       });
       // no validation in frontend since calculation line needs to be persisted in backend,
       // even without description/amount. Otherwise it will not appear in the list.

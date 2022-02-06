@@ -6,9 +6,15 @@ export default class CalculationLineModel extends ValidatedModel {
     offerline: new Validator('presence', {
       presence: true,
     }),
+    position: new Validator('number', {
+      allowBlank: false,
+      positive: true,
+    }),
   };
 
+  @attr('number') position;
   @attr amount;
+  @attr reductionRate;
   @attr('string', {
     defaultValue() {
       return 'EUR';

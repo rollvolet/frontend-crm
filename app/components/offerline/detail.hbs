@@ -113,7 +113,7 @@
           </tr>
         </thead>
         <tbody>
-          {{#each @model.calculationLines as |line index|}}
+          {{#each (sort-by "position" @model.calculationLines) as |line index|}}
             <CalculationLine::Detail
               @model={{line}}
               @initialEditMode={{@model.initialEditMode}}

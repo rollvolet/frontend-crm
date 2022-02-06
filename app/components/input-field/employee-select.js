@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { sort } from '@ember/object/computed';
 
 export default class EmployeeSelect extends Component {
   @service store;
@@ -11,9 +12,7 @@ export default class EmployeeSelect extends Component {
       employees = employees.filter((e) => e.active);
     }
 
-    const enabledFilters = ['isTechnician', 'isAdministrative', 'isOnRoad'].filter(
-      (key) => this[key]
-    );
+    const enabledFilters = ['isTechnician', 'isAdministrative'].filter((key) => this[key]);
     if (enabledFilters.length) {
       const matches = function (employee) {
         for (let key of enabledFilters) {
@@ -30,15 +29,23 @@ export default class EmployeeSelect extends Component {
   }
 
   get sort() {
-    return this.args.sort || ['functionSort'];
+    if (this.args.sort == 'type:desc') {
+      return 'isAdministrative'; // technicians come first
+    } else {
+      return 'isTechnician'; // administration comes first
+    }
   }
 
   get options() {
-    return this.employees.sortBy(...this.sort);
+    return this.employees.sortBy(this.sort);
   }
 
   get required() {
     return this.args.required || false;
+  }
+
+  get allowClear() {
+    return this.args.allowClear !== false; // default to true
   }
 
   get placeholder() {
@@ -55,9 +62,5 @@ export default class EmployeeSelect extends Component {
 
   get isAdministrative() {
     return this.args.isAdministrative || false;
-  }
-
-  get isOnRoad() {
-    return this.args.isOnRoad || false;
   }
 }
