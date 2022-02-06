@@ -21,7 +21,7 @@ export default class OfferPanelsComponent extends Component {
     try {
       // TODO use this.args.model.offerlines once the relation is defined
       const offerlines = yield this.store.query('offerline', {
-        'filter[:exact:offer]': this.args.model.uri,
+        'filter[offer]': this.args.model.uri,
         sort: 'position',
         page: { size: 100 },
       });

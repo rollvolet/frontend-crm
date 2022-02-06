@@ -22,7 +22,7 @@ export default class OrderProductPanelComponent extends Component {
 
     // TODO use this.args.model.invoicelines once the relation is defined
     const invoicelines = yield this.store.query('invoiceline', {
-      'filter[:exact:order]': this.args.model.uri,
+      'filter[order]': this.args.model.uri,
       sort: 'position',
       page: { size: 100 },
     });
