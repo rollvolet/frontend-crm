@@ -12,10 +12,12 @@
     </div>
   {{/if}}
 
-  <Input ...attributes
+  <Input
     id={{this.fieldId}}
     @value={{this.formattedValue}}
-    {{on "focusout" (fn this.updateValue this.formattedValue)}} />
+    {{on "focusout" (fn this.updateValue this.formattedValue)}}
+    class="{{if @leading "pl-7"}} {{if @trailing "pr-12"}}"
+    ...attributes />
 
   {{#if @trailing}}
     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
