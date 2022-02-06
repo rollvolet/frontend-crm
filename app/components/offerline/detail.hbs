@@ -99,14 +99,20 @@
       <table class="w-full table-fixed divide-y divide-gray-200">
         <thead>
           <tr>
-            <th scope="col" class="pr-4 py-3 text-xs tracking-wider text-gray-500 font-medium w-56 sm:w-auto">
+            <th scope="col" class="pr-2 py-3 text-xs tracking-wider text-gray-500 font-medium w-56 sm:w-auto">
               Beschrijving
             </th>
-            <th scope="col" class="px-4 py-3 text-xs tracking-wider text-gray-500 font-medium w-32">
-              Bedrag
+            <th scope="col" class="px-2 py-3 text-xs tracking-wider text-gray-500 font-medium text-right w-28">
+              Bedrag (&euro;)
+            </th>
+            <th scope="col" class="px-2 py-3 text-xs tracking-wider text-gray-500 font-medium text-right w-24">
+              Korting (%)
+            </th>
+            <th scope="col" class="px-2 py-3 text-xs tracking-wider text-gray-500 font-medium text-right w-24">
+              Totaal (&euro;)
             </th>
             {{#unless @isDisabledEdit}}
-              <th scope="col" class="py-3 text-xs tracking-wider text-gray-500 font-medium w-12">
+              <th scope="col" class="py-3 text-xs tracking-wider text-gray-500 font-medium  text-right w-12">
                 {{!-- buttons --}}
               </th>
             {{/unless}}

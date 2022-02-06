@@ -10,6 +10,9 @@ export default class CalculationLineModel extends ValidatedModel {
       allowBlank: false,
       positive: true,
     }),
+    reductionRate: new Validator('number', {
+      allowBlank: true,
+    }),
   };
 
   @attr('number') position;
@@ -25,4 +28,17 @@ export default class CalculationLineModel extends ValidatedModel {
   @attr offerline;
 
   @belongsTo('offerline') offerline;
+
+  get reductionPercentage() {
+    return this.reductionRate ? this.reductionRate * 100 : null;
+  }
+
+  get arithmeticAmount() {
+    if (this.reductionRate) {
+      const reduction = this.amount * this.reductionRate;
+      return this.amount - reduction;
+    } else {
+      return this.amount;
+    }
+  }
 }

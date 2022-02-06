@@ -18,7 +18,9 @@ export default class CalculationLineDetailComponent extends Component {
   }
 
   get isEmpty() {
-    return isEmpty(this.args.model.amount) && isEmpty(this.args.model.description);
+    return isEmpty(this.args.model.amount) &&
+      isEmpty(this.args.model.description) &&
+      isEmpty(this.args.model.reductionRate);
   }
 
   get isAmountInvalid() {
