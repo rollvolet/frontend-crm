@@ -22,7 +22,7 @@ export default class TelephoneTableComponent extends Component {
   *loadData() {
     // TODO use this.args.model.telephones once the relation is defined
     const telephones = yield this.store.query('telephone', {
-      'filter[:exact:customer]': this.args.model.uri,
+      'filter[customer]': this.args.model.uri,
       sort: 'position',
       page: { size: 100 },
     });
@@ -35,12 +35,14 @@ export default class TelephoneTableComponent extends Component {
       ? Math.max(...this.telephones.map((l) => l.position))
       : 0;
     const country = this.configuration.defaultCountry;
+    const telephoneType = this.configuration.defaultTelephoneType;
     const telephone = this.store.createRecord('telephone', {
       position: position + 1,
       customer: this.args.model.uri,
       contact: this.args.model.uri,
       building: this.args.model.uri,
       country,
+      telephoneType,
     });
     telephone.initialEditMode = true;
 

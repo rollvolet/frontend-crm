@@ -18,6 +18,7 @@ export default class TelephoneModel extends ValidatedModel {
   @attr building;
 
   @belongsTo('country') country;
+  @belongsTo('telephone-type') telephoneType;
 
   // @belongsTo('customer') customer;
   // @belongsTo('contact') contact;

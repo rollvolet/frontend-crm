@@ -1,6 +1,12 @@
 <tr class="h-14">
   {{#if this.editMode}}
     <td class="px-3 text-sm text-gray-500">
+      <InputField::TelephoneTypeSelect
+        @value={{@model.telephoneType}}
+        @onSelectionChange={{queue (fn (mut @model.telephoneType)) (perform @saveTask @model)}}
+        class="w-16" />
+    </td>
+    <td class="px-3 text-sm text-gray-500">
       <InputField::TelephonePrefixSelect
         @value={{@model.country}}
         @onSelectionChange={{queue (fn (mut @model.country)) (perform @saveTask @model)}}
@@ -36,6 +42,9 @@
       </div>
     </td>
   {{else}}
+    <td class="w-16 px-3 py-4 text-sm text-gray-500 text-center">
+      {{@model.telephoneType.code}}
+    </td>
     <td class="w-24 px-3 py-4 text-sm text-gray-500 text-right">
       {{@model.country.telephonePrefix}}
     </td>

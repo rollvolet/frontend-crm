@@ -1,5 +1,8 @@
 {{#each @model as |tel|}}
   <div>
+    <span class="text-xs uppercase tracking-wider text-gray-400">
+      {{tel.telephoneType.code}}
+    </span>
     {{format-phone tel.country.telephonePrefix tel.value}}
     {{#if tel.note}}
       <span class="text-gray-400">({{tel.note}})</span>
