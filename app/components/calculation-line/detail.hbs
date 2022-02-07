@@ -1,6 +1,6 @@
 <tr class="h-12">
   {{#if this.editMode}}
-    <td class="pr-4">
+    <td class="pr-2">
       <div class="w-full">
         <label for="description" class="sr-only block text-sm font-medium text-gray-700">
           Beschrijving
@@ -13,20 +13,27 @@
           {{on "focusout" (perform this.save)}} />
       </div>
     </td>
-    <td class="px-2">
-      <div class="relative shadow-sm rounded-md">
-        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <span class="text-gray-500 sm:text-sm">
-            &euro;
-          </span>
-        </div>
-        <InputField::DecimalInput
-          @label="Bedrag"
-          @hideLabel={{true}}
-          @value={{@model.amount}}
-          @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
-          class="mt-1 block w-full sm:text-sm text-gray-700 pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200 {{if this.isAmountInvalid "border-red-500"}}" />
-      </div>
+    <td class="px-1">
+      <InputField::DecimalInput
+        @label="Bedrag"
+        @hideLabel={{true}}
+        @leading="&euro;"
+        @value={{@model.amount}}
+        @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
+        class="mt-1 block w-full sm:text-sm text-gray-700 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200 {{if this.isAmountInvalid "border-red-500"}}" />
+    </td>
+    <td class="px-1">
+      <InputField::PercentageInput
+        @label="Korting (%)"
+        @hideLabel={{true}}
+        @leading="-"
+        @trailing="%"
+        @value={{@model.reductionRate}}
+        @onChange={{queue (fn (mut @model.reductionRate)) (perform this.save)}}
+        class="mt-1 block w-full sm:text-sm text-gray-700 pl-4 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+    </td>
+    <td class="px-2 py-2 text-sm text-gray-700 text-right">
+      <Fmt::Currency @value={{@model.arithmeticAmount}} />
     </td>
     <td class="align-middle">
       <div class="flex items-center space-x-1">
@@ -46,11 +53,19 @@
       </div>
     </td>
   {{else}}
-    <td class="pr-4 py-2 text-sm text-gray-700">
+    <td class="pr-2 py-2 text-sm text-gray-700">
       {{@model.description}}
     </td>
-    <td class="px-4 py-2 text-sm text-gray-700">
+    <td class="px-2 py-2 text-sm text-gray-700 text-right">
       <Fmt::Currency @value={{@model.amount}} />
+    </td>
+    <td class="px-2 py-2 text-sm text-gray-700 text-right">
+      {{#if @model.reductionPercentage}}
+        - <Fmt::Decimal @value={{@model.reductionPercentage}} />%
+      {{/if}}
+    </td>
+    <td class="px-2 py-2 text-sm text-gray-700 text-right">
+      <Fmt::Currency @value={{@model.arithmeticAmount}} />
     </td>
     {{#unless @isDisabledEdit}}
       <td class="py-2 text-right">

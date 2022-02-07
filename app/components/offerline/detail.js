@@ -15,6 +15,12 @@ export default class OfferlineDetailComponent extends Component {
     super(...arguments);
     this.editMode = this.args.model.initialEditMode;
     this.isShownCalculation = this.args.model.initialEditMode;
+    this.loadData.perform();
+  }
+
+  @keepLatestTask
+  *loadData() {
+    yield this.args.model.calculationLines; // used to show loading state in template
   }
 
   get showUnsavedWarning() {
@@ -29,7 +35,7 @@ export default class OfferlineDetailComponent extends Component {
   @keepLatestTask
   *updateOfferlineAmount() {
     const calculationLines = yield this.args.model.calculationLines;
-    const totalAmount = sum(calculationLines.map((line) => line.amount));
+    const totalAmount = sum(calculationLines.map((line) => line.arithmeticAmount));
     this.args.model.amount = totalAmount;
     if (this.args.model.hasDirtyAttributes) {
       yield this.args.model.save(); // only save if total amount of offerline has changed
