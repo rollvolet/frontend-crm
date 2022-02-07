@@ -21,7 +21,7 @@ export default class CaseContactPanelComponent extends Component {
   *loadData() {
     // TODO use this.args.model.telephones once the relation is defined
     const telephones = yield this.store.query('telephone', {
-      'filter[:exact:contact]': this.args.model.uri,
+      'filter[contact]': this.args.model.uri,
       sort: 'position',
       page: { size: 100 },
     });
