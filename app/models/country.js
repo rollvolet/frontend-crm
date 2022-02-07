@@ -1,6 +1,7 @@
 import Model, { attr, hasMany } from '@ember-data/model';
 
 export default class CountryModel extends Model {
+  @attr uri;
   @attr code;
   @attr name;
   @attr telephonePrefix;

@@ -33,8 +33,10 @@ export default class ConfigurationService extends Service {
   }
 
   get defaultCountry() {
-    const value = this.store.peekAll('country').find((c) => c.code == 'BE');
-    warn("No default country with code 'BE' found", value != null, { id: 'no-default-value' });
+    const value = this.store.peekAll('country').find((c) => c.uri == COUNTRY_BE);
+    warn("No default country 'BE' found", value != null, { id: 'no-default-value' });
+    return value;
+  }
     return value;
   }
 }
