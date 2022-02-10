@@ -1,4 +1,5 @@
 import Component from '@glimmer/component';
+import { debug } from '@ember/debug';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import moment from 'moment';
@@ -19,6 +20,18 @@ export default class DepositInvoicePanelsComponent extends Component {
   @keepLatestTask
   *loadData() {
     this.vatRate = yield this.order.vatRate;
+    if (!this.vatRate) {
+      debug('Order VAT rate got lost. Updating VAT rate to VAT rate of first invoiceline.');
+      const invoiceline = yield this.store.queryOne('invoiceline', {
+        'filter[order]': this.order.uri,
+        sort: 'position',
+      });
+      if (invoiceline) {
+        this.vatRate = yield invoiceline.vatRate;
+        this.order.vatRate = this.vatRate;
+        yield this.order.save();
+      }
+    }
   }
 
   get customer() {
@@ -55,7 +68,6 @@ export default class DepositInvoicePanelsComponent extends Component {
     const customer = this.customer;
     const contact = yield this.order.contact;
     const building = yield this.order.building;
-    const vatRate = yield this.order.vatRate;
 
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
@@ -63,13 +75,13 @@ export default class DepositInvoicePanelsComponent extends Component {
     const depositInvoice = this.store.createRecord('deposit-invoice', {
       invoiceDate,
       dueDate,
-      certificateRequired: vatRate.rate == 6,
+      certificateRequired: this.vatRate.rate == 6,
       certificateReceived: false,
       certificateClosed: false,
       reference: offer.reference,
       order: this.order,
+      vatRate: this.vatRate,
       baseAmount: 0,
-      vatRate,
       customer,
       contact,
       building,
@@ -86,6 +98,12 @@ export default class DepositInvoicePanelsComponent extends Component {
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
 
+    const customer = yield invoice.customer;
+    const contact = yield invoice.contact;
+    const building = yield invoice.building;
+    const order = yield invoice.order;
+    const vatRate = yield invoice.vatRate;
+
     const creditNote = this.store.createRecord('deposit-invoice', {
       invoiceDate,
       dueDate,
@@ -95,11 +113,11 @@ export default class DepositInvoicePanelsComponent extends Component {
       certificateClosed: false,
       reference: invoice.reference,
       baseAmount: invoice.baseAmount,
-      order: this.order,
-      vatRate: this.vatRate,
-      customer: this.customer,
-      contact: this.contact,
-      building: this.building,
+      order,
+      vatRate,
+      customer,
+      contact,
+      building,
     });
 
     const { validations } = yield creditNote.validate();
