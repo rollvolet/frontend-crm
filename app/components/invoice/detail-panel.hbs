@@ -176,9 +176,7 @@
           </Util::DetailItem>
           {{#if @model.isIsolated}}
             <Util::DetailItem @label="BTW tarief">
-              {{#if @model.vatRate}}
-                {{@model.vatRate.name}} BTW
-              {{/if}}
+              {{format-vat-rate (await @model.vatRate)}}
             </Util::DetailItem>
           {{/if}}
           <Util::DetailItem @label="Betaalref.">

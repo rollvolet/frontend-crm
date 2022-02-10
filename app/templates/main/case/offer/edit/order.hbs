@@ -37,12 +37,8 @@
               {{on "click" (toggle "isOrdered" offerline)}}>
               <div class="flex space-x-4 items-start">
                 <div>
-                  {{! template-lint-disable no-nested-interactive}}
-                  <input disabled
-                    type="checkbox"
-                    checked={{offerline.isOrdered}}
-                    class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
-                  {{! template-lint-enable no-nested-interactive}}
+                  {{svg-jar (if offerline.isOrdered "checkbox-checked" "checkbox-intermediate")
+                      class=(if offerline.isOrdered "h-6 w-6 text-red-600" "h-6 w-6 text-gray-300")}}
                 </div>
                 <div>
                   {{{offerline.description}}}

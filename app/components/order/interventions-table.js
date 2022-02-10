@@ -70,4 +70,9 @@ export default class OrderInterventionsTableComponent extends FilterComponent {
     this.sort = sort;
     this.search.perform(this.filter);
   }
+
+  @action
+  navigateToDetail(intervention) {
+    this.router.transitionTo('main.interventions.edit', intervention.id);
+  }
 }

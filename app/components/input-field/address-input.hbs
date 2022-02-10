@@ -3,7 +3,7 @@
     {{@label}}
   </label>
 {{/if}}
-<Textarea
+<textarea
   id={{this.elementId}}
   value={{this.value}}
   class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -11,4 +11,3 @@
   {{on "change" this.setValue}}
   {{on "focusout" this.formatAddressLines}}
   ...attributes />
-{{!-- TODO display error --}}

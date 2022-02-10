@@ -43,7 +43,7 @@ export default class BuildingModel extends ValidatedModel {
   @belongsTo('country') country;
   @belongsTo('language') language;
   @belongsTo('honorific-prefix') honorificPrefix;
-  @hasMany('telephone') telephones;
+  // @hasMany('telephone') telephones;
   @hasMany('request') requests;
   @hasMany('offer') offers;
   @hasMany('order') orders;
@@ -82,5 +82,9 @@ export default class BuildingModel extends ValidatedModel {
       address += this.address3 + ' ';
     }
     return address.trim();
+  }
+
+  get uri() {
+    return `http://data.rollvolet.be/buildings/${this.id}`;
   }
 }

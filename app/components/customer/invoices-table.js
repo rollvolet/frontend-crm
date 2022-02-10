@@ -71,4 +71,9 @@ export default class InvoicesTable extends FilterComponent {
     this.sort = sort;
     this.search.perform(this.filter);
   }
+
+  @action
+  navigateToDetail(invoice) {
+    this.router.transitionTo('main.case.invoice.edit', this.args.customer, invoice.id);
+  }
 }

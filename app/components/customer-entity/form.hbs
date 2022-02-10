@@ -14,10 +14,10 @@
           </div>
           <div class="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-4">
             <div class="flex items-center">
-              <Input
+              <input
                 id="customer-type--individual"
-                @type="radio"
-                @value="individual"
+                type="radio"
+                value="individual"
                 name="customer-type"
                 class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
                 checked={{not @model.isCompany}}
@@ -27,10 +27,10 @@
               </label>
             </div>
             <div class="flex items-center">
-              <Input
+              <input
                 id="customer-type--company"
-                @type="radio"
-                @value="company"
+                type="radio"
+                value="company"
                 name="customer-type"
                 class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
                 checked={{@model.isCompany}}
@@ -48,7 +48,7 @@
               @value={{@model.vatNumber}}
               @onChange={{fn (mut @model.vatNumber)}}
               @onBlur={{@onSave}}
-              @showDuplicateVatError={{this.isDuplicateVatNumber}}
+              @errors={{@model.validations.attrs.vatNumber}}
               @customer={{@model}}
               class="mt-1" />
           </div>
@@ -209,7 +209,7 @@
           Telefoonnummers
         </label>
         <div class="mt-1">
-          <CustomerEntity::TelephonesTable @model={{@model}} />
+          <Telephone::Table @model={{@model}} />
         </div>
       </div>
     </div>

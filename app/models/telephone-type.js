@@ -1,5 +1,9 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr, hasMany } from '@ember-data/model';
 
-export default class TelephoneType extends Model {
-  @attr name;
+export default class TelephoneTypeModel extends Model {
+  @attr uri;
+  @attr code;
+  @attr label;
+
+  @hasMany('telephone') telephones;
 }

@@ -55,13 +55,7 @@
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="Telefoon">
-              {{#each @model.telephones as |tel|}}
-                <div>
-                  {{tel.telephoneType.name}}:
-                  {{format-phone tel.country.telephonePrefix tel.area tel.number}}
-                  {{#if tel.memo}}({{tel.memo}}){{/if}}
-                </div>
-              {{/each}}
+              <Telephone::List @model={{this.telephones}} />
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="E-mail">

@@ -30,13 +30,7 @@
 
   <div class="space-y-2">
     <Util::DetailItem @label="Telefoon">
-      {{#each @model.telephones as |tel|}}
-        <div>
-          {{tel.telephoneType.name}}
-          {{format-phone (get (await tel.country) 'telephonePrefix') tel.area tel.number}}
-          {{#if tel.memo}}({{tel.memo}}){{/if}}
-        </div>
-      {{/each}}
+      <Telephone::List @model={{this.telephones}} />
     </Util::DetailItem>
 
     <Util::DetailItem @label="E-mail">

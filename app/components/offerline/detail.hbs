@@ -1,7 +1,7 @@
 <div class="grid border {{if this.showUnsavedWarning "border-red-500 border-2 border-dashed" "border-gray-200"}} rounded">
   <div class="bg-gray-200 rounded-t px-4 py-2 flex justify-between items-center">
     <div class="bg-gray-200 text-gray-500 font-semibold">
-      {{@model.sequenceNumber}}
+      {{@model.position}}
     </div>
     <div class="flex flex-col sm:flex-row justify-end items-end sm:items-center sm:space-x-2">
       <div class="pl-4 space-x-1 flex flex-col sm:flex-row justify-end items-end {{if this.editMode "sm:items-baseline" "sm:items-center"}}">
@@ -99,34 +99,49 @@
       <table class="w-full table-fixed divide-y divide-gray-200">
         <thead>
           <tr>
-            <th scope="col" class="pr-4 py-3 text-xs tracking-wider text-gray-500 font-medium w-56 sm:w-auto">
+            <th scope="col" class="pr-2 py-3 text-xs tracking-wider text-gray-500 font-medium w-56 sm:w-auto">
               Beschrijving
             </th>
-            <th scope="col" class="px-4 py-3 text-xs tracking-wider text-gray-500 font-medium w-32">
-              Bedrag
+            <th scope="col" class="px-2 py-3 text-xs tracking-wider text-gray-500 font-medium text-right w-28">
+              Bedrag (&euro;)
+            </th>
+            <th scope="col" class="px-2 py-3 text-xs tracking-wider text-gray-500 font-medium text-right w-24">
+              Korting (%)
+            </th>
+            <th scope="col" class="px-2 py-3 text-xs tracking-wider text-gray-500 font-medium text-right w-24">
+              Totaal (&euro;)
             </th>
             {{#unless @isDisabledEdit}}
-              <th scope="col" class="py-3 text-xs tracking-wider text-gray-500 font-medium w-12">
+              <th scope="col" class="py-3 text-xs tracking-wider text-gray-500 font-medium  text-right w-12">
                 {{!-- buttons --}}
               </th>
             {{/unless}}
           </tr>
         </thead>
         <tbody>
-          {{#each @model.calculationLines as |line|}}
-            <CalculationLine::Detail
-              @model={{line}}
-              @initialEditMode={{@model.initialEditMode}}
-              @onSave={{perform this.updateOfferlineAmount}}
-              @onDelete={{perform this.deleteCalculationLine line}}
-              @isDisabledEdit={{@isDisabledEdit}} />
-          {{else}}
+          {{#if this.loadData.isRunning}}
             <tr>
-              <td colspan="3" class="py-4 text-sm text-gray-400 italic">
-                Er is nog geen berekening toegevoegd
+              <td colspan="5" class="py-4 text-center">
+                <Util::LoadingSpinner @label="" />
               </td>
             </tr>
-          {{/each}}
+          {{else}}
+            {{#each (sort-by "position" @model.calculationLines) as |line index|}}
+              <CalculationLine::Detail
+                @model={{line}}
+                @initialEditMode={{@model.initialEditMode}}
+                @isAmountRequired={{eq index 0}}
+                @didSave={{perform this.updateOfferlineAmount}}
+                @onDelete={{perform this.deleteCalculationLine line}}
+                @isDisabledEdit={{@isDisabledEdit}} />
+            {{else}}
+              <tr>
+                <td colspan="5" class="py-4 text-sm text-gray-400 italic">
+                  Er is nog geen berekening toegevoegd
+                </td>
+              </tr>
+            {{/each}}
+          {{/if}}
         </tbody>
       </table>
       <div class="mt-4 flex justify-end">

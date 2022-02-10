@@ -17,7 +17,7 @@ export default class MainReportsRevenueRoute extends Route {
   };
 
   beforeModel() {
-    if (!this.userInfo.hasBoardRole) {
+    if (!this.userInfo.isBoard) {
       this.router.transitionTo('forbidden');
     }
   }

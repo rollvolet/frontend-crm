@@ -6,12 +6,18 @@ export default class CalculationLineModel extends ValidatedModel {
     offerline: new Validator('presence', {
       presence: true,
     }),
-    amount: new Validator('presence', {
-      presence: true,
+    position: new Validator('number', {
+      allowBlank: false,
+      positive: true,
+    }),
+    reductionRate: new Validator('number', {
+      allowBlank: true,
     }),
   };
 
+  @attr('number') position;
   @attr amount;
+  @attr reductionRate;
   @attr('string', {
     defaultValue() {
       return 'EUR';
@@ -22,4 +28,17 @@ export default class CalculationLineModel extends ValidatedModel {
   @attr offerline;
 
   @belongsTo('offerline') offerline;
+
+  get reductionPercentage() {
+    return this.reductionRate ? this.reductionRate * 100 : null;
+  }
+
+  get arithmeticAmount() {
+    if (this.reductionRate) {
+      const reduction = this.amount * this.reductionRate;
+      return this.amount - reduction;
+    } else {
+      return this.amount;
+    }
+  }
 }

@@ -18,7 +18,7 @@ export default class OfferDocumentPanelComponent extends Component {
   }
 
   get sortedOfferlines() {
-    return this.offerlines.sortBy('sequenceNumber');
+    return this.offerlines.sortBy('position');
   }
 
   get hasMixedVatRates() {
@@ -29,8 +29,8 @@ export default class OfferDocumentPanelComponent extends Component {
   *loadData() {
     // TODO use this.args.model.offerlines once the relation is defined
     const offerlines = yield this.store.query('offerline', {
-      'filter[offer]': this.args.model.url,
-      sort: 'sequence-number',
+      'filter[offer]': this.args.model.uri,
+      sort: 'position',
       page: { size: 100 },
     });
     this.offerlines = offerlines.toArray();
@@ -49,13 +49,13 @@ export default class OfferDocumentPanelComponent extends Component {
 
   @task
   *addOfferline() {
-    const number = this.offerlines.length
-      ? Math.max(...this.offerlines.map((l) => l.sequenceNumber))
+    const position = this.offerlines.length
+      ? Math.max(...this.offerlines.map((l) => l.position))
       : 0;
     const vatRate = yield this.args.model.vatRate;
     const offerline = this.store.createRecord('offerline', {
-      sequenceNumber: number + 1,
-      offer: this.args.model.url,
+      position: position + 1,
+      offer: this.args.model.uri,
       amount: 0,
       vatRate: vatRate,
     });
@@ -71,6 +71,7 @@ export default class OfferDocumentPanelComponent extends Component {
     if (!offerline.isNew) {
       const calculationLine = this.store.createRecord('calculation-line', {
         offerline: offerline,
+        position: 1,
       });
       // no validation in frontend since calculation line needs to be persisted in backend,
       // even without description/amount. Otherwise it will not appear in the list.

@@ -1,9 +1,9 @@
 <div class="grid border {{if this.showUnsavedWarning "border-red-500 border-2 border-dashed" "border-gray-200"}} rounded">
   <div class="bg-gray-200 rounded-t px-4 py-2 flex justify-between items-center">
     <div class="grow-0 flex-auto flex space-x-2">
-      {{#if @model.sequenceNumber}}
+      {{#if @model.position}}
         <div class="text-gray-500 font-semibold">
-          {{@model.sequenceNumber}}
+          {{@model.position}}
         </div>
       {{/if}}
       {{#if @model.isSupplement}}
@@ -19,7 +19,7 @@
             @value={{@model.amount}}
             @leading="&euro;"
             @onChange={{queue (fn (mut @model.amount)) (perform @saveTask @model)}}
-            class="block w-32 sm:text-sm pl-7 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+            class="block w-32 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
         </div>
         <div class="ml-1 text-sm text-gray-900 font-semibold">
           + {{@model.vatRate.rate}}% btw

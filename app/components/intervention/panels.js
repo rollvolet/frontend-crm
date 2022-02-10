@@ -20,7 +20,7 @@ export default class InterventionPanelsComponent extends Component {
   }
 
   @task
-  *remove() {
+  *delete() {
     const customer = this.case.current.customer;
     const planningEvent = yield this.args.model.planningEvent;
     try {

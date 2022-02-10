@@ -2,16 +2,34 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { task } from 'ember-concurrency';
+import { task, keepLatestTask } from 'ember-concurrency';
 
 export default class CaseCustomerPanelComponent extends Component {
   @service case;
   @service router;
+  @service store;
 
   @tracked isCommentExpanded = false;
   @tracked isMemoExpanded = false;
   @tracked isEnabledEditBuilding = false;
   @tracked isEnabledEditContact = false;
+  @tracked telephones = [];
+
+  constructor() {
+    super(...arguments);
+    this.loadData.perform();
+  }
+
+  @keepLatestTask
+  *loadData() {
+    // TODO use this.args.model.telephones once the relation is defined
+    const telephones = yield this.store.query('telephone', {
+      'filter[customer]': this.args.model.uri,
+      sort: 'position',
+      page: { size: 100 },
+    });
+    this.telephones = telephones.toArray();
+  }
 
   get isUpdatingContact() {
     return this.case.updateContact.isRunning;

@@ -1,9 +1,12 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import applyFilterParams from '../../../utils/apply-filter-params';
 
 export default class IndexController extends Controller {
+  @service router;
+
   @tracked page = 0;
   @tracked size = 25;
   @tracked sort = '-order-date';
@@ -28,5 +31,11 @@ export default class IndexController extends Controller {
   @action
   selectPage(page) {
     this.page = page;
+  }
+
+  @action
+  async navigateToDetail(order) {
+    const customer = await order.customer;
+    this.router.transitionTo('main.case.order.edit', customer.id, order.id);
   }
 }

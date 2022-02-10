@@ -63,10 +63,9 @@ export default class OrderController extends Controller {
     } else {
       if (!vatRate) {
         vatRate = this.orderedVatRate;
+        const vatRateCode = this.orderedVatRate.get('code');
         debug(
-          `Offer doesn't have a VAT rate yet. Updating VAT rate to ordered VAT rate ${this.orderedVatRate.get(
-            `code`
-          )}.`
+          `Offer doesn't have a VAT rate yet. Updating VAT rate to ordered VAT rate. ${vatRateCode}.`
         );
         this.offer.vatRate = vatRate;
         yield this.offer.save();
@@ -101,11 +100,11 @@ export default class OrderController extends Controller {
 
       const invoicelines = this.orderedOfferlines.map(async (offerline) => {
         const invoiceline = this.store.createRecord('invoiceline', {
-          sequenceNumber: offerline.sequenceNumber,
+          position: offerline.position,
           description: offerline.description,
           amount: offerline.amount,
           vatRate,
-          order: order.url,
+          order: order.uri,
         });
         await invoiceline.save();
       });

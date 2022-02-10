@@ -3,7 +3,7 @@
     {{@label}}
   </label>
 {{/if}}
-<div class="{{if @leading "relative shadow-sm rounded-md"}}">
+<div class="{{if (or @leading @trailing) "relative shadow-sm rounded-md"}}">
   {{#if @leading}}
     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
       <span class="text-gray-500 sm:text-sm">
@@ -12,13 +12,23 @@
     </div>
   {{/if}}
 
-  <Input ...attributes
+  <Input
     id={{this.fieldId}}
     @value={{this.formattedValue}}
-    {{on "focusout" (fn this.updateValue this.formattedValue)}} />
+    {{on "focusout" (fn this.updateValue this.formattedValue)}}
+    class="{{if @leading "pl-7"}} {{if @trailing "pr-12"}}"
+    ...attributes />
+
+  {{#if @trailing}}
+    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+      <span class="text-gray-500 sm:text-sm">
+        {{@trailing}}
+      </span>
+    </div>
+  {{/if}}
 </div>
 {{#each @errors as |error|}}
   <p class="mt-2 text-xs text-red-600">
-    {{error}}
+    {{error.message}}
   </p>
 {{/each}}

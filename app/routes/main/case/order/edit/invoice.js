@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
 import sum from '../../../../../utils/math/sum';
+import { debug } from '@ember/debug';
 
 export default class InvoiceRoute extends Route {
   @service case;
@@ -20,11 +21,17 @@ export default class InvoiceRoute extends Route {
     const order = this.modelFor('main.case.order.edit');
     // TODO use order.invoicelines once the relation is defined
     const invoicelines = await this.store.query('invoiceline', {
-      'filter[order]': order.url,
-      sort: 'sequence-number',
+      'filter[order]': order.uri,
+      sort: 'position',
       page: { size: 100 },
     });
-    const vatRate = await order.vatRate;
+    let vatRate = await order.vatRate;
+    if (!vatRate && invoicelines.firstObject) {
+      debug('Order VAT rate got lost. Updating VAT rate to VAT rate of invoiceline.');
+      vatRate = await invoicelines.firstObject.vatRate;
+      order.vatRate = vatRate;
+      await order.save();
+    }
     const customer = await order.customer;
     const contact = await order.contact;
     const building = await order.building;
@@ -52,7 +59,7 @@ export default class InvoiceRoute extends Route {
 
     await Promise.all(
       invoicelines.map((invoiceline) => {
-        invoiceline.invoice = invoice.url;
+        invoiceline.invoice = invoice.uri;
         invoiceline.save();
       })
     );

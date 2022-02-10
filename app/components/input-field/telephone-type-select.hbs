@@ -5,13 +5,12 @@
 {{/if}}
 <div class="mt-1" ...attributes>
   <PowerSelect
-    @placeholder={{this.placeholder}}
     @options={{this.options}}
     @selected={{@value}}
     @searchEnabled={{false}}
     @onChange={{@onSelectionChange}}
-    @noMatchesMessage="Geen resultaten"
-    @allowClear={{true}} as |option|>
-    {{option.name}}
+    @allowClear={{false}} as |option select|
+  >
+    {{option.code}}
   </PowerSelect>
 </div>

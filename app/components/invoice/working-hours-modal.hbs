@@ -96,10 +96,9 @@
               <InputField::EmployeeSelect
                 @label="Technieker"
                 @value={{this.newWorkingHourTechnician}}
-                @isOnRoad={{true}}
                 @isTechnician={{true}}
                 @isAdministrative={{true}}
-                @sort={{array "functionSort:desc"}}
+                @sort={{"type:desc"}}
                 @onSelectionChange={{fn (mut this.newWorkingHourTechnician)}}
                 class="mt-1" />
             </div>

@@ -21,8 +21,8 @@ export default class OfferPanelsComponent extends Component {
     try {
       // TODO use this.args.model.offerlines once the relation is defined
       const offerlines = yield this.store.query('offerline', {
-        'filter[offer]': this.args.model.url,
-        sort: 'sequence-number',
+        'filter[offer]': this.args.model.uri,
+        sort: 'position',
         page: { size: 100 },
       });
       yield all(offerlines.map((t) => t.destroyRecord()));

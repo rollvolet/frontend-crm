@@ -82,4 +82,9 @@ export default class OffersTable extends FilterComponent {
     this.sort = sort;
     this.search.perform(this.filter);
   }
+
+  @action
+  navigateToDetail(offer) {
+    this.router.transitionTo('main.case.offer.edit', this.args.customer, offer.id);
+  }
 }

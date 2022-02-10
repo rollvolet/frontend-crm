@@ -15,6 +15,12 @@ export default class OfferlineDetailComponent extends Component {
     super(...arguments);
     this.editMode = this.args.model.initialEditMode;
     this.isShownCalculation = this.args.model.initialEditMode;
+    this.loadData.perform();
+  }
+
+  @keepLatestTask
+  *loadData() {
+    yield this.args.model.calculationLines; // used to show loading state in template
   }
 
   get showUnsavedWarning() {
@@ -29,7 +35,7 @@ export default class OfferlineDetailComponent extends Component {
   @keepLatestTask
   *updateOfferlineAmount() {
     const calculationLines = yield this.args.model.calculationLines;
-    const totalAmount = sum(calculationLines.map((line) => line.amount));
+    const totalAmount = sum(calculationLines.map((line) => line.arithmeticAmount));
     this.args.model.amount = totalAmount;
     if (this.args.model.hasDirtyAttributes) {
       yield this.args.model.save(); // only save if total amount of offerline has changed
@@ -38,8 +44,13 @@ export default class OfferlineDetailComponent extends Component {
 
   @task
   *addCalculationLine() {
+    const calculationLines = yield this.args.model.calculationLines;
+    const position = calculationLines.length
+      ? Math.max(...calculationLines.map((l) => l.position))
+      : 0;
     const calculationLine = this.store.createRecord('calculation-line', {
       offerline: this.args.model,
+      position: position + 1,
     });
 
     const { validations } = yield calculationLine.validate();
@@ -66,7 +77,7 @@ export default class OfferlineDetailComponent extends Component {
   @action
   closeEdit() {
     this.editMode = false;
-    this.args.model.initialEditMode = false;
+    delete this.args.model.initialEditMode;
   }
 
   @action

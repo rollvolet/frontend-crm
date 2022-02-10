@@ -20,16 +20,6 @@ export default class InputFieldAddressInputComponent extends Component {
     return this.args.rows || 3;
   }
 
-  get errors() {
-    const errors = [];
-    const lines = (this.value || '').split('\n');
-    if (lines.length > 3)
-      errors.pushObject(
-        'Adres mag maximaal 3 lijnen bevatten. Enkel de 3 eerste lijnen zijn opgeslagen'
-      );
-    return errors;
-  }
-
   updateValue(lines) {
     let value = '';
     let i = 0;

@@ -1,8 +1,8 @@
-{{#if (or this.delete.isRunning this.model.isDeleted)}}
+{{#if (or this.delete.isRunning @model.isDeleted)}}
   <div class="h-32">
     <Util::LoadingSpinner @label="Aan het verwijderen..." />
   </div>
-{{else if (and (not this.model.id) this.model.isSaving)}}
+{{else if (and (not @model.id) @model.isSaving)}}
   <div class="h-32">
     <Util::LoadingSpinner @label="Aan het aanmaken..." />
   </div>
@@ -12,7 +12,7 @@
       <AlertMessage::Warning
         @message="Er is reeds een factuur gemaakt. Er zijn geen wijzigingen meer mogelijk."
         class="shadow" />
-    {{else if this.model.isCancelled}}
+    {{else if @model.isCancelled}}
       <AlertMessage::Warning
         @message="De interventie is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
         class="shadow" />
