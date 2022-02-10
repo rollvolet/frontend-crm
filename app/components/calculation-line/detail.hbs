@@ -30,7 +30,7 @@
         @trailing="%"
         @value={{@model.reductionRate}}
         @onChange={{queue (fn (mut @model.reductionRate)) (perform this.save)}}
-        class="mt-1 block w-full sm:text-sm text-gray-700 pl-4 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+        class="mt-1 block w-full sm:text-sm text-gray-700 !pl-4 !pr-6 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
     </td>
     <td class="px-2 py-2 text-sm text-gray-700 text-right">
       <Fmt::Currency @value={{@model.arithmeticAmount}} />
