@@ -67,13 +67,19 @@ export default class DataTableRoute extends Route {
         size: 200,
       },
     });
-    // Next, add the customer IDs as telephone filter on the query to the SQL store
-    return telephones
-      .map((tel) => {
-        const uri = tel.customer;
-        return uri.slice(uri.lastIndexOf('/') + 1);
-      })
-      .filter((id) => isPresent(id))
-      .join(',');
+    // Next, add the customer IDs as telephone filter on the query to the SQL store.
+    if (telephones.length) {
+      return telephones
+        .map((tel) => {
+          const uri = tel.customer;
+          return uri.slice(uri.lastIndexOf('/') + 1);
+        })
+        .filter((id) => isPresent(id))
+        .join(',');
+    } else {
+      // Use an empty string if no phone-numbers are found, to distinguish in backend
+      // between no-filter and non-matching filter.
+      return '';
+    }
   }
 }
