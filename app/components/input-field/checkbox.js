@@ -7,7 +7,7 @@ export default class InputFieldCheckboxComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.checkedValue = this.isOn;
+    this.updateCheckedValue();
   }
 
   get onValue() {
@@ -24,6 +24,11 @@ export default class InputFieldCheckboxComponent extends Component {
 
   get isOff() {
     return !this.isOn;
+  }
+
+  @action
+  updateCheckedValue() {
+    this.checkedValue = this.isOn;
   }
 
   @action
