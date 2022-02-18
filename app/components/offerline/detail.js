@@ -32,13 +32,13 @@ export default class OfferlineDetailComponent extends Component {
     );
   }
 
-  @keepLatestTask
-  *updateOfferlineAmount() {
-    const calculationLines = yield this.args.model.calculationLines;
+  @action
+  async updateOfferlineAmount() {
+    const calculationLines = await this.args.model.calculationLines;
     const totalAmount = sum(calculationLines.map((line) => line.arithmeticAmount));
     this.args.model.amount = totalAmount;
     if (this.args.model.hasDirtyAttributes) {
-      yield this.args.model.save(); // only save if total amount of offerline has changed
+      await this.args.model.save(); // only save if total amount of offerline has changed
     }
   }
 
@@ -58,7 +58,7 @@ export default class OfferlineDetailComponent extends Component {
       yield calculationLine.save();
     }
 
-    this.updateOfferlineAmount.perform();
+    yield this.updateOfferlineAmount();
   }
 
   @task
@@ -66,7 +66,7 @@ export default class OfferlineDetailComponent extends Component {
     if (!calculationLine.isDeleted) {
       yield calculationLine.destroyRecord();
     }
-    this.updateOfferlineAmount.perform();
+    yield this.updateOfferlineAmount();
   }
 
   @action

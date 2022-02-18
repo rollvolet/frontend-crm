@@ -29,10 +29,16 @@ export default class CalculationLineDetailComponent extends Component {
 
   @task
   *save() {
-    const { validations } = yield this.args.model.validate();
+    // Separate async method because it must be completly executed,
+    // even if this component gets destroyed
+    yield this._save();
+  }
+
+  async _save() {
+    const { validations } = await this.args.model.validate();
     if (validations.isValid) {
-      yield this.args.model.save();
-      yield this.args.didSave();
+      await this.args.model.save();
+      await this.args.didSave();
     }
   }
 
