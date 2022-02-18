@@ -107,8 +107,9 @@
               </div>
               <div class="relative flex justify-center">
                 <button type="button"
-                  {{on "click" (perform this.addOfferline)}}
-                  class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                  disabled={{this.addOfferline.isRunning}}
+                  class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+                  {{on "click" (perform this.addOfferline)}}>
                   {{svg-jar "heroicons-sm-plus" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
                   <span>Lijn toevoegen</span>
                 </button>
