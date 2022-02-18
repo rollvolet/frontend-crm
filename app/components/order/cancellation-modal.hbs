@@ -1,0 +1,38 @@
+<Rlv::Modal @onClose={{@onClose}}>
+  <:body>
+  <div class="sm:flex sm:items-start">
+    <div class="mx-auto flex-none flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+      {{svg-jar "heroicons-md-exclamation" class="h-6 w-6 text-red-600"}}
+    </div>
+    <div class="mt-3 grow text-center sm:mt-0 sm:ml-4 sm:text-left">
+      <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+        Bestelling afsluiten
+      </h3>
+      <div class="mt-2 space-y-4">
+        <p class="text-sm text-gray-500">
+          Bent u zeker dat u deze bestelling wil afsluiten?
+        </p>
+        <div>
+          <label for="cancellation-reason" class="block text-sm text-gray-500">
+            Reden van afsluiten
+          </label>
+          <Textarea
+            id="cancellation-reason"
+            @value={{this.cancellationReason}}
+            class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            rows="5"
+            {{on "focusout" this.setCancellationReason}} />
+        </div>
+      </div>
+    </div>
+  </div>
+  </:body>
+  <:footer>
+  <button type="button"
+    disabled={{not this.isValid}}
+    {{on "click" (fn @onConfirm this.cancellationReason)}}
+    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white disabled:bg-gray-200 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200 sm:ml-3 sm:w-auto sm:text-sm">
+    Afsluiten
+  </button>
+  </:footer>
+</Rlv::Modal>

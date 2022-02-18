@@ -179,7 +179,7 @@
                 @id="is-canceled-checkbox"
                 @label="Afgesloten"
                 @value={{@model.canceled}}
-                @onChange={{queue this.setCanceledStatus (perform this.save)}} />
+                @onChange={{this.setCancelledStatus}} />
             </div>
           </div>
         </div>
@@ -258,16 +258,10 @@
           <Util::DetailItem @label="Product klaar" class="items-center">
             <Util::DisplayCheckbox @value={{@model.isReady}} />
           </Util::DetailItem>
-          <Util::DetailItem @label="Afgesloten" class="items-center">
+          <Util::DetailItem @label="Afgesloten" class="items-start">
             <Util::DisplayCheckbox @value={{@model.canceled}} />
             {{#if @model.canceled}}
-              <Util::DetailSubitem @label="Reden">
-                {{#if @model.cancellationReason}}
-                  <span class="html-body">{{@model.cancellationReason}}</span>
-                {{else}}
-                  -
-                {{/if}}
-              </Util::DetailSubitem>
+              <div class="mt-1 html-body italic">{{@model.cancellationReason}}</div>
             {{/if}}
           </Util::DetailItem>
         </div>
@@ -280,3 +274,10 @@
     {{/if}}
   </div>
 </div>
+
+{{#if this.isOpenCancellationModal}}
+  <Order::CancellationModal
+    @onConfirm={{this.confirmCancellation}}
+    @onClose={{this.closeCancellationModal}}
+  />
+{{/if}}

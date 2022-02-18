@@ -16,6 +16,7 @@ export default class OrderDetailPanelComponent extends Component {
   ];
 
   @tracked editMode = false;
+  @tracked isOpenCancellationModal = false;
 
   get request() {
     return this.case.current && this.case.current.request;
@@ -90,12 +91,31 @@ export default class OrderDetailPanelComponent extends Component {
   }
 
   @action
-  setCanceledStatus(value) {
+  async setCancelledStatus(value) {
     this.args.model.canceled = value;
-
     if (!value) {
       this.args.model.cancellationReason = null;
+      await this.save.perform();
+    } else {
+      this.isOpenCancellationModal = true;
     }
+  }
+
+  @action
+  async closeCancellationModal() {
+    this.isOpenCancellationModal = false;
+    this.args.model.canceled = false;
+    this.args.model.cancellationReason = null;
+    await this.save.perform();
+  }
+
+  @action
+  async confirmCancellation(reason) {
+    this.isOpenCancellationModal = false;
+    this.args.model.canceled = true;
+    this.args.model.cancellationReason = reason;
+    await this.save.perform();
+    this.closeEdit();
   }
 
   @action
