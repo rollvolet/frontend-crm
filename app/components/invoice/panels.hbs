@@ -26,6 +26,7 @@
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <Invoice::ProductPanel
         @model={{@model}}
+        @isUpdatingVatRate={{this.updateInvoicelinesVatRate.isRunning}}
         @isDisabledEdit={{this.isDisabledEdit}} />
     </div>
 
