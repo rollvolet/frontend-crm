@@ -9,6 +9,7 @@ import sum from '../../../../../utils/math/sum';
 export default class OrderController extends Controller {
   @service case;
   @service store;
+  @service router;
 
   @tracked isOpenIncompatibleVatRatesModal = false;
 
@@ -108,7 +109,7 @@ export default class OrderController extends Controller {
       });
       yield all(invoicelines);
 
-      this.transitionToRoute('main.case.order.edit', customer, order);
+      this.router.transitionTo('main.case.order.edit', customer, order);
 
       // update case to display the new order tab
       this.case.updateRecord('order', order);
@@ -119,7 +120,7 @@ export default class OrderController extends Controller {
   cancel() {
     this.model.forEach((o) => (o.isOrdered = false));
     const customer = this.case.current.customer;
-    this.transitionToRoute('main.case.offer.edit', customer, this.offer.id);
+    this.router.transitionTo('main.case.offer.edit', customer, this.offer.id);
   }
 
   openIncompatibleVatRatesModal() {

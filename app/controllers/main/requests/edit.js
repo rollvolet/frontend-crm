@@ -5,6 +5,7 @@ import { task } from 'ember-concurrency';
 
 export default class EditController extends Controller {
   @service case;
+  @service router;
 
   get isDisabledEdit() {
     return this.case.current && this.case.current.offer != null;
@@ -23,7 +24,7 @@ export default class EditController extends Controller {
       }
       yield this.model.destroyRecord();
 
-      this.transitionToRoute('main.requests.index');
+      this.router.transitionTo('main.requests.index');
     } catch (e) {
       warn(`Something went wrong while destroying request ${this.model.id}`, {
         id: 'destroy-failure',

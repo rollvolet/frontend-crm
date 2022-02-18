@@ -5,6 +5,7 @@ import { debug } from '@ember/debug';
 
 export default class ApplicationController extends Controller {
   @service appState;
+  @service router;
 
   constructor() {
     super(...arguments);
@@ -27,7 +28,7 @@ export default class ApplicationController extends Controller {
       debug(`An error occurred, but error reporting is disabled for this error: ${error}`);
     } else {
       this.appState.reportError(error);
-      this.transitionToRoute('oops');
+      this.router.transitionTo('oops');
     }
   }
 }

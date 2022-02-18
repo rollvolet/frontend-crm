@@ -1,10 +1,13 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import applyFilterParams from '../../../../utils/apply-filter-params';
 import { task } from 'ember-concurrency';
+import { inject as service } from '@ember/service';
+import applyFilterParams from '../../../../utils/apply-filter-params';
 
 export default class CustomerController extends Controller {
+  @service router;
+
   @tracked page = 0;
   @tracked size = 25;
   @tracked sort = 'name';
@@ -13,7 +16,7 @@ export default class CustomerController extends Controller {
   *linkCustomerToRequest(customer) {
     this.request.customer = customer;
     yield this.request.save();
-    this.transitionToRoute('main.case.request.edit', customer, this.request);
+    this.router.transitionTo('main.case.request.edit', customer, this.request);
   }
 
   @action
