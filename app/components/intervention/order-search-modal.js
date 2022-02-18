@@ -2,7 +2,6 @@ import FilterComponent from '../data-table-filter';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { later } from '@ember/runloop';
 import { restartableTask } from 'ember-concurrency';
 
 export default class InterventionOrderSearchModalComponent extends FilterComponent {
@@ -13,8 +12,6 @@ export default class InterventionOrderSearchModalComponent extends FilterCompone
   @tracked size = 10;
   @tracked sort = '-order-date';
   @tracked orders = [];
-
-  @tracked showModalContent = true;
 
   constructor() {
     super(...arguments);
@@ -62,18 +59,6 @@ export default class InterventionOrderSearchModalComponent extends FilterCompone
         reference: filter.reference,
       },
     });
-  }
-
-  @action
-  closeModal() {
-    this.showModalContent = false;
-    later(
-      this,
-      function () {
-        this.args.onClose();
-      },
-      200
-    ); // delay to finish leave CSS animation
   }
 
   @action

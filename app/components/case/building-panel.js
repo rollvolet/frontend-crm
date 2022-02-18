@@ -2,14 +2,12 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { later } from '@ember/runloop';
 import { keepLatestTask } from 'ember-concurrency';
 
 export default class CaseBuildingPanelComponent extends Component {
   @service store;
 
   @tracked isOpenEditModal = false;
-  @tracked showModalContent = false;
   @tracked telephones = [];
 
   constructor() {
@@ -37,18 +35,10 @@ export default class CaseBuildingPanelComponent extends Component {
   @action
   openEditModal() {
     this.isOpenEditModal = true;
-    this.showModalContent = true;
   }
 
   @action
   closeEditModal() {
-    this.showModalContent = false;
-    later(
-      this,
-      function () {
-        this.isOpenEditModal = false;
-      },
-      200
-    ); // delay to finish leave CSS animation
+    this.isOpenEditModal = false;
   }
 }

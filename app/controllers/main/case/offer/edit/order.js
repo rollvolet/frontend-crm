@@ -4,7 +4,6 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { all, task } from 'ember-concurrency';
 import { debug } from '@ember/debug';
-import { later } from '@ember/runloop';
 import sum from '../../../../../utils/math/sum';
 
 export default class OrderController extends Controller {
@@ -12,7 +11,6 @@ export default class OrderController extends Controller {
   @service store;
 
   @tracked isOpenIncompatibleVatRatesModal = false;
-  @tracked showIncompatibleVatRatesModalContent = false;
 
   get request() {
     return this.case.current && this.case.current.request;
@@ -126,18 +124,10 @@ export default class OrderController extends Controller {
 
   openIncompatibleVatRatesModal() {
     this.isOpenIncompatibleVatRatesModal = true;
-    this.showIncompatibleVatRatesModalContent = true;
   }
 
   @action
   closeIncompatibleVatRatesModal() {
-    this.showIncompatibleVatRatesModalContent = false;
-    later(
-      this,
-      function () {
-        this.isOpenIncompatibleVatRatesModal = false;
-      },
-      200
-    ); // delay to finish leave CSS animation
+    this.isOpenIncompatibleVatRatesModal = false;
   }
 }

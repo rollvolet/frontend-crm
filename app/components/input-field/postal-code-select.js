@@ -4,7 +4,6 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { timeout, keepLatestTask } from 'ember-concurrency';
-import { later } from '@ember/runloop';
 
 export default class PostalCodeSelect extends Component {
   @service store;
@@ -12,7 +11,6 @@ export default class PostalCodeSelect extends Component {
   @tracked value;
   @tracked postalCodes = [];
   @tracked showCreateModal = false;
-  @tracked showModalContent = true;
   @tracked newCode;
   @tracked newCity;
 
@@ -96,18 +94,10 @@ export default class PostalCodeSelect extends Component {
   @action
   openCreateNewModal() {
     this.showCreateModal = true;
-    this.showModalContent = true;
   }
 
   @action
   closeCreateNewModal() {
-    this.showModalContent = false;
-    later(
-      this,
-      function () {
-        this.showCreateModal = false;
-      },
-      200
-    ); // delay to finish leave CSS animation
+    this.showCreateModal = false;
   }
 }

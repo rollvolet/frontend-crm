@@ -1,15 +1,12 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { later } from '@ember/runloop';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
 
 export default class InvoiceWorkingHoursModalComponent extends Component {
   @service store;
 
-  @tracked showModalContent = true;
   @tracked newWorkingHourDate;
   @tracked newWorkingHourTechnician = null;
 
@@ -57,17 +54,5 @@ export default class InvoiceWorkingHoursModalComponent extends Component {
   @task
   *deleteWorkingHour(workingHour) {
     yield workingHour.destroyRecord();
-  }
-
-  @action
-  closeModal() {
-    this.showModalContent = false;
-    later(
-      this,
-      function () {
-        this.args.onClose();
-      },
-      200
-    ); // delay to finish leave CSS animation
   }
 }
