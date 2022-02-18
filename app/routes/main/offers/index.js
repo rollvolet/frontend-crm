@@ -14,7 +14,7 @@ export default class MainOffersIndexRoute extends DataTableRoute {
     visitor: { refreshModel: true },
     reference: { refreshModel: true },
     requestNumber: { refreshModel: true },
-    withoutOrder: { refreshModel: true },
+    hasOrder: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
     cCity: { refreshModel: true },
@@ -33,7 +33,7 @@ export default class MainOffersIndexRoute extends DataTableRoute {
         number: formatOfferNumber(params.number),
         'request-number': onlyNumericChars(params.requestNumber),
         reference: params.reference,
-        order: !params.withoutOrder,
+        hasOrder: params.hasOrder,
         request: {
           visitor: params.visitor,
         },

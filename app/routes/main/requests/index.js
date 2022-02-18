@@ -11,7 +11,7 @@ export default class MainRequestsIndexRoute extends DataTableRoute {
     // filter params
     number: { refreshModel: true },
     visitor: { refreshModel: true },
-    withoutOffer: { refreshModel: true },
+    hasOffer: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
     cCity: { refreshModel: true },
@@ -29,7 +29,7 @@ export default class MainRequestsIndexRoute extends DataTableRoute {
       filter: {
         number: onlyNumericChars(params.number),
         visitor: params.visitor,
-        offer: !params.withoutOffer,
+        hasOffer: params.hasOffer,
         customer: {
           name: params.cName,
           'postal-code': params.cPostalCode,

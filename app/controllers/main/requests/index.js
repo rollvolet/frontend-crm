@@ -10,7 +10,7 @@ export default class IndexController extends Controller {
   @tracked page = 0;
   @tracked size = 25;
   @tracked sort = '-request-date';
-  withoutOffer = false; // enforce boolean datatype
+  hasOffer = 0;
 
   @action
   applyFilter(filter) {

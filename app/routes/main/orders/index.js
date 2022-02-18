@@ -14,8 +14,8 @@ export default class MainOrdersIndexRoute extends DataTableRoute {
     requestNumber: { refreshModel: true },
     visitor: { refreshModel: true },
     reference: { refreshModel: true },
-    withoutInvoice: { refreshModel: true },
-    onlyNotCanceled: { refreshModel: true },
+    hasInvoice: { refreshModel: true },
+    isCancelled: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
     cCity: { refreshModel: true },
@@ -34,8 +34,8 @@ export default class MainOrdersIndexRoute extends DataTableRoute {
         'request-number': onlyNumericChars(params.requestNumber),
         'offer-number': formatOfferNumber(params.offerNumber),
         reference: params.reference,
-        invoice: !params.withoutInvoice,
-        canceled: !params.onlyNotCanceled,
+        isCancelled: params.isCancelled,
+        hasInvoice: params.hasInvoice,
         offer: {
           request: {
             visitor: params.visitor,

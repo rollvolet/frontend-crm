@@ -10,8 +10,8 @@ export default class IndexController extends Controller {
   @tracked page = 0;
   @tracked size = 25;
   @tracked sort = '-order-date';
-  withoutInvoice = false; // enforce boolean datatype
-  onlyNotCanceled = false; // enforce boolean datatype
+  isCancelled = 0;
+  hasInvoice = 0;
 
   @action
   applyFilter(filter) {
