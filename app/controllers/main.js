@@ -18,6 +18,18 @@ export default class MainController extends Controller {
     this.router.on('routeWillChange', () => this.closeMenu());
   }
 
+  get isLoading() {
+    return this.configuration.preloadStaticLists.isRunning;
+  }
+
+  get applicationInitializationFailed() {
+    return this.configuration.preloadStaticLists.isError;
+  }
+
+  get isIndexPage() {
+    return this.router.currentRouteName == 'main.index';
+  }
+
   @action
   logout() {
     this.session.invalidate();
