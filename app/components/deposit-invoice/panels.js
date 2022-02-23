@@ -23,7 +23,7 @@ export default class DepositInvoicePanelsComponent extends Component {
     if (!this.vatRate) {
       debug('Order VAT rate got lost. Updating VAT rate to VAT rate of first invoiceline.');
       const invoiceline = yield this.store.queryOne('invoiceline', {
-        'filter[order]': this.order.uri,
+        'filter[:exact:order]': this.order.uri,
         sort: 'position',
       });
       if (invoiceline) {

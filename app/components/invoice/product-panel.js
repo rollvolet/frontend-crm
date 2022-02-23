@@ -21,7 +21,7 @@ export default class InvoiceProductPanelComponent extends Component {
   *loadData() {
     // TODO use this.args.model.invoicelines once the relation is defined
     const invoicelines = yield this.store.query('invoiceline', {
-      'filter[invoice]': this.args.model.uri,
+      'filter[:exact:invoice]': this.args.model.uri,
       sort: 'position',
       page: { size: 100 },
     });

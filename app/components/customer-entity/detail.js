@@ -32,7 +32,7 @@ export default class CustomerEntityDetailComponent extends Component {
     }
 
     // TODO use this.args.model.telephones once the relation is defined
-    const filterKey = `filter[${this.scope}]`;
+    const filterKey = `filter[:exact:${this.scope}]`;
     const telephones = yield this.store.query('telephone', {
       [filterKey]: this.args.model.uri,
       sort: 'position',

@@ -19,7 +19,7 @@ export default class CaseBuildingPanelComponent extends Component {
   *loadData() {
     // TODO use this.args.model.telephones once the relation is defined
     const telephones = yield this.store.query('telephone', {
-      'filter[building]': this.args.model.uri,
+      'filter[:exact:building]': this.args.model.uri,
       sort: 'position',
       page: { size: 100 },
     });

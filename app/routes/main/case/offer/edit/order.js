@@ -20,7 +20,7 @@ export default class OrderRoute extends Route {
     const offer = this.modelFor('main.case.offer.edit');
     // TODO use offer.offerlines once the relation is defined
     return this.store.query('offerline', {
-      'filter[offer]': offer.uri,
+      'filter[:exact:offer]': offer.uri,
       sort: 'position',
       page: { size: 100 },
     });
