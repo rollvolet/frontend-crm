@@ -1,13 +1,12 @@
 import Route from '@ember/routing/route';
 import { action } from '@ember/object';
-import ArrayProxy from '@ember/array/proxy';
 import { inject as service } from '@ember/service';
-import fetch, { Headers } from 'fetch';
 import { hash } from 'rsvp';
-import OutstandingJob from '../../../../classes/outstanding-job';
-import OutstandingJobReport from '../../../../classes/outstanding-job-report';
-import getPaginationMetadata from '../../../../utils/get-pagination-metadata';
 import Snapshot from '../../../../utils/snapshot';
+import {
+  fetchOutstandingJobs,
+  fetchOutstandingJobsReport,
+} from '../../../../utils/fetch-outstanding-jobs';
 
 export default class MainReportsOutstandingJobsIndexRoute extends Route {
   @service store;
@@ -57,38 +56,9 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
       params.page = 0;
     }
 
-    const jobsEndpoint = new URL('/api/reports/outstanding-jobs', window.location.origin);
-    const reportEndpoint = new URL('/api/reports/outstanding-job-report', window.location.origin);
-
     const searchParams = this.getSearchParams(params);
-    jobsEndpoint.search = searchParams.toString();
-    reportEndpoint.search = searchParams.toString();
-
-    const jobsResponse = await fetch(jobsEndpoint, {
-      headers: new Headers({
-        Accept: 'application/json',
-      }),
-    });
-    const json = await jobsResponse.json();
-    const entries = json.data.map((item) => new OutstandingJob(item.attributes));
-    const count = json.meta.count;
-    const page = json.meta.page;
-    const pagination = getPaginationMetadata(page.number, page.size, count);
-
-    const outstandingJobs = ArrayProxy.create({
-      content: entries,
-      meta: {
-        count,
-        pagination,
-      },
-    });
-
-    const reportResponse = await fetch(reportEndpoint, {
-      headers: new Headers({
-        Accept: 'application/json',
-      }),
-    });
-    const report = new OutstandingJobReport((await reportResponse.json()).data.attributes);
+    const outstandingJobs = await fetchOutstandingJobs(searchParams);
+    const report = await fetchOutstandingJobsReport(searchParams);
 
     // Preload selected values value for ember-power-select
     if (params.visitorName) {
