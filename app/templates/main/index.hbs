@@ -1,5 +1,40 @@
-<h1 class="text-3xl font-bold font-display my-6">Welkom, {{this.userInfo.name}}!</h1>
+<div class="bg-white shadow">
+  <div class="px-4 sm:px-6 lg:mx-auto lg:px-8">
+    <div class="py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center">
+          {{svg-jar "placeholder-avatar" class="hidden h-16 w-16 rounded-full sm:block text-gray-300 border"}}
+          <div>
+            <div class="flex items-center">
+              {{svg-jar "placeholder-avatar" class="h-16 w-16 rounded-full sm:hidden text-gray-300 border"}}
+              <h1 class="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate">{{capitalize this.greeting}}, {{this.userInfo.firstName}}!</h1>
+            </div>
+            <dl class="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
+              <dt class="sr-only">Username</dt>
+              <dd class="flex items-center text-sm text-gray-500 font-medium sm:mr-6">
+                {{svg-jar "heroicons-md-identification" class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"}}
+                {{this.userInfo.username}}
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<p class="text-gray-900">
-  Maak uw keuze in het menu aan de linkerkant door op het {{svg-jar "heroicons-md-menu-alt-2" class="inline h-5 w-5"}}-icoon te klikken.
-</p>
+<h2 class="mx-auto mt-8 px-4 flex items-center space-x-2 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8">
+  <span>
+    Uit te voeren werken
+  </span>
+  <LinkTo @route="main.reports.outstanding-jobs.index"
+    class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+    {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
+    <EmberTooltip @text="Ga naar uit te voeren werken" @side="top" />
+  </LinkTo>
+</h2>
+<div class="mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="flex flex-col mt-2">
+    <Dashboard::OutstandingJobs />
+  </div>
+</div>

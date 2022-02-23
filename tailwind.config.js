@@ -23,8 +23,16 @@ module.exports = {
         green: colors.emerald,
         yellow: colors.amber
       },
+      height: {
+        '128': '32rem',
+      },
       minHeight: (theme) => ({
-        ...theme('spacing')
+        ...theme('spacing'),
+        '128': '32rem',
+      }),
+      maxHeight: (theme) => ({
+        ...theme('spacing'),
+        '128': '32rem',
       }),
       screens: {
         'print': {'raw': 'print'} // => @media print { ... }

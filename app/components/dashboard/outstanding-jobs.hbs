@@ -1,0 +1,203 @@
+<div class="bg-white overflow-hidden shadow sm:rounded-lg">
+  <div class="-my-2 sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+      <div class="border-b border-gray-200 max-h-128 overflow-y-auto ">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="sticky top-0">
+            <tr>
+              <th class="pl-4 pr-2 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                AD
+              </th>
+              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Besteldat.
+              </th>
+              <th class="px-3 py-3 bg-gray-200 whitespace-nowrap text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Kl. nr.
+              </th>
+              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Klant
+              </th>
+              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Gemeente
+              </th>
+              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Uitvoering
+              </th>
+              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Pr. bon
+              </th>
+              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Planning
+              </th>
+              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Uren
+              </th>
+              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Klaar?
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {{#if this.loadData.isRunning}}
+              <tr class="animate-pulse">
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-24 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-14 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-28 bg-gray-300"></div>
+                </td>
+                <td>
+                  <div class="h-8 w-20 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-18 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-24 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-18 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+              </tr>
+              <tr class="animate-pulse">
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-24 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-14 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-24 bg-gray-300"></div>
+                </td>
+                <td>
+                  <div class="h-8 w-24 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-16 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-28 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-16 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+              </tr>
+            {{else}}
+              {{#each this.outstandingJobs as |row|}}
+                <tr>
+                  <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
+                    <LinkTo @route="main.case.order.edit" @models={{array row.customerNumber row.orderId}}
+                      class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      AD{{format-request-number row.requestId}}
+                    </LinkTo>
+                  </td>
+                  <td class="px-3 py-2 text-xs font-medium text-gray-900">
+                    <Fmt::Date @value={{row.orderDate}} />
+                  </td>
+                  <td class="px-3 py-2 text-xs font-medium text-gray-900">
+                    {{row.customerNumber}}
+                  </td>
+                  <td class="px-3 py-2 text-xs font-medium text-gray-900">
+                    {{row.customerName}}
+                    <br>{{row.customerAddress1}}
+                    {{#if row.buildingAddress1}}
+                      <br>{{row.buildingAddress1}}
+                    {{/if}}
+                  </td>
+                  <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+                    <br>
+                    {{row.customerPostalCode}} {{row.customerCity}}
+                    {{#if row.buildingCity}}
+                      <br>{{row.buildingPostalCode}} {{row.buildingCity}}
+                    {{/if}}
+                  </td>
+                  <td class="px-3 py-2 text-xs text-gray-500">
+                    {{#if row.mustBeDelivered}}
+                      {{order-execution 'delivery'}}
+                    {{else if row.mustBeInstalled}}
+                      {{order-execution 'installation'}}
+                    {{else}}
+                      {{order-execution 'pickup'}}
+                    {{/if}}
+                  </td>
+                  <td class="px-3 py-2 text-center text-xs text-gray-400">
+                    {{#if row.hasProductionTicket}}
+                      {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
+                    {{else}}
+                      -
+                    {{/if}}
+                  </td>
+                  <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+                    <div>
+                      <span class="text-gray-400 italic inline-block w-5">Vw</span>
+                      <Fmt::Date @value={{row.expectedDate}} />
+                    </div>
+                    <div>
+                      <span class="text-gray-400 italic inline-block w-5">Ve</span>
+                      <span class="{{if row.isOverdue "bg-red-200"}}">
+                        <Fmt::Date @value={{row.requiredDate}} />
+                      </span>
+                    </div>
+                    <div>
+                      <span class="text-gray-400 italic inline-block w-5">Pl</span>
+                      <Fmt::Date @value={{row.planningDate}} />
+                    </div>
+                  </td>
+                  <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+                    {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
+                    {{#each row.techniciansList as |technician|}}
+                      <br>{{technician}}
+                    {{/each}}
+                  </td>
+                  <td class="px-3 py-2 text-center text-xs text-gray-400">
+                    {{#if row.productIsReady}}
+                      {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
+                    {{else}}
+                      -
+                    {{/if}}
+                  </td>
+                </tr>
+            {{else}}
+                <tr>
+                  <td colspan="10" class="px-6 py-4 text-center text-sm text-gray-500">
+                    Geen uit te voeren werken.
+                  </td>
+                </tr>
+              {{/each}}
+            {{/if}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {{#if this.outstandingJobs}}
+    <DataTable::Pagination
+      @page={{this.page}}
+      @size={{this.size}}
+      @total={{this.outstandingJobs.meta.count}}
+      @onPrevious={{this.previousPage}}
+      @onNext={{this.nextPage}}
+      @onSelectPage={{this.selectPage}} />
+  {{/if}}
+</div>
