@@ -103,7 +103,7 @@
     </div>
   </nav>
 </div>
-<div class="flex flex-none border-t border-red-800 px-4 pt-4">
+<div class="flex justify-between items-center border-t border-red-800 px-4 pt-4">
   <div class="flex items-center">
     <div class="shrink-0">
       <span class="inline-block h-10 w-10 rounded-full overflow-hidden bg-red-100">
@@ -111,12 +111,12 @@
       </span>
     </div>
     <div class="ml-3">
-      <div class="text-base font-medium leading-none text-red-100">{{this.userInfo.name}}</div>
+      <div class="text-base font-medium leading-none text-red-100">{{this.userInfo.firstName}}</div>
     </div>
   </div>
   <div class="px-2" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
     <button type="button"
-      onClick={{@onLogout}}
+      {{on "click" @onLogout}}
       class="block w-full px-3 py-2 rounded-md text-red-100 text-left text-base font-medium hover:text-white hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600"
       role="menuitem">
       Log uit

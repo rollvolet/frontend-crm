@@ -27,6 +27,15 @@ export default class UserInfoService extends Service {
     return this.userGroups.includes('http://data.rollvolet.be/user-groups/employee');
   }
 
+  get firstName() {
+    // TODO this is only a best guess. Get correct first name from DB.
+    return this.name.split(' ')[0];
+  }
+
+  get email() {
+    return this.username;
+  }
+
   @keepLatestTask
   // eslint-disable-next-line require-yield
   *fetchUserInfo() {
@@ -51,7 +60,7 @@ export default class UserInfoService extends Service {
   async getEmployee() {
     if (this.employee === undefined) {
       if (this.name) {
-        const firstName = this.name.split(' ')[0].toLowerCase();
+        const firstName = this.firstName.toLowerCase();
         const employees = await this.store.findAll('employee'); // TODO convert to query
         const employee = employees.find((e) => e.firstName.toLowerCase() == firstName);
         this.employee = employee;
