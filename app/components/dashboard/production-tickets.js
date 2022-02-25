@@ -5,7 +5,6 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class DashboardProductionTicketsComponent extends Component {
-  @service userInfo;
   @service store;
   @service router;
 
@@ -21,7 +20,6 @@ export default class DashboardProductionTicketsComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    const employee = yield this.userInfo.getEmployee();
     this.orders = yield this.store.query('order', {
       include: 'customer,customer.honorific-prefix,building',
       page: {
@@ -32,7 +30,7 @@ export default class DashboardProductionTicketsComponent extends Component {
       filter: {
         offer: {
           request: {
-            visitor: employee?.firstName,
+            visitor: this.args.employee?.firstName,
           },
         },
         hasProductionTicket: 0,

@@ -35,7 +35,7 @@
 </div>
 <div class="mx-auto px-4 sm:px-6 lg:px-8">
   <div class="flex flex-col mt-2">
-    <Dashboard::OutstandingJobs />
+    <Dashboard::OutstandingJobs @employee={{this.userInfo.employee}} />
   </div>
 </div>
 
@@ -52,7 +52,7 @@
       </LinkTo>
     </div>
     <div class="flex flex-col mt-2">
-      <Dashboard::OutstandingRequests />
+      <Dashboard::OutstandingRequests @employee={{this.userInfo.employee}} />
     </div>
   </div>
   <div>
@@ -67,7 +67,7 @@
       </LinkTo>
     </div>
     <div class="flex flex-col mt-2">
-      <Dashboard::ProductionTickets />
+      <Dashboard::ProductionTickets @employee={{this.userInfo.employee}} />
     </div>
   </div>
 </div>

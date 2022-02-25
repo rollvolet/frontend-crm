@@ -5,7 +5,6 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class DashboardOutstandingRequestsComponent extends Component {
-  @service userInfo;
   @service store;
   @service router;
 
@@ -21,7 +20,6 @@ export default class DashboardOutstandingRequestsComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    const employee = yield this.userInfo.getEmployee();
     const yearAgo = new Date();
     yearAgo.setYear(yearAgo.getFullYear() - 1);
     this.requests = yield this.store.query('request', {
@@ -32,7 +30,7 @@ export default class DashboardOutstandingRequestsComponent extends Component {
       },
       sort: this.sort,
       filter: {
-        visitor: employee?.firstName,
+        visitor: this.args.employee?.firstName,
         hasOffer: 0,
         ':gt:request-date': yearAgo.toISOString(),
       },
