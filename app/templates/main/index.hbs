@@ -25,6 +25,17 @@
 
 <div class="mx-auto mt-8 px-4 flex items-center space-x-2 sm:px-6 lg:px-8">
   <h2 class="text-lg leading-6 font-medium text-gray-900">
+    Termijnen
+  </h2>
+</div>
+<div class="mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="flex flex-col mt-2">
+    <Dashboard::AverageDurations />
+  </div>
+</div>
+
+<div class="mx-auto mt-8 px-4 flex items-center space-x-2 sm:px-6 lg:px-8">
+  <h2 class="text-lg leading-6 font-medium text-gray-900">
     Uit te voeren werken
   </h2>
   <LinkTo @route="main.reports.outstanding-jobs.index"
