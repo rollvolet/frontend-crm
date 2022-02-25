@@ -40,6 +40,10 @@ export default class DataTablePaginationComponent extends Component {
     return this.lastPage + 1;
   }
 
+  get hasMultiplePages() {
+    return this.nbOfPages > 1;
+  }
+
   /**
    * Page selectors to show
    * Examples:  (~x~ indicates current page, more indicates ellipsis)
