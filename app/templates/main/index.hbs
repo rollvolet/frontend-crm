@@ -23,16 +23,16 @@
   </div>
 </div>
 
-<h2 class="mx-auto mt-8 px-4 flex items-center space-x-2 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8">
-  <span>
+<div class="mx-auto mt-8 px-4 flex items-center space-x-2 sm:px-6 lg:px-8">
+  <h2 class="text-lg leading-6 font-medium text-gray-900">
     Uit te voeren werken
-  </span>
+  </h2>
   <LinkTo @route="main.reports.outstanding-jobs.index"
     class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
     {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
     <EmberTooltip @text="Ga naar uit te voeren werken" @side="top" />
   </LinkTo>
-</h2>
+</div>
 <div class="mx-auto px-4 sm:px-6 lg:px-8">
   <div class="flex flex-col mt-2">
     <Dashboard::OutstandingJobs />
@@ -41,13 +41,33 @@
 
 <div class="mx-auto mt-8 px-4 sm:px-6 lg:px-8 grid grid-cols-2 gap-4">
   <div>
-    <h2 class="text-lg leading-6 font-medium text-gray-900">
-      Openstaande aanvragen
-    </h2>
+    <div class="flex items-center space-x-2">
+      <h2 class="text-lg leading-6 font-medium text-gray-900">
+        Openstaande aanvragen laatste jaar
+      </h2>
+      <LinkTo @route="main.requests.index"
+        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+        {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
+        <EmberTooltip @text="Ga naar aanvragen" @side="top" />
+      </LinkTo>
+    </div>
     <div class="flex flex-col mt-2">
       <Dashboard::OutstandingRequests />
     </div>
   </div>
   <div>
+    <div class="flex items-center space-x-2">
+      <h2 class="text-lg leading-6 font-medium text-gray-900">
+        Bestellingen zonder productiebon
+      </h2>
+      <LinkTo @route="main.orders.index"
+        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+        {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
+        <EmberTooltip @text="Ga naar bestellingen" @side="top" />
+      </LinkTo>
+    </div>
+    <div class="flex flex-col mt-2">
+      <Dashboard::ProductionTickets />
+    </div>
   </div>
 </div>

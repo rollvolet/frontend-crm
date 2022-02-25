@@ -5,7 +5,7 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="sticky top-0">
             <tr>
-              <th class="pl-4 pr-2 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="pl-4 pr-2 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
                 AD
               </th>
               <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -50,23 +50,16 @@
                 </td>
               </tr>
             {{else}}
-              {{#each this.requests as |row|}}
+              {{#each this.orders as |row|}}
                 <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                   <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
-                    {{#if row.customer}}
-                      <LinkTo @route="main.case.request.edit" @models={{array row.customer.id row.id}}
-                        class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                        AD{{format-request-number row.id}}
-                      </LinkTo>
-                    {{else}}
-                      <LinkTo @route="main.requests.edit" @model={{row.id}}
-                        class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                        AD{{format-request-number row.id}}
-                      </LinkTo>
-                    {{/if}}
+                    <LinkTo @route="main.case.order.edit" @models={{array row.customer.id row.id}}
+                      class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      AD{{format-request-number row.requestNumber}}
+                    </LinkTo>
                   </td>
                   <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-900">
-                    <Fmt::Date @value={{row.requestDate}} />
+                    <Fmt::Date @value={{row.orderDate}} />
                   </td>
                   <td class="px-3 py-2 text-xs font-medium text-gray-900">
                     <div class="flex">
@@ -108,7 +101,7 @@
             {{else}}
                 <tr>
                   <td colspan="4" class="px-6 py-4 text-center text-xs text-gray-500">
-                    Geen openstaande aanvragen gevonden.
+                    Geen bestellingen zonder productiebon gevonden.
                   </td>
                 </tr>
               {{/each}}
@@ -118,11 +111,11 @@
       </div>
     </div>
   </div>
-  {{#if this.requests}}
+  {{#if this.orders}}
     <DataTable::Pagination
       @page={{this.page}}
       @size={{this.size}}
-      @total={{this.requests.meta.count}}
+      @total={{this.orders.meta.count}}
       @onPrevious={{this.previousPage}}
       @onNext={{this.nextPage}}
       @onSelectPage={{this.selectPage}} />
