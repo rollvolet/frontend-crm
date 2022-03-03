@@ -77,7 +77,6 @@ export default class OfferlineDetailComponent extends Component {
   @action
   closeEdit() {
     this.editMode = false;
-    delete this.args.model.initialEditMode;
   }
 
   @action

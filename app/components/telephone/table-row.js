@@ -31,6 +31,5 @@ export default class TelephoneTableRowComponent extends Component {
   @action
   closeEdit() {
     this.editMode = false;
-    delete this.args.model.initialEditMode;
   }
 }

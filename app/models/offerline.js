@@ -30,9 +30,6 @@ export default class OfferlineModel extends ValidatedModel {
 
   @hasMany('calculation-line') calculationLines;
 
-  // flag to keep track whether the offerline must be opened in editMode
-  @tracked initialEditMode = false;
-
   get arithmeticAmount() {
     return this.amount;
   }

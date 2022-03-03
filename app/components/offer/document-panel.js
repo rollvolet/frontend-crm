@@ -17,6 +17,12 @@ export default class OfferDocumentPanelComponent extends Component {
     this.loadData.perform();
   }
 
+  willDestroy() {
+    super.willDestroy(...arguments);
+    // Reset dangling edit modes
+    this.offerlines.forEach((offerline) => delete offerline.initialEditMode);
+  }
+
   get sortedOfferlines() {
     return this.offerlines.sortBy('position');
   }

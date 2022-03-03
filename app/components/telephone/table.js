@@ -14,6 +14,12 @@ export default class TelephoneTableComponent extends Component {
     this.loadData.perform();
   }
 
+  willDestroy() {
+    super.willDestroy(...arguments);
+    // Reset dangling edit modes
+    this.telephones.forEach((telephone) => delete telephone.initialEditMode);
+  }
+
   get sortedTelephones() {
     return this.telephones.sortBy('position');
   }
