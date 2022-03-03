@@ -20,6 +20,8 @@ export default class DashboardProductionTicketsComponent extends Component {
 
   @keepLatestTask
   *loadData() {
+    const yearAgo = new Date();
+    yearAgo.setYear(yearAgo.getFullYear() - 1);
     this.orders = yield this.store.query('order', {
       include: 'customer,customer.honorific-prefix,building',
       page: {
@@ -35,6 +37,7 @@ export default class DashboardProductionTicketsComponent extends Component {
         },
         hasProductionTicket: 0,
         isCancelled: 0,
+        ':gt:order-date': yearAgo.toISOString(),
       },
     });
   }
