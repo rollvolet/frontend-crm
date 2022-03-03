@@ -14,6 +14,10 @@ export default class DashboardOutstandingJobsComponent extends Component {
     this.loadData.perform();
   }
 
+  get averagePlacementDurationInWeeks() {
+    return this.averagePlacementDuration / 7;
+  }
+
   @keepLatestTask
   *loadData() {
     const endpoint = new URL(reportApiPath, window.location.origin);
