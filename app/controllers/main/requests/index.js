@@ -10,7 +10,7 @@ export default class IndexController extends Controller {
   @tracked page = 0;
   @tracked size = 25;
   @tracked sort = '-request-date';
-  hasOffer = 0;
+  hasOffer = -1;
 
   @action
   applyFilter(filter) {

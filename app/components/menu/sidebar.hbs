@@ -26,7 +26,7 @@
       </LinkTo>
 
       <LinkTo @route="main.requests.index"
-        @query={{hash page=0 number=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasOffer=0}}
+        @query={{hash page=0 number=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasOffer=-1}}
         @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-annotation" class="mr-4 h-6 w-6 text-red-300"}}
@@ -42,7 +42,7 @@
       </LinkTo>
 
       <LinkTo @route="main.offers.index"
-        @query={{hash page=0 number=undefined reference=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasOrder=0}}
+        @query={{hash page=0 number=undefined reference=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasOrder=-1}}
         @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-calculator" class="mr-4 h-6 w-6 text-red-300"}}
@@ -50,7 +50,7 @@
       </LinkTo>
 
       <LinkTo @route="main.orders.index"
-        @query={{hash page=0 reference=undefined offerNumber=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasInvoice=0 isCancelled=0}}
+        @query={{hash page=0 reference=undefined offerNumber=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasInvoice=-1 isCancelled=0}}
         @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
         class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
         {{svg-jar "heroicons-md-shopping-cart" class="mr-4 h-6 w-6 text-red-300"}}

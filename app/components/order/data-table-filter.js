@@ -26,7 +26,7 @@ export default class DataFilterComponent extends FilterComponent {
   @action
   resetFilters() {
     this.filterKeys.forEach((key) => this.filter.set(key, undefined));
-    this.filter.set('hasInvoice', 0);
+    this.filter.set('hasInvoice', -1);
     this.filter.set('isCancelled', 0);
     this.onChange(this.filter);
   }

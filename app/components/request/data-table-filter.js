@@ -23,7 +23,7 @@ export default class DataFilterComponent extends FilterComponent {
   @action
   resetFilters() {
     this.filterKeys.forEach((key) => this.filter.set(key, undefined));
-    this.filter.set('hasOffer', 0);
+    this.filter.set('hasOffer', -1);
     this.onChange(this.filter);
   }
 }
