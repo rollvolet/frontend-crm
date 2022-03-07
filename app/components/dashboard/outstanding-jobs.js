@@ -17,18 +17,20 @@ export default class DashboardOutstandingJobsComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    const searchParams = new URLSearchParams(
-      Object.entries({
-        'page[size]': this.size,
-        'page[number]': this.page,
-        sort: this.sort,
-        'filter[visitor]': this.args.employee?.firstName,
-        'filter[mustBeDelivered]': -1,
-        'filter[mustBeInstalled]': -1,
-      })
-    );
+    if (this.args.employee) {
+      const searchParams = new URLSearchParams(
+        Object.entries({
+          'page[size]': this.size,
+          'page[number]': this.page,
+          sort: this.sort,
+          'filter[visitor]': this.args.employee.firstName,
+          'filter[mustBeDelivered]': -1,
+          'filter[mustBeInstalled]': -1,
+        })
+      );
 
-    this.outstandingJobs = yield fetchOutstandingJobs(searchParams);
+      this.outstandingJobs = yield fetchOutstandingJobs(searchParams);
+    }
   }
 
   @action

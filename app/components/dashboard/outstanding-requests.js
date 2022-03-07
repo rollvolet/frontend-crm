@@ -20,21 +20,23 @@ export default class DashboardOutstandingRequestsComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    const yearAgo = new Date();
-    yearAgo.setYear(yearAgo.getFullYear() - 1);
-    this.requests = yield this.store.query('request', {
-      include: 'customer,customer.honorific-prefix,building',
-      page: {
-        size: this.size,
-        number: this.page,
-      },
-      sort: this.sort,
-      filter: {
-        visitor: this.args.employee?.firstName,
-        hasOffer: 0,
-        ':gt:request-date': yearAgo.toISOString(),
-      },
-    });
+    if (this.args.employee) {
+      const yearAgo = new Date();
+      yearAgo.setYear(yearAgo.getFullYear() - 1);
+      this.requests = yield this.store.query('request', {
+        include: 'customer,customer.honorific-prefix,building',
+        page: {
+          size: this.size,
+          number: this.page,
+        },
+        sort: this.sort,
+        filter: {
+          visitor: this.args.employee.firstName,
+          hasOffer: 0,
+          ':gt:request-date': yearAgo.toISOString(),
+        },
+      });
+    }
   }
 
   @action

@@ -20,26 +20,28 @@ export default class DashboardProductionTicketsComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    const yearAgo = new Date();
-    yearAgo.setYear(yearAgo.getFullYear() - 1);
-    this.orders = yield this.store.query('order', {
-      include: 'customer,customer.honorific-prefix,building',
-      page: {
-        size: this.size,
-        number: this.page,
-      },
-      sort: this.sort,
-      filter: {
-        offer: {
-          request: {
-            visitor: this.args.employee?.firstName,
-          },
+    if (this.args.employee) {
+      const yearAgo = new Date();
+      yearAgo.setYear(yearAgo.getFullYear() - 1);
+      this.orders = yield this.store.query('order', {
+        include: 'customer,customer.honorific-prefix,building',
+        page: {
+          size: this.size,
+          number: this.page,
         },
-        hasProductionTicket: 0,
-        isCancelled: 0,
-        ':gt:order-date': yearAgo.toISOString(),
-      },
-    });
+        sort: this.sort,
+        filter: {
+          offer: {
+            request: {
+              visitor: this.args.employee.firstName,
+            },
+          },
+          hasProductionTicket: 0,
+          isCancelled: 0,
+          ':gt:order-date': yearAgo.toISOString(),
+        },
+      });
+    }
   }
 
   @action
