@@ -37,6 +37,7 @@ export default class DashboardProductionTicketsComponent extends Component {
             },
           },
           hasProductionTicket: 0,
+          hasInvoice: 0,
           isCancelled: 0,
           ':gt:order-date': yearAgo.toISOString(),
         },
