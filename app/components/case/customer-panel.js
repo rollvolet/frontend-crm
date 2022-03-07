@@ -4,6 +4,10 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task, keepLatestTask } from 'ember-concurrency';
 
+/**
+ * Arguments
+ * @model {Customer} customer record to show. Optional, might be null.
+ */
 export default class CaseCustomerPanelComponent extends Component {
   @service case;
   @service router;
@@ -22,13 +26,15 @@ export default class CaseCustomerPanelComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    // TODO use this.args.model.telephones once the relation is defined
-    const telephones = yield this.store.query('telephone', {
-      'filter[:exact:customer]': this.args.model.uri,
-      sort: 'position',
-      page: { size: 100 },
-    });
-    this.telephones = telephones.toArray();
+    if (this.args.model) {
+      // TODO use this.args.model.telephones once the relation is defined
+      const telephones = yield this.store.query('telephone', {
+        'filter[:exact:customer]': this.args.model.uri,
+        sort: 'position',
+        page: { size: 100 },
+      });
+      this.telephones = telephones.toArray();
+    }
   }
 
   get isUpdatingContact() {
