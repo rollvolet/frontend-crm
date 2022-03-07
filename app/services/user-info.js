@@ -60,9 +60,17 @@ export default class UserInfoService extends Service {
   async getEmployee() {
     if (this.employee === undefined) {
       if (this.name) {
-        const firstName = this.firstName.toLowerCase();
-        const employees = await this.store.findAll('employee'); // TODO convert to query
-        const employee = employees.find((e) => e.firstName.toLowerCase() == firstName);
+        const userFirstName = this.firstName.toLowerCase();
+        // TODO convert findAll to query
+        const employees = await this.store.findAll('employee');
+        const employee = employees.filterBy('isAdministrative').find((e) => {
+          // First check on exact match of firstname. Fallback to weaker startsWith check
+          // to cover for cases of duplicate firstnames (e.g. 'Kevin S.' vs 'Kevin P.')
+          // TODO Fix to exact match once employees are converted to triplestore
+          // and have cleaned up names.
+          const employeeFirstName = e.firstName.toLowerCase();
+          return employeeFirstName == userFirstName || employeeFirstName.startsWith(userFirstName);
+        });
         this.employee = employee;
       } else {
         this.employee = null;
