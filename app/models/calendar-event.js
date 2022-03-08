@@ -35,7 +35,6 @@ export default class CalendarEventModel extends ValidatedModel {
   @attr period;
   @attr fromHour;
   @attr untilHour;
-  @attr comment;
   @attr calendarSubject;
   @attr calendarId;
   @attr msObjectId;
