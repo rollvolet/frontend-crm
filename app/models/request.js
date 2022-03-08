@@ -13,7 +13,6 @@ export default class RequestModel extends ValidatedModel {
   @attr comment;
   @attr employee;
   @attr visitor;
-  @attr offerExpected;
 
   @belongsTo('customer') customer;
   @belongsTo('contact') contact;
