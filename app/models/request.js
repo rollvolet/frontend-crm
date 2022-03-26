@@ -18,7 +18,12 @@ export default class RequestModel extends ValidatedModel {
   @belongsTo('contact') contact;
   @belongsTo('building') building;
   @belongsTo('way-of-entry') wayOfEntry;
-  @belongsTo('calendar-event') calendarEvent;
+  // TODO enable once request is converted to triplestore
+  // @belongsTo('calendar-event') calendarEvent;
   @belongsTo('offer') offer;
   @belongsTo('intervention') origin;
+
+  get uri() {
+    return `http://data.rollvolet.be/requests/${this.id}`;
+  }
 }

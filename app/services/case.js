@@ -174,7 +174,10 @@ export default class CaseService extends Service.extend(Evented) {
         warn(`Unable to unlink customer from request. Case has an offer already.`);
       } else {
         try {
-          const calendarEvent = yield this.current.request.calendarEvent;
+          // TODO fetch via relation once request is converted to triplestore
+          const calendarEvent = yield this.store.queryOne('calendar-event', {
+            'filter[:exact:request]': this.current.request.uri,
+          });
           if (calendarEvent) {
             this.current.request.requiresVisit = false;
             yield calendarEvent.destroyRecord();
@@ -218,7 +221,6 @@ export default class CaseService extends Service.extend(Evented) {
     const reloadPromises = [];
     if (this.current.request) {
       reloadPromises.push(this.current.request.belongsTo('contact').reload());
-      reloadPromises.push(this.current.request.belongsTo('calendarEvent').reload());
     }
     if (this.current.offer) {
       reloadPromises.push(this.current.offer.belongsTo('contact').reload());
@@ -246,7 +248,6 @@ export default class CaseService extends Service.extend(Evented) {
     const reloadPromises = [];
     if (this.current.request) {
       reloadPromises.push(this.current.request.belongsTo('building').reload());
-      reloadPromises.push(this.current.request.belongsTo('calendarEvent').reload());
     }
     if (this.current.offer) {
       reloadPromises.push(this.current.offer.belongsTo('building').reload());
@@ -268,6 +269,18 @@ export default class CaseService extends Service.extend(Evented) {
 
   @task
   *_updateContactAndBuilding(contact, building) {
+    if (this.current.requestId) {
+      // TODO fetch via relation once request is converted to triplestore
+      const calendarEvent = yield this.store.queryOne('calendar-event', {
+        'filter[:exact:request]': this.current.request.uri,
+      });
+      if (calendarEvent) {
+        const addressEntity = this.current.building || this.current.customer;
+        calendarEvent.location = addressEntity.fullAddress;
+        yield calendarEvent.save();
+      }
+    }
+
     const body = {
       contactId: contact && `${contact.get('id')}`,
       buildingId: building && `${building.get('id')}`,

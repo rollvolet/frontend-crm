@@ -9,25 +9,31 @@
           <div class="ml-3 text-lg font-semibold text-gray-600">
             Bezoek
           </div>
-          <Util::SaveStatus @model={{@model}} @task={{@saveTask}} class="ml-2" />
+          <Util::SaveStatus
+            @model={{@model}}
+            @task={{@saveTask}}
+            @isInvalid={{not this.calendarPeriod.isValid}}
+            class="ml-2" />
         </div>
       </div>
       <div>
-        <div class="grid grid-cols-2 gap-y-6 gap-x-4">
+        <div class="grid grid-cols-2 gap-y-4 gap-x-4">
           <div class="col-span-2">
             <InputField::Date
               @label="Datum"
-              @value={{@model.visitDate}}
-              @onChange={{queue (fn (mut @model.visitDate)) (perform @saveTask)}} />
+              @value={{@model.date}}
+              @onChange={{queue (fn (mut @model.date)) (perform @saveTask)}}
+              class="mt-1" />
           </div>
           <div class="col-span-2">
             <InputField::CalendarPeriodSelect
               @label="Periode"
-              @value={{@model.period}}
+              @value={{this.calendarPeriod.period}}
               @required={{true}}
-              @onSelectionChange={{this.changePeriod}} />
+              @onSelectionChange={{this.changePeriod}}
+              class="mt-1" />
           </div>
-          {{#if this.requiresSingleTime}}
+          {{#if this.calendarPeriod.requiresSingleTime}}
             <div>
               <label for="period-from" class="block text-sm font-medium text-gray-700">
                 Tijdstip
@@ -35,12 +41,12 @@
               <Input
                 id="period-from"
                 @type="text"
-                @value={{@model.fromHour}}
-                class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-                {{on "focusout" (perform @saveTask)}} />
+                @value={{this.calendarPeriod.fromHour}}
+                class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                {{on "focusout" this.saveCalendarPeriodChange}} />
             </div>
           {{/if}}
-          {{#if this.requiresTimeRange}}
+          {{#if this.calendarPeriod.requiresTimeRange}}
             <div>
               <label for="period-from" class="block text-sm font-medium text-gray-700">
                 Van
@@ -48,9 +54,9 @@
               <Input
                 id="period-from"
                 @type="text"
-                @value={{@model.fromHour}}
-                class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-                {{on "focusout" (perform @saveTask)}} />
+                @value={{this.calendarPeriod.fromHour}}
+                class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                {{on "focusout" this.saveCalendarPeriodChange}} />
             </div>
             <div>
               <label for="period-to" class="block text-sm font-medium text-gray-700">
@@ -59,9 +65,9 @@
               <Input
                 id="period-to"
                 @type="text"
-                @value={{@model.untilHour}}
-                class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-                {{on "focusout" (perform @saveTask)}} />
+                @value={{this.calendarPeriod.untilHour}}
+                class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                {{on "focusout" this.saveCalendarPeriodChange}} />
             </div>
           {{/if}}
         </div>

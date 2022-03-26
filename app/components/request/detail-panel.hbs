@@ -13,14 +13,14 @@
       <div class="flex flex-none space-x-4">
         {{#if this.editMode}}
           {{#if @isEnabledDelete}}
-            <button type="button"h
-              onClick={{@onDelete}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            <button type="button"
+              {{on "click" @onDelete}}
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-trash" class="h-6 w-6"}}
             </button>
           {{/if}}
           <button type="button"
-            onClick={{this.closeEdit}}
+            {{on "click" this.closeEdit}}
             class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
             {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
             <EmberTooltip @text="Sluiten" />
@@ -28,7 +28,7 @@
         {{else}}
           {{#if this.isLinkedToCustomer}}
             <button type="button"
-              onClick={{this.generateVisitReport}}
+              {{on "click" this.generateVisitReport}}
               class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-document-text" class="h-6 w-6"}}
               <EmberTooltip @text="Bezoekrapport" @side="bottom" />
@@ -36,8 +36,8 @@
           {{/if}}
           {{#unless @isDisabledEdit}}
             <button type="button"
-              onClick={{this.openEdit}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{on "click" this.openEdit}}
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
             </button>
           {{/unless}}
@@ -51,11 +51,16 @@
     {{#if this.editMode}}
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          {{#if this.isLinkedToCustomer}}
-            {{#if this.hasVisitMasteredByAccess}}
-              <Visit::DetailView @model={{@model}} />
+          {{#if (and (not this.loadData.isRunning) this.isLinkedToCustomer)}}
+            {{#if this.calendarEvent.isMasteredByAccess}}
+              <Visit::DetailView
+                @model={{this.calendarEvent}}
+                @onSynchronize={{perform this.saveCalendarEvent}} />
             {{else if @model.requiresVisit}}
-              <Visit::DetailEdit @model={{this.calendarEvent}} @saveTask={{this.saveCalendarEvent}} />
+              <Visit::DetailEdit
+                @model={{this.calendarEvent}}
+                @onCalendarPeriodChange={{perform this.updateCalendarEventSubject}}
+                @saveTask={{this.saveCalendarEvent}} />
             {{/if}}
           {{/if}}
         </div>
@@ -97,9 +102,9 @@
                   id="requires-visit"
                   @type="checkbox"
                   @checked={{@model.requiresVisit}}
-                disabled={{this.hasVisitMasteredByAccess}}
-                {{on "input" (perform this.setRequiresVisit)}}
-                class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
+                  disabled={{this.calendarEvent.isMasteredByAccess}}
+                  {{on "input" (perform this.setRequiresVisit)}}
+                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
               </div>
               <div class="ml-3">
                 <label for="requires-visit" class="text-gray-500 text-sm font-medium">Bezoek nodig</label>
@@ -121,9 +126,13 @@
       </div>
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <div class="mb-4 sm:mb-0 sm:order-2">
-          <Visit::DetailView @model={{@model}} />
-        </div>
+        {{#unless this.loadData.isRunning}}
+          <div class="mb-4 sm:mb-0 sm:order-2">
+            <Visit::DetailView
+              @model={{this.calendarEvent}}
+              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+          </div>
+        {{/unless}}
         <div class="space-y-2 sm:order-1">
           <Util::DetailItem @label="Datum">
             <Fmt::Date @value={{@model.requestDate}} />

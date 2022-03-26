@@ -1,32 +1,34 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+import CalendarPeriod from '../../classes/calendar-period';
 
 export default class VisitDetailEditComponent extends Component {
-  get requiresNoTime() {
-    return !this.requiresTimeRange && !this.requiresSingleTime;
-  }
+  @tracked calendarPeriod;
 
-  get requiresTimeRange() {
-    return this.args.model.period == 'van-tot';
-  }
-
-  get requiresSingleTime() {
-    return ['vanaf', 'bepaald uur', 'stipt uur', 'benaderend uur'].includes(this.args.model.period);
+  constructor() {
+    super(...arguments);
+    if (this.args.model) {
+      this.calendarPeriod = CalendarPeriod.parse(this.args.model.subject);
+    }
   }
 
   @action
   changePeriod(period) {
-    this.args.model.period = period;
-
-    if (period) {
-      if (this.requiresSingleTime) {
-        this.args.model.untilHour = null;
-      } else if (this.requiresNoTime) {
-        this.args.model.fromHour = null;
-        this.args.model.untilHour = null;
-      }
+    this.calendarPeriod.period = period;
+    if (this.calendarPeriod.requiresSingleTime) {
+      this.calendarPeriod.untilHour = null;
+    } else if (this.calendarPeriod.requiresNoTime) {
+      this.calendarPeriod.fromHour = null;
+      this.calendarPeriod.untilHour = null;
     }
+    this.saveCalendarPeriodChange();
+  }
 
-    this.args.saveTask.perform();
+  @action
+  saveCalendarPeriodChange() {
+    if (this.calendarPeriod.isValid) {
+      this.args.onCalendarPeriodChange(this.calendarPeriod);
+    }
   }
 }

@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { debug, warn } from '@ember/debug';
 import { task, keepLatestTask } from 'ember-concurrency';
+import { requestSubject, requestApplicationUrl } from '../../utils/calendar-helpers';
 
 export default class RequestDetailPanelComponent extends Component {
   @service case;
@@ -28,11 +29,10 @@ export default class RequestDetailPanelComponent extends Component {
     if (model.visitor)
       this.visitor = this.store.peekAll('employee').find((e) => e.firstName == model.visitor);
 
-    this.calendarEvent = yield model.calendarEvent;
-  }
-
-  get hasVisitMasteredByAccess() {
-    return this.calendarEvent && this.calendarEvent.isMasteredByAccess;
+    // TODO fetch via relation once request is converted to triplestore
+    this.calendarEvent = yield this.store.queryOne('calendar-event', {
+      'filter[:exact:request]': this.args.model.uri,
+    });
   }
 
   get isLinkedToCustomer() {
@@ -44,12 +44,9 @@ export default class RequestDetailPanelComponent extends Component {
     const { validations } = yield this.args.model.validate();
     if (validations.isValid) {
       if (this.args.model.changedAttributes()['comment']) {
-        yield this.args.model.save();
-        // reload after save so calendar event has been updated
-        this.args.model.belongsTo('calendarEvent').reload();
-      } else {
-        yield this.args.model.save();
+        yield this.synchronizeCalendarEvent.perform();
       }
+      yield this.args.model.save();
     }
   }
 
@@ -62,10 +59,10 @@ export default class RequestDetailPanelComponent extends Component {
     if (value) {
       try {
         this.calendarEvent = this.store.createRecord('calendar-event', {
-          request: this.args.model,
-          visitDate: new Date(),
-          period: 'GD',
+          request: this.args.model.uri,
+          date: new Date(),
         });
+        this.setCalendarEventProperties();
         yield this.saveCalendarEvent.perform();
       } catch (e) {
         warn(`Something went wrong while saving calendar event for request ${this.args.model.id}`, {
@@ -77,7 +74,6 @@ export default class RequestDetailPanelComponent extends Component {
     } else if (this.calendarEvent) {
       try {
         yield this.calendarEvent.destroyRecord();
-        this.args.model.calendarEvent = null;
         this.calendarEvent = null;
       } catch (e) {
         warn(`Something went wrong while destroying calendar event ${this.calendarEvent.id}`, {
@@ -88,10 +84,33 @@ export default class RequestDetailPanelComponent extends Component {
     }
   }
 
-  @task
+  @keepLatestTask
+  *updateCalendarEventSubject(calendarPeriod) {
+    const subject = requestSubject(this.args.model, this.case.current.customer, calendarPeriod);
+    this.calendarEvent.subject = subject;
+    yield this.saveCalendarEvent.perform();
+  }
+
+  @keepLatestTask
   *saveCalendarEvent() {
     const { validations } = yield this.calendarEvent.validate();
-    if (validations.isValid) yield this.calendarEvent.save();
+    if (validations.isValid) {
+      yield this.calendarEvent.save();
+    }
+  }
+
+  @keepLatestTask
+  *synchronizeCalendarEvent() {
+    this.setCalendarEventProperties();
+    yield this.saveCalendarEvent.perform();
+  }
+
+  setCalendarEventProperties() {
+    this.calendarEvent.subject = requestSubject(this.args.model, this.case.current.customer);
+    this.calendarEvent.description = this.args.model.comment;
+    this.calendarEvent.url = requestApplicationUrl(this.args.model, this.case.current.customer);
+    const addressEntity = this.case.current.building || this.case.current.customer;
+    this.calendarEvent.location = addressEntity.fullAddress;
   }
 
   @action
