@@ -32,6 +32,13 @@ export default class OrderPanelsComponent extends Component {
       });
       yield all(invoicelines.map((t) => t.destroyRecord()));
       this.case.updateRecord('order', null);
+      // TODO fetch via relation once order is converted to triplestore
+      const calendarEvent = yield this.store.queryOne('calendar-event', {
+        'filter[:exact:order]': this.args.model.uri,
+      });
+      if (calendarEvent) {
+        yield calendarEvent.destroyRecord();
+      }
       yield this.args.model.destroyRecord();
       this.router.transitionTo('main.case.offer.edit', this.case.current.offer.id);
     } catch (e) {
