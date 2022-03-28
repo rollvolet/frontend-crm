@@ -6,6 +6,7 @@ import { all, keepLatestTask, task } from 'ember-concurrency';
 import Evented from '@ember/object/evented';
 import { tracked } from '@glimmer/tracking';
 import updateContactAndBuildingRequest from '../utils/api/update-contact-and-building';
+import { setCalendarEventProperties } from '../utils/calendar-helpers';
 
 const regexMap = {
   unlinkedRequestId: /requests\/(\d+)/i,
@@ -200,6 +201,15 @@ export default class CaseService extends Service.extend(Evented) {
       if (this.current.invoice) {
         warn(`Unable to unlink customer from intervention. Case has an invoice already.`);
       } else {
+        // TODO fetch via relation once intervention is converted to triplestore
+        const calendarEvent = yield this.store.queryOne('calendar-event', {
+          'filter[:exact:intervention]': this.current.intervention.uri,
+        });
+        if (calendarEvent) {
+          yield calendarEvent.destroyRecord();
+          this.current.intervention.planningDate = null;
+        }
+
         if (this.current.contact || this.current.building) {
           yield this._updateContactAndBuilding.perform(null, null);
           this.current.contact = null;
@@ -269,17 +279,42 @@ export default class CaseService extends Service.extend(Evented) {
 
   @task
   *_updateContactAndBuilding(contact, building) {
+    const calendarEvents = {};
+
     if (this.current.requestId) {
       // TODO fetch via relation once request is converted to triplestore
-      const calendarEvent = yield this.store.queryOne('calendar-event', {
+      calendarEvents['request'] = yield this.store.queryOne('calendar-event', {
         'filter[:exact:request]': this.current.request.uri,
       });
-      if (calendarEvent) {
-        const addressEntity = this.current.building || this.current.customer;
-        calendarEvent.location = addressEntity.fullAddress;
-        yield calendarEvent.save();
-      }
     }
+    if (this.current.interventionId) {
+      // TODO fetch via relation once intervention is converted to triplestore
+      calendarEvents['intervention'] = yield this.store.queryOne('calendar-event', {
+        'filter[:exact:intervention]': this.current.intervention.uri,
+      });
+    }
+    if (this.current.orderId) {
+      // TODO fetch via relation once order is converted to triplestore
+      calendarEvents['order'] = yield this.store.queryOne('calendar-event', {
+        'filter[:exact:order]': this.current.order.uri,
+      });
+    }
+
+    const promises = Object.keys(calendarEvents).map((key) => {
+      const calendarEvent = calendarEvents[key];
+      if (calendarEvent) {
+        setCalendarEventProperties(calendarEvent, {
+          [key]: this.current[key],
+          customer: this.current.customer,
+          building: this.current.building,
+          visitor: this.visitor,
+        });
+        return calendarEvent.save();
+      } else {
+        return null;
+      }
+    });
+    yield Promise.all(promises);
 
     const body = {
       contactId: contact && `${contact.get('id')}`,
