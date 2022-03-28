@@ -67,6 +67,7 @@ export default class RequestDetailPanelComponent extends Component {
           request: this.args.model,
           customer: this.case.current.customer,
           building: this.case.current.building,
+          visitor: this.case.visitor,
           calendarPeriod: new CalendarPeriod('GD'),
         });
         yield this.saveCalendarEvent.perform();
@@ -96,6 +97,7 @@ export default class RequestDetailPanelComponent extends Component {
       request: this.args.model,
       customer: this.case.current.customer,
       building: this.case.current.building,
+      visitor: this.case.visitor,
       calendarPeriod,
     });
     yield this.saveCalendarEvent.perform();
@@ -115,6 +117,7 @@ export default class RequestDetailPanelComponent extends Component {
       request: this.args.model,
       customer: this.case.current.customer,
       building: this.case.current.building,
+      visitor: this.case.visitor,
     });
     yield this.saveCalendarEvent.perform();
   }

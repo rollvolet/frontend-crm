@@ -2,13 +2,13 @@ import { formatRequestNumber } from '../helpers/format-request-number';
 import CalendarPeriod from '../classes/calendar-period';
 
 export function setCalendarEventProperties(calendarEvent, records) {
-  let { request, intervention, customer, building, calendarPeriod } = records;
+  let { request, intervention, order, customer, visitor, building, calendarPeriod } = records;
   if (!calendarPeriod) {
     // If calendar period is not passed as argument, parse it from existing subject
     calendarPeriod = CalendarPeriod.parse(calendarEvent.subject);
   }
   if (request) {
-    calendarEvent.subject = requestSubject(request, customer, calendarPeriod);
+    calendarEvent.subject = requestSubject(request, customer, calendarPeriod, visitor);
     calendarEvent.description = request.comment;
     calendarEvent.url = requestApplicationUrl(request, customer);
   } else if (intervention) {
@@ -20,10 +20,11 @@ export function setCalendarEventProperties(calendarEvent, records) {
   calendarEvent.location = addressEntity?.fullAddress;
 }
 
-function requestSubject(request, customer, calendarPeriod) {
+function requestSubject(request, customer, calendarPeriod, visitor) {
   const timeSpec = calendarPeriod.toSubjectString();
   const requestNumber = formatRequestNumber([request.id]);
-  return `${timeSpec} ** AD${requestNumber} ** ${customer.name}`;
+  const initials = visitor ? `(${visitor.initials})` : '';
+  return `${timeSpec} ** ${customer.name} ** AD${requestNumber} ${initials}`.trim();
 }
 
 function interventionSubject(intervention, customer, calendarPeriod) {
@@ -32,7 +33,9 @@ function interventionSubject(intervention, customer, calendarPeriod) {
   }
   const timeSpec = calendarPeriod.toSubjectString();
   const nbOfPersons = intervention.nbOfPersons || 0;
-  return `${timeSpec} ** IR${intervention.id} ** ${customer.name} (${nbOfPersons}p)`;
+  return `${timeSpec} ** ${customer.name} ** ${nbOfPersons}p ** IR${intervention.id}`;
+}
+
 }
 
 function requestApplicationUrl(request, customer) {

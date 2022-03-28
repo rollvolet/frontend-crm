@@ -75,6 +75,7 @@ export default class OfferDetailPanelComponent extends Component {
       request: this.request,
       customer: this.case.current.customer,
       building: this.case.current.building,
+      visitor: this.case.visitor,
     });
     yield this.calendarEvent.save();
   }
