@@ -127,7 +127,7 @@
             <Visit::DetailEdit
               @title="planning"
               @model={{this.calendarEvent}}
-              @onCalendarPeriodChange={{perform this.updateCalendarEventSubject}}
+              @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
               @saveTask={{this.saveCalendarEvent}}
               @onDelete={{perform this.deleteCalendarEvent}} />
           {{/unless}}

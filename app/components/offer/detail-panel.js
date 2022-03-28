@@ -81,8 +81,9 @@ export default class OfferDetailPanelComponent extends Component {
   }
 
   @action
-  setVisitor(visitor) {
+  async setVisitor(visitor) {
     this.request.visitor = visitor ? visitor.firstName : null;
+    await this.synchronizeCalendarEvent.perform();
   }
 
   @action

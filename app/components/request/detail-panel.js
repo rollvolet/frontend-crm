@@ -44,7 +44,8 @@ export default class RequestDetailPanelComponent extends Component {
   *save() {
     const { validations } = yield this.args.model.validate();
     if (validations.isValid) {
-      if (this.args.model.changedAttributes()['comment']) {
+      const changedAttributes = this.args.model.changedAttributes();
+      if (changedAttributes['visitor'] || changedAttributes['comment']) {
         yield this.synchronizeCalendarEvent.perform();
       }
       yield this.args.model.save();
@@ -92,7 +93,7 @@ export default class RequestDetailPanelComponent extends Component {
   }
 
   @keepLatestTask
-  *updateCalendarEventSubject(calendarPeriod) {
+  *updateCalendarPeriod(calendarPeriod) {
     setCalendarEventProperties(this.calendarEvent, {
       request: this.args.model,
       customer: this.case.current.customer,

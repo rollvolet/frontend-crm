@@ -72,8 +72,15 @@ export default class OrderDetailPanelComponent extends Component {
           requiresOfferReload = true;
         }
       }
-
       yield this.args.model.save();
+
+      if (
+        changedAttributes['scheduledNbOfPersons'] ||
+        changedAttributes['scheduledNbOfHours'] ||
+        changedAttributes['comment']
+      ) {
+        yield this.synchronizeCalendarEvent.perform();
+      }
 
       if (requiresOfferReload) {
         yield this.args.model.belongsTo('offer').reload();
@@ -87,7 +94,7 @@ export default class OrderDetailPanelComponent extends Component {
   }
 
   @keepLatestTask
-  *updateCalendarEventSubject(calendarPeriod) {
+  *updateCalendarPeriod(calendarPeriod) {
     setCalendarEventProperties(this.calendarEvent, {
       order: this.args.model,
       customer: this.case.current.customer,
