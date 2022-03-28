@@ -28,7 +28,7 @@ export default class InterventionModel extends ValidatedModel {
   @belongsTo('invoice') invoice;
   @belongsTo('order') origin;
   @belongsTo('request') followUpRequest;
-  // TODO enable once request is converted to triplestore
+  // TODO enable once intervention is converted to triplestore
   // @belongsTo('calendar-event') calendarEvent;
   @belongsTo('employee', { inverse: null }) employee;
   @hasMany('employee', { inverse: null }) technicians;

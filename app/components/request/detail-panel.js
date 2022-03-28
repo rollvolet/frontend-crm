@@ -4,7 +4,8 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { debug, warn } from '@ember/debug';
 import { task, keepLatestTask } from 'ember-concurrency';
-import { requestSubject, requestApplicationUrl } from '../../utils/calendar-helpers';
+import { setCalendarEventProperties } from '../../utils/calendar-helpers';
+import CalendarPeriod from '../../classes/calendar-period';
 
 export default class RequestDetailPanelComponent extends Component {
   @service case;
@@ -62,7 +63,12 @@ export default class RequestDetailPanelComponent extends Component {
           request: this.args.model.uri,
           date: new Date(),
         });
-        this.setCalendarEventProperties();
+        setCalendarEventProperties(this.calendarEvent, {
+          request: this.args.model,
+          customer: this.case.current.customer,
+          building: this.case.current.building,
+          calendarPeriod: new CalendarPeriod('GD'),
+        });
         yield this.saveCalendarEvent.perform();
       } catch (e) {
         warn(`Something went wrong while saving calendar event for request ${this.args.model.id}`, {
@@ -86,11 +92,12 @@ export default class RequestDetailPanelComponent extends Component {
 
   @keepLatestTask
   *updateCalendarEventSubject(calendarPeriod) {
-    this.calendarEvent.subject = requestSubject(
-      this.args.model,
-      this.case.current.customer,
-      calendarPeriod
-    );
+    setCalendarEventProperties(this.calendarEvent, {
+      request: this.args.model,
+      customer: this.case.current.customer,
+      building: this.case.current.building,
+      calendarPeriod,
+    });
     yield this.saveCalendarEvent.perform();
   }
 
@@ -104,16 +111,12 @@ export default class RequestDetailPanelComponent extends Component {
 
   @keepLatestTask
   *synchronizeCalendarEvent() {
-    this.setCalendarEventProperties();
+    setCalendarEventProperties(this.calendarEvent, {
+      request: this.args.model,
+      customer: this.case.current.customer,
+      building: this.case.current.building,
+    });
     yield this.saveCalendarEvent.perform();
-  }
-
-  setCalendarEventProperties() {
-    this.calendarEvent.subject = requestSubject(this.args.model, this.case.current.customer);
-    this.calendarEvent.description = this.args.model.comment;
-    this.calendarEvent.url = requestApplicationUrl(this.args.model, this.case.current.customer);
-    const addressEntity = this.case.current.building || this.case.current.customer;
-    this.calendarEvent.location = addressEntity.fullAddress;
   }
 
   @action

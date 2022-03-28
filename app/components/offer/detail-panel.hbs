@@ -43,21 +43,26 @@
     {{#if this.editMode}}
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          <Visit::DetailView @model={{this.request}} />
+          <Visit::DetailView
+            @title="bezoek"
+            @model={{this.calendarEvent}}
+            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
         </div>
         <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
           <div>
             <InputField::Date
               @label="Datum"
               @value={{@model.offerDate}}
-              @onChange={{queue (fn (mut @model.offerDate)) (perform this.save)}} />
+              @onChange={{queue (fn (mut @model.offerDate)) (perform this.save)}}
+              class="mt-1" />
           </div>
           <div>
             <InputField::VatRateSelect
               @value={{@model.vatRate}}
               @label="BTW tarief"
               @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save)}}
-              @allowClear={{false}} />
+              @allowClear={{false}}
+              class="mt-1" />
           </div>
           <div>
             <InputField::EmployeeSelect
@@ -65,7 +70,8 @@
               @value={{this.visitor}}
               @isAdministrative={{true}}
               @allowClear={{false}}
-              @onSelectionChange={{queue this.setVisitor (perform this.save)}} />
+              @onSelectionChange={{queue this.setVisitor (perform this.save)}}
+              class="mt-1" />
           </div>
           <div>
             <label for="reference" class="block text-sm font-medium text-gray-700">
@@ -75,7 +81,7 @@
               id="reference"
               @type="text"
               @value={{@model.reference}}
-              class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+              class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
               {{on "focusout" (perform this.save)}} />
           </div>
         </div>
@@ -86,7 +92,7 @@
           <Textarea
             id="comment"
             @value={{@model.comment}}
-            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             rows="5"
             {{on "focusout" (perform this.save)}} />
         </div>
@@ -94,7 +100,10 @@
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          <Visit::DetailView @model={{this.request}} />
+          <Visit::DetailView
+            @title="bezoek"
+            @model={{this.calendarEvent}}
+            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
         </div>
         <div class="space-y-2 sm:order-1">
           <Util::DetailItem @label="Datum">

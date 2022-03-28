@@ -3,7 +3,8 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { keepLatestTask, task } from 'ember-concurrency';
-import { interventionSubject, interventionApplicationUrl } from '../../utils/calendar-helpers';
+import { setCalendarEventProperties } from '../../utils/calendar-helpers';
+import CalendarPeriod from '../../classes/calendar-period';
 
 export default class InterventionDetailPanelComponent extends Component {
   @service case;
@@ -63,11 +64,12 @@ export default class InterventionDetailPanelComponent extends Component {
 
   @keepLatestTask
   *updateCalendarEventSubject(calendarPeriod) {
-    this.calendarEvent.subject = interventionSubject(
-      this.args.model,
-      this.case.current.customer,
-      calendarPeriod
-    );
+    setCalendarEventProperties(this.calendarEvent, {
+      intervention: this.args.model,
+      customer: this.case.current.customer,
+      building: this.case.current.building,
+      calendarPeriod,
+    });
     yield this.saveCalendarEvent.perform();
   }
 
@@ -89,7 +91,11 @@ export default class InterventionDetailPanelComponent extends Component {
 
   @keepLatestTask
   *synchronizeCalendarEvent() {
-    this.setCalendarEventProperties();
+    setCalendarEventProperties(this.calendarEvent, {
+      intervention: this.args.model,
+      customer: this.case.current.customer,
+      building: this.case.current.building,
+    });
     yield this.saveCalendarEvent.perform();
   }
 
@@ -99,20 +105,14 @@ export default class InterventionDetailPanelComponent extends Component {
         intervention: this.args.model.uri,
         date: null, // ember-flatpickr cannot handle 'undefined'
       });
-      this.setCalendarEventProperties();
+      setCalendarEventProperties(this.calendarEvent, {
+        intervention: this.args.model,
+        customer: this.case.current.customer,
+        building: this.case.current.building,
+        calendarPeriod: new CalendarPeriod('GD'),
+      });
       // don't save calendar-event yet. It's just a placeholder to fill in the form.
     }
-  }
-
-  setCalendarEventProperties() {
-    this.calendarEvent.subject = interventionSubject(this.args.model, this.case.current.customer);
-    this.calendarEvent.description = this.args.model.description;
-    this.calendarEvent.url = interventionApplicationUrl(
-      this.args.model,
-      this.case.current.customer
-    );
-    const addressEntity = this.case.current.building || this.case.current.customer;
-    this.calendarEvent.location = addressEntity.fullAddress;
   }
 
   @keepLatestTask
