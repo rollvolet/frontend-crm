@@ -43,7 +43,7 @@
     {{#if this.editMode}}
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          <Visit::DetailView
+          <CalendarEvent::DetailView
             @title="bezoek"
             @model={{this.calendarEvent}}
             @onSynchronize={{perform this.synchronizeCalendarEvent}} />
@@ -100,7 +100,7 @@
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          <Visit::DetailView
+          <CalendarEvent::DetailView
             @title="bezoek"
             @model={{this.calendarEvent}}
             @onSynchronize={{perform this.synchronizeCalendarEvent}} />

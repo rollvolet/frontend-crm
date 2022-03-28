@@ -53,12 +53,12 @@
         <div class="mb-4 sm:mb-0 sm:order-2">
           {{#if (and (not this.loadData.isRunning) this.isLinkedToCustomer)}}
             {{#if this.calendarEvent.isMasteredByAccess}}
-              <Visit::DetailView
+              <CalendarEvent::DetailView
                 @title="bezoek"
                 @model={{this.calendarEvent}}
                 @onSynchronize={{perform this.saveCalendarEvent}} />
             {{else if @model.requiresVisit}}
-              <Visit::DetailEdit
+              <CalendarEvent::DetailEdit
                 @title="bezoek"
                 @model={{this.calendarEvent}}
                 @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
@@ -130,7 +130,7 @@
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {{#unless this.loadData.isRunning}}
           <div class="mb-4 sm:mb-0 sm:order-2">
-            <Visit::DetailView
+            <CalendarEvent::DetailView
               @title="bezoek"
               @model={{this.calendarEvent}}
               @onSynchronize={{perform this.synchronizeCalendarEvent}} />

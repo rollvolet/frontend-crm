@@ -124,7 +124,7 @@
         </div>
         <div class="space-y-6">
           {{#unless this.loadData.isRunning}}
-            <Visit::DetailEdit
+            <CalendarEvent::DetailEdit
               @title="planning"
               @model={{this.calendarEvent}}
               @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
@@ -236,7 +236,7 @@
         <div class="mb-4 sm:mb-0 space-y-2">
           <div class="mb-4">
             {{#unless this.loadData.isRunning}}
-              <Visit::DetailView
+              <CalendarEvent::DetailView
                 @title="planning"
                 @model={{this.calendarEvent}}
                 @onSynchronize={{perform this.synchronizeCalendarEvent}} />

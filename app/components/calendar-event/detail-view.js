@@ -3,7 +3,7 @@ import fetch, { Headers } from 'fetch';
 import { tracked } from '@glimmer/tracking';
 import { keepLatestTask } from 'ember-concurrency';
 
-export default class VisitDetailViewComponent extends Component {
+export default class CalendarEventDetailViewComponent extends Component {
   @tracked isMissingInCalendar = false;
 
   constructor() {

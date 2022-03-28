@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import CalendarPeriod from '../../classes/calendar-period';
 
-export default class VisitDetailEditComponent extends Component {
+export default class CalendarEventDetailEditComponent extends Component {
   @tracked calendarPeriod;
 
   constructor() {
