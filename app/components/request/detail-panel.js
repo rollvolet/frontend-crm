@@ -86,8 +86,11 @@ export default class RequestDetailPanelComponent extends Component {
 
   @keepLatestTask
   *updateCalendarEventSubject(calendarPeriod) {
-    const subject = requestSubject(this.args.model, this.case.current.customer, calendarPeriod);
-    this.calendarEvent.subject = subject;
+    this.calendarEvent.subject = requestSubject(
+      this.args.model,
+      this.case.current.customer,
+      calendarPeriod
+    );
     yield this.saveCalendarEvent.perform();
   }
 

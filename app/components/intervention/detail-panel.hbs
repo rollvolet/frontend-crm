@@ -148,10 +148,12 @@
         </div>
         <div class="space-y-6">
           {{#unless this.loadData.isRunning}}
-            <PlanningEvent::DetailEdit
-              @model={{this.planningEvent}}
-              @saveTask={{this.savePlanningEvent}}
-              @onDelete={{perform this.deletePlanningEvent}} />
+            <Visit::DetailEdit
+              @title="planning"
+              @model={{this.calendarEvent}}
+              @onCalendarPeriodChange={{perform this.updateCalendarEventSubject}}
+              @saveTask={{this.saveCalendarEvent}}
+              @onDelete={{perform this.deleteCalendarEvent}} />
           {{/unless}}
         </div>
         <div class="sm:col-span-2">
@@ -204,7 +206,10 @@
         </div>
         <div class="space-y-6">
           {{#unless this.loadData.isRunning}}
-            <PlanningEvent::DetailView @model={{this.planningEvent}} />
+            <Visit::DetailView
+              @title="planning"
+              @model={{this.calendarEvent}}
+              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
           {{/unless}}
           <div class="space-y-2">
             {{#if @model.cancellationDate}}

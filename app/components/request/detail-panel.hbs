@@ -54,10 +54,12 @@
           {{#if (and (not this.loadData.isRunning) this.isLinkedToCustomer)}}
             {{#if this.calendarEvent.isMasteredByAccess}}
               <Visit::DetailView
+                @title="bezoek"
                 @model={{this.calendarEvent}}
                 @onSynchronize={{perform this.saveCalendarEvent}} />
             {{else if @model.requiresVisit}}
               <Visit::DetailEdit
+                @title="bezoek"
                 @model={{this.calendarEvent}}
                 @onCalendarPeriodChange={{perform this.updateCalendarEventSubject}}
                 @saveTask={{this.saveCalendarEvent}} />
@@ -129,6 +131,7 @@
         {{#unless this.loadData.isRunning}}
           <div class="mb-4 sm:mb-0 sm:order-2">
             <Visit::DetailView
+              @title="bezoek"
               @model={{this.calendarEvent}}
               @onSynchronize={{perform this.synchronizeCalendarEvent}} />
           </div>

@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { keepLatestTask, task } from 'ember-concurrency';
+import { interventionSubject, interventionApplicationUrl } from '../../utils/calendar-helpers';
 
 export default class InterventionDetailPanelComponent extends Component {
   @service case;
@@ -13,7 +14,7 @@ export default class InterventionDetailPanelComponent extends Component {
   @tracked editMode = false;
   @tracked isOpenOptionsMenu = false;
   @tracked isOpenCancellationModal = false;
-  @tracked planningEvent;
+  @tracked calendarEvent;
 
   constructor() {
     super(...arguments);
@@ -22,7 +23,10 @@ export default class InterventionDetailPanelComponent extends Component {
 
   @task
   *loadData() {
-    this.planningEvent = yield this.args.model.planningEvent;
+    // TODO fetch via relation once intervention is converted to triplestore
+    this.calendarEvent = yield this.store.queryOne('calendar-event', {
+      'filter[:exact:intervention]': this.args.model.uri,
+    });
   }
 
   get technicianNames() {
@@ -48,31 +52,79 @@ export default class InterventionDetailPanelComponent extends Component {
   @keepLatestTask
   *save() {
     const { validations } = yield this.args.model.validate();
-    let requiresPlanningEventReload = false;
     if (validations.isValid) {
       const changedAttributes = this.args.model.changedAttributes();
-      if (changedAttributes['comment']) {
-        requiresPlanningEventReload = true;
+      if (changedAttributes['description'] || changedAttributes['nbOfPersons']) {
+        yield this.synchronizeCalendarEvent.perform();
       }
       yield this.args.model.save();
     }
+  }
 
-    if (requiresPlanningEventReload) {
-      yield this.args.model.belongsTo('planningEvent').reload();
+  @keepLatestTask
+  *updateCalendarEventSubject(calendarPeriod) {
+    this.calendarEvent.subject = interventionSubject(
+      this.args.model,
+      this.case.current.customer,
+      calendarPeriod
+    );
+    yield this.saveCalendarEvent.perform();
+  }
+
+  @keepLatestTask
+  *saveCalendarEvent() {
+    const { validations } = yield this.calendarEvent.validate();
+    if (validations.isValid) {
+      yield this.calendarEvent.save();
+      // TODO remove once interventions are converted to triplestore and
+      // link with calendar-event can be established
+      const planningDateRequiresUpdate =
+        this.args.model.planningDate?.toISOString() != this.calendarEvent.date?.toISOString();
+      if (planningDateRequiresUpdate) {
+        this.args.model.planningDate = this.calendarEvent.date;
+        yield this.args.model.save();
+      }
     }
   }
 
   @keepLatestTask
-  *savePlanningEvent() {
-    const { validations } = yield this.planningEvent.validate();
-    if (validations.isValid) yield this.planningEvent.save();
+  *synchronizeCalendarEvent() {
+    this.setCalendarEventProperties();
+    yield this.saveCalendarEvent.perform();
+  }
+
+  ensureCalendarEvent() {
+    if (!this.calendarEvent) {
+      this.calendarEvent = this.store.createRecord('calendar-event', {
+        intervention: this.args.model.uri,
+        date: null, // ember-flatpickr cannot handle 'undefined'
+      });
+      this.setCalendarEventProperties();
+      // don't save calendar-event yet. It's just a placeholder to fill in the form.
+    }
+  }
+
+  setCalendarEventProperties() {
+    this.calendarEvent.subject = interventionSubject(this.args.model, this.case.current.customer);
+    this.calendarEvent.description = this.args.model.description;
+    this.calendarEvent.url = interventionApplicationUrl(
+      this.args.model,
+      this.case.current.customer
+    );
+    const addressEntity = this.case.current.building || this.case.current.customer;
+    this.calendarEvent.location = addressEntity.fullAddress;
   }
 
   @keepLatestTask
-  *deletePlanningEvent() {
-    this.planningEvent.period = null;
-    this.planningEvent.date = null;
-    yield this.savePlanningEvent.perform();
+  *deleteCalendarEvent() {
+    // TODO remove planningDate on intervention
+    // once interventions are converted to triplestore and
+    // link with calendar-event can be established
+    this.args.model.planningDate = null;
+    yield this.args.model.save();
+    yield this.calendarEvent.destroyRecord();
+    this.calendarEvent = null;
+    this.ensureCalendarEvent();
   }
 
   @task
@@ -108,12 +160,17 @@ export default class InterventionDetailPanelComponent extends Component {
 
   @action
   openEdit() {
+    this.ensureCalendarEvent();
     this.editMode = true;
   }
 
   @action
-  closeEdit() {
+  async closeEdit() {
     this.editMode = false;
+    if (this.calendarEvent && this.calendarEvent.isNew) {
+      await this.calendarEvent.destroyRecord();
+      this.calendarEvent = null;
+    }
   }
 
   @action

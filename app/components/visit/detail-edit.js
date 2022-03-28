@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { task } from 'ember-concurrency';
 import CalendarPeriod from '../../classes/calendar-period';
 
 export default class VisitDetailEditComponent extends Component {
@@ -29,6 +30,13 @@ export default class VisitDetailEditComponent extends Component {
   saveCalendarPeriodChange() {
     if (this.calendarPeriod.isValid) {
       this.args.onCalendarPeriodChange(this.calendarPeriod);
+    }
+  }
+
+  @task
+  *delete() {
+    if (this.args.onDelete) {
+      yield this.args.onDelete();
     }
   }
 }

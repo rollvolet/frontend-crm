@@ -25,6 +25,12 @@ export default class CalendarEventModel extends ValidatedModel {
   // TODO enable once request has moved to triplestore
   @attr request;
   // @belongsTo('request') request;
+  // TODO enable once intervention has moved to triplestore
+  @attr intervention;
+  // @belongsTo('intervention') intervention;
+  // TODO enable once order has moved to triplestore
+  @attr order;
+  // @belongsTo('order') order;
 
   get isAvailableInCalendar() {
     return isPresent(this.msIdentifier);
