@@ -123,9 +123,14 @@
           </div>
         </div>
         <div class="space-y-6">
-          <Planning::DetailEdit
-            @model={{@model}}
-            @saveTask={{this.planEvent}} />
+          {{#unless this.loadData.isRunning}}
+            <Visit::DetailEdit
+              @title="planning"
+              @model={{this.calendarEvent}}
+              @onCalendarPeriodChange={{perform this.updateCalendarEventSubject}}
+              @saveTask={{this.saveCalendarEvent}}
+              @onDelete={{perform this.deleteCalendarEvent}} />
+          {{/unless}}
           <div role="group" aria-labelledby="label-executions" class="space-y-4">
             <div id="label-executions" class="font-semibold text-sm text-gray-700">
               Uitvoering
@@ -230,7 +235,12 @@
         </div>
         <div class="mb-4 sm:mb-0 space-y-2">
           <div class="mb-4">
-            <Planning::DetailView @model={{@model}} />
+            {{#unless this.loadData.isRunning}}
+              <Visit::DetailView
+                @title="planning"
+                @model={{this.calendarEvent}}
+                @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+            {{/unless}}
           </div>
           <Util::DetailItem @label="Uitvoering">
             {{#each this.executionOptions as |option|}}

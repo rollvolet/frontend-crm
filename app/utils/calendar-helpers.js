@@ -15,6 +15,10 @@ export function setCalendarEventProperties(calendarEvent, records) {
     calendarEvent.subject = interventionSubject(intervention, customer, calendarPeriod);
     calendarEvent.description = intervention.description;
     calendarEvent.url = interventionApplicationUrl(intervention, customer);
+  } else if (order) {
+    calendarEvent.subject = orderSubject(order, customer, calendarPeriod, visitor);
+    calendarEvent.description = order.comment;
+    calendarEvent.url = orderApplicationUrl(order, customer);
   }
   const addressEntity = building || customer;
   calendarEvent.location = addressEntity?.fullAddress;
@@ -36,6 +40,17 @@ function interventionSubject(intervention, customer, calendarPeriod) {
   return `${timeSpec} ** ${customer.name} ** ${nbOfPersons}p ** IR${intervention.id}`;
 }
 
+function orderSubject(order, customer, calendarPeriod, visitor) {
+  if (!calendarPeriod) {
+    calendarPeriod = new CalendarPeriod('GD');
+  }
+  const timeSpec = calendarPeriod.toSubjectString();
+  const requestNumber = formatRequestNumber([order.requestNumber]);
+  const nbOfPersons = order.scheduledNbOfPersons || 0;
+  const nbOfHours = order.scheduledNbOfHours || 0;
+  const workload = `${nbOfPersons}p x ${nbOfHours}u`;
+  const initials = visitor ? `(${visitor.initials})` : '';
+  return `${timeSpec} ** ${customer.name} ** ${workload} ** AD${requestNumber} ${initials}`.trim();
 }
 
 function requestApplicationUrl(request, customer) {
@@ -44,4 +59,8 @@ function requestApplicationUrl(request, customer) {
 
 function interventionApplicationUrl(intervention, customer) {
   return `${window.origin}/case/${customer.id}/intervention/${intervention.id}`;
+}
+
+function orderApplicationUrl(order, customer) {
+  return `${window.origin}/case/${customer.id}/order/${order.id}`;
 }
