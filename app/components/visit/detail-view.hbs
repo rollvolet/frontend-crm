@@ -1,6 +1,6 @@
 <div class="p-4 bg-gray-100 rounded-lg
-  {{if this.notAvailableInCalendar "relative border-2 border-dashed border-red-500" }}">
-  {{#if this.notAvailableInCalendar}}
+  {{if this.isMissingInCalendar "relative border-2 border-dashed border-red-500" }}">
+  {{#if this.isMissingInCalendar}}
     <div class="absolute -bottom-3 -right-3 rounded shadow px-2 py-1 bg-red-600 text-white text-sm">
       Niet gevonden in de agenda
     </div>
@@ -36,11 +36,7 @@
           <Fmt::Date @value={{@model.date}} />
         </Util::DetailItem>
         <Util::DetailItem @label="Agenda">
-          {{#if (not @model.isAvailableInCalendar)}}
-            Niet gevonden
-          {{else}}
-            {{@model.subject}}
-          {{/if}}
+          {{@model.subject}}
         </Util::DetailItem>
       </dl>
       {{#if @model.isMasteredByAccess}}

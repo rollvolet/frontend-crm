@@ -32,10 +32,6 @@ export default class CalendarEventModel extends ValidatedModel {
   @attr order;
   // @belongsTo('order') order;
 
-  get isAvailableInCalendar() {
-    return isPresent(this.msIdentifier);
-  }
-
   get isMasteredByAccess() {
     return this.source == 'Access';
   }
