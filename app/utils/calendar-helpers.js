@@ -28,7 +28,7 @@ function requestSubject(request, customer, calendarPeriod, visitor) {
   const timeSpec = calendarPeriod.toSubjectString();
   const requestNumber = formatRequestNumber([request.id]);
   const initials = visitor ? `(${visitor.initials})` : '';
-  return `${timeSpec} ** ${customer.name} ** AD${requestNumber} ${initials}`.trim();
+  return `${timeSpec} | ${customer.name} | AD${requestNumber} ${initials}`.trim();
 }
 
 function interventionSubject(intervention, customer, calendarPeriod) {
@@ -37,7 +37,7 @@ function interventionSubject(intervention, customer, calendarPeriod) {
   }
   const timeSpec = calendarPeriod.toSubjectString();
   const nbOfPersons = intervention.nbOfPersons || 0;
-  return `${timeSpec} ** ${customer.name} ** ${nbOfPersons}p ** IR${intervention.id}`;
+  return `${timeSpec} | ${customer.name} | ${nbOfPersons}p | IR${intervention.id}`;
 }
 
 function orderSubject(order, customer, calendarPeriod, visitor) {
@@ -50,7 +50,7 @@ function orderSubject(order, customer, calendarPeriod, visitor) {
   const nbOfHours = order.scheduledNbOfHours || 0;
   const workload = `${nbOfPersons}p x ${nbOfHours}u`;
   const initials = visitor ? `(${visitor.initials})` : '';
-  return `${timeSpec} ** ${customer.name} ** ${workload} ** AD${requestNumber} ${initials}`.trim();
+  return `${timeSpec} | ${customer.name} | ${workload} | AD${requestNumber} ${initials}`.trim();
 }
 
 function requestApplicationUrl(request, customer) {
