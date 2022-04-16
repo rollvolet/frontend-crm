@@ -9,7 +9,6 @@ export function setCalendarEventProperties(calendarEvent, records) {
   }
   if (request) {
     calendarEvent.subject = requestSubject(request, customer, calendarPeriod, visitor);
-    calendarEvent.description = request.comment;
     calendarEvent.url = requestApplicationUrl(request, customer);
   } else if (intervention) {
     calendarEvent.subject = interventionSubject(intervention, customer, calendarPeriod);
@@ -28,22 +27,19 @@ function requestSubject(request, customer, calendarPeriod, visitor) {
   const timeSpec = calendarPeriod.toSubjectString();
   const requestNumber = formatRequestNumber([request.id]);
   const initials = visitor ? `(${visitor.initials})` : '';
-  return `${timeSpec} | ${customer.name} | AD${requestNumber} ${initials}`.trim();
+  const comment = request.comment;
+  return [timeSpec, customer.name, `AD${requestNumber} ${initials}`, comment]
+    .filter((f) => f)
+    .join(' | ');
 }
 
 function interventionSubject(intervention, customer, calendarPeriod) {
-  if (!calendarPeriod) {
-    calendarPeriod = new CalendarPeriod('GD');
-  }
   const timeSpec = calendarPeriod.toSubjectString();
   const nbOfPersons = intervention.nbOfPersons || 0;
   return `${timeSpec} | ${customer.name} | ${nbOfPersons}p | IR${intervention.id}`;
 }
 
 function orderSubject(order, customer, calendarPeriod, visitor) {
-  if (!calendarPeriod) {
-    calendarPeriod = new CalendarPeriod('GD');
-  }
   const timeSpec = calendarPeriod.toSubjectString();
   const requestNumber = formatRequestNumber([order.requestNumber]);
   const nbOfPersons = order.scheduledNbOfPersons || 0;
