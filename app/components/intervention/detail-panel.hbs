@@ -142,7 +142,7 @@
               @isTechnician={{true}}
               @isAdministrative={{true}}
               @sort={{"type:desc"}}
-              @onSelectionChange={{queue this.setTechnicians (perform this.save)}}
+              @onSelectionChange={{queue this.setTechnicians (perform this.save) (perform this.synchronizeCalendarEvent)}}
               class="mt-1" />
           </div>
         </div>

@@ -64,7 +64,7 @@ export default class RequestDetailPanelComponent extends Component {
           request: this.args.model.uri,
           date: new Date(),
         });
-        setCalendarEventProperties(this.calendarEvent, {
+        yield setCalendarEventProperties(this.calendarEvent, {
           request: this.args.model,
           customer: this.case.current.customer,
           building: this.case.current.building,
@@ -94,7 +94,7 @@ export default class RequestDetailPanelComponent extends Component {
 
   @keepLatestTask
   *updateCalendarPeriod(calendarPeriod) {
-    setCalendarEventProperties(this.calendarEvent, {
+    yield setCalendarEventProperties(this.calendarEvent, {
       request: this.args.model,
       customer: this.case.current.customer,
       building: this.case.current.building,
@@ -114,7 +114,7 @@ export default class RequestDetailPanelComponent extends Component {
 
   @keepLatestTask
   *synchronizeCalendarEvent() {
-    setCalendarEventProperties(this.calendarEvent, {
+    yield setCalendarEventProperties(this.calendarEvent, {
       request: this.args.model,
       customer: this.case.current.customer,
       building: this.case.current.building,

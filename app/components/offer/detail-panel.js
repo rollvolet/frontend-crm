@@ -71,7 +71,7 @@ export default class OfferDetailPanelComponent extends Component {
 
   @keepLatestTask
   *synchronizeCalendarEvent() {
-    setCalendarEventProperties(this.calendarEvent, {
+    yield setCalendarEventProperties(this.calendarEvent, {
       request: this.request,
       customer: this.case.current.customer,
       building: this.case.current.building,

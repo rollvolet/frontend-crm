@@ -118,7 +118,7 @@
               @isTechnician={{true}}
               @isAdministrative={{true}}
               @sort={{"type:desc"}}
-              @onSelectionChange={{queue this.setTechnicians (perform this.save)}}
+              @onSelectionChange={{queue this.setTechnicians (perform this.save) (perform this.synchronizeCalendarEvent)}}
               class="mt-1" />
           </div>
         </div>
@@ -127,7 +127,7 @@
             <CalendarEvent::DetailEdit
               @title="planning"
               @model={{this.calendarEvent}}
-              @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
+              @onCalendarPeriodChange={{perform this.updateCalendarEventSubject}}
               @saveTask={{this.saveCalendarEvent}}
               @onDelete={{perform this.deleteCalendarEvent}} />
           {{/unless}}

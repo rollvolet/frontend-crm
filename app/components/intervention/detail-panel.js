@@ -56,6 +56,7 @@ export default class InterventionDetailPanelComponent extends Component {
     if (validations.isValid) {
       const changedAttributes = this.args.model.changedAttributes();
       if (changedAttributes['description'] || changedAttributes['nbOfPersons']) {
+        // for updates on technicians, synchronizeCalendarEvent is called from template
         yield this.synchronizeCalendarEvent.perform();
       }
       yield this.args.model.save();
@@ -64,13 +65,26 @@ export default class InterventionDetailPanelComponent extends Component {
 
   @keepLatestTask
   *updateCalendarEventSubject(calendarPeriod) {
-    setCalendarEventProperties(this.calendarEvent, {
+    yield setCalendarEventProperties(this.calendarEvent, {
       intervention: this.args.model,
       customer: this.case.current.customer,
       building: this.case.current.building,
       calendarPeriod,
     });
     yield this.saveCalendarEvent.perform();
+  }
+
+  @keepLatestTask
+  *synchronizeCalendarEvent() {
+    yield setCalendarEventProperties(this.calendarEvent, {
+      intervention: this.args.model,
+      customer: this.case.current.customer,
+      building: this.case.current.building,
+    });
+    if (!this.calendarEvent.isNew) {
+      // only save if it has already been saved before (by selecting a date/period)
+      yield this.saveCalendarEvent.perform();
+    }
   }
 
   @keepLatestTask
@@ -89,23 +103,13 @@ export default class InterventionDetailPanelComponent extends Component {
     }
   }
 
-  @keepLatestTask
-  *synchronizeCalendarEvent() {
-    setCalendarEventProperties(this.calendarEvent, {
-      intervention: this.args.model,
-      customer: this.case.current.customer,
-      building: this.case.current.building,
-    });
-    yield this.saveCalendarEvent.perform();
-  }
-
-  ensureCalendarEvent() {
+  async ensureCalendarEvent() {
     if (!this.calendarEvent) {
       this.calendarEvent = this.store.createRecord('calendar-event', {
         intervention: this.args.model.uri,
         date: null, // ember-flatpickr cannot handle 'undefined'
       });
-      setCalendarEventProperties(this.calendarEvent, {
+      await setCalendarEventProperties(this.calendarEvent, {
         intervention: this.args.model,
         customer: this.case.current.customer,
         building: this.case.current.building,
@@ -124,7 +128,7 @@ export default class InterventionDetailPanelComponent extends Component {
     yield this.args.model.save();
     yield this.calendarEvent.destroyRecord();
     this.calendarEvent = null;
-    this.ensureCalendarEvent();
+    yield this.ensureCalendarEvent();
   }
 
   @task
@@ -159,8 +163,8 @@ export default class InterventionDetailPanelComponent extends Component {
   }
 
   @action
-  openEdit() {
-    this.ensureCalendarEvent();
+  async openEdit() {
+    await this.ensureCalendarEvent();
     this.editMode = true;
   }
 

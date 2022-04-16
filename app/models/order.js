@@ -55,9 +55,13 @@ export default class OrderModel extends ValidatedModel {
   }
 
   get execution() {
-    if (this.mustBeInstalled) return 'installation';
-    else if (this.mustBeDelivered) return 'delivery';
-    else return 'pickup';
+    if (this.mustBeInstalled) {
+      return 'installation';
+    } else if (this.mustBeDelivered) {
+      return 'delivery';
+    } else {
+      return 'pickup';
+    }
   }
 
   get isMasteredByAccess() {

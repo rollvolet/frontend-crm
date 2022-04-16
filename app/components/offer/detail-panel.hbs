@@ -42,12 +42,14 @@
   <div class="p-6">
     {{#if this.editMode}}
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div class="mb-4 sm:mb-0 sm:order-2">
-          <CalendarEvent::DetailView
-            @title="bezoek"
-            @model={{this.calendarEvent}}
-            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
-        </div>
+        {{#unless this.loadData.isRunning}}
+          <div class="mb-4 sm:mb-0 sm:order-2">
+            <CalendarEvent::DetailView
+              @title="bezoek"
+              @model={{this.calendarEvent}}
+              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+          </div>
+        {{/unless}}
         <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
           <div>
             <InputField::Date
@@ -99,12 +101,14 @@
       </div>
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <div class="mb-4 sm:mb-0 sm:order-2">
-          <CalendarEvent::DetailView
-            @title="bezoek"
-            @model={{this.calendarEvent}}
-            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
-        </div>
+        {{#unless this.loadData.isRunning}}
+          <div class="mb-4 sm:mb-0 sm:order-2">
+            <CalendarEvent::DetailView
+              @title="bezoek"
+              @model={{this.calendarEvent}}
+              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+          </div>
+        {{/unless}}
         <div class="space-y-2 sm:order-1">
           <Util::DetailItem @label="Datum">
             <Fmt::Date @value={{@model.offerDate}} />

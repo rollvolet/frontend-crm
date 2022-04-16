@@ -300,10 +300,10 @@ export default class CaseService extends Service.extend(Evented) {
       });
     }
 
-    const promises = Object.keys(calendarEvents).map((key) => {
+    const promises = Object.keys(calendarEvents).map(async (key) => {
       const calendarEvent = calendarEvents[key];
       if (calendarEvent) {
-        setCalendarEventProperties(calendarEvent, {
+        await setCalendarEventProperties(calendarEvent, {
           [key]: this.current[key],
           customer: this.current.customer,
           building: this.current.building,

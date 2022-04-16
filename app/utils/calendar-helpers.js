@@ -1,7 +1,8 @@
+import { isPresent } from '@ember/utils';
 import { formatRequestNumber } from '../helpers/format-request-number';
 import CalendarPeriod from '../classes/calendar-period';
 
-export function setCalendarEventProperties(calendarEvent, records) {
+export async function setCalendarEventProperties(calendarEvent, records) {
   let { request, intervention, order, customer, visitor, building, calendarPeriod } = records;
   if (!calendarPeriod) {
     // If calendar period is not passed as argument, parse it from existing subject
@@ -11,11 +12,11 @@ export function setCalendarEventProperties(calendarEvent, records) {
     calendarEvent.subject = requestSubject(request, customer, calendarPeriod, visitor);
     calendarEvent.url = requestApplicationUrl(request, customer);
   } else if (intervention) {
-    calendarEvent.subject = interventionSubject(intervention, customer, calendarPeriod);
+    calendarEvent.subject = await interventionSubject(intervention, customer, calendarPeriod);
     calendarEvent.description = intervention.description;
     calendarEvent.url = interventionApplicationUrl(intervention, customer);
   } else if (order) {
-    calendarEvent.subject = orderSubject(order, customer, calendarPeriod, visitor);
+    calendarEvent.subject = await orderSubject(order, customer, calendarPeriod, visitor);
     calendarEvent.description = order.comment;
     calendarEvent.url = orderApplicationUrl(order, customer);
   }
@@ -27,26 +28,37 @@ function requestSubject(request, customer, calendarPeriod, visitor) {
   const timeSpec = calendarPeriod.toSubjectString();
   const requestNumber = formatRequestNumber([request.id]);
   const initials = visitor ? `(${visitor.initials})` : '';
+  const requestReference = `AD${requestNumber} ${initials}`.trim();
   const comment = request.comment;
-  return [timeSpec, customer.name, `AD${requestNumber} ${initials}`, comment]
-    .filter((f) => f)
+  return [timeSpec, customer.name, requestReference, comment]
+    .filter((f) => isPresent(f))
     .join(' | ');
 }
 
-function interventionSubject(intervention, customer, calendarPeriod) {
+async function interventionSubject(intervention, customer, calendarPeriod) {
   const timeSpec = calendarPeriod.toSubjectString();
   const nbOfPersons = intervention.nbOfPersons || 0;
-  return `${timeSpec} | ${customer.name} | ${nbOfPersons}p | IR${intervention.id}`;
+  const technicians = await intervention.technicians;
+  const technicianNames = technicians.sortBy('firstName').mapBy('firstName').join(', ');
+  const workload = `${nbOfPersons}p ${technicianNames}`.trim();
+  return [timeSpec, customer.name, `IR${intervention.id}`, workload]
+    .filter((f) => isPresent(f))
+    .join(' | ');
 }
 
-function orderSubject(order, customer, calendarPeriod, visitor) {
+async function orderSubject(order, customer, calendarPeriod, visitor) {
   const timeSpec = calendarPeriod.toSubjectString();
   const requestNumber = formatRequestNumber([order.requestNumber]);
+  const initials = visitor ? `(${visitor.initials})` : '';
+  const requestReference = `AD${requestNumber} ${initials}`.trim();
   const nbOfPersons = order.scheduledNbOfPersons || 0;
   const nbOfHours = order.scheduledNbOfHours || 0;
-  const workload = `${nbOfPersons}p x ${nbOfHours}u`;
-  const initials = visitor ? `(${visitor.initials})` : '';
-  return `${timeSpec} | ${customer.name} | ${workload} | AD${requestNumber} ${initials}`.trim();
+  const technicians = await order.technicians;
+  const technicianNames = technicians.sortBy('firstName').mapBy('firstName').join(', ');
+  const workload = `${nbOfPersons}p x ${nbOfHours}u ${technicianNames}`.trim();
+  return [timeSpec, customer.name, requestReference, workload]
+    .filter((f) => isPresent(f))
+    .join(' | ');
 }
 
 function requestApplicationUrl(request, customer) {

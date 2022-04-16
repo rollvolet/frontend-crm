@@ -79,6 +79,7 @@ export default class OrderDetailPanelComponent extends Component {
         changedAttributes['scheduledNbOfHours'] ||
         changedAttributes['comment']
       ) {
+        // for updates on technicians, synchronizeCalendarEvent is called from template
         yield this.synchronizeCalendarEvent.perform();
       }
 
@@ -94,8 +95,8 @@ export default class OrderDetailPanelComponent extends Component {
   }
 
   @keepLatestTask
-  *updateCalendarPeriod(calendarPeriod) {
-    setCalendarEventProperties(this.calendarEvent, {
+  *updateCalendarEventSubject(calendarPeriod) {
+    yield setCalendarEventProperties(this.calendarEvent, {
       order: this.args.model,
       customer: this.case.current.customer,
       building: this.case.current.building,
@@ -103,6 +104,20 @@ export default class OrderDetailPanelComponent extends Component {
       calendarPeriod,
     });
     yield this.saveCalendarEvent.perform();
+  }
+
+  @keepLatestTask
+  *synchronizeCalendarEvent() {
+    yield setCalendarEventProperties(this.calendarEvent, {
+      order: this.args.model,
+      customer: this.case.current.customer,
+      building: this.case.current.building,
+      visitor: this.case.visitor,
+    });
+    if (!this.calendarEvent.isNew) {
+      // only save if it has already been saved before (by selecting a date/period)
+      yield this.saveCalendarEvent.perform();
+    }
   }
 
   @keepLatestTask
@@ -121,24 +136,13 @@ export default class OrderDetailPanelComponent extends Component {
     }
   }
 
-  @keepLatestTask
-  *synchronizeCalendarEvent() {
-    setCalendarEventProperties(this.calendarEvent, {
-      order: this.args.model,
-      customer: this.case.current.customer,
-      building: this.case.current.building,
-      visitor: this.case.visitor,
-    });
-    yield this.saveCalendarEvent.perform();
-  }
-
-  ensureCalendarEvent() {
+  async ensureCalendarEvent() {
     if (!this.calendarEvent) {
       this.calendarEvent = this.store.createRecord('calendar-event', {
         order: this.args.model.uri,
         date: null, // ember-flatpickr cannot handle 'undefined'
       });
-      setCalendarEventProperties(this.calendarEvent, {
+      await setCalendarEventProperties(this.calendarEvent, {
         order: this.args.model,
         customer: this.case.current.customer,
         building: this.case.current.building,
@@ -158,7 +162,7 @@ export default class OrderDetailPanelComponent extends Component {
     yield this.args.model.save();
     yield this.calendarEvent.destroyRecord();
     this.calendarEvent = null;
-    this.ensureCalendarEvent();
+    yield this.ensureCalendarEvent();
   }
 
   @action
@@ -213,8 +217,8 @@ export default class OrderDetailPanelComponent extends Component {
   }
 
   @action
-  openEdit() {
-    this.ensureCalendarEvent();
+  async openEdit() {
+    await this.ensureCalendarEvent();
     this.editMode = true;
   }
 
