@@ -1,14 +1,19 @@
 import Component from '@glimmer/component';
 import fetch, { Headers } from 'fetch';
+import moment from 'moment';
 import { tracked } from '@glimmer/tracking';
 import { keepLatestTask } from 'ember-concurrency';
 
 export default class CalendarEventDetailViewComponent extends Component {
-  @tracked isMissingInCalendar = false;
+  @tracked errorMessage;
 
   constructor() {
     super(...arguments);
     this.checkExistenceInMsCalendar.perform();
+  }
+
+  get hasErrorInCalendar() {
+    return this.errorMessage;
   }
 
   @keepLatestTask
@@ -20,14 +25,21 @@ export default class CalendarEventDetailViewComponent extends Component {
           Accept: 'application/json',
         }),
       });
+      this.errorMessage = null;
       if (response.ok) {
         const json = yield response.json();
-        this.isMissingInCalendar = json.data?.id == null;
+        if (json.data?.id == null) {
+          this.errorMessage = 'Niet gevonden in agenda';
+        }
+      } else if (response.status == 409) {
+        const json = yield response.json();
+        const date = moment(json.data.attributes.date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+        this.errorMessage = `Andere datum (${date}) in agenda`;
       } else {
-        this.isMissingInCalendar = true;
+        this.errorMessage = 'Probleem in agenda';
       }
     } else {
-      this.isMissingInCalendar = false;
+      this.errorMessage = null;
     }
   }
 

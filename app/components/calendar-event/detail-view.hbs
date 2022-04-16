@@ -1,8 +1,8 @@
 <div class="p-4 bg-gray-100 rounded-lg
-  {{if this.isMissingInCalendar "relative border-2 border-dashed border-red-500" }}">
-  {{#if this.isMissingInCalendar}}
+  {{if this.hasErrorInCalendar "relative border-2 border-dashed border-red-500" }}">
+  {{#if this.hasErrorInCalendar}}
     <div class="absolute -bottom-3 -right-3 rounded shadow px-2 py-1 bg-red-600 text-white text-sm">
-      Niet gevonden in de agenda
+      {{this.errorMessage}}
     </div>
   {{/if}}
   {{#if @model}}
