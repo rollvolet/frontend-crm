@@ -9,6 +9,11 @@ export default class CalendarEventDetailEditComponent extends Component {
 
   constructor() {
     super(...arguments);
+    this.parseCalendarPeriod();
+  }
+
+  @action
+  parseCalendarPeriod() {
     if (this.args.model) {
       this.calendarPeriod = CalendarPeriod.parse(this.args.model.subject);
     }
