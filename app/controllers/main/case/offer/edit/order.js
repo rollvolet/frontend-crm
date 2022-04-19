@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { all, task } from 'ember-concurrency';
 import { debug } from '@ember/debug';
+import { isEmpty } from '@ember/utils';
 import sum from '../../../../../utils/math/sum';
 
 export default class OrderController extends Controller {
@@ -108,6 +109,17 @@ export default class OrderController extends Controller {
         await invoiceline.save();
       });
       yield all(invoicelines);
+
+      // cleanup empty calculation-lines
+      // since they can no longer be removed after the order has been created
+      const calculationLinesCleanup = this.model.map(async (offerline) => {
+        const calculationLines = await offerline.calculationLines;
+        const emptyCalculationLines = calculationLines.filter((calculationLine) => {
+          return isEmpty(calculationLine.description) && isEmpty(calculationLine.amount);
+        });
+        await Promise.all(emptyCalculationLines.map((line) => line.destroyRecord()));
+      });
+      yield all(calculationLinesCleanup);
 
       this.router.transitionTo('main.case.order.edit', customer, order);
 
