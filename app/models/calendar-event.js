@@ -1,5 +1,4 @@
 import { attr } from '@ember-data/model';
-import { isPresent } from '@ember/utils';
 import ValidatedModel, { Validator } from './validated-model';
 
 export default class CalendarEventModel extends ValidatedModel {

@@ -18,7 +18,7 @@ export default class CalendarEventDetailViewComponent extends Component {
 
   @keepLatestTask
   *checkExistenceInMsCalendar() {
-    if (this.args.model && this.args.model.id) {
+    if (this.args.model && this.args.model.id && !this.args.model.isMasteredByAccess) {
       const response = yield fetch(`/calendar-events/${this.args.model.id}/ms-event`, {
         method: 'GET',
         headers: new Headers({
