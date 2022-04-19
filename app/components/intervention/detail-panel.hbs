@@ -71,19 +71,21 @@
                     </LinkTo>
                   {{/if}}
                   {{#if @model.isCancelled}}
-                    <div role="menuitem" tabindex="-1"
-                      {{on "click" this.uncancelIntervention}}
-                      class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                      Opnieuw openen
-                    </div>
+                    {{#unless this.hasFollowUpRequest}}
+                      <div role="menuitem" tabindex="-1"
+                        {{on "click" this.uncancelIntervention}}
+                        class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
+                        Opnieuw openen
+                      </div>
+                    {{/unless}}
                   {{else}}
-                    {{#if (and (not this.hasInvoice) (not this.hasFollowUpRequest))}}
+                    {{#unless this.hasInvoice}}
                       <div role="menuitem" tabindex="-1"
                         {{on "click" this.cancelIntervention}}
                         class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
                         Afsluiten
                       </div>
-                    {{/if}}
+                    {{/unless}}
                   {{/if}}
                   <div role="menuitem" tabindex="-1"
                     {{on "click" (perform this.createNewIntervention)}}
