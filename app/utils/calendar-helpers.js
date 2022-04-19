@@ -49,7 +49,7 @@ async function interventionSubject(intervention, customer, calendarPeriod) {
 async function orderSubject(order, customer, calendarPeriod, visitor) {
   const timeSpec = calendarPeriod.toSubjectString();
   const requestNumber = formatRequestNumber([order.requestNumber]);
-  const initials = visitor ? `(${visitor.initials})` : '';
+  const initials = visitor ? `${visitor.initials}` : '';
   const requestReference = `AD${requestNumber} ${initials}`.trim();
   const nbOfPersons = order.scheduledNbOfPersons || 0;
   const nbOfHours = order.scheduledNbOfHours || 0;
