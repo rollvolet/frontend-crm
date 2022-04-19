@@ -89,40 +89,52 @@
         {{/if}}
 
         {{#if this.canCreateNewOffer}}
-          <LinkTo @route="main.case.request.edit.offer"
-            @models={{array this.model.customerId this.model.requestId}}
-            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
-            data-case-tab>
-            {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
-          </LinkTo>
+          <div class="flex items-center">
+            <LinkTo @route="main.case.request.edit.offer"
+              @models={{array this.model.customerId this.model.requestId}}
+                @activeClass="bg-red-200 border-red-300 !text-red-500 hover:bg-red-200 hover:border-red-300 hover:text-red-500"
+                class="inline-flex items-center p-2 border border-gray-300 rounded-full text-gray-500 bg-gray-200 hover:bg-red-200 hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparant"
+                data-case-tab>
+              <EmberTooltip @text="Offerte aanmaken" @side="right" />
+              {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
+            </LinkTo>
+          </div>
         {{/if}}
         {{#if this.canCreateNewOrder}}
-          <LinkTo @route="main.case.offer.edit.order"
-            @models={{array this.model.customerId this.model.offerId}}
-            @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-            class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
-            data-case-tab>
-            {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
-          </LinkTo>
+          <div class="flex items-center">
+            <LinkTo @route="main.case.offer.edit.order"
+              @models={{array this.model.customerId this.model.offerId}}
+              @activeClass="bg-red-200 border-red-300 !text-red-500 hover:bg-red-200 hover:border-red-300 hover:text-red-500"
+              class="inline-flex items-center p-2 border border-gray-300 rounded-full text-gray-500 bg-gray-200 hover:bg-red-200 hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparant"
+              data-case-tab>
+              <EmberTooltip @text="Bestelling aanmaken" @side="right" />
+              {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
+            </LinkTo>
+          </div>
         {{/if}}
         {{#if this.canCreateNewInvoice}}
           {{#if this.model.orderId}}
-            <LinkTo @route="main.case.order.edit.invoice"
-              @models={{array this.model.customerId this.model.orderId}}
-              @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-              class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
-              data-case-tab>
-              {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
-            </LinkTo>
+            <div class="flex items-center">
+              <LinkTo @route="main.case.order.edit.invoice"
+                @models={{array this.model.customerId this.model.orderId}}
+                @activeClass="bg-red-200 border-red-300 !text-red-500 hover:bg-red-200 hover:border-red-300 hover:text-red-500"
+                class="inline-flex items-center p-2 border border-gray-300 rounded-full text-gray-500 bg-gray-200 hover:bg-red-200 hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparant"
+                data-case-tab>
+                <EmberTooltip @text="Factuur aanmaken" @side="right" />
+                {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
+              </LinkTo>
+            </div>
           {{else if this.model.interventionId}}
-            <LinkTo @route="main.case.intervention.edit.invoice"
-              @models={{array this.model.customerId this.model.interventionId}}
-              @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
-              class="block border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
-              data-case-tab>
-              {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
-            </LinkTo>
+            <div class="flex items-center">
+              <LinkTo @route="main.case.intervention.edit.invoice"
+                @models={{array this.model.customerId this.model.interventionId}}
+                  @activeClass="bg-red-200 border-red-300 !text-red-500 hover:bg-red-200 hover:border-red-300 hover:text-red-500"
+                  class="inline-flex items-center p-2 border border-gray-300 rounded-full text-gray-500 bg-gray-200 hover:bg-red-200 hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparant"
+                  data-case-tab>
+                <EmberTooltip @text="Factuur aanmaken" @side="right" />
+                {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
+              </LinkTo>
+            </div>
           {{/if}}
         {{/if}}
       </nav>
