@@ -1,0 +1,44 @@
+<div class="divide-y divide-y-200">
+  {{!-- Card header --}}
+  <div class="px-6 pt-6 pb-4">
+    <div class="space-y-4 sm:space-y-0 sm:flex sm:justify-between sm:items-start">
+      <div class="space-y-1">
+        <div class="flex items-center">
+          <h2 class="text-2xl font-bold font-display text-gray-900">
+            Interventie {{#if @model.origin}}IR{{@model.origin.id}}{{/if}}
+          </h2>
+          {{#if @model.origin}}
+            <LinkTo @route="main.interventions.edit" @model={{@model.origin.id}}
+              class="ml-2 block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
+              <EmberTooltip @text="Open interventie" @side="bottom" />
+            </LinkTo>
+          {{/if}}
+        </div>
+        <p class="text-sm text-gray-400">
+          Interventie waarvan deze aanvraag een gevolg is
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Card content --}}
+  <div class="p-6">
+    {{#if @model.origin}}
+      <dl class="grid grid-cols-1 gap-1">
+        <div class="space-y-1">
+          <Util::DetailItem @label="Datum">
+            <Fmt::Date @value={{@model.origin.date}} />
+          </Util::DetailItem>
+          <Util::DetailItem @label="Beschrijving">
+            {{@model.origin.description}}
+          </Util::DetailItem>
+        </div>
+      </dl>
+    {{else}}
+      <p class="italic text-gray-400 text-sm">
+        Deze aanvraag komt niet voort uit een interventie
+      </p>
+    {{/if}}
+  </div>
+</div>

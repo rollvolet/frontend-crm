@@ -22,5 +22,13 @@
         @isDisabledEdit={{this.isDisabledEdit}}
         @isEnabledDelete={{this.isEnabledDelete}} />
     </div>
+
+    {{!-- Origin intervention --}}
+    {{#if this.model.origin}}
+      <div class="bg-white shadow rounded-lg overflow-hidden">
+        <Request::InterventionPanel
+          @model={{this.model}} />
+      </div>
+    {{/if}}
   </div>
 {{/if}}
