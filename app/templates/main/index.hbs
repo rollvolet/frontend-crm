@@ -36,48 +36,24 @@
 
 <div class="mx-auto mt-8 px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-4">
   <div>
-    <div class="flex items-center space-x-2">
-      <h2 class="text-lg leading-6 font-medium text-gray-900">
-        Te maken offertes laatste jaar
-      </h2>
-      <LinkTo @route="main.requests.index"
-        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-        {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
-        <EmberTooltip @text="Ga naar aanvragen" @side="top" />
-      </LinkTo>
-    </div>
-    <div class="flex flex-col mt-2">
-      <Dashboard::OutstandingRequests @employee={{this.userInfo.employee}} />
-    </div>
+    <Dashboard::OutstandingRequests @employee={{this.userInfo.employee}} />
   </div>
   <div>
-    <div class="flex items-center space-x-2">
-      <h2 class="text-lg leading-6 font-medium text-gray-900">
-        Te maken productiebons laatste jaar
-      </h2>
-      <LinkTo @route="main.orders.index"
-        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-        {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
-        <EmberTooltip @text="Ga naar bestellingen" @side="top" />
-      </LinkTo>
-    </div>
-    <div class="flex flex-col mt-2">
-      <Dashboard::ProductionTickets @employee={{this.userInfo.employee}} />
-    </div>
+    <Dashboard::ProductionTickets @employee={{this.userInfo.employee}} />
   </div>
 </div>
 
-<div class="mx-auto mt-8 px-4 flex items-center space-x-2 sm:px-6 lg:px-8">
-  <h2 class="text-lg leading-6 font-medium text-gray-900">
-    Op te volgen bestellingen
-  </h2>
-  <LinkTo @route="main.reports.outstanding-jobs.index"
-    class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-    {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
-    <EmberTooltip @text="Ga naar uit te voeren werken" @side="top" />
-  </LinkTo>
-</div>
-<div class="mx-auto mb-8 px-4 sm:px-6 lg:px-8">
+<div class="mx-auto my-8 px-4 sm:px-6 lg:px-8">
+  <div class="flex items-center space-x-2">
+    <h2 class="text-lg leading-6 font-medium text-gray-900">
+      Op te volgen bestellingen
+    </h2>
+    <LinkTo @route="main.reports.outstanding-jobs.index"
+      class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+      {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
+      <EmberTooltip @text="Ga naar uit te voeren werken" @side="top" />
+    </LinkTo>
+  </div>
   <div class="flex flex-col mt-2">
     <Dashboard::OutstandingJobs @employee={{this.userInfo.employee}} />
   </div>

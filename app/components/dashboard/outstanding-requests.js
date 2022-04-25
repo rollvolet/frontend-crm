@@ -11,6 +11,7 @@ export default class DashboardOutstandingRequestsComponent extends Component {
   @tracked size = 25;
   @tracked page = 0;
   @tracked sort = '-request-date';
+  @tracked showFutureVisits = false;
   @tracked requests = [];
 
   constructor() {
@@ -23,6 +24,19 @@ export default class DashboardOutstandingRequestsComponent extends Component {
     if (this.args.employee) {
       const yearAgo = new Date();
       yearAgo.setYear(yearAgo.getFullYear() - 1);
+
+      const filter = {
+        visitor: this.args.employee.firstName,
+        hasOffer: 0,
+        isCancelled: 0,
+        ':gt:request-date': yearAgo.toISOString(),
+      };
+
+      if (this.showFutureVisits) {
+        const now = new Date();
+        filter[':lte:visit-date'] = now.toISOString();
+      }
+
       this.requests = yield this.store.query('request', {
         include: 'customer,customer.honorific-prefix,building',
         page: {
@@ -30,14 +44,15 @@ export default class DashboardOutstandingRequestsComponent extends Component {
           number: this.page,
         },
         sort: this.sort,
-        filter: {
-          visitor: this.args.employee.firstName,
-          hasOffer: 0,
-          isCancelled: 0,
-          ':gt:request-date': yearAgo.toISOString(),
-        },
+        filter,
       });
     }
+  }
+
+  @action
+  toggleShowFutureVisits(value) {
+    this.showFutureVisits = value;
+    this.loadData.perform();
   }
 
   @action
