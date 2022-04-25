@@ -99,11 +99,14 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
+              <th class="bg-gray-50">
+                {{!-- cancelled icon --}}
+              </th>
               <DataTable::Th
                 @field="number"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
-                class="pl-4 pr-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="px-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Nr.
               </DataTable::Th>
               <DataTable::Th
@@ -131,6 +134,9 @@
           <tbody class="bg-white divide-y divide-gray-200">
             {{#if this.search.isRunning}}
               <tr class="animate-pulse">
+                <td class="py-2 px-2">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
@@ -153,6 +159,9 @@
                 </td>
               </tr>
               <tr class="animate-pulse">
+                <td class="py-2 px-2">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
@@ -177,7 +186,12 @@
             {{else}}
               {{#each this.requests as |row|}}
                 <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
-                  <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                  <td class="py-2 text-center text-xs text-red-500">
+                    {{#if row.isCancelled}}
+                      {{svg-jar "heroicons-sm-ban" class="block m-auto h-5 w-5"}}
+                    {{/if}}
+                  </td>
+                  <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
                     {{format-request-number row.id}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
