@@ -43,7 +43,11 @@ export default class CaseTabsComponent extends Component {
 
   get canCreateNewOffer() {
     return (
-      this.model && this.model.customerId && this.model.requestId && this.model.offerId == null
+      this.model &&
+      this.model.customerId &&
+      this.model.requestId &&
+      !this.model.request.isCancelled &&
+      this.model.offerId == null
     );
   }
 

@@ -3,6 +3,18 @@ import Component from '@glimmer/component';
 const more = -1;
 
 export default class DataTablePaginationComponent extends Component {
+  get isSmall() {
+    return this.args.textSize == 'small';
+  }
+
+  get textSizeClass() {
+    if (this.isSmall) {
+      return 'text-xs';
+    } else {
+      return 'text-sm';
+    }
+  }
+
   get page() {
     return this.args.page || 0;
   }

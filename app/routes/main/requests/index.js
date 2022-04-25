@@ -12,6 +12,7 @@ export default class MainRequestsIndexRoute extends DataTableRoute {
     number: { refreshModel: true },
     visitor: { refreshModel: true },
     hasOffer: { refreshModel: true },
+    isCancelled: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
     cCity: { refreshModel: true },
@@ -29,6 +30,7 @@ export default class MainRequestsIndexRoute extends DataTableRoute {
       filter: {
         number: onlyNumericChars(params.number),
         visitor: params.visitor,
+        isCancelled: params.isCancelled,
         hasOffer: params.hasOffer,
         customer: {
           name: params.cName,

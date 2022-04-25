@@ -120,6 +120,7 @@
   </div>
   {{#if this.requests}}
     <DataTable::Pagination
+      @textSize="small"
       @page={{this.page}}
       @size={{this.size}}
       @total={{this.requests.meta.count}}

@@ -8,9 +8,13 @@
   </div>
 {{else}}
   <div class="space-y-4">
-    {{#if this.offer}}
+    {{#if this.hasOffer}}
       <AlertMessage::Warning
         @message="Er is reeds een offerte gemaakt. Er zijn geen wijzigingen meer mogelijk."
+        class="shadow" />
+    {{else if this.model.isCancelled}}
+      <AlertMessage::Warning
+        @message="De aanvraag is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
         class="shadow" />
     {{/if}}
 
@@ -22,5 +26,13 @@
         @isDisabledEdit={{this.isDisabledEdit}}
         @isEnabledDelete={{this.isEnabledDelete}} />
     </div>
+
+    {{!-- Origin intervention --}}
+    {{#if this.model.origin}}
+      <div class="bg-white shadow rounded-lg overflow-hidden">
+        <Request::InterventionPanel
+          @model={{this.model}} />
+      </div>
+    {{/if}}
   </div>
 {{/if}}

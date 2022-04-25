@@ -33,6 +33,10 @@ export default class IndexController extends Controller {
 
   @action
   navigateToDetail(customer) {
-    this.router.transitionTo('main.customers.edit', customer.id);
+    this.router.transitionTo('main.customers.edit', customer.id, {
+      queryParams: {
+        tab: 'requests',
+      },
+    });
   }
 }

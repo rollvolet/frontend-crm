@@ -46,7 +46,7 @@
               <button type="button"
                 {{on "click" this.openOptionsMenu}}
                 class="bg-white rounded-full flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-200" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                <span class="sr-only">Open options</span>
+                <span class="sr-only">Open menu</span>
                 {{svg-jar "heroicons-md-dots-vertical" class="h-6 w-6"}}
               </button>
             </div>
@@ -62,28 +62,30 @@
                     leaveActiveClass="transition ease-in duration-75"
                     leaveToClass="transform opacity-0 scale-95"}}>
                 <div class="py-1" role="none">
-                  {{#if (and (not this.hasInvoice) this.isLinkedToCustomer)}}
-                    <LinkTo role="menuitem" tabindex="-1"
-                      @route="main.case.intervention.edit.invoice"
-                      @models={{array this.case.current.customerId @model.id}}
-                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                      Factuur opstellen
-                    </LinkTo>
-                  {{/if}}
                   {{#if @model.isCancelled}}
-                    <div role="menuitem" tabindex="-1"
-                      {{on "click" this.uncancelIntervention}}
-                      class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                      Opnieuw openen
-                    </div>
+                    {{#unless this.hasFollowUpRequest}}
+                      <div role="menuitem" tabindex="-1"
+                        {{on "click" this.uncancelIntervention}}
+                        class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
+                        Opnieuw openen
+                      </div>
+                    {{/unless}}
                   {{else}}
-                    {{#if (and (not this.hasInvoice) (not this.hasFollowUpRequest))}}
+                    {{#unless this.hasInvoice}}
+                      {{#if this.isLinkedToCustomer}}
+                        <LinkTo role="menuitem" tabindex="-1"
+                          @route="main.case.intervention.edit.invoice"
+                          @models={{array this.case.current.customerId @model.id}}
+                          class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
+                          Factuur opstellen
+                        </LinkTo>
+                      {{/if}}
                       <div role="menuitem" tabindex="-1"
                         {{on "click" this.cancelIntervention}}
                         class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
                         Afsluiten
                       </div>
-                    {{/if}}
+                    {{/unless}}
                   {{/if}}
                   <div role="menuitem" tabindex="-1"
                     {{on "click" (perform this.createNewIntervention)}}

@@ -29,18 +29,18 @@
         {{did-insert this.autofocus}} />
     </div>
     <div class="space-y-4 sm:col-span-12 md:col-span-10 sm:flex sm:gap-4 sm:space-y-0">
-      <div class="">
+      <div>
         <InputField::FilterFlag
           @label="Reeds gefactureerd"
           @value={{this.filter.hasInvoice}}
           @onChange={{fn this.setFilter "hasInvoice"}} />
       </div>
-      <div class="">
+      <div>
         <InputField::FilterFlag @label="Afgesloten"
           @value={{this.filter.isCancelled}}
           @onChange={{fn this.setFilter "isCancelled"}} />
       </div>
-      <div class="">
+      <div>
         <InputField::FilterFlag @label="Gepland"
           @value={{this.filter.isPlanned}}
           @onChange={{fn this.setFilter "isPlanned"}} />

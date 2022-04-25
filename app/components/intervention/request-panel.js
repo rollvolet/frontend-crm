@@ -29,6 +29,7 @@ export default class InterventionRequestPanelComponent extends Component {
     const employee = yield this.args.model.employee;
     const firstName = employee ? employee.firstName : null;
     const wayOfEntry = this.store.peekAll('way-of-entry').find((e) => e.position == '1');
+
     const request = this.store.createRecord('request', {
       requestDate: new Date(),
       requiresVisit: false,
@@ -45,6 +46,10 @@ export default class InterventionRequestPanelComponent extends Component {
       requestId: request.id,
     };
     yield updateContactAndBuildingRequest(body);
+
+    this.args.model.cancellationDate = new Date();
+    this.args.model.cancellationReason = 'Nieuwe aanvraag gestart';
+    yield this.args.model.save();
 
     this.router.transitionTo('main.requests.edit', request.id, {
       queryParams: { editMode: true },
