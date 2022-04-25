@@ -69,7 +69,6 @@ export default class RequestDetailPanelComponent extends Component {
   *setRequiresVisit(event) {
     const value = event.target.checked;
     this.args.model.requiresVisit = value;
-    this.save.perform();
 
     if (value) {
       try {
@@ -89,20 +88,26 @@ export default class RequestDetailPanelComponent extends Component {
         warn(`Something went wrong while saving calendar event for request ${this.args.model.id}`, {
           id: 'create-failure',
         });
+        this.args.model.visitDate = null;
         this.args.model.requiresVisit = false;
         this.save.perform();
       }
-    } else if (this.calendarEvent) {
-      try {
-        yield this.calendarEvent.destroyRecord();
-        this.calendarEvent = null;
-      } catch (e) {
-        warn(`Something went wrong while destroying calendar event ${this.calendarEvent.id}`, {
-          id: 'destroy-failure',
-        });
-        debug(e);
+    } else {
+      if (this.calendarEvent) {
+        try {
+          yield this.calendarEvent.destroyRecord();
+          this.calendarEvent = null;
+        } catch (e) {
+          warn(`Something went wrong while destroying calendar event ${this.calendarEvent.id}`, {
+            id: 'destroy-failure',
+          });
+          debug(e);
+        }
       }
+      this.args.model.visitDate = null;
     }
+
+    this.save.perform();
   }
 
   @keepLatestTask
@@ -122,6 +127,14 @@ export default class RequestDetailPanelComponent extends Component {
     const { validations } = yield this.calendarEvent.validate();
     if (validations.isValid) {
       yield this.calendarEvent.save();
+      // TODO remove once requests are converted to triplestore and
+      // link with calendar-event can be established
+      const visitDateRequiresUpdate =
+        this.args.model.visitDate?.toISOString() != this.calendarEvent.date?.toISOString();
+      if (visitDateRequiresUpdate) {
+        this.args.model.visitDate = this.calendarEvent.date;
+        yield this.args.model.save();
+      }
     }
   }
 

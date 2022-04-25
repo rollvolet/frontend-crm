@@ -13,6 +13,7 @@ export default class RequestModel extends ValidatedModel {
   @attr comment;
   @attr employee;
   @attr visitor;
+  @attr('date-midnight') visitDate;
   @attr('date-midnight') cancellationDate;
   @attr cancellationReason;
 
