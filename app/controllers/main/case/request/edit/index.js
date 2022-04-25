@@ -8,15 +8,15 @@ export default class IndexController extends Controller {
   @service router;
 
   get isDisabledEdit() {
-    return this.case.current && this.case.current.offer != null;
+    return this.hasOffer || this.model.isCancelled;
   }
 
   get isEnabledDelete() {
-    return this.case.current && this.case.current.offer == null;
+    return this.hasOffer && !this.model.isCancelled;
   }
 
-  get offer() {
-    return this.case.current && this.case.current.offer;
+  get hasOffer() {
+    return this.case.current && this.case.current.offer != null;
   }
 
   @task

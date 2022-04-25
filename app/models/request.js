@@ -14,6 +14,8 @@ export default class RequestModel extends ValidatedModel {
   @attr employee;
   @attr visitor;
   @attr offerExpected;
+  @attr('date-midnight') cancellationDate;
+  @attr cancellationReason;
 
   @belongsTo('customer') customer;
   @belongsTo('contact') contact;
@@ -22,4 +24,8 @@ export default class RequestModel extends ValidatedModel {
   @belongsTo('calendar-event') calendarEvent;
   @belongsTo('offer') offer;
   @belongsTo('intervention') origin;
+
+  get isCancelled() {
+    return this.cancellationDate;
+  }
 }
