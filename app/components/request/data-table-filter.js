@@ -17,6 +17,7 @@ export default class DataFilterComponent extends FilterComponent {
       'bCity',
       'bStreet',
       'hasOffer',
+      'isCancelled',
     ]);
   }
 
@@ -24,6 +25,7 @@ export default class DataFilterComponent extends FilterComponent {
   resetFilters() {
     this.filterKeys.forEach((key) => this.filter.set(key, undefined));
     this.filter.set('hasOffer', -1);
+    this.filter.set('isCancelled', 0);
     this.onChange(this.filter);
   }
 }

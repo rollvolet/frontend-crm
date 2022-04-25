@@ -11,6 +11,7 @@ export default class IndexController extends Controller {
   @tracked size = 25;
   @tracked sort = '-request-date';
   hasOffer = -1;
+  isCancelled = 0;
 
   @action
   applyFilter(filter) {

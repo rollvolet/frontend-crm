@@ -33,6 +33,7 @@ export default class DashboardOutstandingRequestsComponent extends Component {
         filter: {
           visitor: this.args.employee.firstName,
           hasOffer: 0,
+          isCancelled: 0,
           ':gt:request-date': yearAgo.toISOString(),
         },
       });
