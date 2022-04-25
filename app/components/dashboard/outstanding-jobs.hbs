@@ -193,6 +193,7 @@
   </div>
   {{#if this.outstandingJobs}}
     <DataTable::Pagination
+      @textSize="small"
       @page={{this.page}}
       @size={{this.size}}
       @total={{this.outstandingJobs.meta.count}}

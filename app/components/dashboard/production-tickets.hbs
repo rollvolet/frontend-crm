@@ -113,6 +113,7 @@
   </div>
   {{#if this.orders}}
     <DataTable::Pagination
+      @textSize="small"
       @page={{this.page}}
       @size={{this.size}}
       @total={{this.orders.meta.count}}
