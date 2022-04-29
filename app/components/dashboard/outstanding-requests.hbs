@@ -4,12 +4,12 @@
       Te maken offertes laatste jaar
     </h2>
     <LinkTo @route="main.requests.index"
-      class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+      class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
       {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
       <EmberTooltip @text="Ga naar aanvragen" @side="top" />
     </LinkTo>
   </div>
-  <div class="mr-4">
+  <div class="mr-4 flex items-center space-x-2">
     <InputField::Checkbox
       @id="future-requests-checkbox"
       @value={{this.showFutureVisits}}
@@ -20,6 +20,13 @@
       </div>
       </:label>
     </InputField::Checkbox>
+    <button type="button"
+      {{on "click" this.printVisitReport}}
+      disabled={{is-empty this.selectedRequests}}
+      class="text-gray-400 disabled:text-gray-300 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+      {{svg-jar "heroicons-sm-printer" class="h-5 w-5"}}
+      <EmberTooltip @text="Selectie afdrukken" />
+    </button>
   </div>
 </div>
 <div class="flex flex-col mt-2">
@@ -30,6 +37,11 @@
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="sticky top-0">
               <tr>
+                <th class="px-1 py-3 bg-gray-200">
+                  <InputField::Checkbox
+                    @value={{this.isSelectedAll}}
+                    @onChange={{this.toggleSelectionAll}} />
+                </th>
                 <th class="pl-4 pr-2 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   AD
                 </th>
@@ -54,6 +66,9 @@
                     <div class="h-8 w-12 bg-gray-300"></div>
                   </td>
                   <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
                     <div class="h-8 w-16 bg-gray-300"></div>
                   </td>
                   <td class="py-2 px-4">
@@ -67,6 +82,9 @@
                   </td>
                 </tr>
                 <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
                   <td class="py-2 px-4">
                     <div class="h-8 w-12 bg-gray-300"></div>
                   </td>
@@ -86,6 +104,11 @@
               {{else}}
                 {{#each this.requests as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
+                    <td class="px-1 py-2">
+                      <InputField::Checkbox
+                        @value={{includes row this.selectedRequests}}
+                        @onChange={{fn this.toggleSelection row}} />
+                    </td>
                     <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
                       {{#if row.customer}}
                         <LinkTo @route="main.case.request.edit" @models={{array row.customer.id row.id}}
