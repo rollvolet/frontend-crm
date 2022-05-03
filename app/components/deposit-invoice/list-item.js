@@ -23,7 +23,7 @@ export default class DepositInvoiceListItemComponent extends Component {
   }
 
   get vatPercentage() {
-    return this.args.vatRate.rate / 100;
+    return this.args.vatRate && this.args.vatRate.rate / 100;
   }
 
   get baseAmount() {
@@ -32,6 +32,10 @@ export default class DepositInvoiceListItemComponent extends Component {
 
   get baseAmountVat() {
     return this.baseAmount * this.vatPercentage;
+  }
+
+  get grossAmount() {
+    return this.baseAmount + this.baseAmountVat;
   }
 
   get isLimitedUpdateOnly() {

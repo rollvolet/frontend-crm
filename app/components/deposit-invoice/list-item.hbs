@@ -41,8 +41,8 @@
             </p>
           </div>
           <div class="mt-2 flex flex-none items-center text-sm text-gray-500 sm:mt-0">
-            <p class="flex items-center text-sm text-gray-500">
-              <Fmt::Currency @value={{this.baseAmount}} /> + {{@vatRate.rate}}% btw
+            <p class="flex items-center text-sm text-gray-700 font-medium">
+              <Fmt::Currency @value={{this.baseAmount}} /> + {{@vatRate.rate}}% btw = <Fmt::Currency @value={{this.grossAmount}} />
             </p>
           </div>
         </div>
