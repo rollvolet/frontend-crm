@@ -13,14 +13,14 @@
       <div class="flex flex-none space-x-4">
         {{#if this.editMode}}
           {{#if @isEnabledDelete}}
-            <button type="button"h
-              onClick={{@onDelete}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+            <button type="button"
+              {{on "click" @onDelete}}
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-trash" class="h-6 w-6"}}
             </button>
           {{/if}}
           <button type="button"
-            onClick={{this.closeEdit}}
+            {{on "click" this.closeEdit}}
             class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
             {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
             <EmberTooltip @text="Sluiten" />
@@ -28,7 +28,7 @@
         {{else}}
           {{#if this.isLinkedToCustomer}}
             <button type="button"
-              onClick={{this.generateVisitReport}}
+              {{on "click" this.generateVisitReport}}
               class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-document-text" class="h-6 w-6"}}
               <EmberTooltip @text="Bezoekrapport" @side="bottom" />
@@ -36,8 +36,8 @@
           {{/if}}
           {{#unless @isDisabledEdit}}
             <button type="button"
-              onClick={{this.openEdit}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{on "click" this.openEdit}}
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
             </button>
           {{/unless}}
@@ -101,61 +101,70 @@
     {{#if this.editMode}}
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          {{#if this.isLinkedToCustomer}}
-            {{#if this.hasVisitMasteredByAccess}}
-              <Visit::DetailView @model={{@model}} />
+          {{#if (and (not this.loadData.isRunning) this.isLinkedToCustomer)}}
+            {{#if this.calendarEvent.isMasteredByAccess}}
+              <CalendarEvent::DetailView
+                @title="bezoek"
+                @model={{this.calendarEvent}}
+                @onSynchronize={{perform this.saveCalendarEvent}} />
             {{else if @model.requiresVisit}}
-              <Visit::DetailEdit @model={{this.calendarEvent}} @saveTask={{this.saveCalendarEvent}} />
+              <CalendarEvent::DetailEdit
+                @title="bezoek"
+                @model={{this.calendarEvent}}
+                @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
+                @saveTask={{this.saveCalendarEvent}} />
             {{/if}}
           {{/if}}
         </div>
-        <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
-          <div>
-            <InputField::Date
-              @label="Datum"
-              @value={{@model.requestDate}}
-              @onChange={{queue (fn (mut @model.requestDate)) (perform this.save)}} />
-          </div>
-          <div class="col-start-1">
-            <InputField::EmployeeSelect
-              @label="Bediende"
-              @value={{this.employee}}
-              @isAdministrative={{true}}
-              @onSelectionChange={{queue this.setEmployee (perform this.save)}}
-              class="mt-1" />
-          </div>
-          <div>
-            <InputField::WayOfEntrySelect
-              @label="Aanmelding"
-              @value={{@model.wayOfEntry}}
-              @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform this.save)}}
-              class="mt-1" />
-          </div>
-          <div>
-            <InputField::EmployeeSelect
-              @label="Bezoeker"
-              @value={{this.visitor}}
-              @isAdministrative={{true}}
-              @isTechnician={{true}}
-              @onSelectionChange={{queue this.setVisitor (perform this.save)}}
-              class="mt-1" />
-          </div>
-          {{#if this.isLinkedToCustomer}}
-            <div class="relative flex items-end">
-              <div class="flex grow-0 items-center h-5">
-                <Input
-                  id="requires-visit"
-                  @type="checkbox"
-                  @checked={{@model.requiresVisit}}
-                disabled={{this.hasVisitMasteredByAccess}}
-                {{on "input" (perform this.setRequiresVisit)}}
-                class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
-              </div>
-              <div class="ml-3">
-                <label for="requires-visit" class="text-gray-500 text-sm font-medium">Bezoek nodig</label>
-              </div>
+        <div>
+          <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
+            <div>
+              <InputField::Date
+                @label="Datum"
+                @value={{@model.requestDate}}
+                @onChange={{queue (fn (mut @model.requestDate)) (perform this.save)}} />
             </div>
-          {{/if}}
+            <div class="col-start-1">
+              <InputField::EmployeeSelect
+                @label="Bediende"
+                @value={{this.employee}}
+                @isAdministrative={{true}}
+                @onSelectionChange={{queue this.setEmployee (perform this.save)}}
+                class="mt-1" />
+            </div>
+            <div>
+              <InputField::WayOfEntrySelect
+                @label="Aanmelding"
+                @value={{@model.wayOfEntry}}
+                @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform this.save)}}
+                class="mt-1" />
+            </div>
+            <div>
+              <InputField::EmployeeSelect
+                @label="Bezoeker"
+                @value={{this.visitor}}
+                @isAdministrative={{true}}
+                @isTechnician={{true}}
+                @onSelectionChange={{queue this.setVisitor (perform this.save)}}
+                class="mt-1" />
+            </div>
+            {{#if this.isLinkedToCustomer}}
+              <div class="relative flex items-end">
+                <div class="flex grow-0 items-center h-5">
+                  <Input
+                    id="requires-visit"
+                    @type="checkbox"
+                    @checked={{@model.requiresVisit}}
+                    disabled={{this.calendarEvent.isMasteredByAccess}}
+                    {{on "input" (perform this.setRequiresVisit)}}
+                    class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
+                </div>
+                <div class="ml-3">
+                  <label for="requires-visit" class="text-gray-500 text-sm font-medium">Bezoek nodig</label>
+                </div>
+              </div>
+            {{/if}}
+          </div>
         </div>
         <div class="sm:col-span-2 sm:order-3">
           <label for="comment" class="block text-sm font-medium text-gray-700">
@@ -164,7 +173,7 @@
           <Textarea
             id="comment"
             @value={{@model.comment}}
-            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             rows="5"
             {{on "focusout" (perform this.save)}} />
         </div>
@@ -172,7 +181,12 @@
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2 space-y-6">
-          <Visit::DetailView @model={{@model}} />
+          {{#unless this.loadData.isRunning}}
+            <CalendarEvent::DetailView
+              @title="bezoek"
+              @model={{this.calendarEvent}}
+              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+          {{/unless}}
           <div class="space-y-2">
             {{#if @model.cancellationDate}}
               <Util::DetailItem @label="Afgesloten">

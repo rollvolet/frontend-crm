@@ -13,6 +13,8 @@ export default class InterventionModel extends ValidatedModel {
   };
 
   @attr('date-midnight') date;
+  // TODO remove once intervention is converted to triplestore
+  @attr('date-midnight') planningDate;
   @attr description;
   @attr comment;
   @attr('number') nbOfPersons;
@@ -26,11 +28,16 @@ export default class InterventionModel extends ValidatedModel {
   @belongsTo('invoice') invoice;
   @belongsTo('order') origin;
   @belongsTo('request') followUpRequest;
-  @belongsTo('planning-event') planningEvent;
+  // TODO enable once intervention is converted to triplestore
+  // @belongsTo('calendar-event') calendarEvent;
   @belongsTo('employee', { inverse: null }) employee;
   @hasMany('employee', { inverse: null }) technicians;
 
   get isCancelled() {
     return this.cancellationDate;
+  }
+
+  get uri() {
+    return `http://data.rollvolet.be/interventions/${this.id}`;
   }
 }

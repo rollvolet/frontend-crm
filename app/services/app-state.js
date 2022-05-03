@@ -1,6 +1,6 @@
 import Service, { inject as service } from '@ember/service';
 import fetch from 'fetch';
-import config from '../config/environment';
+import config from 'rollvolet-crm/config/environment';
 import { tracked } from '@glimmer/tracking';
 
 export default class AppStateService extends Service {

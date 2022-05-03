@@ -1,131 +1,192 @@
-<div class="bg-white overflow-hidden shadow sm:rounded-lg">
-  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-      <div class="border-b border-gray-200 max-h-128 overflow-y-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="sticky top-0">
-            <tr>
-              <th class="pl-4 pr-2 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                AD
-              </th>
-              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Datum
-              </th>
-              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Naam
-              </th>
-              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Adres
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            {{#if this.loadData.isRunning}}
-              <tr class="animate-pulse">
-                <td class="py-2 px-4">
-                  <div class="h-8 w-12 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-16 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-28 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-36 bg-gray-300"></div>
-                </td>
+<div class="flex items-center justify-between">
+  <div class="flex items-center space-x-2">
+    <h2 class="text-lg leading-6 font-medium text-gray-900">
+      Te maken offertes laatste jaar
+    </h2>
+    <LinkTo @route="main.requests.index"
+      class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+      {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
+      <EmberTooltip @text="Ga naar aanvragen" @side="top" />
+    </LinkTo>
+  </div>
+  <div class="mr-4 flex items-center space-x-2">
+    <InputField::Checkbox
+      @id="future-requests-checkbox"
+      @value={{this.showFutureVisits}}
+      @onChange={{this.toggleShowFutureVisits}}>
+      <:label as |fieldId|>
+      <div class="ml-1 text-xs">
+        <label for={{fieldId}} class="text-gray-700">Toon toekomstige bezoeken</label>
+      </div>
+      </:label>
+    </InputField::Checkbox>
+    <button type="button"
+      {{on "click" this.printVisitReport}}
+      disabled={{is-empty this.selectedRequests}}
+      class="text-gray-400 disabled:text-gray-300 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+      {{svg-jar "heroicons-sm-printer" class="h-5 w-5"}}
+      <EmberTooltip @text="Selectie afdrukken" />
+    </button>
+  </div>
+</div>
+<div class="flex flex-col mt-2">
+  <div class="bg-white overflow-hidden shadow sm:rounded-lg">
+    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="border-b border-gray-200 max-h-128 overflow-y-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="sticky top-0">
+              <tr>
+                <th class="px-1 py-3 bg-gray-200">
+                  <InputField::Checkbox
+                    @value={{this.isSelectedAll}}
+                    @onChange={{this.toggleSelectionAll}} />
+                </th>
+                <th class="pl-4 pr-2 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  AD
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Datum
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Bezoek
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Naam
+                </th>
+                <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Adres
+                </th>
               </tr>
-              <tr class="animate-pulse">
-                <td class="py-2 px-4">
-                  <div class="h-8 w-12 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-16 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-36 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-48 bg-gray-300"></div>
-                </td>
-              </tr>
-            {{else}}
-              {{#each this.requests as |row|}}
-                <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
-                  <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
-                    {{#if row.customer}}
-                      <LinkTo @route="main.case.request.edit" @models={{array row.customer.id row.id}}
-                        class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                        AD{{format-request-number row.id}}
-                      </LinkTo>
-                    {{else}}
-                      <LinkTo @route="main.requests.edit" @model={{row.id}}
-                        class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                        AD{{format-request-number row.id}}
-                      </LinkTo>
-                    {{/if}}
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {{#if this.loadData.isRunning}}
+                <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
                   </td>
-                  <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-900">
-                    <Fmt::Date @value={{row.requestDate}} />
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
                   </td>
-                  <td class="px-3 py-2 text-xs font-medium text-gray-900">
-                    <div class="flex">
-                      {{#if row.building}}
-                        {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
-                        <div class="space-y-1">
-                          {{#if row.building.printName}}
-                            <div>
-                              {{row.building.printName}}
-                            </div>
-                          {{else}}
-                            <div class="text-gray-400 italic font-normal">
-                              Naamloos
-                            </div>
-                          {{/if}}
-                          <div class="text-gray-400 text-xs"><Fmt::CustomerName @model={{row.customer}} /></div>
-                        </div>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-28 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-36 bg-gray-300"></div>
+                  </td>
+                </tr>
+                <tr class="animate-pulse">
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-16 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-36 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-48 bg-gray-300"></div>
+                  </td>
+                </tr>
+              {{else}}
+                {{#each this.requests as |row|}}
+                  <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
+                    <td class="px-1 py-2">
+                      <InputField::Checkbox
+                        @value={{includes row this.selectedRequests}}
+                        @onChange={{fn this.toggleSelection row}} />
+                    </td>
+                    <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
+                      {{#if row.customer}}
+                        <LinkTo @route="main.case.request.edit" @models={{array row.customer.id row.id}}
+                          class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                          AD{{format-request-number row.id}}
+                        </LinkTo>
                       {{else}}
-                        {{#if row.customer}}
-                          {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
-                          <Fmt::CustomerName @model={{row.customer}} />
-                        {{else}}
-                          {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
-                          <span class="text-gray-400 italic">Geen klant gekoppeld</span>
-                        {{/if}}
+                        <LinkTo @route="main.requests.edit" @model={{row.id}}
+                          class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                          AD{{format-request-number row.id}}
+                        </LinkTo>
                       {{/if}}
-                    </div>
-                  </td>
-                  <td class="px-3 py-2 text-xs text-gray-500">
-                    {{#if row.building}}
-                      {{row.building.address1}}<br>
-                      {{row.building.postalCode}} {{row.building.city}}
-                    {{else}}
-                      {{row.customer.address1}}<br>
-                      {{row.customer.postalCode}} {{row.customer.city}}
-                    {{/if}}
-                  </td>
-                </tr>
-            {{else}}
-                <tr>
-                  <td colspan="4" class="px-6 py-4 text-center text-xs text-gray-500">
-                    Geen openstaande aanvragen gevonden.
-                  </td>
-                </tr>
-              {{/each}}
-            {{/if}}
-          </tbody>
-        </table>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-900">
+                      <Fmt::Date @value={{row.requestDate}} />
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-900">
+                      <Fmt::Date @value={{row.visitDate}} />
+                    </td>
+                    <td class="px-3 py-2 text-xs font-medium text-gray-900">
+                      <div class="flex">
+                        {{#if row.building}}
+                          {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                          <div class="space-y-1">
+                            {{#if row.building.printName}}
+                              <div>
+                                {{row.building.printName}}
+                              </div>
+                            {{else}}
+                              <div class="text-gray-400 italic font-normal">
+                                Naamloos
+                              </div>
+                            {{/if}}
+                            <div class="text-gray-400 text-xs"><Fmt::CustomerName @model={{row.customer}} /></div>
+                          </div>
+                        {{else}}
+                          {{#if row.customer}}
+                            {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                            <Fmt::CustomerName @model={{row.customer}} />
+                          {{else}}
+                            {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
+                            <span class="text-gray-400 italic">Geen klant gekoppeld</span>
+                          {{/if}}
+                        {{/if}}
+                      </div>
+                    </td>
+                    <td class="px-3 py-2 text-xs text-gray-500">
+                      {{#if row.building}}
+                        {{row.building.address1}}<br>
+                        {{row.building.postalCode}} {{row.building.city}}
+                      {{else}}
+                        {{row.customer.address1}}<br>
+                        {{row.customer.postalCode}} {{row.customer.city}}
+                      {{/if}}
+                    </td>
+                  </tr>
+              {{else}}
+                  <tr>
+                    <td colspan="4" class="px-6 py-4 text-center text-xs text-gray-500">
+                      Geen openstaande aanvragen gevonden.
+                    </td>
+                  </tr>
+                {{/each}}
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+    {{#if this.requests}}
+      <DataTable::Pagination
+        @textSize="small"
+        @page={{this.page}}
+        @size={{this.size}}
+        @total={{this.requests.meta.count}}
+        @onPrevious={{this.previousPage}}
+        @onNext={{this.nextPage}}
+        @onSelectPage={{this.selectPage}} />
+    {{/if}}
   </div>
-  {{#if this.requests}}
-    <DataTable::Pagination
-      @textSize="small"
-      @page={{this.page}}
-      @size={{this.size}}
-      @total={{this.requests.meta.count}}
-      @onPrevious={{this.previousPage}}
-      @onNext={{this.nextPage}}
-      @onSelectPage={{this.selectPage}} />
-  {{/if}}
 </div>

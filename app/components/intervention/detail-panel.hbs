@@ -105,55 +105,59 @@
   <div class="p-6">
     {{#if this.editMode}}
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
-          <div>
-            <InputField::Date
-              @label="Datum"
-              @value={{@model.date}}
-              @onChange={{queue (fn (mut @model.date)) (perform this.save)}}
-              class="mt-1" />
-          </div>
-          <div>
-            <InputField::EmployeeSelect
-              @label="Bediende"
-              @value={{@model.employee}}
-              @isAdministrative={{true}}
-              @onSelectionChange={{queue (fn (mut @model.employee)) (perform this.save)}}
-              class="mt-1" />
-          </div>
-          <div>
-            <InputField::WayOfEntrySelect
-              @label="Aanmelding"
-              @value={{@model.wayOfEntry}}
-              @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform this.save)}}
-              class="mt-1" />
-          </div>
-          <div>
-            <InputField::DecimalInput
-              @label="Aantal personen"
-              @value={{@model.nbOfPersons}}
-              @errors={{@model.validations.attrs.nbOfPersons.messages}}
-              @onChange={{queue (fn (mut @model.nbOfPersons)) (perform this.save)}}
-              class="mt-1 block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
-          </div>
-          <div class="lg:col-span-2">
-            <InputField::EmployeeSelect
-              @label="Techniekers"
-              @value={{@model.technicians}}
-              @multiple={{true}}
-              @isTechnician={{true}}
-              @isAdministrative={{true}}
-              @sort={{"type:desc"}}
-              @onSelectionChange={{queue this.setTechnicians (perform this.save)}}
-              class="mt-1" />
+        <div>
+          <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
+            <div>
+              <InputField::Date
+                @label="Datum"
+                @value={{@model.date}}
+                @onChange={{queue (fn (mut @model.date)) (perform this.save)}}
+                class="mt-1" />
+            </div>
+            <div>
+              <InputField::EmployeeSelect
+                @label="Bediende"
+                @value={{@model.employee}}
+                @isAdministrative={{true}}
+                @onSelectionChange={{queue (fn (mut @model.employee)) (perform this.save)}}
+                class="mt-1" />
+            </div>
+            <div>
+              <InputField::WayOfEntrySelect
+                @label="Aanmelding"
+                @value={{@model.wayOfEntry}}
+                @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform this.save)}}
+                class="mt-1" />
+            </div>
+            <div>
+              <InputField::DecimalInput
+                @label="Aantal personen"
+                @value={{@model.nbOfPersons}}
+                @errors={{@model.validations.attrs.nbOfPersons.messages}}
+                @onChange={{queue (fn (mut @model.nbOfPersons)) (perform this.save)}}
+                class="mt-1 block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+            </div>
+            <div class="lg:col-span-2">
+              <InputField::EmployeeSelect
+                @label="Techniekers"
+                @value={{@model.technicians}}
+                @multiple={{true}}
+                @isTechnician={{true}}
+                @isAdministrative={{true}}
+                @sort={{"type:desc"}}
+                @onSelectionChange={{queue this.setTechnicians (perform this.save) (perform this.synchronizeCalendarEvent)}}
+                class="mt-1" />
+            </div>
           </div>
         </div>
         <div class="space-y-6">
           {{#unless this.loadData.isRunning}}
-            <PlanningEvent::DetailEdit
-              @model={{this.planningEvent}}
-              @saveTask={{this.savePlanningEvent}}
-              @onDelete={{perform this.deletePlanningEvent}} />
+            <CalendarEvent::DetailEdit
+              @title="planning"
+              @model={{this.calendarEvent}}
+              @onCalendarPeriodChange={{perform this.updateCalendarEventSubject}}
+              @saveTask={{this.saveCalendarEvent}}
+              @onDelete={{perform this.deleteCalendarEvent}} />
           {{/unless}}
         </div>
         <div class="sm:col-span-2">
@@ -206,7 +210,10 @@
         </div>
         <div class="space-y-6">
           {{#unless this.loadData.isRunning}}
-            <PlanningEvent::DetailView @model={{this.planningEvent}} />
+            <CalendarEvent::DetailView
+              @title="planning"
+              @model={{this.calendarEvent}}
+              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
           {{/unless}}
           <div class="space-y-2">
             {{#if @model.cancellationDate}}

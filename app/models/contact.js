@@ -1,4 +1,5 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
+import { isPresent } from '@ember/utils';
 import ValidatedModel, { Validator } from './validated-model';
 
 export default class ContactModel extends ValidatedModel {
@@ -77,6 +78,12 @@ export default class ContactModel extends ValidatedModel {
       address += this.address3 + ' ';
     }
     return address.trim();
+  }
+
+  get fullAddress() {
+    return [this.address, `${this.postalCode || ''} ${this.city || ''}`]
+      .filter((line) => isPresent(line))
+      .join(', ');
   }
 
   get uri() {

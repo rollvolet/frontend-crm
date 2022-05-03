@@ -33,9 +33,8 @@ export default class OrderModel extends ValidatedModel {
   @attr comment;
   @attr('boolean') canceled;
   @attr cancellationReason;
+  // TODO remove once order is converted to triplestore
   @attr('date-midnight') planningDate;
-  @attr planningId;
-  @attr planningMsObjectId;
 
   @belongsTo('offer') offer;
   @belongsTo('invoice') invoice;
@@ -43,6 +42,8 @@ export default class OrderModel extends ValidatedModel {
   @belongsTo('contact') contact;
   @belongsTo('building') building;
   @belongsTo('vat-rate') vatRate;
+  // TODO enable once order is converted to triplestore
+  // @belongsTo('calendar-event') calendarEvent;
   @hasMany('deposit') deposits;
   @hasMany('deposit-invoices') depositInvoices;
   // @hasMany('invoiceline') invoicelines;
@@ -54,21 +55,17 @@ export default class OrderModel extends ValidatedModel {
   }
 
   get execution() {
-    if (this.mustBeInstalled) return 'installation';
-    else if (this.mustBeDelivered) return 'delivery';
-    else return 'pickup';
-  }
-
-  get isPlanned() {
-    return this.planningMsObjectId != null;
+    if (this.mustBeInstalled) {
+      return 'installation';
+    } else if (this.mustBeDelivered) {
+      return 'delivery';
+    } else {
+      return 'pickup';
+    }
   }
 
   get isMasteredByAccess() {
     return this.amount != null;
-  }
-
-  get isPlanningMasteredByAccess() {
-    return this.planningId;
   }
 
   get uri() {

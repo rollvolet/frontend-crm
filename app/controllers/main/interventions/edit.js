@@ -21,11 +21,13 @@ export default class MainInterventionsEditController extends Controller {
 
   @task
   *delete() {
-    const planningEvent = yield this.model.planningEvent;
+    // TODO fetch via relation once intervention is converted to triplestore
+    const calendarEvent = yield this.store.queryOne('calendar-event', {
+      'filter[:exact:intervention]': this.model.uri,
+    });
     try {
-      if (planningEvent && planningEvent.isPlanned) {
-        planningEvent.date = null;
-        yield planningEvent.save();
+      if (calendarEvent) {
+        yield calendarEvent.destroyRecord();
       }
       yield this.model.destroyRecord();
       this.router.transitionTo('main.interventions.index');

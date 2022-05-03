@@ -4,6 +4,8 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { debug, warn } from '@ember/debug';
 import { task, keepLatestTask } from 'ember-concurrency';
+import { setCalendarEventProperties } from '../../utils/calendar-helpers';
+import CalendarPeriod from '../../classes/calendar-period';
 
 export default class RequestDetailPanelComponent extends Component {
   @service case;
@@ -30,11 +32,10 @@ export default class RequestDetailPanelComponent extends Component {
     if (model.visitor)
       this.visitor = this.store.peekAll('employee').find((e) => e.firstName == model.visitor);
 
-    this.calendarEvent = yield model.calendarEvent;
-  }
-
-  get hasVisitMasteredByAccess() {
-    return this.calendarEvent && this.calendarEvent.isMasteredByAccess;
+    // TODO fetch via relation once request is converted to triplestore
+    this.calendarEvent = yield this.store.queryOne('calendar-event', {
+      'filter[:exact:request]': this.args.model.uri,
+    });
   }
 
   get isLinkedToCustomer() {
@@ -54,13 +55,13 @@ export default class RequestDetailPanelComponent extends Component {
   *save() {
     const { validations } = yield this.args.model.validate();
     if (validations.isValid) {
-      if (this.args.model.changedAttributes()['comment']) {
-        yield this.args.model.save();
-        // reload after save so calendar event has been updated
-        this.args.model.belongsTo('calendarEvent').reload();
-      } else {
-        yield this.args.model.save();
+      if (this.calendarEvent) {
+        const changedAttributes = this.args.model.changedAttributes();
+        if (changedAttributes['visitor'] || changedAttributes['comment']) {
+          yield this.synchronizeCalendarEvent.perform();
+        }
       }
+      yield this.args.model.save();
     }
   }
 
@@ -68,41 +69,84 @@ export default class RequestDetailPanelComponent extends Component {
   *setRequiresVisit(event) {
     const value = event.target.checked;
     this.args.model.requiresVisit = value;
-    this.save.perform();
 
     if (value) {
       try {
         this.calendarEvent = this.store.createRecord('calendar-event', {
+          request: this.args.model.uri,
+          date: new Date(),
+        });
+        yield setCalendarEventProperties(this.calendarEvent, {
           request: this.args.model,
-          visitDate: new Date(),
-          period: 'GD',
+          customer: this.case.current.customer,
+          building: this.case.current.building,
+          visitor: this.case.visitor,
+          calendarPeriod: new CalendarPeriod('GD'),
         });
         yield this.saveCalendarEvent.perform();
       } catch (e) {
         warn(`Something went wrong while saving calendar event for request ${this.args.model.id}`, {
           id: 'create-failure',
         });
+        this.args.model.visitDate = null;
         this.args.model.requiresVisit = false;
         this.save.perform();
       }
-    } else if (this.calendarEvent) {
-      try {
-        yield this.calendarEvent.destroyRecord();
-        this.args.model.calendarEvent = null;
-        this.calendarEvent = null;
-      } catch (e) {
-        warn(`Something went wrong while destroying calendar event ${this.calendarEvent.id}`, {
-          id: 'destroy-failure',
-        });
-        debug(e);
+    } else {
+      if (this.calendarEvent) {
+        try {
+          yield this.calendarEvent.destroyRecord();
+          this.calendarEvent = null;
+        } catch (e) {
+          warn(`Something went wrong while destroying calendar event ${this.calendarEvent.id}`, {
+            id: 'destroy-failure',
+          });
+          debug(e);
+        }
+      }
+      this.args.model.visitDate = null;
+    }
+
+    this.save.perform();
+  }
+
+  @keepLatestTask
+  *updateCalendarPeriod(calendarPeriod) {
+    yield setCalendarEventProperties(this.calendarEvent, {
+      request: this.args.model,
+      customer: this.case.current.customer,
+      building: this.case.current.building,
+      visitor: this.case.visitor,
+      calendarPeriod,
+    });
+    yield this.saveCalendarEvent.perform();
+  }
+
+  @keepLatestTask
+  *saveCalendarEvent() {
+    const { validations } = yield this.calendarEvent.validate();
+    if (validations.isValid) {
+      yield this.calendarEvent.save();
+      // TODO remove once requests are converted to triplestore and
+      // link with calendar-event can be established
+      const visitDateRequiresUpdate =
+        this.args.model.visitDate?.toISOString() != this.calendarEvent.date?.toISOString();
+      if (visitDateRequiresUpdate) {
+        this.args.model.visitDate = this.calendarEvent.date;
+        yield this.args.model.save();
       }
     }
   }
 
-  @task
-  *saveCalendarEvent() {
-    const { validations } = yield this.calendarEvent.validate();
-    if (validations.isValid) yield this.calendarEvent.save();
+  @keepLatestTask
+  *synchronizeCalendarEvent() {
+    yield setCalendarEventProperties(this.calendarEvent, {
+      request: this.args.model,
+      customer: this.case.current.customer,
+      building: this.case.current.building,
+      visitor: this.case.visitor,
+    });
+    yield this.saveCalendarEvent.perform();
   }
 
   @action

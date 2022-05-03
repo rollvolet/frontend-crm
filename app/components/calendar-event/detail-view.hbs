@@ -1,11 +1,11 @@
 <div class="p-4 bg-gray-100 rounded-lg
-  {{if @model.isNotAvailableInCalendar "relative border-2 border-dashed border-red-500" }}">
-  {{#if @model.isNotAvailableInCalendar}}
+  {{if this.hasErrorInCalendar "relative border-2 border-dashed border-red-500" }}">
+  {{#if this.hasErrorInCalendar}}
     <div class="absolute -bottom-3 -right-3 rounded shadow px-2 py-1 bg-red-600 text-white text-sm">
-      Niet gevonden in de agenda
+      {{this.errorMessage}}
     </div>
   {{/if}}
-  {{#if @model.date}}
+  {{#if @model}}
     <div class="space-y-3">
       <div class="flex justify-between items-center">
         <div class="flex flex-row items-center">
@@ -13,15 +13,19 @@
             {{svg-jar "heroicons-md-calendar" class="h-5 w-5 text-gray-500"}}
           </div>
           <div class="ml-3 text-lg font-semibold text-gray-600">
-            Planning
+            {{capitalize @title}}
           </div>
         </div>
         <div>
           {{#unless @model.isMasteredByAccess}}
             <button type="button"
-              onClick={{this.forceUpdate}}
-                class="text-gray-500 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-              {{svg-jar "heroicons-md-refresh" class="h-5 w-5"}}
+              {{on "click" (perform this.synchronize)}}
+              class="text-gray-500 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+              {{#if this.synchronize.isRunning}}
+                {{svg-jar "heroicons-md-refresh" class="animate-spin text-blue-500 h-5 w-5"}}
+              {{else}}
+                {{svg-jar "heroicons-md-refresh" class="h-5 w-5"}}
+              {{/if}}
               <EmberTooltip @text="Stuur wijzigingen naar agenda" @side="bottom" />
             </button>
           {{/unless}}
@@ -32,13 +36,14 @@
           <Fmt::Date @value={{@model.date}} />
         </Util::DetailItem>
         <Util::DetailItem @label="Agenda">
-          {{#if @model.isNotAvailableInCalendar}}
-            Niet gevonden
-          {{else}}
-            {{@model.subject}}
-          {{/if}}
+          {{@model.subject}}
         </Util::DetailItem>
       </dl>
+      {{#if @model.isMasteredByAccess}}
+        <div class="text-xs text-gray-400 italic text-right">
+          Beheerd door Access
+        </div>
+      {{/if}}
     </div>
   {{else}}
     <div class="space-y-3">
@@ -48,12 +53,12 @@
             {{svg-jar "heroicons-md-calendar" class="h-5 w-5 text-gray-500"}}
           </div>
           <div class="ml-3 text-lg font-semibold text-gray-600">
-            Planning
+            {{capitalize @title}}
           </div>
         </div>
       </div>
       <div class="pl-8 italic text-sm text-gray-400">
-        Nog niet gepland
+        Nog niets gepland in agenda.
       </div>
     </div>
   {{/if}}

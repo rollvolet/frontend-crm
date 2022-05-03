@@ -94,6 +94,11 @@ export default class DocumentGenerationService extends Service {
 
   // Document downloads
 
+  downloadVisitSummary(requestIds) {
+    const queryParams = requestIds.map((id) => `ids=${id}`).join('&');
+    this._openInNewTab(`/api/files/visit-summary?${queryParams}`);
+  }
+
   downloadVisitReport(request) {
     this._openInNewTab(`/api/files/requests/${request.get('id')}`);
   }

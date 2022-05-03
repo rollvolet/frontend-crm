@@ -1,5 +1,6 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
 import { getOwner } from '@ember/application';
+import { isPresent } from '@ember/utils';
 import ValidatedModel, { Validator } from './validated-model';
 import UniqueVatNumberValidator from '../validators/unique-vat-number';
 
@@ -90,6 +91,26 @@ export default class CustomerModel extends ValidatedModel {
   @hasMany('deposit-invoice') depositInvoices;
   @hasMany('invoice') invoices;
   @hasMany('tag') tags;
+
+  get address() {
+    let address = '';
+    if (this.address1) {
+      address += this.address1 + ' ';
+    }
+    if (this.address2) {
+      address += this.address2 + ' ';
+    }
+    if (this.address3) {
+      address += this.address3 + ' ';
+    }
+    return address.trim();
+  }
+
+  get fullAddress() {
+    return [this.address, `${this.postalCode || ''} ${this.city || ''}`]
+      .filter((line) => isPresent(line))
+      .join(', ');
+  }
 
   get uri() {
     return `http://data.rollvolet.be/customers/${this.dataId}`;

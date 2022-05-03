@@ -2,6 +2,7 @@ import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import Ember from 'ember';
 import { debug } from '@ember/debug';
+import ENV from 'rollvolet-crm/config/environment';
 
 export default class ApplicationController extends Controller {
   @service appState;
@@ -9,9 +10,11 @@ export default class ApplicationController extends Controller {
 
   constructor() {
     super(...arguments);
-    Ember.onerror = (error) => {
-      this.handleApplicationError(error);
-    };
+    if (ENV.environment != 'development') {
+      Ember.onerror = (error) => {
+        this.handleApplicationError(error);
+      };
+    }
   }
 
   handleApplicationError(error) {

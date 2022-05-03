@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
 
-export default class IndexController extends Controller {
+export default class MainCaseRequestEditIndexController extends Controller {
   @service case;
   @service router;
 
@@ -23,7 +23,10 @@ export default class IndexController extends Controller {
   *delete() {
     const customer = this.case.current.customer;
     try {
-      const calendarEvent = yield this.model.calendarEvent;
+      // TODO fetch via relation once intervention is converted to triplestore
+      const calendarEvent = yield this.store.queryOne('calendar-event', {
+        'filter[:exact:request]': this.model.uri,
+      });
       if (calendarEvent) {
         yield calendarEvent.destroyRecord();
       }

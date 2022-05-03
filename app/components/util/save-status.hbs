@@ -1,17 +1,18 @@
 <div class="inline-block" ...attributes>
-  {{#if (or @task.isRunning @model.isValidating)}}
-    {{svg-jar "heroicons-md-refresh" class="h-5 w-5 text-blue-500"}}
+  {{#if (or @task.isRunning @model.isValidating @isSaving)}}
+    {{svg-jar "heroicons-md-refresh" class="animate-spin h-5 w-5 text-blue-500"}}
     <EmberTooltip @text="Aan het opslaan" />
+  {{else if @isDeleting}}
+    {{svg-jar "heroicons-md-refresh" class="animate-spin h-5 w-5 text-blue-500"}}
+    <EmberTooltip @text="Aan het verwijderen" />
+  {{else if (or @isInvalid @model.validations.isInvalid)}}
+    {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-400"}}
+    <EmberTooltip @text="Ongeldig" />
+  {{else if (or @isError @model.isError @task.last.isError)}}
+    {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-400"}}
+    <EmberTooltip @text="Fout bij het opslaan" />
   {{else}}
-    {{#if (or @isInvalid @model.validations.isInvalid)}}
-      {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-400"}}
-      <EmberTooltip @text="Ongeldig" />
-    {{else if (or @isError @model.isError @task.last.isError)}}
-      {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-400"}}
-      <EmberTooltip @text="Fout bij het opslaan" />
-    {{else}}
-      {{svg-jar "heroicons-md-check-circle" class="h-5 w-5 text-green-500"}}
-      <EmberTooltip @text="Opgeslagen" />
-    {{/if}}
+    {{svg-jar "heroicons-md-check-circle" class="h-5 w-5 text-green-500"}}
+    <EmberTooltip @text="Opgeslagen" />
   {{/if}}
 </div>

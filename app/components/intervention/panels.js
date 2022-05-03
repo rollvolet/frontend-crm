@@ -22,11 +22,13 @@ export default class InterventionPanelsComponent extends Component {
   @task
   *delete() {
     const customer = this.case.current.customer;
-    const planningEvent = yield this.args.model.planningEvent;
+    // TODO fetch via relation once intervention is converted to triplestore
+    const calendarEvent = yield this.store.queryOne('calendar-event', {
+      'filter[:exact:intervention]': this.model.uri,
+    });
     try {
-      if (planningEvent && planningEvent.isPlanned) {
-        planningEvent.date = null;
-        yield planningEvent.save();
+      if (calendarEvent) {
+        yield calendarEvent.destroyRecord();
       }
       yield this.args.model.destroyRecord();
     } catch (e) {

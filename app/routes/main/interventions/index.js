@@ -26,7 +26,7 @@ export default class MainInterventionsIndexRoute extends DataTableRoute {
 
   mergeQueryOptions(params) {
     return {
-      include: 'customer,customer.honorific-prefix,building,planning-event',
+      include: 'customer,customer.honorific-prefix,building',
       filter: {
         number: onlyNumericChars(params.number),
         isCancelled: params.isCancelled,

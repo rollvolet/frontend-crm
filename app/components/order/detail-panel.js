@@ -4,10 +4,13 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { debug } from '@ember/debug';
 import { guidFor } from '@ember/object/internals';
-import { task } from 'ember-concurrency';
+import { keepLatestTask, task } from 'ember-concurrency';
+import { setCalendarEventProperties } from '../../utils/calendar-helpers';
+import CalendarPeriod from '../../classes/calendar-period';
 
 export default class OrderDetailPanelComponent extends Component {
   @service case;
+  @service store;
 
   executionOptions = [
     { label: 'te leveren', value: 'delivery', id: `delivery-${guidFor(this)}` },
@@ -17,6 +20,20 @@ export default class OrderDetailPanelComponent extends Component {
 
   @tracked editMode = false;
   @tracked isOpenCancellationModal = false;
+  @tracked calendarEvent;
+
+  constructor() {
+    super(...arguments);
+    this.loadData.perform();
+  }
+
+  @task
+  *loadData() {
+    // TODO fetch via relation once order is converted to triplestore
+    this.calendarEvent = yield this.store.queryOne('calendar-event', {
+      'filter[:exact:order]': this.args.model.uri,
+    });
+  }
 
   get request() {
     return this.case.current && this.case.current.request;
@@ -55,8 +72,16 @@ export default class OrderDetailPanelComponent extends Component {
           requiresOfferReload = true;
         }
       }
-
       yield this.args.model.save();
+
+      if (
+        changedAttributes['scheduledNbOfPersons'] ||
+        changedAttributes['scheduledNbOfHours'] ||
+        changedAttributes['comment']
+      ) {
+        // for updates on technicians, synchronizeCalendarEvent is called from template
+        yield this.synchronizeCalendarEvent.perform();
+      }
 
       if (requiresOfferReload) {
         yield this.args.model.belongsTo('offer').reload();
@@ -69,12 +94,75 @@ export default class OrderDetailPanelComponent extends Component {
     }
   }
 
-  @task
-  *planEvent() {
-    const changedAttributes = this.args.model.changedAttributes();
-    if (changedAttributes['planningDate']) {
-      yield this.args.model.save();
+  @keepLatestTask
+  *updateCalendarEventSubject(calendarPeriod) {
+    yield setCalendarEventProperties(this.calendarEvent, {
+      order: this.args.model,
+      customer: this.case.current.customer,
+      building: this.case.current.building,
+      visitor: this.case.visitor,
+      calendarPeriod,
+    });
+    yield this.saveCalendarEvent.perform();
+  }
+
+  @keepLatestTask
+  *synchronizeCalendarEvent() {
+    yield setCalendarEventProperties(this.calendarEvent, {
+      order: this.args.model,
+      customer: this.case.current.customer,
+      building: this.case.current.building,
+      visitor: this.case.visitor,
+    });
+    if (!this.calendarEvent.isNew) {
+      // only save if it has already been saved before (by selecting a date/period)
+      yield this.saveCalendarEvent.perform();
     }
+  }
+
+  @keepLatestTask
+  *saveCalendarEvent() {
+    const { validations } = yield this.calendarEvent.validate();
+    if (validations.isValid) {
+      yield this.calendarEvent.save();
+      // TODO remove once orders are converted to triplestore and
+      // link with calendar-event can be established
+      const planningDateRequiresUpdate =
+        this.args.model.planningDate?.toISOString() != this.calendarEvent.date?.toISOString();
+      if (planningDateRequiresUpdate) {
+        this.args.model.planningDate = this.calendarEvent.date;
+        yield this.args.model.save();
+      }
+    }
+  }
+
+  async ensureCalendarEvent() {
+    if (!this.calendarEvent) {
+      this.calendarEvent = this.store.createRecord('calendar-event', {
+        order: this.args.model.uri,
+        date: null, // ember-flatpickr cannot handle 'undefined'
+      });
+      await setCalendarEventProperties(this.calendarEvent, {
+        order: this.args.model,
+        customer: this.case.current.customer,
+        building: this.case.current.building,
+        visitor: this.case.visitor,
+        calendarPeriod: new CalendarPeriod('GD'),
+      });
+      // don't save calendar-event yet. It's just a placeholder to fill in the form.
+    }
+  }
+
+  @keepLatestTask
+  *deleteCalendarEvent() {
+    // TODO remove planningDate on order
+    // once order are converted to triplestore and
+    // link with calendar-event can be established
+    this.args.model.planningDate = null;
+    yield this.args.model.save();
+    yield this.calendarEvent.destroyRecord();
+    this.calendarEvent = null;
+    yield this.ensureCalendarEvent();
   }
 
   @action
@@ -129,12 +217,17 @@ export default class OrderDetailPanelComponent extends Component {
   }
 
   @action
-  openEdit() {
+  async openEdit() {
+    await this.ensureCalendarEvent();
     this.editMode = true;
   }
 
   @action
-  closeEdit() {
+  async closeEdit() {
     this.editMode = false;
+    if (this.calendarEvent && this.calendarEvent.isNew) {
+      await this.calendarEvent.destroyRecord();
+      this.calendarEvent = null;
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
+import { isPresent } from '@ember/utils';
 import ValidatedModel, { Validator } from './validated-model';
 
 export default class BuildingModel extends ValidatedModel {
@@ -64,8 +65,7 @@ export default class BuildingModel extends ValidatedModel {
   get searchName() {
     let search = `[${this.number}] ${this.printName}`;
     if (this.postalCode || this.city || this.address) {
-      const fullAddress = `${this.address} ${this.postalCode} ${this.city}`;
-      search += ` (${fullAddress.trim()})`;
+      search += ` (${this.fullAddress})`;
     }
     return search;
   }
@@ -82,6 +82,12 @@ export default class BuildingModel extends ValidatedModel {
       address += this.address3 + ' ';
     }
     return address.trim();
+  }
+
+  get fullAddress() {
+    return [this.address, `${this.postalCode || ''} ${this.city || ''}`]
+      .filter((line) => isPresent(line))
+      .join(', ');
   }
 
   get uri() {

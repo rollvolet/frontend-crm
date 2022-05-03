@@ -6,6 +6,7 @@ import { all, keepLatestTask, task } from 'ember-concurrency';
 import Evented from '@ember/object/evented';
 import { tracked } from '@glimmer/tracking';
 import updateContactAndBuildingRequest from '../utils/api/update-contact-and-building';
+import { setCalendarEventProperties } from '../utils/calendar-helpers';
 
 const regexMap = {
   unlinkedRequestId: /requests\/(\d+)/i,
@@ -174,7 +175,10 @@ export default class CaseService extends Service.extend(Evented) {
         warn(`Unable to unlink customer from request. Case has an offer already.`);
       } else {
         try {
-          const calendarEvent = yield this.current.request.calendarEvent;
+          // TODO fetch via relation once request is converted to triplestore
+          const calendarEvent = yield this.store.queryOne('calendar-event', {
+            'filter[:exact:request]': this.current.request.uri,
+          });
           if (calendarEvent) {
             this.current.request.requiresVisit = false;
             yield calendarEvent.destroyRecord();
@@ -197,6 +201,15 @@ export default class CaseService extends Service.extend(Evented) {
       if (this.current.invoice) {
         warn(`Unable to unlink customer from intervention. Case has an invoice already.`);
       } else {
+        // TODO fetch via relation once intervention is converted to triplestore
+        const calendarEvent = yield this.store.queryOne('calendar-event', {
+          'filter[:exact:intervention]': this.current.intervention.uri,
+        });
+        if (calendarEvent) {
+          yield calendarEvent.destroyRecord();
+          this.current.intervention.planningDate = null;
+        }
+
         if (this.current.contact || this.current.building) {
           yield this._updateContactAndBuilding.perform(null, null);
           this.current.contact = null;
@@ -218,7 +231,6 @@ export default class CaseService extends Service.extend(Evented) {
     const reloadPromises = [];
     if (this.current.request) {
       reloadPromises.push(this.current.request.belongsTo('contact').reload());
-      reloadPromises.push(this.current.request.belongsTo('calendarEvent').reload());
     }
     if (this.current.offer) {
       reloadPromises.push(this.current.offer.belongsTo('contact').reload());
@@ -246,7 +258,6 @@ export default class CaseService extends Service.extend(Evented) {
     const reloadPromises = [];
     if (this.current.request) {
       reloadPromises.push(this.current.request.belongsTo('building').reload());
-      reloadPromises.push(this.current.request.belongsTo('calendarEvent').reload());
     }
     if (this.current.offer) {
       reloadPromises.push(this.current.offer.belongsTo('building').reload());
@@ -268,6 +279,43 @@ export default class CaseService extends Service.extend(Evented) {
 
   @task
   *_updateContactAndBuilding(contact, building) {
+    const calendarEvents = {};
+
+    if (this.current.requestId) {
+      // TODO fetch via relation once request is converted to triplestore
+      calendarEvents['request'] = yield this.store.queryOne('calendar-event', {
+        'filter[:exact:request]': this.current.request.uri,
+      });
+    }
+    if (this.current.interventionId) {
+      // TODO fetch via relation once intervention is converted to triplestore
+      calendarEvents['intervention'] = yield this.store.queryOne('calendar-event', {
+        'filter[:exact:intervention]': this.current.intervention.uri,
+      });
+    }
+    if (this.current.orderId) {
+      // TODO fetch via relation once order is converted to triplestore
+      calendarEvents['order'] = yield this.store.queryOne('calendar-event', {
+        'filter[:exact:order]': this.current.order.uri,
+      });
+    }
+
+    const promises = Object.keys(calendarEvents).map(async (key) => {
+      const calendarEvent = calendarEvents[key];
+      if (calendarEvent) {
+        await setCalendarEventProperties(calendarEvent, {
+          [key]: this.current[key],
+          customer: this.current.customer,
+          building: this.current.building,
+          visitor: this.visitor,
+        });
+        return calendarEvent.save();
+      } else {
+        return null;
+      }
+    });
+    yield Promise.all(promises);
+
     const body = {
       contactId: contact && `${contact.get('id')}`,
       buildingId: building && `${building.get('id')}`,
