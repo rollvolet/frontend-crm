@@ -11,6 +11,7 @@ export default class DepositInvoicePanelsComponent extends Component {
   @service store;
 
   @tracked vatRate;
+  @tracked invoicelines = [];
 
   constructor() {
     super(...arguments);
@@ -20,14 +21,18 @@ export default class DepositInvoicePanelsComponent extends Component {
   @keepLatestTask
   *loadData() {
     this.vatRate = yield this.order.vatRate;
+    // TODO use this.order.invoicelines once the relation is defined
+    const invoicelines = yield this.store.query('invoiceline', {
+      'filter[:exact:order]': this.order.uri,
+      sort: 'position',
+      page: { size: 100 },
+    });
+    this.invoicelines = invoicelines.toArray();
+
     if (!this.vatRate) {
       debug('Order VAT rate got lost. Updating VAT rate to VAT rate of first invoiceline.');
-      const invoiceline = yield this.store.queryOne('invoiceline', {
-        'filter[:exact:order]': this.order.uri,
-        sort: 'position',
-      });
-      if (invoiceline) {
-        this.vatRate = yield invoiceline.vatRate;
+      if (invoicelines.firstObject) {
+        this.vatRate = yield invoicelines.firstObject.vatRate;
         this.order.vatRate = this.vatRate;
         yield this.order.save();
       }
@@ -48,6 +53,10 @@ export default class DepositInvoicePanelsComponent extends Component {
 
   get isDisabledEdit() {
     return this.order.isMasteredByAccess || this.invoice;
+  }
+
+  get orderAmount() {
+    return sum(this.invoicelines.map((line) => line.arithmeticAmount));
   }
 
   get totalAmount() {

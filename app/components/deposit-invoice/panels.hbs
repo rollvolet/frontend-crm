@@ -32,25 +32,33 @@
 
       {{!-- Card content --}}
       <div class="p-6">
+        <dl class="rounded-lg bg-white grid sm:grid-cols-3 sm:divide-x">
+          <div class="flex flex-col p-4 text-center">
+            <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+              Netto bestelling
+            </dt>
+            <dd class="order-1 text-lg font-medium text-red-700">
+              <Fmt::Currency @value={{this.orderAmount}} />
+            </dd>
+          </div>
+          <div class="flex flex-col p-4 text-center">
+            <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+              Netto voorschotfacturen
+            </dt>
+            <dd class="order-1 text-lg font-medium text-red-700">
+              <Fmt::Currency @value={{this.totalAmount}} />
+            </dd>
+          </div>
+          <div class="flex flex-col p-4 text-center">
+            <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+              {{this.vatRate.rate}}% BTW voorschotfacturen
+            </dt>
+            <dd class="order-1 text-lg font-medium text-red-700">
+              <Fmt::Currency @value={{this.totalVat}} />
+            </dd>
+          </div>
+        </dl>
         {{#if @model.length}}
-          <dl class="rounded-lg bg-white grid grid-cols-2 divide-x">
-            <div class="flex flex-col p-4 text-center">
-              <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
-                Netto
-              </dt>
-              <dd class="order-1 text-lg font-medium text-red-700">
-                <Fmt::Currency @value={{this.totalAmount}} />
-              </dd>
-            </div>
-            <div class="flex flex-col p-4 text-center">
-              <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
-                {{this.vatRate.rate}}% BTW
-              </dt>
-              <dd class="order-1 text-lg font-medium text-red-700">
-                <Fmt::Currency @value={{this.totalVat}} />
-              </dd>
-            </div>
-          </dl>
           <ul class="divide-y divide-gray-200">
             {{#each @model as |depositInvoice|}}
               <DepositInvoice::ListItem
@@ -64,7 +72,7 @@
             {{/each}}
           </ul>
         {{else}}
-          <p class="italic text-gray-400 text-sm">
+          <p class="mt-8 text-center italic text-gray-400 text-sm">
             Nog geen voorschotfacturen toegevoegd
           </p>
         {{/if}}
