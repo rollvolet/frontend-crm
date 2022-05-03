@@ -81,6 +81,8 @@ export default class DepositInvoicePanelsComponent extends Component {
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
 
+    const amount = this.orderAmount * 0.3; // default to 30% of order amount
+
     const depositInvoice = this.store.createRecord('deposit-invoice', {
       invoiceDate,
       dueDate,
@@ -90,7 +92,7 @@ export default class DepositInvoicePanelsComponent extends Component {
       reference: offer.reference,
       order: this.order,
       vatRate: this.vatRate,
-      baseAmount: 0,
+      baseAmount: amount,
       customer,
       contact,
       building,
