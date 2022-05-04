@@ -1,7 +1,17 @@
-<div class="grid border {{if this.showUnsavedWarning "border-red-500 border-2 border-dashed" "border-gray-200"}} rounded">
+<div class="grid border {{if this.showUnsavedWarning "border-red-500 border-2 border-dashed" "border-gray-200"}} {{if this.copyOfferline.isRunning "scan-bar"}} rounded">
   <div class="bg-gray-200 rounded-t px-4 py-2 flex justify-between items-center">
-    <div class="bg-gray-200 text-gray-500 font-semibold">
-      {{@model.position}}
+    <div class="flex items-center space-x-2">
+      <div class="bg-gray-200 text-gray-500 font-semibold">
+        {{@model.position}}
+      </div>
+      {{#unless @isDisabledEdit}}
+        <button type="button"
+          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+          {{on "click" (perform this.copyOfferline)}}>
+          {{svg-jar "heroicons-md-duplicate" class="h-5 w-5"}}
+          <EmberTooltip @text="Lijn kopiëren" />
+        </button>
+      {{/unless}}
     </div>
     <div class="flex flex-col sm:flex-row justify-end items-end sm:items-center sm:space-x-2">
       <div class="pl-4 space-x-1 flex flex-col sm:flex-row justify-end items-end {{if this.editMode "sm:items-baseline" "sm:items-center"}}">

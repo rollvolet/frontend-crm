@@ -79,12 +79,49 @@ export default class OfferDocumentPanelComponent extends Component {
         offerline: offerline,
         position: 1,
       });
-      // no validation in frontend since calculation line needs to be persisted in backend,
+      // no validation in FE since calculation line needs to be persisted in BE,
       // even without description/amount. Otherwise it will not appear in the list.
       yield calculationLine.save();
     }
 
     this.offerlines.pushObject(offerline);
+  }
+
+  @task
+  *copyOfferline(offerline) {
+    const position = this.offerlines.length
+      ? Math.max(...this.offerlines.map((l) => l.position))
+      : 0;
+    const vatRate = yield offerline.vatRate;
+    const calculationLines = yield offerline.calculationLines;
+
+    const copiedOfferline = this.store.createRecord('offerline', {
+      position: position + 1,
+      offer: this.args.model.uri,
+      description: offerline.description,
+      amount: offerline.amount,
+      vatRate: vatRate,
+    });
+    copiedOfferline.initialEditMode = true;
+
+    yield this.saveOfferline.perform(copiedOfferline);
+
+    yield all(
+      calculationLines.map(async (calculationLine) => {
+        const copiedCalculationLine = this.store.createRecord('calculation-line', {
+          offerline: copiedOfferline,
+          position: calculationLine.position,
+          amount: calculationLine.amount,
+          reductionRate: calculationLine.reductionRate,
+          description: calculationLine.description,
+        });
+        // no validation in FE since calculation line needs to be persisted in BE,
+        // even without description/amount. Otherwise it will not appear in the list.
+        await copiedCalculationLine.save();
+      })
+    );
+
+    this.offerlines.pushObject(copiedOfferline);
   }
 
   @task

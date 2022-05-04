@@ -69,6 +69,11 @@ export default class OfferlineDetailComponent extends Component {
     yield this.updateOfferlineAmount();
   }
 
+  @task
+  *copyOfferline() {
+    yield this.args.onCopy();
+  }
+
   @action
   openEdit() {
     this.editMode = true;

@@ -1,0 +1,37 @@
+.scan-bar {
+  position: relative;
+}
+
+.scan-bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 5px;
+  background: rgb(252 165 165);
+  box-shadow: 0 0 70px 20px rgb(252 165 165);
+  clip-path: inset(0);
+  animation:
+    x 1.5s ease-in-out infinite alternate,
+    y 3s   ease-in-out infinite;
+}
+
+@keyframes x {
+  to {
+    transform: translateX(-100%);
+    left: 100%;
+  }
+}
+
+@keyframes y {
+   33% {
+     clip-path: inset(0 0 0 -100px);
+   }
+   50% {
+     clip-path: inset(0 0 0 0);
+   }
+   83% {
+     clip-path: inset(0 -100px 0 0);
+   }
+}

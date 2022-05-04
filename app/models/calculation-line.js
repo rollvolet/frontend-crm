@@ -25,7 +25,6 @@ export default class CalculationLineModel extends ValidatedModel {
   })
   currency;
   @attr description;
-  @attr offerline;
 
   @belongsTo('offerline') offerline;
 

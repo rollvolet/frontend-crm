@@ -3,6 +3,7 @@
 @import "tailwindcss/components";
 @import "components/ember-tooltip";
 @import "components/ember-power-select";
+@import "components/scanning-bar";
 
 @import "tailwindcss/utilities";
 

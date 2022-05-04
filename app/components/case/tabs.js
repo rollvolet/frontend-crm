@@ -45,7 +45,7 @@ export default class CaseTabsComponent extends Component {
     return (
       this.model &&
       this.model.customerId &&
-      this.model.requestId &&
+      this.model.request &&
       !this.model.request.isCancelled &&
       this.model.offerId == null
     );
