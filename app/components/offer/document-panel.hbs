@@ -89,6 +89,8 @@
                   @saveTask={{this.saveOfferline}}
                   @onDelete={{perform this.deleteOfferline line}}
                   @onCopy={{perform this.copyOfferline line}}
+                  @onMoveUp={{perform this.moveOfferlineUp line}}
+                  @onMoveDown={{perform this.moveOfferlineDown line}}
                   @isDisabledEdit={{@isDisabledEdit}} />
               </li>
             {{else}}

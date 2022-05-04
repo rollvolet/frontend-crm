@@ -125,6 +125,38 @@ export default class OfferDocumentPanelComponent extends Component {
   }
 
   @task
+  *moveOfferlineUp(offerline) {
+    const index = this.sortedOfferlines.indexOf(offerline);
+
+    if (index > 0) {
+      const position = offerline.position;
+      const previousOfferline = this.sortedOfferlines[index - 1];
+      const previousPosition = previousOfferline.position;
+      offerline.position = previousPosition;
+      previousOfferline.position = position;
+
+      yield all([offerline.save(), previousOfferline.save()]);
+    }
+    // else: offerline is already at the top of the list
+  }
+
+  @task
+  *moveOfferlineDown(offerline) {
+    const index = this.sortedOfferlines.indexOf(offerline);
+
+    if (index < this.offerlines.length - 1) {
+      const position = offerline.position;
+      const nextOfferline = this.sortedOfferlines[index + 1];
+      const nextPosition = nextOfferline.position;
+      offerline.position = nextPosition;
+      nextOfferline.position = position;
+
+      yield all([offerline.save(), nextOfferline.save()]);
+    }
+    // else: offerline is already at the end of the list
+  }
+
+  @task
   *saveOfferline(offerline) {
     const { validations } = yield offerline.validate();
     if (validations.isValid) {
