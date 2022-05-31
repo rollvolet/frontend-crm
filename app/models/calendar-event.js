@@ -11,7 +11,10 @@ export default class CalendarEventModel extends ValidatedModel {
   @attr('date') date;
   @attr subject;
   @attr description;
-  @attr location;
+  @attr street;
+  @attr postalCode;
+  @attr city;
+  @attr country;
   @attr msIdentifier;
   @attr url;
   @attr('string', {

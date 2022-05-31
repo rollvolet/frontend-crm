@@ -21,7 +21,13 @@ export async function setCalendarEventProperties(calendarEvent, records) {
     calendarEvent.url = orderApplicationUrl(order, customer);
   }
   const addressEntity = building || customer;
-  calendarEvent.location = addressEntity?.fullAddress;
+  if (addressEntity) {
+    calendarEvent.street = addressEntity.address;
+    calendarEvent.postalCode = addressEntity.postalCode;
+    calendarEvent.city = addressEntity.city;
+    const country = await addressEntity.country;
+    calendarEvent.country = country?.name;
+  }
 }
 
 function requestSubject(request, customer, calendarPeriod, visitor) {
