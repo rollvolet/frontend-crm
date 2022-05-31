@@ -58,7 +58,7 @@ async function orderSubject(order, customer, calendarPeriod, visitor) {
   const initials = visitor ? `${visitor.initials}` : '';
   const requestReference = `AD${requestNumber} ${initials}`.trim();
   const nbOfPersons = order.scheduledNbOfPersons || 0;
-  const nbOfHours = order.scheduledNbOfHours || 0;
+  const nbOfHours = order.scheduledHours || 0;
   const technicians = await order.technicians;
   const technicianNames = technicians.sortBy('firstName').mapBy('firstName').join(', ');
   const workload = `${nbOfPersons}p x ${nbOfHours}u ${technicianNames}`.trim();
