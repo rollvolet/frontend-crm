@@ -6,6 +6,7 @@ import { task } from 'ember-concurrency';
 export default class MainRequestsEditController extends Controller {
   @service case;
   @service router;
+  @service store;
 
   get isDisabledEdit() {
     return this.case.current && this.case.current.offer != null;

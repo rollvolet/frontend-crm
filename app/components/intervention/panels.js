@@ -6,6 +6,7 @@ import { task } from 'ember-concurrency';
 export default class InterventionPanelsComponent extends Component {
   @service case;
   @service router;
+  @service store;
 
   get isDisabledEdit() {
     return this.hasInvoice || this.args.model.isCancelled;
