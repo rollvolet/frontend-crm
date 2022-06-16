@@ -61,7 +61,7 @@ async function orderSubject(order, customer, calendarPeriod, visitor) {
   const nbOfHours = order.scheduledHours || 0;
   const technicians = await order.technicians;
   const technicianNames = technicians.sortBy('firstName').mapBy('firstName').join(', ');
-  const workload = `${nbOfPersons}p x ${nbOfHours}u ${technicianNames}`.trim();
+  const workload = `${nbOfHours}u x ${nbOfPersons}p ${technicianNames}`.trim();
   return [timeSpec, customer.name, requestReference, workload]
     .filter((f) => isPresent(f))
     .join(' | ');
