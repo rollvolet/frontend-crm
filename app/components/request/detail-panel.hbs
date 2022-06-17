@@ -173,7 +173,7 @@
           <Textarea
             id="comment"
             @value={{@model.comment}}
-            class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             rows="5"
             {{on "focusout" (perform this.save)}} />
         </div>

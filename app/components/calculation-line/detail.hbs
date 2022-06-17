@@ -9,7 +9,7 @@
           id={{concat "description-" this.fieldId}}
           @type="text"
           @value={{@model.description}}
-          class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm text-gray-700 border-gray-300 rounded-md"
+          class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm text-gray-700 border-gray-300 rounded-md"
           {{on "focusout" (perform this.save)}} />
       </div>
     </td>
@@ -20,7 +20,7 @@
         @leading="&euro;"
         @value={{@model.amount}}
         @onChange={{queue (fn (mut @model.amount)) (perform this.save)}}
-        class="mt-1 shadow-sm block w-full sm:text-sm text-gray-700 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200 {{if this.isAmountInvalid "border-red-500"}}" />
+        class="mt-1 block w-full sm:text-sm text-gray-700 border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200 {{if this.isAmountInvalid "border-red-500"}}" />
     </td>
     <td class="px-1">
       <InputField::PercentageInput

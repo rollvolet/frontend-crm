@@ -16,7 +16,7 @@
       <input
         type="text"
         value={{this.formattedValue}}
-        class="mt-1 w-36 shadow-sm focus:ring-red-200 focus:border-red-200 block sm:text-sm border-gray-300 rounded-md"
+        class="mt-1 w-36 focus:ring-red-200 focus:border-red-200 block sm:text-sm border-gray-300 rounded-md"
         {{on "input" this.setValue}}
         {{on "focusout" (perform @saveTask @model)}} />
     </td>
@@ -24,7 +24,7 @@
       <Input
         @type="text"
         @value={{@model.note}}
-        class="mt-1 w-full shadow-sm focus:ring-red-200 focus:border-red-200 block sm:text-sm border-gray-300 rounded-md"
+        class="mt-1 w-full focus:ring-red-200 focus:border-red-200 block sm:text-sm border-gray-300 rounded-md"
         {{on "focusout" (perform @saveTask @model)}} />
     </td>
     <td class="w-20 px-3 align-middle">

@@ -81,7 +81,7 @@
               id="reference"
               @type="text"
               @value={{@model.reference}}
-              class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+              class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
               {{on "focusout" (perform this.save)}} />
           </div>
           <div class="lg:col-span-2">
@@ -92,7 +92,7 @@
                   @value={{@model.scheduledHours}}
                   @errors={{@model.validations.attrs.scheduledHours.messages}}
                   @onChange={{queue (fn (mut @model.scheduledHours)) (perform this.save)}}
-                  class="mt-1 shadow-sm block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+                  class="mt-1 block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
               </div>
               <div class="text-sm text-gray-700 whitespace-nowrap">
                 x
@@ -103,7 +103,7 @@
                   @value={{@model.scheduledNbOfPersons}}
                   @errors={{@model.validations.attrs.scheduledNbOfPersons.messages}}
                   @onChange={{queue (fn (mut @model.scheduledNbOfPersons)) (perform this.save)}}
-                  class="mt-1 shadow-sm block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+                  class="mt-1 block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
               </div>
               <div class="text-sm text-gray-700 whitespace-nowrap">
                 = {{@model.scheduledTotal}} uur
@@ -195,7 +195,7 @@
           <Textarea
             id="comment"
             @value={{@model.comment}}
-            class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             rows="5"
             {{on "focusout" (perform this.save)}} />
         </div>
