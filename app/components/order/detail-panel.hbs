@@ -92,7 +92,7 @@
                   @value={{@model.scheduledHours}}
                   @errors={{@model.validations.attrs.scheduledHours.messages}}
                   @onChange={{queue (fn (mut @model.scheduledHours)) (perform this.save)}}
-                  class="mt-1 block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+                  class="mt-1 shadow-sm block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
               </div>
               <div class="text-sm text-gray-700 whitespace-nowrap">
                 x
@@ -103,7 +103,7 @@
                   @value={{@model.scheduledNbOfPersons}}
                   @errors={{@model.validations.attrs.scheduledNbOfPersons.messages}}
                   @onChange={{queue (fn (mut @model.scheduledNbOfPersons)) (perform this.save)}}
-                  class="mt-1 block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+                  class="mt-1 shadow-sm block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
               </div>
               <div class="text-sm text-gray-700 whitespace-nowrap">
                 = {{@model.scheduledTotal}} uur
@@ -222,7 +222,7 @@
           </Util::DetailItem>
           <Util::DetailItem @label="Werkuren" @displayRow={{true}}>
             <Fmt::Decimal @value={{@model.scheduledHours}} /> uur x
-            <span class="{{if this.isNbOfPersonsWarning "px-1 py-0.5 text-red-700 bg-red-100"}}">{{@model.scheduledNbOfPersons}} man</span>
+            <span class="{{if this.isNbOfPersonsWarning "px-1 py-0.5 text-red-700 bg-red-100 rounded"}}">{{@model.scheduledNbOfPersons}} man</span>
             = {{@model.scheduledTotal}} uur
           </Util::DetailItem>
           <Util::DetailItem @label="Techniekers">

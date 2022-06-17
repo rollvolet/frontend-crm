@@ -118,7 +118,7 @@
                     @value={{@model.baseAmount}}
                     @errors={{@model.validations.attrs.baseAmount.messages}}
                     @onChange={{queue (fn (mut @model.baseAmount)) (perform this.save)}}
-                    class="mt-1 block w-32 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
+                    class="mt-1 shadow-sm block w-32 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
                 </div>
                 <div>
                   <label class="text-sm font-medium text-gray-700">
