@@ -31,8 +31,11 @@ export default class CaseAttachmentsPanelComponent extends Component {
     const caseId = this.args.caseDispatcher.identifier;
     try {
       yield file.upload(`/cases/${caseId}/attachments`);
-      yield timeout(1000); // make sure async cache got invalidated in backend
-      yield this.loadAttachments.perform();
+      const currentNbOfAttachments = this.attachments.length;
+      while (currentNbOfAttachments == this.attachments.length) {
+        yield timeout(250); // make sure async cache got invalidated in backend
+        yield this.loadAttachments.perform();
+      }
     } catch (e) {
       warn(`Error while uploading attachment: ${e.message || JSON.stringify(e)}`, {
         id: 'failure.upload',
@@ -46,6 +49,7 @@ export default class CaseAttachmentsPanelComponent extends Component {
 
   @task
   *deleteAttachment(file) {
+    const currentNbOfAttachments = this.attachments.length;
     file.deleteRecord(); // mark as deleted in ember-data store
     const result = yield fetch(`/files/${file.id}`, {
       method: 'DELETE',
@@ -55,8 +59,10 @@ export default class CaseAttachmentsPanelComponent extends Component {
     });
 
     if (result.ok) {
-      yield timeout(500); // make sure async cache got invalidated in backend
-      yield this.loadAttachments.perform();
+      while (currentNbOfAttachments == this.attachments.length) {
+        yield timeout(100); // make sure async cache got invalidated in backend
+        yield this.loadAttachments.perform();
+      }
     } else {
       throw result;
     }
