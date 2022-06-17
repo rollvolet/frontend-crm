@@ -22,7 +22,7 @@ export default class CaseAttachmentsPanelComponent extends Component {
       page: {
         size: 100,
       },
-      sort: 'created',
+      sort: '-created',
     });
   }
 
