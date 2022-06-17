@@ -46,9 +46,7 @@ export default class DashboardOutstandingRequestsComponent extends Component {
       };
 
       const now = new Date();
-      if (this.showFutureVisits) {
-        filter[':gt:visit-date'] = now.toISOString();
-      } else {
+      if (!this.showFutureVisits) {
         filter[':lte:visit-date'] = now.toISOString();
       }
 
