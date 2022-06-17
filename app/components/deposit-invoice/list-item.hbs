@@ -131,7 +131,7 @@
               {{/unless}}
               <div class="sm:col-span-2 xl:col-span-4">
                 <label for="document-outro" class="block text-sm font-medium text-gray-700">
-                  Mededeling (zichtbaar in document)
+                  Mededeling <span class="text-gray-400 font-normal">(zichtbaar in document)</span>
                 </label>
                 <InputField::RichTextArea
                   @value={{@model.documentOutro}}
@@ -142,7 +142,7 @@
               </div>
               <div class="sm:col-span-2 xl:col-span-4">
                 <label for="comment" class="block text-sm font-medium text-gray-700">
-                  Opmerking (niet zichtbaar in document)
+                  Opmerking <span class="text-gray-400 font-normal">(niet zichtbaar in document)</span>
                 </label>
                 <Textarea
                   id={{concat this.fieldId "-comment"}}
@@ -220,7 +220,7 @@
               </div>
               <div class="sm:col-span-2 xl:col-span-4">
                 <dt class="text-sm font-medium text-gray-500">
-                  Mededeling (zichtbaar in document)
+                  Mededeling <span class="text-gray-400 font-normal">(zichtbaar in document)</span>
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
                   {{#if @model.documentOutro}}
@@ -236,7 +236,7 @@
               </div>
               <div class="sm:col-span-2 xl:col-span-4">
                 <dt class="text-sm font-medium text-gray-500">
-                  Opmerking (niet zichtbaar in document)
+                  Opmerking <span class="text-gray-400 font-normal">(niet zichtbaar in document)</span>
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
                   {{#if @model.comment}}

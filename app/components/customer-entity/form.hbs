@@ -225,7 +225,7 @@
     <div class="pt-6 sm:pt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <div class="sm:col-span-2">
         <label for="comment" class="block text-sm font-medium text-gray-700">
-          Opmerking (zichtbaar)
+          Opmerking <span class="text-gray-400 font-normal">(zichtbaar)</span>
         </label>
         <Textarea
           id="comment"
@@ -237,7 +237,7 @@
       {{#if this.isScopeCustomer}}
         <div class="sm:col-span-2">
           <label for="memo" class="block text-sm font-medium text-gray-700">
-            Memo (verborgen)
+            Memo <span class="text-gray-400 font-normal">(verborgen)</span>
           </label>
           <Textarea
             id="memo"
