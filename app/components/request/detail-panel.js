@@ -57,7 +57,7 @@ export default class RequestDetailPanelComponent extends Component {
     if (validations.isValid) {
       if (this.calendarEvent) {
         const changedAttributes = this.args.model.changedAttributes();
-        if (changedAttributes['visitor'] || changedAttributes['comment']) {
+        if (changedAttributes['visitor'] || changedAttributes['description']) {
           yield this.synchronizeCalendarEvent.perform();
         }
       }

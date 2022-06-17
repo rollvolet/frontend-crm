@@ -166,9 +166,20 @@
             {{/if}}
           </div>
         </div>
-        <div class="sm:col-span-2 sm:order-3">
+        <div class="sm:col-span-2">
+          <label for="description" class="block text-sm font-medium text-gray-700">
+            Beschrijving <span class="text-gray-400 font-normal">(zichtbaar in document)</span>
+          </label>
+          <Textarea
+            id="description"
+            @value={{@model.description}}
+            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            rows="5"
+            {{on "focusout" (perform this.save)}} />
+        </div>
+        <div class="sm:col-span-2">
           <label for="comment" class="block text-sm font-medium text-gray-700">
-            Opmerking
+            Opmerking <span class="text-gray-400 font-normal">(niet zichtbaar in document)</span>
           </label>
           <Textarea
             id="comment"
@@ -217,7 +228,10 @@
             {{@model.visitor}}
           </Util::DetailItem>
         </div>
-        <div class="sm:col-span-2 sm:order-3">
+        <div class="sm:col-span-2 space-y-2 sm:order-3">
+          <Util::DetailItem @label="Beschrijving">
+            <span class="whitespace-pre-wrap">{{@model.description}}</span>
+          </Util::DetailItem>
           <Util::DetailItem @label="Opmerking">
             <span class="whitespace-pre-wrap">{{@model.comment}}</span>
           </Util::DetailItem>
