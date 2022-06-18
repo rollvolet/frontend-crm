@@ -104,7 +104,7 @@ export default class InterventionDetailPanelComponent extends Component {
   }
 
   async ensureCalendarEvent() {
-    if (!this.calendarEvent) {
+    if (this.isLinkedToCustomer && !this.calendarEvent) {
       this.calendarEvent = this.store.createRecord('calendar-event', {
         intervention: this.args.model.uri,
         date: null, // ember-flatpickr cannot handle 'undefined'

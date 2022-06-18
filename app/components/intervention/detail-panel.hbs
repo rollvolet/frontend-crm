@@ -151,14 +151,14 @@
           </div>
         </div>
         <div class="space-y-6">
-          {{#unless this.loadData.isRunning}}
+          {{#if (and (not this.loadData.isRunning) this.isLinkedToCustomer)}}
             <CalendarEvent::DetailEdit
               @title="planning"
               @model={{this.calendarEvent}}
               @onCalendarPeriodChange={{perform this.updateCalendarEventSubject}}
               @saveTask={{this.saveCalendarEvent}}
               @onDelete={{perform this.deleteCalendarEvent}} />
-          {{/unless}}
+          {{/if}}
         </div>
         <div class="sm:col-span-2">
           <label for="description" class="block text-sm font-medium text-gray-700">
