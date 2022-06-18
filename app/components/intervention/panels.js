@@ -25,7 +25,7 @@ export default class InterventionPanelsComponent extends Component {
     const customer = this.case.current.customer;
     // TODO fetch via relation once intervention is converted to triplestore
     const calendarEvent = yield this.store.queryOne('calendar-event', {
-      'filter[:exact:intervention]': this.model.uri,
+      'filter[:exact:intervention]': this.args.model.uri,
     });
     try {
       if (calendarEvent) {
