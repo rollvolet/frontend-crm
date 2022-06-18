@@ -17,4 +17,8 @@ export default class EmployeeClass extends Model {
   get isAdministrative() {
     return this.type == 1;
   }
+
+  get isExternal() {
+    return this.type == 3;
+  }
 }

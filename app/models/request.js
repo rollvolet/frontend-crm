@@ -6,6 +6,9 @@ export default class RequestModel extends ValidatedModel {
     requestDate: new Validator('presence', {
       presence: true,
     }),
+    employee: new Validator('presence', {
+      presence: true,
+    }),
   };
 
   @attr('date-midnight') requestDate;
