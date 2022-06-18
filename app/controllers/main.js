@@ -30,6 +30,10 @@ export default class MainController extends Controller {
     return this.router.currentRouteName == 'main.index';
   }
 
+  get hasTopBanner() {
+    return !this.userInfo.employee || this.userInfo.isImpersonation;
+  }
+
   @action
   logout() {
     this.session.invalidate();
@@ -51,5 +55,15 @@ export default class MainController extends Controller {
       },
       300
     ); // delay to finish leave CSS animation
+  }
+
+  @action
+  selectEmployee(employee) {
+    this.userInfo.employee = employee;
+  }
+
+  @action
+  clearEmployee() {
+    this.userInfo.employee = null;
   }
 }

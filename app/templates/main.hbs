@@ -86,24 +86,52 @@
 
     {{!-- Main outlet --}}
     <main class="flex-1 relative overflow-y-auto print:overflow-visible focus:outline-none main-outlet" tabindex="0">
-      {{#if this.isLoading}}
-        <div class="fixed inset-0 w-full h-screen">
-          <Util::LoadingSpinner @label="Applicatie initialiseren..." />
-        </div>
-      {{else if (not this.userInfo.employee)}}
-        <div class="fixed inset-0 flex w-full h-screen justify-center items-center">
-          <div class="rounded-md bg-red-50 p-4">
-            <div class="flex">
+      {{#if (not this.userInfo.employee)}}
+        <div class="sticky z-40 absolute inset-x-0 top-0 h-12">
+          <div class="bg-red-50 p-4 shadow-md">
+            <div class="flex items-center">
               <div class="shrink-0">
                 {{svg-jar "heroicons-sm-x-circle" class="h-5 w-5 text-red-400"}}
               </div>
-              <div class="ml-3">
+              <div class="ml-3 flex space-x-2 items-center">
                 <p class="text-sm text-red-700">
-                  Er is geen overeenkomstige werknemer gevonden voor de ingelogde gebruiker. De applicatie werkt hierdoor niet volledig.
+                  Er is geen overeenkomstige werknemer gevonden voor de ingelogde gebruiker. Selecteer in wiens naam u wil werken
                 </p>
+                <InputField::EmployeeSelect
+                  @value={{this.userInfo.employee}}
+                  @isAdministrative={{true}}
+                  @onSelectionChange={{this.selectEmployee}}
+                  class="w-32" />
               </div>
             </div>
           </div>
+        </div>
+      {{else if this.userInfo.isImpersonation}}
+        <div class="sticky z-40 absolute inset-x-0 top-0 h-12">
+          <div class="bg-yellow-50 p-4 shadow-md">
+            <div class="flex items-center">
+              <div class="shrink-0">
+                {{svg-jar "heroicons-sm-information-circle" class="h-5 w-5 text-yellow-400"}}
+              </div>
+              <div class="ml-3 flex space-x-2 items-center">
+                <p class="text-sm text-yellow-700">
+                  Gebruiker {{this.userInfo.firstName}} werkt momenteel in naam van <span class="font-bold">{{this.userInfo.employee.firstName}}</span>.
+                </p>
+                <button
+                  type="button"
+                  class="underline text-sm text-yellow-700"
+                  {{on "click" this.clearEmployee}}>
+                  Wijzigen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+
+      {{#if this.isLoading}}
+        <div class="fixed inset-0 w-full h-screen">
+          <Util::LoadingSpinner @label="Applicatie initialiseren..." />
         </div>
       {{else if this.applicationInitializationFailed}}
         <div class="fixed inset-0 flex w-full h-screen justify-center items-center">
@@ -121,7 +149,7 @@
           </div>
         </div>
       {{else}}
-        <div class="{{unless this.isIndexPage "mx-auto px-4 py-6 sm:px-6 lg:px-8"}}">
+        <div class="{{unless this.isIndexPage "mx-auto px-4 py-6 sm:px-6 lg:px-8"}} {{if this.hasTopBanner "mt-12"}}">
           {{outlet}}
         </div>
       {{/if}}

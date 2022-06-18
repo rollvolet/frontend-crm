@@ -36,6 +36,16 @@ export default class UserInfoService extends Service {
     return this.username;
   }
 
+  get isImpersonation() {
+    if (this.employee) {
+      const employeeFirstName = this.employee.firstName.toLowerCase();
+      const userFirstName = this.firstName.toLowerCase();
+      return !employeeFirstName.startsWith(userFirstName);
+    } else {
+      return false;
+    }
+  }
+
   @keepLatestTask
   // eslint-disable-next-line require-yield
   *fetchUserInfo() {
