@@ -10,6 +10,7 @@ export default class RequestModel extends ValidatedModel {
 
   @attr('date-midnight') requestDate;
   @attr requiresVisit;
+  @attr description;
   @attr comment;
   @attr employee;
   @attr visitor;

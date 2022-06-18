@@ -107,7 +107,7 @@
                   id={{concat this.fieldId "-reference"}}
                   @type="text"
                   @value={{@model.reference}}
-                  class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                  class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
                   {{on "focusout" (perform this.save)}} />
               </div>
               {{#unless this.isLimitedUpdateOnly}}
@@ -130,13 +130,24 @@
                 </div>
               {{/unless}}
               <div class="sm:col-span-2 xl:col-span-4">
+                <label for="document-outro" class="block text-sm font-medium text-gray-700">
+                  Mededeling <span class="text-gray-400 font-normal">(zichtbaar in document)</span>
+                </label>
+                <InputField::RichTextArea
+                  @value={{@model.documentOutro}}
+                  @class="mt-1 w-full border border-gray-300 rounded-md text-sm"
+                  @textAreaHeight="h-full min-h-24"
+                  @onChange={{fn (mut @model.documentOutro)}}
+                  @focusOut={{perform this.save}} />
+              </div>
+              <div class="sm:col-span-2 xl:col-span-4">
                 <label for="comment" class="block text-sm font-medium text-gray-700">
-                  Opmerking
+                  Opmerking <span class="text-gray-400 font-normal">(niet zichtbaar in document)</span>
                 </label>
                 <Textarea
                   id={{concat this.fieldId "-comment"}}
                   @value={{@model.comment}}
-                  class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                  class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
                   rows="5"
                   {{on "focusout" (perform this.save)}} />
               </div>
@@ -209,13 +220,27 @@
               </div>
               <div class="sm:col-span-2 xl:col-span-4">
                 <dt class="text-sm font-medium text-gray-500">
-                  Opmerking
+                  Mededeling <span class="text-gray-400 font-normal">(zichtbaar in document)</span>
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{#if @model.documentOutro}}
+                    <p class="text-sm text-gray-900 prose max-w-none">
+                      {{{@model.documentOutro}}}
+                    </p>
+                  {{else}}
+                    <p class="italic text-gray-400 text-xs">
+                      Geen mededeling
+                    </p>
+                  {{/if}}
+                </dd>
+              </div>
+              <div class="sm:col-span-2 xl:col-span-4">
+                <dt class="text-sm font-medium text-gray-500">
+                  Opmerking <span class="text-gray-400 font-normal">(niet zichtbaar in document)</span>
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
                   {{#if @model.comment}}
-                    <p class="whitespace-pre-wrap">
-                      {{@model.comment}}
-                    </p>
+                    <span class="whitespace-pre-wrap">{{@model.comment}}</span>
                   {{else}}
                     <p class="italic text-gray-400 text-xs">
                       Geen opmerking

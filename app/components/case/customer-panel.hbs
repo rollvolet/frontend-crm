@@ -79,7 +79,9 @@
                   <span class="whitespace-pre-wrap">{{@model.comment}}</span>
                 {{/if}}
               {{else}}
-                Geen opmerkingen
+                <div class="text-sm text-gray-400">
+                  Geen opmerkingen
+                </div>
               {{/if}}
             </Util::DetailItem>
 
@@ -98,7 +100,9 @@
                   <span class="whitespace-pre-wrap">{{@model.memo}}</span>
                 {{/if}}
               {{else}}
-                Geen memo
+                <div class="text-sm text-gray-400">
+                  Geen memo
+                </div>
               {{/if}}
             </Util::DetailItem>
           </div>

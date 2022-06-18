@@ -35,8 +35,8 @@ function requestSubject(request, customer, calendarPeriod, visitor) {
   const requestNumber = formatRequestNumber([request.id]);
   const initials = visitor ? `(${visitor.initials})` : '';
   const requestReference = `AD${requestNumber} ${initials}`.trim();
-  const comment = request.comment;
-  return [timeSpec, customer.name, requestReference, comment]
+  const description = request.description;
+  return [timeSpec, customer.name, requestReference, description]
     .filter((f) => isPresent(f))
     .join(' | ');
 }

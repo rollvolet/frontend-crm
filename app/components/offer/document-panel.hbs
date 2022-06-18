@@ -13,7 +13,7 @@
                 id="document-version"
                 @type="text"
                 @value={{@model.documentVersion}}
-                class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-12 sm:text-sm border-gray-300 rounded-md"
+                class="focus:ring-red-200 focus:border-red-200 block w-12 sm:text-sm border-gray-300 rounded-md"
                 {{on "focusout" (perform this.saveDocumentVersion)}} />
               <Util::SaveStatus @model={{@model}} @task={{this.saveDocumentVersion}} class="ml-2" />
               <button type="button"
