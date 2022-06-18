@@ -12,7 +12,7 @@ export default class OfferRoute extends Route {
   async beforeModel() {
     const request = this.modelFor('main.case.request.edit');
     if (!request.visitor) {
-      const employee = await this.userInfo.getEmployee();
+      const employee = this.userInfo.employee;
       if (employee) {
         request.visitor = employee.firstName;
         await request.save();

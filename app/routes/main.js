@@ -9,7 +9,9 @@ export default class MainRoute extends Route {
     const isAuthenticated = this.session.requireAuthentication(transition, 'login');
 
     if (isAuthenticated) {
-      this.userInfo.fetchUserInfo.perform();
+      return this.userInfo.fetchUserInfo.perform();
+    } else {
+      return null;
     }
   }
 }

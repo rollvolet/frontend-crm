@@ -90,6 +90,21 @@
         <div class="fixed inset-0 w-full h-screen">
           <Util::LoadingSpinner @label="Applicatie initialiseren..." />
         </div>
+      {{else if (not this.userInfo.employee)}}
+        <div class="fixed inset-0 flex w-full h-screen justify-center items-center">
+          <div class="rounded-md bg-red-50 p-4">
+            <div class="flex">
+              <div class="shrink-0">
+                {{svg-jar "heroicons-sm-x-circle" class="h-5 w-5 text-red-400"}}
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-red-700">
+                  Er is geen overeenkomstige werknemer gevonden voor de ingelogde gebruiker. De applicatie werkt hierdoor niet volledig.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       {{else if this.applicationInitializationFailed}}
         <div class="fixed inset-0 flex w-full h-screen justify-center items-center">
           <div class="rounded-md bg-red-50 p-4">

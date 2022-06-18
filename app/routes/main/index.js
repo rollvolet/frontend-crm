@@ -5,6 +5,6 @@ export default class IndexRoute extends Route {
   @service userInfo;
 
   afterModel() {
-    return this.userInfo.getEmployee();
+    return this.userInfo.employee;
   }
 }

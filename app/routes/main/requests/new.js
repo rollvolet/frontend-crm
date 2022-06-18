@@ -6,8 +6,8 @@ export default class NewRoute extends Route {
   @service store;
   @service router;
 
-  async model() {
-    const employee = await this.userInfo.getEmployee();
+  model() {
+    const employee = this.userInfo.employee;
     const firstName = employee ? employee.firstName : null;
     const request = this.store.createRecord('request', {
       requestDate: new Date(),

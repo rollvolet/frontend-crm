@@ -44,6 +44,7 @@ export default class UserInfoService extends Service {
       this.name = sessionData.attributes.name;
       this.username = sessionData.attributes.username;
       this.userGroups = sessionData.attributes['user-groups'];
+      yield this.fetchEmployee();
     } else {
       this.name = null;
       this.username = null;
@@ -57,20 +58,23 @@ export default class UserInfoService extends Service {
     this.userGroups = [];
   }
 
-  async getEmployee() {
+  async fetchEmployee() {
     if (this.employee === undefined) {
       if (this.name) {
         const userFirstName = this.firstName.toLowerCase();
         // TODO convert findAll to query
         const employees = await this.store.findAll('employee');
-        const employee = employees.filterBy('isAdministrative').find((e) => {
-          // First check on exact match of firstname. Fallback to weaker startsWith check
-          // to cover for cases of duplicate firstnames (e.g. 'Kevin S.' vs 'Kevin P.')
-          // TODO Fix to exact match once employees are converted to triplestore
-          // and have cleaned up names.
-          const employeeFirstName = e.firstName.toLowerCase();
-          return employeeFirstName == userFirstName || employeeFirstName.startsWith(userFirstName);
-        });
+        const employee = employees
+          .filter((e) => e.isAdministrative || e.isExternal)
+          .find((e) => {
+            // First check on exact match of firstname. Fallback to weaker startsWith check
+            // to cover for cases of duplicate firstnames (e.g. 'Kevin S.' vs 'Kevin P.')
+            // TODO Fix to exact match once employees are converted to triplestore
+            // and have cleaned up names.
+            const employeeFirstName = e.firstName.toLowerCase();
+            const exactMatch = employeeFirstName == userFirstName;
+            return exactMatch || employeeFirstName.startsWith(userFirstName);
+          });
         this.employee = employee;
       } else {
         this.employee = null;
