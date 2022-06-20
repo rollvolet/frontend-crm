@@ -12,7 +12,7 @@ import { isBlank } from '@ember/utils';
 // - Group 5: from time of 'van-tot'
 // - Group 6: until time of 'van-tot'
 const periodRegex =
-  /^GD|^NM|^VM|^vanaf([\d:.\s]*)\s*uur|^rond([\d:.\s]*)\s*uur|^([\d:.\s]*)\s*uur\s(\(stipt\))?|^([\d:.\s]*)-([^\s]*)/;
+  /^GD|^NM|^VM|^vanaf([\d:.\s]*)\s*uur|^rond([\d:.\s]*)\s*uur|^([\d:.\s]*)\s*uur\s(\(stipt\))?|^([\d:.\su]*)-([^|]*)/;
 
 export default class CalendarPeriod {
   @tracked period;
