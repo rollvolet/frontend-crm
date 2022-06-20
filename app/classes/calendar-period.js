@@ -50,17 +50,27 @@ export default class CalendarPeriod {
   }
 
   toSubjectString() {
+    // Cleanup fromHour and untilHour before saving
+    // to avoid matching conflicts with other time spec patterns
+    // when parsing subject line using periodRegex again afterwards
     if (['GD', 'VM', 'NM'].includes(this.period)) {
       return this.period;
     } else if (this.period == 'vanaf') {
+      this.fromHour = this.fromHour.replace(/[^\d.:]/g, '');
       return `vanaf ${this.fromHour} uur`;
     } else if (this.period == 'benaderend uur') {
+      this.fromHour = this.fromHour.replace(/[^\d.:]/g, '');
       return `rond ${this.fromHour} uur`;
     } else if (this.period == 'stipt uur') {
+      this.fromHour = this.fromHour.replace(/[^\d.:]/g, '');
       return `${this.fromHour} uur (stipt)`;
     } else if (this.period == 'bepaald uur') {
+      this.fromHour = this.fromHour.replace(/[^\d.:]/g, '');
       return `${this.fromHour} uur`;
     } else if (this.period == 'van-tot') {
+      // Replace 'uur' with 'u'
+      this.fromHour = this.fromHour.replace('uur', 'u');
+      this.untilHour = this.untilHour.replace('uur', 'u');
       return `${this.fromHour}-${this.untilHour}`;
     } else {
       return '';
