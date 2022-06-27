@@ -13,7 +13,7 @@ export default class MainCaseRequestEditIndexController extends Controller {
   }
 
   get isEnabledDelete() {
-    return this.hasOffer && !this.model.isCancelled;
+    return !(this.hasOffer || this.model.isCancelled);
   }
 
   get hasOffer() {
