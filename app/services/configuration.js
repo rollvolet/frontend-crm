@@ -48,4 +48,10 @@ export default class ConfigurationService extends Service {
     warn('No default telephone-type vcard:Voice found', value != null, { id: 'no-default-value' });
     return value;
   }
+
+  get defaultVisitor() {
+    const value = this.store.peekAll('employee').find((c) => c.fullName == 'Joris Pauwels');
+    warn("No default employee 'Joris Pauwels' found", value != null, { id: 'no-default-value' });
+    return value;
+  }
 }

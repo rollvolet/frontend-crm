@@ -5,6 +5,7 @@ import getDocumentLanguageCode from '../../../../../utils/get-document-language-
 
 export default class OfferRoute extends Route {
   @service case;
+  @service configuration;
   @service userInfo;
   @service store;
   @service router;
@@ -12,7 +13,7 @@ export default class OfferRoute extends Route {
   async beforeModel() {
     const request = this.modelFor('main.case.request.edit');
     if (!request.visitor) {
-      const employee = this.userInfo.employee;
+      const employee = this.userInfo.employee || this.configuration.defaultVisitor;
       if (employee) {
         request.visitor = employee.firstName;
         await request.save();

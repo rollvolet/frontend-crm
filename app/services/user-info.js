@@ -47,7 +47,6 @@ export default class UserInfoService extends Service {
   }
 
   @keepLatestTask
-  // eslint-disable-next-line require-yield
   *fetchUserInfo() {
     if (this.session.isAuthenticated) {
       const sessionData = this.session.data.authenticated.data;

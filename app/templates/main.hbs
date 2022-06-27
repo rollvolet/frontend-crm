@@ -95,7 +95,7 @@
               </div>
               <div class="ml-3 flex space-x-2 items-center">
                 <p class="text-sm text-red-700">
-                  Er is geen overeenkomstige werknemer gevonden voor de ingelogde gebruiker. Selecteer in wiens naam u wil werken
+                  Er is geen overeenkomstige werknemer gevonden voor de ingelogde gebruiker <span class="font-bold">{{this.userInfo.firstName}}</span>. Selecteer in wiens naam u wil werken
                 </p>
                 <InputField::EmployeeSelect
                   @value={{this.userInfo.employee}}

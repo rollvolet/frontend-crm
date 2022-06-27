@@ -1,4 +1,5 @@
 import Model, { attr, hasMany } from '@ember-data/model';
+import { isPresent } from '@ember/utils';
 
 export default class EmployeeClass extends Model {
   @attr type;
@@ -20,5 +21,9 @@ export default class EmployeeClass extends Model {
 
   get isExternal() {
     return this.type == 3;
+  }
+
+  get fullName() {
+    return [this.firstName, this.lastName].filter((e) => isPresent(e)).join(' ');
   }
 }
