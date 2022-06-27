@@ -10,6 +10,7 @@
           @type="text"
           @value={{@model.description}}
           class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm text-gray-700 border-gray-300 rounded-md"
+          {{autofocus}}
           {{on "focusout" (perform this.save)}} />
       </div>
     </td>
