@@ -9,7 +9,7 @@ export default class MainCaseRequestEditIndexController extends Controller {
   @service store;
 
   get isDisabledEdit() {
-    return this.hasOffer || this.model.isCancelled;
+    return this.model.isCancelled;
   }
 
   get isEnabledDelete() {

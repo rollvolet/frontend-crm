@@ -118,11 +118,12 @@
         </div>
         <div>
           <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
-            <div>
+            <div class="lg:col-span-2">
               <InputField::Date
                 @label="Datum"
                 @value={{@model.requestDate}}
-                @onChange={{queue (fn (mut @model.requestDate)) (perform this.save)}} />
+                @onChange={{queue (fn (mut @model.requestDate)) (perform this.save)}}
+                @disabled={{this.isLimitedEdit}} />
             </div>
             <div class="col-start-1">
               <InputField::EmployeeSelect
@@ -132,6 +133,7 @@
                 @onSelectionChange={{queue this.setEmployee (perform this.save)}}
                 @required={{true}}
                 @allowClear={{false}}
+                @disabled={{this.isLimitedEdit}}
                 class="mt-1" />
             </div>
             <div>
@@ -139,6 +141,7 @@
                 @label="Aanmelding"
                 @value={{@model.wayOfEntry}}
                 @onSelectionChange={{queue (fn (mut @model.wayOfEntry)) (perform this.save)}}
+                @disabled={{this.isLimitedEdit}}
                 class="mt-1" />
             </div>
             <div>
@@ -168,27 +171,29 @@
             {{/if}}
           </div>
         </div>
-        <div class="sm:col-span-2">
+        <div class="sm:col-span-2 sm:order-3">
           <label for="description" class="block text-sm font-medium text-gray-700">
             Beschrijving <span class="text-gray-400 font-normal">(zichtbaar in document)</span>
           </label>
           <Textarea
             id="description"
             @value={{@model.description}}
-            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md disabled:bg-gray-100"
             rows="5"
-            {{on "focusout" (perform this.save)}} />
+            {{on "focusout" (perform this.save)}}
+            disabled={{this.isLimitedEdit}} />
         </div>
-        <div class="sm:col-span-2">
+        <div class="sm:col-span-2 sm:order-4">
           <label for="comment" class="block text-sm font-medium text-gray-700">
             Opmerking <span class="text-gray-400 font-normal">(niet zichtbaar in document)</span>
           </label>
           <Textarea
             id="comment"
             @value={{@model.comment}}
-            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md disabled:bg-gray-100"
             rows="5"
-            {{on "focusout" (perform this.save)}} />
+            {{on "focusout" (perform this.save)}}
+            disabled={{this.isLimitedEdit}} />
         </div>
       </div>
     {{else}}

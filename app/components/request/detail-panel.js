@@ -46,6 +46,10 @@ export default class RequestDetailPanelComponent extends Component {
     return this.case.current && this.case.current.offer != null;
   }
 
+  get isLimitedEdit() {
+    return this.hasOffer;
+  }
+
   get hasOptionsMenu() {
     // There are no options to show for a request which already has an offer
     return this.args.model.isCancelled || !this.hasOffer;
