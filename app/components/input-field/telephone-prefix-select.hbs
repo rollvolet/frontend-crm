@@ -12,7 +12,9 @@
     @searchField="telephonePrefix"
     @onChange={{@onSelectionChange}}
     @noMatchesMessage="Geen resultaten"
-    @allowClear={{true}} as |option select|
+    @allowClear={{true}}
+    @disabled={{@disabled}}
+    as |option select|
   >
     {{highlight-substr option.telephonePrefix select.lastSearchedText}}
   </PowerSelect>

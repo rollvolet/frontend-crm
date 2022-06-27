@@ -14,6 +14,7 @@
     @onChange={{@onSelectionChange}}
     @noMatchesMessage="Geen resultaten"
     @allowClear={{this.allowClear}}
+    @disabled={{@disabled}}
     as |option select|
   >
     {{highlight-substr option.name select.lastSearchedText}}

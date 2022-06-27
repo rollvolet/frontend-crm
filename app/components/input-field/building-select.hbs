@@ -14,7 +14,9 @@
     @onChange={{@onSelectionChange}}
     @noMatchesMessage="Geen resultaten"
     @renderInPlace={{true}}
-    @allowClear={{true}} as |option select|
+    @allowClear={{true}}
+    @disabled={{@disabled}}
+    as |option select|
   >
     {{highlight-substr option.searchName select.lastSearchedText}}
   </PowerSelect>

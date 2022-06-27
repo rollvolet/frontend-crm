@@ -13,7 +13,9 @@
     @searchField="name"
     @onChange={{this.changeSelection}}
     @noMatchesMessage="Geen resultaten"
-    @allowClear={{true}} as |option select|
+    @allowClear={{true}}
+    @disabled={{@disabled}}
+    as |option select|
   >
     {{highlight-substr option.name select.lastSearchedText}}
   </PowerSelect>

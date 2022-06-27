@@ -9,7 +9,9 @@
     @selected={{@value}}
     @searchEnabled={{false}}
     @onChange={{@onSelectionChange}}
-    @allowClear={{false}} as |option select|
+    @allowClear={{false}}
+    @disabled={{@disabled}}
+    as |option select|
   >
     {{option.code}}
   </PowerSelect>

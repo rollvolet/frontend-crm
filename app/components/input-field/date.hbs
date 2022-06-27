@@ -3,10 +3,16 @@
     {{@label}}
   </label>
 {{/if}}
-<EmberFlatpickr
-  id={{this.fieldId}}
-  @locale="nl"
-  @date={{@value}}
-  @dateFormat="j-n-Y"
-  @onChange={{this.updateValue}}
-  class="focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md" ...attributes />
+{{#if @disabled}}
+  <div class="mt-1 text-sm text-gray-900" ...attributes>
+    <Fmt::Date @value={{@value}} />
+  </div>
+{{else}}
+  <EmberFlatpickr
+    id={{this.fieldId}}
+    @locale="nl"
+    @date={{@value}}
+    @dateFormat="j-n-Y"
+    @onChange={{this.updateValue}}
+    class="focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md" ...attributes />
+{{/if}}
