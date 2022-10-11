@@ -26,7 +26,13 @@ export default class ConfigurationService extends Service {
       'employee',
       'payment',
     ];
-    yield all(entities.map((e) => this.store.findAll(e)));
+    yield all(
+      entities.map((type) => {
+        this.store.query(type, {
+          page: { size: 100 },
+        });
+      })
+    );
   }
 
   get defaultLanguage() {
