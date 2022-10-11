@@ -1,26 +1,31 @@
 import Model, { attr, hasMany } from '@ember-data/model';
-import { isPresent } from '@ember/utils';
+import { isPresent, isBlank } from '@ember/utils';
+import CONSTANTS from 'rollvolet-crm/config/constants';
 
 export default class EmployeeClass extends Model {
   @attr type;
   @attr firstName;
   @attr lastName;
   @attr initials;
-  @attr comment;
-  @attr active;
-  @attr function;
+  @attr('datetime') endDate;
+
+  // TODO remove legacy ID conversion once employees are fully migrated to triplestore
+  @attr uuid;
+
   @hasMany('working-hour') workingHours;
 
   get isTechnician() {
-    return this.type == 2;
+    // TODO remove filter on int once employees are fully migrated to triplestore
+    return this.type == CONSTANTS.EMPLOYEE_TYPES.TECHNICIAN || this.type == 2;
   }
 
   get isAdministrative() {
-    return this.type == 1;
+    // TODO remove filter on int once employees are fully migrated to triplestore
+    return this.type == CONSTANTS.EMPLOYEE_TYPES.ADMINISTRATIVE || this.type == 1;
   }
 
-  get isExternal() {
-    return this.type == 3;
+  get isActive() {
+    return isBlank(this.endDate);
   }
 
   get fullName() {

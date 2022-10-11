@@ -5,23 +5,16 @@ export default class EmployeeSelect extends Component {
   @service store;
 
   get employees() {
-    let employees = this.store.peekAll('employee');
+    let employees = this.store.peekAll('employee').sortBy('firstName');
 
     if (this.isActive) {
-      employees = employees.filter((e) => e.active);
+      employees = employees.filter((e) => e.isActive);
     }
 
-    const enabledFilters = ['isTechnician', 'isAdministrative', 'isExternal'].filter(
-      (key) => this[key]
-    );
+    const enabledFilters = ['isTechnician', 'isAdministrative'].filter((key) => this[key]);
     if (enabledFilters.length) {
       const matches = function (employee) {
-        for (let key of enabledFilters) {
-          if (employee[key]) {
-            return true;
-          }
-        }
-        return false;
+        return enabledFilters.some((key) => employee[key]);
       };
       employees = employees.filter((e) => matches(e));
     }
@@ -63,9 +56,5 @@ export default class EmployeeSelect extends Component {
 
   get isAdministrative() {
     return this.args.isAdministrative || false;
-  }
-
-  get isExternal() {
-    return this.args.isExternal || false;
   }
 }
