@@ -34,8 +34,8 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button type="button"
-                      onClick={{perform this.deleteWorkingHour workingHour}}
-                            class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+                      {{on "click" (perform this.deleteWorkingHour workingHour)}}>
                       Verwijder
                     </button>
                   </td>
@@ -53,37 +53,39 @@
       </div>
     </div>
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-3 sm:max-w-lg items-start">
-      <div>
-        <InputField::Date
-          @label="Datum"
-          @value={{this.newWorkingHourDate}}
-          @onChange={{fn (mut this.newWorkingHourDate)}}
-          class="mt-1" />
-      </div>
-      <div>
-        <InputField::EmployeeSelect
-          @label="Technieker"
-          @value={{this.newWorkingHourTechnician}}
-          @isTechnician={{true}}
-          @isAdministrative={{true}}
-          @sort={{"type:desc"}}
-          @onSelectionChange={{fn (mut this.newWorkingHourTechnician)}}
-          class="mt-1" />
-      </div>
-      <div class="sm:mt-6">
-        {{#if this.isDisabledAddWorkingHour}}
-          <button type="button" disabled
-            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-gray-100">
-            Toevoegen
-          </button>
-        {{else}}
-          <button type="button"
-            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-            onClick={{perform this.addWorkingHour}}>
-            Toevoegen
-          </button>
-        {{/if}}
-      </div>
+      {{#unless this.loadData.isRunning}}
+        <div>
+          <InputField::Date
+            @label="Datum"
+            @value={{this.newWorkingHourDate}}
+            @onChange={{fn (mut this.newWorkingHourDate)}}
+            class="mt-1" />
+        </div>
+        <div>
+          <InputField::EmployeeSelect
+            @label="Technieker"
+            @value={{this.newWorkingHourTechnician}}
+            @isTechnician={{true}}
+            @isAdministrative={{true}}
+            @sort={{"type:desc"}}
+            @onSelectionChange={{fn (mut this.newWorkingHourTechnician)}}
+            class="mt-1" />
+        </div>
+        <div class="sm:mt-6">
+          {{#if this.isDisabledAddWorkingHour}}
+            <button type="button" disabled
+              class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-gray-100">
+              Toevoegen
+            </button>
+          {{else}}
+            <button type="button"
+              class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              {{on "click" (perform this.addWorkingHour)}}>
+              Toevoegen
+            </button>
+          {{/if}}
+        </div>
+      {{/unless}}
     </div>
   </div>
   </:body>

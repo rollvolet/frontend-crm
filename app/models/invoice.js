@@ -46,7 +46,7 @@ export default class InvoiceModel extends ValidatedModel {
   @hasMany('deposit') deposits;
   @hasMany('deposit-invoice') depositInvoices;
   // @hasMany('invoiceline') invoicelines;
-  @hasMany('working-hour') workingHours;
+  // @hasMany('technical-work-activity') technicalWorkActivities;
 
   get isIsolated() {
     return this.order.get('id') == null && this.intervention.get('id') == null;
