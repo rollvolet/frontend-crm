@@ -1,7 +1,7 @@
 import { attr, belongsTo } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
 
-export default class WorkingHourModel extends ValidatedModel {
+export default class TechnicalWorkActivityModel extends ValidatedModel {
   validators = {
     date: new Validator('presence', {
       presence: true,
@@ -14,7 +14,9 @@ export default class WorkingHourModel extends ValidatedModel {
     }),
   };
 
-  @attr('date-midnight') date;
-  @belongsTo('invoice') invoice;
+  @attr('date') date;
+  @attr invoice;
+
+  // @belongsTo('invoice') invoice;
   @belongsTo('employee') employee;
 }

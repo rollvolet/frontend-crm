@@ -7,6 +7,7 @@ import { task, keepLatestTask } from 'ember-concurrency';
 
 export default class InvoiceDetailPanelComponent extends Component {
   @service case;
+  @service store;
   @service documentGeneration;
 
   @tracked editMode = false;
@@ -20,7 +21,14 @@ export default class InvoiceDetailPanelComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    this.workingHours = yield this.args.model.workingHours;
+    // TODO use this.args.model.technicalWorkActivities once the relation is defined
+    const workingHours = yield this.store.query('technical-work-activity', {
+      'filter[:exact:invoice]': this.args.model.uri,
+      sort: 'date',
+      page: { size: 100 },
+    });
+
+    this.workingHours = workingHours.toArray();
   }
 
   get order() {
@@ -92,6 +100,9 @@ export default class InvoiceDetailPanelComponent extends Component {
 
   @action
   closeWorkingHoursModal() {
+    // TODO remove once this.args.model.technicalWorkActivities is used
+    this.loadData.perform();
+
     this.isOpenWorkingHoursModal = false;
   }
 }

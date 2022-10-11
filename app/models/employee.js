@@ -12,7 +12,7 @@ export default class EmployeeClass extends Model {
   // TODO remove legacy ID conversion once employees are fully migrated to triplestore
   @attr uuid;
 
-  @hasMany('working-hour') workingHours;
+  @hasMany('technical-work-activities') technicalWorkActivities;
 
   get isTechnician() {
     // TODO remove filter on int once employees are fully migrated to triplestore
