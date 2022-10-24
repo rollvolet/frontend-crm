@@ -33,7 +33,7 @@ Router.map(function () {
     });
     this.route('deposit-invoices', function () {});
     this.route('invoices', function () {});
-    this.route('case', { path: '/case/:customer_id' }, function () {
+    this.route('case', { path: '/case/:case_id' }, function () {
       this.route('request', function () {
         this.route('new'); // create a new request with a customer
         this.route('edit', { path: '/:request_id' }, function () {

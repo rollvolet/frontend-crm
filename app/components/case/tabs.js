@@ -8,23 +8,11 @@ export default class CaseTabsComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.case.initCase.perform();
 
-    this.router.on('routeWillChange', (transition) => {
-      const target = transition.to.name;
-      if (!target.startsWith('main.case')) {
-        this.case.unloadCase();
-      }
-    });
-
-    this.router.on('routeDidChange', (transition) => {
+    this.router.on('routeDidChange', () => {
       const activeElement = document.activeElement;
       if (activeElement && activeElement.hasAttribute('data-case-tab')) {
         document.activeElement.blur(); // unfocus tab
-      }
-      const target = transition.to.name;
-      if (target.startsWith('main.case')) {
-        this.case.reloadCase.perform();
       }
     });
   }
@@ -38,7 +26,7 @@ export default class CaseTabsComponent extends Component {
   }
 
   get isLoading() {
-    return this.case.initCase.isRunning;
+    return this.case.loadCase.isRunning;
   }
 
   get canCreateNewOffer() {

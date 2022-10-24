@@ -1,5 +1,4 @@
 import { tracked } from '@glimmer/tracking';
-import snakeToCamel from '../utils/snake-to-camel-string';
 
 const ATTRS = [
   'customerId',
@@ -52,15 +51,5 @@ export default class CaseDispatcher {
 
   get uri() {
     return `http://data.rollvolet.be/cases/${this.identifier}`;
-  }
-
-  differsFrom(other) {
-    for (let key of Object.keys(other)) {
-      const snakeKey = snakeToCamel(key);
-      if (ATTRS.includes(snakeKey) && other[key] !== this[snakeKey]) {
-        return true;
-      }
-    }
-    return false;
   }
 }

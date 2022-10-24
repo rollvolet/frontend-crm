@@ -1,37 +1,24 @@
 import Service, { inject as service } from '@ember/service';
-import fetch, { Headers } from 'fetch';
-import { assert, warn } from '@ember/debug';
-import CaseDispatcher from '../models/case-dispatcher';
+import { warn } from '@ember/debug';
 import { all, keepLatestTask, task } from 'ember-concurrency';
 import Evented from '@ember/object/evented';
 import { tracked } from '@glimmer/tracking';
 import updateContactAndBuildingRequest from '../utils/api/update-contact-and-building';
 import { setCalendarEventProperties } from '../utils/calendar-helpers';
 
-const regexMap = {
-  unlinkedRequestId: /requests\/(\d+)/i,
-  unlinkedInterventionId: /interventions\/(\d+)/i,
-  requestId: /case\/\d+\/request\/(\d+)/i,
-  interventionId: /case\/\d+\/intervention\/(\d+)/i,
-  offerId: /case\/\d+\/offer\/(\d+)/i,
-  orderId: /case\/\d+\/order\/(\d+)/i,
-  invoiceId: /case\/\d+\/invoice\/(\d+)/i,
-};
-
-const calcQueryParam = function (routeUrl, key, regexKey) {
-  if (!regexKey) regexKey = key;
-  const regex = regexMap[regexKey];
-  const matches = routeUrl.match(regex);
-  assert('Expected 1 full match and 1 group capture', matches && matches.length == 2);
-  return `${key}=${matches[1]}`;
-};
+function getLegacyIdFromUri(uri) {
+  if (uri && uri.includes('/')) {
+    return uri.slice(uri.lastIndexOf('/') + 1);
+  } else {
+    return null;
+  }
+}
 
 export default class CaseService extends Service.extend(Evented) {
   @service router;
   @service store;
 
-  @tracked isInvalid = false;
-  @tracked current = null; // case-dispatcher
+  @tracked current = null;
 
   get visitorName() {
     return this.current && this.current.request && this.current.request.visitor;
@@ -42,101 +29,19 @@ export default class CaseService extends Service.extend(Evented) {
   }
 
   get isLoadingCurrentCase() {
-    return this.loadCaseForCurrentRoute.isRunning || this.loadRecords.isRunning;
-  }
-
-  unloadCase() {
-    this.isInvalid = true;
-  }
-
-  updateRecord(type, record) {
-    this.current[type] = record;
-    this.current[`${type}Id`] = record && `${record.get('id')}`;
+    return this.loadCase.isRunning;
   }
 
   @keepLatestTask()
-  *initCase() {
-    this.current = null;
-    this.current = yield this.loadCaseForCurrentRoute.perform();
-    yield this.loadRecords.perform();
-    this.isInvalid = false;
-  }
+  *loadCase(_case) {
+    this.current = { case: _case };
 
-  @keepLatestTask()
-  *reloadCase() {
-    let mustReload = false;
-    if (this.isInvalid) {
-      mustReload = true;
-    } else if (this.current) {
-      // check if route params of current route are still the same as before
-      let routeParams = {};
-      let routeInfo = this.router.currentRoute;
-      while (routeInfo) {
-        routeParams = Object.assign(routeParams, routeInfo.params);
-        routeInfo = routeInfo.parent;
-      }
-      if (this.current.differsFrom(routeParams)) {
-        mustReload = true;
-      }
-    }
-
-    if (mustReload) {
-      yield this.initCase.perform();
-    }
-  }
-
-  @keepLatestTask()
-  *loadCaseForCurrentRoute() {
-    const currentRoute = this.router.currentRouteName;
-    const currentUrl = this.router.currentURL;
-
-    let queryParam;
-    if (currentRoute.includes('requests.edit'))
-      queryParam = calcQueryParam(currentUrl, 'requestId', 'unlinkedRequestId');
-    else if (currentRoute.includes('interventions.edit'))
-      queryParam = calcQueryParam(currentUrl, 'interventionId', 'unlinkedInterventionId');
-    else if (currentRoute.includes('case.request'))
-      queryParam = calcQueryParam(currentUrl, 'requestId');
-    else if (currentRoute.includes('case.intervention'))
-      queryParam = calcQueryParam(currentUrl, 'interventionId');
-    else if (currentRoute.includes('case.offer'))
-      queryParam = calcQueryParam(currentUrl, 'offerId');
-    else if (currentRoute.includes('case.order'))
-      queryParam = calcQueryParam(currentUrl, 'orderId');
-    else if (currentRoute.includes('case.invoice'))
-      queryParam = calcQueryParam(currentUrl, 'invoiceId');
-
-    const response = yield fetch(`/api/cases/current?${queryParam}`, {
-      headers: new Headers({
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/vnd.api+json',
-      }),
-    });
-
-    if (response.ok) {
-      const responseBody = yield response.json();
-      return new CaseDispatcher({
-        customerId: responseBody.customerId && `${responseBody.customerId}`,
-        contactId: responseBody.contactId && `${responseBody.contactId}`,
-        buildingId: responseBody.buildingId && `${responseBody.buildingId}`,
-        requestId: responseBody.requestId && `${responseBody.requestId}`,
-        interventionId: responseBody.interventionId && `${responseBody.interventionId}`,
-        offerId: responseBody.offerId && `${responseBody.offerId}`,
-        orderId: responseBody.orderId && `${responseBody.orderId}`,
-        invoiceId: responseBody.invoiceId && `${responseBody.invoiceId}`,
-      });
-    } else {
-      throw response;
-    }
-  }
-
-  @keepLatestTask()
-  *loadRecords() {
     const isRecordLoaded = function (currentId, currentResource) {
       return currentId && currentResource && currentId == currentResource.id;
     };
 
-    const promises = [
+    // TODO add deposit-invoices
+    const loadRelatedRecords = [
       'customer',
       'contact',
       'building',
@@ -146,11 +51,21 @@ export default class CaseService extends Service.extend(Evented) {
       'order',
       'invoice',
     ].map(async (type) => {
+      const uriProp = `${type}Uri`;
       const idProp = `${type}Id`;
-      const currentId = this.current[idProp];
+
+      const currentUri = _case[type];
       const currentResource = this.current[type];
 
-      if (currentId) {
+      if (currentUri) {
+        // set uri on current
+        this.current[uriProp] = currentUri;
+
+        // set legacy id on current
+        const currentId = getLegacyIdFromUri(currentUri);
+        this.current[idProp] = currentId;
+
+        // set related record on current
         if (!isRecordLoaded(currentId, currentResource)) {
           let record = this.store.peekRecord(type, currentId);
 
@@ -161,11 +76,23 @@ export default class CaseService extends Service.extend(Evented) {
           this.current[type] = record;
         }
       } else {
+        this.current[uriProp] = null;
+        this.current[idProp] = null;
         this.current[type] = null;
       }
     });
 
-    yield all(promises);
+    yield all(loadRelatedRecords);
+  }
+
+  unloadCase() {
+    this.current = null;
+  }
+
+  updateRecord(type, record) {
+    this.current[type] = record;
+    this.current[`${type}Uri`] = record && `${record.get('uri')}`;
+    this.current[`${type}Id`] = record && `${record.get('id')}`;
   }
 
   @task

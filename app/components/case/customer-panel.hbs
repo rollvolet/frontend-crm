@@ -217,7 +217,7 @@
 
     <div class="mt-4 bg-white shadow rounded-lg overflow-hidden">
       <div class="divide-y divide-gray-200">
-        <Case::AttachmentsPanel @caseDispatcher={{this.case.current}} />
+        <Case::AttachmentsPanel @case={{this.case.current.case}} />
       </div>
     </div>
   {{/unless}}

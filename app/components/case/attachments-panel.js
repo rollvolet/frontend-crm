@@ -18,7 +18,7 @@ export default class CaseAttachmentsPanelComponent extends Component {
   @keepLatestTask
   *loadAttachments() {
     this.attachments = yield this.store.query('file', {
-      'filter[case][:uri:]': this.args.caseDispatcher.uri,
+      'filter[case][:uri:]': this.args.case.uri,
       page: {
         size: 100,
       },
@@ -28,7 +28,7 @@ export default class CaseAttachmentsPanelComponent extends Component {
 
   @enqueueTask({ maxConcurrency: 3 })
   *uploadAttachment(file) {
-    const caseId = this.args.caseDispatcher.identifier;
+    const caseId = this.args.case.id;
     try {
       yield file.upload(`/cases/${caseId}/attachments`);
       const currentNbOfAttachments = this.attachments.length;
