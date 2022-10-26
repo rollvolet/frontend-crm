@@ -155,7 +155,7 @@
                 @model={{line}}
                 @initialEditMode={{@model.initialEditMode}}
                 @isAmountRequired={{eq index 0}}
-                @didSave={{this.updateOfferlineAmount}}
+                @didSave={{perform this.updateOfferlineAmount}}
                 @onDelete={{perform this.deleteCalculationLine line}}
                 @isDisabledEdit={{@isDisabledEdit}} />
             {{else}}
