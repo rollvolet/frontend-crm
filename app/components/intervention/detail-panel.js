@@ -153,7 +153,16 @@ export default class InterventionDetailPanelComponent extends Component {
     });
 
     yield intervention.save();
-    this.router.transitionTo('main.case.intervention.edit', customer, intervention.id);
+
+    // TODO first create case and relate to intervention once relationship is fully defined
+    const _case = this.store.createRecord('case', {
+      customer: customer?.uri,
+      intervention: intervention.uri,
+    });
+
+    yield _case.save();
+
+    this.router.transitionTo('main.case.intervention.edit.index', _case.id, intervention.id);
   }
 
   @action

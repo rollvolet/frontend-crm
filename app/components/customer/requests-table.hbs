@@ -10,8 +10,8 @@
   <div class="mx-4 sm:mx-6 lg:mx-8 space-y-4 xl:flex xl:flex-row-reverse xl:space-x-8 xl:space-x-reverse xl:items-start xl:space-y-0">
     {{#if @customer.name}}
       <div class="text-right xl:mt-4">
-        <LinkTo @route="main.case.request.new"
-          @model={{@customer}}
+        <LinkTo @route="main.customers.edit.request"
+          @model={{@customer.id}}
           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
           {{svg-jar "heroicons-md-plus" class="-ml-1 mr-2 h-5 w-5"}}
           Nieuw
@@ -225,7 +225,7 @@
                     {{row.building.city}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <LinkTo @route="main.case.request.edit" @models={{array @customer row.id}}
+                    <LinkTo @route="main.requests.edit" @model={{row.id}}
                       class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                       Bekijk
                     </LinkTo>

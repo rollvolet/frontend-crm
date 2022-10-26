@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
 
-export default class InvoiceRoute extends Route {
+export default class MainCaseInterventionEditInvoiceRoute extends Route {
   @service case;
   @service store;
   @service router;
@@ -10,7 +10,7 @@ export default class InvoiceRoute extends Route {
   async model() {
     const intervention = this.modelFor('main.case.intervention.edit');
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 6);
-    const customer = this.modelFor('main.case');
+    const customer = await intervention.customer;
     const contact = await intervention.contact;
     const building = await intervention.building;
 
@@ -33,14 +33,16 @@ export default class InvoiceRoute extends Route {
       vatRate,
     });
 
-    return invoice.save();
+    await invoice.save();
+
+    // TODO set case on creation of invoice once relation is fully defined
+    await this.case.current.updateRecord('invoice', invoice);
+
+    return invoice;
   }
 
   afterModel(model) {
-    // update case to display the new invoice tab
-    this.case.updateRecord('invoice', model);
-
-    const customer = this.modelFor('main.case');
-    this.router.transitionTo('main.case.invoice.edit', customer, model);
+    const _case = this.modelFor('main.case');
+    this.router.transitionTo('main.case.invoice.edit', _case, model);
   }
 }

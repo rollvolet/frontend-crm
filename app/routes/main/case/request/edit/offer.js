@@ -22,8 +22,8 @@ export default class OfferRoute extends Route {
   }
 
   async model() {
-    const customer = this.modelFor('main.case');
     const request = this.modelFor('main.case.request.edit');
+    const customer = await request.customer;
     const contact = await request.contact;
     const building = await request.building;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
@@ -41,15 +41,17 @@ export default class OfferRoute extends Route {
       building,
     });
 
-    return offer.save();
+    await offer.save();
+
+    // TODO set case on creation of offer once relation is fully defined
+    await this.case.current.updateRecord('offer', offer);
+
+    return offer;
   }
 
   afterModel(model) {
-    // update case to display the new offer tab
-    this.case.updateRecord('offer', model);
-
-    const customer = this.modelFor('main.case');
-    this.router.transitionTo('main.case.offer.edit', customer, model, {
+    const _case = this.modelFor('main.case');
+    this.router.transitionTo('main.case.offer.edit', _case, model, {
       queryParams: { editMode: true },
     });
   }

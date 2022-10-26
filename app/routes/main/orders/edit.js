@@ -6,15 +6,14 @@ export default class MainOrdersEditRoute extends Route {
   @service router;
 
   model(params) {
-    return this.store.findRecord('order', params.order_id, {
-      include: 'customer',
-    });
+    return this.store.findRecord('order', params.order_id);
   }
 
   async afterModel(model) {
-    const customer = await model.customer;
-    if (customer) {
-      this.router.transitionTo('main.case.order.edit', customer, model);
-    }
+    // TODO get related case via order model once relation is fully defined
+    const _case = await this.store.queryOne('case', {
+      'filter[:exact:order]': model.uri,
+    });
+    this.router.transitionTo('main.case.order.edit.index', _case.id, model.id);
   }
 }

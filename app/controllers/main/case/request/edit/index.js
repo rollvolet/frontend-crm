@@ -24,7 +24,7 @@ export default class MainCaseRequestEditIndexController extends Controller {
   *delete() {
     const customer = this.case.current.customer;
     try {
-      // TODO fetch via relation once intervention is converted to triplestore
+      // TODO fetch via relation once request is converted to triplestore
       const calendarEvent = yield this.store.queryOne('calendar-event', {
         'filter[:exact:request]': this.model.uri,
       });
@@ -32,6 +32,7 @@ export default class MainCaseRequestEditIndexController extends Controller {
         yield calendarEvent.destroyRecord();
       }
       yield this.model.destroyRecord();
+      yield this.case.current.case.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying request ${this.model.id}`, {
         id: 'destroy-failure',
@@ -39,7 +40,7 @@ export default class MainCaseRequestEditIndexController extends Controller {
       yield this.model.rollbackAttributes(); // undo delete-state
     } finally {
       if (customer) {
-        this.router.transitionTo('main.customers.edit', customer);
+        this.router.transitionTo('main.customers.edit.index', customer);
       } else {
         this.router.transitionTo('main.requests.index');
       }

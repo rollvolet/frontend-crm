@@ -219,7 +219,7 @@
                     {{row.building.city}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <LinkTo @route="main.case.order.edit.deposit-invoices" @models={{array @customer row.order.id}}
+                    <LinkTo @route="main.deposit-invoices.edit" @model={{row.id}}
                       class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                       Bekijk
                     </LinkTo>

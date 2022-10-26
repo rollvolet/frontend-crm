@@ -32,9 +32,7 @@ export default class IndexController extends Controller {
   }
 
   @action
-  async navigateToDetail(depositInvoice) {
-    const customer = await depositInvoice.customer;
-    const order = await depositInvoice.order;
-    this.router.transitionTo('main.case.order.edit.deposit-invoices', customer.id, order.id);
+  navigateToDetail(depositInvoice) {
+    this.router.transitionTo('main.deposit-invoices.edit', depositInvoice.id);
   }
 }

@@ -39,7 +39,7 @@ export default class RequestDetailPanelComponent extends Component {
   }
 
   get isLinkedToCustomer() {
-    return this.case.current.customer != null;
+    return this.case.current && this.case.current.customer != null;
   }
 
   get hasOffer() {

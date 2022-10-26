@@ -6,7 +6,7 @@
       {{outlet}}
     </div>
     <div class="lg:col-span-1">
-      <Case::CustomerPanel @model={{this.case.current.customer}} />
+      <Case::CustomerPanel @case={{@model}} />
     </div>
   </div>
 {{/unless}}

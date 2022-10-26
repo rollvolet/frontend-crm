@@ -1,55 +1,99 @@
 import { tracked } from '@glimmer/tracking';
+import { all, keepLatestTask } from 'ember-concurrency';
 
-const ATTRS = [
-  'customerId',
-  'contactId',
-  'buildingId',
-  'interventionId',
-  'requestId',
-  'offerId',
-  'orderId',
-  'invoiceId',
-];
+function getLegacyIdFromUri(uri) {
+  if (uri && uri.includes('/')) {
+    return uri.slice(uri.lastIndexOf('/') + 1);
+  } else {
+    return null;
+  }
+}
+
 export default class CaseDispatcher {
-  @tracked customerId = null;
-  @tracked contactId = null;
-  @tracked buildingId = null;
-
-  @tracked requestId = null;
-  @tracked interventionId = null;
-  @tracked offerId = null;
-  @tracked orderId = null;
-  @tracked invoiceId = null;
+  @tracked case;
 
   @tracked customer = null;
   @tracked contact = null;
   @tracked building = null;
   @tracked request = null;
+  @tracked intervention = null;
   @tracked offer = null;
   @tracked order = null;
   @tracked invoice = null;
 
-  constructor(params) {
-    for (let key of ATTRS) {
-      this[key] = params[key];
+  constructor(_case, fetchRecord) {
+    this.case = _case;
+    this.fetchRecord = fetchRecord;
+  }
+
+  @keepLatestTask()
+  *loadRelatedRecords() {
+    // TODO add deposit-invoices
+    const loadRelatedRecords = [
+      'customer',
+      'contact',
+      'building',
+      'request',
+      'intervention',
+      'offer',
+      'order',
+      'invoice',
+    ].map(async (type) => {
+      const currentUri = this.case[type];
+      if (currentUri) {
+        await this.ensureFreshRecord(type);
+      } else {
+        this[type] = null;
+      }
+    });
+
+    yield all(loadRelatedRecords);
+  }
+
+  async ensureFreshRecord(type) {
+    const recordIsFresh = function (id, resource) {
+      return id && resource && id == resource.id;
+    };
+
+    const currentUri = this.case[type];
+    const currentResource = this[type];
+    const currentId = getLegacyIdFromUri(currentUri);
+
+    if (!recordIsFresh(currentId, currentResource)) {
+      this[type] = await this.fetchRecord(type, currentId);
     }
   }
 
-  get identifier() {
-    if (this.requestId) {
-      return `AD-${this.requestId}`;
-    } else if (this.interventionId) {
-      return `IR-${this.interventionId}`;
-    } else if (this.invoice) {
-      return `F-${this.invoice.number}`; // isolated invoice
+  async updateRecord(type, record) {
+    if (record) {
+      this.case[type] = record.uri;
+      await this.case.save();
+      this[type] = record;
     } else {
-      throw new Error(
-        'Cannot determine unique identifier for case. Case is in an unsupported state.'
-      );
+      this.case[type] = null;
+      await this.case.save();
+      this[type] = null;
     }
   }
 
-  get uri() {
-    return `http://data.rollvolet.be/cases/${this.identifier}`;
+  async unlinkCustomer() {
+    const customerEntities = ['customer', 'contact', 'building'];
+    customerEntities.forEach((type) => {
+      this.case[type] = null;
+      this[type] = null;
+    });
+    await this.case.save();
+
+    if (this.request) {
+      customerEntities.forEach((type) => {
+        this.request[type] = null;
+      });
+      await this.request.save();
+    } else if (this.intervention) {
+      customerEntities.forEach((type) => {
+        this.intervention[type] = null;
+      });
+      await this.intervention.save();
+    }
   }
 }

@@ -33,8 +33,7 @@ export default class IndexController extends Controller {
   }
 
   @action
-  async navigateToDetail(offer) {
-    const customer = await offer.customer;
-    this.router.transitionTo('main.case.offer.edit', customer.id, offer.id);
+  navigateToDetail(offer) {
+    this.router.transitionTo('main.offers.edit', offer.id);
   }
 }

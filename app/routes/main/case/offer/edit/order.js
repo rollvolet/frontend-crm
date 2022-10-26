@@ -10,9 +10,9 @@ export default class OrderRoute extends Route {
     const offer = this.modelFor('main.case.offer.edit');
     const order = await offer.order;
     if (order) {
-      const customer = this.modelFor('main.case');
+      const _case = this.modelFor('main.case');
       debug(`Order already exists for offer ${offer.id}. Transition directly to order edit route.`);
-      this.router.transitionTo('main.case.order.edit', customer, order);
+      this.router.transitionTo('main.case.order.edit', _case, order);
     }
   }
 

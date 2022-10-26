@@ -74,4 +74,12 @@ export default class ApplicationJSONAPISerializer extends JSONAPISerializer {
 
     return result;
   }
+
+  serialize() {
+    const payload = super.serialize(...arguments);
+    if (payload && payload.data && payload.data.attributes) {
+      delete payload.data.attributes.uri;
+    }
+    return payload;
+  }
 }

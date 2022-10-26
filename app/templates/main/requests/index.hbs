@@ -173,17 +173,10 @@
                       {{if row.building row.building.city row.customer.city}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      {{#if row.customer}}
-                        <LinkTo @route="main.case.request.edit" @models={{array row.customer.id row.id}}
-                          class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                          Bekijk
-                        </LinkTo>
-                      {{else}}
-                        <LinkTo @route="main.requests.edit" @model={{row.id}}
-                          class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                          Bekijk
-                        </LinkTo>
-                      {{/if}}
+                      <LinkTo @route="main.requests.edit" @model={{row.id}}
+                        class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                        Bekijk
+                      </LinkTo>
                     </td>
                   </tr>
                 {{else}}

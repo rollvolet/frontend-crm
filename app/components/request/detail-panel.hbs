@@ -74,7 +74,7 @@
                         {{#if this.isLinkedToCustomer}}
                           <LinkTo role="menuitem" tabindex="-1"
                             @route="main.case.request.edit.offer"
-                            @models={{array this.case.current.customerId @model.id}}
+                            @models={{array this.case.current.case.id @model.id}}
                             class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
                             Offerte opstellen
                           </LinkTo>

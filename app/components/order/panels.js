@@ -31,7 +31,8 @@ export default class OrderPanelsComponent extends Component {
         page: { size: 100 },
       });
       yield all(invoicelines.map((t) => t.destroyRecord()));
-      this.case.updateRecord('order', null);
+      yield this.case.current.updateRecord('order', null);
+
       // TODO fetch via relation once order is converted to triplestore
       const calendarEvent = yield this.store.queryOne('calendar-event', {
         'filter[:exact:order]': this.args.model.uri,
@@ -40,15 +41,13 @@ export default class OrderPanelsComponent extends Component {
         yield calendarEvent.destroyRecord();
       }
       yield this.args.model.destroyRecord();
-      this.router.transitionTo('main.case.offer.edit', this.case.current.offer.id);
+      this.router.transitionTo('main.offers.edit', this.case.current.offer.id);
     } catch (e) {
       warn(`Something went wrong while destroying order ${this.args.model.id}`, {
         id: 'destroy-failure',
       });
-      this.case.current.offer.order = this.args.model;
-      yield this.case.current.offer.save();
       yield this.args.model.rollbackAttributes(); // undo delete-state
-      this.case.updateRecord('order', this.args.model);
+      yield this.case.current.updateRecord('order', this.args.model);
     }
   }
 }

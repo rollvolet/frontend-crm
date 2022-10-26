@@ -34,12 +34,7 @@ export default class IndexController extends Controller {
   }
 
   @action
-  async navigateToDetail(request) {
-    const customer = await request.customer;
-    if (customer) {
-      this.router.transitionTo('main.case.request.edit', customer.id, request.id);
-    } else {
-      this.router.transitionTo('main.requests.edit', request.id);
-    }
+  navigateToDetail(request) {
+    this.router.transitionTo('main.requests.edit', request.id);
   }
 }

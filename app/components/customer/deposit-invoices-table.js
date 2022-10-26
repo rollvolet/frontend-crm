@@ -73,8 +73,7 @@ export default class DepositInvoicesTable extends FilterComponent {
   }
 
   @action
-  async navigateToDetail(depositInvoice) {
-    const order = await depositInvoice.order;
-    this.router.transitionTo('main.case.order.edit.deposit-invoices', this.args.customer, order.id);
+  navigateToDetail(depositInvoice) {
+    this.router.transitionTo('main.deposit-invoices.edit', depositInvoice.id);
   }
 }

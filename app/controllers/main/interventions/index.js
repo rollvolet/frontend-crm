@@ -40,15 +40,10 @@ export default class IndexController extends Controller {
   }
 
   @action
-  async navigateToDetail(intervention, event) {
+  navigateToDetail(intervention, event) {
     const isExpandableElement = event.srcElement?.hasAttribute('data-expandable');
     if (!isExpandableElement) {
-      const customer = await intervention.customer;
-      if (customer) {
-        this.router.transitionTo('main.case.intervention.edit', customer.id, intervention.id);
-      } else {
-        this.router.transitionTo('main.interventions.edit', intervention.id);
-      }
+      this.router.transitionTo('main.interventions.edit', intervention.id);
     }
   }
 }

@@ -22,6 +22,15 @@ export default class OrderInterventionPanelComponent extends Component {
 
     yield intervention.save();
 
+    // TODO first create case and relate to intervention once relationship is fully defined
+    const _case = this.store.createRecord('case', {
+      customer: customer?.uri,
+      intervention: intervention.uri,
+    });
+
+    yield _case.save();
+
+    // TODO remove once cases are fully moved to triplestore
     const body = {
       contactId: this.case.current.contact && this.case.current.contact.id,
       buildingId: this.case.current.building && this.case.current.building.id,
@@ -29,7 +38,7 @@ export default class OrderInterventionPanelComponent extends Component {
     };
     yield updateContactAndBuildingRequest(body);
 
-    this.router.transitionTo('main.interventions.edit', intervention.id, {
+    this.router.transitionTo('main.case.intervention.edit.index', _case.id, intervention.id, {
       queryParams: { editMode: true },
     });
   }

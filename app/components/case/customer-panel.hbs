@@ -1,21 +1,21 @@
-{{#if @model}}
+{{#if this.customer}}
   <div class="bg-white shadow rounded-lg overflow-hidden">
     <div class="divide-y divide-gray-200">
       <div class="px-6 py-4">
         <div class="flex justify-between items-end">
           <h3 class="text-xl font-bold font-display text-gray-400">
-            {{@model.number}}
+            {{this.customer.number}}
           </h3>
           <div class="flex grow-0 flex-row items-end space-x-3 pb-2">
             {{#if this.isEnabledUnlinkCustomer}}
               <button type="button"
-                onClick={{perform this.unlinkCustomer}}
+                {{on "click" (perform this.unlinkCustomer)}}
                 class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                 {{svg-jar "heroicons-md-user-remove" class="h-6 w-6"}}
                 <EmberTooltip @text="Ontkoppel klant" @side="bottom" />
               </button>
             {{/if}}
-            <LinkTo @route="main.customers.edit" @model={{@model}}
+            <LinkTo @route="main.customers.edit.index" @model={{this.customer}}
               class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-external-link" class="h-6 w-6"}}
               <EmberTooltip @text="Open klant" @side="bottom" />
@@ -23,7 +23,7 @@
           </div>
         </div>
         <h2 class="text-2xl font-bold font-display text-gray-900">
-          <Fmt::CustomerName @model={{@model}} />
+          <Fmt::CustomerName @model={{this.customer}} />
         </h2>
       </div>
       <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:grid-cols-1">
@@ -33,25 +33,25 @@
           </div>
         {{else}}
           <div class="space-y-4">
-            <Util::DetailItem @width={{20}} @label={{if @model.isCompany "Bedrijf" "Naam"}}>
+            <Util::DetailItem @width={{20}} @label={{if this.customer.isCompany "Bedrijf" "Naam"}}>
               <div>
-                {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
-                {{@model.prefix}} {{@model.name}} {{@model.suffix}}
-                {{#unless @model.printInFront}}{{@model.honorificPrefix.name}}{{/unless}}
+                {{#if this.customer.printInFront}}{{this.customer.honorificPrefix.name}}{{/if}}
+                {{this.customer.prefix}} {{this.customer.name}} {{this.customer.suffix}}
+                {{#unless this.customer.printInFront}}{{this.customer.honorificPrefix.name}}{{/unless}}
               </div>
-              <div><Fmt::VatNumber @value={{@model.vatNumber}} /></div>
+              <div><Fmt::VatNumber @value={{this.customer.vatNumber}} /></div>
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="Adres">
-              <div>{{@model.address1}}</div>
-              <div>{{@model.address2}}</div>
-              <div>{{@model.address3}}</div>
-              <div>{{@model.postalCode}} {{@model.city}}</div>
-              <div>{{@model.country.name}}</div>
+              <div>{{this.customer.address1}}</div>
+              <div>{{this.customer.address2}}</div>
+              <div>{{this.customer.address3}}</div>
+              <div>{{this.customer.postalCode}} {{this.customer.city}}</div>
+              <div>{{this.customer.country.name}}</div>
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="Taal">
-              {{@model.language.name}}
+              {{this.customer.language.name}}
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="Telefoon">
@@ -59,13 +59,13 @@
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="E-mail">
-              <div><Fmt::Email @value={{@model.email}} /></div>
-              <div><Fmt::Email @value={{@model.email2}} /></div>
-              <div>{{@model.url}}</div>
+              <div><Fmt::Email @value={{this.customer.email}} /></div>
+              <div><Fmt::Email @value={{this.customer.email2}} /></div>
+              <div>{{this.customer.url}}</div>
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="Opmerking">
-              {{#if @model.comment}}
+              {{#if this.customer.comment}}
                 <div>
                   <button class="text-gray-400 text-sm" type="button" {{on "click" this.toggleComment}}>
                     {{#if this.isCommentExpanded}}
@@ -76,7 +76,7 @@
                   </button>
                 </div>
                 {{#if this.isCommentExpanded}}
-                  <span class="whitespace-pre-wrap">{{@model.comment}}</span>
+                  <span class="whitespace-pre-wrap">{{this.customer.comment}}</span>
                 {{/if}}
               {{else}}
                 <div class="text-sm text-gray-400">
@@ -86,7 +86,7 @@
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="Memo">
-              {{#if @model.memo}}
+              {{#if this.customer.memo}}
                 <div>
                   <button class="text-gray-400 text-sm" type="button" {{on "click" this.toggleMemo}}>
                     {{#if this.isMemoExpanded}}
@@ -97,7 +97,7 @@
                   </button>
                 </div>
                 {{#if this.isMemoExpanded}}
-                  <span class="whitespace-pre-wrap">{{@model.memo}}</span>
+                  <span class="whitespace-pre-wrap">{{this.customer.memo}}</span>
                 {{/if}}
               {{else}}
                 <div class="text-sm text-gray-400">
@@ -110,7 +110,7 @@
       </div>
       <div class="px-6 py-4">
         <div class="italic text-xs text-gray-400">
-          Aangemaakt: {{moment-format @model.created}}
+          Aangemaakt: {{moment-format this.customer.created}}
         </div>
       </div>
     </div>
@@ -131,15 +131,15 @@
                   </span>
                   {{#if this.isEnabledEditBuilding}}
                     <button type="button"
-                      onClick={{this.toggleBuildingEdit}}
-              class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      {{on "click" this.toggleBuildingEdit}}
+                      class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                       {{svg-jar "heroicons-md-x" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
                       <span>Annuleer</span>
                     </button>
                   {{else}}
                     <button type="button"
-                      onClick={{this.toggleBuildingEdit}}
-              class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      {{on "click" this.toggleBuildingEdit}}
+                      class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                       {{svg-jar "heroicons-md-cursor-click" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
                       <span>Selecteer</span>
                     </button>
@@ -150,7 +150,7 @@
                 {{#if this.isEnabledEditBuilding}}
                   <InputField::BuildingSelect
                     @value={{this.building}}
-                    @customer={{@model}}
+                    @customer={{this.customer}}
                     @onSelectionChange={{this.updateBuilding}}
                     @label="Selecteer een gebouw"
                     class="mt-1" />
@@ -176,15 +176,15 @@
                   </span>
                   {{#if this.isEnabledEditContact}}
                     <button type="button"
-                      onClick={{this.toggleContactEdit}}
-              class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      {{on "click" this.toggleContactEdit}}
+                      class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                       {{svg-jar "heroicons-md-x" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
                       <span>Annuleer</span>
                     </button>
                   {{else}}
                     <button type="button"
-                      onClick={{this.toggleContactEdit}}
-              class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      {{on "click" this.toggleContactEdit}}
+                      class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                       {{svg-jar "heroicons-md-cursor-click" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
                       <span>Selecteer</span>
                     </button>
@@ -195,7 +195,7 @@
                 {{#if this.isEnabledEditContact}}
                   <InputField::ContactSelect
                     @value={{this.contact}}
-                    @customer={{@model}}
+                    @customer={{this.customer}}
                     @onSelectionChange={{this.updateContact}}
                     @label="Selecteer een contact"
                     class="mt-1" />
@@ -217,7 +217,7 @@
 
     <div class="mt-4 bg-white shadow rounded-lg overflow-hidden">
       <div class="divide-y divide-gray-200">
-        <Case::AttachmentsPanel @case={{this.case.current.case}} />
+        <Case::AttachmentsPanel @case={{@case}} />
       </div>
     </div>
   {{/unless}}
@@ -230,13 +230,13 @@
         </h2>
         <div>
           {{#if this.case.current.request}}
-            <LinkTo @route="main.requests.edit.customer" @model={{this.case.current.request}}
+            <LinkTo @route="main.case.request.edit.customer" @models={{array @case this.case.current.request}}
               class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-link" class="h-6 w-6"}}
               <EmberTooltip @text="Koppel klant" @side="bottom" />
             </LinkTo>
           {{else if this.case.current.intervention}}
-            <LinkTo @route="main.interventions.edit.customer" @model={{this.case.current.intervention}}
+            <LinkTo @route="main.case.intervention.edit.customer" @models={{array @case this.case.current.intervention}}
               class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-link" class="h-6 w-6"}}
               <EmberTooltip @text="Koppel klant" @side="bottom" />

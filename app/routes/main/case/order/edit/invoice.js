@@ -67,14 +67,14 @@ export default class InvoiceRoute extends Route {
       })
     );
 
+    // TODO set case on creation of invoice once relation is fully defined
+    await this.case.current.updateRecord('invoice', invoice);
+
     return invoice;
   }
 
   afterModel(model) {
-    const customer = this.modelFor('main.case');
-    this.router.transitionTo('main.case.invoice.edit', customer, model);
-
-    // update case to display the new invoice tab
-    this.case.updateRecord('invoice', model);
+    const _case = this.modelFor('main.case');
+    this.router.transitionTo('main.case.invoice.edit', _case, model);
   }
 }

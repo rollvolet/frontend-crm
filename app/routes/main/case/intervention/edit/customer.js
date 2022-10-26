@@ -1,6 +1,6 @@
-import DataTableRoute from '../../../../utils/data-table-route';
+import DataTableRoute from '../../../../../utils/data-table-route';
 
-export default class MainRequestsEditCustomerRoute extends DataTableRoute {
+export default class MainCaseInterventionEditCustomerRoute extends DataTableRoute {
   modelName = 'customer';
 
   queryParams = {
@@ -30,10 +30,9 @@ export default class MainRequestsEditCustomerRoute extends DataTableRoute {
     };
   }
 
-  setupController(controller, model) {
-    super.setupController(controller, model);
-
-    const request = this.modelFor('main.requests.edit');
-    controller.set('request', request);
+  setupController(controller) {
+    super.setupController(...arguments);
+    controller.case = this.modelFor('main.case');
+    controller.intervention = this.modelFor('main.case.intervention.edit');
   }
 }

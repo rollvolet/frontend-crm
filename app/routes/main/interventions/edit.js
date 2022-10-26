@@ -12,9 +12,10 @@ export default class MainInterventionsEditRoute extends Route {
   }
 
   async afterModel(model) {
-    const customer = await model.customer;
-    if (customer) {
-      this.router.transitionTo('main.case.intervention.edit', customer, model);
-    }
+    // TODO get related case via intervention model once relation is fully defined
+    const _case = await this.store.queryOne('case', {
+      'filter[:exact:intervention]': model.uri,
+    });
+    this.router.transitionTo('main.case.intervention.edit.index', _case.id, model.id);
   }
 }

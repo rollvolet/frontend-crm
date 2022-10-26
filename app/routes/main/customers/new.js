@@ -20,6 +20,6 @@ export default class NewRoute extends Route {
   }
 
   afterModel(model) {
-    this.router.transitionTo('main.customers.edit', model);
+    this.router.transitionTo('main.customers.edit.index', model);
   }
 }

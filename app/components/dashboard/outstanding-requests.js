@@ -100,12 +100,7 @@ export default class DashboardOutstandingRequestsComponent extends Component {
   @action
   async navigateToDetail(request, event) {
     if (event.srcElement.attributes['type']?.value != 'checkbox') {
-      const customer = await request.customer;
-      if (customer) {
-        this.router.transitionTo('main.case.request.edit', customer.id, request.id);
-      } else {
-        this.router.transitionTo('main.requests.edit', request.id);
-      }
+      this.router.transitionTo('main.requests.edit', request.id);
     }
     // else: checkbox on row has been clicked. Prevent transition to other route
   }

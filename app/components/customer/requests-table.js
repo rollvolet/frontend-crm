@@ -78,6 +78,6 @@ export default class RequestsTable extends FilterComponent {
 
   @action
   navigateToDetail(request) {
-    this.router.transitionTo('main.case.request.edit', this.args.customer, request.id);
+    this.router.transitionTo('main.requests.edit', request.id);
   }
 }

@@ -32,18 +32,18 @@ export default class CaseTabsComponent extends Component {
   get canCreateNewOffer() {
     return (
       this.model &&
-      this.model.customerId &&
+      this.model.case.customer &&
       this.model.request &&
       !this.model.request.isCancelled &&
-      this.model.offerId == null
+      this.model.case.offer == null
     );
   }
 
   get canCreateNewOrder() {
     return (
       this.model &&
-      this.model.offerId &&
-      this.model.orderId == null &&
+      this.model.case.offer &&
+      this.model.case.order == null &&
       this.model.offer &&
       !this.model.offer.isMasteredByAccess
     );
@@ -52,16 +52,16 @@ export default class CaseTabsComponent extends Component {
   get canCreateNewInvoice() {
     const canCreateNewInvoiceForOrder =
       this.model &&
-      this.model.orderId &&
-      this.model.invoiceId == null &&
+      this.model.case.order &&
+      this.model.case.invoice == null &&
       this.model.order &&
       !this.model.order.isMasteredByAccess &&
       !this.model.order.canceled;
     const canCreateNewInvoiceForIntervention =
       this.model &&
-      this.model.customerId &&
-      this.model.interventionId &&
-      this.model.invoiceId == null &&
+      this.model.case.customer &&
+      this.model.case.intervention &&
+      this.model.case.invoice == null &&
       !this.model.intervention.isCancelled;
 
     return canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention;

@@ -18,7 +18,7 @@
   {{#if this.order}}
     <div class="flex flex-col p-4 text-center">
       <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
-        <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model}}>
+        <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{this.order}}>
           Voorschotfacturen
         </LinkTo>
       </dt>
@@ -28,7 +28,7 @@
     </div>
     <div class="flex flex-col p-4 text-center">
       <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
-        <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model}}>
+        <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{this.order}}>
           Voorschotten
         </LinkTo>
       </dt>

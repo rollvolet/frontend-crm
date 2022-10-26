@@ -2,12 +2,12 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
 
-export default class NewRoute extends Route {
+export default class MainCustomersEditInvoiceRoute extends Route {
   @service store;
   @service router;
 
   async model() {
-    const customer = this.modelFor('main.case');
+    const customer = this.modelFor('main.customers.edit');
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
 
     const invoiceDate = new Date();
@@ -25,11 +25,20 @@ export default class NewRoute extends Route {
       vatRate,
     });
 
-    return invoice.save();
+    await invoice.save();
+
+    // TODO first create case and relate to invoice once relationship is fully defined
+    const _case = this.store.createRecord('case', {
+      customer: customer.uri,
+      invoice: invoice.uri,
+    });
+
+    await _case.save();
+
+    return { case: _case, invoice };
   }
 
   afterModel(model) {
-    const customer = this.modelFor('main.case');
-    this.router.transitionTo('main.case.invoice.edit', customer, model);
+    this.router.transitionTo('main.case.invoice.edit.index', model.case.id, model.invoice.id);
   }
 }

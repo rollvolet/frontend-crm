@@ -107,7 +107,7 @@
               {{#each this.outstandingJobs as |row|}}
                 <tr>
                   <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
-                    <LinkTo @route="main.case.order.edit" @models={{array row.customerNumber row.orderId}}
+                    <LinkTo @route="main.orders.edit" @model={{row.orderId}}
                       class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                       AD{{format-request-number row.requestId}}
                     </LinkTo>

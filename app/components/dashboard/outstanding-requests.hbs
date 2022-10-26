@@ -110,17 +110,10 @@
                         @onChange={{fn this.toggleSelection row}} />
                     </td>
                     <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
-                      {{#if row.customer}}
-                        <LinkTo @route="main.case.request.edit" @models={{array row.customer.id row.id}}
-                          class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                          AD{{format-request-number row.id}}
-                        </LinkTo>
-                      {{else}}
-                        <LinkTo @route="main.requests.edit" @model={{row.id}}
-                          class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                          AD{{format-request-number row.id}}
-                        </LinkTo>
-                      {{/if}}
+                      <LinkTo @route="main.requests.edit" @model={{row.id}}
+                        class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                        AD{{format-request-number row.id}}
+                      </LinkTo>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-900">
                       <Fmt::Date @value={{row.requestDate}} />

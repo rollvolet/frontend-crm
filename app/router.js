@@ -13,36 +13,42 @@ Router.map(function () {
   this.route('main', { path: '/' }, function () {
     this.route('customers', function () {
       this.route('new');
-      this.route('edit', { path: '/:customer_id' });
+      this.route('edit', { path: '/:customer_id' }, function () {
+        this.route('request'); // create a new request with accompanying case
+        this.route('intervention'); // create a new intervention with accompanying case
+        this.route('invoice'); // create a new isolated invoice with accompanying case
+      });
     });
     this.route('requests', function () {
-      this.route('new'); // create a new request without a customer
-      this.route('edit', { path: '/:request_id' }, function () {
-        this.route('customer');
-      });
+      this.route('new'); // create a new request without customer
+      this.route('edit', { path: '/:request_id' }); // shortcut for main.case.request.edit.index
     });
     this.route('interventions', function () {
-      this.route('new'); // create a new intervention without a customer
-      this.route('edit', { path: '/:intervention_id' }, function () {
-        this.route('customer');
-      });
+      this.route('new'); // create a new intervention without customer
+      this.route('edit', { path: '/:intervention_id' }); // shortcut for main.case.intervention.edit.index
     });
-    this.route('offers', function () {});
+    this.route('offers', function () {
+      this.route('edit', { path: '/:offer_id' }); // shortcut for main.case.offer.edit.index
+    });
     this.route('orders', function () {
-      this.route('edit', { path: '/:order_id' });
+      this.route('edit', { path: '/:order_id' }); // shortcut for main.case.order.edit.index
     });
-    this.route('deposit-invoices', function () {});
-    this.route('invoices', function () {});
+    this.route('deposit-invoices', function () {
+      this.route('edit', { path: '/:deposit_invoice_id' }); // shortcut for main.case.order.edit.deposit-invoices
+    });
+    this.route('invoices', function () {
+      this.route('edit', { path: '/:invoice_id' }); // shortcut for main.case.invoice.edit.index
+    });
     this.route('case', { path: '/case/:case_id' }, function () {
       this.route('request', function () {
-        this.route('new'); // create a new request with a customer
         this.route('edit', { path: '/:request_id' }, function () {
+          this.route('customer'); // link a customer
           this.route('offer'); // create new offer
         });
       });
       this.route('intervention', function () {
-        this.route('new'); // create a new intervention with a customer
         this.route('edit', { path: '/:intervention_id' }, function () {
+          this.route('customer'); // link a customer
           this.route('invoice'); // create new invoice for intervention
         });
       });
@@ -58,7 +64,6 @@ Router.map(function () {
         });
       });
       this.route('invoice', function () {
-        this.route('new'); // create new isolated invoice
         this.route('edit', { path: '/:invoice_id' }, function () {});
       });
     });

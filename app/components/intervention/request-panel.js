@@ -40,9 +40,19 @@ export default class InterventionRequestPanelComponent extends Component {
     });
     yield request.save();
 
+    // TODO first create case and relate to request once relationship is fully defined
+    const _case = this.store.createRecord('case', {
+      customer: customer?.uri,
+      contact: contact?.uri,
+      building: building?.uri,
+      request: request.uri,
+    });
+
+    yield _case.save();
+
     const body = {
-      contactId: contact && contact.id,
-      buildingId: building && building.id,
+      contactId: contact?.id,
+      buildingId: building?.id,
       requestId: request.id,
     };
     yield updateContactAndBuildingRequest(body);
@@ -51,7 +61,7 @@ export default class InterventionRequestPanelComponent extends Component {
     this.args.model.cancellationReason = 'Nieuwe aanvraag gestart';
     yield this.args.model.save();
 
-    this.router.transitionTo('main.requests.edit', request.id, {
+    this.router.transitionTo('main.case.request.edit.index', _case.id, request.id, {
       queryParams: { editMode: true },
     });
   }

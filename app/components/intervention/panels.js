@@ -32,6 +32,7 @@ export default class InterventionPanelsComponent extends Component {
         yield calendarEvent.destroyRecord();
       }
       yield this.args.model.destroyRecord();
+      yield this.case.current.case.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying intervention ${this.args.model.id}`, {
         id: 'destroy-failure',
@@ -39,7 +40,7 @@ export default class InterventionPanelsComponent extends Component {
       yield this.args.model.rollbackAttributes(); // undo delete-state
     } finally {
       if (customer) {
-        this.router.transitionTo('main.customers.edit', customer);
+        this.router.transitionTo('main.customers.edit.index', customer);
       } else {
         this.router.transitionTo('main.interventions.index');
       }

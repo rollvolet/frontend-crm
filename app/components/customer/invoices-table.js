@@ -74,6 +74,6 @@ export default class InvoicesTable extends FilterComponent {
 
   @action
   navigateToDetail(invoice) {
-    this.router.transitionTo('main.case.invoice.edit', this.args.customer, invoice.id);
+    this.router.transitionTo('main.invoices.edit', invoice.id);
   }
 }

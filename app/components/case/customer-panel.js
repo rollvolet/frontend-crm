@@ -6,7 +6,7 @@ import { task, keepLatestTask } from 'ember-concurrency';
 
 /**
  * Arguments
- * @model {Customer} customer record to show. Optional, might be null.
+ * @case {CaseDispatcher} Case record to show customer details for
  */
 export default class CaseCustomerPanelComponent extends Component {
   @service case;
@@ -26,10 +26,10 @@ export default class CaseCustomerPanelComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    if (this.args.model) {
-      // TODO use this.args.model.telephones once the relation is defined
+    if (this.customer) {
+      // TODO use this.customer.telephones once the relation is defined
       const telephones = yield this.store.query('telephone', {
-        'filter[:exact:customer]': this.args.model.uri,
+        'filter[:exact:customer]': this.customer.uri,
         sort: 'position',
         page: { size: 100 },
       });
@@ -52,6 +52,10 @@ export default class CaseCustomerPanelComponent extends Component {
     return isRequestWithoutOffer || isInterventionWithoutInvoice;
   }
 
+  get customer() {
+    return this.case.current && this.case.current.customer;
+  }
+
   get contact() {
     return this.case.current && this.case.current.contact;
   }
@@ -65,9 +69,17 @@ export default class CaseCustomerPanelComponent extends Component {
     yield this.case.unlinkCustomer.perform();
 
     if (this.case.current.request)
-      this.router.transitionTo('main.requests.edit', this.case.current.request.id);
+      this.router.transitionTo(
+        'main.case.request.edit.index',
+        this.case.current.case.id,
+        this.case.current.request.id
+      );
     else if (this.case.current.intervention)
-      this.router.transitionTo('main.interventions.edit', this.case.current.intervention.id);
+      this.router.transitionTo(
+        'main.case.intervention.edit.index',
+        this.case.current.case.id,
+        this.case.current.intervention.id
+      );
   }
 
   @action

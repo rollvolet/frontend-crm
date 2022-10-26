@@ -74,6 +74,6 @@ export default class CustomerInterventionsTableComponent extends FilterComponent
 
   @action
   navigateToDetail(intervention) {
-    this.router.transitionTo('main.case.intervention.edit', this.args.customer, intervention.id);
+    this.router.transitionTo('main.interventions.edit', intervention.id);
   }
 }

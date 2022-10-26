@@ -84,6 +84,6 @@ export default class OrdersTable extends FilterComponent {
 
   @action
   navigateToDetail(order) {
-    this.router.transitionTo('main.case.order.edit', this.args.customer, order.id);
+    this.router.transitionTo('main.orders.edit', order.id);
   }
 }

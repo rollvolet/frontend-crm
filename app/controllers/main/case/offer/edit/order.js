@@ -98,6 +98,9 @@ export default class OrderController extends Controller {
 
       yield order.save();
 
+      // TODO relate case to order once relationship is fully defined
+      yield this.case.current.updateRecord('order', order);
+
       const invoicelines = this.orderedOfferlines.map(async (offerline) => {
         const invoiceline = this.store.createRecord('invoiceline', {
           position: offerline.position,
@@ -121,18 +124,15 @@ export default class OrderController extends Controller {
       });
       yield all(calculationLinesCleanup);
 
-      this.router.transitionTo('main.case.order.edit', customer, order);
-
-      // update case to display the new order tab
-      this.case.updateRecord('order', order);
+      this.router.transitionTo('main.case.order.edit', this.case.current.case.id, order);
     }
   }
 
   @action
   cancel() {
     this.model.forEach((o) => (o.isOrdered = false));
-    const customer = this.case.current.customer;
-    this.router.transitionTo('main.case.offer.edit', customer, this.offer.id);
+    const _case = this.case.current.case;
+    this.router.transitionTo('main.case.offer.edit', _case.id, this.offer.id);
   }
 
   openIncompatibleVatRatesModal() {

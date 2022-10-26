@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import applyFilterParams from '../../../utils/apply-filter-params';
 
-export default class IndexController extends Controller {
+export default class MainInvoicesIndexController extends Controller {
   @service router;
 
   @tracked page = 0;
@@ -32,8 +32,7 @@ export default class IndexController extends Controller {
   }
 
   @action
-  async navigateToDetail(invoice) {
-    const customer = await invoice.customer;
-    this.router.transitionTo('main.case.invoice.edit', customer.id, invoice.id);
+  navigateToDetail(invoice) {
+    this.router.transitionTo('main.invoices.edit', invoice.id);
   }
 }
