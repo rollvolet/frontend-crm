@@ -116,14 +116,29 @@ export default class RequestDetailPanelComponent extends Component {
 
   @keepLatestTask
   *updateCalendarPeriod(calendarPeriod) {
-    yield setCalendarEventProperties(this.calendarEvent, {
-      request: this.args.model,
-      customer: this.case.current.customer,
-      building: this.case.current.building,
-      visitor: this.case.visitor,
-      calendarPeriod,
-    });
-    yield this.saveCalendarEvent.perform();
+    if (this.calendarEvent) {
+      yield setCalendarEventProperties(this.calendarEvent, {
+        request: this.args.model,
+        customer: this.case.current.customer,
+        building: this.case.current.building,
+        visitor: this.case.visitor,
+        calendarPeriod,
+      });
+      yield this.saveCalendarEvent.perform();
+    }
+  }
+
+  @keepLatestTask
+  *synchronizeCalendarEvent() {
+    if (this.calendarEvent) {
+      yield setCalendarEventProperties(this.calendarEvent, {
+        request: this.args.model,
+        customer: this.case.current.customer,
+        building: this.case.current.building,
+        visitor: this.case.visitor,
+      });
+      yield this.saveCalendarEvent.perform();
+    }
   }
 
   @keepLatestTask
@@ -140,17 +155,6 @@ export default class RequestDetailPanelComponent extends Component {
         yield this.args.model.save();
       }
     }
-  }
-
-  @keepLatestTask
-  *synchronizeCalendarEvent() {
-    yield setCalendarEventProperties(this.calendarEvent, {
-      request: this.args.model,
-      customer: this.case.current.customer,
-      building: this.case.current.building,
-      visitor: this.case.visitor,
-    });
-    yield this.saveCalendarEvent.perform();
   }
 
   @action

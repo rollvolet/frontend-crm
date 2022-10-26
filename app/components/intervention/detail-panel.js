@@ -65,25 +65,29 @@ export default class InterventionDetailPanelComponent extends Component {
 
   @keepLatestTask
   *updateCalendarEventSubject(calendarPeriod) {
-    yield setCalendarEventProperties(this.calendarEvent, {
-      intervention: this.args.model,
-      customer: this.case.current.customer,
-      building: this.case.current.building,
-      calendarPeriod,
-    });
-    yield this.saveCalendarEvent.perform();
+    if (this.calendarEvent) {
+      yield setCalendarEventProperties(this.calendarEvent, {
+        intervention: this.args.model,
+        customer: this.case.current.customer,
+        building: this.case.current.building,
+        calendarPeriod,
+      });
+      yield this.saveCalendarEvent.perform();
+    }
   }
 
   @keepLatestTask
   *synchronizeCalendarEvent() {
-    yield setCalendarEventProperties(this.calendarEvent, {
-      intervention: this.args.model,
-      customer: this.case.current.customer,
-      building: this.case.current.building,
-    });
-    if (!this.calendarEvent.isNew) {
-      // only save if it has already been saved before (by selecting a date/period)
-      yield this.saveCalendarEvent.perform();
+    if (this.calendarEvent) {
+      yield setCalendarEventProperties(this.calendarEvent, {
+        intervention: this.args.model,
+        customer: this.case.current.customer,
+        building: this.case.current.building,
+      });
+      if (!this.calendarEvent.isNew) {
+        // only save if it has already been saved before (by selecting a date/period)
+        yield this.saveCalendarEvent.perform();
+      }
     }
   }
 
