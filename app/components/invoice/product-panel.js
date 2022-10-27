@@ -26,6 +26,7 @@ export default class InvoiceProductPanelComponent extends Component {
       page: { size: 100 },
     });
     this.invoicelines = invoicelines.toArray();
+    yield this.updateInvoicelinesTotalAmount.perform(); // ensure invoice amount is up-to-date
   }
 
   get sortedInvoicelines() {

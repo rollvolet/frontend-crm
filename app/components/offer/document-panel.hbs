@@ -89,8 +89,8 @@
                   @saveTask={{this.saveOfferline}}
                   @onDelete={{perform this.deleteOfferline line}}
                   @onCopy={{perform this.copyOfferline line}}
-                  @onMoveUp={{perform this.moveOfferlineUp line}}
-                  @onMoveDown={{perform this.moveOfferlineDown line}}
+                  @onMoveUp={{if (has-previous line this.sortedOfferlines) (perform this.moveOfferlineUp line)}}
+                  @onMoveDown={{if (has-next line this.sortedOfferlines) (perform this.moveOfferlineDown line)}}
                   @isDisabledEdit={{@isDisabledEdit}} />
               </li>
             {{else}}

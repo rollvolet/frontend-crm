@@ -20,7 +20,7 @@ export default class OfferlineDetailComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    yield this.args.model.calculationLines; // used to show loading state in template
+    yield this.updateOfferlineAmount.perform(); // ensure total offerline amount is up-to-date
   }
 
   get showUnsavedWarning() {
@@ -32,13 +32,13 @@ export default class OfferlineDetailComponent extends Component {
     );
   }
 
-  @action
-  async updateOfferlineAmount() {
-    const calculationLines = await this.args.model.calculationLines;
+  @task
+  *updateOfferlineAmount() {
+    const calculationLines = yield this.args.model.calculationLines;
     const totalAmount = sum(calculationLines.map((line) => line.arithmeticAmount));
     this.args.model.amount = totalAmount;
     if (this.args.model.hasDirtyAttributes) {
-      await this.args.model.save(); // only save if total amount of offerline has changed
+      yield this.args.model.save(); // only save if total amount of offerline has changed
     }
   }
 
@@ -58,7 +58,7 @@ export default class OfferlineDetailComponent extends Component {
       yield calculationLine.save();
     }
 
-    yield this.updateOfferlineAmount();
+    yield this.updateOfferlineAmount.perform();
   }
 
   @task
@@ -66,7 +66,7 @@ export default class OfferlineDetailComponent extends Component {
     if (!calculationLine.isDeleted) {
       yield calculationLine.destroyRecord();
     }
-    yield this.updateOfferlineAmount();
+    yield this.updateOfferlineAmount.perform();
   }
 
   @task

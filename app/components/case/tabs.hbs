@@ -1,6 +1,6 @@
 <div>
   <div class="block">
-    <div class="border-b border-gray-300">
+    <div class="border-b border-gray-300 flex items-center justify-between">
       <nav class="-mb-px flex flex-wrap md:flex-nowrap space-x-8" aria-label="Tabs">
         <div class="p-4 {{if this.isLoading "w-32"}} text-sm font-bold text-gray-500 bg-gray-200 rounded-t-lg whitespace-nowrap border border-gray-300">
           {{#if this.isLoading}}
@@ -112,32 +112,32 @@
             </LinkTo>
           </div>
         {{/if}}
+      </nav>
+      <div>
         {{#if this.canCreateNewInvoice}}
           {{#if this.model.orderId}}
             <div class="flex items-center">
               <LinkTo @route="main.case.order.edit.invoice"
                 @models={{array this.model.customerId this.model.orderId}}
-                @activeClass="bg-red-200 border-red-300 !text-red-500 hover:bg-red-200 hover:border-red-300 hover:text-red-500"
-                class="inline-flex items-center p-2 border border-gray-300 rounded-full text-gray-500 bg-gray-200 hover:bg-red-200 hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparant"
+                @activeClass="bg-blue-200 border-blue-300 !text-blue-500 hover:bg-blue-200 hover:border-blue-300 hover:text-blue-500"
+                class="inline-flex items-center rounded-md border border-transparent bg-blue-100 px-3 py-2 text-sm font-medium leading-4 text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 data-case-tab>
-                <EmberTooltip @text="Factuur aanmaken" @side="right" />
-                {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
+                {{svg-jar "heroicons-md-plus" class="-ml-1 mr-2 h-5 w-5"}} Factuur maken
               </LinkTo>
             </div>
           {{else if this.model.interventionId}}
             <div class="flex items-center">
               <LinkTo @route="main.case.intervention.edit.invoice"
                 @models={{array this.model.customerId this.model.interventionId}}
-                  @activeClass="bg-red-200 border-red-300 !text-red-500 hover:bg-red-200 hover:border-red-300 hover:text-red-500"
-                  class="inline-flex items-center p-2 border border-gray-300 rounded-full text-gray-500 bg-gray-200 hover:bg-red-200 hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparant"
-                  data-case-tab>
-                <EmberTooltip @text="Factuur aanmaken" @side="right" />
-                {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
+                @activeClass="bg-blue-200 border-blue-300 !text-blue-500 hover:bg-blue-200 hover:border-blue-300 hover:text-blue-500"
+                class="inline-flex items-center rounded-md border border-transparent bg-blue-100 px-3 py-2 text-sm font-medium leading-4 text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                data-case-tab>
+                {{svg-jar "heroicons-md-plus" class="-ml-1 mr-2 h-5 w-5"}} Factuur maken
               </LinkTo>
             </div>
           {{/if}}
         {{/if}}
-      </nav>
+      </div>
     </div>
   </div>
 </div>

@@ -96,27 +96,31 @@ export default class OrderDetailPanelComponent extends Component {
 
   @keepLatestTask
   *updateCalendarEventSubject(calendarPeriod) {
-    yield setCalendarEventProperties(this.calendarEvent, {
-      order: this.args.model,
-      customer: this.case.current.customer,
-      building: this.case.current.building,
-      visitor: this.case.visitor,
-      calendarPeriod,
-    });
-    yield this.saveCalendarEvent.perform();
+    if (this.calendarEvent) {
+      yield setCalendarEventProperties(this.calendarEvent, {
+        order: this.args.model,
+        customer: this.case.current.customer,
+        building: this.case.current.building,
+        visitor: this.case.visitor,
+        calendarPeriod,
+      });
+      yield this.saveCalendarEvent.perform();
+    }
   }
 
   @keepLatestTask
   *synchronizeCalendarEvent() {
-    yield setCalendarEventProperties(this.calendarEvent, {
-      order: this.args.model,
-      customer: this.case.current.customer,
-      building: this.case.current.building,
-      visitor: this.case.visitor,
-    });
-    if (!this.calendarEvent.isNew) {
-      // only save if it has already been saved before (by selecting a date/period)
-      yield this.saveCalendarEvent.perform();
+    if (this.calendarEvent) {
+      yield setCalendarEventProperties(this.calendarEvent, {
+        order: this.args.model,
+        customer: this.case.current.customer,
+        building: this.case.current.building,
+        visitor: this.case.visitor,
+      });
+      if (!this.calendarEvent.isNew) {
+        // only save if it has already been saved before (by selecting a date/period)
+        yield this.saveCalendarEvent.perform();
+      }
     }
   }
 

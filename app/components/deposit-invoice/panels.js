@@ -112,7 +112,6 @@ export default class DepositInvoicePanelsComponent extends Component {
     const customer = yield invoice.customer;
     const contact = yield invoice.contact;
     const building = yield invoice.building;
-    const order = yield invoice.order;
     const vatRate = yield invoice.vatRate;
 
     const creditNote = this.store.createRecord('deposit-invoice', {
@@ -124,7 +123,7 @@ export default class DepositInvoicePanelsComponent extends Component {
       certificateClosed: false,
       reference: invoice.reference,
       baseAmount: invoice.baseAmount,
-      order,
+      order: this.order,
       vatRate,
       customer,
       contact,
