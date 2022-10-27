@@ -6,18 +6,22 @@
       </div>
       {{#unless @isDisabledEdit}}
         <div class="flex items-center">
-          <button type="button"
-            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-            {{on "click" @onMoveUp}}>
-            {{svg-jar "heroicons-md-arrow-sm-up" class="h-5 w-5"}}
-            <EmberTooltip @text="Verplaats omhoog" />
-          </button>
-          <button type="button"
-            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-            {{on "click" @onMoveDown}}>
-            {{svg-jar "heroicons-md-arrow-sm-down" class="h-5 w-5"}}
-            <EmberTooltip @text="Verplaats omlaag" />
-          </button>
+          {{#if @onMoveUp}}
+            <button type="button"
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+              {{on "click" @onMoveUp}}>
+              {{svg-jar "heroicons-md-arrow-sm-up" class="h-5 w-5"}}
+              <EmberTooltip @text="Verplaats omhoog" />
+            </button>
+          {{/if}}
+          {{#if @onMoveDown}}
+            <button type="button"
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+              {{on "click" @onMoveDown}}>
+              {{svg-jar "heroicons-md-arrow-sm-down" class="h-5 w-5"}}
+              <EmberTooltip @text="Verplaats omlaag" />
+            </button>
+          {{/if}}
         </div>
         <button type="button"
           class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
