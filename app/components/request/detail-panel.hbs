@@ -180,8 +180,7 @@
             @value={{@model.description}}
             class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md disabled:bg-gray-100"
             rows="5"
-            {{on "focusout" (perform this.save)}}
-            disabled={{this.isLimitedEdit}} />
+            {{on "focusout" (perform this.save)}} />
         </div>
         <div class="sm:col-span-2 sm:order-4">
           <label for="comment" class="block text-sm font-medium text-gray-700">
