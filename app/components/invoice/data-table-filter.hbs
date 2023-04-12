@@ -47,17 +47,6 @@
         {{on "input" (perform this.debounceFilter "requestNumber")}} />
     </div>
     <div class="sm:col-span-4 lg:col-span-2">
-      <label for="filter-offer-number" class="block text-sm font-medium text-gray-700">
-        Offertenr.
-      </label>
-      <input
-        id="filter-offer-number"
-        type="text"
-        value={{this.filter.offerNumber}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "offerNumber")}} />
-    </div>
-    <div class="sm:col-span-4 lg:col-span-2">
       <label for="filter-reference" class="block text-sm font-medium text-gray-700">
         Referentie
       </label>
