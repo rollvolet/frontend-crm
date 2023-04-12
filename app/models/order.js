@@ -45,7 +45,6 @@ export default class OrderModel extends ValidatedModel {
   // TODO enable once order is converted to triplestore
   // @belongsTo('calendar-event') calendarEvent;
   @hasMany('deposit') deposits;
-  @hasMany('deposit-invoices') depositInvoices;
   // @hasMany('invoiceline') invoicelines;
   @hasMany('interventions') interventions;
   @hasMany('employee', { inverse: null }) technicians;

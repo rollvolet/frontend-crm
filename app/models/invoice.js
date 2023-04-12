@@ -1,35 +1,38 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
+import { INVOICE_TYPES } from '../config/constants';
 
 export default class InvoiceModel extends ValidatedModel {
   validators = {
     invoiceDate: new Validator('presence', {
       presence: true,
     }),
-    baseAmount: new Validator('number', {
+    totalAmountNet: new Validator('number', {
       allowBlank: true,
       positive: true,
     }),
-    // Enable validation once https://github.com/offirgolan/ember-cp-validations/issues/651 is fixed
-    // vatRate: new Validator('presence', { presence: true })
   };
 
-  @attr number;
-  @attr('date-midnight') invoiceDate;
-  @attr('date-midnight') dueDate;
-  @attr('date-midnight') bookingDate;
-  @attr('date-midnight') paymentDate;
-  @attr('date-midnight') cancellationDate;
-  @attr baseAmount;
-  @attr('boolean') certificateRequired;
-  @attr('boolean') certificateReceived;
-  @attr('boolean') certificateClosed;
-  @attr('boolean') isCreditNote;
-  @attr('boolean') hasProductionTicket;
-  @attr comment;
-  @attr qualification;
-  @attr documentOutro;
-  @attr reference;
+  @attr('string') uri;
+  @attr('string') type;
+  @attr('number') number;
+  @attr('date') invoiceDate;
+  @attr('date') dueDate;
+  @attr('date') bookingDate;
+  @attr('date') paymentDate;
+  @attr('date') cancellationDate;
+  @attr('string') documentOutro;
+
+  @attr totalAmountNet;
+  @attr paymentAmountNet;
+  @attr vatAmount;
+
+  @attr('string', {
+    defaultValue() {
+      return 'EUR';
+    },
+  })
+  currency;
   @attr('string', {
     defaultValue() {
       return 'RKB';
@@ -37,20 +40,13 @@ export default class InvoiceModel extends ValidatedModel {
   })
   origin;
 
-  @belongsTo('order') order;
-  @belongsTo('intervention') intervention;
-  @belongsTo('customer') customer;
-  @belongsTo('contact') contact;
-  @belongsTo('building') building;
-  @belongsTo('vat-rate') vatRate;
-  @hasMany('deposit') deposits;
-  @hasMany('deposit-invoice') depositInvoices;
-  // @hasMany('invoiceline') invoicelines;
-  // @hasMany('technical-work-activity') technicalWorkActivities;
+  @belongsTo('case', { inverse: 'invoices' }) case;
+  @belongsTo('customer-snapshot', { inverse: 'invoice' }) customer;
+  @belongsTo('contact-snapshot', { inverse: 'invoice' }) contact;
+  @belongsTo('building-snapshot', { inverse: 'invoice' }) building;
 
-  get isIsolated() {
-    return this.order.get('id') == null && this.intervention.get('id') == null;
-  }
+  @hasMany('invoiceline', { inverse: 'invoice' }) invoicelines;
+  @hasMany('technical-work-activity', { inverse: 'invoice' }) technicalWorkActivities;
 
   get isBooked() {
     return this.bookingDate != null;
@@ -58,6 +54,14 @@ export default class InvoiceModel extends ValidatedModel {
 
   get isPaid() {
     return this.paymentDate != null;
+  }
+
+  get isCreditNote() {
+    return this.type == INVOICE_TYPES.CREDIT_NOTE;
+  }
+
+  get arithmeticAmount() {
+    return this.isCreditNote ? this.totalAmountNet * -1.0 : this.totalAmountNet;
   }
 
   get bankReference() {
@@ -70,9 +74,5 @@ export default class InvoiceModel extends ValidatedModel {
 
   get isMasteredByAccess() {
     return this.origin == 'Access';
-  }
-
-  get uri() {
-    return `http://data.rollvolet.be/invoices/${this.id}`;
   }
 }

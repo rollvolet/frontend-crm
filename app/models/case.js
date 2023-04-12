@@ -1,10 +1,13 @@
-import Model, { attr, hasMany } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 
 export default class CaseModel extends Model {
-  @attr uri;
-  @attr identifier;
-  @attr reference;
-  @attr comment;
+  @attr('string') uri;
+  @attr('string') identifier;
+  @attr('string') reference;
+  @attr('string') comment;
+  @attr('boolean') hasProductionTicket;
+  @attr('boolean') certificateRequired;
+  @attr('boolean') certificateReceived;
 
   @attr customer;
   // @belongsTo('customer') customer;
@@ -21,11 +24,12 @@ export default class CaseModel extends Model {
   // @belongsTo('offer') offer;
   @attr order;
   // @belongsTo('order') order;
-  // @attr('uri-set') depositInvoices;
-  // @hasMany('deposit-invoice') depositInvoices;
-  @attr invoice;
-  // @belongsTo('invoice') invoice;
 
-  // @belongsTo('vat-rate') vatRate;
+  @belongsTo('invoice', { inverse: 'case' }) invoices;
+  @belongsTo('vat-rate', { inverse: 'cases' }) vatRate;
   @hasMany('file') attachments;
+
+  get isIsolated() {
+    return this.order == null && this.intervention == null;
+  }
 }

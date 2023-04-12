@@ -88,8 +88,6 @@ export default class CustomerModel extends ValidatedModel {
   @hasMany('offer') offers;
   @hasMany('order') orders;
   @hasMany('deposit') deposits;
-  @hasMany('deposit-invoice') depositInvoices;
-  @hasMany('invoice') invoices;
   @hasMany('tag') tags;
 
   get address() {
