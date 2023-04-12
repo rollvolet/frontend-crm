@@ -1,4 +1,4 @@
-import { attr, belongsTo } from '@ember-data/model';
+import { attr, belongsTo, hasMany } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
 
 export default class TelephoneModel extends ValidatedModel {
@@ -9,9 +9,9 @@ export default class TelephoneModel extends ValidatedModel {
     }),
   };
 
-  @attr value;
+  @attr('string') value;
   @attr('number') position;
-  @attr note;
+  @attr('string') note;
   // TODO refactor once customers are stored in triplestore
   @attr customer;
   @attr contact;
@@ -19,6 +19,8 @@ export default class TelephoneModel extends ValidatedModel {
 
   @belongsTo('country') country;
   @belongsTo('telephone-type') telephoneType;
+
+  @hasMany('customer-snapshot', { inverse: 'telephones' }) customerSnapshots;
 
   // @belongsTo('customer') customer;
   // @belongsTo('contact') contact;

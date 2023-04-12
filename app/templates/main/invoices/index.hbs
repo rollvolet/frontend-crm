@@ -9,7 +9,6 @@
 <div class="mt-6 bg-white shadow rounded-lg">
   <Invoice::DataTableFilter
     @number={{this.number}}
-    @offerNumber={{this.offerNumber}}
     @reference={{this.reference}}
     @requestNumber={{this.requestNumber}}
     @cName={{this.cName}}
@@ -43,7 +42,7 @@
                   Nr.
                 </DataTable::Th>
                 <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  AD
+                  Dossier
                 </th>
                 <DataTable::Th
                   @field="invoice-date"
@@ -137,7 +136,7 @@
                       {{format-invoice-number row.number}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {{format-request-number row.order.requestNumber}}
+                      {{format-case-number row.case.identifier}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <Fmt::Date @value={{row.invoiceDate}} />
@@ -147,21 +146,21 @@
                         {{#if row.building}}
                           {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
                           <div class="space-y-1">
-                            {{#if row.building.printName}}
+                            {{#if row.building.name}}
                               <div>
-                                {{row.building.printName}}
+                                {{row.building.name}}
                               </div>
                             {{else}}
                               <div class="text-gray-400 italic font-normal">
                                 Naamloos
                               </div>
                             {{/if}}
-                            <div class="text-gray-400 text-xs"><Fmt::CustomerName @model={{row.customer}} /></div>
+                            <div class="text-gray-400 text-xs">{{row.customer.name}}</div>
                           </div>
                         {{else}}
                           {{#if row.customer}}
                             {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
-                            <Fmt::CustomerName @model={{row.customer}} />
+                            {{row.customer.name}}
                           {{else}}
                             {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
                             <span class="text-gray-400 italic">Geen klant gekoppeld</span>
@@ -169,15 +168,17 @@
                         {{/if}}
                       </div>
                     </td>
-                    <td class="px-6 py-4 text-sm text-gray-500">
-                      {{if row.building row.building.address1 row.customer.address1}}
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-500">
-                      {{if row.building row.building.postalCode row.customer.postalCode}}
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-500">
-                      {{if row.building row.building.city row.customer.city}}
-                    </td>
+                    {{#let (if row.building row.building.address row.customer.address) as |address|}}
+                      <td class="px-6 py-4 text-sm text-gray-500">
+                        {{address.street}}
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-500">
+                        {{address.postalCode}}
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-500">
+                        {{address.city}}
+                      </td>
+                    {{/let}}
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <LinkTo @route="main.invoices.edit" @model={{row.id}}
                         class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">

@@ -1,6 +1,8 @@
 import DataTableRoute from '../../../utils/data-table-route';
 import onlyNumericChars from '../../../utils/only-numeric-chars';
-import formatOfferNumber from '../../../utils/format-offer-number';
+import constants from '../../../config/constants';
+
+const { INVOICE_TYPES } = constants;
 
 export default class MainInvoicesIndexRoute extends DataTableRoute {
   modelName = 'invoice';
@@ -12,7 +14,6 @@ export default class MainInvoicesIndexRoute extends DataTableRoute {
     // filter params
     number: { refreshModel: true },
     requestNumber: { refreshModel: true },
-    offerNumber: { refreshModel: true },
     reference: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
@@ -27,26 +28,33 @@ export default class MainInvoicesIndexRoute extends DataTableRoute {
 
   mergeQueryOptions(params) {
     return {
-      include: 'customer,customer.honorific-prefix,order,building',
+      include: ['customer.address.country', 'building.address.country', 'case'].join(','),
       filter: {
+        // using :gt:-flag as workaround to exclude deposit invoices
+        ':gt:type': INVOICE_TYPES.DEPOSIT_INVOICE,
         number: onlyNumericChars(params.number),
-        reference: params.reference,
-        offer: {
-          number: formatOfferNumber(params.offerNumber),
-          'request-number': onlyNumericChars(params.requestNumber),
+        case: {
+          identifier: onlyNumericChars(params.requestNumber),
+          reference: params.reference,
         },
         customer: {
           name: params.cName,
-          'postal-code': params.cPostalCode,
-          city: params.cCity,
-          street: params.cStreet,
-          telephone: params.cTelephone,
+          address: {
+            'postal-code': params.cPostalCode,
+            city: params.cCity,
+            street: params.cStreet,
+          },
+          telephones: {
+            value: params.cTelephone,
+          },
         },
         building: {
           name: params.bName,
-          'postal-code': params.bPostalCode,
-          city: params.bCity,
-          street: params.bStreet,
+          address: {
+            'postal-code': params.bPostalCode,
+            city: params.bCity,
+            street: params.bStreet,
+          },
         },
       },
     };

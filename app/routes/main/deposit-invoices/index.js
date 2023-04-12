@@ -43,7 +43,9 @@ export default class MainDepositInvoicesIndexRoute extends DataTableRoute {
             city: params.cCity,
             street: params.cStreet,
           },
-          telephone: params.cTelephone,
+          telephones: {
+            value: params.cTelephone,
+          },
         },
         building: {
           name: params.bName,
