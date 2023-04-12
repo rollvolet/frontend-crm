@@ -111,6 +111,6 @@ export default class CustomerModel extends ValidatedModel {
   }
 
   get uri() {
-    return `http://data.rollvolet.be/customers/${this.number}`;
+    return `http://data.rollvolet.be/customers/${this.dataId}`;
   }
 }

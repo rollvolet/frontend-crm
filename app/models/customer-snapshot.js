@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { CUSTOMER_TYPES } from '../config/constants';
 
 export default class CustomerSnapshotModel extends Model {
@@ -14,8 +14,12 @@ export default class CustomerSnapshotModel extends Model {
   })
   created;
 
+  // TODO convert to relation once customers are added to triplestore
+  @attr('string') source;
+
   @belongsTo('address', { inverse: 'customerSnapshot' }) address;
   @belongsTo('invoice', { inverse: 'customer' }) invoice;
+  @hasMany('telephone', { inverse: 'customerSnapshots' }) telephones;
 
   get isCompany() {
     return this.type == CUSTOMER_TYPES.ORGANIZATION;

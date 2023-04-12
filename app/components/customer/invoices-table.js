@@ -4,6 +4,9 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 import onlyNumericChars from '../../utils/only-numeric-chars';
+import constants from '../../config/constants';
+
+const { INVOICE_TYPES } = constants;
 
 export default class InvoicesTable extends FilterComponent {
   @service router;
@@ -33,18 +36,24 @@ export default class InvoicesTable extends FilterComponent {
         number: this.page,
       },
       sort: this.sort,
-      include: 'building',
+      include: 'case,building.address.country',
       filter: {
+        // using :gt:-flag as workaround to exclude deposit invoices
+        ':gt:type': INVOICE_TYPES.DEPOSIT_INVOICE,
         customer: {
-          number: this.args.customer.number,
+          source: this.args.customer.uri,
         },
         number: onlyNumericChars(filter.number),
-        reference: filter.reference,
+        case: {
+          reference: filter.reference,
+        },
         building: {
           name: filter.name,
-          'postal-code': filter.postalCode,
-          city: filter.city,
-          street: filter.street,
+          address: {
+            'postal-code': filter.postalCode,
+            city: filter.city,
+            street: filter.street,
+          },
         },
       },
     });
