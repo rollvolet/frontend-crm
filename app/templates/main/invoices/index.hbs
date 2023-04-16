@@ -128,7 +128,7 @@
                 {{#each this.model as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 text-sm text-gray-500">
-                      {{#let (if row.isPaid "text-green-600" "text-red-600") as |color|}}
+                      {{#let (if row.isCreditNote "text-blue-600" (if row.isPaid "text-green-600" "text-red-600")) as |color|}}
                         {{svg-jar "heroicons-sm-currency-euro" class=(concat "h-4 w-4 mx-auto " color)}}
                       {{/let}}
                     </td>

@@ -3,7 +3,10 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { debug } from '@ember/debug';
-import { task, keepLatestTask } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
+import constants from '../../config/constants';
+
+const { INVOICE_TYPES } = constants;
 
 export default class InvoiceDetailPanelComponent extends Component {
   @service case;
@@ -12,31 +15,13 @@ export default class InvoiceDetailPanelComponent extends Component {
 
   @tracked editMode = false;
   @tracked isOpenWorkingHoursModal = false;
-  @tracked workingHours = [];
-
-  constructor() {
-    super(...arguments);
-    this.loadData.perform();
-  }
-
-  @keepLatestTask
-  *loadData() {
-    // TODO use this.args.model.technicalWorkActivities once the relation is defined
-    const workingHours = yield this.store.query('technical-work-activity', {
-      'filter[:exact:invoice]': this.args.model.uri,
-      sort: 'date',
-      page: { size: 100 },
-    });
-
-    this.workingHours = workingHours.toArray();
-  }
 
   get order() {
-    return this.case.current && this.case.current.order;
+    return this.case.current?.order;
   }
 
   get technicianNames() {
-    return this.workingHours
+    return this.args.model.technicalWorkActivities
       .filterBy('isNew', false)
       .mapBy('employee')
       .uniqBy('firstName')
@@ -49,13 +34,14 @@ export default class InvoiceDetailPanelComponent extends Component {
     const { validations } = yield this.args.model.validate();
     let requiresOfferReload = false;
     if (validations.isValid) {
-      const changedAttributes = this.args.model.changedAttributes();
+      const _case = yield this.args.model.case;
+      const changedAttributes = _case.changedAttributes();
       const fieldsToSyncWithOrder = ['reference', 'comment'];
       for (let field of fieldsToSyncWithOrder) {
         if (changedAttributes[field]) {
           if (this.order) {
-            debug(`Syncing ${field} of offer/order with updated ${field} of invoice`);
-            this.order[field] = this.args.model[field];
+            debug(`Syncing ${field} of offer/order with updated ${field} of case`);
+            this.order[field] = _case[field];
             yield this.order.save();
           }
           requiresOfferReload = true;
@@ -63,6 +49,7 @@ export default class InvoiceDetailPanelComponent extends Component {
       }
 
       yield this.args.model.save();
+      yield _case.save();
 
       if (this.order && requiresOfferReload) {
         yield this.order.belongsTo('offer').reload();
@@ -71,15 +58,21 @@ export default class InvoiceDetailPanelComponent extends Component {
   }
 
   @action
-  setVatRate(vatRate) {
-    this.args.model.vatRate = vatRate;
-    this.args.model.certificateRequired = vatRate && vatRate.rate == 6;
+  async setVatRate(vatRate) {
+    const _case = await this.args.model.case;
+    _case.vatRate = vatRate;
+    this.args.model.certificateRequired = vatRate?.rate == 6;
     this.args.onChangeVatRate(vatRate);
   }
 
   @action
+  setCreditNoteFlag(isCreditNote) {
+    this.args.model.type = isCreditNote ? INVOICE_TYPES.CREDIT_NOTE : null;
+  }
+
+  @action
   async downloadProductionTicket() {
-    const order = await this.args.model.order;
+    const order = await this.order;
     await this.documentGeneration.downloadProductionTicket(order);
   }
 
@@ -100,9 +93,6 @@ export default class InvoiceDetailPanelComponent extends Component {
 
   @action
   closeWorkingHoursModal() {
-    // TODO remove once this.args.model.technicalWorkActivities is used
-    this.loadData.perform();
-
     this.isOpenWorkingHoursModal = false;
   }
 }

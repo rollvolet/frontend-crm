@@ -6,8 +6,6 @@ export default class CaseModel extends Model {
   @attr('string') reference;
   @attr('string') comment;
   @attr('boolean') hasProductionTicket;
-  @attr('boolean') certificateRequired;
-  @attr('boolean') certificateReceived;
 
   @attr customer;
   // @belongsTo('customer') customer;
@@ -25,8 +23,9 @@ export default class CaseModel extends Model {
   @attr order;
   // @belongsTo('order') order;
 
-  @belongsTo('invoice', { inverse: 'case' }) invoices;
   @belongsTo('vat-rate', { inverse: 'cases' }) vatRate;
+  @hasMany('deposit-invoice', { inverse: 'case' }) depositInvoices;
+  @belongsTo('invoice', { inverse: 'case' }) invoice;
   @hasMany('file') attachments;
 
   get isIsolated() {

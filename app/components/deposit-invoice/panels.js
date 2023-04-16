@@ -5,6 +5,9 @@ import { tracked } from '@glimmer/tracking';
 import moment from 'moment';
 import sum from '../../utils/math/sum';
 import { keepLatestTask, task } from 'ember-concurrency';
+import constants from '../../config/constants';
+
+const { INVOICE_TYPES } = constants;
 
 export default class DepositInvoicePanelsComponent extends Component {
   @service case;
@@ -83,7 +86,8 @@ export default class DepositInvoicePanelsComponent extends Component {
 
     const amount = this.orderAmount * 0.3; // default to 30% of order amount
 
-    const depositInvoice = this.store.createRecord('deposit-invoice', {
+    const depositInvoice = this.store.createRecord('invoice', {
+      type: INVOICE_TYPES.DEPOSIT_INVOICE,
       invoiceDate,
       dueDate,
       certificateRequired: this.vatRate.rate == 6,

@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import updateContactAndBuildingRequest from '../utils/api/update-contact-and-building';
 import { setCalendarEventProperties } from '../utils/calendar-helpers';
 import CaseDispatcher from '../models/case-dispatcher';
+import { createContactSnapshot, createBuildingSnapshot } from '../utils/invoice-helpers';
 
 export default class CaseService extends Service.extend(Evented) {
   @service router;
@@ -82,7 +83,8 @@ export default class CaseService extends Service.extend(Evented) {
         yield this.current.unlinkCustomer();
       }
     } else if (this.current.case.intervention) {
-      if (this.current.case.invoice) {
+      const invoice = yield this.current.case.invoice;
+      if (invoice) {
         warn(`Unable to unlink customer from intervention. Case has an invoice already.`);
       } else {
         try {
@@ -121,13 +123,14 @@ export default class CaseService extends Service.extend(Evented) {
     if (this.current.order) {
       reloadPromises.push(this.current.order.belongsTo('contact').reload());
 
-      const depositInvoices = yield this.current.order.get('depositInvoices');
+      const depositInvoices = yield this.current.case.depositInvoices;
       depositInvoices.forEach((depositInvoice) => {
         reloadPromises.push(depositInvoice.belongsTo('contact').reload());
       });
     }
-    if (this.current.invoice) {
-      reloadPromises.push(this.current.invoice.belongsTo('contact').reload());
+    const invoice = yield this.current.case.invoice;
+    if (invoice) {
+      reloadPromises.push(invoice.belongsTo('contact').reload());
     }
 
     yield Promise.all(reloadPromises);
@@ -151,13 +154,13 @@ export default class CaseService extends Service.extend(Evented) {
     if (this.current.order) {
       reloadPromises.push(this.current.order.belongsTo('building').reload());
 
-      const depositInvoices = yield this.current.order.get('depositInvoices');
+      const depositInvoices = yield this.current.case.get('depositInvoices');
       depositInvoices.forEach((depositInvoice) => {
-        reloadPromises.push(depositInvoice.belongsTo('building').reload());
+        reloadPromises.push(depositInvoice.belongsTo('contact').reload());
       });
     }
-    if (this.current.invoice) {
-      reloadPromises.push(this.current.invoice.belongsTo('building').reload());
+    if (this.current.case.invoice) {
+      reloadPromises.push(this.current.case.invoice.belongsTo('building').reload());
     }
 
     yield Promise.all(reloadPromises);
@@ -209,8 +212,42 @@ export default class CaseService extends Service.extend(Evented) {
       interventionId: this.current.intervention?.id,
       offerId: this.current.offer?.id,
       orderId: this.current.order?.id,
-      invoiceId: this.current.invoice?.id,
+      invoiceId: this.current.case.invoice?.id,
     };
     yield updateContactAndBuildingRequest(body);
+
+    // Update contact and building snapshots of (deposit-)invoices
+    const invoices = (yield Promise.all([
+      this.current.case.depositInvoices,
+      this.current.case.invoice,
+    ])).flat();
+
+    yield Promise.all(
+      invoices.map(async (invoice) => {
+        const [currentBuilding, currentContact] = await Promise.all([
+          invoice.building,
+          invoice.contact,
+        ]);
+        if (building) {
+          if (currentBuilding?.source != building.uri) {
+            const snapshot = await createBuildingSnapshot(building);
+            invoice.building = snapshot;
+          } // else: building-snapshot already up-to-date
+        } else {
+          invoice.building = null;
+        }
+
+        if (contact) {
+          if (currentContact?.source != contact.uri) {
+            const snapshot = await createContactSnapshot(contact);
+            invoice.contact = snapshot;
+          } // else: contact-snapshot already up-to-date
+        } else {
+          invoice.contact = null;
+        }
+
+        return invoice.save();
+      })
+    );
   }
 }

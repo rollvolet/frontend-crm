@@ -1,5 +1,5 @@
 <dl class="rounded-lg bg-white grid grid-cols-2 divide-x sm:grid-cols-4">
-  <div class="flex flex-col p-4 text-center {{unless this.order "sm:col-start-2"}}">
+  <div class="flex flex-col p-4 text-center {{unless this.case.order "sm:col-start-2"}}">
     <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
       Netto
     </dt>
@@ -15,7 +15,7 @@
       <Fmt::Currency @value={{this.totalVat}} />
     </dd>
   </div>
-  {{#if this.order}}
+  {{#if this.case.order}}
     <div class="flex flex-col p-4 text-center">
       <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
         <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{this.order}}>

@@ -1,8 +1,5 @@
 import DataTableRoute from '../../../utils/data-table-route';
 import onlyNumericChars from '../../../utils/only-numeric-chars';
-import constants from '../../../config/constants';
-
-const { INVOICE_TYPES } = constants;
 
 export default class MainInvoicesIndexRoute extends DataTableRoute {
   modelName = 'invoice';
@@ -30,8 +27,6 @@ export default class MainInvoicesIndexRoute extends DataTableRoute {
     return {
       include: ['customer.address.country', 'building.address.country', 'case'].join(','),
       filter: {
-        // using :gt:-flag as workaround to exclude deposit invoices
-        ':gt:type': INVOICE_TYPES.DEPOSIT_INVOICE,
         number: onlyNumericChars(params.number),
         case: {
           identifier: onlyNumericChars(params.requestNumber),

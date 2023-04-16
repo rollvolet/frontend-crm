@@ -9,9 +9,20 @@ function getLegacyIdFromUri(uri) {
   }
 }
 
+/**
+ * Dispatcher for a case containing all related resources as Ember Data records.
+ * This class is an intermediate as long as the related resources are a mix of
+ * SQL and triplestore resources, respectively fetched from the monolith backend
+ * or the triplestore.
+ * The 'case' Ember Data record contains URIs as attribute for the the records that still reside
+ * in the SQL DB.
+ * Once all resources are refactored to the triplestore, this class becomes void,
+ * as the 'case' record will contain relations to all related resources.
+ */
 export default class CaseDispatcher {
-  @tracked case;
+  @tracked case; // Ember Data case record
 
+  // Fetched from SQL DB
   @tracked customer = null;
   @tracked contact = null;
   @tracked building = null;
@@ -19,7 +30,6 @@ export default class CaseDispatcher {
   @tracked intervention = null;
   @tracked offer = null;
   @tracked order = null;
-  @tracked invoice = null;
 
   constructor(_case, fetchRecord) {
     this.case = _case;
@@ -28,7 +38,6 @@ export default class CaseDispatcher {
 
   @keepLatestTask()
   *loadRelatedRecords() {
-    // TODO add deposit-invoices
     const loadRelatedRecords = [
       'customer',
       'contact',
@@ -37,7 +46,6 @@ export default class CaseDispatcher {
       'intervention',
       'offer',
       'order',
-      'invoice',
     ].map(async (type) => {
       const currentUri = this.case[type];
       if (currentUri) {

@@ -4,7 +4,12 @@
     <div class="flex justify-between items-center">
       <div class="flex items-center">
         <h2 class="text-2xl font-bold font-display text-gray-900">
-          Factuur {{format-invoice-number @model.number}}
+          {{#if @model.isCreditNote}}
+            Creditnota
+          {{else}}
+            Factuur
+          {{/if}}
+          {{format-invoice-number @model.number}}
         </h2>
         {{#if this.editMode}}
           <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
@@ -20,7 +25,7 @@
       <div class="flex flex-none space-x-4">
         {{#if this.editMode}}
           <button type="button"
-            onClick={{this.closeEdit}}
+            {{on "click" this.closeEdit}}
             class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
             {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
             <EmberTooltip @text="Sluiten" />
@@ -37,8 +42,8 @@
           {{/if}}
           {{#unless @isDisabledEdit}}
             <button type="button"
-              onClick={{this.openEdit}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              {{on "click" this.openEdit}}
+              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
             </button>
           {{/unless}}
@@ -59,7 +64,7 @@
             <Input
               id="reference"
               @type="text"
-              @value={{@model.reference}}
+              @value={{@model.case.reference}}
               class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
               {{on "focusout" (perform this.save)}} />
           </div>
@@ -84,12 +89,12 @@
               @id="is-creditnote-checkbox"
               @label="Creditnota"
               @value={{@model.isCreditNote}}
-              @onChange={{queue (fn (mut @model.isCreditNote)) (perform this.save)}} />
+              @onChange={{queue this.setCreditNoteFlag (perform this.save)}} />
           </div>
-          {{#if (or @model.isIsolated @model.intervention)}}
+          {{#if (or @model.case.isIsolated @model.case.intervention)}}
             <div>
               <InputField::VatRateSelect
-                @value={{@model.vatRate}}
+                @value={{@model.case.vatRate}}
                 @label="BTW tarief"
                 @onSelectionChange={{queue this.setVatRate (perform this.save)}}
                 @allowClear={{false}}
@@ -103,7 +108,7 @@
             <Input
               id="reference"
               @type="text"
-              @value={{@model.reference}}
+              @value={{@model.case.reference}}
               class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
               {{on "focusout" (perform this.save)}} />
           </div>
@@ -143,7 +148,7 @@
           </label>
           <Textarea
             id="comment"
-            @value={{@model.comment}}
+            @value={{@model.case.comment}}
             class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             rows="5"
             {{on "focusout" (perform this.save)}} />
@@ -167,31 +172,31 @@
             </Util::DetailSubitem>
           </Util::DetailItem>
           <Util::DetailItem @label="Referentie">
-            {{@model.reference}}
+            {{@model.case.reference}}
           </Util::DetailItem>
         </div>
         <div class="space-y-2">
           <Util::DetailItem @label="Creditnota" class="items-center">
             <Util::DisplayCheckbox @value={{@model.isCreditNote}} />
           </Util::DetailItem>
-          {{#if @model.isIsolated}}
+          {{#if @model.case.isIsolated}}
             <Util::DetailItem @label="BTW tarief">
-              {{format-vat-rate (await @model.vatRate)}}
+              {{format-vat-rate (await @model.case.vatRate)}}
             </Util::DetailItem>
           {{/if}}
           <Util::DetailItem @label="Betaalref.">
             {{format-bank-reference @model.bankReference}}
           </Util::DetailItem>
-          {{#if @model.certificateRequired}}
+          {{#if @model.case.certificateRequired}}
             <Util::DetailItem @label="BTW-attest" @class="layout-align-start-center">
               <Certificate::InlineEdit @model={{@model}} />
             </Util::DetailItem>
           {{/if}}
-          {{#unless @model.isIsolated}}
+          {{#unless @model.case.isIsolated}}
             <Util::DetailItem @label="Productiebon" class="items-center">
               <div class="flex items-center">
-                <Util::DisplayAvailability @value={{@model.hasProductionTicket}} />
-                {{#if @model.hasProductionTicket}}
+                <Util::DisplayAvailability @value={{@model.case.hasProductionTicket}} />
+                {{#if @model.case.hasProductionTicket}}
                   <button type="button"
                     class="ml-2 text-gray-500 text-sm hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-200"
                     {{on "click" this.downloadProductionTicket}}>
@@ -213,7 +218,7 @@
         </div>
         <div class="sm:col-span-2">
           <Util::DetailItem @label="Interne opmerking">
-            <span class="whitespace-pre-wrap">{{@model.comment}}</span>
+            <span class="whitespace-pre-wrap">{{@model.case.comment}}</span>
           </Util::DetailItem>
         </div>
       </dl>

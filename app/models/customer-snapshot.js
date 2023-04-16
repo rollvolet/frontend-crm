@@ -18,7 +18,7 @@ export default class CustomerSnapshotModel extends Model {
   @attr('string') source;
 
   @belongsTo('address', { inverse: 'customerSnapshot' }) address;
-  @belongsTo('invoice', { inverse: 'customer' }) invoice;
+  @belongsTo('invoice-document', { inverse: 'customer', polymorphic: true }) invoice;
   @hasMany('telephone', { inverse: 'customerSnapshots' }) telephones;
 
   get isCompany() {

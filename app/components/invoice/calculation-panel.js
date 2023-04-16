@@ -5,11 +5,11 @@ import { keepLatestTask } from 'ember-concurrency';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceCalculationPanelComponent extends Component {
-  @service case;
   @service router;
+  @service store;
 
+  @tracked case;
   @tracked vatRate;
-  @tracked depositInvoices = [];
   @tracked deposits = [];
 
   constructor() {
@@ -21,13 +21,8 @@ export default class InvoiceCalculationPanelComponent extends Component {
   *loadData() {
     const model = yield this.args.model;
 
-    this.vatRate = yield model.vatRate;
-    this.depositInvoices = yield model.depositInvoices;
-    this.deposits = yield model.deposits;
-  }
-
-  get intervention() {
-    return this.case.current && this.case.current.intervention;
+    this.case = yield model.case;
+    this.vatRate = yield this.case.vatRate;
   }
 
   get vatPercentage() {
@@ -35,7 +30,7 @@ export default class InvoiceCalculationPanelComponent extends Component {
   }
 
   get totalOrderAmount() {
-    return this.args.model.baseAmount;
+    return this.args.model.totalAmountNet;
   }
 
   get totalOrderVat() {
@@ -43,7 +38,7 @@ export default class InvoiceCalculationPanelComponent extends Component {
   }
 
   get depositInvoicesAmount() {
-    return sum(this.depositInvoices.mapBy('arithmeticAmount'));
+    return sum(this.case.depositInvoices.mapBy('arithmeticAmount'));
   }
 
   get depositInvoicesVat() {
@@ -51,23 +46,23 @@ export default class InvoiceCalculationPanelComponent extends Component {
     return this.depositInvoicesAmount * this.vatPercentage;
   }
 
-  get totalNetAmount() {
+  get paymentAmountNet() {
     return this.totalOrderAmount - this.depositInvoicesAmount;
   }
 
-  get totalVat() {
+  get paymentVat() {
     return this.totalOrderVat - this.depositInvoicesVat;
   }
 
-  get totalGrossAmount() {
-    return this.totalNetAmount + this.totalVat;
+  get paymentAmountGross() {
+    return this.paymentAmountNet + this.paymentVat;
   }
 
   get depositsAmount() {
-    return sum(this.deposits.mapBy('amount'));
+    return this.args.model.paidDeposits || 0.0;
   }
 
   get totalToPay() {
-    return this.totalGrossAmount - this.depositsAmount;
+    return this.paymentAmountGross - this.depositsAmount;
   }
 }

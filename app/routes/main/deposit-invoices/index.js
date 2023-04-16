@@ -1,11 +1,8 @@
 import DataTableRoute from '../../../utils/data-table-route';
 import onlyNumericChars from '../../../utils/only-numeric-chars';
-import constants from '../../../config/constants';
-
-const { INVOICE_TYPES } = constants;
 
 export default class MainDepositInvoicesIndexRoute extends DataTableRoute {
-  modelName = 'invoice';
+  modelName = 'deposit-invoice';
 
   queryParams = {
     page: { refreshModel: true },
@@ -30,7 +27,6 @@ export default class MainDepositInvoicesIndexRoute extends DataTableRoute {
     return {
       include: ['customer.address.country', 'building.address.country', 'case'].join(','),
       filter: {
-        type: INVOICE_TYPES.DEPOSIT_INVOICE,
         number: onlyNumericChars(params.number),
         reference: params.reference,
         case: {

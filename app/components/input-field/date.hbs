@@ -11,7 +11,7 @@
   <EmberFlatpickr
     id={{this.fieldId}}
     @locale="nl"
-    @date={{@value}}
+    @date={{if @value @value null}}
     @dateFormat="j-n-Y"
     @onChange={{this.updateValue}}
     class="focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md" ...attributes />

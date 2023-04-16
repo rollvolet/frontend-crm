@@ -1,13 +1,15 @@
 import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import sum from '../../utils/math/sum';
 import { keepLatestTask } from 'ember-concurrency';
+import sum from '../../utils/math/sum';
 
 export default class InvoiceStatsComponent extends Component {
+  @service store;
+
   @tracked vatRate;
-  @tracked order = null;
+  @tracked case = null;
   @tracked deposits = [];
-  @tracked depositInvoices = [];
 
   constructor() {
     super(...arguments);
@@ -16,17 +18,13 @@ export default class InvoiceStatsComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    this.vatRate = yield this.args.model.vatRate;
-    this.order = yield this.args.model.order;
-    if (this.order) {
-      this.deposits = yield this.order.deposits;
-      this.depositInvoices = yield this.order.depositInvoices;
-    }
+    this.case = yield this.args.model.case;
+    this.vatRate = yield this.case.vatRate;
   }
 
   get totalAmount() {
     // in case of Access a fixed number, otherwise the sum of the invoicelines
-    return this.args.model.baseAmount;
+    return this.args.model.totalAmountNet;
   }
 
   get vatPercentage() {
@@ -39,10 +37,10 @@ export default class InvoiceStatsComponent extends Component {
   }
 
   get depositsAmount() {
-    return sum(this.deposits.map((deposit) => deposit.arithmeticAmount));
+    return this.args.model.paidDeposits || 0.0;
   }
 
   get depositInvoicesAmount() {
-    return sum(this.depositInvoices.map((depositInvoice) => depositInvoice.arithmeticAmount));
+    return sum(this.case.depositInvoices.mapBy('arithmeticAmount'));
   }
 }

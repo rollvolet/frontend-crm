@@ -1,5 +1,4 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
@@ -10,8 +9,6 @@ export default class InvoiceProductPanelComponent extends Component {
   @service documentGeneration;
   @service store;
 
-  @tracked invoicelines = [];
-
   constructor() {
     super(...arguments);
     this.loadData.perform();
@@ -19,14 +16,11 @@ export default class InvoiceProductPanelComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    // TODO use this.args.model.invoicelines once the relation is defined
-    const invoicelines = yield this.store.query('invoiceline', {
-      'filter[:exact:invoice]': this.args.model.uri,
-      sort: 'position',
-      page: { size: 100 },
-    });
-    this.invoicelines = invoicelines.toArray();
-    yield this.updateInvoicelinesTotalAmount.perform(); // ensure invoice amount is up-to-date
+    yield this.args.model.hasMany('invoicelines').reload();
+  }
+
+  get invoicelines() {
+    return this.args.model.invoicelines;
   }
 
   get sortedInvoicelines() {
@@ -36,7 +30,7 @@ export default class InvoiceProductPanelComponent extends Component {
   get isEnabledAddingInvoicelines() {
     return (
       !this.args.model.isBooked &&
-      this.args.model.vatRate.get('id') != null &&
+      this.args.model.case.get('vatRate.id') != null &&
       !this.args.isDisabledEdit
     );
   }
@@ -46,17 +40,16 @@ export default class InvoiceProductPanelComponent extends Component {
     const position = this.invoicelines.length
       ? Math.max(...this.invoicelines.map((l) => l.position))
       : 0;
-    const vatRate = yield this.args.model.vatRate;
+    const _case = yield this.args.model.case;
+    const vatRate = yield _case.vatRate;
     const invoiceline = this.store.createRecord('invoiceline', {
       position: position + 1,
-      invoice: this.args.model.uri,
+      invoice: this.args.model,
       vatRate: vatRate,
     });
 
     // save invoiceline and update invoicelines total amount on invoice
     yield this.saveInvoiceline.perform(invoiceline);
-
-    this.invoicelines.pushObject(invoiceline);
   }
 
   @task
@@ -70,7 +63,6 @@ export default class InvoiceProductPanelComponent extends Component {
 
   @task
   *deleteInvoiceline(invoiceline) {
-    this.invoicelines.removeObject(invoiceline);
     if (!invoiceline.isNew) {
       invoiceline.rollbackAttributes();
     }
@@ -106,10 +98,10 @@ export default class InvoiceProductPanelComponent extends Component {
 
   @keepLatestTask
   *updateInvoicelinesTotalAmount() {
-    const invoicelinesAmount = sum(this.invoicelines.map((line) => line.arithmeticAmount));
-    this.args.model.baseAmount = invoicelinesAmount;
+    const invoicelinesAmount = sum(this.invoicelines.mapBy('arithmeticAmount'));
+    this.args.model.totalAmountNet = invoicelinesAmount;
     if (this.args.model.hasDirtyAttributes) {
-      // only save if baseAmount actually changed
+      // only save if totalAmountNet actually changed
       const { validations } = yield this.args.model.validate();
       if (validations.isValid) {
         yield this.args.model.save();
