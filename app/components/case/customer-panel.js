@@ -18,6 +18,7 @@ export default class CaseCustomerPanelComponent extends Component {
   @tracked isEnabledEditBuilding = false;
   @tracked isEnabledEditContact = false;
   @tracked telephones = [];
+  @tracked emails = [];
 
   constructor() {
     super(...arguments);
@@ -27,13 +28,22 @@ export default class CaseCustomerPanelComponent extends Component {
   @keepLatestTask
   *loadData() {
     if (this.args.model) {
-      // TODO use this.args.model.telephones once the relation is defined
-      const telephones = yield this.store.query('telephone', {
-        'filter[:exact:customer]': this.args.model.uri,
-        sort: 'position',
-        page: { size: 100 },
-      });
+      const [telephones, emails] = yield Promise.all([
+        // TODO use this.args.model.telephones once the relation is defined
+        this.store.query('telephone', {
+          'filter[:exact:customer]': this.args.model.dataUri,
+          sort: 'position',
+          page: { size: 100 },
+        }),
+        // TODO use this.args.model.emails once the relation is defined
+        this.store.query('email', {
+          'filter[:exact:customer]': this.args.model.uri,
+          sort: 'value',
+          page: { size: 100 },
+        }),
+      ]);
       this.telephones = telephones.toArray();
+      this.emails = emails.toArray();
     }
   }
 
