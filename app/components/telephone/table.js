@@ -7,6 +7,7 @@ export default class TelephoneTableComponent extends Component {
   @service store;
   @service configuration;
 
+  @tracked scope = this.args.scope || 'customer'; // one of 'customer', 'contact', 'building'
   @tracked telephones = [];
 
   constructor() {
@@ -20,15 +21,20 @@ export default class TelephoneTableComponent extends Component {
     this.telephones.forEach((telephone) => delete telephone.initialEditMode);
   }
 
+  get isScopeCustomer() {
+    return this.scope == 'customer';
+  }
+
   get sortedTelephones() {
     return this.telephones.sortBy('position');
   }
 
   @keepLatestTask
   *loadData() {
+    const filterKey = `filter[:exact:${this.scope}]`;
     // TODO use this.args.model.telephones once the relation is defined
     const telephones = yield this.store.query('telephone', {
-      'filter[:exact:customer]': this.args.model.uri,
+      [filterKey]: this.isScopeCustomer ? this.args.model.dataUri : this.args.model.uri,
       sort: 'position',
       page: { size: 100 },
     });
@@ -44,9 +50,7 @@ export default class TelephoneTableComponent extends Component {
     const telephoneType = this.configuration.defaultTelephoneType;
     const telephone = this.store.createRecord('telephone', {
       position: position + 1,
-      customer: this.args.model.uri,
-      contact: this.args.model.uri,
-      building: this.args.model.uri,
+      [`${this.scope}`]: this.isScopeCustomer ? this.args.model.dataUri : this.args.model.uri,
       country,
       telephoneType,
     });
