@@ -1,16 +1,16 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
+import { tracked } from '@glimmer/tracking';
 import formatVatNumber from '../../utils/format-vat-number';
 import deformatVatNumber from '../../utils/deformat-vat-number';
 
 export default class VatNumberInputComponent extends Component {
-  get formattedValue() {
-    if (this.args.value) {
-      return formatVatNumber(this.args.value);
-    } else {
-      return 'BE 0';
-    }
+  @tracked _value;
+
+  constructor() {
+    super(...arguments);
+    this._value = formatVatNumber(this.args.value) || 'BE 0';
   }
 
   get elementId() {
@@ -22,8 +22,16 @@ export default class VatNumberInputComponent extends Component {
   }
 
   @action
-  updateValue(event) {
-    const deformattedValue = deformatVatNumber(event.target.value);
+  updateInput(event) {
+    this._value = event.target.value;
+    const deformattedValue = deformatVatNumber(this._value);
     this.args.onChange(deformattedValue);
+  }
+
+  @action
+  changeValue() {
+    const deformattedValue = deformatVatNumber(this._value);
+    this._value = formatVatNumber(deformattedValue); // only format on focusout
+    this.args.onBlur();
   }
 }
