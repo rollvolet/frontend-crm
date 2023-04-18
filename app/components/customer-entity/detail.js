@@ -36,7 +36,7 @@ export default class CustomerEntityDetailComponent extends Component {
     const [telephones, emails] = yield Promise.all([
       // TODO use this.args.model.telephones once the relation is defined
       this.store.query('telephone', {
-        [filterKey]: this.isScopeCustomer ? this.args.model.dataUri : this.args.model.uri,
+        [filterKey]: this.args.model.uri,
         sort: 'position',
         page: { size: 100 },
       }),

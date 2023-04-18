@@ -31,7 +31,7 @@ export default class CaseCustomerPanelComponent extends Component {
       const [telephones, emails] = yield Promise.all([
         // TODO use this.args.model.telephones once the relation is defined
         this.store.query('telephone', {
-          'filter[:exact:customer]': this.args.model.dataUri,
+          'filter[:exact:customer]': this.args.model.uri,
           sort: 'position',
           page: { size: 100 },
         }),
