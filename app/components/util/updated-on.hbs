@@ -1,0 +1,13 @@
+{{#if (or @date this.by)}}
+  {{#if @resource}}
+    {{@resource}} updated
+  {{else}}
+    Updated
+  {{/if}}
+  {{#if @date}}
+    on {{moment-format @date}}
+  {{/if}}
+  {{#if this.by}}
+    by {{this.by}}
+  {{/if}}
+{{/if}}
