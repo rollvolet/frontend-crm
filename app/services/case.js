@@ -309,7 +309,13 @@ export default class CaseService extends Service.extend(Evented) {
           building: this.current.building,
           visitor: this.visitor,
         });
-        return calendarEvent.save();
+        try {
+          await calendarEvent.save();
+          return calendarEvent;
+        } catch {
+          // don't block building/contact update flow on calendar-event failure
+          return null;
+        }
       } else {
         return null;
       }
