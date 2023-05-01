@@ -59,9 +59,8 @@
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="E-mail">
-              <div><Fmt::Email @value={{this.customer.email}} /></div>
-              <div><Fmt::Email @value={{this.customer.email2}} /></div>
-              <div>{{this.customer.url}}</div>
+              <Email::List @model={{this.emails}} />
+              <div>{{@model.url}}</div>
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="Opmerking">

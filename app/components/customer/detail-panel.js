@@ -29,6 +29,9 @@ export default class CustomerDetailPanelComponent extends Component {
 
   @action
   closeEdit() {
+    // rollback invalid values that couldn't be saved and revalidate for consistent state
+    this.args.model.rollbackAttributes();
+    this.args.model.validate();
     this.editMode = false;
   }
 }

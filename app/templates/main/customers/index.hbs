@@ -113,8 +113,15 @@
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                       {{row.number}}
                     </td>
-                    <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                      <Fmt::CustomerName @model={{row}} />
+                    <td class="pl-4 pr-6 py-4 text-sm font-medium text-gray-900">
+                      <div class="flex items-center">
+                        {{#if row.isCompany}}
+                          {{svg-jar "heroicons-md-office-building" class="mr-1.5 flex-none h-5 w-5 text-gray-400"}}
+                        {{else}}
+                          {{svg-jar "heroicons-md-user" class="mr-1.5 flex-none h-5 w-5 text-gray-400"}}
+                        {{/if}}
+                        <Fmt::CustomerName @model={{row}} />
+                      </div>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
                       {{row.address1}}

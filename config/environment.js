@@ -23,7 +23,7 @@ module.exports = function (environment) {
     },
     moment: {
       includeLocales: ['nl'],
-      outputFormat: 'DD-MM-YYYY hh:mm:ss',
+      outputFormat: 'DD-MM-YYYY HH:mm:ss',
       allowEmpty: true,
     },
     torii: {

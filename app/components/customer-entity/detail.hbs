@@ -34,8 +34,7 @@
     </Util::DetailItem>
 
     <Util::DetailItem @label="E-mail">
-      <div><Fmt::Email @value={{@model.email}} /></div>
-      <div><Fmt::Email @value={{@model.email2}} /></div>
+      <Email::List @model={{this.emails}} />
     </Util::DetailItem>
 
     <Util::DetailItem @label="Website">
