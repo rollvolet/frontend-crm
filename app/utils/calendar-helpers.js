@@ -57,12 +57,13 @@ async function orderSubject(order, customer, calendarPeriod, visitor) {
   const requestNumber = formatRequestNumber([order.requestNumber]);
   const initials = visitor ? `${visitor.initials}` : '';
   const requestReference = `AD${requestNumber} ${initials}`.trim();
+  const execution = order.mustBeDelivered ? 'Te leveren' : null;
   const nbOfPersons = order.scheduledNbOfPersons || 0;
   const nbOfHours = order.scheduledHours || 0;
   const technicians = await order.technicians;
   const technicianNames = technicians.sortBy('firstName').mapBy('firstName').join(', ');
   const workload = `${nbOfHours}u x ${nbOfPersons}p ${technicianNames}`.trim();
-  return [timeSpec, customer.name, requestReference, workload]
+  return [timeSpec, customer.name, requestReference, execution, workload]
     .filter((f) => isPresent(f))
     .join(' | ');
 }

@@ -43,6 +43,12 @@
         <div class="text-xs text-gray-400 italic text-right">
           Beheerd door Access
         </div>
+      {{else}}
+        <div class="text-xs text-gray-400 italic text-right">
+          <Util::CreatedOn @date={{@model.created}} @user={{@model.creator}} />
+          <br />
+          <Util::UpdatedOn @date={{@model.modified}} @user={{@model.editor}} />
+        </div>
       {{/if}}
     </div>
   {{else}}

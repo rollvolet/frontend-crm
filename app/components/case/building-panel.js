@@ -9,6 +9,7 @@ export default class CaseBuildingPanelComponent extends Component {
 
   @tracked isOpenEditModal = false;
   @tracked telephones = [];
+  @tracked emails = [];
 
   constructor() {
     super(...arguments);
@@ -17,13 +18,22 @@ export default class CaseBuildingPanelComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    // TODO use this.args.model.telephones once the relation is defined
-    const telephones = yield this.store.query('telephone', {
-      'filter[:exact:building]': this.args.model.uri,
-      sort: 'position',
-      page: { size: 100 },
-    });
+    const [telephones, emails] = yield Promise.all([
+      // TODO use this.args.model.telephones once the relation is defined
+      this.store.query('telephone', {
+        'filter[:exact:building]': this.args.model.uri,
+        sort: 'position',
+        page: { size: 100 },
+      }),
+      // TODO use this.args.model.emails once the relation is defined
+      this.store.query('email', {
+        'filter[:exact:building]': this.args.model.uri,
+        sort: 'value',
+        page: { size: 100 },
+      }),
+    ]);
     this.telephones = telephones.toArray();
+    this.emails = emails.toArray();
   }
 
   @keepLatestTask

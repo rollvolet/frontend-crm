@@ -171,28 +171,6 @@
     <div class="space-y-4">
       <div class="pt-6 sm:pt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <label for="customer-mail" class="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <Input
-            id="customer-mail"
-            @type="text"
-            @value={{@model.email}}
-            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            {{on "focusout" @onSave}} />
-        </div>
-        <div>
-          <label for="customer-mail2" class="block text-sm font-medium text-gray-700">
-            Email 2
-          </label>
-          <Input
-            id="customer-mail2"
-            @type="text"
-            @value={{@model.email2}}
-            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            {{on "focusout" @onSave}} />
-        </div>
-        <div>
           <label for="customer-website" class="block text-sm font-medium text-gray-700">
             Website
           </label>
@@ -204,12 +182,22 @@
             {{on "focusout" @onSave}} />
         </div>
       </div>
-      <div>
-        <label for="customer-telephones" class="block text-sm font-medium text-gray-700">
-          Telefoonnummers
-        </label>
-        <div class="mt-1">
-          <Telephone::Table @model={{@model}} />
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
+        <div class="lg:col-span-3">
+          <label for="customer-telephones" class="block text-sm font-medium text-gray-700">
+            Telefoonnummers
+          </label>
+          <div class="mt-1">
+            <Telephone::Table @model={{@model}} @scope={{this.scope}} />
+          </div>
+        </div>
+        <div class="lg:col-span-3">
+          <label for="customer-emails" class="block text-sm font-medium text-gray-700">
+            Emailadressen
+          </label>
+          <div class="mt-1">
+            <Email::Table @model={{@model}} @scope={{this.scope}} />
+          </div>
         </div>
       </div>
     </div>

@@ -72,7 +72,10 @@ export default class UserInfoService extends Service {
       if (this.name) {
         const userFirstName = this.firstName.toLowerCase();
         // TODO convert findAll to query
-        const employees = await this.store.findAll('employee');
+        const employees = await this.store.query('employee', {
+          'page[size]': 1000,
+          sort: 'first-name',
+        });
         const employee = employees
           .filter((e) => e.isAdministrative || e.isExternal)
           .find((e) => {

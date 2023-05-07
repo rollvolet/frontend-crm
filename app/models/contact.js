@@ -4,8 +4,6 @@ import ValidatedModel, { Validator } from './validated-model';
 
 export default class ContactModel extends ValidatedModel {
   validators = {
-    email: new Validator('format', { type: 'email', allowBlank: true }),
-    email2: new Validator('format', { type: 'email', allowBlank: true }),
     url: new Validator('format', { type: 'url', allowBlank: true }),
     language: new Validator('presence', {
       presence: true,
@@ -25,8 +23,6 @@ export default class ContactModel extends ValidatedModel {
   @attr city;
   @attr prefix;
   @attr suffix;
-  @attr email;
-  @attr email2;
   @attr url;
   @attr printPrefix;
   @attr printSuffix;
@@ -45,6 +41,7 @@ export default class ContactModel extends ValidatedModel {
   @belongsTo('language') language;
   @belongsTo('honorific-prefix') honorificPrefix;
   // @hasMany('telephone') telephones;
+  // @hasMany('email') emails;
   @hasMany('request') requests;
   @hasMany('offer') offers;
   @hasMany('order') orders;
