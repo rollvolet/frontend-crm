@@ -20,6 +20,6 @@ export default class UtilCreatedOnComponent extends Component {
   @keepLatestTask
   *loadUser() {
     const user = yield this.store.findRecordByUri('user', this.args.user);
-    this.by = user?.name;
+    this.by = user?.firstName;
   }
 }

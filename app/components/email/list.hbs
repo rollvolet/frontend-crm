@@ -1,6 +1,6 @@
 {{#each @model as |email|}}
   <div>
-    {{email.value}}
+    <Fmt::Email @value={{email.value}} />
     {{#if email.note}}
       <span class="text-gray-400">({{email.note}})</span>
     {{/if}}
