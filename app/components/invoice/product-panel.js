@@ -19,12 +19,8 @@ export default class InvoiceProductPanelComponent extends Component {
     yield this.args.model.hasMany('invoicelines').reload();
   }
 
-  get invoicelines() {
-    return this.args.model.invoicelines;
-  }
-
   get sortedInvoicelines() {
-    return this.invoicelines.sortBy('position');
+    return this.args.model.invoicelines.sortBy('position');
   }
 
   get isEnabledAddingInvoicelines() {
@@ -37,8 +33,8 @@ export default class InvoiceProductPanelComponent extends Component {
 
   @task
   *addInvoiceline() {
-    const position = this.invoicelines.length
-      ? Math.max(...this.invoicelines.map((l) => l.position))
+    const position = this.sortedInvoicelines.length
+      ? Math.max(...this.sortedInvoicelines.map((l) => l.position))
       : 0;
     const _case = yield this.args.model.case;
     const vatRate = yield _case.vatRate;
@@ -98,7 +94,7 @@ export default class InvoiceProductPanelComponent extends Component {
 
   @keepLatestTask
   *updateInvoicelinesTotalAmount() {
-    const invoicelinesAmount = sum(this.invoicelines.mapBy('arithmeticAmount'));
+    const invoicelinesAmount = sum(this.sortedInvoicelines.mapBy('arithmeticAmount'));
     this.args.model.totalAmountNet = invoicelinesAmount;
     if (this.args.model.hasDirtyAttributes) {
       // only save if totalAmountNet actually changed

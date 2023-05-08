@@ -22,7 +22,6 @@ export default class InvoiceDetailPanelComponent extends Component {
 
   get technicianNames() {
     return this.args.model.technicalWorkActivities
-      .filterBy('isNew', false)
       .mapBy('employee')
       .uniqBy('firstName')
       .sortBy('firstName')
@@ -36,6 +35,7 @@ export default class InvoiceDetailPanelComponent extends Component {
     if (validations.isValid) {
       const _case = yield this.args.model.case;
       const changedAttributes = _case.changedAttributes();
+      // TODO remove syncing once order is refactored to triplestore
       const fieldsToSyncWithOrder = ['reference', 'comment'];
       for (let field of fieldsToSyncWithOrder) {
         if (changedAttributes[field]) {

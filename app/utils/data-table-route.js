@@ -6,6 +6,7 @@ import { isPresent } from '@ember/utils';
 // Inspired by the Route mixin of mu-semtech/ember-data-table
 export default class DataTableRoute extends Route {
   @service store;
+  @service router;
 
   queryParams = {
     page: { refreshModel: true },
@@ -18,15 +19,19 @@ export default class DataTableRoute extends Route {
     return {};
   }
 
-  async model(params) {
-    // TODO remove filter on telephone-number workaround once all resources
-    // have been moved to the triplestore
-    // Note: search by telephone only works if at least 5 digits are given
-    if (isPresent(params.telephone) && params.telephone.length > 4) {
-      params.telephone = await this.fetchCustomerIdsForTelephone(params.telephone);
-    }
-    if (isPresent(params.cTelephone) && params.cTelephone.length > 4) {
-      params.cTelephone = await this.fetchCustomerIdsForTelephone(params.cTelephone);
+  async model(params, transition) {
+    const routePrefixes = ['main.invoice', 'main.deposit-invoices'];
+    const isExcludedRoute = routePrefixes.some((r) => transition.to.name.startsWith(r));
+    if (!isExcludedRoute) {
+      // TODO remove filter on telephone-number workaround once all resources
+      // have been moved to the triplestore
+      // Note: search by telephone only works if at least 5 digits are given
+      if (isPresent(params.telephone) && params.telephone.length > 4) {
+        params.telephone = await this.fetchCustomerIdsForTelephone(params.telephone);
+      }
+      if (isPresent(params.cTelephone) && params.cTelephone.length > 4) {
+        params.cTelephone = await this.fetchCustomerIdsForTelephone(params.cTelephone);
+      }
     }
 
     let options = {

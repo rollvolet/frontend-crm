@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
-export default class DepositInvoicesRoute extends Route {
+export default class MainCaseOrderEditDepositInvoicesRoute extends Route {
   @service store;
 
   model() {
@@ -12,12 +12,8 @@ export default class DepositInvoicesRoute extends Route {
       page: {
         size: 1000, // we don't expect more than 1000 deposit invoices for 1 order
       },
-      include: 'vat-rate',
-      filter: {
-        order: {
-          id: order.get('id'),
-        },
-      },
+      include: 'case.vat-rate',
+      'filter[case][:exact:order]': order.uri,
     });
   }
 

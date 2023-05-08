@@ -8,10 +8,6 @@
       <AlertMessage::Warning
         @message="De factuur is reeds geboekt. Enkel beperkte wijzigingen zijn nog mogelijk."
         class="shadow" />
-    {{else if @model.isMasteredByAccess}}
-      <AlertMessage::Warning
-        @message="De factuur is aangemaakt in Access en kan hier niet gewijzigd worden."
-        class="shadow" />
     {{/if}}
 
     {{!-- Details panel --}}

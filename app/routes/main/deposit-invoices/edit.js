@@ -10,11 +10,9 @@ export default class MainDepositInvoicesEditRoute extends Route {
   }
 
   async afterModel(model) {
-    const order = await model.order;
-    // TODO get related case via order model once relation is fully defined
-    const _case = await this.store.queryOne('case', {
-      'filter[:exact:order]': order.uri,
-    });
-    this.router.transitionTo('main.case.order.edit.deposit-invoices', _case.id, order.id);
+    const _case = await model.case;
+    const orderUri = _case.order;
+    const orderId = orderUri.substr(orderUri.lastIndexOf('/') + 1);
+    this.router.transitionTo('main.case.order.edit.deposit-invoices', _case.id, orderId);
   }
 }
