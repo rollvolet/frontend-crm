@@ -31,10 +31,7 @@
   {{!-- Card content --}}
   <div class="p-6 space-y-6">
     <div class="mx-auto">
-      {{!-- TODO hack to force rerendering of component. Can be refactored with ember-resources? --}}
-      {{#unless @isUpdatingVatRate}}
-        <Invoice::Stats @model={{@model}} />
-      {{/unless}}
+      <Invoice::Stats @model={{@model}} />
     </div>
     {{#if @model.isMasteredByAccess}}
       <AlertMessage::Warning

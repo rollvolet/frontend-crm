@@ -24,7 +24,7 @@
                     Netto
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {{@model.case.vatRate.rate}}% BTW
+                    {{this.vatRate.rate}}% BTW
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Bruto
@@ -32,7 +32,7 @@
                 </tr>
               </thead>
               <tbody>
-                {{#if this.loadData.isRunning}}
+                {{#if this.isLoading}}
                   <tr>
                     <td colspan="4" class="px-6 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Aan het berekenen...
@@ -111,7 +111,11 @@
 
                   <tr class="bg-gray-100">
                     <td class="px-6 py-2 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                      Totaal te betalen
+                      {{#if this.args.model.isCreditNote}}
+                        Totaal terug te betalen
+                      {{else}}
+                        Totaal te betalen
+                      {{/if}}
                     </td>
                     <td class="px-6 py-2 text-xs font-semibold text-gray-700 uppercase tracking-wider">
                     </td>

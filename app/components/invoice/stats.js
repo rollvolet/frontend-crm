@@ -1,25 +1,31 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
-import { keepLatestTask } from 'ember-concurrency';
+import { trackedFunction } from 'ember-resources/util/function';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceStatsComponent extends Component {
   @service store;
 
-  @tracked vatRate;
-  @tracked case = null;
-  @tracked deposits = [];
+  caseData = trackedFunction(this, async () => {
+    return await this.args.model.case;
+  });
 
-  constructor() {
-    super(...arguments);
-    this.loadData.perform();
+  vatRateData = trackedFunction(this, async () => {
+    const _case = this.caseData.value;
+    return await _case?.vatRate;
+  });
+
+  depositInvoicesData = trackedFunction(this, async () => {
+    const _case = this.caseData.value;
+    return _case ? await _case.depositInvoices : [];
+  });
+
+  get case() {
+    return this.caseData.value;
   }
 
-  @keepLatestTask
-  *loadData() {
-    this.case = yield this.args.model.case;
-    this.vatRate = yield this.case.vatRate;
+  get vatRate() {
+    return this.vatRateData.value;
   }
 
   get totalAmount() {
@@ -41,6 +47,6 @@ export default class InvoiceStatsComponent extends Component {
   }
 
   get depositInvoicesAmount() {
-    return sum(this.case.depositInvoices.mapBy('arithmeticAmount'));
+    return sum(this.depositInvoicesData.value?.mapBy('arithmeticAmount'));
   }
 }
