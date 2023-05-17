@@ -107,6 +107,12 @@ export default class CustomerModel extends ValidatedModel {
       .join(', ');
   }
 
+  get type() {
+    return this.isCompany
+      ? 'http://www.w3.org/2006/vcard/ns#Organization'
+      : 'http://www.w3.org/2006/vcard/ns#Individual';
+  }
+
   get uri() {
     return `http://data.rollvolet.be/customers/${this.number}`;
   }

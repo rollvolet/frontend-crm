@@ -42,7 +42,7 @@
           </div>
           <div class="mt-2 flex flex-none items-center text-sm text-gray-500 sm:mt-0">
             <p class="flex items-center text-sm text-gray-700 font-medium">
-              <Fmt::Currency @value={{this.baseAmount}} /> + {{@vatRate.rate}}% btw = <Fmt::Currency @value={{this.grossAmount}} />
+              <Fmt::Currency @value={{this.netAmount}} /> + {{@vatRate.rate}}% btw = <Fmt::Currency @value={{this.grossAmount}} />
             </p>
           </div>
         </div>
@@ -82,7 +82,7 @@
                     @id={{concat this.fieldId "-is-creditnote-checkbox"}}
                     @label="Creditnota"
                     @value={{@model.isCreditNote}}
-                    @onChange={{queue (fn (mut @model.isCreditNote)) (perform this.save)}} />
+                    @onChange={{queue this.setCreditNoteFlag (perform this.save)}} />
                 </div>
                 <div class="col-start-1">
                   <InputField::Date
@@ -106,7 +106,7 @@
                 <Input
                   id={{concat this.fieldId "-reference"}}
                   @type="text"
-                  @value={{@model.reference}}
+                  @value={{@model.case.reference}}
                   class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
                   {{on "focusout" (perform this.save)}} />
               </div>
@@ -115,9 +115,9 @@
                   <InputField::DecimalInput
                     @label="Bedrag"
                     @leading="&euro;"
-                    @value={{@model.baseAmount}}
-                    @errors={{@model.validations.attrs.baseAmount.messages}}
-                    @onChange={{queue (fn (mut @model.baseAmount)) (perform this.save)}}
+                    @value={{@model.totalAmountNet}}
+                    @errors={{@model.validations.attrs.totalAmountNet.messages}}
+                    @onChange={{queue (fn (mut @model.totalAmountNet)) (perform this.save)}}
                     class="mt-1 block w-32 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
                 </div>
                 <div>
@@ -125,7 +125,7 @@
                     BTW
                   </label>
                   <div class="mt-1 text-sm text-gray-900">
-                    <Fmt::Currency @value={{this.baseAmountVat}} /> ({{@vatRate.rate}}%)
+                    <Fmt::Currency @value={{this.vatAmount}} /> ({{@vatRate.rate}}%)
                   </div>
                 </div>
               {{/unless}}
@@ -146,7 +146,7 @@
                 </label>
                 <Textarea
                   id={{concat this.fieldId "-comment"}}
-                  @value={{@model.comment}}
+                  @value={{@model.case.comment}}
                   class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
                   rows="5"
                   {{on "focusout" (perform this.save)}} />
@@ -183,7 +183,7 @@
                   Referentie
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
-                  {{@model.reference}}
+                  {{@model.case.reference}}
                 </dd>
               </div>
               <div class="sm:col-span-1">
@@ -191,7 +191,7 @@
                   Nettobedrag
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
-                  <Fmt::Currency @value={{this.baseAmount}} />
+                  <Fmt::Currency @value={{this.netAmount}} />
                 </dd>
               </div>
               <div class="sm:col-span-1">
@@ -199,7 +199,7 @@
                   BTW bedrag
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
-                  <Fmt::Currency @value={{this.baseAmountVat}} />
+                  <Fmt::Currency @value={{this.vatAmount}} />
                 </dd>
               </div>
               <div class="sm:col-span-1">
@@ -239,8 +239,8 @@
                   Interne opmerking <span class="text-gray-400 font-normal">(niet zichtbaar in document)</span>
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
-                  {{#if @model.comment}}
-                    <span class="whitespace-pre-wrap">{{@model.comment}}</span>
+                  {{#if @model.case.comment}}
+                    <span class="whitespace-pre-wrap">{{@model.case.comment}}</span>
                   {{else}}
                     <p class="italic text-gray-400 text-xs">
                       Geen opmerking

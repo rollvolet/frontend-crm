@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 
 export default class DepositInvoicesController extends Controller {
   @service case;
+  @service router;
 
   // Since the model is refreshed on creation of a new deposit-invoice
   // and we want to open this new deposit-invoice in edit mode,
@@ -22,7 +23,7 @@ export default class DepositInvoicesController extends Controller {
   @action
   updateList(depositInvoice) {
     this.newlyCreatedDepositInvoice = depositInvoice;
-    this.send('refreshModel');
+    this.router.refresh();
   }
 
   @action

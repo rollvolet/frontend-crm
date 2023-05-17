@@ -2,7 +2,7 @@ import ApplicationSerializer from './application';
 import classic from 'ember-classic-decorator';
 
 @classic
-export default class TelephoneSerializer extends ApplicationSerializer {
+export default class AddressSerializer extends ApplicationSerializer {
   serializeBelongsTo(snapshot, json, relationship) {
     // TODO remove legacy ID conversion once countries are fully migrated to triplestore
     if (relationship.key == 'country') {
