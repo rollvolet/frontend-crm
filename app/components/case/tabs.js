@@ -53,7 +53,7 @@ export default class CaseTabsComponent extends Component {
     const canCreateNewInvoiceForOrder =
       this.model &&
       this.model.case.order &&
-      this.model.case.invoice == null &&
+      this.model.case.invoice.get('id') == null &&
       this.model.order &&
       !this.model.order.isMasteredByAccess &&
       !this.model.order.canceled;
@@ -61,7 +61,7 @@ export default class CaseTabsComponent extends Component {
       this.model &&
       this.model.case.customer &&
       this.model.case.intervention &&
-      this.model.case.invoice == null &&
+      this.model.case.invoice.get('id') == null &&
       !this.model.intervention.isCancelled;
 
     return canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention;

@@ -2,12 +2,16 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
 import sum from '../../../../../utils/math/sum';
-import { debug } from '@ember/debug';
+import {
+  createCustomerSnapshot,
+  createContactSnapshot,
+  createBuildingSnapshot,
+} from '../../../../../utils/invoice-helpers';
 
 export default class InvoiceRoute extends Route {
-  @service case;
   @service store;
   @service router;
+  @service sequence;
 
   beforeModel(transition) {
     const order = this.modelFor('main.case.order.edit');
@@ -18,57 +22,53 @@ export default class InvoiceRoute extends Route {
   }
 
   async model() {
+    const _case = this.modelFor('main.case');
     const order = this.modelFor('main.case.order.edit');
     // TODO use order.invoicelines once the relation is defined
-    const invoicelines = await this.store.query('invoiceline', {
-      'filter[:exact:order]': order.uri,
-      sort: 'position',
-      page: { size: 100 },
-    });
-    let vatRate = await order.vatRate;
-    if (!vatRate && invoicelines.firstObject) {
-      debug('Order VAT rate got lost. Updating VAT rate to VAT rate of invoiceline.');
-      vatRate = await invoicelines.firstObject.vatRate;
-      order.vatRate = vatRate;
-      await order.save();
-    }
-    const customer = await order.customer;
-    const contact = await order.contact;
-    const building = await order.building;
+    const [invoicelines, vatRate, customer, contact, building] = await Promise.all([
+      this.store.query('invoiceline', {
+        'filter[:exact:order]': _case.order,
+        sort: 'position',
+        page: { size: 100 },
+      }),
+      _case.vatRate,
+      order.customer,
+      order.contact,
+      order.building,
+    ]);
 
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
-    const baseAmount = sum(invoicelines.map((line) => line.arithmeticAmount));
+    const orderAmount = sum(invoicelines.map((line) => line.arithmeticAmount));
+
+    const [customerSnap, contactSnap, buildingSnap] = await Promise.all([
+      createCustomerSnapshot(customer),
+      createContactSnapshot(contact),
+      createBuildingSnapshot(building),
+    ]);
+    const number = await this.sequence.fetchNextInvoiceNumber();
 
     const invoice = this.store.createRecord('invoice', {
       invoiceDate,
       dueDate,
-      baseAmount,
+      number,
+      totalAmountNet: orderAmount,
       certificateRequired: vatRate.rate == 6,
       certificateReceived: false,
-      certificateClosed: false,
-      isCreditNote: false,
-      hasProductionTicket: order.hasProductionTicket,
-      reference: order.reference,
-      comment: order.comment,
-      order,
-      customer,
-      contact,
-      building,
-      vatRate,
+      case: _case,
+      customer: customerSnap,
+      contact: contactSnap,
+      building: buildingSnap,
     });
 
     await invoice.save();
 
     await Promise.all(
       invoicelines.map((invoiceline) => {
-        invoiceline.invoice = invoice.uri;
+        invoiceline.invoice = invoice;
         invoiceline.save();
       })
     );
-
-    // TODO set case on creation of invoice once relation is fully defined
-    await this.case.current.updateRecord('invoice', invoice);
 
     return invoice;
   }
