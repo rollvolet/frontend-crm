@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import snippets from '../../../../../config/snippets';
 import getDocumentLanguageCode from '../../../../../utils/get-document-language-code';
 
-export default class OfferRoute extends Route {
+export default class MainCaseRequestEditOfferRoute extends Route {
   @service case;
   @service configuration;
   @service userInfo;
@@ -23,10 +23,13 @@ export default class OfferRoute extends Route {
 
   async model() {
     const request = this.modelFor('main.case.request.edit');
-    const customer = await request.customer;
-    const contact = await request.contact;
-    const building = await request.building;
-    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
+    const [vatRate, customer, contact, building] = await Promise.all([
+      this.case.current.case.vatRate,
+      request.customer,
+      request.contact,
+      request.building,
+    ]);
+
     const languageCode = await getDocumentLanguageCode({ customer, contact });
 
     const offer = this.store.createRecord('offer', {

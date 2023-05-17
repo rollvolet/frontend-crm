@@ -15,8 +15,8 @@ export default class MainCaseInterventionEditInvoiceRoute extends Route {
   async model() {
     const _case = this.modelFor('main.case');
     const intervention = this.modelFor('main.case.intervention.edit');
-    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 6);
-    const [customer, contact, building] = await Promise.all([
+    const [vatRate, customer, contact, building] = await Promise.all([
+      _case.vatRate,
       intervention.customer,
       intervention.contact,
       intervention.building,

@@ -9,6 +9,7 @@ export default class MainCustomersEditInterventionRoute extends Route {
   async model() {
     const customer = this.modelFor('main.customers.edit');
     const employee = this.userInfo.employee;
+    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 6);
     const intervention = this.store.createRecord('intervention', {
       date: new Date(),
       employee,
@@ -21,6 +22,7 @@ export default class MainCustomersEditInterventionRoute extends Route {
     const _case = this.store.createRecord('case', {
       customer: customer.uri,
       intervention: intervention.uri,
+      vatRate,
     });
 
     await _case.save();

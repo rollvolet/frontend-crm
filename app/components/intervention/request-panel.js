@@ -29,6 +29,7 @@ export default class InterventionRequestPanelComponent extends Component {
     const employee = yield this.args.model.employee;
     const firstName = employee ? employee.firstName : null;
     const wayOfEntry = this.store.peekAll('way-of-entry').find((e) => e.position == '1');
+    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
 
     const request = this.store.createRecord('request', {
       requestDate: new Date(),
@@ -46,6 +47,7 @@ export default class InterventionRequestPanelComponent extends Component {
       contact: contact?.uri,
       building: building?.uri,
       request: request.uri,
+      vatRate,
     });
 
     yield _case.save();

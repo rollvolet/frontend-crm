@@ -142,6 +142,7 @@ export default class InterventionDetailPanelComponent extends Component {
     const building = this.case.current.building;
     const employee = yield this.args.model.employee;
     const origin = yield this.args.model.origin;
+    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 6);
 
     const intervention = this.store.createRecord('intervention', {
       date: new Date(),
@@ -158,6 +159,7 @@ export default class InterventionDetailPanelComponent extends Component {
     const _case = this.store.createRecord('case', {
       customer: customer?.uri,
       intervention: intervention.uri,
+      vatRate,
     });
 
     yield _case.save();

@@ -8,6 +8,8 @@ export default class MainInterventionsNewRoute extends Route {
 
   async model() {
     const employee = this.userInfo.employee;
+    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 6);
+
     const intervention = this.store.createRecord('intervention', {
       date: new Date(),
       employee,
@@ -18,6 +20,7 @@ export default class MainInterventionsNewRoute extends Route {
     // TODO first create case and relate to intervention once relationship is fully defined
     const _case = this.store.createRecord('case', {
       intervention: intervention.uri,
+      vatRate,
     });
 
     await _case.save();

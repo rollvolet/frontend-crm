@@ -11,6 +11,7 @@ export default class MainCustomersEditRequestRoute extends Route {
     const employee = this.userInfo.employee;
     const firstName = employee ? employee.firstName : null;
     const wayOfEntry = this.store.peekAll('way-of-entry').find((e) => e.position == '1');
+    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
     const request = this.store.createRecord('request', {
       requestDate: new Date(),
       requiresVisit: false,
@@ -25,6 +26,7 @@ export default class MainCustomersEditRequestRoute extends Route {
     const _case = this.store.createRecord('case', {
       customer: customer.uri,
       request: request.uri,
+      vatRate,
     });
 
     await _case.save();

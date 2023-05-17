@@ -13,6 +13,7 @@ export default class OrderInterventionPanelComponent extends Component {
   *createNew() {
     const customer = this.case.current.customer;
     const employee = this.userInfo.employee;
+    const vatRate = yield this.case.current.case.vatRate;
     const intervention = this.store.createRecord('intervention', {
       date: new Date(),
       origin: this.args.order,
@@ -26,6 +27,7 @@ export default class OrderInterventionPanelComponent extends Component {
     const _case = this.store.createRecord('case', {
       customer: customer?.uri,
       intervention: intervention.uri,
+      vatRate,
     });
 
     yield _case.save();
