@@ -1,10 +1,12 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
+import { createCustomerSnapshot } from '../../../../utils/invoice-helpers';
 
 export default class MainCustomersEditInvoiceRoute extends Route {
   @service store;
   @service router;
+  @service sequence;
 
   async model() {
     const customer = this.modelFor('main.customers.edit');
@@ -13,27 +15,26 @@ export default class MainCustomersEditInvoiceRoute extends Route {
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
 
+    const customerSnap = await createCustomerSnapshot(customer);
+
+    const _case = this.store.createRecord('case', {
+      customer: customer.uri,
+      vatRate,
+    });
+    await _case.save();
+
+    const number = await this.sequence.fetchNextInvoiceNumber();
     const invoice = this.store.createRecord('invoice', {
       invoiceDate,
       dueDate,
-      certificateRequired: false,
+      number,
+      certificateRequired: vatRate.rate == 6,
       certificateReceived: false,
-      certificateClosed: false,
-      isCreditNote: false,
-      hasProductionTicket: false,
-      customer,
-      vatRate,
+      case: _case,
+      customer: customerSnap,
     });
 
     await invoice.save();
-
-    // TODO first create case and relate to invoice once relationship is fully defined
-    const _case = this.store.createRecord('case', {
-      customer: customer.uri,
-      invoice: invoice.uri,
-    });
-
-    await _case.save();
 
     return { case: _case, invoice };
   }
