@@ -55,7 +55,10 @@ export default class CaseDispatcher {
       }
     });
 
-    yield all(loadRelatedRecords);
+    // Regular Ember Data relationships
+    const loadRelations = ['invoice', 'depositInvoices'].map((type) => this.case[type]);
+
+    yield all([...loadRelatedRecords, ...loadRelations]);
   }
 
   async ensureFreshRecord(type) {

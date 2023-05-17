@@ -1,42 +1,50 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
+import {
+  createCustomerSnapshot,
+  createContactSnapshot,
+  createBuildingSnapshot,
+} from '../../../../../utils/invoice-helpers';
 
 export default class MainCaseInterventionEditInvoiceRoute extends Route {
-  @service case;
   @service store;
   @service router;
+  @service sequence;
 
   async model() {
+    const _case = this.modelFor('main.case');
     const intervention = this.modelFor('main.case.intervention.edit');
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 6);
-    const customer = await intervention.customer;
-    const contact = await intervention.contact;
-    const building = await intervention.building;
+    const [customer, contact, building] = await Promise.all([
+      intervention.customer,
+      intervention.contact,
+      intervention.building,
+    ]);
 
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
 
+    const [customerSnap, contactSnap, buildingSnap] = await Promise.all([
+      createCustomerSnapshot(customer),
+      createContactSnapshot(contact),
+      createBuildingSnapshot(building),
+    ]);
+    const number = await this.sequence.fetchNextInvoiceNumber();
+
     const invoice = this.store.createRecord('invoice', {
       invoiceDate,
       dueDate,
+      number,
       certificateRequired: vatRate.rate == 6,
       certificateReceived: false,
-      certificateClosed: false,
-      isCreditNote: false,
-      hasProductionTicket: false,
-      comment: intervention.comment,
-      intervention,
-      customer,
-      contact,
-      building,
-      vatRate,
+      case: _case,
+      customer: customerSnap,
+      contact: contactSnap,
+      building: buildingSnap,
     });
 
     await invoice.save();
-
-    // TODO set case on creation of invoice once relation is fully defined
-    await this.case.current.updateRecord('invoice', invoice);
 
     return invoice;
   }
