@@ -20,6 +20,7 @@ export default class CustomerSnapshotModel extends Model {
   @belongsTo('address', { inverse: 'customerSnapshot' }) address;
   @belongsTo('invoice-document', { inverse: 'customer', polymorphic: true }) invoice;
   @hasMany('telephone', { inverse: 'customerSnapshots' }) telephones;
+  @belongsTo('language', { inverse: 'customerSnapshots' }) language;
 
   get isCompany() {
     return this.type == CUSTOMER_TYPES.ORGANIZATION;

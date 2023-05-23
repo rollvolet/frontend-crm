@@ -16,4 +16,5 @@ export default class ContactSnapshotModel extends Model {
 
   @belongsTo('address', { inverse: 'contactSnapshot' }) address;
   @belongsTo('invoice-document', { inverse: 'contact', polymorphic: true }) invoice;
+  @belongsTo('language', { inverse: 'contactSnapshots' }) language;
 }
