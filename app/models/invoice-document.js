@@ -50,6 +50,7 @@ export default class InvoiceDocumentModel extends ValidatedModel {
   @belongsTo('building-snapshot', { inverse: 'invoice' }) building;
   @belongsTo('invoice-document', { inverse: 'creditedInvoice', polymorphic: true }) creditNote;
   @belongsTo('invoice-document', { inverse: 'creditNote', polymorphic: true }) creditedInvoice;
+  @belongsTo('file', { inverse: 'invoice' }) document;
 
   get isBooked() {
     return this.bookingDate != null;

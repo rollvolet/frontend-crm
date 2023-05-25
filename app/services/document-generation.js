@@ -1,7 +1,10 @@
-import Service from '@ember/service';
+import Service, { inject as service } from '@ember/service';
 import fetch, { Headers } from 'fetch';
+import getLegacyIdFromUri from '../utils/get-legacy-id-from-uri';
 
 export default class DocumentGenerationService extends Service {
+  @service store;
+
   // Document generation
 
   async visitReport(request) {
@@ -37,8 +40,43 @@ export default class DocumentGenerationService extends Service {
   async invoiceDocument(invoice) {
     const resource =
       invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    await this._generate(`/api/${resource}/${invoice.get('id')}/documents`);
-    this.downloadInvoiceDocument(invoice);
+    const [customer, contact, building] = await Promise.all([
+      invoice.customer,
+      invoice.contact,
+      invoice.building,
+    ]);
+    const addresses = await Promise.all([customer.address, contact?.address, building?.address]);
+    const _case = await invoice.case;
+    const related = await Promise.all(
+      ['request', 'offer', 'order', 'intervention'].map((rel) => {
+        if (_case[rel]) {
+          const id = getLegacyIdFromUri(_case[rel]);
+          return this.store.findRecord(rel, id);
+        } else {
+          return null;
+        }
+      })
+    );
+    const included = [customer, contact, building, ...addresses, ...related]
+      .filter((r) => r)
+      .map((r) => r.serialize({ includeId: true }))
+      .map((r) => r.data);
+    const language = contact ? await contact.language : await customer.language;
+
+    const data = {
+      data: {
+        type: 'invoice-document-generators',
+        attributes: {
+          language: language?.code,
+        },
+        included,
+      },
+    };
+
+    const response = await this._generate(`/${resource}/${invoice.id}/documents`, data);
+    const blob = await response.blob();
+    await this._uploadDocument(`/invoices/${invoice.id}/files`, blob);
+    this.previewBlob(blob);
   }
 
   async certificateTemplate(invoice) {
@@ -132,12 +170,6 @@ export default class DocumentGenerationService extends Service {
     this._openInNewTab(`/api/files/production-tickets/${order.get('id')}?${query}`);
   }
 
-  downloadInvoiceDocument(invoice) {
-    const resource =
-      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}`);
-  }
-
   downloadCertificateTemplate(invoice) {
     const resource =
       invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
@@ -151,20 +183,50 @@ export default class DocumentGenerationService extends Service {
   }
 
   // Core helpers
-  async _generate(url, body = '') {
+  async _generate(url, body) {
     const result = await fetch(url, {
       method: 'POST',
       headers: new Headers({
         Accept: 'application/pdf',
         'Content-Type': 'application/json',
       }),
-      body: body,
+      body: body ? JSON.stringify(body) : '',
     });
 
     if (result.ok) {
       return result;
     } else {
       throw result;
+    }
+  }
+
+  async _uploadDocument(url, blob) {
+    const formData = new FormData();
+    formData.append('file', blob);
+    const result = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (result.ok) {
+      return result;
+    } else {
+      throw result;
+    }
+  }
+
+  previewBlob(blob) {
+    var blobURL = URL.createObjectURL(blob);
+    window.open(blobURL);
+  }
+
+  async previewFile(file) {
+    const download = await fetch(`/files/${file.id}/download`);
+    const location = download.headers.get('Location');
+    if (location) {
+      const result = await fetch(location);
+      const blob = await result.blob();
+      this.previewBlob(blob);
     }
   }
 

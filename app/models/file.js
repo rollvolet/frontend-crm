@@ -10,6 +10,7 @@ export default class FileModel extends Model {
 
   @belongsTo('remote-file') download;
   @belongsTo('case') case;
+  @belongsTo('invoice-document', { inverse: 'document', polymorphic: true }) invoice;
 
   get humanReadableSize() {
     const bytes = this.size;

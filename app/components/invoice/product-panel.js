@@ -80,6 +80,7 @@ export default class InvoiceProductPanelComponent extends Component {
   *generateInvoiceDocument() {
     try {
       yield this.documentGeneration.invoiceDocument(this.args.model);
+      yield this.args.model.belongsTo('document').reload();
     } catch (e) {
       warn(`Something went wrong while generating the invoice document`, {
         id: 'document-generation-failure',
@@ -88,8 +89,9 @@ export default class InvoiceProductPanelComponent extends Component {
   }
 
   @action
-  downloadInvoiceDocument() {
-    this.documentGeneration.downloadInvoiceDocument(this.args.model);
+  async downloadInvoiceDocument() {
+    const file = await this.args.model.document;
+    this.documentGeneration.previewFile(file);
   }
 
   @keepLatestTask

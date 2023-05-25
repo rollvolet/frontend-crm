@@ -1,12 +1,26 @@
 export async function createCustomerSnapshot(customer) {
   if (customer) {
     const store = customer.store;
-    const country = await customer.country;
+    const [country, language, honorificPrefix] = await Promise.all([
+      customer.country,
+      customer.language,
+      customer.honorificPrefix,
+    ]);
     const telephones = await store.query('telephone', {
-      ':exact:customer': customer.uri,
+      'filter[:exact:customer]': customer.uri,
       sort: 'position',
       page: { size: 100 },
     });
+
+    const name = [
+      customer.printInFront ? honorificPrefix?.name : null,
+      customer.printPrefix ? customer.prefix : null,
+      customer.name,
+      customer.printSuffix ? customer.suffix : null,
+      customer.printInFront ? null : honorificPrefix?.name,
+    ]
+      .filter((s) => s)
+      .join(' ');
 
     const address = store.createRecord('address', {
       street: customer.address,
@@ -17,12 +31,13 @@ export async function createCustomerSnapshot(customer) {
     await address.save();
     const snapshot = store.createRecord('customer-snapshot', {
       type: customer.type,
-      name: customer.printName,
+      name,
       number: customer.number,
       vatNumber: customer.vatNumber,
       source: customer.uri,
       address,
       telephones,
+      language,
     });
     await snapshot.save();
     return snapshot;
@@ -34,7 +49,7 @@ export async function createCustomerSnapshot(customer) {
 export async function createContactSnapshot(contact) {
   if (contact) {
     const store = contact.store;
-    const country = await contact.country;
+    const [country, language] = await Promise.all([contact.country, contact.language]);
     const address = store.createRecord('address', {
       street: contact.address,
       postalCode: contact.postalCode,
@@ -47,6 +62,7 @@ export async function createContactSnapshot(contact) {
       number: contact.number,
       source: contact.uri,
       address,
+      language,
     });
     await snapshot.save();
     return snapshot;

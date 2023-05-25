@@ -1,13 +1,6 @@
 import { tracked } from '@glimmer/tracking';
 import { all, keepLatestTask } from 'ember-concurrency';
-
-function getLegacyIdFromUri(uri) {
-  if (uri && uri.includes('/')) {
-    return uri.slice(uri.lastIndexOf('/') + 1);
-  } else {
-    return null;
-  }
-}
+import getLegacyIdFromUri from '../utils/get-legacy-id-from-uri';
 
 /**
  * Dispatcher for a case containing all related resources as Ember Data records.
