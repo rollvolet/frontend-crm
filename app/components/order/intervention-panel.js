@@ -25,6 +25,7 @@ export default class OrderInterventionPanelComponent extends Component {
 
     // TODO first create case and relate to intervention once relationship is fully defined
     const _case = this.store.createRecord('case', {
+      identifier: `IR-${intervention.id}`,
       customer: customer?.uri,
       intervention: intervention.uri,
       vatRate,

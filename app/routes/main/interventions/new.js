@@ -19,6 +19,7 @@ export default class MainInterventionsNewRoute extends Route {
 
     // TODO first create case and relate to intervention once relationship is fully defined
     const _case = this.store.createRecord('case', {
+      identifier: `IR-${intervention.id}`,
       intervention: intervention.uri,
       vatRate,
     });

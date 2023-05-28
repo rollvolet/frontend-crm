@@ -22,6 +22,7 @@ export default class MainRequestsNewRoute extends Route {
 
     // TODO first create case and relate to request once relationship is fully defined
     const _case = this.store.createRecord('case', {
+      identifier: `AD-${request.id}`,
       request: request.uri,
       vatRate,
     });

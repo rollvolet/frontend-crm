@@ -43,6 +43,7 @@ export default class InterventionRequestPanelComponent extends Component {
 
     // TODO first create case and relate to request once relationship is fully defined
     const _case = this.store.createRecord('case', {
+      identifier: `AD-${request.id}`,
       customer: customer?.uri,
       contact: contact?.uri,
       building: building?.uri,

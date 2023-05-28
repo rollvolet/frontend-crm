@@ -17,12 +17,6 @@ export default class MainCustomersEditInvoiceRoute extends Route {
 
     const customerSnap = await createCustomerSnapshot(customer);
 
-    const _case = this.store.createRecord('case', {
-      customer: customer.uri,
-      vatRate,
-    });
-    await _case.save();
-
     const number = await this.sequence.fetchNextInvoiceNumber();
     const invoice = this.store.createRecord('invoice', {
       invoiceDate,
@@ -30,11 +24,16 @@ export default class MainCustomersEditInvoiceRoute extends Route {
       number,
       certificateRequired: vatRate.rate == 6,
       certificateReceived: false,
-      case: _case,
       customer: customerSnap,
     });
-
     await invoice.save();
+    const _case = this.store.createRecord('case', {
+      identifier: `F-${invoice.number}`,
+      customer: customer.uri,
+      vatRate,
+      invoice,
+    });
+    await _case.save();
 
     return { case: _case, invoice };
   }
