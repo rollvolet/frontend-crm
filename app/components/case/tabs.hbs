@@ -33,25 +33,25 @@
             Interventie
           </LinkTo>
         {{/if}}
-        {{#if this.model.offer.id}}
+        {{#if this.model.case.offer.id}}
           <LinkTo @route="main.case.offer.edit.index"
-            @models={{array this.model.case.id this.model.offer.id}}
+            @models={{array this.model.case.id this.model.case.offer.id}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
             class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
             data-case-tab>
             Offerte
           </LinkTo>
         {{/if}}
-        {{#if this.model.order.id}}
+        {{#if this.model.case.order.id}}
           <LinkTo @route="main.case.order.edit.index"
-            @models={{array this.model.case.id this.model.order.id}}
+            @models={{array this.model.case.id this.model.case.order.id}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
             class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
             data-case-tab>
             Bestelling
           </LinkTo>
           <LinkTo @route="main.case.order.edit.deposit-invoices"
-            @models={{array this.model.case.id this.model.order.id}}
+            @models={{array this.model.case.id this.model.case.order.id}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
             class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
             data-case-tab>
@@ -83,7 +83,7 @@
         {{#if this.canCreateNewOrder}}
           <div class="flex items-center">
             <LinkTo @route="main.case.offer.edit.order"
-              @models={{array this.model.case.id this.model.offer.id}}
+              @models={{array this.model.case.id this.model.case.offer.id}}
               @activeClass="bg-red-200 border-red-300 !text-red-500 hover:bg-red-200 hover:border-red-300 hover:text-red-500"
               class="inline-flex items-center p-2 border border-gray-300 rounded-full text-gray-500 bg-gray-200 hover:bg-red-200 hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparant"
               data-case-tab>
@@ -95,10 +95,10 @@
       </nav>
       <div>
         {{#if this.canCreateNewInvoice}}
-          {{#if this.model.order.id}}
+          {{#if this.model.case.order.id}}
             <div class="flex items-center">
               <LinkTo @route="main.case.order.edit.invoice"
-                @models={{array this.model.case.id this.model.order.id}}
+                @models={{array this.model.case.id this.model.case.order.id}}
                 @activeClass="bg-blue-200 border-blue-300 !text-blue-500 hover:bg-blue-200 hover:border-blue-300 hover:text-blue-500"
                 class="inline-flex items-center rounded-md border border-transparent bg-blue-100 px-3 py-2 text-sm font-medium leading-4 text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 data-case-tab>

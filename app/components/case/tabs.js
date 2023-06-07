@@ -32,37 +32,36 @@ export default class CaseTabsComponent extends Component {
   get canCreateNewOffer() {
     return (
       this.model &&
+      !this.model.case.isCancelled &&
       this.model.case.customer &&
       this.model.request &&
-      !this.model.request.isCancelled &&
-      this.model.case.offer == null
+      this.model.case.offer.get('id') == null
     );
   }
 
   get canCreateNewOrder() {
     return (
       this.model &&
-      this.model.case.offer &&
-      this.model.case.order == null &&
-      this.model.offer &&
-      !this.model.offer.isMasteredByAccess
+      !this.model.case.isCancelled &&
+      this.model.case.offer.get('id') &&
+      this.model.case.order.get('id') == null &&
+      !this.model.case.offer.get('isMasteredByAccess')
     );
   }
 
   get canCreateNewInvoice() {
     const canCreateNewInvoiceForOrder =
       this.model &&
-      this.model.case.order &&
+      !this.model.case.isCancelled &&
+      this.model.case.order.get('id') &&
       this.model.case.invoice.get('id') == null &&
-      this.model.order &&
-      !this.model.order.isMasteredByAccess &&
-      !this.model.order.canceled;
+      !this.model.case.order.get('isMasteredByAccess');
     const canCreateNewInvoiceForIntervention =
       this.model &&
+      !this.model.case.isCancelled &&
       this.model.case.customer &&
       this.model.case.intervention &&
-      this.model.case.invoice.get('id') == null &&
-      !this.model.intervention.isCancelled;
+      this.model.case.invoice.get('id') == null;
 
     return canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention;
   }

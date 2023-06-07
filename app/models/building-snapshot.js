@@ -11,9 +11,7 @@ export default class BuildingSnapshotModel extends Model {
   })
   created;
 
-  // TODO convert to relation once buildings are added to triplestore
-  @attr('string') source;
-
   @belongsTo('address', { inverse: 'buildingSnapshot' }) address;
   @belongsTo('invoice-document', { inverse: 'building', polymorphic: true }) invoice;
+  @belongsTo('building', { inverse: 'snapshots' }) source;
 }

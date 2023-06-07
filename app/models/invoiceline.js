@@ -27,10 +27,9 @@ export default class InvoicelineModel extends ValidatedModel {
   @attr type;
   @attr description;
   @attr('number') amount;
-  @attr order;
 
   @belongsTo('vat-rate') vatRate;
-  // @belongsTo('order') order;
+  @belongsTo('order', { inverse: 'invoicelines' }) order;
   @belongsTo('invoice', { inverse: 'invoicelines' }) invoice;
 
   get arithmeticAmount() {

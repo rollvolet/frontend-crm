@@ -41,7 +41,7 @@
                   Nr.
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="name"
+                  @field="name,prefix"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -51,14 +51,14 @@
                   Straat
                 </th>
                 <DataTable::Th
-                  @field="postal-code"
+                  @field="address.postal-code"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   P.code
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="city"
+                  @field="address.city"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -124,13 +124,13 @@
                       </div>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{row.address1}}
+                      {{row.address.street}}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{row.postalCode}}
+                      {{row.address.postalCode}}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{row.city}}
+                      {{row.address.city}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <LinkTo @route="main.customers.edit.index" @model={{row.id}}

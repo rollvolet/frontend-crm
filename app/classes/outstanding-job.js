@@ -21,6 +21,6 @@ export default class OutstandingJob {
   }
 
   get isOverdue() {
-    return this.requiredDate && new Date(this.requiredDate) < new Date();
+    return this.dueDate && new Date(this.dueDate) < new Date();
   }
 }

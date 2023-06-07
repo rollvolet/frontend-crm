@@ -1,8 +1,10 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
 import { getOwner } from '@ember/application';
-import { isPresent } from '@ember/utils';
 import ValidatedModel, { Validator } from './validated-model';
 import UniqueVatNumberValidator from '../validators/unique-vat-number';
+import constants from '../config/constants';
+
+const { CUSTOMER_TYPES } = constants;
 
 export default class CustomerModel extends ValidatedModel {
   validators = {
@@ -10,10 +12,6 @@ export default class CustomerModel extends ValidatedModel {
     language: new Validator('presence', {
       presence: true,
       message: 'Kies een geldige taal',
-    }),
-    country: new Validator('presence', {
-      presence: true,
-      message: 'Kies een geldig land',
     }),
     vatNumber: [
       new Validator('inline', {
@@ -48,72 +46,43 @@ export default class CustomerModel extends ValidatedModel {
     ],
   };
 
-  @attr dataId;
-  @attr number;
-  @attr name;
-  @attr address1;
-  @attr address2;
-  @attr address3;
-  @attr postalCode;
-  @attr city;
-  @attr isCompany;
-  @attr vatNumber;
-  @attr prefix;
-  @attr suffix;
-  @attr url;
-  @attr printPrefix;
-  @attr printSuffix;
-  @attr printInFront;
-  @attr comment;
-  @attr memo;
+  @attr('string') type; // individual or organization
+  @attr('number') number;
+  @attr('string') honorificPrefix;
+  @attr('string') prefix;
+  @attr('string') name;
+  @attr('string') suffix;
+  @attr('string') url;
+  @attr('string') vatNumber;
+  @attr('string') comment;
+  @attr('string') memo;
+  @attr('string-set') tags;
   @attr('datetime', {
     defaultValue() {
       return new Date();
     },
   })
   created;
+  @attr('datetime', {
+    defaultValue() {
+      return new Date();
+    },
+  })
+  modified;
+  @attr('boolean') printPrefix;
+  @attr('boolean') printSuffix;
+  @attr('boolean') printInFront;
 
-  @hasMany('contact') contacts;
-  @hasMany('building') buildings;
-  @belongsTo('country') country;
-  @belongsTo('language') language;
-  @belongsTo('honorific-prefix') honorificPrefix;
-  // @hasMany('telephone') telephones;
-  // @hasMany('email') emails;
-  @hasMany('request') requests;
-  @hasMany('intervention') interventions;
-  @hasMany('offer') offers;
-  @hasMany('order') orders;
-  @hasMany('deposit') deposits;
-  @hasMany('tag') tags;
+  @belongsTo('address', { inverse: 'customer' }) address;
+  @belongsTo('language', { inverse: 'customers' }) language;
+  @hasMany('telephone', { inverse: 'customer' }) telephones;
+  @hasMany('email', { inverse: 'customer' }) emails;
+  @hasMany('contact', { inverse: 'customer' }) contacts;
+  @hasMany('building', { inverse: 'customer' }) buildings;
+  @hasMany('case', { inverse: 'customer' }) cases;
+  @hasMany('customer-snapshot', { inverse: 'source' }) snapshots;
 
-  get address() {
-    let address = '';
-    if (this.address1) {
-      address += this.address1 + ' ';
-    }
-    if (this.address2) {
-      address += this.address2 + ' ';
-    }
-    if (this.address3) {
-      address += this.address3 + ' ';
-    }
-    return address.trim();
-  }
-
-  get fullAddress() {
-    return [this.address, `${this.postalCode || ''} ${this.city || ''}`]
-      .filter((line) => isPresent(line))
-      .join(', ');
-  }
-
-  get type() {
-    return this.isCompany
-      ? 'http://www.w3.org/2006/vcard/ns#Organization'
-      : 'http://www.w3.org/2006/vcard/ns#Individual';
-  }
-
-  get uri() {
-    return `http://data.rollvolet.be/customers/${this.number}`;
+  get isCompany() {
+    return this.type == CUSTOMER_TYPES.ORGANIZATION;
   }
 }

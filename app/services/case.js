@@ -117,21 +117,6 @@ export default class CaseService extends Service.extend(Evented) {
     if (this.current.intervention) {
       reloadPromises.push(this.current.intervention.belongsTo('contact').reload());
     }
-    if (this.current.offer) {
-      reloadPromises.push(this.current.offer.belongsTo('contact').reload());
-    }
-    if (this.current.order) {
-      reloadPromises.push(this.current.order.belongsTo('contact').reload());
-
-      const depositInvoices = yield this.current.case.depositInvoices;
-      depositInvoices.forEach((depositInvoice) => {
-        reloadPromises.push(depositInvoice.belongsTo('contact').reload());
-      });
-    }
-    const invoice = yield this.current.case.invoice;
-    if (invoice) {
-      reloadPromises.push(invoice.belongsTo('contact').reload());
-    }
 
     yield Promise.all(reloadPromises);
   }
@@ -147,20 +132,6 @@ export default class CaseService extends Service.extend(Evented) {
     }
     if (this.current.intervention) {
       reloadPromises.push(this.current.intervention.belongsTo('building').reload());
-    }
-    if (this.current.offer) {
-      reloadPromises.push(this.current.offer.belongsTo('building').reload());
-    }
-    if (this.current.order) {
-      reloadPromises.push(this.current.order.belongsTo('building').reload());
-
-      const depositInvoices = yield this.current.case.get('depositInvoices');
-      depositInvoices.forEach((depositInvoice) => {
-        reloadPromises.push(depositInvoice.belongsTo('contact').reload());
-      });
-    }
-    if (this.current.case.invoice) {
-      reloadPromises.push(this.current.case.invoice.belongsTo('building').reload());
     }
 
     yield Promise.all(reloadPromises);
@@ -183,10 +154,7 @@ export default class CaseService extends Service.extend(Evented) {
       });
     }
     if (this.current.case.order) {
-      // TODO fetch via relation once order is converted to triplestore
-      calendarEvents['order'] = yield this.store.queryOne('calendar-event', {
-        'filter[:exact:order]': this.current.case.order,
-      });
+      calendarEvents['order'] = yield this.current.case.order.planning;
     }
 
     const promises = Object.keys(calendarEvents).map(async (key) => {
@@ -216,8 +184,8 @@ export default class CaseService extends Service.extend(Evented) {
       buildingId: building && `${building.get('id')}`,
       requestId: this.current.request?.id,
       interventionId: this.current.intervention?.id,
-      offerId: this.current.offer?.id,
-      orderId: this.current.order?.id,
+      offerId: this.current.case.offer?.id,
+      orderId: this.current.case.order?.id,
       invoiceId: this.current.case.invoice?.id,
     };
     yield updateContactAndBuildingRequest(body);

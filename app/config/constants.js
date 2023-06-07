@@ -11,4 +11,8 @@ export default {
   CUSTOMER_TYPES: {
     ORGANIZATION: 'http://www.w3.org/2006/vcard/ns#Organization',
   },
+  CASE_STATUSES: {
+    ONGOING: 'http://data.rollvolet.be/concepts/2fb2bd3f-1df3-4c45-94a0-69a6af2ab735',
+    CANCELLED: 'http://data.rollvolet.be/concepts/2ffb1b3c-7932-4369-98ac-37539efd2cbe',
+  },
 };

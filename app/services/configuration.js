@@ -17,20 +17,15 @@ export default class ConfigurationService extends Service {
   *preloadStaticLists() {
     const entities = [
       'country',
-      'honorific-prefix',
       'telephone-type',
       'language',
       'postal-code',
       'vat-rate',
-      'way-of-entry',
       'employee',
-      'payment',
     ];
     yield all(
       entities.map((type) => {
-        this.store.query(type, {
-          page: { size: 100 },
-        });
+        this.store.queryAll(type);
       })
     );
   }

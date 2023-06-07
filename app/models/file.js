@@ -1,16 +1,20 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 
 export default class FileModel extends Model {
-  @attr uri;
-  @attr filename;
-  @attr type;
-  @attr format;
-  @attr size;
-  @attr extension;
+  @attr('string') uri;
+  @attr('string') filename;
+  @attr('string') type;
+  @attr('string') format;
+  @attr('number') size;
+  @attr('string') extension;
   @attr('datetime') created;
 
   @belongsTo('remote-file') download;
-  @belongsTo('case') case;
+  @belongsTo('case', { inverse: 'attachments' }) case;
+  @belongsTo('intervention', { inverse: 'document' }) intervention;
+  @belongsTo('request', { inverse: 'document' }) request;
+  @belongsTo('offer', { inverse: 'document' }) offer;
+  @belongsTo('order', { inverse: 'documents' }) order;
   @belongsTo('invoice-document', { inverse: 'document', polymorphic: true }) invoice;
 
   get humanReadableSize() {

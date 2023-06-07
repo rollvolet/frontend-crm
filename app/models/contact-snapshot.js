@@ -11,10 +11,8 @@ export default class ContactSnapshotModel extends Model {
   })
   created;
 
-  // TODO convert to relation once contacts are added to triplestore
-  @attr('string') source;
-
   @belongsTo('address', { inverse: 'contactSnapshot' }) address;
   @belongsTo('invoice-document', { inverse: 'contact', polymorphic: true }) invoice;
   @belongsTo('language', { inverse: 'contactSnapshots' }) language;
+  @belongsTo('contact', { inverse: 'snapshots' }) source;
 }

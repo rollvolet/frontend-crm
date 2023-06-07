@@ -1,5 +1,4 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
-import { isPresent } from '@ember/utils';
 import ValidatedModel, { Validator } from './validated-model';
 
 export default class ContactModel extends ValidatedModel {
@@ -9,43 +8,38 @@ export default class ContactModel extends ValidatedModel {
       presence: true,
       message: 'Kies een geldige taal',
     }),
-    country: new Validator('presence', {
-      presence: true,
-      message: 'Kies een geldig land',
-    }),
   };
 
-  @attr name;
-  @attr address1;
-  @attr address2;
-  @attr address3;
-  @attr postalCode;
-  @attr city;
-  @attr prefix;
-  @attr suffix;
-  @attr url;
-  @attr printPrefix;
-  @attr printSuffix;
-  @attr printInFront;
-  @attr comment;
-  @attr number;
+  @attr('number') position;
+  @attr('string') honorificPrefix;
+  @attr('string') prefix;
+  @attr('string') name;
+  @attr('string') suffix;
+  @attr('string') url;
+  @attr('string') comment;
   @attr('datetime', {
     defaultValue() {
       return new Date();
     },
   })
   created;
+  @attr('datetime', {
+    defaultValue() {
+      return new Date();
+    },
+  })
+  modified;
+  @attr('boolean') printPrefix;
+  @attr('boolean') printSuffix;
+  @attr('boolean') printInFront;
 
-  @belongsTo('customer') customer;
-  @belongsTo('country') country;
-  @belongsTo('language') language;
-  @belongsTo('honorific-prefix') honorificPrefix;
-  // @hasMany('telephone') telephones;
-  // @hasMany('email') emails;
-  @hasMany('request') requests;
-  @hasMany('offer') offers;
-  @hasMany('order') orders;
-  @hasMany('invoice') invoices;
+  @belongsTo('address', { inverse: 'contact' }) address;
+  @belongsTo('language', { inverse: 'contacts' }) language;
+  @hasMany('telephone', { inverse: 'contact' }) telephones;
+  @hasMany('email', { inverse: 'contact' }) emails;
+  @belongsTo('customer', { inverse: 'contacts' }) customer;
+  @hasMany('case', { inverse: 'contact' }) cases;
+  @hasMany('contact-snapshot', { inverse: 'source' }) snapshots;
 
   get printName() {
     let name = '';
@@ -61,29 +55,5 @@ export default class ContactModel extends ValidatedModel {
 
   get searchName() {
     return `[${this.number}] ${this.printName}`;
-  }
-
-  get address() {
-    let address = '';
-    if (this.address1) {
-      address += this.address1 + ' ';
-    }
-    if (this.address2) {
-      address += this.address2 + ' ';
-    }
-    if (this.address3) {
-      address += this.address3 + ' ';
-    }
-    return address.trim();
-  }
-
-  get fullAddress() {
-    return [this.address, `${this.postalCode || ''} ${this.city || ''}`]
-      .filter((line) => isPresent(line))
-      .join(', ');
-  }
-
-  get uri() {
-    return `http://data.rollvolet.be/contacts/${this.id}`;
   }
 }

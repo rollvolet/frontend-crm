@@ -1,4 +1,4 @@
-import { attr } from '@ember-data/model';
+import { attr, belongsTo } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
 
 export default class CalendarEventModel extends ValidatedModel {
@@ -28,15 +28,9 @@ export default class CalendarEventModel extends ValidatedModel {
   })
   source;
 
-  // TODO enable once request has moved to triplestore
-  @attr request;
-  // @belongsTo('request') request;
-  // TODO enable once intervention has moved to triplestore
-  @attr intervention;
-  // @belongsTo('intervention') intervention;
-  // TODO enable once order has moved to triplestore
-  @attr order;
-  // @belongsTo('order') order;
+  @belongsTo('request', { inverse: 'visit' }) request;
+  @belongsTo('intervention', { inverse: 'visit' }) intervention;
+  @belongsTo('order', { inverse: 'planning' }) order;
 
   get isMasteredByAccess() {
     return this.source == 'Access';

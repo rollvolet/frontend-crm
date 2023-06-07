@@ -95,10 +95,10 @@
             {{moment-format row.expectedDate 'DD/MM/YY'}}
           </div>
         {{/if}}
-        {{#if row.requiredDate}}
+        {{#if row.dueDate}}
           <div>
             <span class="note note--info">Ve </span>
-            {{moment-format row.requiredDate 'DD/MM/YY'}}
+            {{moment-format row.dueDate 'DD/MM/YY'}}
           </div>
         {{/if}}
         {{#if row.planningDate}}

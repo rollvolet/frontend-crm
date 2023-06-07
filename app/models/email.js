@@ -1,4 +1,4 @@
-import { attr } from '@ember-data/model';
+import { attr, belongsTo } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
 
 export default class EmailModel extends ValidatedModel {
@@ -8,12 +8,8 @@ export default class EmailModel extends ValidatedModel {
 
   @attr('email') value;
   @attr('string') note;
-  // TODO refactor once customers are stored in triplestore
-  @attr('string') customer;
-  @attr('string') contact;
-  @attr('string') building;
 
-  // @belongsTo('customer') customer;
-  // @belongsTo('contact') contact;
-  // @belongsTo('building') building;
+  @belongsTo('customer', { inverse: 'emails' }) customer;
+  @belongsTo('contact', { inverse: 'emails' }) contact;
+  @belongsTo('building', { inverse: 'emails' }) building;
 }

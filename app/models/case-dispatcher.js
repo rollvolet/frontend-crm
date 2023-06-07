@@ -21,8 +21,6 @@ export default class CaseDispatcher {
   @tracked building = null;
   @tracked request = null;
   @tracked intervention = null;
-  @tracked offer = null;
-  @tracked order = null;
 
   constructor(_case, fetchRecord) {
     this.case = _case;
@@ -31,25 +29,21 @@ export default class CaseDispatcher {
 
   @keepLatestTask()
   *loadRelatedRecords() {
-    const loadRelatedRecords = [
-      'customer',
-      'contact',
-      'building',
-      'request',
-      'intervention',
-      'offer',
-      'order',
-    ].map(async (type) => {
-      const currentUri = this.case[type];
-      if (currentUri) {
-        await this.ensureFreshRecord(type);
-      } else {
-        this[type] = null;
+    const loadRelatedRecords = ['customer', 'contact', 'building', 'request', 'intervention'].map(
+      async (type) => {
+        const currentUri = this.case[type];
+        if (currentUri) {
+          await this.ensureFreshRecord(type);
+        } else {
+          this[type] = null;
+        }
       }
-    });
+    );
 
     // Regular Ember Data relationships
-    const loadRelations = ['invoice', 'depositInvoices'].map((type) => this.case[type]);
+    const loadRelations = ['offer', 'order', 'invoice', 'depositInvoices'].map(
+      (type) => this.case[type]
+    );
 
     yield all([...loadRelatedRecords, ...loadRelations]);
   }

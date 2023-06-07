@@ -60,8 +60,8 @@
           <div>
             <InputField::Date
               @label="Vereist"
-              @value={{@model.requiredDate}}
-              @onChange={{queue (fn (mut @model.requiredDate)) (perform this.save)}}
+              @value={{@model.dueDate}}
+              @onChange={{queue (fn (mut @model.dueDate)) (perform this.save)}}
               class="mt-1" />
           </div>
           <div>
@@ -89,9 +89,9 @@
               <div>
                 <InputField::DecimalInput
                   @label="Werkuren"
-                  @value={{@model.scheduledHours}}
-                  @errors={{@model.validations.attrs.scheduledHours.messages}}
-                  @onChange={{queue (fn (mut @model.scheduledHours)) (perform this.save)}}
+                  @value={{@model.scheduledNbOfHours}}
+                  @errors={{@model.validations.attrs.scheduledNbOfHours.messages}}
+                  @onChange={{queue (fn (mut @model.scheduledNbOfHours)) (perform this.save)}}
                   class="mt-1 block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
               </div>
               <div class="text-sm text-gray-700 whitespace-nowrap">
@@ -211,7 +211,7 @@
               <Fmt::Date @value={{@model.expectedDate}} />
             </Util::DetailSubitem>
             <Util::DetailSubitem @label="Vereist">
-              <Fmt::Date @value={{@model.requiredDate}} />
+              <Fmt::Date @value={{@model.dueDate}} />
             </Util::DetailSubitem>
           </Util::DetailItem>
           <Util::DetailItem @label="Bezoeker">
@@ -221,7 +221,7 @@
             {{@model.reference}}
           </Util::DetailItem>
           <Util::DetailItem @label="Werkuren" @displayRow={{true}}>
-            <Fmt::Decimal @value={{@model.scheduledHours}} /> uur x
+            <Fmt::Decimal @value={{@model.scheduledNbOfHours}} /> uur x
             <span class="{{if this.isNbOfPersonsWarning "px-1 py-0.5 text-red-700 bg-red-100 rounded"}}">{{@model.scheduledNbOfPersons}} man</span>
             = {{@model.scheduledTotal}} uur
           </Util::DetailItem>

@@ -22,10 +22,9 @@ export default class OfferlineModel extends ValidatedModel {
   currency;
   @attr description;
   @attr('number') amount;
-  @attr offer;
 
   @belongsTo('vat-rate') vatRate;
-  // @belongsTo('offer') offer;
+  @belongsTo('offer', { inverse: 'offerlines' }) offer;
 
   @hasMany('calculation-line') calculationLines;
 

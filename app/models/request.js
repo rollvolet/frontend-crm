@@ -11,30 +11,28 @@ export default class RequestModel extends ValidatedModel {
     }),
   };
 
-  @attr('date-midnight') requestDate;
-  @attr requiresVisit;
-  @attr description;
-  @attr comment;
-  @attr employee;
-  @attr visitor;
-  @attr('date-midnight') visitDate;
-  @attr('date-midnight') cancellationDate;
-  @attr cancellationReason;
+  @attr('string') uri;
+  @attr('date') requestDate;
+  @attr('string') number;
+  @attr('string') description;
+  @attr('string') comment;
+  @attr('boolean') requiresVisit;
+  @attr('string', {
+    defaultValue() {
+      return 'RKB';
+    },
+  })
+  source;
 
-  @belongsTo('customer') customer;
-  @belongsTo('contact') contact;
-  @belongsTo('building') building;
-  @belongsTo('way-of-entry') wayOfEntry;
-  // TODO enable once request is converted to triplestore
-  // @belongsTo('calendar-event') calendarEvent;
-  @belongsTo('offer') offer;
-  @belongsTo('intervention') origin;
+  @belongsTo('case', { inverse: 'request' }) case;
+  @belongsTo('calendar-event', { inverse: 'request' }) visit;
+  @belongsTo('concept', { inverse: null }) wayOfEntry;
+  @belongsTo('employee', { inverse: 'acceptedRequests' }) employee;
+  @belongsTo('employee', { inverse: 'visitedRequests' }) visitor;
+  @belongsTo('intervention', { inverse: 'followUpRequest' }) origin;
+  @belongsTo('file', { inverse: 'offer' }) document;
 
-  get isCancelled() {
-    return this.cancellationDate;
-  }
-
-  get uri() {
-    return `http://data.rollvolet.be/requests/${this.id}`;
+  get isMasteredByAccess() {
+    return this.source == 'Access';
   }
 }

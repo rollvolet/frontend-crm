@@ -1,4 +1,4 @@
-import { attr, belongsTo } from '@ember-data/model';
+import { attr, belongsTo, hasMany } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
 
 export default class OfferModel extends ValidatedModel {
@@ -8,30 +8,25 @@ export default class OfferModel extends ValidatedModel {
     }),
   };
 
-  @attr number;
-  @attr sequenceNumber;
-  @attr requestNumber;
-  @attr('date-midnight') offerDate;
-  @attr amount;
-  @attr reference;
-  @attr comment;
-  @attr documentIntro;
-  @attr documentOutro;
-  @attr documentVersion;
+  @attr('string') uri;
+  @attr('string') number;
+  @attr('date') offerDate;
+  @attr('number') amount;
+  @attr('string') documentIntro;
+  @attr('string') documentOutro;
+  @attr('string') documentVersion;
+  @attr('string', {
+    defaultValue() {
+      return 'RKB';
+    },
+  })
+  source;
 
-  @belongsTo('request') request;
-  @belongsTo('order') order;
-  @belongsTo('customer') customer;
-  @belongsTo('contact') contact;
-  @belongsTo('building') building;
-  @belongsTo('vat-rate') vatRate;
-  // @hasMany('offerline') offerlines;
+  @belongsTo('case', { inverse: 'offer' }) case;
+  @hasMany('offerline', { inverse: 'offer' }) offerlines;
+  @belongsTo('file', { inverse: 'offer' }) document;
 
   get isMasteredByAccess() {
-    return this.amount;
-  }
-
-  get uri() {
-    return `http://data.rollvolet.be/offers/${this.id}`;
+    return this.source == 'Access';
   }
 }

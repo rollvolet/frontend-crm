@@ -1,9 +1,9 @@
 import Model, { attr, hasMany } from '@ember-data/model';
 
 export default class TelephoneTypeModel extends Model {
-  @attr uri;
-  @attr code;
-  @attr label;
+  @attr('string') uri;
+  @attr('string') code;
+  @attr('string') label;
 
-  @hasMany('telephone') telephones;
+  @hasMany('telephone', { inverse: 'telephoneType' }) telephones;
 }

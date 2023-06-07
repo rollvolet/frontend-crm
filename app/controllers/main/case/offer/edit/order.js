@@ -81,7 +81,7 @@ export default class OrderController extends Controller {
         offerNumber: this.offer.number,
         reference: this.offer.reference,
         comment: this.offer.comment,
-        scheduledHours: 0,
+        scheduledNbOfHours: 0,
         scheduledNbOfPersons: 2,
         depositRequired: true,
         hasProductionTicket: false,

@@ -3,7 +3,7 @@ import ValidatedModel, { Validator } from './validated-model';
 
 export default class InterventionModel extends ValidatedModel {
   validators = {
-    date: new Validator('presence', {
+    interventionDate: new Validator('presence', {
       presence: true,
     }),
     nbOfPersons: new Validator('number', {
@@ -12,32 +12,29 @@ export default class InterventionModel extends ValidatedModel {
     }),
   };
 
-  @attr('date-midnight') date;
-  // TODO remove once intervention is converted to triplestore
-  @attr('date-midnight') planningDate;
-  @attr description;
-  @attr comment;
-  @attr('number') nbOfPersons;
-  @attr('date-midnight') cancellationDate;
-  @attr cancellationReason;
+  @attr('string') uri;
+  @attr('date') interventionDate;
+  @attr('string') number;
+  @attr('string') description;
+  @attr('string') comment;
+  @attr('number') scheduledNbOfPersons;
+  @attr('string', {
+    defaultValue() {
+      return 'RKB';
+    },
+  })
+  source;
 
-  @belongsTo('customer') customer;
-  @belongsTo('contact') contact;
-  @belongsTo('building') building;
-  @belongsTo('way-of-entry') wayOfEntry;
-  @belongsTo('invoice') invoice;
-  @belongsTo('order') origin;
-  @belongsTo('request') followUpRequest;
-  // TODO enable once intervention is converted to triplestore
-  // @belongsTo('calendar-event') calendarEvent;
-  @belongsTo('employee', { inverse: null }) employee;
-  @hasMany('employee', { inverse: null }) technicians;
+  @belongsTo('case', { inverse: 'intervention' }) case;
+  @belongsTo('calendar-event', { inverse: 'intervention' }) visit;
+  @belongsTo('concept', { inverse: null }) wayOfEntry;
+  @belongsTo('employee', { inverse: 'acceptedInterventions' }) employee;
+  @hasMany('employee', { inverse: 'interventions' }) technicians;
+  @belongsTo('file', { inverse: 'offer' }) document;
+  @belongsTo('order', { inverse: 'interventions' }) origin;
+  @belongsTo('request', { inverse: 'origin' }) followUpRequest;
 
-  get isCancelled() {
-    return this.cancellationDate;
-  }
-
-  get uri() {
-    return `http://data.rollvolet.be/interventions/${this.id}`;
+  get isMasteredByAccess() {
+    return this.source == 'Access';
   }
 }
