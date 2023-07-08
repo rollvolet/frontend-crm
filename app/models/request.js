@@ -13,7 +13,7 @@ export default class RequestModel extends ValidatedModel {
 
   @attr('string') uri;
   @attr('date') requestDate;
-  @attr('string') number;
+  @attr('number') number;
   @attr('string') description;
   @attr('string') comment;
   @attr('boolean') requiresVisit;

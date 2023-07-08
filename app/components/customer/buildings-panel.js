@@ -6,19 +6,30 @@ import { inject as service } from '@ember/service';
 export default class BuildingsPanel extends Component {
   @service store;
   @service configuration;
+  @service sequence;
 
   @tracked selectedBuilding = null;
   @tracked isNewBuilding = false;
 
-  createNewBuilding() {
-    return this.store.createRecord('building', {
+  async createNewBuilding() {
+    const address = this.store.createRecord('address', {
+      country: this.configuration.defaultCountry,
+    });
+    const [position] = await Promise.all([
+      this.sequence.fetchNextBuildingPosition(this.args.customer),
+      address.save(),
+    ]);
+    const building = this.store.createRecord('building', {
+      position,
       printInFront: true,
       printPrefix: true,
       printSuffix: true,
       language: this.configuration.defaultLanguage,
-      country: this.configuration.defaultCountry,
+      address,
       customer: this.args.customer,
     });
+
+    return building.save();
   }
 
   @action
@@ -34,11 +45,10 @@ export default class BuildingsPanel extends Component {
 
   @action
   async openCreate() {
-    const building = this.createNewBuilding();
-    this.selectedBuilding = building;
-    this.isNewBuilding = true;
     try {
-      await building.save();
+      const building = await this.createNewBuilding();
+      this.selectedBuilding = building;
+      this.isNewBuilding = true;
     } catch (e) {} // eslint-disable-line no-empty
   }
 }

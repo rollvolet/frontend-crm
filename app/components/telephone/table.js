@@ -31,13 +31,8 @@ export default class TelephoneTableComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    const filterKey = `filter[:exact:${this.scope}]`;
-    // TODO use this.args.model.telephones once the relation is defined
-    const telephones = yield this.store.query('telephone', {
-      [filterKey]: this.args.model.uri,
-      sort: 'position',
-      page: { size: 100 },
-    });
+    // TODO increase page size [?]
+    const telephones = yield this.args.model.telephones;
     this.telephones = telephones.toArray();
   }
 
@@ -50,7 +45,7 @@ export default class TelephoneTableComponent extends Component {
     const telephoneType = this.configuration.defaultTelephoneType;
     const telephone = this.store.createRecord('telephone', {
       position: position + 1,
-      [`${this.scope}`]: this.args.model.uri,
+      [`${this.scope}`]: this.args.model,
       country,
       telephoneType,
     });

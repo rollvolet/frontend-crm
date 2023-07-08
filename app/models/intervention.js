@@ -14,7 +14,7 @@ export default class InterventionModel extends ValidatedModel {
 
   @attr('string') uri;
   @attr('date') interventionDate;
-  @attr('string') number;
+  @attr('number') number;
   @attr('string') description;
   @attr('string') comment;
   @attr('number') scheduledNbOfPersons;

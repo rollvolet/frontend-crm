@@ -100,18 +100,12 @@
           <thead>
             <tr>
               <DataTable::Th
-                @field="number"
+                @field="position"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
                 class="pl-4 pr-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Nr.
               </DataTable::Th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Aanspreking
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Prefix
-              </th>
               <DataTable::Th
                 @field="name"
                 @currentSort={{this.sort}}
@@ -120,29 +114,26 @@
                 Naam
               </DataTable::Th>
               <DataTable::Th
-                @field="address"
+                @field="address.street"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Straat
               </DataTable::Th>
               <DataTable::Th
-                @field="postal-code"
+                @field="address.postal-code"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 P.Code
               </DataTable::Th>
               <DataTable::Th
-                @field="city"
+                @field="address.city"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Gemeente
               </DataTable::Th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Land
-              </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Taal
               </th>
@@ -154,12 +145,6 @@
               <tr class="animate-pulse">
                 <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-12 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-18 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-20 bg-gray-300"></div>
@@ -174,9 +159,6 @@
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
-                  <div class="h-8 w-32 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
                 <td>
@@ -185,12 +167,6 @@
               <tr class="animate-pulse">
                 <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-12 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-16 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-14 bg-gray-300"></div>
@@ -205,9 +181,6 @@
                   <div class="h-8 w-48 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
-                  <div class="h-8 w-12 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
                   <div class="h-8 w-24 bg-gray-300"></div>
                 </td>
                 <td>
@@ -217,28 +190,19 @@
               {{#each this.buildings as |row|}}
                 <tr role="button" {{on "click" (fn @onOpenDetail row)}}>
                   <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                    {{row.number}}
-                  </td>
-                  <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                    {{row.honorificPrefix.name}}
+                    {{row.position}}
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-900">
-                    {{row.prefix}}
-                  </td>
-                  <td class="px-6 py-4 text-sm text-gray-900">
-                    {{row.name}}
+                    <Fmt::CustomerName @model={{row}} />
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.address}}
+                    {{row.address.street}}
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.postalCode}}
+                    {{row.address.postalCode}}
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.city}}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{row.country.name}}
+                    {{row.address.city}} ({{row.address.country.code}})
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {{row.language.name}}

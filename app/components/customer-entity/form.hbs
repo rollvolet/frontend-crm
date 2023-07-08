@@ -128,18 +128,16 @@
       <div class="sm:col-span-2">
         <InputField::AddressInput
           @label="Straat"
-          @address1={{@model.address1}}
-          @address2={{@model.address2}}
-          @address3={{@model.address3}}
-          @onChange={{queue this.setAddress @onSave}}
+          @value={{@model.address.street}}
+          @onChange={{queue (fn (mut @model.address.street)) @onSave}}
           class="mt-1" />
       </div>
 
       <div class="sm:col-span-2 sm:col-start-1">
         <InputField::PostalCodeSelect
           @label="Gemeente"
-          @postalCode={{@model.postalCode}}
-          @city={{@model.city}}
+          @postalCode={{@model.address.postalCode}}
+          @city={{@model.address.city}}
           @titleize={{not this.isScopeCustomer}}
           @onSelectionChange={{queue this.setPostalCode @onSave}}
           class="mt-1" />
@@ -147,15 +145,15 @@
       <div>
         <InputField::CountrySelect
           @label="Land"
-          @value={{@model.country}}
-          @onSelectionChange={{queue (fn (mut @model.country)) @onSave}}
+          @value={{@model.address.country}}
+          @onSelectionChange={{queue (fn (mut @model.address.country)) @onSave}}
           class="mt-1" />
       </div>
       <div>
         <InputField::LanguageSelect
           @label="Taal"
           @value={{@model.language}}
-          @onSelectionChange={{queue (fn (mut @model.language)) @onSave}}
+          @onSelectionChange={{queue this.setLanguage @onSave}}
           class="mt-1" />
       </div>
     </div>

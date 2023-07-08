@@ -1,16 +1,12 @@
 import FilterComponent from '../data-table-filter';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
 import { restartableTask } from 'ember-concurrency';
 
 export default class InterventionOrderSearchModalComponent extends FilterComponent {
   @service router;
   @service store;
 
-  @tracked page = 0;
-  @tracked size = 10;
-  @tracked sort = '-order-date';
   @tracked orders = [];
 
   constructor() {
@@ -24,6 +20,7 @@ export default class InterventionOrderSearchModalComponent extends FilterCompone
       'city',
       'street',
     ]);
+    this.sort = '-order-date';
     this.initSearch();
   }
 
@@ -59,27 +56,5 @@ export default class InterventionOrderSearchModalComponent extends FilterCompone
         reference: filter.reference,
       },
     });
-  }
-
-  @action
-  previousPage() {
-    this.selectPage(this.page - 1);
-  }
-
-  @action
-  nextPage() {
-    this.selectPage(this.page + 1);
-  }
-
-  @action
-  selectPage(page) {
-    this.page = page;
-    this.search.perform(this.filter);
-  }
-
-  @action
-  setSort(sort) {
-    this.sort = sort;
-    this.search.perform(this.filter);
   }
 }

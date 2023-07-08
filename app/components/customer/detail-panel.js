@@ -18,8 +18,17 @@ export default class CustomerDetailPanelComponent extends Component {
       this.args.model.name = this.args.model.name.toUpperCase();
     }
 
-    const { validations } = yield this.args.model.validate();
-    if (validations.isValid) yield this.args.model.save();
+    const address = yield this.args.model.address;
+    const validationResults = yield Promise.all([
+      address.validate(),
+      this.args.model.validate(),
+    ])
+
+    const isValid = validationResults.find((v) => v.validations.isInvalid) == null;
+    if (isValid) {
+      yield address.save();
+      yield this.args.model.save();
+    }
   }
 
   @action
@@ -28,10 +37,13 @@ export default class CustomerDetailPanelComponent extends Component {
   }
 
   @action
-  closeEdit() {
+  async closeEdit() {
     // rollback invalid values that couldn't be saved and revalidate for consistent state
-    this.args.model.rollbackAttributes();
-    this.args.model.validate();
+    const address = await this.args.model.address;
+    [address, this.args.model].forEach((record) => {
+      record.rollbackAttributes();
+      record.validate();
+    });
     this.editMode = false;
   }
 }

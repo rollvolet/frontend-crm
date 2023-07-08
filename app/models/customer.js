@@ -46,6 +46,7 @@ export default class CustomerModel extends ValidatedModel {
     ],
   };
 
+  @attr('string') uri;
   @attr('string') type; // individual or organization
   @attr('number') number;
   @attr('string') honorificPrefix;

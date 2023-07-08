@@ -1,8 +1,14 @@
 import Component from '@glimmer/component';
 import EmberObject, { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { timeout, restartableTask } from 'ember-concurrency';
+import { isBlank } from '@ember/utils';
 
 export default class DataTableFilterComponent extends Component {
+  @tracked page = 0;
+  @tracked size = 10;
+  @tracked sort;
+
   initFilter(filterKeys) {
     this.filterKeys = filterKeys;
     this.filter = EmberObject.create();
@@ -19,7 +25,7 @@ export default class DataTableFilterComponent extends Component {
   @restartableTask
   *debounceFilter(key, event) {
     const value = event.target.value;
-    this.filter.set(key, value);
+    this.filter.set(key, isBlank(value) ? undefined : value);
     yield timeout(500);
     this.onChange(this.filter);
   }
@@ -32,12 +38,34 @@ export default class DataTableFilterComponent extends Component {
 
   @action
   setFilter(key, value) {
-    this.filter.set(key, value);
+    this.filter.set(key, isBlank(value) ? undefined : value);
     this.onChange(this.filter);
   }
 
   @action
   autofocus(element) {
     element.focus();
+  }
+
+  @action
+  previousPage() {
+    this.selectPage(this.page - 1);
+  }
+
+  @action
+  nextPage() {
+    this.selectPage(this.page + 1);
+  }
+
+  @action
+  selectPage(page) {
+    this.page = page;
+    this.search.perform(this.filter);
+  }
+
+  @action
+  setSort(sort) {
+    this.sort = sort;
+    this.search.perform(this.filter);
   }
 }

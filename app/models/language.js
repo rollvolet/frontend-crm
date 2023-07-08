@@ -1,11 +1,10 @@
 import Model, { attr, hasMany } from '@ember-data/model';
 
 export default class LanguageModel extends Model {
+  @attr('string') uri;
   @attr('string') code;
   @attr('string') name;
-
-  // TODO remove legacy ID conversion once countries are fully migrated to triplestore
-  @attr uuid;
+  @attr('string') langTag;
 
   @hasMany('customer', { inverse: 'language' }) customers;
   @hasMany('contact', { inverse: 'language' }) contacts;

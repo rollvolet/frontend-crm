@@ -5,14 +5,11 @@ import constants from 'rollvolet-crm/config/constants';
 const { EMPLOYEE_TYPES } = constants;
 
 export default class EmployeeClass extends Model {
-  @attr type;
-  @attr firstName;
-  @attr lastName;
-  @attr initials;
+  @attr('string') type;
+  @attr('string') firstName;
+  @attr('string') lastName;
+  @attr('string') initials;
   @attr('datetime') endDate;
-
-  // TODO remove legacy ID conversion once employees are fully migrated to triplestore
-  @attr uuid;
 
   @hasMany('request', { inverse: 'employee' }) acceptedRequests;
   @hasMany('request', { inverse: 'visitor' }) visitedRequests;

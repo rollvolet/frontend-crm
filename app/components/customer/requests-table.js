@@ -5,18 +5,16 @@ import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 import onlyNumericChars from '../../utils/only-numeric-chars';
 
-export default class RequestsTable extends FilterComponent {
+export default class CustomerRequestsTableComponent extends FilterComponent {
   @service router;
   @service store;
 
-  @tracked page = 0;
-  @tracked size = 10;
-  @tracked sort = '-request-date';
   @tracked requests = [];
 
   constructor() {
     super(...arguments);
-    this.initFilter(['number', 'name', 'postalCode', 'city', 'street']);
+    this.initFilter(['number', 'visitor', 'reference', 'name', 'postalCode', 'city', 'street']);
+    this.sort = '-request-date';
     this.search.perform(this.filter);
   }
 
@@ -28,52 +26,34 @@ export default class RequestsTable extends FilterComponent {
 
   @restartableTask
   *search(filter) {
-    if (filter.number) {
-      // TODO remove non-numeric characters
-    }
-
     this.requests = yield this.store.query('request', {
       page: {
         size: this.size,
         number: this.page,
       },
       sort: this.sort,
-      include: 'building',
+      include: 'case.building.address.country',
       filter: {
-        customer: {
-          number: this.args.customer.number,
-        },
         number: onlyNumericChars(filter.number),
-        building: {
-          name: filter.name,
-          'postal-code': filter.postalCode,
-          city: filter.city,
-          street: filter.street,
+        visitor: {
+          'first-name': filter.visitor,
+        },
+        case: {
+          customer: {
+            ':uri:': this.args.customer.uri,
+          },
+          building: {
+            name: filter.name,
+            address: {
+              street: filter.street,
+              'postal-code': filter.postalCode,
+              city: filter.city,
+            },
+          },
+          reference: filter.reference,
         },
       },
     });
-  }
-
-  @action
-  previousPage() {
-    this.selectPage(this.page - 1);
-  }
-
-  @action
-  nextPage() {
-    this.selectPage(this.page + 1);
-  }
-
-  @action
-  selectPage(page) {
-    this.page = page;
-    this.search.perform(this.filter);
-  }
-
-  @action
-  setSort(sort) {
-    this.sort = sort;
-    this.search.perform(this.filter);
   }
 
   @action

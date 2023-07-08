@@ -6,19 +6,30 @@ import { inject as service } from '@ember/service';
 export default class ContactsPanel extends Component {
   @service store;
   @service configuration;
+  @service sequence;
 
   @tracked selectedContact = null;
   @tracked isNewContact = false;
 
-  createNewContact() {
-    return this.store.createRecord('contact', {
+  async createNewContact() {
+    const address = this.store.createRecord('address', {
+      country: this.configuration.defaultCountry,
+    });
+    const [position] = await Promise.all([
+      this.sequence.fetchNextContactPosition(this.args.customer),
+      address.save(),
+    ]);
+    const contact = this.store.createRecord('contact', {
+      position,
       printInFront: true,
       printPrefix: true,
       printSuffix: true,
       language: this.configuration.defaultLanguage,
-      country: this.configuration.defaultCountry,
+      address,
       customer: this.args.customer,
     });
+
+    return contact.save();
   }
 
   @action
@@ -34,11 +45,10 @@ export default class ContactsPanel extends Component {
 
   @action
   async openCreate() {
-    const contact = this.createNewContact();
-    this.selectedContact = contact;
-    this.isNewContact = true;
     try {
-      await contact.save();
+      const contact = await this.createNewContact();
+      this.selectedContact = contact;
+      this.isNewContact = true;
     } catch (e) {} // eslint-disable-line no-empty
   }
 }

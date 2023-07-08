@@ -22,7 +22,6 @@ export default class InvoiceDocumentModel extends ValidatedModel {
   @attr('date') dueDate;
   @attr('date') bookingDate;
   @attr('date') paymentDate;
-  @attr('date') cancellationDate;
   @attr('string') documentOutro;
   @attr('boolean') certificateRequired;
   @attr('boolean') certificateReceived;

@@ -19,6 +19,17 @@
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "number")}} />
         </div>
+        <div class="sm:col-span-2 xl:col-span-1">
+          <label for="dt-filter-number" class="block text-sm font-medium text-gray-700">
+            Bezoeker
+          </label>
+          <input
+            id="dt-filter-visitor"
+            type="text"
+            value={{this.filter.visitor}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "visitor")}} />
+        </div>
         <div class="sm:col-span-2">
           <label for="dt-filter-reference" class="block text-sm font-medium text-gray-700">
             Referentie
@@ -91,6 +102,9 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
+              <th class="bg-gray-50 w-5">
+                {{!-- cancelled icon --}}
+              </th>
               <DataTable::Th
                 @field="number"
                 @currentSort={{this.sort}}
@@ -112,18 +126,33 @@
                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Referentie
               </DataTable::Th>
+              <DataTable::Th
+                @field="case.request.visitor.first-name"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Bezoeker
+              </DataTable::Th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Gebouw
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Straat
               </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <DataTable::Th
+                @field="building.address.postal-code"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 P.Code
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              </DataTable::Th>
+              <DataTable::Th
+                @field="building.address.city"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Gemeente
-              </th>
+              </DataTable::Th>
               <th class="px-6 py-3 bg-gray-50"></th>
             </tr>
           </thead>
@@ -138,6 +167,9 @@
                 </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-18 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-28 bg-gray-300"></div>
@@ -165,6 +197,9 @@
                   <div class="h-8 w-14 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
                   <div class="h-8 w-36 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
@@ -182,6 +217,11 @@
             {{else}}
               {{#each this.depositInvoices as |row|}}
                 <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
+                  <td class="py-2 text-center text-xs text-red-400">
+                    {{#if row.case.isCancelled}}
+                      {{svg-jar "heroicons-sm-ban" class="block m-auto h-5 w-5"}}
+                    {{/if}}
+                  </td>
                   <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                     {{format-invoice-number row.number}}
                   </td>
@@ -190,6 +230,9 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {{row.case.reference}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{row.case.request.visitor.firstName}}
                   </td>
                   <td class="px-6 py-4 text-sm font-medium text-gray-900">
                     <div class="flex">

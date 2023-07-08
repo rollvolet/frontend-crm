@@ -3,20 +3,20 @@
     {{@label}}
   </label>
 {{/if}}
-<div ...attributes {{did-update this.updateSelection @language}}>
+<div ...attributes>
   <PowerSelect
     @placeholder={{this.placeholder}}
     @searchPlaceholder="Typ om te zoeken"
     @options={{this.options}}
-    @selected={{@value}}
+    @selected={{this.selectedOption}}
     @searchEnabled={{true}}
-    @searchField="name"
-    @onChange={{@onSelectionChange}}
+    @searchField="label"
+    @onChange={{this.selectOption}}
     @noMatchesMessage="Geen resultaten"
     @allowClear={{true}}
-    @disabled={{@disabled}}
+    @disabled={{or @disabled this.loadData.isRunning}}
     as |option select|
   >
-    {{highlight-substr option.name select.lastSearchedText}}
+    {{highlight-substr option.label select.lastSearchedText}}
   </PowerSelect>
 </div>

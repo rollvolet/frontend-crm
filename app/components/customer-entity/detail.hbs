@@ -2,19 +2,17 @@
   <div class="space-y-2">
     <Util::DetailItem @label={{if @model.isCompany "Bedrijf" "Naam"}}>
       <div>
-        {{#if @model.printInFront}}{{@model.honorificPrefix.name}}{{/if}}
+        {{#if @model.printInFront}}{{@model.honorificPrefix}}{{/if}}
         {{@model.prefix}} {{@model.name}} {{@model.suffix}}
-        {{#unless @model.printInFront}}{{@model.honorificPrefix.name}}{{/unless}}
+        {{#unless @model.printInFront}}{{@model.honorificPrefix}}{{/unless}}
       </div>
       <div><Fmt::VatNumber @value={{@model.vatNumber}} /></div>
     </Util::DetailItem>
 
     <Util::DetailItem @label="Adres">
-      <div>{{@model.address1}}</div>
-      <div>{{@model.address2}}</div>
-      <div>{{@model.address3}}</div>
-      <div>{{@model.postalCode}} {{@model.city}}</div>
-      <div>{{@model.country.name}}</div>
+      <div>{{@model.address.street}}</div>
+      <div>{{@model.address.postalCode}} {{@model.address.city}}</div>
+      <div>{{@model.address.country.name}}</div>
     </Util::DetailItem>
 
     <Util::DetailItem @label="Taal">
@@ -23,18 +21,18 @@
 
     {{#if this.isScopeCustomer}}
       <Util::DetailItem @label="Tags">
-        {{this.joinedTagNames}}
+        {{join ", " @model.tags}}
       </Util::DetailItem>
     {{/if}}
   </div>
 
   <div class="space-y-2">
     <Util::DetailItem @label="Telefoon">
-      <Telephone::List @model={{this.telephones}} />
+      <Telephone::List @model={{@model.telephones}} />
     </Util::DetailItem>
 
     <Util::DetailItem @label="E-mail">
-      <Email::List @model={{this.emails}} />
+      <Email::List @model={{@model.emails}} />
     </Util::DetailItem>
 
     <Util::DetailItem @label="Website">

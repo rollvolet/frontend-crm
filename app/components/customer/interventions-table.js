@@ -9,14 +9,12 @@ export default class CustomerInterventionsTableComponent extends FilterComponent
   @service router;
   @service store;
 
-  @tracked page = 0;
-  @tracked size = 10;
-  @tracked sort = '-date';
   @tracked interventions = [];
 
   constructor() {
     super(...arguments);
     this.initFilter(['number', 'name', 'postalCode', 'city', 'street']);
+    this.sort = '-intervention-date';
     this.search.perform(this.filter);
   }
 
@@ -34,42 +32,24 @@ export default class CustomerInterventionsTableComponent extends FilterComponent
         number: this.page,
       },
       sort: this.sort,
-      include: 'building',
+      include: 'case.building.address.country',
       filter: {
-        customer: {
-          number: this.args.customer.number,
-        },
         number: onlyNumericChars(filter.number),
-        building: {
-          name: filter.name,
-          'postal-code': filter.postalCode,
-          city: filter.city,
-          street: filter.street,
+        case: {
+          customer: {
+            ':uri:': this.args.customer.uri,
+          },
+          building: {
+            name: filter.name,
+            address: {
+              street: filter.street,
+              'postal-code': filter.postalCode,
+              city: filter.city,
+            },
+          },
         },
       },
     });
-  }
-
-  @action
-  previousPage() {
-    this.selectPage(this.page - 1);
-  }
-
-  @action
-  nextPage() {
-    this.selectPage(this.page + 1);
-  }
-
-  @action
-  selectPage(page) {
-    this.page = page;
-    this.search.perform(this.filter);
-  }
-
-  @action
-  setSort(sort) {
-    this.sort = sort;
-    this.search.perform(this.filter);
   }
 
   @action

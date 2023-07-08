@@ -1,6 +1,6 @@
 import FilterComponent from '../data-table-filter';
 
-export default class DataFilterComponent extends FilterComponent {
+export default class InvoiceDataTableFilterComponent extends FilterComponent {
   constructor() {
     super(...arguments);
     super.initFilter([

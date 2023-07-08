@@ -25,19 +25,41 @@
           Zoeken
         </h4>
       </div>
-      <div class="grid sm:grid-cols-5 lg:grid-cols-8 gap-4">
-        <div class="">
-          <label for="dt-filter-number" class="block text-sm font-medium text-gray-700">
-            Nummer
+      <div class="grid sm:grid-cols-5 lg:grid-cols-7 gap-4">
+        <div class="lg:col-span-2 xl:col-span-1">
+          <label for="dt-filter-request-number" class="block text-sm font-medium text-gray-700">
+            AD nr.
           </label>
           <input
-            id="dt-filter-number"
+            id="dt-filter-request-number"
             type="text"
             value={{this.filter.number}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
             {{on "input" (perform this.debounceFilter "number")}} />
         </div>
+        <div class="sm:col-span-2 xl:col-span-1">
+          <label for="dt-filter-number" class="block text-sm font-medium text-gray-700">
+            Bezoeker
+          </label>
+          <input
+            id="dt-filter-visitor"
+            type="text"
+            value={{this.filter.visitor}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "visitor")}} />
+        </div>
         <div class="sm:col-span-2">
+          <label for="dt-filter-reference" class="block text-sm font-medium text-gray-700">
+            Referentie
+          </label>
+          <input
+            id="dt-filter-reference"
+            type="text"
+            value={{this.filter.reference}}
+            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+            {{on "input" (perform this.debounceFilter "reference")}} />
+        </div>
+        <div class="sm:col-span-2 lg:col-start-1">
           <label for="dt-filter-building-name" class="block text-sm font-medium text-gray-700">
             Gebouw
           </label>
@@ -99,7 +121,7 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
-              <th class="bg-gray-50">
+              <th class="bg-gray-50 w-5">
                 {{!-- cancelled icon --}}
               </th>
               <DataTable::Th
@@ -107,7 +129,7 @@
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
                 class="px-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nr.
+                AD
               </DataTable::Th>
               <DataTable::Th
                 @field="request-date"
@@ -116,18 +138,40 @@
                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Datum
               </DataTable::Th>
+              <DataTable::Th
+                @field="case.reference"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Referentie
+              </DataTable::Th>
+              <DataTable::Th
+                @field="visitor.first-name"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Bezoeker
+              </DataTable::Th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Gebouw
               </th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Straat
               </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <DataTable::Th
+                @field="case.building.address.postal-code"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 P.Code
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              </DataTable::Th>
+              <DataTable::Th
+                @field="case.building.address.city"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Gemeente
-              </th>
+              </DataTable::Th>
               <th class="px-6 py-3 bg-gray-50"></th>
             </tr>
           </thead>
@@ -135,6 +179,12 @@
             {{#if this.search.isRunning}}
               <tr class="animate-pulse">
                 <td class="py-2 px-2">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
@@ -166,6 +216,12 @@
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-12 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
                   <div class="h-8 w-16 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
@@ -186,25 +242,31 @@
             {{else}}
               {{#each this.requests as |row|}}
                 <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
-                  <td class="py-2 text-center text-xs text-red-500">
-                    {{#if row.isCancelled}}
+                  <td class="py-2 text-center text-xs text-red-400">
+                    {{#if row.case.isCancelled}}
                       {{svg-jar "heroicons-sm-ban" class="block m-auto h-5 w-5"}}
                     {{/if}}
                   </td>
                   <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{format-request-number row.id}}
+                    {{format-request-number row.number}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <Fmt::Date @value={{row.requestDate}} />
                   </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{row.case.reference}}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{row.visitor.firstName}}
+                  </td>
                   <td class="px-6 py-4 text-sm font-medium text-gray-900">
                     <div class="flex">
-                      {{#if row.building}}
+                      {{#if row.case.building}}
                         {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
                         <div class="space-y-1">
-                          {{#if row.building.printName}}
+                          {{#if row.case.building.printName}}
                             <div>
-                              {{row.building.printName}}
+                              {{row.case.building.printName}}
                             </div>
                           {{else}}
                             <div class="text-gray-400 italic font-normal">
@@ -216,13 +278,13 @@
                     </div>
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.building.address1}}
+                    {{row.case.building.address.street}}
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.building.postalCode}}
+                    {{row.case.building.address.postalCode}}
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.building.city}}
+                    {{row.case.building.address.city}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <LinkTo @route="main.requests.edit" @model={{row.id}}

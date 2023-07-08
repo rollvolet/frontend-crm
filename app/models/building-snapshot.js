@@ -2,7 +2,7 @@ import Model, { attr, belongsTo } from '@ember-data/model';
 
 export default class BuildingSnapshotModel extends Model {
   @attr('string') uri;
-  @attr('number') number;
+  @attr('number') position;
   @attr('string') name;
   @attr('datetime', {
     defaultValue() {

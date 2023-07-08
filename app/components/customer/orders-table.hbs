@@ -20,14 +20,14 @@
       </div>
       <div class="sm:col-span-2 xl:col-span-1">
         <label for="dt-filter-number" class="block text-sm font-medium text-gray-700">
-          Offerte
+          Bezoeker
         </label>
         <input
-          id="dt-filter-offer-number"
+          id="dt-filter-visitor"
           type="text"
-          value={{this.filter.offerNumber}}
+          value={{this.filter.visitor}}
           class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-          {{on "input" (perform this.debounceFilter "offerNumber")}} />
+          {{on "input" (perform this.debounceFilter "visitor")}} />
       </div>
       <div class="sm:col-span-2">
         <label for="dt-filter-reference" class="block text-sm font-medium text-gray-700">
@@ -101,29 +101,36 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
-              <th class="pl-4 pr-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                AD
+              <th class="bg-gray-50 w-5">
+                {{!-- cancelled icon --}}
               </th>
               <DataTable::Th
-                @field="offer-number"
+                @field="case.request.number"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
-                class="pl-4 pr-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Offerte
+                class="pl-4 pr-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                AD
               </DataTable::Th>
               <DataTable::Th
-                @field="offer-date"
+                @field="order-date"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Datum
               </DataTable::Th>
               <DataTable::Th
-                @field="reference"
+                @field="case.reference"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Referentie
+              </DataTable::Th>
+              <DataTable::Th
+                @field="case.request.visitor.first-name"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Bezoeker
               </DataTable::Th>
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Gebouw
@@ -131,12 +138,20 @@
               <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Straat
               </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <DataTable::Th
+                @field="case.building.address.postal-code"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 P.Code
-              </th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              </DataTable::Th>
+              <DataTable::Th
+                @field="case.building.address.city"
+                @currentSort={{this.sort}}
+                @onUpdateSort={{this.setSort}}
+                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Gemeente
-              </th>
+              </DataTable::Th>
               <th class="px-6 py-3 bg-gray-50"></th>
             </tr>
           </thead>
@@ -201,26 +216,31 @@
             {{else}}
               {{#each this.orders as |row|}}
                 <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
-                  <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                    {{format-request-number row.requestNumber}}
+                  <td class="py-2 text-center text-xs text-red-400">
+                    {{#if row.case.isCancelled}}
+                      {{svg-jar "heroicons-sm-ban" class="block m-auto h-5 w-5"}}
+                    {{/if}}
                   </td>
                   <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                    {{row.offerNumber}}
+                    {{format-request-number row.case.request.number}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <Fmt::Date @value={{row.orderDate}} />
                   </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{row.case.reference}}
+                  </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{row.reference}}
+                    {{row.case.request.visitor.firstName}}
                   </td>
                   <td class="px-6 py-4 text-sm font-medium text-gray-900">
                     <div class="flex">
-                      {{#if row.building}}
+                      {{#if row.case.building}}
                         {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
                         <div class="space-y-1">
-                          {{#if row.building.printName}}
+                          {{#if row.case.building.printName}}
                             <div>
-                              {{row.building.printName}}
+                              {{row.case.building.printName}}
                             </div>
                           {{else}}
                             <div class="text-gray-400 italic font-normal">
@@ -232,13 +252,13 @@
                     </div>
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.building.address1}}
+                    {{row.case.building.address.street}}
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.building.postalCode}}
+                    {{row.case.building.address.postalCode}}
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.building.city}}
+                    {{row.case.building.address.city}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <LinkTo @route="main.orders.edit" @model={{row.id}}

@@ -10,6 +10,7 @@ export default class BuildingModel extends ValidatedModel {
     }),
   };
 
+  @attr('string') uri;
   @attr('number') position;
   @attr('string') honorificPrefix;
   @attr('string') prefix;

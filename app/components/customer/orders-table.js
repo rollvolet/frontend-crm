@@ -4,28 +4,25 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 import onlyNumericChars from '../../utils/only-numeric-chars';
-import formatOfferNumber from '../../utils/format-offer-number';
 
-export default class OrdersTable extends FilterComponent {
+export default class CustomerOrdersTableComponent extends FilterComponent {
   @service router;
   @service store;
 
-  @tracked page = 0;
-  @tracked size = 10;
-  @tracked sort = '-order-date';
   @tracked orders = [];
 
   constructor() {
     super(...arguments);
     this.initFilter([
       'requestNumber',
-      'offerNumber',
+      'visitor',
       'reference',
       'name',
       'postalCode',
       'city',
       'street',
     ]);
+    this.sort = '-order-date';
     this.search.perform(this.filter);
   }
 
@@ -42,44 +39,30 @@ export default class OrdersTable extends FilterComponent {
         number: this.page,
       },
       sort: this.sort,
-      include: 'building,offer',
+      include: 'case.building.address.country,case.request.visitor',
       filter: {
-        customer: {
-          number: this.args.customer.number,
-        },
-        'request-number': onlyNumericChars(filter.requestNumber),
-        'offer-number': formatOfferNumber(filter.offerNumber),
-        reference: filter.reference,
-        building: {
-          name: filter.name,
-          'postal-code': filter.postalCode,
-          city: filter.city,
-          street: filter.street,
+        case: {
+          customer: {
+            ':uri:': this.args.customer.uri,
+          },
+          building: {
+            name: filter.name,
+            address: {
+              street: filter.street,
+              'postal-code': filter.postalCode,
+              city: filter.city,
+            },
+          },
+          request: {
+            number: onlyNumericChars(filter.requestNumber),
+            visitor: {
+              'first-name': filter.visitor,
+            },
+          },
+          reference: filter.reference,
         },
       },
     });
-  }
-
-  @action
-  previousPage() {
-    this.selectPage(this.page - 1);
-  }
-
-  @action
-  nextPage() {
-    this.selectPage(this.page + 1);
-  }
-
-  @action
-  selectPage(page) {
-    this.page = page;
-    this.search.perform(this.filter);
-  }
-
-  @action
-  setSort(sort) {
-    this.sort = sort;
-    this.search.perform(this.filter);
   }
 
   @action

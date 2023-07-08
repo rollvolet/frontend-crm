@@ -26,20 +26,15 @@ export default class EmailTableComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    const filterKey = `filter[:exact:${this.scope}]`;
-    // TODO use this.args.model.emails once the relation is defined
-    const emails = yield this.store.query('email', {
-      [filterKey]: this.args.model.uri,
-      sort: 'value',
-      page: { size: 100 },
-    });
+    // TODO increase page size [?]
+    const emails = yield this.args.model.emails;
     this.emails = emails.toArray();
   }
 
   @task
   *addEmail() {
     const email = this.store.createRecord('email', {
-      [`${this.scope}`]: this.args.model.uri,
+      [`${this.scope}`]: this.args.model,
     });
     email.initialEditMode = true;
 

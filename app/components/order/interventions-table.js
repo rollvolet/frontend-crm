@@ -8,14 +8,12 @@ export default class OrderInterventionsTableComponent extends FilterComponent {
   @service router;
   @service store;
 
-  @tracked page = 0;
-  @tracked size = 10;
-  @tracked sort = '-date';
   @tracked interventions = [];
 
   constructor() {
     super(...arguments);
     this.initFilter(['number', 'name', 'postalCode', 'city', 'street']);
+    this.sort = '-intervention-date';
     this.search.perform(this.filter);
   }
 
@@ -47,28 +45,6 @@ export default class OrderInterventionsTableComponent extends FilterComponent {
         },
       },
     });
-  }
-
-  @action
-  previousPage() {
-    this.selectPage(this.page - 1);
-  }
-
-  @action
-  nextPage() {
-    this.selectPage(this.page + 1);
-  }
-
-  @action
-  selectPage(page) {
-    this.page = page;
-    this.search.perform(this.filter);
-  }
-
-  @action
-  setSort(sort) {
-    this.sort = sort;
-    this.search.perform(this.filter);
   }
 
   @action

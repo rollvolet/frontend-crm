@@ -1,8 +1,9 @@
 import Service, { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { all, dropTask } from 'ember-concurrency';
+import constants from '../config/constants';
 
-const COUNTRY_BE = 'http://data.rollvolet.be/countries/a181ff79-c47a-4cf6-9ed9-6305c02c0440';
+const { COUNTRIES, CONCEPT_SCHEMES, LANGUAGES, TELEPHONE_TYPES } = constants;
 
 export default class ConfigurationService extends Service {
   @service store;
@@ -23,29 +24,34 @@ export default class ConfigurationService extends Service {
       'vat-rate',
       'employee',
     ];
-    yield all(
-      entities.map((type) => {
+    const conceptSchemes = [CONCEPT_SCHEMES.HONORIFIC_PREFIXES];
+    yield all([
+      ...entities.map((type) => {
         this.store.queryAll(type);
-      })
-    );
+      }),
+      ...conceptSchemes.map((conceptScheme) => {
+        this.store.queryAll('concept', {
+          'filter[concept-schemes][:uri:]': conceptScheme,
+          sort: 'position',
+        });
+      }),
+    ]);
   }
 
   get defaultLanguage() {
-    const value = this.store.peekAll('language').find((l) => l.code == 'NED');
+    const value = this.store.peekAll('language').find((l) => l.uri == LANGUAGES.NL);
     warn("No default language with code 'NED' found", value != null, { id: 'no-default-value' });
     return value;
   }
 
   get defaultCountry() {
-    const value = this.store.peekAll('country').find((c) => c.uri == COUNTRY_BE);
+    const value = this.store.peekAll('country').find((c) => c.uri == COUNTRIES.BE);
     warn("No default country 'BE' found", value != null, { id: 'no-default-value' });
     return value;
   }
 
   get defaultTelephoneType() {
-    const value = this.store
-      .peekAll('telephone-type')
-      .find((c) => c.uri == 'http://www.w3.org/2006/vcard/ns#Voice');
+    const value = this.store.peekAll('telephone-type').find((c) => c.uri == TELEPHONE_TYPES.VOICE);
     warn('No default telephone-type vcard:Voice found', value != null, { id: 'no-default-value' });
     return value;
   }
