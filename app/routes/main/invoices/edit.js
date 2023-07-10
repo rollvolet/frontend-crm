@@ -6,13 +6,13 @@ export default class MainInvoicesEditRoute extends Route {
   @service router;
 
   model(params) {
-    return this.store.findRecord('invoice', params.invoice_id, {
-      include: 'case',
+    this.invoiceId = params.invoice_id;
+    return this.store.queryOne('case', {
+      'filter[invoice][:id:]': params.invoice_id,
     });
   }
 
-  async afterModel(model) {
-    const _case = await model.case;
-    this.router.transitionTo('main.case.invoice.edit.index', _case.id, model.id);
+  afterModel(model) {
+    this.router.transitionTo('main.case.invoice.edit.index', model.id, this.invoiceId);
   }
 }

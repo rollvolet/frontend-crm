@@ -6,13 +6,14 @@ export default class MainDepositInvoicesEditRoute extends Route {
   @service router;
 
   model(params) {
-    return this.store.findRecord('deposit-invoice', params.deposit_invoice_id);
+    return this.store.queryOne('case', {
+      'filter[deposit-invoices][:id:]': params.deposit_invoice_id,
+      include: 'order',
+    });
   }
 
   async afterModel(model) {
-    const _case = await model.case;
-    const orderUri = _case.order;
-    const orderId = orderUri.substr(orderUri.lastIndexOf('/') + 1);
-    this.router.transitionTo('main.case.order.edit.deposit-invoices', _case.id, orderId);
+    const order = await model.order;
+    this.router.transitionTo('main.case.order.edit.deposit-invoices', model.id, order.id);
   }
 }

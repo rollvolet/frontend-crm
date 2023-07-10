@@ -6,14 +6,13 @@ export default class MainOffersEditRoute extends Route {
   @service router;
 
   model(params) {
-    return this.store.findRecord('offer', params.offer_id);
+    this.offerId = params.offer_id;
+    return this.store.queryOne('case', {
+      'filter[offer][:id:]': params.offer_id,
+    });
   }
 
-  async afterModel(model) {
-    // TODO get related case via offer model once relation is fully defined
-    const _case = await this.store.queryOne('case', {
-      'filter[:exact:offer]': model.uri,
-    });
-    this.router.transitionTo('main.case.offer.edit.index', _case.id, model.id);
+  afterModel(model) {
+    this.router.transitionTo('main.case.offer.edit.index', model.id, this.offerId);
   }
 }
