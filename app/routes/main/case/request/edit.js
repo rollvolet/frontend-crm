@@ -6,9 +6,7 @@ export default class MainCaseRequestEditRoute extends Route {
 
   model(params) {
     return this.store.findRecord('request', params.request_id, {
-      // We must include customer such that it is also included in PATCH requests to /request/:id.
-      // Otherwise the customer will be unlinked from the request after a PATCH request
-      include: 'customer',
+      include: 'case.offer',
     });
   }
 }

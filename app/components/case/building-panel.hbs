@@ -3,26 +3,27 @@
     {{@model.printName}}
   </Util::DetailItem>
 
-  <Util::DetailItem @width={{20}} @label="Adres">
-    <div>{{@model.address1}}</div>
-    <div>{{@model.address2}}</div>
-    <div>{{@model.address3}}</div>
-    <div>{{@model.postalCode}} {{@model.city}}</div>
-  </Util::DetailItem>
+  {{#let @model.address as |address|}}
+    <Util::DetailItem @width={{20}} @label="Adres">
+      <div>{{address.street}}</div>
+      <div>{{address.postalCode}} {{address.city}}</div>
+      <div>{{address.country.name}}</div>
+    </Util::DetailItem>
+  {{/let}}
 
   <Util::DetailItem @width={{20}} @label="Telefoon">
-    <Telephone::List @model={{this.telephones}} />
+    <Telephone::List @model={{@model.telephones}} />
   </Util::DetailItem>
 
   <Util::DetailItem @width={{20}} @label="E-mail">
-    <Email::List @model={{this.emails}} />
+    <Email::List @model={{@model.emails}} />
   </Util::DetailItem>
 </div>
 
 <div class="flex justify-end">
   <button type="button"
-    onClick={{this.openEditModal}}
-        class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+    {{on "click" this.openEditModal}}
+    class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
     {{svg-jar "heroicons-md-pencil" class="h-5 w-5"}}
   </button>
 </div>
@@ -33,8 +34,8 @@
     <div class="absolute top-0 right-0 pt-4 pr-4">
       <Util::SaveStatus @model={{@model}} @task={{this.save}} class="mb-0.5" />
       <button type="button"
-        onClick={{this.closeEditModal}}
-          class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+        {{on "click" this.closeEditModal}}
+        class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
         <span class="sr-only">Close</span>
         {{svg-jar "heroicons-md-x" class="h-6 w-6"}}
       </button>

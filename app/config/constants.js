@@ -2,6 +2,7 @@ export default {
   CONCEPT_SCHEMES: {
     HONORIFIC_PREFIXES:
       'http://data.rollvolet.be/concept-scheme/e3297128-117c-4a73-bed1-08a797554897',
+    WAY_OF_ENTRIES: 'http://data.rollvolet.be/concept-scheme/9d8087db-4307-4f6d-82f3-a414a5cb2076',
   },
   EMPLOYEE_TYPES: {
     ADMINISTRATIVE: 'http://data.rollvolet.be/employee-types/18734ab3-b8c4-428c-aca3-beb4d8e0e0ea',

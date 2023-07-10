@@ -24,7 +24,7 @@ export default class ConfigurationService extends Service {
       'vat-rate',
       'employee',
     ];
-    const conceptSchemes = [CONCEPT_SCHEMES.HONORIFIC_PREFIXES];
+    const conceptSchemes = [CONCEPT_SCHEMES.HONORIFIC_PREFIXES, CONCEPT_SCHEMES.WAY_OF_ENTRIES];
     yield all([
       ...entities.map((type) => {
         this.store.queryAll(type);

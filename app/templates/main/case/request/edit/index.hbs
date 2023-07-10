@@ -1,16 +1,16 @@
-{{#if (or this.delete.isRunning this.model.isDeleted)}}
+{{#if (or this.delete.isRunning this.request.isDeleted)}}
   <div class="h-32">
     <Util::LoadingSpinner @label="Aan het verwijderen..." />
   </div>
-{{else if (and (not this.model.id) this.model.isSaving)}}
+{{else if (and (not this.request.id) this.request.isSaving)}}
   <div class="h-32">
     <Util::LoadingSpinner @label="Aan het aanmaken..." />
   </div>
 {{else}}
   <div class="space-y-4">
-    {{#if this.model.isCancelled}}
+    {{#if this.case.isCancelled}}
       <AlertMessage::Warning
-        @message="De aanvraag is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
+        @message="Het dossier is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
         class="shadow" />
     {{else if this.hasOffer}}
       <AlertMessage::Warning
@@ -21,17 +21,17 @@
     {{!-- Details panel --}}
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <Request::DetailPanel
-        @model={{this.model}}
+        @model={{this.request}}
         @onDelete={{perform this.delete}}
         @isDisabledEdit={{this.isDisabledEdit}}
         @isEnabledDelete={{this.isEnabledDelete}} />
     </div>
 
     {{!-- Origin intervention --}}
-    {{#if this.model.origin}}
+    {{#if this.request.origin}}
       <div class="bg-white shadow rounded-lg overflow-hidden">
         <Request::InterventionPanel
-          @model={{this.model}} />
+          @model={{this.request}} />
       </div>
     {{/if}}
   </div>

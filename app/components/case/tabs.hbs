@@ -3,64 +3,60 @@
     <div class="border-b border-gray-300 flex items-center justify-between">
       <nav class="-mb-px flex flex-wrap md:flex-nowrap space-x-8" aria-label="Tabs">
         <div class="p-4 {{if this.isLoading "w-32"}} text-sm font-bold text-gray-500 bg-gray-200 rounded-t-lg whitespace-nowrap border border-gray-300">
-          {{#if this.isLoading}}
-            {{svg-jar "loading-circle" class="animate-spin h-5 w-5 mx-auto"}}
+          {{#if @model.request}}
+            AD {{format-request-number @model.request.number}} {{@model.request.visitor.initials}}
+          {{else if @model.intervention}}
+            IR {{@model.intervention.number}}
           {{else}}
-            {{#if this.model.request.id}}
-              AD {{format-request-number this.model.request.id}} {{this.visitor.initials}}
-            {{else if this.model.intervention.id}}
-              IR {{this.model.intervention.id}}
-            {{else}}
-              Dossier
-            {{/if}}
+            Dossier
           {{/if}}
         </div>
-        {{#if this.model.request.id}}
+        {{#if @model.request.id}}
           <LinkTo @route="main.case.request.edit.index"
-            @models={{array this.model.case.id this.model.request.id}}
+            @models={{array @model.id @model.request.id}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
             class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
             data-case-tab>
             Aanvraag
           </LinkTo>
         {{/if}}
-        {{#if this.model.intervention.id}}
+        {{#if @model.intervention.id}}
           <LinkTo @route="main.case.intervention.edit.index"
-            @models={{array this.model.case.id this.model.intervention.id}}
+            @models={{array @model.id @model.intervention.id}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
             class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
             data-case-tab>
             Interventie
           </LinkTo>
         {{/if}}
-        {{#if this.model.case.offer.id}}
+        {{#if @model.offer.id}}
           <LinkTo @route="main.case.offer.edit.index"
-            @models={{array this.model.case.id this.model.case.offer.id}}
+            @models={{array @model.id @model.offer.id}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
             class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
             data-case-tab>
             Offerte
           </LinkTo>
         {{/if}}
-        {{#if this.model.case.order.id}}
+        {{#if @model.order.id}}
           <LinkTo @route="main.case.order.edit.index"
-            @models={{array this.model.case.id this.model.case.order.id}}
+            @models={{array @model.id @model.order.id}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
             class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
             data-case-tab>
             Bestelling
           </LinkTo>
           <LinkTo @route="main.case.order.edit.deposit-invoices"
-            @models={{array this.model.case.id this.model.case.order.id}}
+            @models={{array @model.id @model.order.id}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
             class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
             data-case-tab>
             Voorschotten
           </LinkTo>
         {{/if}}
-        {{#if this.model.case.invoice.id}}
+        {{#if @model.invoice.id}}
           <LinkTo @route="main.case.invoice.edit.index"
-            @models={{array this.model.case.id this.model.case.invoice.id}}
+            @models={{array @model.id @model.invoice.id}}
             @activeClass="border-red-500 text-red-600 hover:text-red-600 hover:border-red-500"
             class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-200 rounded-t"
             data-case-tab>
@@ -71,7 +67,7 @@
         {{#if this.canCreateNewOffer}}
           <div class="flex items-center">
             <LinkTo @route="main.case.request.edit.offer"
-              @models={{array this.model.case.id this.model.request.id}}
+              @models={{array @model.id @model.request.id}}
                 @activeClass="bg-red-200 border-red-300 !text-red-500 hover:bg-red-200 hover:border-red-300 hover:text-red-500"
                 class="inline-flex items-center p-2 border border-gray-300 rounded-full text-gray-500 bg-gray-200 hover:bg-red-200 hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparant"
                 data-case-tab>
@@ -83,7 +79,7 @@
         {{#if this.canCreateNewOrder}}
           <div class="flex items-center">
             <LinkTo @route="main.case.offer.edit.order"
-              @models={{array this.model.case.id this.model.case.offer.id}}
+              @models={{array @model.id @model.offer.id}}
               @activeClass="bg-red-200 border-red-300 !text-red-500 hover:bg-red-200 hover:border-red-300 hover:text-red-500"
               class="inline-flex items-center p-2 border border-gray-300 rounded-full text-gray-500 bg-gray-200 hover:bg-red-200 hover:border-red-300 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-transparant"
               data-case-tab>
@@ -95,20 +91,20 @@
       </nav>
       <div>
         {{#if this.canCreateNewInvoice}}
-          {{#if this.model.case.order.id}}
+          {{#if @model.order.id}}
             <div class="flex items-center">
               <LinkTo @route="main.case.order.edit.invoice"
-                @models={{array this.model.case.id this.model.case.order.id}}
+                @models={{array @model.id @model.order.id}}
                 @activeClass="bg-blue-200 border-blue-300 !text-blue-500 hover:bg-blue-200 hover:border-blue-300 hover:text-blue-500"
                 class="inline-flex items-center rounded-md border border-transparent bg-blue-100 px-3 py-2 text-sm font-medium leading-4 text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 data-case-tab>
                 {{svg-jar "heroicons-md-plus" class="-ml-1 mr-2 h-5 w-5"}} Factuur maken
               </LinkTo>
             </div>
-          {{else if this.model.intervention.id}}
+          {{else if @model.intervention.id}}
             <div class="flex items-center">
               <LinkTo @route="main.case.intervention.edit.invoice"
-                @models={{array this.model.case.id this.model.intervention.id}}
+                @models={{array @model.id @model.intervention.id}}
                 @activeClass="bg-blue-200 border-blue-300 !text-blue-500 hover:bg-blue-200 hover:border-blue-300 hover:text-blue-500"
                 class="inline-flex items-center rounded-md border border-transparent bg-blue-100 px-3 py-2 text-sm font-medium leading-4 text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 data-case-tab>

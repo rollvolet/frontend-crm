@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
 
-export default class ContactSelect extends Component {
+export default class InputFieldContactSelectComponent extends Component {
   @service store;
 
   @tracked options = [];
@@ -20,9 +20,10 @@ export default class ContactSelect extends Component {
       // Ember data may otherwise assume it has already loaded the relation when it only fetched 1 page
       this.options = yield this.store.query('contact', {
         page: { size: 1000 },
+        sort: 'position',
         filter: {
           customer: {
-            number: this.args.customer.number,
+            ':uri:': this.args.customer.uri,
           },
         },
       });

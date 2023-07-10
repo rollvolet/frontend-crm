@@ -1,15 +1,27 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { keepLatestTask } from 'ember-concurrency';
+import constants from '../../config/constants';
 
-export default class WayOfEntrySelect extends Component {
+const { CONCEPT_SCHEMES } = constants;
+
+export default class InputFieldWayOfEntrySelectComponent extends Component {
   @service store;
 
   @tracked options = [];
 
   constructor() {
     super(...arguments);
-    this.options = this.store.peekAll('way-of-entry');
+    this.loadData.perform();
+  }
+
+  @keepLatestTask
+  *loadData() {
+    this.options = yield this.store.queryAll('concept', {
+      'filter[concept-schemes][:uri:]': CONCEPT_SCHEMES.WAY_OF_ENTRIES,
+      sort: 'position',
+    });
   }
 
   get required() {

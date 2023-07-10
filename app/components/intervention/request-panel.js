@@ -33,7 +33,6 @@ export default class InterventionRequestPanelComponent extends Component {
 
     const request = this.store.createRecord('request', {
       requestDate: new Date(),
-      requiresVisit: false,
       employee: firstName,
       origin: this.args.model,
       customer,

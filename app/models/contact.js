@@ -55,6 +55,6 @@ export default class ContactModel extends ValidatedModel {
   }
 
   get searchName() {
-    return `[${this.number}] ${this.printName}`;
+    return `[${this.position}] ${this.printName}`;
   }
 }

@@ -73,7 +73,6 @@ export default class CaseService extends Service.extend(Evented) {
             'filter[:exact:request]': this.current.case.request,
           });
           if (calendarEvent) {
-            this.current.request.requiresVisit = false;
             yield calendarEvent.destroyRecord();
           }
         } catch (e) {

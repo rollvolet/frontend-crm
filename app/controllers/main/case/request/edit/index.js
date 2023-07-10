@@ -2,45 +2,49 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
+import { isPresent } from '@ember/utils';
 
 export default class MainCaseRequestEditIndexController extends Controller {
-  @service case;
   @service router;
-  @service store;
+
+  get case() {
+    return this.model.case;
+  }
+
+  get request() {
+    return this.model.request;
+  }
 
   get isDisabledEdit() {
-    return this.model.isCancelled;
+    return this.case.isCancelled;
   }
 
   get isEnabledDelete() {
-    return !(this.hasOffer || this.model.isCancelled);
+    return !this.hasOffer && !this.case.isCancelled;
   }
 
   get hasOffer() {
-    return this.case.current && this.case.current.offer != null;
+    return isPresent(this.case.offer.get('id'));
   }
 
   @task
   *delete() {
-    const customer = this.case.current.customer;
+    const customer = yield this.case.customer;
     try {
-      // TODO fetch via relation once request is converted to triplestore
-      const calendarEvent = yield this.store.queryOne('calendar-event', {
-        'filter[:exact:request]': this.model.uri,
-      });
+      const calendarEvent = yield this.request.visit;
       if (calendarEvent) {
         yield calendarEvent.destroyRecord();
       }
-      yield this.model.destroyRecord();
-      yield this.case.current.case.destroyRecord();
+      yield this.request.destroyRecord();
+      yield this.case.destroyRecord();
     } catch (e) {
-      warn(`Something went wrong while destroying request ${this.model.id}`, {
+      warn(`Something went wrong while destroying request ${this.request.id}`, {
         id: 'destroy-failure',
       });
-      yield this.model.rollbackAttributes(); // undo delete-state
+      yield this.request.rollbackAttributes(); // undo delete-state
     } finally {
       if (customer) {
-        this.router.transitionTo('main.customers.edit.index', customer);
+        this.router.transitionTo('main.customers.edit.index', customer.id);
       } else {
         this.router.transitionTo('main.requests.index');
       }

@@ -1,5 +1,5 @@
 {{#if @model}}
-  <div class="p-4 bg-gray-100 rounded-lg" {{did-update this.parseCalendarPeriod @model}}>
+  <div class="p-4 bg-gray-100 rounded-lg">
     <div class="space-y-3">
       <div class="flex justify-between items-center">
         <div class="flex flex-row items-center">
@@ -33,7 +33,7 @@
             <InputField::Date
               @label="Datum"
               @value={{@model.date}}
-              @onChange={{queue (fn (mut @model.date)) (perform @saveTask)}}
+              @onChange={{queue (fn (mut @model.date)) (perform @saveTask @model)}}
               class="mt-1" />
           </div>
           {{#if @model.date}}

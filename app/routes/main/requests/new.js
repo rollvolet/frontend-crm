@@ -13,7 +13,6 @@ export default class MainRequestsNewRoute extends Route {
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
     const request = this.store.createRecord('request', {
       requestDate: new Date(),
-      requiresVisit: false,
       employee: firstName,
       wayOfEntry,
     });

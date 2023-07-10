@@ -2,7 +2,6 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 
 export default class CaseTabsComponent extends Component {
-  @service case;
   @service router;
   @service store;
 
@@ -17,51 +16,35 @@ export default class CaseTabsComponent extends Component {
     });
   }
 
-  get model() {
-    return this.case.current;
-  }
-
-  get visitor() {
-    return this.case.visitor;
-  }
-
-  get isLoading() {
-    return this.case.loadCase.isRunning;
-  }
-
   get canCreateNewOffer() {
     return (
-      this.model &&
-      !this.model.case.isCancelled &&
-      this.model.case.customer &&
-      this.model.request &&
-      this.model.case.offer.get('id') == null
+      !this.args.model.isCancelled &&
+      this.args.model.customer.get('id') &&
+      this.args.model.request.get('id') &&
+      this.args.model.offer.get('id') == null
     );
   }
 
   get canCreateNewOrder() {
     return (
-      this.model &&
-      !this.model.case.isCancelled &&
-      this.model.case.offer.get('id') &&
-      this.model.case.order.get('id') == null &&
-      !this.model.case.offer.get('isMasteredByAccess')
+      !this.args.model.isCancelled &&
+      this.args.model.offer.get('id') &&
+      this.args.model.order.get('id') == null &&
+      !this.args.model.offer.get('isMasteredByAccess')
     );
   }
 
   get canCreateNewInvoice() {
     const canCreateNewInvoiceForOrder =
-      this.model &&
-      !this.model.case.isCancelled &&
-      this.model.case.order.get('id') &&
-      this.model.case.invoice.get('id') == null &&
-      !this.model.case.order.get('isMasteredByAccess');
+      !this.args.model.isCancelled &&
+      this.args.model.order.get('id') &&
+      this.args.model.invoice.get('id') == null &&
+      !this.args.model.order.get('isMasteredByAccess');
     const canCreateNewInvoiceForIntervention =
-      this.model &&
-      !this.model.case.isCancelled &&
-      this.model.case.customer &&
-      this.model.case.intervention &&
-      this.model.case.invoice.get('id') == null;
+      !this.args.model.isCancelled &&
+      this.args.model.customer.get('id') &&
+      this.args.model.intervention.get('id') &&
+      this.args.model.invoice.get('id') == null;
 
     return canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention;
   }

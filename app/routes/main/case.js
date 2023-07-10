@@ -3,17 +3,19 @@ import { inject as service } from '@ember/service';
 
 export default class MainCaseRoute extends Route {
   @service store;
-  @service case;
-
-  beforeModel() {
-    return this.case.unloadCase();
-  }
 
   model(params) {
-    return this.store.findRecord('case', params.case_id);
-  }
-
-  afterModel(model) {
-    return this.case.loadCase.perform(model);
+    return this.store.findRecord('case', params.case_id, {
+      include: [
+        'customer',
+        'contact',
+        'building',
+        'request.visitor',
+        'intervention',
+        'offer',
+        'order',
+        'invoice',
+      ].join(','),
+    });
   }
 }

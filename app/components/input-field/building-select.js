@@ -20,9 +20,10 @@ export default class BuildingSelect extends Component {
       // Ember data may otherwise assume it has already loaded the relation when it only fetched 1 page
       this.options = yield this.store.query('building', {
         page: { size: 1000 },
+        sort: 'position',
         filter: {
           customer: {
-            number: this.args.customer.number,
+            ':uri:': this.args.customer.uri,
           },
         },
       });

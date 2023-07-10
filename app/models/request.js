@@ -16,7 +16,6 @@ export default class RequestModel extends ValidatedModel {
   @attr('number') number;
   @attr('string') description;
   @attr('string') comment;
-  @attr('boolean') requiresVisit;
   @attr('string', {
     defaultValue() {
       return 'RKB';

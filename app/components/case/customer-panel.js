@@ -1,95 +1,86 @@
+import { warn } from '@ember/debug';
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { task, keepLatestTask } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
+import { setCalendarEventProperties } from '../../utils/calendar-helpers';
 
-/**
- * Arguments
- * @case {CaseDispatcher} Case record to show customer details for
- */
 export default class CaseCustomerPanelComponent extends Component {
-  @service case;
   @service router;
-  @service store;
 
   @tracked isCommentExpanded = false;
   @tracked isMemoExpanded = false;
   @tracked isEnabledEditBuilding = false;
   @tracked isEnabledEditContact = false;
-  @tracked telephones = [];
-  @tracked emails = [];
-
-  constructor() {
-    super(...arguments);
-    this.loadData.perform();
-  }
-
-  @keepLatestTask
-  *loadData() {
-    if (this.args.model) {
-      const [telephones, emails] = yield Promise.all([
-        // TODO use this.args.model.telephones once the relation is defined
-        this.store.query('telephone', {
-          'filter[:exact:customer]': this.args.model.uri,
-          sort: 'position',
-          page: { size: 100 },
-        }),
-        // TODO use this.args.model.emails once the relation is defined
-        this.store.query('email', {
-          'filter[:exact:customer]': this.args.model.uri,
-          sort: 'value',
-          page: { size: 100 },
-        }),
-      ]);
-      this.telephones = telephones.toArray();
-      this.emails = emails.toArray();
-    }
-  }
 
   get isUpdatingContact() {
-    return this.case.updateContact.isRunning;
+    return this.updateContact.isRunning;
   }
 
   get isUpdatingBuilding() {
-    return this.case.updateBuilding.isRunning;
+    return this.updateBuilding.isRunning;
   }
 
   get isEnabledUnlinkCustomer() {
-    const current = this.case.current;
-    const isRequestWithoutOffer = current.request != null && current.offer == null;
-    const isInterventionWithoutInvoice = current.intervention != null && current.invoice == null;
+    const _case = this.args.model;
+    const isRequestWithoutOffer = _case.request.get('id') != null && _case.offer.get('id') == null;
+    const isInterventionWithoutInvoice =
+      _case.intervention.get('id') != null && _case.invoice.get('id') == null;
     return isRequestWithoutOffer || isInterventionWithoutInvoice;
-  }
-
-  get customer() {
-    return this.case.current && this.case.current.customer;
-  }
-
-  get contact() {
-    return this.case.current && this.case.current.contact;
-  }
-
-  get building() {
-    return this.case.current && this.case.current.building;
   }
 
   @task
   *unlinkCustomer() {
-    yield this.case.unlinkCustomer.perform();
+    const [request, offer, intervention, invoice] = yield Promise.all([
+      this.args.model.request,
+      this.args.model.offer,
+      this.args.model.intervention,
+      this.args.model.invoice,
+    ]);
 
-    if (this.case.current.request)
-      this.router.transitionTo(
-        'main.case.request.edit.index',
-        this.case.current.case.id,
-        this.case.current.request.id
-      );
-    else if (this.case.current.intervention)
+    if (request) {
+      if (offer) {
+        warn(`Unable to unlink customer from request. Case has an offer already.`);
+      } else {
+        try {
+          const visit = yield request.visit;
+          if (visit) {
+            yield visit.destroyRecord();
+          }
+        } catch (e) {
+          // silently ignore calendar event error
+        }
+      }
+    } else if (intervention) {
+      if (invoice) {
+        warn(`Unable to unlink customer from intervention. Case has an invoice already.`);
+      } else {
+        try {
+          const visit = yield intervention.visit;
+          if (visit) {
+            yield visit.destroyRecord();
+          }
+        } catch (e) {
+          // silently ignore calendar event error
+        }
+      }
+    }
+
+    this.args.model.customer = null;
+    this.args.model.building = null;
+    this.args.model.contact = null;
+    yield this.args.model.save();
+
+    if (request) {
+      this.router.transitionTo('main.case.request.edit.index', this.args.model.id, request.id);
+    } else if (intervention) {
       this.router.transitionTo(
         'main.case.intervention.edit.index',
-        this.case.current.case.id,
-        this.case.current.intervention.id
+        this.args.model.id,
+        intervention.id
       );
+    }
   }
 
   @action
@@ -112,15 +103,53 @@ export default class CaseCustomerPanelComponent extends Component {
     this.isEnabledEditBuilding = !this.isEnabledEditBuilding;
   }
 
-  @action
-  async updateContact(contact) {
+  @task
+  *updateContact(contact) {
     this.isEnabledEditContact = false;
-    await this.case.updateContact.perform(contact);
+    this.args.model.contact = contact;
+    yield this.args.model.save();
+    yield this.syncCalendarEvents.perform();
   }
 
-  @action
-  async updateBuilding(building) {
+  @task
+  *updateBuilding(building) {
     this.isEnabledEditBuilding = false;
-    await this.case.updateBuilding.perform(building);
+    this.args.model.building = building;
+    yield this.args.model.save();
+    yield this.syncCalendarEvents.perform();
+  }
+
+  @task
+  *syncCalendarEvents() {
+    const [request, intervention, order] = yield Promise.all([
+      this.args.model.request,
+      this.args.model.intervention,
+      this.args.model.order,
+    ]);
+
+    const [visitor, requestVisit, interventionVisit, orderPlanning] = yield Promise.all([
+      request?.visitor,
+      request?.visit,
+      intervention?.visit,
+      order?.planning,
+    ]);
+
+    const calendarEvents = [];
+    if (requestVisit) {
+      calendarEvents.push(
+        yield setCalendarEventProperties(requestVisit, {
+          request,
+          visitor,
+        })
+      );
+    }
+    if (interventionVisit) {
+      calendarEvents.push(yield setCalendarEventProperties(interventionVisit, { intervention }));
+    }
+    if (orderPlanning) {
+      calendarEvents.push(yield setCalendarEventProperties(orderPlanning, { order }));
+    }
+
+    yield Promise.all(calendarEvents.map((calendarEvent) => calendarEvent.save()));
   }
 }
