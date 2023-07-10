@@ -1,5 +1,8 @@
 import DataTableRoute from '../../../utils/data-table-route';
 import onlyNumericChars from '../../../utils/only-numeric-chars';
+import constants from '../../../config/constants';
+
+const { CASE_STATUSES } = constants;
 
 export default class MainInterventionsIndexRoute extends DataTableRoute {
   modelName = 'intervention';
@@ -25,27 +28,54 @@ export default class MainInterventionsIndexRoute extends DataTableRoute {
   };
 
   mergeQueryOptions(params) {
-    return {
-      include: 'customer,customer.honorific-prefix,building',
+    let caseStatus = undefined;
+    if (params.isCancelled == 0) {
+      caseStatus = CASE_STATUSES.ONGOING;
+    } else if (params.isCancelled == 1) {
+      caseStatus = CASE_STATUSES.CANCELLED;
+    }
+
+    const queryOptions = {
+      include: 'case.customer.address,case.building.address,visit',
       filter: {
         number: onlyNumericChars(params.number),
-        isCancelled: params.isCancelled,
-        hasInvoice: params.hasInvoice,
-        isPlanned: params.isPlanned,
-        customer: {
-          name: params.cName,
-          'postal-code': params.cPostalCode,
-          city: params.cCity,
-          street: params.cStreet,
-          telephone: params.cTelephone,
-        },
-        building: {
-          name: params.bName,
-          'postal-code': params.bPostalCode,
-          city: params.bCity,
-          street: params.bStreet,
+        case: {
+          status: caseStatus,
+          customer: {
+            name: params.cName,
+            address: {
+              street: params.cStreet,
+              'postal-code': params.cPostalCode,
+              city: params.cCity,
+            },
+            telephones: {
+              value: params.cTelephone,
+            },
+          },
+          building: {
+            name: params.bName,
+            address: {
+              street: params.bStreet,
+              'postal-code': params.bPostalCode,
+              city: params.bCity,
+            },
+          },
         },
       },
     };
+
+    if (params.hasInvoice == 0) {
+      queryOptions.filter.case[':has-no:invoice'] = 't';
+    } else if (params.hasInvoice == 1) {
+      queryOptions.filter.case[':has:invoice'] = 't';
+    }
+
+    if (params.isPlanned == 0) {
+      queryOptions.filter[':has-no:visit'] = 't';
+    } else if (params.isPlanned == 1) {
+      queryOptions.filter[':has:visit'] = 't';
+    }
+
+    return queryOptions;
   }
 }

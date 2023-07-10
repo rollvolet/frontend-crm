@@ -10,7 +10,7 @@
   <Invoice::DataTableFilter
     @number={{this.number}}
     @reference={{this.reference}}
-    @requestNumber={{this.requestNumber}}
+    @caseIdentifier={{this.caseIdentifier}}
     @cName={{this.cName}}
     @cStreet={{this.cStreet}}
     @cPostalCode={{this.cPostalCode}}
@@ -20,6 +20,7 @@
     @bPostalCode={{this.bPostalCode}}
     @bCity={{this.bCity}}
     @bStreet={{this.bStreet}}
+    @isCancelled={{this.isCancelled}}
     @resultCount={{this.model.meta.count}}
     @onChange={{this.applyFilter}} />
 </div>

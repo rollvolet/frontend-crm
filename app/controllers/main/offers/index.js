@@ -4,13 +4,14 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import applyFilterParams from '../../../utils/apply-filter-params';
 
-export default class IndexController extends Controller {
+export default class MainOffersIndexController extends Controller {
   @service router;
 
   @tracked page = 0;
   @tracked size = 25;
-  @tracked sort = '-number';
+  @tracked sort = '-offer-date';
   hasOrder = -1;
+  isCancelled = 0;
 
   @action
   applyFilter(filter) {

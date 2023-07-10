@@ -8,7 +8,6 @@
 
 <div class="mt-6 bg-white shadow rounded-lg">
   <Order::DataTableFilter
-    @offerNumber={{this.offerNumber}}
     @reference={{this.reference}}
     @visitor={{this.visitor}}
     @requestNumber={{this.requestNumber}}
@@ -35,15 +34,12 @@
           <table class="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
-                  Dossier
-                </th>
                 <DataTable::Th
-                  @field="offer-number"
+                  @field="case.request.number"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
-                  class="px-6 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Offertenr.
+                  class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+                  AD
                 </DataTable::Th>
                 <DataTable::Th
                   @field="order-date"
@@ -52,9 +48,13 @@
                   class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Datum
                 </DataTable::Th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <DataTable::Th
+                  @field="case.request.visitor.first-name"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Bezoek
-                </th>
+                </DataTable::Th>
                 <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Naam
                 </th>
@@ -75,9 +75,6 @@
                 <tr class="animate-pulse">
                   <td class="py-2 px-4">
                     <div class="h-8 w-12 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-16 bg-gray-300"></div>
                   </td>
                   <td class="py-2 px-4">
                     <div class="h-8 w-16 bg-gray-300"></div>
@@ -111,9 +108,6 @@
                     <div class="h-8 w-16 bg-gray-300"></div>
                   </td>
                   <td class="py-2 px-4">
-                    <div class="h-8 w-16 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
                     <div class="h-8 w-36 bg-gray-300"></div>
                   </td>
                   <td class="py-2 px-4">
@@ -132,16 +126,13 @@
                 {{#each this.model as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      {{format-case-number row.case.identifier}}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      {{row.case.offer.number}}
+                      {{format-request-number row.case.request.number}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <Fmt::Date @value={{row.orderDate}} />
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{row.case.request.visitor}}
+                      {{row.case.request.visitor.firstName}}
                     </td>
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">
                       <div class="flex">
@@ -157,7 +148,9 @@
                                 Naamloos
                               </div>
                             {{/if}}
-                            <div class="text-gray-400 text-xs"><Fmt::CustomerName @model={{row.case.customer}} /></div>
+                            <div class="text-gray-400 text-xs">
+                              <Fmt::CustomerName @model={{row.case.customer}} />
+                            </div>
                           </div>
                         {{else}}
                           {{#if row.case.customer}}
@@ -170,15 +163,17 @@
                         {{/if}}
                       </div>
                     </td>
-                    <td class="px-6 py-4 text-sm text-gray-500">
-                      {{if row.case.building row.case.building.address1 row.case.customer.address1}}
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-500">
-                      {{if row.case.building row.case.building.postalCode row.case.customer.postalCode}}
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-500">
-                      {{if row.case.building row.case.building.city row.case.customer.city}}
-                    </td>
+                    {{#let (if row.case.building row.case.building.address row.case.customer.address) as |address|}}
+                      <td class="px-6 py-4 text-sm text-gray-500">
+                        {{address.street}}
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-500">
+                        {{address.postalCode}}
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-500">
+                        {{address.city}}
+                      </td>
+                    {{/let}}
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <LinkTo @route="main.orders.edit" @model={{row.id}}
                         class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">

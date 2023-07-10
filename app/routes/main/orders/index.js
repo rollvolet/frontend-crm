@@ -1,9 +1,8 @@
 import DataTableRoute from '../../../utils/data-table-route';
 import onlyNumericChars from '../../../utils/only-numeric-chars';
-import formatOfferNumber from '../../../utils/format-offer-number';
-import config from '../../../config/constants';
+import constants from '../../../config/constants';
 
-const { CASE_STATUSES } = config;
+const { CASE_STATUSES } = constants;
 
 export default class MainOrdersIndexRoute extends DataTableRoute {
   modelName = 'order';
@@ -13,7 +12,6 @@ export default class MainOrdersIndexRoute extends DataTableRoute {
     size: { refreshModel: true },
     sort: { refreshModel: true },
     // filter params
-    offerNumber: { refreshModel: true },
     requestNumber: { refreshModel: true },
     visitor: { refreshModel: true },
     reference: { refreshModel: true },
@@ -31,47 +29,54 @@ export default class MainOrdersIndexRoute extends DataTableRoute {
   };
 
   mergeQueryOptions(params) {
-    const q = {
-      include: 'case',
+    let caseStatus = undefined;
+    if (params.isCancelled == 0) {
+      caseStatus = CASE_STATUSES.ONGOING;
+    } else if (params.isCancelled == 1) {
+      caseStatus = CASE_STATUSES.CANCELLED;
+    }
+
+    const queryOptions = {
+      include: 'case.customer.address,case.building.address,case.request.visitor',
       filter: {
         case: {
-          identifier: onlyNumericChars(params.requestNumber),
+          status: caseStatus,
           reference: params.reference,
-          request: {
-            visitor: params.visitor,
-          },
-          offer: {
-            number: formatOfferNumber(params.offerNumber),
-          },
           customer: {
             name: params.cName,
-            'postal-code': params.cPostalCode,
-            city: params.cCity,
-            street: params.cStreet,
-            telephone: params.cTelephone,
+            address: {
+              street: params.cStreet,
+              'postal-code': params.cPostalCode,
+              city: params.cCity,
+            },
+            telephones: {
+              value: params.cTelephone,
+            },
           },
           building: {
             name: params.bName,
-            'postal-code': params.bPostalCode,
-            city: params.bCity,
-            street: params.bStreet,
+            address: {
+              street: params.bStreet,
+              'postal-code': params.bPostalCode,
+              city: params.bCity,
+            },
+          },
+          request: {
+            number: onlyNumericChars(params.requestNumber),
+            visitor: {
+              'first-name': params.visitor,
+            },
           },
         },
       },
     };
 
-    if (params.isCancelled == 0) {
-      q['filter[case][status]'] = CASE_STATUSES.ONGOING;
-    } else if (params.isCancelled == 1) {
-      q['filter[case][status]'] = CASE_STATUSES.CANCELLED;
-    } // else -1: ignore filter
-
     if (params.hasInvoice == 0) {
-      q['filter[case][:has-no:invoice]'] = true;
+      queryOptions.filter.case[':has-no:invoice'] = 't';
     } else if (params.hasInvoice == 1) {
-      q['filter[case][:has:invoice]'] = true;
-    } // else -1: ignore filter
+      queryOptions.filter.case[':has:invoice'] = 't';
+    }
 
-    return q;
+    return queryOptions;
   }
 }

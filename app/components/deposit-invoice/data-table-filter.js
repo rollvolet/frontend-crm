@@ -1,12 +1,12 @@
 import FilterComponent from '../data-table-filter';
 import { action } from '@ember/object';
 
-export default class OfferDataTableFilterComponent extends FilterComponent {
+export default class DepositInvoiceDataTableFilterComponent extends FilterComponent {
   constructor() {
     super(...arguments);
     super.initFilter([
+      'number',
       'reference',
-      'visitor',
       'requestNumber',
       'cName',
       'cPostalCode',
@@ -17,7 +17,6 @@ export default class OfferDataTableFilterComponent extends FilterComponent {
       'bPostalCode',
       'bCity',
       'bStreet',
-      'hasOrder',
       'isCancelled',
     ]);
   }
@@ -25,7 +24,6 @@ export default class OfferDataTableFilterComponent extends FilterComponent {
   @action
   resetFilters() {
     this.filterKeys.forEach((key) => this.filter.set(key, undefined));
-    this.filter.set('hasOrder', -1);
     this.filter.set('isCancelled', 0);
     this.onChange(this.filter);
   }

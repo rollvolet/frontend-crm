@@ -45,17 +45,17 @@
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="pl-4 pr-2 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
-                  Nr.
+                  IR
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="date"
+                  @field="intervention-date"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Datum
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="planning-date"
+                  @field="visit.date"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -132,37 +132,39 @@
                 {{#each this.model as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      {{row.id}}
+                      {{format-intervention-number row.number}}
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <Fmt::Date @value={{row.date}} />
+                      <Fmt::Date @value={{row.interventionDate}} />
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <Fmt::Date @value={{row.planningDate}} />
+                      <Fmt::Date @value={{row.visit.date}} />
                     </td>
                     <td class="px-2 py-4 text-sm text-gray-500">
-                      {{row.nbOfPersons}}
+                      {{row.scheduledNbOfPersons}}
                     </td>
-                    <td class="px-4 py-4 text-sm font-medium text-gray-900">
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900">
                       <div class="flex">
-                        {{#if row.building}}
+                        {{#if row.case.building}}
                           {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
                           <div class="space-y-1">
-                            {{#if row.building.printName}}
+                            {{#if row.case.building.printName}}
                               <div>
-                                {{row.building.printName}}
+                                {{row.case.building.printName}}
                               </div>
                             {{else}}
                               <div class="text-gray-400 italic font-normal">
                                 Naamloos
                               </div>
                             {{/if}}
-                            <div class="text-gray-400 text-xs"><Fmt::CustomerName @model={{row.customer}} /></div>
+                            <div class="text-gray-400 text-xs">
+                              <Fmt::CustomerName @model={{row.case.customer}} />
+                            </div>
                           </div>
                         {{else}}
-                          {{#if row.customer}}
+                          {{#if row.case.customer}}
                             {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
-                            <Fmt::CustomerName @model={{row.customer}} />
+                            <Fmt::CustomerName @model={{row.case.customer}} />
                           {{else}}
                             {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
                             <span class="text-gray-400 italic">Geen klant gekoppeld</span>
@@ -172,13 +174,13 @@
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                       <div>
-                        {{if row.building row.building.address1 row.customer.address1}}
+                        {{if row.case.building row.case.building.address.street row.case.customer.address.street}}
                       </div>
                       <div>
-                        {{#if row.building}}
-                          {{row.building.postalCode}} {{row.building.city}}
+                        {{#if row.case.building}}
+                          {{row.case.building.address.postalCode}} {{row.case.building.address.city}}
                         {{else}}
-                          {{row.customer.postalCode}} {{row.customer.city}}
+                          {{row.case.customer.address.postalCode}} {{row.case.customer.address.city}}
                         {{/if}}
                       </div>
                     </td>

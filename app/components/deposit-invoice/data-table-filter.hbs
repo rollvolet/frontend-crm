@@ -24,11 +24,11 @@
   </div>
   <div class="mt-4 grid sm:grid-cols-12 gap-4">
     <div class="sm:col-span-2 lg:col-span-1">
-      <label for="filter-number" class="block text-sm font-medium text-gray-700">
-        Nummer
+      <label for="filter-invoice-number" class="block text-sm font-medium text-gray-700">
+        Factuurnr.
       </label>
       <input
-        id="filter-number"
+        id="filter-invoice-number"
         type="text"
         value={{this.filter.number}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -36,15 +36,15 @@
         {{did-insert this.autofocus}} />
     </div>
     <div class="sm:col-span-2">
-      <label for="filter-visitor" class="block text-sm font-medium text-gray-700">
-        Bezoeker
+      <label for="filter-request-number" class="block text-sm font-medium text-gray-700">
+        AD nr.
       </label>
       <input
-        id="filter-visitor"
+        id="filter-request-number"
         type="text"
-        value={{this.filter.visitor}}
+        value={{this.filter.requestNumber}}
         class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "visitor")}} />
+        {{on "input" (perform this.debounceFilter "requestNumber")}} />
     </div>
     <div class="sm:col-span-2">
       <label for="filter-reference" class="block text-sm font-medium text-gray-700">
@@ -58,12 +58,6 @@
         {{on "input" (perform this.debounceFilter "reference")}} />
     </div>
     <div class="space-y-4 sm:col-span-12 md:col-span-6 sm:flex sm:gap-4 sm:space-y-0">
-      <div>
-        <InputField::FilterFlag
-          @label="Offerte reeds gemaakt"
-          @value={{this.filter.hasOffer}}
-          @onChange={{fn this.setFilter "hasOffer"}} />
-      </div>
       <div>
         <InputField::FilterFlag @label="Afgesloten"
           @value={{this.filter.isCancelled}}

@@ -1,6 +1,8 @@
 import DataTableRoute from '../../../utils/data-table-route';
 import onlyNumericChars from '../../../utils/only-numeric-chars';
-import formatOfferNumber from '../../../utils/format-offer-number';
+import constants from '../../../config/constants';
+
+const { CASE_STATUSES } = constants;
 
 export default class MainOffersIndexRoute extends DataTableRoute {
   modelName = 'offer';
@@ -10,11 +12,11 @@ export default class MainOffersIndexRoute extends DataTableRoute {
     size: { refreshModel: true },
     sort: { refreshModel: true },
     // filter params
-    number: { refreshModel: true },
     visitor: { refreshModel: true },
     reference: { refreshModel: true },
     requestNumber: { refreshModel: true },
     hasOrder: { refreshModel: true },
+    isCancelled: { refreshModel: true },
     cName: { refreshModel: true },
     cPostalCode: { refreshModel: true },
     cCity: { refreshModel: true },
@@ -27,30 +29,54 @@ export default class MainOffersIndexRoute extends DataTableRoute {
   };
 
   mergeQueryOptions(params) {
-    return {
-      include: 'customer,customer.honorific-prefix,building,request',
+    let caseStatus = undefined;
+    if (params.isCancelled == 0) {
+      caseStatus = CASE_STATUSES.ONGOING;
+    } else if (params.isCancelled == 1) {
+      caseStatus = CASE_STATUSES.CANCELLED;
+    }
+
+    const queryOptions = {
+      include: 'case.customer.address,case.building.address,case.request.visitor',
       filter: {
-        number: formatOfferNumber(params.number),
-        'request-number': onlyNumericChars(params.requestNumber),
-        reference: params.reference,
-        hasOrder: params.hasOrder,
-        request: {
-          visitor: params.visitor,
-        },
-        customer: {
-          name: params.cName,
-          'postal-code': params.cPostalCode,
-          city: params.cCity,
-          street: params.cStreet,
-          telephone: params.cTelephone,
-        },
-        building: {
-          name: params.bName,
-          'postal-code': params.bPostalCode,
-          city: params.bCity,
-          street: params.bStreet,
+        case: {
+          status: caseStatus,
+          reference: params.reference,
+          customer: {
+            name: params.cName,
+            address: {
+              street: params.cStreet,
+              'postal-code': params.cPostalCode,
+              city: params.cCity,
+            },
+            telephones: {
+              value: params.cTelephone,
+            },
+          },
+          building: {
+            name: params.bName,
+            address: {
+              street: params.bStreet,
+              'postal-code': params.bPostalCode,
+              city: params.bCity,
+            },
+          },
+          request: {
+            number: onlyNumericChars(params.requestNumber),
+            visitor: {
+              'first-name': params.visitor,
+            },
+          },
         },
       },
     };
+
+    if (params.hasOrder == 0) {
+      queryOptions.filter.case[':has-no:order'] = 't';
+    } else if (params.hasOrder == 1) {
+      queryOptions.filter.case[':has:order'] = 't';
+    }
+
+    return queryOptions;
   }
 }

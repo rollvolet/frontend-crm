@@ -9,7 +9,7 @@ export default class IndexController extends Controller {
 
   @tracked page = 0;
   @tracked size = 25;
-  @tracked sort = '-date';
+  @tracked sort = '-intervention-date';
   isCancelled = 0;
   hasInvoice = 0;
   isPlanned = -1;

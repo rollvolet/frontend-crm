@@ -1,5 +1,8 @@
 import DataTableRoute from '../../../utils/data-table-route';
 import onlyNumericChars from '../../../utils/only-numeric-chars';
+import constants from '../../../config/constants';
+
+const { CASE_STATUSES } = constants;
 
 export default class MainDepositInvoicesIndexRoute extends DataTableRoute {
   modelName = 'deposit-invoice';
@@ -21,23 +24,37 @@ export default class MainDepositInvoicesIndexRoute extends DataTableRoute {
     bPostalCode: { refreshModel: true },
     bCity: { refreshModel: true },
     bStreet: { refreshModel: true },
+    isCancelled: { refreshModel: true },
   };
 
   mergeQueryOptions(params) {
-    return {
-      include: ['customer.address.country', 'building.address.country', 'case'].join(','),
+    let caseStatus = undefined;
+    if (params.isCancelled == 0) {
+      caseStatus = CASE_STATUSES.ONGOING;
+    } else if (params.isCancelled == 1) {
+      caseStatus = CASE_STATUSES.CANCELLED;
+    }
+
+    const queryOptions = {
+      include: 'customer.address.country,building.address.country,case.request',
       filter: {
         number: onlyNumericChars(params.number),
-        reference: params.reference,
         case: {
-          identifier: onlyNumericChars(params.requestNumber),
+          status: caseStatus,
+          reference: params.reference,
+          request: {
+            number: onlyNumericChars(params.requestNumber),
+            visitor: {
+              'first-name': params.visitor,
+            },
+          },
         },
         customer: {
           name: params.cName,
           address: {
+            street: params.cStreet,
             'postal-code': params.cPostalCode,
             city: params.cCity,
-            street: params.cStreet,
           },
           telephones: {
             value: params.cTelephone,
@@ -46,12 +63,14 @@ export default class MainDepositInvoicesIndexRoute extends DataTableRoute {
         building: {
           name: params.bName,
           address: {
+            street: params.bStreet,
             'postal-code': params.bPostalCode,
             city: params.bCity,
-            street: params.bStreet,
           },
         },
       },
     };
+
+    return queryOptions;
   }
 }

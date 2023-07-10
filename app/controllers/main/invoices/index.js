@@ -10,6 +10,7 @@ export default class MainInvoicesIndexController extends Controller {
   @tracked page = 0;
   @tracked size = 25;
   @tracked sort = '-number';
+  isCancelled = 0;
 
   @action
   applyFilter(filter) {

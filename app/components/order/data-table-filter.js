@@ -1,11 +1,10 @@
 import FilterComponent from '../data-table-filter';
 import { action } from '@ember/object';
 
-export default class DataFilterComponent extends FilterComponent {
+export default class OrderDataTableFilterComponent extends FilterComponent {
   constructor() {
     super(...arguments);
     super.initFilter([
-      'offerNumber',
       'reference',
       'visitor',
       'requestNumber',
