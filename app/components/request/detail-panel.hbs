@@ -106,7 +106,7 @@
               <CalendarEvent::DetailView
                 @title="bezoek"
                 @model={{await @model.visit}}
-                @onSynchronize={{perform this.saveCalendarEvent @model.visit}} />
+                @onSynchronize={{perform this.saveCalendarEvent}} />
             {{else if @model.visit.id}}
               <CalendarEvent::DetailEdit
                 @title="bezoek"

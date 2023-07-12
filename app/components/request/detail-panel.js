@@ -46,10 +46,7 @@ export default class RequestDetailPanelComponent extends Component {
   *save() {
     const { validations } = yield this.args.model.validate();
     if (validations.isValid) {
-      const visit = yield this.args.model.visit;
-      if (visit) {
-        yield this.synchronizeCalendarEvent.perform(visit);
-      }
+      yield this.synchronizeCalendarEvent.perform();
       yield this.args.model.save();
     }
   }
@@ -103,11 +100,14 @@ export default class RequestDetailPanelComponent extends Component {
   }
 
   @keepLatestTask
-  *synchronizeCalendarEvent(calendarEvent) {
-    yield setCalendarEventProperties(calendarEvent, {
-      request: this.args.model,
-    });
-    yield this.saveCalendarEvent.perform(calendarEvent);
+  *synchronizeCalendarEvent() {
+    const calendarEvent = yield this.args.model.visit;
+    if (calendarEvent) {
+      yield setCalendarEventProperties(calendarEvent, {
+        request: this.args.model,
+      });
+      yield this.saveCalendarEvent.perform(calendarEvent);
+    }
   }
 
   @keepLatestTask
