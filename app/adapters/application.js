@@ -3,8 +3,6 @@ import classic from 'ember-classic-decorator';
 
 @classic
 export default class ApplicationAdapter extends JSONAPIAdapter {
-  namespace = 'api';
-
   handleResponse(status, headers, payload /*, requestData*/) {
     if (!this.isSuccess(status, headers, payload)) {
       const { code, title, detail } = payload ? payload : {};
