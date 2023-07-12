@@ -29,7 +29,7 @@ export default class RequestModel extends ValidatedModel {
   @belongsTo('employee', { inverse: 'acceptedRequests' }) employee;
   @belongsTo('employee', { inverse: 'visitedRequests' }) visitor;
   @belongsTo('intervention', { inverse: 'followUpRequest' }) origin;
-  @belongsTo('file', { inverse: 'offer' }) document;
+  @belongsTo('file', { inverse: 'request' }) document;
 
   get isMasteredByAccess() {
     return this.source == 'Access';

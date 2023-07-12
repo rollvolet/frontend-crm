@@ -8,13 +8,13 @@
   </div>
 {{else}}
   <div class="space-y-4">
-    {{#if this.hasInvoice}}
+    {{#if this.case.isCancelled}}
+      <AlertMessage::Warning
+        @message="Het dossier is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
+        class="shadow" />
+    {{else if this.hasInvoice}}
       <AlertMessage::Warning
         @message="Er is reeds een factuur gemaakt. Er zijn geen wijzigingen meer mogelijk."
-        class="shadow" />
-    {{else if @model.isCancelled}}
-      <AlertMessage::Warning
-        @message="De interventie is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
         class="shadow" />
     {{/if}}
 

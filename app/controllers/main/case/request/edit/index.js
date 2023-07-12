@@ -31,9 +31,9 @@ export default class MainCaseRequestEditIndexController extends Controller {
   *delete() {
     const customer = yield this.case.customer;
     try {
-      const calendarEvent = yield this.request.visit;
-      if (calendarEvent) {
-        yield calendarEvent.destroyRecord();
+      const visit = yield this.request.visit;
+      if (visit) {
+        yield visit.destroyRecord();
       }
       yield this.request.destroyRecord();
       yield this.case.destroyRecord();

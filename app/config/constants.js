@@ -30,4 +30,10 @@ export default {
   LANGUAGES: {
     NL: 'http://data.rollvolet.be/languages/20b7a74c-22ef-41e2-b98f-f85b12570540',
   },
+  ACTIVITY_TYPES: {
+    INVALIDATION: 'http://data.rollvolet.be/concepts/5b0eb3d6-bbfb-449a-88c1-ec23ae341dca',
+  },
+  WAY_OF_ENTRIES: {
+    TELEPHONE: 'http://data.rollvolet.be/concepts/3d1a75db-c683-4b61-859b-3cae4da72df6',
+  },
 };

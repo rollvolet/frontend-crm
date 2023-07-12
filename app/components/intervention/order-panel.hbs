@@ -5,10 +5,10 @@
       <div class="space-y-1">
         <div class="flex items-center">
           <h2 class="text-2xl font-bold font-display text-gray-900">
-            Bestelling {{this.order.offerNumber}}
+            Bestelling {{format-case-number this.order.case.identifier}}
           </h2>
           {{#if this.order}}
-            <LinkTo @route="main.orders.edit" @model={{this.order}}
+            <LinkTo @route="main.orders.edit" @model={{this.order.id}}
               class="ml-2 block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
               {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
               <EmberTooltip @text="Open bestelling" @side="bottom" />
@@ -22,15 +22,15 @@
       <div class="flex flex-none space-x-4">
         {{#if this.order}}
           <button type="button"
-            onClick={{perform this.unlink}}
-                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+            {{on "click" (perform this.unlink)}}
+            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
             {{svg-jar "heroicons-md-minus-sm" class="-ml-1 mr-2 h-5 w-5"}}
             Ontkoppel bestelling
           </button>
         {{else}}
           <button type="button"
-            onClick={{this.openOrderModal}}
-                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
+            {{on "click" this.openOrderModal}}
+            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
             {{svg-jar "heroicons-md-link" class="-ml-1 mr-2 h-5 w-5"}}
             Koppel bestelling
           </button>
@@ -41,47 +41,41 @@
 
   {{!-- Card content --}}
   <div class="p-6">
-    {{#if this.loadData.isRunning}}
-      <div class="flex w-full h-full justify-center items-center">
-        {{svg-jar "loading-circle" class="animate-spin -ml-1 mr-3 h-5 w-5 text-red-600"}}
-      </div>
+    {{#if this.order}}
+      <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
+        <div class="space-y-1">
+          <Util::DetailItem @label="Datum">
+            <Fmt::Date @value={{this.order.orderDate}} />
+          </Util::DetailItem>
+          <Util::DetailItem @label="Referentie">
+            {{this.order.case.reference}}
+          </Util::DetailItem>
+        </div>
+        <div class="space-y-6">
+          <Util::DetailItem @label="Productiebon" class="items-baseline">
+            {{#if this.order.case.hasProductionTicket}}
+              <button {{on "click" this.downloadProductionTicket}} type="button">
+                {{svg-jar "heroicons-md-document-search" class="h-6 w-6 text-gray-400"}}
+              </button>
+            {{else}}
+              <div class="italic text-gray-400 text-sm">
+                Niet beschikbaar
+              </div>
+            {{/if}}
+          </Util::DetailItem>
+        </div>
+      </dl>
     {{else}}
-      {{#if this.order}}
-        <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-          <div class="space-y-1">
-            <Util::DetailItem @label="Datum">
-              <Fmt::Date @value={{this.order.orderDate}} />
-            </Util::DetailItem>
-            <Util::DetailItem @label="Referentie">
-              {{this.order.reference}}
-            </Util::DetailItem>
-          </div>
-          <div class="space-y-6">
-            <Util::DetailItem @label="Productiebon" class="items-baseline">
-              {{#if this.order.hasProductionTicket}}
-                <button onClick={{this.downloadProductionTicket}} type="button">
-                  {{svg-jar "heroicons-md-document-search" class="h-6 w-6 text-gray-400"}}
-                </button>
-              {{else}}
-                <div class="italic text-gray-400 text-sm">
-                  Niet beschikbaar
-                </div>
-              {{/if}}
-            </Util::DetailItem>
-          </div>
-        </dl>
-      {{else}}
-        <p class="italic text-gray-400 text-sm">
-          Deze interventie is niet gekoppeld aan een (eerdere) bestelling. Klik
-          <button type="button"
-            onClick={{this.openOrderModal}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "heroicons-sm-link" class="h-4 w-4"}}
-            <EmberTooltip @text="Koppel bestelling" @side="top" />
-          </button>
-          om een bestelling te koppelen.
-        </p>
-      {{/if}}
+      <p class="italic text-gray-400 text-sm">
+        Deze interventie is niet gekoppeld aan een (eerdere) bestelling. Klik
+        <button type="button"
+          {{on "click" this.openOrderModal}}
+          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+          {{svg-jar "heroicons-sm-link" class="h-4 w-4"}}
+          <EmberTooltip @text="Koppel bestelling" @side="top" />
+        </button>
+        om een bestelling te koppelen.
+      </p>
     {{/if}}
   </div>
 </div>

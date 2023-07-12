@@ -3,6 +3,16 @@ import Service, { inject as service } from '@ember/service';
 export default class SequenceService extends Service {
   @service store;
 
+  async fetchNextCaseNumber() {
+    const resources = await Promise.all([
+      this.store.queryOne('request', { sort: '-number' }),
+      this.store.queryOne('intervention', { sort: '-number' }),
+    ]);
+
+    const number = Math.max(...resources.map((resource) => resource?.number));
+    return number + 1;
+  }
+
   async fetchNextCustomerNumber() {
     const customer = await this.store.queryOne('customer', { sort: '-number' });
     return customer.number + 1;

@@ -147,21 +147,11 @@
       </div>
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <div class="mb-4 sm:mb-0 sm:order-2 space-y-6">
+        <div class="mb-4 sm:mb-0 sm:order-2">
           <CalendarEvent::DetailView
             @title="bezoek"
             @model={{await @model.visit}}
             @onSynchronize={{perform this.synchronizeCalendarEvent}} />
-          <div class="space-y-2">
-            {{#if this.case.invalidation}}
-              <Util::DetailItem @label="Afgesloten">
-                <Fmt::Date @value={{this.case.invalidation.date}} />
-              </Util::DetailItem>
-              <Util::DetailItem @label="Reden van afsluiten">
-                <span class="html-body">{{this.case.invalidation.description}}</span>
-              </Util::DetailItem>
-            {{/if}}
-          </div>
         </div>
         <div class="space-y-2 sm:order-1">
           <Util::DetailItem @label="Datum">
@@ -192,11 +182,3 @@
     {{/if}}
   </div>
 </div>
-
-
-{{#if this.isOpenCancellationModal}}
-  <Request::CancellationModal
-    @onConfirm={{this.confirmCancellation}}
-    @onClose={{this.closeCancellationModal}}
-  />
-{{/if}}

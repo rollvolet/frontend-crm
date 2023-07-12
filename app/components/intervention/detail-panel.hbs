@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center">
       <div class="flex items-center">
         <h2 class="text-2xl font-bold font-display text-gray-900">
-          Interventie {{@model.id}}
+          Interventie {{format-intervention-number @model.number}}
         </h2>
         {{#if this.editMode}}
           <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
@@ -62,30 +62,15 @@
                     leaveActiveClass="transition ease-in duration-75"
                     leaveToClass="transform opacity-0 scale-95"}}>
                 <div class="py-1" role="none">
-                  {{#if @model.isCancelled}}
-                    {{#unless this.hasFollowUpRequest}}
-                      <div role="menuitem" tabindex="-1"
-                        {{on "click" this.uncancelIntervention}}
-                        class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                        Opnieuw openen
-                      </div>
-                    {{/unless}}
-                  {{else}}
-                    {{#unless this.hasInvoice}}
-                      {{#if this.isLinkedToCustomer}}
-                        <LinkTo role="menuitem" tabindex="-1"
-                          @route="main.case.intervention.edit.invoice"
-                          @models={{array this.case.current.case.id @model.id}}
-                          class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                          Factuur opstellen
-                        </LinkTo>
-                      {{/if}}
-                      <div role="menuitem" tabindex="-1"
-                        {{on "click" this.cancelIntervention}}
-                        class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                        Afsluiten
-                      </div>
-                    {{/unless}}
+                  {{#if (and (not this.case.isCancelled) (not this.hasInvoice))}}
+                    {{#if this.isLinkedToCustomer}}
+                      <LinkTo role="menuitem" tabindex="-1"
+                        @route="main.case.intervention.edit.invoice"
+                        @models={{array this.case.id @model.id}}
+                        class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
+                        Factuur opstellen
+                      </LinkTo>
+                    {{/if}}
                   {{/if}}
                   <div role="menuitem" tabindex="-1"
                     {{on "click" (perform this.createNewIntervention)}}
@@ -110,8 +95,8 @@
             <div>
               <InputField::Date
                 @label="Datum"
-                @value={{@model.date}}
-                @onChange={{queue (fn (mut @model.date)) (perform this.save)}}
+                @value={{@model.interventionDate}}
+                @onChange={{queue (fn (mut @model.interventionDate)) (perform this.save)}}
                 class="mt-1" />
             </div>
             <div>
@@ -132,9 +117,9 @@
             <div>
               <InputField::DecimalInput
                 @label="Aantal personen"
-                @value={{@model.nbOfPersons}}
-                @errors={{@model.validations.attrs.nbOfPersons.messages}}
-                @onChange={{queue (fn (mut @model.nbOfPersons)) (perform this.save)}}
+                @value={{@model.scheduledNbOfPersons}}
+                @errors={{@model.validations.attrs.scheduledNbOfPersons.messages}}
+                @onChange={{queue (fn (mut @model.scheduledNbOfPersons)) (perform this.save)}}
                 class="mt-1 block w-16 sm:text-sm border-gray-300 rounded-md focus:ring-red-200 focus:border-red-200" />
             </div>
             <div class="lg:col-span-2">
@@ -145,17 +130,17 @@
                 @isTechnician={{true}}
                 @isAdministrative={{true}}
                 @sort={{"type:desc"}}
-                @onSelectionChange={{queue this.setTechnicians (perform this.save) (perform this.synchronizeCalendarEvent)}}
+                @onSelectionChange={{queue this.setTechnicians (perform this.save)}}
                 class="mt-1" />
             </div>
           </div>
         </div>
         <div class="space-y-6">
-          {{#if (and (not this.loadData.isRunning) this.isLinkedToCustomer)}}
+          {{#if this.isLinkedToCustomer}}
             <CalendarEvent::DetailEdit
               @title="planning"
-              @model={{this.calendarEvent}}
-              @onCalendarPeriodChange={{perform this.updateCalendarEventSubject}}
+              @model={{await @model.visit}}
+              @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
               @saveTask={{this.saveCalendarEvent}}
               @onDelete={{perform this.deleteCalendarEvent}} />
           {{/if}}
@@ -187,17 +172,17 @@
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="space-y-2">
           <Util::DetailItem @label="Datum">
-            <Fmt::Date @value={{@model.date}} />
+            <Fmt::Date @value={{@model.interventionDate}} />
           </Util::DetailItem>
           <Util::DetailItem @label="Aanmelding">
-            {{@model.wayOfEntry.name}}
+            {{@model.wayOfEntry.label}}
           </Util::DetailItem>
           <Util::DetailItem @label="Bediende">
             {{@model.employee.firstName}}
           </Util::DetailItem>
           <Util::DetailItem @label="Aantal pers.">
-            {{#if @model.nbOfPersons}}
-              <span class="{{if this.isNbOfPersonsWarning "px-1 py-0.5 text-red-700 bg-red-100"}}">{{@model.nbOfPersons}} man</span>
+            {{#if @model.scheduledNbOfPersons}}
+              <span class="{{if this.isNbOfPersonsWarning "px-1 py-0.5 text-red-700 bg-red-100"}}">{{@model.scheduledNbOfPersons}} man</span>
             {{/if}}
           </Util::DetailItem>
           <Util::DetailItem @label="Techniekers">
@@ -208,25 +193,11 @@
             {{/if}}
           </Util::DetailItem>
         </div>
-        <div class="space-y-6">
-          {{#unless this.loadData.isRunning}}
-            <CalendarEvent::DetailView
-              @title="planning"
-              @model={{this.calendarEvent}}
-              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
-          {{/unless}}
-          <div class="space-y-2">
-            {{#if @model.cancellationDate}}
-              <Util::DetailItem @label="Afgesloten">
-                <Fmt::Date @value={{@model.cancellationDate}} />
-              </Util::DetailItem>
-            {{/if}}
-            {{#if @model.cancellationReason}}
-              <Util::DetailItem @label="Reden van afsluiten">
-                <span class="html-body">{{@model.cancellationReason}}</span>
-              </Util::DetailItem>
-            {{/if}}
-          </div>
+        <div>
+          <CalendarEvent::DetailView
+            @title="planning"
+            @model={{await @model.visit}}
+            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
         </div>
         <div class="sm:col-span-2 space-y-2">
           <Util::DetailItem @label="Beschrijving">
@@ -240,10 +211,3 @@
     {{/if}}
   </div>
 </div>
-
-{{#if this.isOpenCancellationModal}}
-  <Intervention::CancellationModal
-    @onConfirm={{this.confirmCancellation}}
-    @onClose={{this.closeCancellationModal}}
-  />
-{{/if}}

@@ -2,37 +2,42 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
+import { trackedFunction } from 'ember-resources/util/function';
+import { isPresent } from '@ember/utils';
 
 export default class InterventionPanelsComponent extends Component {
-  @service case;
   @service router;
-  @service store;
+
+  caseData = trackedFunction(this, async () => {
+    return await this.args.model.case;
+  });
+
+  get case() {
+    return this.caseData.value;
+  }
 
   get isDisabledEdit() {
-    return this.hasInvoice || this.args.model.isCancelled;
+    return this.hasInvoice || this.case?.isCancelled;
   }
 
   get isEnabledDelete() {
-    return !this.hasInvoice && !this.args.model.isCancelled;
+    return !this.hasInvoice && !this.case?.isCancelled;
   }
 
   get hasInvoice() {
-    return this.case.current && this.case.current.invoice != null;
+    return isPresent(this.case?.invoice.get('id'));
   }
 
   @task
   *delete() {
-    const customer = this.case.current.customer;
-    // TODO fetch via relation once intervention is converted to triplestore
-    const calendarEvent = yield this.store.queryOne('calendar-event', {
-      'filter[:exact:intervention]': this.args.model.uri,
-    });
+    const customer = yield this.case.customer;
     try {
-      if (calendarEvent) {
-        yield calendarEvent.destroyRecord();
+      const visit = yield this.request.visit;
+      if (visit) {
+        yield visit.destroyRecord();
       }
       yield this.args.model.destroyRecord();
-      yield this.case.current.case.destroyRecord();
+      yield this.case.destroyRecord();
     } catch (e) {
       warn(`Something went wrong while destroying intervention ${this.args.model.id}`, {
         id: 'destroy-failure',
@@ -40,7 +45,7 @@ export default class InterventionPanelsComponent extends Component {
       yield this.args.model.rollbackAttributes(); // undo delete-state
     } finally {
       if (customer) {
-        this.router.transitionTo('main.customers.edit.index', customer);
+        this.router.transitionTo('main.customers.edit.index', customer.id);
       } else {
         this.router.transitionTo('main.interventions.index');
       }

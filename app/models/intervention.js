@@ -6,7 +6,7 @@ export default class InterventionModel extends ValidatedModel {
     interventionDate: new Validator('presence', {
       presence: true,
     }),
-    nbOfPersons: new Validator('number', {
+    scheduledNbOfPersons: new Validator('number', {
       allowBlank: true,
       positive: true,
     }),

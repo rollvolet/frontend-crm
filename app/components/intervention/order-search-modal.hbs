@@ -4,7 +4,7 @@
     <div class="flex justify-between items-start">
       <div class="space-y-2">
         <h2 class="text-2xl font-bold font-display text-gray-900">
-          Bestelling zoeken voor interventie {{@model.id}}
+          Bestelling zoeken voor interventie {{format-intervention-number @model.number}}
         </h2>
       </div>
     </div>
@@ -28,15 +28,15 @@
             {{on "input" (perform this.debounceFilter "requestNumber")}} />
         </div>
         <div class="sm:col-span-2 xl:col-span-1">
-          <label for="dt-filter-number" class="block text-sm font-medium text-gray-700">
-            Offerte
+          <label for="dt-filter-visitor" class="block text-sm font-medium text-gray-700">
+            Bezoeker
           </label>
           <input
-            id="dt-filter-offer-number"
+            id="dt-filter-offer-visitor"
             type="text"
-            value={{this.filter.offerNumber}}
+            value={{this.filter.visitor}}
             class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            {{on "input" (perform this.debounceFilter "offerNumber")}} />
+            {{on "input" (perform this.debounceFilter "visitor")}} />
         </div>
         <div class="sm:col-span-2">
           <label for="dt-filter-reference" class="block text-sm font-medium text-gray-700">
@@ -110,42 +110,58 @@
           <table class="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
-                <th class="pl-4 pr-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  AD
-                </th>
                 <DataTable::Th
-                  @field="offer-number"
+                  @field="case.request.number"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{this.setSort}}
-                  class="pl-4 pr-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Offerte
+                  class="pl-4 pr-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  AD
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="offer-date"
+                  @field="order-date"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{this.setSort}}
                   class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Datum
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="reference"
+                  @field="case.reference"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{this.setSort}}
                   class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Referentie
                 </DataTable::Th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <DataTable::Th
+                  @field="case.request.visitor.first-name"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{this.setSort}}
+                  class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Bezoeker
+                </DataTable::Th>
+                <DataTable::Th
+                  @field="case.customer.name"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{this.setSort}}
+                  class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Klant
-                </th>
+                </DataTable::Th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Straat
                 </th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <DataTable::Th
+                  @field="case.customer.address.postal-code"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{this.setSort}}
+                  class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   P.Code
-                </th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                </DataTable::Th>
+                <DataTable::Th
+                  @field="case.customer.address.city"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{this.setSort}}
+                  class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Gemeente
-                </th>
+                </DataTable::Th>
                 <th class="px-6 py-3 bg-gray-50"></th>
               </tr>
             </thead>
@@ -183,24 +199,24 @@
                 {{#each this.orders as |row|}}
                   <tr>
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      {{format-request-number row.requestNumber}}
-                    </td>
-                    <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      {{row.offerNumber}}
+                      {{format-request-number row.case.request.number}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <Fmt::Date @value={{row.orderDate}} />
                     </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                      {{row.case.reference}}
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {{row.reference}}
+                      {{row.case.request.visitor.firstName}}
                     </td>
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">
                       <div class="flex">
-                        {{#if row.customer}}
+                        {{#if row.case.customer}}
                           <div class="space-y-1">
-                            {{#if row.customer.name}}
+                            {{#if row.case.customer.name}}
                               <div>
-                                {{row.customer.name}}
+                                {{row.case.customer.name}}
                               </div>
                             {{else}}
                               <div class="text-gray-400 italic font-normal">
@@ -212,13 +228,13 @@
                       </div>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{row.customer.address1}}
+                      {{row.case.customer.address.street}}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{row.customer.postalCode}}
+                      {{row.case.customer.address.postalCode}}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{row.customer.city}}
+                      {{row.case.customer.address.city}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button type="button"

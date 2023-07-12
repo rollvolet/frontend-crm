@@ -1,6 +1,6 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 
-export default class ConceptModel extends Model {
+export default class ActivityModel extends Model {
   @attr('string') uri;
   @attr('string') type;
   @attr('datetime') date;

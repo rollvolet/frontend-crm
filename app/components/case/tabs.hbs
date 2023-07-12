@@ -6,7 +6,7 @@
           {{#if @model.request}}
             AD {{format-request-number @model.request.number}} {{@model.request.visitor.initials}}
           {{else if @model.intervention}}
-            IR {{@model.intervention.number}}
+            IR {{format-intervention-number @model.intervention.number}}
           {{else}}
             Dossier
           {{/if}}

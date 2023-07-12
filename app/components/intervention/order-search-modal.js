@@ -2,9 +2,9 @@ import FilterComponent from '../data-table-filter';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { restartableTask } from 'ember-concurrency';
+import onlyNumericChars from '../../utils/only-numeric-chars';
 
 export default class InterventionOrderSearchModalComponent extends FilterComponent {
-  @service router;
   @service store;
 
   @tracked orders = [];
@@ -13,7 +13,7 @@ export default class InterventionOrderSearchModalComponent extends FilterCompone
     super(...arguments);
     this.initFilter([
       'requestNumber',
-      'offerNumber',
+      'visitor',
       'reference',
       'name',
       'postalCode',
@@ -30,7 +30,8 @@ export default class InterventionOrderSearchModalComponent extends FilterCompone
   }
 
   async initSearch() {
-    const customer = await this.args.model.customer;
+    const _case = await this.args.model.case;
+    const customer = await _case.customer;
     this.filter.set('name', customer.name);
     this.search.perform(this.filter);
   }
@@ -43,17 +44,25 @@ export default class InterventionOrderSearchModalComponent extends FilterCompone
         number: this.page,
       },
       sort: this.sort,
-      include: 'customer,offer',
+      include: 'case.customer.address.country,case.request.visitor',
       filter: {
-        customer: {
-          name: filter.name,
-          'postal-code': filter.postalCode,
-          city: filter.city,
-          street: filter.street,
+        case: {
+          customer: {
+            name: filter.name,
+            address: {
+              street: filter.street,
+              'postal-code': filter.postalCode,
+              city: filter.city,
+            },
+          },
+          request: {
+            number: onlyNumericChars(filter.requestNumber),
+            visitor: {
+              'first-name': filter.visitor,
+            },
+          },
+          reference: filter.reference,
         },
-        'request-number': filter.requestNumber,
-        'offer-number': filter.offerNumber,
-        reference: filter.reference,
       },
     });
   }

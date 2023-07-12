@@ -5,7 +5,8 @@
       <div class="space-y-1">
         <div class="flex items-center">
           <h2 class="text-2xl font-bold font-display text-gray-900">
-            Aanvraag {{#if this.request}}AD{{format-request-number this.request.id}}{{/if}}
+            Aanvraag
+            {{#if this.request}}{{format-request-number this.request.number}}{{/if}}
           </h2>
           {{#if this.request}}
             <LinkTo @route="main.requests.edit" @model={{this.request.id}}
@@ -34,27 +35,21 @@
 
   {{!-- Card content --}}
   <div class="p-6">
-    {{#if this.loadData.isRunning}}
-      <div class="flex w-full h-full justify-center items-center">
-        {{svg-jar "loading-circle" class="animate-spin -ml-1 mr-3 h-5 w-5 text-red-600"}}
-      </div>
+    {{#if this.request}}
+      <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
+        <div class="space-y-1">
+          <Util::DetailItem @label="Datum">
+            <Fmt::Date @value={{this.request.requestDate}} />
+          </Util::DetailItem>
+          <Util::DetailItem @label="Bezoeker">
+            {{this.request.visitor.firstName}}
+          </Util::DetailItem>
+        </div>
+      </dl>
     {{else}}
-      {{#if this.request}}
-        <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-          <div class="space-y-1">
-            <Util::DetailItem @label="Datum">
-              <Fmt::Date @value={{this.request.requestDate}} />
-            </Util::DetailItem>
-            <Util::DetailItem @label="Bezoeker">
-              {{this.request.visitor}}
-            </Util::DetailItem>
-          </div>
-        </dl>
-      {{else}}
-        <p class="italic text-gray-400 text-sm">
-          Deze interventie heeft niet geleid tot een nieuwe aanvraag.
-        </p>
-      {{/if}}
+      <p class="italic text-gray-400 text-sm">
+        Deze interventie heeft niet geleid tot een nieuwe aanvraag.
+      </p>
     {{/if}}
   </div>
 </div>
