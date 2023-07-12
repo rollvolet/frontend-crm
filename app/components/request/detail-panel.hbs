@@ -41,56 +41,6 @@
               {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
             </button>
           {{/unless}}
-          {{#if this.hasOptionsMenu}}
-            <div class="relative inline-block text-left">
-              <div>
-                <button type="button"
-                  {{on "click" this.openOptionsMenu}}
-                  class="bg-white rounded-full flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-200" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                  <span class="sr-only">Open menu</span>
-                  {{svg-jar "heroicons-md-dots-vertical" class="h-6 w-6"}}
-                </button>
-              </div>
-              {{#if this.isOpenOptionsMenu}}
-                <div class="z-10 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
-                  {{on-click-outside this.closeOptionsMenu}}
-                  {{!-- TODO make CSS transition work on leave --}}
-                  {{css-transition
-                      enterClass="transform opacity-0 scale-95"
-                      enterActiveClass="transition ease-out duration-100"
-                      enterToClass="transform opacity-100 scale-100"
-                      leaveClass="transform opacity-100 scale-100"
-                      leaveActiveClass="transition ease-in duration-75"
-                      leaveToClass="transform opacity-0 scale-95"}}>
-                  <div class="py-1" role="none">
-                    {{#if this.case.isCancelled}}
-                      <div role="menuitem" tabindex="-1"
-                        {{on "click" this.uncancelRequest}}
-                        class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                        Opnieuw openen
-                      </div>
-                    {{else}}
-                      {{#unless this.hasOffer}}
-                        {{#if this.isLinkedToCustomer}}
-                          <LinkTo role="menuitem" tabindex="-1"
-                            @route="main.case.request.edit.offer"
-                            @models={{array this.case.id @model.id}}
-                            class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                            Offerte opstellen
-                          </LinkTo>
-                        {{/if}}
-                        <div role="menuitem" tabindex="-1"
-                          {{on "click" this.cancelRequest}}
-                          class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                          Afsluiten
-                        </div>
-                      {{/unless}}
-                    {{/if}}
-                  </div>
-                </div>
-              {{/if}}
-            </div>
-          {{/if}}
         {{/if}}
       </div>
     </div>

@@ -14,8 +14,6 @@ export default class RequestDetailPanelComponent extends Component {
   @service store;
 
   @tracked editMode = false;
-  @tracked isOpenOptionsMenu = false;
-  @tracked isOpenCancellationModal = false;
 
   caseData = trackedFunction(this, async () => {
     return await this.args.model.case;
@@ -35,11 +33,6 @@ export default class RequestDetailPanelComponent extends Component {
 
   get isLimitedEdit() {
     return this.hasOffer;
-  }
-
-  get hasOptionsMenu() {
-    // There are no options to show for a request which already has an offer
-    return this.case?.isCancelled || !this.hasOffer;
   }
 
   @keepLatestTask
@@ -131,43 +124,5 @@ export default class RequestDetailPanelComponent extends Component {
   @action
   closeEdit() {
     this.editMode = false;
-  }
-
-  @action
-  openOptionsMenu() {
-    this.isOpenOptionsMenu = true;
-  }
-
-  @action
-  closeOptionsMenu() {
-    this.isOpenOptionsMenu = false;
-  }
-
-  @action
-  cancelRequest() {
-    this.closeOptionsMenu();
-    this.isOpenCancellationModal = true;
-  }
-
-  @action
-  closeCancellationModal() {
-    this.isOpenCancellationModal = false;
-    this.args.model.cancellationReason = null;
-  }
-
-  @action
-  confirmCancellation(reason) {
-    this.isOpenCancellationModal = false;
-    this.args.model.cancellationReason = reason;
-    this.args.model.cancellationDate = new Date();
-    this.save.perform();
-  }
-
-  @action
-  uncancelRequest() {
-    this.closeOptionsMenu();
-    this.args.model.cancellationReason = null;
-    this.args.model.cancellationDate = null;
-    this.save.perform();
   }
 }
