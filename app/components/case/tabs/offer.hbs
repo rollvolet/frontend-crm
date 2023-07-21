@@ -1,0 +1,53 @@
+{{#if @model.request}}
+  <li class="relative overflow-hidden lg:flex-1">
+    <div class="overflow-hidden border border-gray-200 lg:border-0">
+      {{#if @model.offer}}
+        <LinkTo @route="main.case.offer.edit.index"
+          @models={{array @model.id @model.offer.id}}
+          class="group" aria-current="step">
+          <span class="absolute left-0 top-0 h-full w-1 {{if (eq @selectedStep "offer") "bg-red-600" "bg-transparant group-hover:bg-gray-200"}} lg:bottom-0 lg:top-auto lg:h-1 lg:w-full" aria-hidden="true"></span>
+          <span class="flex items-start px-6 py-5 text-sm lg:pl-9">
+            <span class="flex-shrink-0">
+              <Case::Tabs::StepIcon @current={{@currentStep}} @reference="offer" />
+            </span>
+            <span class="ml-4 mt-0.5 flex min-w-0 flex-col">
+              <span class="text-sm font-medium">Offerte</span>
+              <span class="flex space-x-2 items-center">
+                <span class="text-xs text-gray-500">
+                  <Fmt::Date @value={{@model.offer.offerDate}} />
+                </span>
+                {{#if @model.offer.visitor}}
+                  <span class="inline-flex items-center rounded-md bg-gray-50 px-1.5 py-0.5 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                    {{@model.offer.visitor.firstName}}
+                  </span>
+                {{/if}}
+              </span>
+            </span>
+          </span>
+        </LinkTo>
+      {{else}}
+        {{#if (not this.canCreateNew)}}
+          <Case::Tabs::Placeholder @label="Offerte" />
+        {{else if this.isNextStep}}
+          <LinkTo @route="main.case.request.edit.offer"
+            @models={{array @model.id @model.request.id}}
+            class="group" aria-current="step">
+            <span class="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full" aria-hidden="true"></span>
+            <span class="flex items-start px-6 py-5 text-sm lg:pl-9">
+              <span class="flex-shrink-0">
+                <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300 text-gray-400 group-hover:text-gray-500 group-hover:border-gray-400">
+                  {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
+                </span>
+              </span>
+              <span class="ml-4 mt-0.5 flex min-w-0 flex-col">
+                <span class="text-sm font-medium text-gray-500 group-hover:text-gray-800">Offerte</span>
+                <span class="text-xs text-gray-400">Stel offerte op</span>
+              </span>
+            </span>
+          </LinkTo>
+        {{/if}}
+      {{/if}}
+      <Case::Tabs::Separator />
+    </div>
+  </li>
+{{/if}}

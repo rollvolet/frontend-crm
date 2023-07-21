@@ -1,0 +1,32 @@
+{{#if @model.request}}
+  <li class="relative overflow-hidden lg:flex-1">
+    {{#if @model.order}}
+      {{#if @model.isCancelled}}
+        <Case::Tabs::Placeholder @label="Voorschotfacturen" />
+      {{else}}
+        <div class="overflow-hidden border border-gray-200 lg:border-0">
+          <LinkTo @route="main.case.order.edit.deposit-invoices"
+            @models={{array @model.id @model.order.id}}
+            class="group" aria-current="step">
+            <span class="absolute left-0 top-0 h-full w-1 {{if (eq @selectedStep "deposit-invoices") "bg-red-600" "bg-transparant group-hover:bg-gray-200"}} lg:bottom-0 lg:top-auto lg:h-1 lg:w-full" aria-hidden="true"></span>
+            <span class="flex items-start px-6 py-5 text-sm lg:pl-9">
+              <span class="flex-shrink-0">
+                <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-red-600 text-gray-400">
+                  <span class="h-2.5 w-2.5 rounded-full bg-transparent"></span>
+                </span>
+              </span>
+              <span class="ml-4 mt-0.5 flex min-w-0 flex-col">
+                <span class="text-sm font-medium">Voorschotfacturen</span>
+                <span class="flex space-x-2 items-center">
+                </span>
+              </span>
+            </span>
+          </LinkTo>
+        </div>
+        <Case::Tabs::Separator />
+      {{/if}}
+    {{else}}
+      <Case::Tabs::Placeholder @label="Voorschotfacturen" />
+    {{/if}}
+  </li>
+{{/if}}

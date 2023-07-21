@@ -1,5 +1,7 @@
+import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { cancelCase, reopenCase } from '../../utils/case-helpers';
 
 export default class CaseTabsComponent extends Component {
   @service router;
@@ -16,36 +18,32 @@ export default class CaseTabsComponent extends Component {
     });
   }
 
-  get canCreateNewOffer() {
-    return (
-      !this.args.model.isCancelled &&
-      this.args.model.customer.get('id') &&
-      this.args.model.request.get('id') &&
-      this.args.model.offer.get('id') == null
-    );
+  get currentStep() {
+    if (this.args.model.invoice.get('id')) {
+      return 'invoice';
+    } else if (this.args.model.intervention.get('id')) {
+      return 'intervention';
+    } else if (this.args.model.order.get('id')) {
+      return 'order';
+    } else if (this.args.model.offer.get('id')) {
+      return 'offer';
+    } else {
+      return 'request';
+    }
   }
 
-  get canCreateNewOrder() {
-    return (
-      !this.args.model.isCancelled &&
-      this.args.model.offer.get('id') &&
-      this.args.model.order.get('id') == null &&
-      !this.args.model.offer.get('isMasteredByAccess')
-    );
+  get selectedStep() {
+    return 'request';
+    // TODO get selected step based on route info
   }
 
-  get canCreateNewInvoice() {
-    const canCreateNewInvoiceForOrder =
-      !this.args.model.isCancelled &&
-      this.args.model.order.get('id') &&
-      this.args.model.invoice.get('id') == null &&
-      !this.args.model.order.get('isMasteredByAccess');
-    const canCreateNewInvoiceForIntervention =
-      !this.args.model.isCancelled &&
-      this.args.model.customer.get('id') &&
-      this.args.model.intervention.get('id') &&
-      this.args.model.invoice.get('id') == null;
+  @action
+  async cancelCase() {
+    await cancelCase(this.args.model);
+  }
 
-    return canCreateNewInvoiceForOrder || canCreateNewInvoiceForIntervention;
+  @action
+  async reopenCase() {
+    await reopenCase(this.args.model);
   }
 }

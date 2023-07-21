@@ -1,0 +1,29 @@
+{{#if @model.request}}
+  <li class="relative overflow-hidden lg:flex-1">
+    <div class="overflow-hidden border border-gray-200 rounded-t-md border-b-0 lg:border-0">
+      <LinkTo @route="main.case.request.edit.index"
+        @models={{array @model.id @model.request.id}}
+        class="group" aria-current="step">
+        <span class="absolute left-0 top-0 h-full w-1 {{if (eq @selectedStep "request") "bg-red-600" "bg-transparant group-hover:bg-gray-200"}} lg:bottom-0 lg:top-auto lg:h-1 lg:w-full" aria-hidden="true"></span>
+        <span class="flex items-start px-6 py-5 text-sm">
+          <span class="flex-shrink-0">
+            <Case::Tabs::StepIcon @current={{@currentStep}} @reference="request" />
+          </span>
+          <span class="ml-4 mt-0.5 flex min-w-0 flex-col">
+            <span class="text-sm font-medium">Aanvraag</span>
+            <span class="flex space-x-2 items-center">
+              <span class="text-xs text-gray-500">
+                <Fmt::Date @value={{@model.request.requestDate}} />
+              </span>
+              {{#if @model.request.visitor}}
+                <span class="inline-flex items-center rounded-md bg-gray-50 px-1.5 py-0.5 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                  {{@model.request.visitor.firstName}}
+                </span>
+              {{/if}}
+            </span>
+          </span>
+        </span>
+      </LinkTo>
+    </div>
+  </li>
+{{/if}}

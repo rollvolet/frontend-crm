@@ -17,4 +17,13 @@ async function cancelCase(_case, reason) {
   await _case.save();
 }
 
-export { cancelCase };
+async function reopenCase(_case) {
+  const invalidation = await _case.invalidation;
+  if (invalidation) {
+    await invalidation.destroyRecord();
+  }
+  _case.status = CASE_STATUSES.ONGOING;
+  await _case.save();
+}
+
+export { cancelCase, reopenCase };
