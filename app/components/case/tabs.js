@@ -5,18 +5,6 @@ import { cancelCase, reopenCase } from '../../utils/case-helpers';
 
 export default class CaseTabsComponent extends Component {
   @service router;
-  @service store;
-
-  constructor() {
-    super(...arguments);
-
-    this.router.on('routeDidChange', () => {
-      const activeElement = document.activeElement;
-      if (activeElement && activeElement.hasAttribute('data-case-tab')) {
-        document.activeElement.blur(); // unfocus tab
-      }
-    });
-  }
 
   get currentStep() {
     if (this.args.model.invoice.get('id')) {
@@ -33,8 +21,12 @@ export default class CaseTabsComponent extends Component {
   }
 
   get selectedStep() {
-    return 'request';
-    // TODO get selected step based on route info
+    const route = this.router.currentRoute.name.substr('main.case.'.length); // e.g. main.case.request.edit
+    if (route.includes('deposit-invoices')) {
+      return 'deposit-invoices';
+    } else {
+      return route.substr(0, route.indexOf('.'));
+    }
   }
 
   @action
