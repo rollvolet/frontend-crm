@@ -11,7 +11,6 @@ export default class OfferModel extends ValidatedModel {
   @attr('string') uri;
   @attr('string') number;
   @attr('date') offerDate;
-  @attr('number') amount;
   @attr('string') documentIntro;
   @attr('string') documentOutro;
   @attr('string') documentVersion;

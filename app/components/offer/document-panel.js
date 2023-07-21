@@ -33,9 +33,8 @@ export default class OfferDocumentPanelComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    // TODO use this.args.model.offerlines once the relation is defined
     const offerlines = yield this.store.query('offerline', {
-      'filter[:exact:offer]': this.args.model.uri,
+      'filter[offer][:uri:]': this.args.model.uri,
       sort: 'position',
       page: { size: 100 },
     });
@@ -58,19 +57,15 @@ export default class OfferDocumentPanelComponent extends Component {
     const position = this.offerlines.length
       ? Math.max(...this.offerlines.map((l) => l.position))
       : 0;
-    const vatRate = yield this.args.model.vatRate;
+    const _case = yield this.args.model.case;
+    const vatRate = yield _case.vatRate;
     const offerline = this.store.createRecord('offerline', {
       position: position + 1,
-      offer: this.args.model.uri,
       amount: 0,
-      vatRate: vatRate,
+      offer: this.args.model,
+      vatRate,
     });
     offerline.initialEditMode = true;
-
-    if (this.args.model.isMasteredByAccess) {
-      this.args.model.amount = 0; // make sure offer is no longer mastered by Access
-      this.args.model.save();
-    }
 
     yield this.saveOfferline.perform(offerline);
 
@@ -92,15 +87,16 @@ export default class OfferDocumentPanelComponent extends Component {
     const position = this.offerlines.length
       ? Math.max(...this.offerlines.map((l) => l.position))
       : 0;
-    const vatRate = yield offerline.vatRate;
+    const _case = yield this.args.model.case;
+    const vatRate = yield _case.vatRate;
     const calculationLines = yield offerline.calculationLines;
 
     const copiedOfferline = this.store.createRecord('offerline', {
       position: position + 1,
-      offer: this.args.model.uri,
       description: offerline.description,
       amount: offerline.amount,
-      vatRate: vatRate,
+      offer: this.args.model,
+      vatRate,
     });
     copiedOfferline.initialEditMode = true;
 

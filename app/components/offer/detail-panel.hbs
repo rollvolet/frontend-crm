@@ -42,14 +42,12 @@
   <div class="p-6">
     {{#if this.editMode}}
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        {{#unless this.loadData.isRunning}}
-          <div class="mb-4 sm:mb-0 sm:order-2">
-            <CalendarEvent::DetailView
-              @title="bezoek"
-              @model={{this.calendarEvent}}
-              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
-          </div>
-        {{/unless}}
+        <div class="mb-4 sm:mb-0 sm:order-2">
+          <CalendarEvent::DetailView
+            @title="bezoek"
+            @model={{await this.request.visit}}
+            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+        </div>
         <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
           <div>
             <InputField::Date
@@ -59,56 +57,24 @@
               class="mt-1" />
           </div>
           <div>
-            <InputField::VatRateSelect
-              @value={{@model.vatRate}}
-              @label="BTW tarief"
-              @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save)}}
-              @allowClear={{false}}
-              class="mt-1" />
-          </div>
-          <div>
             <InputField::EmployeeSelect
               @label="Bezoeker"
-              @value={{this.visitor}}
+              @value={{await this.request.visitor}}
               @isAdministrative={{true}}
               @allowClear={{false}}
               @onSelectionChange={{queue this.setVisitor (perform this.save)}}
               class="mt-1" />
           </div>
-          <div>
-            <label for="reference" class="block text-sm font-medium text-gray-700">
-              Referentie klant
-            </label>
-            <Input
-              id="reference"
-              @type="text"
-              @value={{@model.reference}}
-              class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-              {{on "focusout" (perform this.save)}} />
-          </div>
-        </div>
-        <div class="sm:col-span-2 sm:order-3">
-          <label for="comment" class="block text-sm font-medium text-gray-700">
-            Interne opmerking
-          </label>
-          <Textarea
-            id="comment"
-            @value={{@model.comment}}
-            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            rows="5"
-            {{on "focusout" (perform this.save)}} />
         </div>
       </div>
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-        {{#unless this.loadData.isRunning}}
-          <div class="mb-4 sm:mb-0 sm:order-2">
-            <CalendarEvent::DetailView
-              @title="bezoek"
-              @model={{this.calendarEvent}}
-              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
-          </div>
-        {{/unless}}
+        <div class="mb-4 sm:mb-0 sm:order-2">
+          <CalendarEvent::DetailView
+            @title="bezoek"
+            @model={{await this.request.visit}}
+            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+        </div>
         <div class="space-y-2 sm:order-1">
           <Util::DetailItem @label="Datum">
             <Fmt::Date @value={{@model.offerDate}} />
@@ -116,27 +82,11 @@
           <Util::DetailItem @label="Offertenummer">
             {{@model.number}}
           </Util::DetailItem>
-          {{#if @model.isMasteredByAccess}}
-            <Util::DetailItem @label="Bedrag">
-              <Fmt::Currency @value={{@model.amount}} />
-            </Util::DetailItem>
-          {{/if}}
-          <Util::DetailItem @label="BTW tarief">
-            {{format-vat-rate (await @model.vatRate)}}
-          </Util::DetailItem>
           <Util::DetailItem @label="Aanmelding">
-            {{this.request.wayOfEntry.name}}
+            {{this.request.wayOfEntry.label}}
           </Util::DetailItem>
           <Util::DetailItem @label="Bezoeker">
-            {{this.request.visitor}}
-          </Util::DetailItem>
-          <Util::DetailItem @label="Referentie">
-            {{@model.reference}}
-          </Util::DetailItem>
-        </div>
-        <div class="sm:col-span-2 sm:order-3">
-          <Util::DetailItem @label="Interne opmerking">
-            <span class="whitespace-pre-wrap">{{@model.comment}}</span>
+            {{this.request.visitor.firstName}}
           </Util::DetailItem>
         </div>
       </dl>
