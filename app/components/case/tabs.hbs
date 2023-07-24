@@ -36,7 +36,7 @@
             BTW tarief
           </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            {{format-vat-rate (await @model.vatRate)}}
+            {{@model.vatRate.rate}}% BTW
           </dd>
         </div>
         <div class="shrink-0">

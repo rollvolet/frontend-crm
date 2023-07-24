@@ -1,23 +1,20 @@
-{{!--
-     Passed = link to detail; check icon
-     Current = no link to; bullet icon
-     Next = link to create new; plus icon
-     Future = no link to; grayed out
-     --}}
-
-{{#if this.isCurrent}}
+{{#if (eq @step "ongoing")}}
   <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-red-600">
     <span class="h-2.5 w-2.5 rounded-full bg-red-600"></span>
   </span>
-{{else if this.isFinished}}
+{{else if (eq @step "ongoing-sibling")}}
+  <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-red-600">
+    <span class="h-2.5 w-2.5 rounded-full bg-transparent"></span>
+  </span>
+{{else if (eq @step "done")}}
   <span class="flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-white">
     {{svg-jar "heroicons-md-check" class="h-6 w-6"}}
   </span>
-{{else if this.isNext}}
+{{else if (eq @step "next")}}
   <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300 text-gray-400 group-hover:text-gray-500 group-hover:border-gray-400">
     {{svg-jar "heroicons-md-plus" class="h-5 w-5"}}
   </span>
-{{else if this.isFuture}}
+{{else if (eq @step "future")}}
   <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-200 text-gray-400">
     <span class="h-2.5 w-2.5 rounded-full bg-transparent"></span>
   </span>

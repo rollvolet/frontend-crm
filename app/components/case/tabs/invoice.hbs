@@ -7,7 +7,7 @@
         <span class="absolute left-0 top-0 h-full w-1 {{if (eq @selectedStep "invoice") "bg-red-600" "bg-transparant group-hover:bg-gray-200"}} lg:bottom-0 lg:top-auto lg:h-1 lg:w-full" aria-hidden="true"></span>
         <span class="flex items-start px-6 py-5 text-sm lg:pl-9">
           <span class="flex-shrink-0">
-            <Case::Tabs::StepIcon @current={{@currentStep}} @reference="invoice" />
+            <Case::Tabs::StepIcon @step={{if @model.invoice.isBooked "done" "ongoing"}} />
           </span>
           <span class="ml-4 mt-0.5 flex min-w-0 flex-col">
             <span class="text-sm font-medium">Factuur</span>
