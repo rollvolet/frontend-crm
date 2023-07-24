@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center">
       <div class="flex items-center">
         <h2 class="text-2xl font-bold font-display text-gray-900">
-          Bestelling {{@model.offerNumber}}
+          Details
         </h2>
         {{#if this.editMode}}
           <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
@@ -67,22 +67,11 @@
           <div>
             <InputField::EmployeeSelect
               @label="Bezoeker"
-              @value={{this.visitor}}
+              @value={{await this.request.visitor}}
               @isAdministrative={{true}}
               @isTechnician={{true}}
-              @onSelectionChange={{queue this.setVisitor (perform this.save)}}
+              @onSelectionChange={{queue (perform this.setVisitor) (perform this.save)}}
               class="mt-1" />
-          </div>
-          <div>
-            <label for="reference" class="block text-sm font-medium text-gray-700">
-              Referentie klant
-            </label>
-            <Input
-              id="reference"
-              @type="text"
-              @value={{@model.reference}}
-              class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-              {{on "focusout" (perform this.save)}} />
           </div>
           <div class="lg:col-span-2">
             <div class="flex items-baseline space-x-2">
@@ -118,41 +107,17 @@
               @isTechnician={{true}}
               @isAdministrative={{true}}
               @sort={{"type:desc"}}
-              @onSelectionChange={{queue this.setTechnicians (perform this.save) (perform this.synchronizeCalendarEvent)}}
+              @onSelectionChange={{queue this.setTechnicians (perform this.save)}}
               class="mt-1" />
           </div>
         </div>
         <div class="space-y-6">
-          {{#unless this.loadData.isRunning}}
-            <CalendarEvent::DetailEdit
-              @title="planning"
-              @model={{this.calendarEvent}}
-              @onCalendarPeriodChange={{perform this.updateCalendarEventSubject}}
-              @saveTask={{this.saveCalendarEvent}}
-              @onDelete={{perform this.deleteCalendarEvent}} />
-          {{/unless}}
-          <div role="group" aria-labelledby="label-executions" class="space-y-4">
-            <div id="label-executions" class="font-semibold text-sm text-gray-700">
-              Uitvoering
-            </div>
-            <div class="space-y-4">
-              {{#each this.executionOptions as |option|}}
-                <div class="flex items-center">
-                  <input
-                    id="execution-opt-{{option.id}}"
-                    type="radio"
-                    value={{option.value}}
-                    name="execution-opt-group"
-                    class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
-                    checked={{eq @model.execution option.value}}
-                    {{on "input" (queue this.setExecution (perform this.save))}} />
-                  <label for="execution-opt-{{option.id}}" class="ml-3 block text-sm font-medium text-gray-700">
-                    {{capitalize option.label}}
-                  </label>
-                </div>
-              {{/each}}
-            </div>
-          </div>
+          <CalendarEvent::DetailEdit
+            @title="planning"
+            @model={{await @model.planning}}
+            @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
+            @saveTask={{this.saveCalendarEvent}}
+            @onDelete={{perform this.deleteCalendarEvent}} />
           <div>
             <div class="flex items-center">
               <div class="font-semibold text-sm text-gray-700">
@@ -180,24 +145,8 @@
                 @label="Product klaar"
                 @value={{@model.isReady}}
                 @onChange={{queue (fn (mut @model.isReady)) (perform this.save)}} />
-              <InputField::Checkbox
-                @id="is-canceled-checkbox"
-                @label="Afgesloten"
-                @value={{@model.canceled}}
-                @onChange={{this.setCancelledStatus}} />
             </div>
           </div>
-        </div>
-        <div class="sm:col-span-2">
-          <label for="comment" class="block text-sm font-medium text-gray-700">
-            Interne opmerking
-          </label>
-          <Textarea
-            id="comment"
-            @value={{@model.comment}}
-            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            rows="5"
-            {{on "focusout" (perform this.save)}} />
         </div>
       </div>
     {{else}}
@@ -215,10 +164,7 @@
             </Util::DetailSubitem>
           </Util::DetailItem>
           <Util::DetailItem @label="Bezoeker">
-            {{this.request.visitor}}
-          </Util::DetailItem>
-          <Util::DetailItem @label="Referentie">
-            {{@model.reference}}
+            {{this.request.visitor.firstName}}
           </Util::DetailItem>
           <Util::DetailItem @label="Werkuren" @displayRow={{true}}>
             <Fmt::Decimal @value={{@model.scheduledNbOfHours}} /> uur x
@@ -235,30 +181,11 @@
         </div>
         <div class="mb-4 sm:mb-0 space-y-2">
           <div class="mb-4">
-            {{#unless this.loadData.isRunning}}
-              <CalendarEvent::DetailView
-                @title="planning"
-                @model={{this.calendarEvent}}
-                @onSynchronize={{perform this.synchronizeCalendarEvent}} />
-            {{/unless}}
+            <CalendarEvent::DetailView
+              @title="planning"
+              @model={{await @model.planning}}
+              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
           </div>
-          <Util::DetailItem @label="Uitvoering">
-            {{#each this.executionOptions as |option|}}
-              <div class="flex items-center mb-2">
-                <input
-                  id="execution-opt-{{option.id}}"
-                  type="radio"
-                  value={{option.value}}
-                  name="execution-opt-group"
-                  class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
-                  checked={{eq @model.execution option.value}}
-                  disabled="true" />
-                <label for="execution-opt-{{option.id}}" class="ml-3 block text-sm font-medium text-gray-700">
-                  {{capitalize option.label}}
-                </label>
-              </div>
-            {{/each}}
-          </Util::DetailItem>
           <Util::DetailItem @label="Productiebon" class="items-center">
             <ProductionTicket::InlineEdit @model={{@model}} />
           </Util::DetailItem>
@@ -268,26 +195,8 @@
           <Util::DetailItem @label="Product klaar" class="items-center">
             <Util::DisplayCheckbox @value={{@model.isReady}} />
           </Util::DetailItem>
-          <Util::DetailItem @label="Afgesloten" class="items-start">
-            <Util::DisplayCheckbox @value={{@model.canceled}} />
-            {{#if @model.canceled}}
-              <div class="mt-1 html-body italic">{{@model.cancellationReason}}</div>
-            {{/if}}
-          </Util::DetailItem>
-        </div>
-        <div class="sm:col-span-2">
-          <Util::DetailItem @label="Interne opmerking">
-            <span class="whitespace-pre-wrap">{{@model.comment}}</span>
-          </Util::DetailItem>
         </div>
       </dl>
     {{/if}}
   </div>
 </div>
-
-{{#if this.isOpenCancellationModal}}
-  <Order::CancellationModal
-    @onConfirm={{this.confirmCancellation}}
-    @onClose={{this.closeCancellationModal}}
-  />
-{{/if}}

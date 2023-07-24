@@ -6,6 +6,7 @@ import { trackedFunction } from 'ember-resources/util/function';
 import { isPresent } from '@ember/utils';
 
 export default class OfferPanelsComponent extends Component {
+  @service store;
   @service router;
 
   caseData = trackedFunction(this, async () => {

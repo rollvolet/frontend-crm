@@ -1,10 +1,10 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
 import moment from 'moment';
 import sum from '../../utils/math/sum';
 import { task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
+import { isPresent } from '@ember/utils';
 import {
   createCustomerSnapshot,
   createContactSnapshot,
@@ -16,44 +16,43 @@ const { INVOICE_TYPES } = constants;
 
 export default class DepositInvoicePanelsComponent extends Component {
   @service store;
-  @service case;
   @service sequence;
 
-  @tracked orderAmount;
+  orderData = trackedFunction(this, async () => {
+    return await this.args.case.order;
+  });
 
-  constructor() {
-    super(...arguments);
-    this.loadData.perform();
-  }
-
-  @task
-  *loadData() {
-    const lines = yield this.store.query('invoiceline', {
-      'filter[:exact:order]': this.args.case.order,
-      sort: 'position',
-      page: { size: 100 },
-    });
-    this.orderAmount = sum(lines.mapBy('arithmeticAmount'));
-  }
+  orderAmountData = trackedFunction(this, async () => {
+    if (this.order) {
+      const lines = await this.order.invoicelines;
+      return sum(lines.mapBy('arithmeticAmount'));
+    } else {
+      return null;
+    }
+  });
 
   vatRateData = trackedFunction(this, async () => {
     return await this.args.case.vatRate;
   });
 
+  get order() {
+    return this.orderData.value;
+  }
+
+  get orderAmount() {
+    return this.orderAmountData.value;
+  }
+
   get vatRate() {
     return this.vatRateData.value;
   }
 
-  get order() {
-    return this.case.current && this.case.current.order;
-  }
-
-  get invoice() {
-    return this.args.case.invoice;
-  }
-
   get isDisabledEdit() {
-    return this.order?.isMasteredByAccess || this.invoice;
+    return this.hasInvoice || this.order?.isMasteredByAccess || this.args.case.isCancelled;
+  }
+
+  get hasInvoice() {
+    return isPresent(this.args.case.invoice.get('id'));
   }
 
   get totalAmount() {
@@ -71,9 +70,9 @@ export default class DepositInvoicePanelsComponent extends Component {
   @task
   *createNewDepositInvoice() {
     const [customer, contact, building] = yield Promise.all([
-      this.order?.customer,
-      this.order?.contact,
-      this.order?.building,
+      this.args.case.customer,
+      this.args.case.contact,
+      this.args.case.building,
     ]);
     const [customerSnap, contactSnap, buildingSnap] = yield Promise.all([
       createCustomerSnapshot(customer),

@@ -62,7 +62,7 @@
               @value={{await this.request.visitor}}
               @isAdministrative={{true}}
               @allowClear={{false}}
-              @onSelectionChange={{queue this.setVisitor (perform this.save)}}
+              @onSelectionChange={{queue (perform this.setVisitor) (perform this.save)}}
               class="mt-1" />
           </div>
         </div>

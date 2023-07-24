@@ -39,7 +39,7 @@ export default class OrderModel extends ValidatedModel {
   @hasMany('employee', { inverse: 'orders' }) technicians;
 
   get scheduledTotal() {
-    return this.scheduledNbHours * this.scheduledNbOfPersons;
+    return this.scheduledNbOfHours * this.scheduledNbOfPersons;
   }
 
   get isMasteredByAccess() {

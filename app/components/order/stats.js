@@ -1,17 +1,18 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
 import sum from '../../utils/math/sum';
 import { trackedFunction } from 'ember-resources/util/function';
 
 export default class OrderStatsComponent extends Component {
-  @service('case') caseService;
+  caseData = trackedFunction(this, async () => {
+    return await this.args.model.case;
+  });
 
   vatRateData = trackedFunction(this, async () => {
     return await this.case?.vatRate;
   });
 
   depositInvoicesData = trackedFunction(this, async () => {
-    return await this.case.depositInvoices;
+    return await this.case?.depositInvoices;
   });
 
   depositsAmountData = trackedFunction(this, async () => {
@@ -20,7 +21,7 @@ export default class OrderStatsComponent extends Component {
   });
 
   get case() {
-    return this.caseService.current.case;
+    return this.caseData.value;
   }
 
   get vatRate() {

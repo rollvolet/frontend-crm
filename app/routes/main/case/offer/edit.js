@@ -6,7 +6,7 @@ export default class MainCaseOfferEditRoute extends Route {
 
   model(params) {
     return this.store.findRecord('offer', params.offer_id, {
-      include: 'case.order',
+      include: 'case,case.request.visit,case.order',
     });
   }
 }

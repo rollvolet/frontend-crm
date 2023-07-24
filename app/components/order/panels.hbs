@@ -8,7 +8,11 @@
   </div>
 {{else}}
   <div class="space-y-4">
-    {{#if this.case.current.invoice}}
+    {{#if this.case.isCancelled}}
+      <AlertMessage::Warning
+        @message="Het dossier is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
+        class="shadow" />
+    {{else if this.hasOrder}}
       <AlertMessage::Warning
         @message="De factuur is reeds opgemaakt. Er zijn geen wijzigingen meer mogelijk."
         class="shadow" />
@@ -29,13 +33,9 @@
 
     {{!-- Products panel --}}
     <div class="bg-white shadow rounded-lg overflow-hidden">
-      {{#unless this.loadData.isRunning}}
-        <Order::ProductPanel
-          @model={{@model}}
-          @deposits={{@deposits}}
-          @depositInvoices={{@depositInvoices}}
-          @isDisabledEdit={{this.isDisabledEdit}} />
-      {{/unless}}
+      <Order::ProductPanel
+        @model={{@model}}
+        @isDisabledEdit={{this.isDisabledEdit}} />
     </div>
 
     {{!-- Documents panel --}}

@@ -3,8 +3,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
-export default class DepositInvoicesController extends Controller {
-  @service case;
+export default class MainCaseOrderEditDepositInvoicesController extends Controller {
   @service router;
 
   // Since the model is refreshed on creation of a new deposit-invoice
@@ -15,10 +14,6 @@ export default class DepositInvoicesController extends Controller {
   // We cannot store this state on the component itself, since it will be
   // destroyed on each refresh of the model hook.
   @tracked newlyCreatedDepositInvoice;
-
-  get order() {
-    return this.case.current && this.case.current.order;
-  }
 
   @action
   updateList(depositInvoice) {

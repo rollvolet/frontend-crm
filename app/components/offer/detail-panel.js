@@ -44,10 +44,10 @@ export default class OfferDetailPanelComponent extends Component {
   *synchronizeCalendarEvent() {
     const visit = yield this.request?.visit;
     if (visit) {
-      yield setCalendarEventProperties(this.calendarEvent, {
+      yield setCalendarEventProperties(visit, {
         request: this.request,
       });
-      yield this.calendarEvent.save();
+      yield visit.save();
     }
   }
 

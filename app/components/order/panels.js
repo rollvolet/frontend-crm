@@ -2,56 +2,66 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { all, task } from 'ember-concurrency';
 import { warn } from '@ember/debug';
+import { trackedFunction } from 'ember-resources/util/function';
+import { isPresent } from '@ember/utils';
 
 export default class OrderPanelsComponent extends Component {
-  @service('case') caseService;
   @service router;
   @service store;
 
+  caseData = trackedFunction(this, async () => {
+    return await this.args.model.case;
+  });
+
   get case() {
-    return this.caseService.current.case;
+    return this.caseData.value;
   }
 
   get isDisabledEdit() {
-    return this.args.model.isMasteredByAccess || this.case.invoice.get('id') != null;
+    return this.hasInvoice || this.args.model.isMasteredByAccess || this.case?.isCancelled;
   }
 
   get isEnabledDelete() {
     return (
+      !this.hasInvoice &&
+      !this.hasDepositInvoices &&
       !this.args.model.isMasteredByAccess &&
-      !this.case.invoice.get('id') == null &&
-      !this.args.model.deposits.length &&
-      !this.case.depositInvoices.length
+      !this.case?.isCancelled
     );
+  }
+
+  get hasDepositInvoices() {
+    return this.case?.depositInvoices.get('length');
+  }
+
+  get hasInvoice() {
+    return isPresent(this.case?.invoice.get('id'));
   }
 
   @task
   *delete() {
     try {
-      // TODO use this.args.model.invoicelines once the relation is defined
       const invoicelines = yield this.store.query('invoiceline', {
-        'filter[:exact:order]': this.args.model.uri,
+        'filter[order][:uri:]': this.args.model.uri,
         sort: 'position',
         page: { size: 100 },
       });
       yield all(invoicelines.map((t) => t.destroyRecord()));
-      yield this.caseService.current.updateRecord('order', null);
 
-      // TODO fetch via relation once order is converted to triplestore
-      const calendarEvent = yield this.store.queryOne('calendar-event', {
-        'filter[:exact:order]': this.args.model.uri,
-      });
+      const calendarEvent = yield this.args.model.planning;
       if (calendarEvent) {
         yield calendarEvent.destroyRecord();
       }
+
       yield this.args.model.destroyRecord();
-      this.router.transitionTo('main.offers.edit', this.caseService.current.offer.id);
+
+      const offer = yield this.case.offer;
+      this.router.transitionTo('main.case.offer.edit', this.case.id, offer.id);
     } catch (e) {
       warn(`Something went wrong while destroying order ${this.args.model.id}`, {
         id: 'destroy-failure',
       });
       yield this.args.model.rollbackAttributes(); // undo delete-state
-      yield this.caseService.current.updateRecord('order', this.args.model);
     }
   }
 }

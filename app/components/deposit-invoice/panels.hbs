@@ -1,5 +1,9 @@
 <div class="space-y-4">
-  {{#if this.invoice}}
+  {{#if @case.isCancelled}}
+    <AlertMessage::Warning
+      @message="Het dossier is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
+      class="shadow" />
+  {{else if this.hasInvoice}}
     <AlertMessage::Warning
       @message="De factuur is reeds opgemaakt. Er zijn geen wijzigingen meer mogelijk."
       class="shadow" />
