@@ -16,8 +16,9 @@
         @invoicelines={{this.invoicelines}} />
     </div>
     {{#if @model.isMasteredByAccess}}
-      <AlertMessage::Warning
-        @message="De bestelling is aangemaakt in Access. De inhoud kan hier niet weergegeven worden." />
+      <div class="text-gray-400 text-sm italic">
+        De bestelling is aangemaakt in Access. De inhoud kan hier niet weergegeven worden.
+      </div>
     {{else}}
       <div>
         {{#if this.loadData.isRunning}}

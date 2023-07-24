@@ -29,6 +29,10 @@ export default class CaseModel extends Model {
     return this.identifier?.startsWith('F-');
   }
 
+  get isOngoing() {
+    return this.status == CASE_STATUSES.ONGOING;
+  }
+
   get isCancelled() {
     return this.status == CASE_STATUSES.CANCELLED;
   }

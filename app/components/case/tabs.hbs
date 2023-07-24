@@ -13,19 +13,26 @@
         </h2>
         <div>
           {{#if @model.isCancelled}}
-            <span class="inline-flex items-center gap-x-1.5 rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700" {{on "click" this.reopenCase}}>
+            <button class="inline-flex items-center gap-x-1.5 rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700" {{on "click" this.openCancellationModal}}>
               <svg class="h-1.5 w-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
                 <circle cx="3" cy="3" r="3" />
               </svg>
               Afgesloten
+            </button>
+          {{else if @model.invoice.isBooked}}
+            <span class="inline-flex items-center gap-x-1.5 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700">
+              <svg class="h-1.5 w-1.5 fill-blue-500" viewBox="0 0 6 6" aria-hidden="true">
+                <circle cx="3" cy="3" r="3" />
+              </svg>
+              Geboekt
             </span>
           {{else}}
-            <span class="inline-flex items-center gap-x-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700" {{on "click" this.cancelCase}}>
+            <button class="inline-flex items-center gap-x-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700" {{on "click" this.openCancellationModal}}>
               <svg class="h-1.5 w-1.5 fill-green-500" viewBox="0 0 6 6" aria-hidden="true">
                 <circle cx="3" cy="3" r="3" />
               </svg>
               Geopend
-            </span>
+            </button>
           {{/if}}
         </div>
       </div>
@@ -66,6 +73,13 @@
       </div>
     </div>
 
+    {{#if @model.isCancelled}}
+      <AlertMessage::Error
+        @title="Het dossier is afgesloten. Er zijn geen wijzigingen meer mogelijk."
+        @message={{@model.invalidation.description}}
+        class="mt-2 rounded-none" />
+    {{/if}}
+
     <nav aria-label="Progress">
       <ol role="list" class="overflow-hidden rounded-md lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200">
         <Case::Tabs::Intervention
@@ -96,3 +110,17 @@
     </nav>
   </div>
 </div>
+
+{{#if this.isOpenCancellationModal}}
+  {{#if @model.isCancelled}}
+    <Case::UncancellationModal
+      @onConfirm={{this.confirmReopen}}
+      @onClose={{this.closeCancellationModal}}
+    />
+  {{else}}
+    <Case::CancellationModal
+      @onConfirm={{this.confirmCancellation}}
+      @onClose={{this.closeCancellationModal}}
+    />
+  {{/if}}
+{{/if}}

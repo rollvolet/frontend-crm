@@ -16,6 +16,13 @@
               <span class="ml-4 mt-0.5 flex min-w-0 flex-col">
                 <span class="text-sm font-medium">Voorschotfacturen</span>
                 <span class="flex space-x-2 items-center">
+                  <span class="text-xs text-gray-500">
+                    {{#if @model.depositInvoices.length}}
+                      {{@model.depositInvoices.length}} facturen gemaakt
+                    {{else}}
+                      Nog geen facturen
+                    {{/if}}
+                  </span>
                 </span>
               </span>
             </span>

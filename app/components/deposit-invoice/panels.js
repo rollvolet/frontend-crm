@@ -25,7 +25,7 @@ export default class DepositInvoicePanelsComponent extends Component {
   orderAmountData = trackedFunction(this, async () => {
     if (this.order) {
       const lines = await this.order.invoicelines;
-      return sum(lines.mapBy('arithmeticAmount'));
+      return sum(lines.map((line) => line.arithmeticAmount));
     } else {
       return null;
     }

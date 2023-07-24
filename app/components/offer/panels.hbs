@@ -8,18 +8,16 @@
   </div>
 {{else}}
   <div class="space-y-4">
-    {{#if this.case.isCancelled}}
-      <AlertMessage::Warning
-        @message="Het dossier is reeds afgesloten. Er zijn geen wijzigingen meer mogelijk."
-        class="shadow" />
-    {{else if this.hasOrder}}
-      <AlertMessage::Warning
-        @message="De offerte is reeds besteld. Er zijn geen wijzigingen meer mogelijk."
-        class="shadow" />
-    {{else if @model.isMasteredByAccess}}
-      <AlertMessage::Warning
-        @message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden."
-        class="shadow" />
+    {{#if this.case.isOngoing}}
+      {{#if this.hasOrder}}
+        <AlertMessage::Warning
+          @message="De offerte is reeds besteld. Er zijn geen wijzigingen meer mogelijk."
+          class="shadow" />
+      {{else if @model.isMasteredByAccess}}
+        <AlertMessage::Warning
+          @message="De offerte is aangemaakt in Access en kan hier niet gewijzigd worden."
+          class="shadow" />
+      {{/if}}
     {{/if}}
 
     {{!-- Details panel --}}

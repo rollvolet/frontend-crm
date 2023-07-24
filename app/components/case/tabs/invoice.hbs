@@ -19,6 +19,9 @@
           </span>
         </span>
       </LinkTo>
+      {{#unless @model.isIsolated}}
+        <Case::Tabs::Separator />
+      {{/unless}}
     {{else}}
       {{#if (not this.canCreateNew)}}
         <Case::Tabs::Placeholder @label="Factuur" />
@@ -40,6 +43,7 @@
               </span>
             </span>
           </LinkTo>
+          <Case::Tabs::Separator />
         {{else}}
           <LinkTo @route="main.case.intervention.edit.invoice"
             @models={{array @model.id @model.intervention.id}}
@@ -57,11 +61,11 @@
               </span>
             </span>
           </LinkTo>
+          <Case::Tabs::Separator />
         {{/if}}
       {{else}}
         <Case::Tabs::Placeholder @label="Factuur" />
       {{/if}}
-      <Case::Tabs::Separator />
     {{/if}}
   </div>
 </li>

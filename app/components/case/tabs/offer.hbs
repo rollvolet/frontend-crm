@@ -25,6 +25,7 @@
             </span>
           </span>
         </LinkTo>
+        <Case::Tabs::Separator />
       {{else}}
         {{#if (not this.canCreateNew)}}
           <Case::Tabs::Placeholder @label="Offerte" />
@@ -45,9 +46,9 @@
               </span>
             </span>
           </LinkTo>
+          <Case::Tabs::Separator />
         {{/if}}
       {{/if}}
-      <Case::Tabs::Separator />
     </div>
   </li>
 {{/if}}

@@ -1,10 +1,13 @@
-import { action } from '@ember/object';
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { cancelCase, reopenCase } from '../../utils/case-helpers';
 
 export default class CaseTabsComponent extends Component {
   @service router;
+
+  @tracked isOpenCancellationModal = false;
 
   get currentStep() {
     if (this.args.model.invoice.get('id')) {
@@ -30,12 +33,24 @@ export default class CaseTabsComponent extends Component {
   }
 
   @action
-  async cancelCase() {
-    await cancelCase(this.args.model);
+  openCancellationModal() {
+    this.isOpenCancellationModal = true;
   }
 
   @action
-  async reopenCase() {
+  closeCancellationModal() {
+    this.isOpenCancellationModal = false;
+  }
+
+  @action
+  async confirmCancellation(reason) {
+    this.isOpenCancellationModal = false;
+    await cancelCase(this.args.model, reason);
+  }
+
+  @action
+  async confirmReopen() {
+    this.isOpenCancellationModal = false;
     await reopenCase(this.args.model);
   }
 }
