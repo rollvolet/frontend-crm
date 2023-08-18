@@ -1,0 +1,54 @@
+{{#if this.editMode}}
+  {{#if (or @isSaving this.save.isRunning)}}
+    <div class="flex items-center space-x-1">
+      <label for={{this.elementId}} class="block text-sm font-medium text-gray-700">
+        {{@label}}
+      </label>
+      {{svg-jar "heroicons-md-cog" class="h-4 w-4 text-blue-500 animate-spin"}}
+    </div>
+  {{else if @onCancel}}
+    <button type="button"
+      {{on "click" this.cancelEditMode}}
+      class="group flex items-center space-x-1 text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+      <label for={{this.elementId}} class="block text-sm font-medium text-gray-700">
+        {{@label}}
+      </label>
+      <span class="h-4 w-4 group-focus:text-red-400">
+        {{svg-jar "heroicons-md-x-circle" class="h-4 w-4"}}
+      </span>
+    </button>
+  {{else}}
+    <label for={{this.elementId}} class="block text-sm font-medium text-gray-700">
+      {{@label}}
+    </label>
+  {{/if}}
+  {{#if (has-block "edit")}}
+    {{yield this.elementId this.closeEditMode to="edit"}}
+  {{else}}
+    <Input
+      id={{this.elementId}}
+      @type="text"
+      @value={{@value}}
+      class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+      autofocus
+      {{on "focusout" (perform this.save)}} />
+  {{/if}}
+{{else}}
+  <button type="button"
+    {{on "click" this.openEditMode}}
+    class="group flex items-center space-x-1 text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+    <dt class="text-sm font-medium text-gray-500">
+      {{@label}}
+    </dt>
+    <span class="h-4 w-4 invisible group-hover:visible group-focus:text-red-400">
+      {{svg-jar "heroicons-md-pencil" class="h-4 w-4"}}
+    </span>
+  </button>
+  {{#if (has-block "read")}}
+    {{yield this.elementId to="read"}}
+  {{else}}
+    <dd class="mt-1 text-sm text-gray-900">
+      {{@value}}
+    </dd>
+  {{/if}}
+{{/if}}
