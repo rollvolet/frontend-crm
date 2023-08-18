@@ -1,0 +1,19 @@
+{{#if @label}}
+  <label for="way-of-entry-select" class="block text-sm font-medium text-gray-700">
+    {{@label}}
+  </label>
+{{/if}}
+<div ...attributes>
+  <PowerSelect
+    @placeholder={{this.placeholder}}
+    @options={{this.sortedOptions}}
+    @selected={{@value}}
+    @onChange={{@onSelectionChange}}
+    @noMatchesMessage="Geen resultaten"
+    @allowClear={{@allowClear}}
+    @disabled={{@disabled}}
+    as |option select|
+  >
+    {{highlight-substr option.label select.lastSearchedText}}
+  </PowerSelect>
+</div>
