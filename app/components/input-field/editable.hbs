@@ -34,16 +34,22 @@
       {{on "focusout" (perform this.save)}} />
   {{/if}}
 {{else}}
-  <button type="button"
-    {{on "click" this.openEditMode}}
-    class="group flex items-center space-x-1 text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+  {{#if @disabled}}
     <dt class="text-sm font-medium text-gray-500">
       {{@label}}
     </dt>
-    <span class="h-4 w-4 invisible group-hover:visible group-focus:text-red-400">
-      {{svg-jar "heroicons-md-pencil" class="h-4 w-4"}}
-    </span>
-  </button>
+  {{else}}
+    <button type="button"
+      {{on "click" this.openEditMode}}
+      class="group flex items-center space-x-1 text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+      <dt class="text-sm font-medium text-gray-500">
+        {{@label}}
+      </dt>
+      <span class="h-4 w-4 invisible group-hover:visible group-focus:text-red-400">
+        {{svg-jar "heroicons-md-pencil" class="h-4 w-4"}}
+      </span>
+    </button>
+  {{/if}}
   {{#if (has-block "read")}}
     {{yield this.elementId to="read"}}
   {{else}}

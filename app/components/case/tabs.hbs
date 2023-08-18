@@ -13,7 +13,7 @@
         </h2>
         <div>
           {{#if @model.isCancelled}}
-            <button class="inline-flex items-center gap-x-1.5 rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700" {{on "click" this.openCancellationModal}}>
+            <button class="inline-flex items-center gap-x-1.5 rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700 focus:outline-none focus:ring-2 focus:ring-red-200" type="button" {{on "click" this.openCancellationModal}}>
               <svg class="h-1.5 w-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
                 <circle cx="3" cy="3" r="3" />
               </svg>
@@ -27,7 +27,7 @@
               Geboekt
             </span>
           {{else}}
-            <button class="inline-flex items-center gap-x-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700" {{on "click" this.openCancellationModal}}>
+            <button class="inline-flex items-center gap-x-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 focus:outline-none focus:ring-2 focus:ring-green-200" type="button" {{on "click" this.openCancellationModal}}>
               <svg class="h-1.5 w-1.5 fill-green-500" viewBox="0 0 6 6" aria-hidden="true">
                 <circle cx="3" cy="3" r="3" />
               </svg>
@@ -39,36 +39,75 @@
 
       <div class="mt-4 flex space-x-16">
         <div class="shrink-0">
-          <dt class="text-sm font-medium text-gray-500">
-            BTW tarief
-          </dt>
-          <dd class="mt-1 text-sm text-gray-900">
-            {{@model.vatRate.rate}}% BTW
-          </dd>
+          <InputField::Editable
+            @label="BTW tarief"
+            @disabled={{@model.isCancelled}}
+            @isSaving={{this.save.isRunning}}
+            @onCancel={{reset-relation @model "vatRate"}}>
+            <:read>
+            <dd class="mt-1 text-sm text-gray-900">
+              {{#if @model.vatRate}}
+                {{@model.vatRate.rate}}% BTW
+              {{else}}
+                -
+              {{/if}}
+            </dd>
+            </:read>
+            <:edit as |_ closeEditMode|>
+            <InputField::VatRateSelect
+              @value={{@model.vatRate}}
+              @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save) closeEditMode}}
+              @allowClear={{false}}
+              class="mt-1 w-44" />
+            </:edit>
+          </InputField::Editable>
         </div>
         <div class="shrink-0">
-          <dt class="text-sm font-medium text-gray-500">
-            Referentie
-          </dt>
-          <dd class="mt-1 text-sm text-gray-900">
-            {{or @model.reference "-"}}
-          </dd>
+          <InputField::Editable
+            @label="Referentie"
+            @value={{@model.reference}}
+            @disabled={{@model.isCancelled}}
+            @onSave={{queue (fn (mut @model.reference)) (perform this.save)}} />
         </div>
         <div class="shrink-0">
-          <dt class="text-sm font-medium text-gray-500">
-            Uitvoering
-          </dt>
-          <dd class="mt-1 text-sm text-gray-900">
-            {{or @model.deliveryMethod.label "-"}}
-          </dd>
+          <InputField::Editable
+            @label="Uitvoering"
+            @disabled={{@model.isCancelled}}
+            @isSaving={{this.save.isRunning}}
+            @onCancel={{reset-relation @model "deliveryMethod"}}>
+            <:read>
+            <dd class="mt-1 text-sm text-gray-900">
+              {{or @model.deliveryMethod.label "-"}}
+            </dd>
+            </:read>
+            <:edit as |_ closeEditMode|>
+            <InputField::DeliveryMethodSelect
+              @value={{@model.deliveryMethod}}
+              @onSelectionChange={{queue (fn (mut @model.deliveryMethod)) (perform this.save) closeEditMode}}
+              class="mt-1 w-36" />
+            </:edit>
+          </InputField::Editable>
         </div>
-        <div class="truncate">
-          <dt class="text-sm font-medium text-gray-500">
-            Opmerking
-          </dt>
-          <dd class="mt-1 text-sm text-gray-900 truncate">
-            {{@model.comment}}
-          </dd>
+        <div class="flex-1 overflow-y-hidden">
+          <InputField::Editable
+            @label="Opmerking"
+            @disabled={{@model.isCancelled}}
+            @isSaving={{this.save.isRunning}}>
+            <:read>
+            <dd class="mt-1 text-sm text-gray-900 truncate">
+              {{or @model.comment "-"}}
+            </dd>
+            </:read>
+            <:edit as |elementId closeEditMode|>
+            <Textarea
+              id={{elementId}}
+              @value={{@model.comment}}
+              class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+              rows="5"
+              autofocus
+              {{on "focusout" (queue (perform this.save) closeEditMode)}} />
+            </:edit>
+          </InputField::Editable>
         </div>
       </div>
     </div>

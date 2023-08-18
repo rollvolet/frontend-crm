@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { keepLatestTask } from 'ember-concurrency';
 import { cancelCase, reopenCase } from '../../utils/case-helpers';
 
 export default class CaseTabsComponent extends Component {
@@ -30,6 +31,11 @@ export default class CaseTabsComponent extends Component {
     } else {
       return route.substr(0, route.indexOf('.'));
     }
+  }
+
+  @keepLatestTask
+  *save() {
+    yield this.args.model.save();
   }
 
   @action

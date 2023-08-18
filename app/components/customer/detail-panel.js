@@ -19,10 +19,7 @@ export default class CustomerDetailPanelComponent extends Component {
     }
 
     const address = yield this.args.model.address;
-    const validationResults = yield Promise.all([
-      address.validate(),
-      this.args.model.validate(),
-    ])
+    const validationResults = yield Promise.all([address.validate(), this.args.model.validate()]);
 
     const isValid = validationResults.find((v) => v.validations.isInvalid) == null;
     if (isValid) {
