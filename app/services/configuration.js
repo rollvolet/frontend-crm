@@ -3,7 +3,7 @@ import { debug, warn } from '@ember/debug';
 import { all, dropTask } from 'ember-concurrency';
 import constants from '../config/constants';
 
-const { COUNTRIES, CONCEPT_SCHEMES, LANGUAGES, TELEPHONE_TYPES } = constants;
+const { COUNTRIES, CONCEPT_SCHEMES, LANGUAGES, TELEPHONE_TYPES, WAY_OF_ENTRIES } = constants;
 
 export default class ConfigurationService extends Service {
   @service store;
@@ -53,6 +53,12 @@ export default class ConfigurationService extends Service {
   get defaultTelephoneType() {
     const value = this.store.peekAll('telephone-type').find((c) => c.uri == TELEPHONE_TYPES.VOICE);
     warn('No default telephone-type vcard:Voice found', value != null, { id: 'no-default-value' });
+    return value;
+  }
+
+  get defaultWayOfEntry() {
+    const value = this.store.peekAll('concept').find((c) => c.uri == WAY_OF_ENTRIES.TELEPHONE);
+    warn('No default way of entry Telephone found', value != null, { id: 'no-default-value' });
     return value;
   }
 
