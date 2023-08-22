@@ -231,19 +231,21 @@
           Klant
         </h2>
         <div>
-          {{#if @model.request}}
-            <LinkTo @route="main.case.request.edit.customer" @models={{array @model.id @model.request.id}}
-              class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "heroicons-md-link" class="h-6 w-6"}}
-              <EmberTooltip @text="Koppel klant" @side="bottom" />
-            </LinkTo>
-          {{else if @model.intervention}}
-            <LinkTo @route="main.case.intervention.edit.customer" @models={{array @model.id @model.intervention.id}}
-              class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "heroicons-md-link" class="h-6 w-6"}}
-              <EmberTooltip @text="Koppel klant" @side="bottom" />
-            </LinkTo>
-          {{/if}}
+          {{#unless @model.isCancelled}}
+            {{#if @model.request}}
+              <LinkTo @route="main.case.request.edit.customer" @models={{array @model.id @model.request.id}}
+                class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                {{svg-jar "heroicons-md-link" class="h-6 w-6"}}
+                <EmberTooltip @text="Koppel klant" @side="bottom" />
+              </LinkTo>
+            {{else if @model.intervention}}
+              <LinkTo @route="main.case.intervention.edit.customer" @models={{array @model.id @model.intervention.id}}
+                class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                {{svg-jar "heroicons-md-link" class="h-6 w-6"}}
+                <EmberTooltip @text="Koppel klant" @side="bottom" />
+              </LinkTo>
+            {{/if}}
+          {{/unless}}
         </div>
       </div>
       <div class="p-6">

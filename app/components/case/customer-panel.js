@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
+import { trackedFunction } from 'ember-resources/util/function';
 import { setCalendarEventProperties } from '../../utils/calendar-helpers';
 
 export default class CaseCustomerPanelComponent extends Component {
@@ -22,12 +23,20 @@ export default class CaseCustomerPanelComponent extends Component {
     return this.updateBuilding.isRunning;
   }
 
-  get isEnabledUnlinkCustomer() {
-    const _case = this.args.model;
-    const isRequestWithoutOffer = _case.request.get('id') != null && _case.offer.get('id') == null;
-    const isInterventionWithoutInvoice =
-      _case.intervention.get('id') != null && _case.invoice.get('id') == null;
+  isInStartupPhase = trackedFunction(this, async () => {
+    const [request, offer, intervention, invoice] = await Promise.all([
+      this.args.model.request,
+      this.args.model.offer,
+      this.args.model.intervention,
+      this.args.model.invoice,
+    ]);
+    const isRequestWithoutOffer = request != null && offer == null;
+    const isInterventionWithoutInvoice = intervention != null && invoice == null;
     return isRequestWithoutOffer || isInterventionWithoutInvoice;
+  });
+
+  get isEnabledUnlinkCustomer() {
+    return this.args.model.isOngoing && this.isInStartupPhase.value;
   }
 
   @task
