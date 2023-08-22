@@ -1,13 +1,13 @@
 {{#if (or @date this.by)}}
   {{#if @resource}}
-    {{@resource}} created
+    {{@resource}} aangemaakt
   {{else}}
-    Created
+    Aangemaakt
   {{/if}}
   {{#if @date}}
-    on {{moment-format @date}}
+    op {{moment-format @date}}
   {{/if}}
   {{#if this.by}}
-    by {{this.by}}
+    door {{this.by}}
   {{/if}}
 {{/if}}
