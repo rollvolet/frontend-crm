@@ -55,12 +55,12 @@
             {{#if @model.visit.isMasteredByAccess}}
               <CalendarEvent::DetailView
                 @title="bezoek"
-                @model={{await @model.visit}}
+                @model={{this.visit}}
                 @onSynchronize={{perform this.saveCalendarEvent}} />
             {{else if @model.visit.id}}
               <CalendarEvent::DetailEdit
                 @title="bezoek"
-                @model={{await @model.visit}}
+                @model={{this.visit}}
                 @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
                 @saveTask={{this.saveCalendarEvent}} />
             {{/if}}
@@ -150,7 +150,7 @@
         <div class="mb-4 sm:mb-0 sm:order-2">
           <CalendarEvent::DetailView
             @title="bezoek"
-            @model={{await @model.visit}}
+            @model={{this.visit}}
             @onSynchronize={{perform this.synchronizeCalendarEvent}} />
         </div>
         <div class="space-y-2 sm:order-1">

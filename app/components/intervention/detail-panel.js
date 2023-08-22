@@ -21,8 +21,16 @@ export default class InterventionDetailPanelComponent extends Component {
     return await this.args.model.case;
   });
 
+  visitData = trackedFunction(this, async () => {
+    return await this.args.model.visit;
+  });
+
   get case() {
     return this.caseData.value;
+  }
+
+  get visit() {
+    return this.visitData.value;
   }
 
   get technicianNames() {
@@ -62,20 +70,22 @@ export default class InterventionDetailPanelComponent extends Component {
         intervention: this.args.model,
         calendarPeriod,
       });
-      yield this.saveCalendarEvent.perform(visit);
+      if (visit.hasDirtyAttributes) {
+        yield this.saveCalendarEvent.perform(visit);
+      }
     }
   }
 
   @keepLatestTask
   *synchronizeCalendarEvent() {
-    const calendarEvent = yield this.args.model.visit;
-    if (calendarEvent) {
-      yield setCalendarEventProperties(calendarEvent, {
+    const visit = yield this.args.model.visit;
+    if (visit) {
+      yield setCalendarEventProperties(visit, {
         intervention: this.args.model,
       });
-      if (!calendarEvent.isNew) {
+      if (!visit.isNew) {
         // only save if it has already been saved before (by selecting a date/period)
-        yield this.saveCalendarEvent.perform(calendarEvent);
+        yield this.saveCalendarEvent.perform(visit);
       }
     }
   }
@@ -89,13 +99,13 @@ export default class InterventionDetailPanelComponent extends Component {
   }
 
   async ensureCalendarEvent() {
-    const calendarEvent = await this.args.model.visit;
-    if (this.isLinkedToCustomer && !calendarEvent) {
-      const calendarEvent = this.store.createRecord('calendar-event', {
+    const visit = await this.args.model.visit;
+    if (this.isLinkedToCustomer && !visit) {
+      const visit = this.store.createRecord('calendar-event', {
         intervention: this.args.model,
         date: null, // ember-flatpickr cannot handle 'undefined'
       });
-      await setCalendarEventProperties(calendarEvent, {
+      await setCalendarEventProperties(visit, {
         intervention: this.args.model,
         calendarPeriod: new CalendarPeriod('GD'),
       });
@@ -105,41 +115,41 @@ export default class InterventionDetailPanelComponent extends Component {
 
   @keepLatestTask
   *deleteCalendarEvent() {
-    const calendarEvent = yield this.args.model.visit;
-    yield calendarEvent.destroyRecord();
+    const visit = yield this.args.model.visit;
+    yield visit?.destroyRecord();
     yield this.ensureCalendarEvent();
   }
 
   @task
   *createNewIntervention() {
-    const [customer, contact, building, employee, origin] = yield Promise.all([
+    const [customer, contact, building, vatRate, employee, origin, number] = yield Promise.all([
       this.case.customer,
       this.case.contact,
       this.case.building,
+      this.case.vatRate,
       this.args.model.employee,
       this.args.model.origin,
+      this.sequence.fetchNextCaseNumber(),
     ]);
-    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 6);
 
-    const number = yield this.sequence.fetchNextCaseNumber();
+    const intervention = this.store.createRecord('intervention', {
+      interventionDate: new Date(),
+      number,
+      employee,
+      origin,
+    });
+
+    yield intervention.save();
+
     const _case = this.store.createRecord('case', {
       identifier: `IR-${number}`,
       customer,
       contact,
       building,
       vatRate,
+      intervention,
     });
     yield _case.save();
-
-    const intervention = this.store.createRecord('intervention', {
-      interventionDate: new Date(),
-      number,
-      case: _case,
-      employee,
-      origin,
-    });
-
-    yield intervention.save();
 
     this.router.transitionTo('main.case.intervention.edit.index', _case.id, intervention.id);
   }
@@ -147,11 +157,6 @@ export default class InterventionDetailPanelComponent extends Component {
   @action
   generateInterventionReport() {
     return this.documentGeneration.interventionReport(this.args.model);
-  }
-
-  @action
-  setTechnicians(employees) {
-    this.args.model.technicians = employees;
   }
 
   @action

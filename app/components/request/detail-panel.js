@@ -19,8 +19,16 @@ export default class RequestDetailPanelComponent extends Component {
     return await this.args.model.case;
   });
 
+  visitData = trackedFunction(this, async () => {
+    return await this.args.model.visit;
+  });
+
   get case() {
     return this.caseData.value;
+  }
+
+  get visit() {
+    return this.visitData.value;
   }
 
   get isLinkedToCustomer() {

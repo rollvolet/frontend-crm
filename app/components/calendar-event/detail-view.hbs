@@ -2,7 +2,7 @@
   {{if this.hasErrorInCalendar "relative border-2 border-dashed border-red-500" }}">
   {{#if this.hasErrorInCalendar}}
     <div class="absolute -bottom-3 -right-3 rounded shadow px-2 py-1 bg-red-600 text-white text-sm">
-      {{this.errorMessage}}
+      {{this.errorMessage.value}}
     </div>
   {{/if}}
   {{#if @model}}

@@ -6,7 +6,11 @@ const { CASE_STATUSES } = constants;
 export default class CaseModel extends Model {
   @attr('string') uri;
   @attr('string') identifier;
-  @attr('string') status;
+  @attr('string', {
+    defaultValue() {
+      return CASE_STATUSES.ONGOING;
+    },
+  }) status;
   @attr('string') reference;
   @attr('string') comment;
   @attr('boolean') hasProductionTicket;

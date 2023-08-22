@@ -30,7 +30,7 @@ export default class InterventionModel extends ValidatedModel {
   @belongsTo('concept', { inverse: null }) wayOfEntry;
   @belongsTo('employee', { inverse: 'acceptedInterventions' }) employee;
   @hasMany('employee', { inverse: 'interventions' }) technicians;
-  @belongsTo('file', { inverse: 'offer' }) document;
+  @belongsTo('file', { inverse: 'intervention' }) document;
   @belongsTo('order', { inverse: 'interventions' }) origin;
   @belongsTo('request', { inverse: 'origin' }) followUpRequest;
 

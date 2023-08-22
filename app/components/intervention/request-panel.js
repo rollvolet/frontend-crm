@@ -3,13 +3,11 @@ import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
 import { cancelCase } from '../../utils/case-helpers';
-import constants from '../../config/constants';
-
-const { WAY_OF_ENTRIES } = constants;
 
 export default class InterventionRequestPanelComponent extends Component {
   @service router;
   @service store;
+  @service configuration;
   @service sequence;
 
   requestData = trackedFunction(this, async () => {
@@ -24,34 +22,35 @@ export default class InterventionRequestPanelComponent extends Component {
   *createFollowUpRequest() {
     const _case = yield this.args.model.case;
 
-    const [customer, contact, building, employee] = yield Promise.all([
+    const [customer, contact, building, employee, number] = yield Promise.all([
       _case.customer,
       _case.contact,
       _case.building,
       this.args.model.employee,
+      this.sequence.fetchNextCaseNumber(),
     ]);
-    const wayOfEntry = this.store.peekAll('concept').find((c) => c.uri == WAY_OF_ENTRIES.TELEPHONE);
+    const wayOfEntry = this.configuration.defaultWayOfEntry;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
 
-    const number = yield this.sequence.fetchNextCaseNumber();
+    const request = this.store.createRecord('request', {
+      number,
+      requestDate: new Date(),
+      employee,
+      origin: this.args.model,
+      wayOfEntry,
+    });
+    yield request.save();
+
     const newCase = this.store.createRecord('case', {
       identifier: `AD-${number}`,
       customer,
       contact,
       building,
       vatRate,
+      request,
     });
-    yield newCase.save();
 
-    const request = this.store.createRecord('request', {
-      number,
-      requestDate: new Date(),
-      case: newCase,
-      employee,
-      origin: this.args.model,
-      wayOfEntry,
-    });
-    yield request.save();
+    yield newCase.save();
 
     yield cancelCase(_case, 'Nieuwe aanvraag gestart');
 

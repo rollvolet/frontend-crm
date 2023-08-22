@@ -21,7 +21,7 @@ export default class InterventionPanelsComponent extends Component {
   }
 
   get isEnabledDelete() {
-    return !this.hasInvoice && !this.case?.isCancelled;
+    return this.case?.isOngoing && !this.hasInvoice;
   }
 
   get hasInvoice() {
@@ -32,7 +32,7 @@ export default class InterventionPanelsComponent extends Component {
   *delete() {
     const customer = yield this.case.customer;
     try {
-      const visit = yield this.request.visit;
+      const visit = yield this.args.model.visit;
       if (visit) {
         yield visit.destroyRecord();
       }

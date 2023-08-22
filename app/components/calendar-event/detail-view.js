@@ -1,19 +1,17 @@
 import Component from '@glimmer/component';
 import fetch, { Headers } from 'fetch';
 import moment from 'moment';
-import { tracked } from '@glimmer/tracking';
 import { keepLatestTask } from 'ember-concurrency';
+import { task as trackedTask } from 'ember-resources/util/ember-concurrency';
 
 export default class CalendarEventDetailViewComponent extends Component {
-  @tracked errorMessage;
-
-  constructor() {
-    super(...arguments);
-    this.checkExistenceInMsCalendar.perform();
-  }
+  errorMessage = trackedTask(this, this.checkExistenceInMsCalendar, () => [this.args.model]);
 
   get hasErrorInCalendar() {
-    return this.errorMessage;
+    // workaround to correctly update the template
+    // - this.errorMessage.value must be called such that the trackedTask gets re-executed if model updates
+    // - this.checkExistenceInMsCalendar.lastSuccessful?.value is called to update if synchronize task is performed
+    return this.errorMessage.value && this.checkExistenceInMsCalendar.lastSuccessful?.value;
   }
 
   @keepLatestTask
@@ -25,22 +23,20 @@ export default class CalendarEventDetailViewComponent extends Component {
           Accept: 'application/json',
         }),
       });
-      this.errorMessage = null;
       if (response.ok) {
         const json = yield response.json();
         if (json.data?.id == null) {
-          this.errorMessage = 'Niet gevonden in agenda';
+          return 'Niet gevonden in agenda';
         }
       } else if (response.status == 409) {
         const json = yield response.json();
         const date = moment(json.data.attributes.date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-        this.errorMessage = `Andere datum (${date}) in agenda`;
+        return `Andere datum (${date}) in agenda`;
       } else {
-        this.errorMessage = 'Probleem in agenda';
+        return 'Probleem in agenda';
       }
-    } else {
-      this.errorMessage = null;
     }
+    return null;
   }
 
   @keepLatestTask

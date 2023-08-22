@@ -18,13 +18,13 @@ export async function setCalendarEventProperties(calendarEvent, records) {
     _case = await intervention.case;
     const customer = await _case.customer;
     calendarEvent.subject = await interventionSubject(intervention, customer, calendarPeriod);
-    calendarEvent.description = intervention.description;
+    calendarEvent.description = intervention.description || null; // undefined seems to be interpreted as dirty attribute on save
     calendarEvent.url = interventionApplicationUrl(intervention, _case);
   } else if (order) {
     _case = await order.case;
     const [customer, visitor] = await Promise.all([_case.customer, order.visitor]);
     calendarEvent.subject = await orderSubject(order, customer, calendarPeriod, visitor);
-    calendarEvent.description = order.comment;
+    calendarEvent.description = order.comment || null; // undefined seems to be interpreted as dirty attribute on save
     calendarEvent.url = orderApplicationUrl(order, _case);
   }
   const [building, customer] = await Promise.all([_case.building, _case.customer]);
