@@ -2,30 +2,32 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
 export default class MainCustomersEditRequestRoute extends Route {
+  @service configuration;
   @service userInfo;
+  @service sequence;
   @service store;
   @service router;
 
   async model() {
     const customer = this.modelFor('main.customers.edit');
     const employee = this.userInfo.employee;
-    const firstName = employee ? employee.firstName : null;
-    const wayOfEntry = this.store.peekAll('way-of-entry').find((e) => e.position == '1');
+    const wayOfEntry = this.configration.defaultWayOfEntry;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
+    const number = await this.sequence.fetchNextCaseNumber();
+
     const request = this.store.createRecord('request', {
       requestDate: new Date(),
-      employee: firstName,
+      number,
+      employee,
       wayOfEntry,
-      customer,
     });
 
     await request.save();
 
-    // TODO first create case and relate to request once relationship is fully defined
     const _case = this.store.createRecord('case', {
-      identifier: `AD-${request.id}`,
-      customer: customer.uri,
-      request: request.uri,
+      identifier: `AD-${number}`,
+      customer,
+      request,
       vatRate,
     });
 

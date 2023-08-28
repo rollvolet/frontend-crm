@@ -14,10 +14,9 @@ export default class MainCustomersEditInvoiceRoute extends Route {
 
     const invoiceDate = new Date();
     const dueDate = moment(invoiceDate).add(14, 'days').toDate();
-
     const customerSnap = await createCustomerSnapshot(customer);
-
     const number = await this.sequence.fetchNextInvoiceNumber();
+
     const invoice = this.store.createRecord('invoice', {
       invoiceDate,
       dueDate,
@@ -27,9 +26,10 @@ export default class MainCustomersEditInvoiceRoute extends Route {
       customer: customerSnap,
     });
     await invoice.save();
+
     const _case = this.store.createRecord('case', {
       identifier: `F-${invoice.number}`,
-      customer: customer.uri,
+      customer,
       vatRate,
       invoice,
     });
