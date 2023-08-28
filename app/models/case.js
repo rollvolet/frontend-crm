@@ -10,7 +10,8 @@ export default class CaseModel extends Model {
     defaultValue() {
       return CASE_STATUSES.ONGOING;
     },
-  }) status;
+  })
+  status;
   @attr('string') reference;
   @attr('string') comment;
   @attr('boolean') hasProductionTicket;

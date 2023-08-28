@@ -1,0 +1,21 @@
+input#mu-login-username,
+input#mu-login-password {
+  @apply block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-200 sm:text-sm sm:leading-6;
+}
+
+.mu-login-password {
+  @apply mt-2;
+}
+
+.mu-login-name label,
+.mu-login-password label {
+  @apply block text-sm font-medium leading-6 text-gray-900;
+}
+
+.mu-login-error-message {
+  @apply mt-6 rounded-md bg-yellow-50 p-4 text-sm text-yellow-700;
+}
+
+.mu-login-button {
+  @apply mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500;
+}

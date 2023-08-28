@@ -29,7 +29,7 @@ export default class UserInfoService extends Service {
 
   get firstName() {
     // TODO this is only a best guess. Get correct first name from DB.
-    return this.name.split(' ')[0];
+    return this.name?.split(' ')[0];
   }
 
   get email() {
@@ -49,10 +49,15 @@ export default class UserInfoService extends Service {
   @keepLatestTask
   *fetchUserInfo() {
     if (this.session.isAuthenticated) {
-      const sessionData = this.session.data.authenticated.data;
-      this.name = sessionData.attributes.name;
-      this.username = sessionData.attributes.username;
-      this.userGroups = sessionData.attributes['user-groups'];
+      const authenticatedData = this.session.data.authenticated;
+      // TODO: response in msal-login service must be fixed. Relationships must be included in data object
+      const sessionData = authenticatedData.relationships || authenticatedData.data.relationships;
+      const accountId = sessionData.account?.data.id;
+      const account = yield this.store.findRecord('account', accountId);
+      const user = yield account.user;
+      this.name = user.name;
+      this.username = account.accountName;
+      this.userGroups = user.userGroups;
       yield this.fetchEmployee();
     } else {
       this.name = null;
