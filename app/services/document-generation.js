@@ -8,8 +8,15 @@ export default class DocumentGenerationService extends Service {
   // Document generation
 
   async visitReport(request) {
-    await this._generate(`/api/requests/${request.get('id')}/reports`);
-    this.downloadVisitReport(request);
+    const data = {
+      data: {
+        type: 'document-generators',
+      },
+    };
+
+    const response = await this._generate(`/requests/${request.id}/documents`, data);
+    const blob = await response.blob();
+    this.previewBlob(blob);
   }
 
   async interventionReport(intervention) {
