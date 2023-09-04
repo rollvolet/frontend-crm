@@ -1,4 +1,5 @@
 import Service, { inject as service } from '@ember/service';
+import moment from 'moment';
 
 export default class SequenceService extends Service {
   @service store;
@@ -32,6 +33,23 @@ export default class SequenceService extends Service {
       'filter[customer][:uri:]': customer.uri,
     });
     return building ? building.position + 1 : 1;
+  }
+
+  async fetchNextOfferNumber() {
+    const now = moment();
+    now.add(10, 'years');
+    const number = now.format('YY/MM/DD');
+    const offer = await this.store.queryOne('offer', {
+      sort: '-number',
+      'filter[number]': number,
+    });
+    if (offer) {
+      const sequenceNumber = parseInt(offer.number.substr(offer.number.lastIndexOf('/') + 1));
+      const postfix = `${sequenceNumber + 1}`.padStart(2, '0');
+      return `${number}/${postfix}`;
+    } else {
+      return `${number}/01`;
+    }
   }
 
   async fetchNextInvoiceNumber() {

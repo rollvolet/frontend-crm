@@ -45,7 +45,7 @@
         <div class="mb-4 sm:mb-0 sm:order-2">
           <CalendarEvent::DetailView
             @title="bezoek"
-            @model={{await this.request.visit}}
+            @model={{this.visit}}
             @onSynchronize={{perform this.synchronizeCalendarEvent}} />
         </div>
         <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
@@ -59,7 +59,7 @@
           <div>
             <InputField::EmployeeSelect
               @label="Bezoeker"
-              @value={{await this.request.visitor}}
+              @value={{this.visitor}}
               @isAdministrative={{true}}
               @allowClear={{false}}
               @onSelectionChange={{queue (perform this.setVisitor) (perform this.save)}}
@@ -72,7 +72,7 @@
         <div class="mb-4 sm:mb-0 sm:order-2">
           <CalendarEvent::DetailView
             @title="bezoek"
-            @model={{await this.request.visit}}
+            @model={{this.visit}}
             @onSynchronize={{perform this.synchronizeCalendarEvent}} />
         </div>
         <div class="space-y-2 sm:order-1">
@@ -86,7 +86,7 @@
             {{this.request.wayOfEntry.label}}
           </Util::DetailItem>
           <Util::DetailItem @label="Bezoeker">
-            {{this.request.visitor.firstName}}
+            {{this.visitor.firstName}}
           </Util::DetailItem>
         </div>
       </dl>

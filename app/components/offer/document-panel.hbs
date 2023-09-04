@@ -26,11 +26,13 @@
               <div class="text-lg text-gray-400 font-bold font-display">
                 {{@model.documentVersion}}
               </div>
-              <button type="button"
-                class="ml-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-                {{on "click" this.openVersionEdit}}>
-                {{svg-jar "heroicons-md-pencil" class="h-4 w-4"}}
-              </button>
+              {{#unless @isDisabledEdit}}
+                <button type="button"
+                  class="ml-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+                  {{on "click" this.openVersionEdit}}>
+                  {{svg-jar "heroicons-md-pencil" class="h-4 w-4"}}
+                </button>
+              {{/unless}}
             {{/if}}
           </div>
         {{/unless}}
@@ -42,7 +44,7 @@
           {{svg-jar "heroicons-md-eye" class="-ml-1 mr-2 h-5 w-5"}}
           Bekijken
         </button>
-        {{#unless @model.isMasteredByAccess}}
+        {{#unless @isDisabledEdit}}
           <button type="button"
             {{on "click" (perform this.generateOfferDocument)}}
             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">

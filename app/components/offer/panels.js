@@ -22,7 +22,7 @@ export default class OfferPanelsComponent extends Component {
   }
 
   get isEnabledDelete() {
-    return !this.hasOrder && !this.args.model.isMasteredByAccess && !this.case?.isCancelled;
+    return !this.hasOrder && !this.args.model.isMasteredByAccess && this.case?.isOngoing;
   }
 
   get hasOrder() {

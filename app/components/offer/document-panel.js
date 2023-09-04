@@ -28,7 +28,7 @@ export default class OfferDocumentPanelComponent extends Component {
   }
 
   get hasMixedVatRates() {
-    return this.offerlines.mapBy('vatRate').uniqBy('code').length > 1;
+    return this.offerlines.mapBy('vatRate').uniqBy('uri').length > 1;
   }
 
   @keepLatestTask
@@ -71,8 +71,8 @@ export default class OfferDocumentPanelComponent extends Component {
 
     if (!offerline.isNew) {
       const calculationLine = this.store.createRecord('calculation-line', {
-        offerline: offerline,
         position: 1,
+        offerline,
       });
       // no validation in FE since calculation line needs to be persisted in BE,
       // even without description/amount. Otherwise it will not appear in the list.

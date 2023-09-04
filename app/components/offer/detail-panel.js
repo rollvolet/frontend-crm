@@ -20,16 +20,32 @@ export default class OfferDetailPanelComponent extends Component {
     return await this.args.model.case;
   });
 
-  get case() {
-    return this.caseData.value;
-  }
-
   requestData = trackedFunction(this, async () => {
     return await this.case?.request;
   });
 
+  visitData = trackedFunction(this, async () => {
+    return await this.request?.visit;
+  });
+
+  visitorData = trackedFunction(this, async () => {
+    return await this.request?.visitor;
+  });
+
+  get case() {
+    return this.caseData.value;
+  }
+
   get request() {
     return this.requestData.value;
+  }
+
+  get visit() {
+    return this.visitData.value;
+  }
+
+  get visitor() {
+    return this.visitorData.value;
   }
 
   @task

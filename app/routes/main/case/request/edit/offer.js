@@ -4,9 +4,9 @@ import snippets from '../../../../../config/snippets';
 import getDocumentLanguageCode from '../../../../../utils/get-document-language-code';
 
 export default class MainCaseRequestEditOfferRoute extends Route {
-  @service case;
   @service configuration;
   @service userInfo;
+  @service sequence;
   @service store;
   @service router;
 
@@ -22,39 +22,29 @@ export default class MainCaseRequestEditOfferRoute extends Route {
   }
 
   async model() {
-    const request = this.modelFor('main.case.request.edit');
-    const [vatRate, customer, contact, building] = await Promise.all([
-      this.case.current.case.vatRate,
-      request.customer,
-      request.contact,
-      request.building,
-    ]);
+    const _case = this.modelFor('main.case');
+    const [customer, contact] = await Promise.all([_case.customer, _case.contact]);
 
     const languageCode = await getDocumentLanguageCode({ customer, contact });
 
+    const number = await this.sequence.fetchNextOfferNumber();
     const offer = this.store.createRecord('offer', {
+      number,
       offerDate: new Date(),
       documentIntro: snippets[languageCode]['offerDocumentIntro'],
       documentOutro: snippets[languageCode]['offerDocumentOutro'],
       documentVersion: 'v1',
-      vatRate,
-      customer,
-      request,
-      contact,
-      building,
+      case: _case,
     });
 
     await offer.save();
-
-    // TODO set case on creation of offer once relation is fully defined
-    await this.case.current.updateRecord('offer', offer);
 
     return offer;
   }
 
   afterModel(model) {
     const _case = this.modelFor('main.case');
-    this.router.transitionTo('main.case.offer.edit', _case, model, {
+    this.router.transitionTo('main.case.offer.edit', _case.id, model.id, {
       queryParams: { editMode: true },
     });
   }
