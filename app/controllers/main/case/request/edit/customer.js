@@ -7,7 +7,6 @@ import applyFilterParams from '../../../../../utils/apply-filter-params';
 
 export default class MainCaseRequestEditCustomerController extends Controller {
   @service router;
-  @service('case') caseService;
 
   @tracked page = 0;
   @tracked size = 25;
@@ -18,11 +17,9 @@ export default class MainCaseRequestEditCustomerController extends Controller {
 
   @task
   *linkCustomerToRequest(customer) {
-    this.request.customer = customer;
-    yield this.request.save();
-    // TODO set relation instead of URI once relationship to customer is fully defined
-    yield this.caseService.current.updateRecord('customer', customer);
-    this.router.transitionTo('main.case.request.edit.index', this.case, this.request);
+    this.case.customer = customer;
+    yield this.case.save();
+    this.router.transitionTo('main.case.request.edit.index', this.case.id, this.request.id);
   }
 
   @action

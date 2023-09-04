@@ -10,7 +10,7 @@ export default class MainRequestsNewRoute extends Route {
 
   async model() {
     const employee = this.userInfo.employee;
-    const wayOfEntry = this.configration.defaultWayOfEntry;
+    const wayOfEntry = this.configuration.defaultWayOfEntry;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
     const number = await this.sequence.fetchNextCaseNumber();
 

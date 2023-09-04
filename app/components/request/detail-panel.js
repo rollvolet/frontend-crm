@@ -96,18 +96,20 @@ export default class RequestDetailPanelComponent extends Component {
         request: this.args.model,
         calendarPeriod,
       });
-      yield this.saveCalendarEvent.perform(visit);
+      if (visit.hasDirtyAttributes) {
+        yield this.saveCalendarEvent.perform(visit);
+      }
     }
   }
 
   @keepLatestTask
   *synchronizeCalendarEvent() {
-    const calendarEvent = yield this.args.model.visit;
-    if (calendarEvent) {
-      yield setCalendarEventProperties(calendarEvent, {
+    const visit = yield this.args.model.visit;
+    if (visit) {
+      yield setCalendarEventProperties(visit, {
         request: this.args.model,
       });
-      yield this.saveCalendarEvent.perform(calendarEvent);
+      yield this.saveCalendarEvent.perform(visit);
     }
   }
 

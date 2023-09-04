@@ -1,4 +1,5 @@
 import DataTableRoute from '../../../../../utils/data-table-route';
+import onlyNumericChars from '../../../../../utils/only-numeric-chars';
 
 export default class MainCaseRequestEditCustomerRoute extends DataTableRoute {
   modelName = 'customer';
@@ -18,14 +19,18 @@ export default class MainCaseRequestEditCustomerRoute extends DataTableRoute {
 
   mergeQueryOptions(params) {
     return {
-      include: 'honorific-prefix',
+      include: 'address',
       filter: {
-        number: params.number,
+        number: onlyNumericChars(params.number),
         name: params.name,
-        'postal-code': params.postalCode,
-        city: params.city,
-        street: params.street,
-        telephone: params.telephone,
+        address: {
+          'postal-code': params.postalCode,
+          city: params.city,
+          street: params.street,
+        },
+        telephones: {
+          value: onlyNumericChars(params.telephone),
+        },
       },
     };
   }

@@ -12,7 +12,6 @@ export default class FileModel extends Model {
   @belongsTo('remote-file') download;
   @belongsTo('case', { inverse: 'attachments' }) case;
   @belongsTo('intervention', { inverse: 'document' }) intervention;
-  @belongsTo('request', { inverse: 'document' }) request;
   @belongsTo('offer', { inverse: 'document' }) offer;
   @belongsTo('order', { inverse: 'documents' }) order;
   @belongsTo('invoice-document', { inverse: 'document', polymorphic: true }) invoice;
