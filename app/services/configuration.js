@@ -3,7 +3,8 @@ import { debug, warn } from '@ember/debug';
 import { all, dropTask } from 'ember-concurrency';
 import constants from '../config/constants';
 
-const { COUNTRIES, CONCEPT_SCHEMES, LANGUAGES, TELEPHONE_TYPES, WAY_OF_ENTRIES } = constants;
+const { COUNTRIES, CONCEPT_SCHEMES, LANGUAGES, TELEPHONE_TYPES, DELIVERY_METHODS, WAY_OF_ENTRIES } =
+  constants;
 
 export default class ConfigurationService extends Service {
   @service store;
@@ -24,7 +25,11 @@ export default class ConfigurationService extends Service {
       'vat-rate',
       'employee',
     ];
-    const conceptSchemes = [CONCEPT_SCHEMES.HONORIFIC_PREFIXES, CONCEPT_SCHEMES.WAY_OF_ENTRIES];
+    const conceptSchemes = [
+      CONCEPT_SCHEMES.HONORIFIC_PREFIXES,
+      CONCEPT_SCHEMES.WAY_OF_ENTRIES,
+      CONCEPT_SCHEMES.DELIVERY_METHODS,
+    ];
     yield all([
       ...entities.map((type) => {
         this.store.queryAll(type);
@@ -59,6 +64,14 @@ export default class ConfigurationService extends Service {
   get defaultWayOfEntry() {
     const value = this.store.peekAll('concept').find((c) => c.uri == WAY_OF_ENTRIES.TELEPHONE);
     warn('No default way of entry Telephone found', value != null, { id: 'no-default-value' });
+    return value;
+  }
+
+  get defaultDeliveryMethod() {
+    const value = this.store
+      .peekAll('concept')
+      .find((c) => c.uri == DELIVERY_METHODS.TO_BE_INSTALLED);
+    warn('No default delivery method found', value != null, { id: 'no-default-value' });
     return value;
   }
 

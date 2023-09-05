@@ -1,5 +1,9 @@
 <div class="space-y-4">
-  {{#if this.interventions.length}}
+  {{#if this.hasNoLinkedInterventions}}
+    <div class="text-sm text-gray-400 italic">
+      Nog geen interventies voor deze bestelling
+    </div>
+  {{else}}
     <div class="space-y-4 xl:flex xl:flex-row-reverse xl:space-x-8 xl:space-x-reverse xl:items-start xl:space-y-0">
       <div class="p-4 space-y-4 bg-gray-50 rounded">
         <div class="flex justify-between items-center">
@@ -99,7 +103,7 @@
                   Datum
                 </DataTable::Th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Klant
+                  Naam
                 </th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Straat
@@ -163,37 +167,51 @@
                 {{#each this.interventions as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      {{row.id}}
+                      {{format-intervention-number row.number}}
                     </td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
-                      <Fmt::Date @value={{row.date}} />
+                      <Fmt::Date @value={{row.interventionDate}} />
                     </td>
                     <td class="px-4 py-2 text-sm font-medium text-gray-900">
                       <div class="flex">
-                        {{#if row.customer}}
+                        {{#if row.case.building}}
+                          {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
                           <div class="space-y-1">
-                            {{#if row.customer.name}}
+                            {{#if row.case.building.printName}}
                               <div>
-                                {{row.customer.name}}
+                                {{row.case.building.printName}}
                               </div>
                             {{else}}
                               <div class="text-gray-400 italic font-normal">
                                 Naamloos
                               </div>
                             {{/if}}
+                            <div class="text-gray-400 text-xs">
+                              <Fmt::CustomerName @model={{row.case.customer}} />
+                            </div>
                           </div>
+                        {{else}}
+                          {{#if row.case.customer}}
+                            {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                            <Fmt::CustomerName @model={{row.case.customer}} />
+                          {{else}}
+                            {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
+                            <span class="text-gray-400 italic">Geen klant gekoppeld</span>
+                          {{/if}}
                         {{/if}}
                       </div>
                     </td>
-                    <td class="px-4 py-2 text-sm text-gray-500">
-                      {{row.customer.address1}}
-                    </td>
-                    <td class="px-4 py-2 text-sm text-gray-500">
-                      {{row.customer.postalCode}}
-                    </td>
-                    <td class="px-4 py-2 text-sm text-gray-500">
-                      {{row.customer.city}}
-                    </td>
+                    {{#let (or row.case.building.address row.case.customer.address) as |address|}}
+                      <td class="px-4 py-2 text-sm text-gray-500">
+                        {{address.street}}
+                      </td>
+                      <td class="px-4 py-2 text-sm text-gray-500">
+                        {{address.postalCode}}
+                      </td>
+                      <td class="px-4 py-2 text-sm text-gray-500">
+                        {{address.city}}
+                      </td>
+                    {{/let}}
                     <td class="px-4 py-2 whitespace-nowrap text-right text-sm font-medium">
                       <LinkTo @route="main.interventions.edit" @model={{row.id}}
                         class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
@@ -220,10 +238,6 @@
         @onPrevious={{this.previousPage}}
         @onNext={{this.nextPage}}
         @onSelectPage={{this.selectPage}} />
-    </div>
-  {{else}}
-    <div class="text-sm text-gray-400 italic">
-      Nog geen interventies voor deze bestelling
     </div>
   {{/if}}
 </div>

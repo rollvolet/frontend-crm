@@ -1,6 +1,10 @@
 import { isPresent } from '@ember/utils';
 import { formatRequestNumber } from '../helpers/format-request-number';
+import { formatInterventionNumber } from '../helpers/format-intervention-number';
 import CalendarPeriod from '../classes/calendar-period';
+import constants from '../config/constants';
+
+const { DELIVERY_METHODS } = constants;
 
 export async function setCalendarEventProperties(calendarEvent, records) {
   let { request, intervention, order, calendarPeriod } = records;
@@ -22,8 +26,20 @@ export async function setCalendarEventProperties(calendarEvent, records) {
     calendarEvent.url = interventionApplicationUrl(intervention, _case);
   } else if (order) {
     _case = await order.case;
-    const [customer, visitor] = await Promise.all([_case.customer, order.visitor]);
-    calendarEvent.subject = await orderSubject(order, customer, calendarPeriod, visitor);
+    const [customer, request, deliveryMethod] = await Promise.all([
+      _case.customer,
+      _case.request,
+      _case.deliveryMethod,
+    ]);
+    const visitor = await request.visitor;
+    calendarEvent.subject = await orderSubject(
+      order,
+      customer,
+      calendarPeriod,
+      request,
+      visitor,
+      deliveryMethod
+    );
     calendarEvent.description = order.comment || null; // undefined seems to be interpreted as dirty attribute on save
     calendarEvent.url = orderApplicationUrl(order, _case);
   }
@@ -51,21 +67,23 @@ function requestSubject(request, customer, calendarPeriod, visitor) {
 
 async function interventionSubject(intervention, customer, calendarPeriod) {
   const timeSpec = calendarPeriod.toSubjectString();
+  const interventionNumber = formatInterventionNumber([intervention.number]);
   const nbOfPersons = intervention.scheduledNbOfPersons || 0;
   const technicians = await intervention.technicians;
   const technicianNames = technicians.sortBy('firstName').mapBy('firstName').join(', ');
   const workload = `${nbOfPersons}p ${technicianNames}`.trim();
-  return [timeSpec, customer.name, `IR${intervention.id}`, workload]
+  return [timeSpec, customer.name, `IR${interventionNumber}`, workload]
     .filter((f) => isPresent(f))
     .join(' | ');
 }
 
-async function orderSubject(order, customer, calendarPeriod, visitor) {
+async function orderSubject(order, customer, calendarPeriod, request, visitor, deliveryMethod) {
   const timeSpec = calendarPeriod.toSubjectString();
-  const requestNumber = formatRequestNumber([order.requestNumber]);
+  const requestNumber = formatRequestNumber([request.number]);
   const initials = visitor ? `${visitor.initials}` : '';
   const requestReference = `AD${requestNumber} ${initials}`.trim();
-  const execution = order.mustBeDelivered ? 'Te leveren' : null;
+  const execution =
+    deliveryMethod?.uri == DELIVERY_METHODS.TO_BE_DELIVERED ? deliveryMethod.label : null;
   const nbOfPersons = order.scheduledNbOfPersons || 0;
   const nbOfHours = order.scheduledNbOfHours || 0;
   const technicians = await order.technicians;

@@ -154,7 +154,7 @@
           <CalendarEvent::DetailView
             @title="bezoek"
             @model={{this.visit}}
-            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+            @onSynchronize={{perform this.forceCalendarEventSynchronization}} />
         </div>
         <div class="space-y-2 sm:order-1">
           <Util::DetailItem @label="Datum">

@@ -38,4 +38,8 @@ export default {
   WAY_OF_ENTRIES: {
     TELEPHONE: 'http://data.rollvolet.be/concepts/3d1a75db-c683-4b61-859b-3cae4da72df6',
   },
+  DELIVERY_METHODS: {
+    TO_BE_DELIVERED: 'http://data.rollvolet.be/concepts/e8ac5c18-628f-435a-ac36-3c6704c3ff19',
+    TO_BE_INSTALLED: 'http://data.rollvolet.be/concepts/89db0214-65d1-444d-9c19-a0e772113b8a',
+  },
 };

@@ -12,6 +12,7 @@ export default class MainCustomersEditRequestRoute extends Route {
     const customer = this.modelFor('main.customers.edit');
     const employee = this.userInfo.employee;
     const wayOfEntry = this.configuration.defaultWayOfEntry;
+    const deliveryMethod = this.configuration.defaultDeliveryMethod;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
     const number = await this.sequence.fetchNextCaseNumber();
 
@@ -29,6 +30,7 @@ export default class MainCustomersEditRequestRoute extends Route {
       customer,
       request,
       vatRate,
+      deliveryMethod,
     });
 
     await _case.save();

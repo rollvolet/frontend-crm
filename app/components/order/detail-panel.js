@@ -13,12 +13,36 @@ export default class OrderDetailPanelComponent extends Component {
   @tracked editMode = false;
   @tracked isOpenCancellationModal = false;
 
+  caseData = trackedFunction(this, async () => {
+    return await this.args.model.case;
+  });
+
   requestData = trackedFunction(this, async () => {
     return await this.case?.request;
   });
 
+  visitorData = trackedFunction(this, async () => {
+    return await this.request?.visitor;
+  });
+
+  planningData = trackedFunction(this, async () => {
+    return await this.args.model.planning;
+  });
+
+  get case() {
+    return this.caseData.value;
+  }
+
   get request() {
     return this.requestData.value;
+  }
+
+  get visitor() {
+    return this.visitorData.value;
+  }
+
+  get planning() {
+    return this.planningData.value;
   }
 
   get technicianNames() {
@@ -46,18 +70,26 @@ export default class OrderDetailPanelComponent extends Component {
         order: this.args.model,
         calendarPeriod,
       });
-      yield this.saveCalendarEvent.perform(planning);
+      if (planning.hasDirtyAttributes) {
+        yield this.saveCalendarEvent.perform(planning);
+      }
     }
   }
 
   @keepLatestTask
-  *synchronizeCalendarEvent() {
+  *forceCalendarEventSynchronization() {
+    yield this.synchronizeCalendarEvent.perform({ force: true });
+  }
+
+  @keepLatestTask
+  *synchronizeCalendarEvent({ force = false } = {}) {
     const planning = yield this.args.model.planning;
     if (planning) {
       yield setCalendarEventProperties(planning, {
         order: this.args.model,
       });
-      if (!planning.isNew) {
+      const mustUpdate = force || planning.hasDirtyAttributes;
+      if (!planning.isNew && mustUpdate) {
         // only save if it has already been saved before (by selecting a date/period)
         yield this.saveCalendarEvent.perform(planning);
       }
@@ -107,11 +139,6 @@ export default class OrderDetailPanelComponent extends Component {
       });
       yield visit.save();
     }
-  }
-
-  @action
-  setTechnicians(employees) {
-    this.args.model.technicians = employees;
   }
 
   @action

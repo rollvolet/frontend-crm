@@ -103,13 +103,21 @@ export default class RequestDetailPanelComponent extends Component {
   }
 
   @keepLatestTask
-  *synchronizeCalendarEvent() {
+  *forceCalendarEventSynchronization() {
+    yield this.synchronizeCalendarEvent.perform({ force: true });
+  }
+
+  @keepLatestTask
+  *synchronizeCalendarEvent({ force = false } = {}) {
     const visit = yield this.args.model.visit;
     if (visit) {
       yield setCalendarEventProperties(visit, {
         request: this.args.model,
       });
-      yield this.saveCalendarEvent.perform(visit);
+      const mustUpdate = force || visit.hasDirtyAttributes;
+      if (mustUpdate) {
+        yield this.saveCalendarEvent.perform(visit);
+      }
     }
   }
 

@@ -61,6 +61,7 @@
               @label="Bezoeker"
               @value={{this.visitor}}
               @isAdministrative={{true}}
+              @isTechnician={{true}}
               @allowClear={{false}}
               @onSelectionChange={{queue (perform this.setVisitor) (perform this.save)}}
               class="mt-1" />

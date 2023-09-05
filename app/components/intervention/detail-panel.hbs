@@ -193,7 +193,7 @@
           <CalendarEvent::DetailView
             @title="planning"
             @model={{this.visit}}
-            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+            @onSynchronize={{perform this.forceCalendarEventSynchronization}} />
         </div>
         <div class="sm:col-span-2 space-y-2">
           <Util::DetailItem @label="Beschrijving">

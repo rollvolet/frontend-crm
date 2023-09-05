@@ -67,7 +67,7 @@
           <div>
             <InputField::EmployeeSelect
               @label="Bezoeker"
-              @value={{await this.request.visitor}}
+              @value={{this.visitor}}
               @isAdministrative={{true}}
               @isTechnician={{true}}
               @onSelectionChange={{queue (perform this.setVisitor) (perform this.save)}}
@@ -107,14 +107,14 @@
               @isTechnician={{true}}
               @isAdministrative={{true}}
               @sort={{"type:desc"}}
-              @onSelectionChange={{queue this.setTechnicians (perform this.save)}}
+              @onSelectionChange={{queue (fn (mut @model.technicians)) (perform this.save)}}
               class="mt-1" />
           </div>
         </div>
         <div class="space-y-6">
           <CalendarEvent::DetailEdit
             @title="planning"
-            @model={{await @model.planning}}
+            @model={{this.planning}}
             @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
             @saveTask={{this.saveCalendarEvent}}
             @onDelete={{perform this.deleteCalendarEvent}} />
@@ -164,7 +164,7 @@
             </Util::DetailSubitem>
           </Util::DetailItem>
           <Util::DetailItem @label="Bezoeker">
-            {{this.request.visitor.firstName}}
+            {{this.visitor.firstName}}
           </Util::DetailItem>
           <Util::DetailItem @label="Werkuren" @displayRow={{true}}>
             <Fmt::Decimal @value={{@model.scheduledNbOfHours}} /> uur x
@@ -172,10 +172,8 @@
             = {{@model.scheduledTotal}} uur
           </Util::DetailItem>
           <Util::DetailItem @label="Techniekers">
-            {{#if this.technicianNames.length}}
+            {{#if this.technicianNames}}
               {{join ", " this.technicianNames}}
-            {{else}}
-              -
             {{/if}}
           </Util::DetailItem>
         </div>
@@ -183,8 +181,8 @@
           <div class="mb-4">
             <CalendarEvent::DetailView
               @title="planning"
-              @model={{await @model.planning}}
-              @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+              @model={{this.planning}}
+              @onSynchronize={{perform this.forceCalendarEventSynchronization}} />
           </div>
           <Util::DetailItem @label="Productiebon" class="items-center">
             <ProductionTicket::InlineEdit @model={{@model}} />

@@ -7,23 +7,26 @@ import { debug } from '@ember/debug';
 import { isEmpty } from '@ember/utils';
 import sum from '../../../../../utils/math/sum';
 
-export default class OrderController extends Controller {
-  @service case;
+export default class MainCaseOfferEditOrderController extends Controller {
   @service store;
   @service router;
 
   @tracked isOpenIncompatibleVatRatesModal = false;
 
-  get request() {
-    return this.case.current && this.case.current.request;
+  get case() {
+    return this.model.case;
   }
 
-  get visitor() {
-    return this.case.visitor;
+  get offer() {
+    return this.model.offer;
+  }
+
+  get offerlines() {
+    return this.model.offerlines;
   }
 
   get orderedOfferlines() {
-    return this.model.filterBy('isOrdered');
+    return this.offerlines.filterBy('isOrdered');
   }
 
   get hasSelectedLines() {
@@ -31,7 +34,7 @@ export default class OrderController extends Controller {
   }
 
   get hasMixedVatRates() {
-    return this.orderedOfferlines.mapBy('vatRate').uniqBy('code').length > 1;
+    return this.orderedOfferlines.mapBy('vatRate').uniqBy('uri').length > 1;
   }
 
   get isDisabledCreate() {
@@ -47,16 +50,16 @@ export default class OrderController extends Controller {
   }
 
   @task
-  *updateOfferVatRate() {
+  *updateCaseVatRate() {
     this.closeIncompatibleVatRatesModal();
-    this.offer.vatRate = this.orderedVatRate;
-    yield this.offer.save();
+    this.case.vatRate = this.orderedVatRate;
+    yield this.case.save();
     yield this.createOrder.perform();
   }
 
   @task
   *createOrder() {
-    let vatRate = yield this.offer.get('vatRate');
+    let vatRate = yield this.case.vatRate;
 
     if (vatRate && this.orderedVatRate && this.orderedVatRate.get('id') != vatRate.get('id')) {
       this.openIncompatibleVatRatesModal();
@@ -65,41 +68,22 @@ export default class OrderController extends Controller {
         vatRate = this.orderedVatRate;
         const vatRateCode = this.orderedVatRate.get('code');
         debug(
-          `Offer doesn't have a VAT rate yet. Updating VAT rate to ordered VAT rate. ${vatRateCode}.`
+          `Case doesn't have a VAT rate yet. Updating VAT rate to ordered VAT rate. ${vatRateCode}.`
         );
-        this.offer.vatRate = vatRate;
-        yield this.offer.save();
+        this.case.vatRate = vatRate;
+        yield this.case.save();
       }
-
-      const customer = this.case.current.customer;
-      const contact = this.case.current.contact;
-      const building = this.case.current.building;
 
       const order = this.store.createRecord('order', {
         orderDate: new Date(),
-        requestNumber: this.offer.requestNumber,
-        offerNumber: this.offer.number,
-        reference: this.offer.reference,
-        comment: this.offer.comment,
         scheduledNbOfHours: 0,
         scheduledNbOfPersons: 2,
         depositRequired: true,
-        hasProductionTicket: false,
-        mustBeInstalled: true,
-        mustBeDelivered: false,
         isReady: false,
-        canceled: false,
-        offer: this.offer,
-        customer,
-        contact,
-        building,
-        vatRate,
+        case: this.case,
       });
 
       yield order.save();
-
-      // TODO relate case to order once relationship is fully defined
-      yield this.case.current.updateRecord('order', order);
 
       const invoicelines = this.orderedOfferlines.map(async (offerline) => {
         const invoiceline = this.store.createRecord('invoiceline', {
@@ -107,7 +91,7 @@ export default class OrderController extends Controller {
           description: offerline.description,
           amount: offerline.amount,
           vatRate,
-          order: order.uri,
+          order,
         });
         await invoiceline.save();
       });
@@ -115,7 +99,7 @@ export default class OrderController extends Controller {
 
       // cleanup empty calculation-lines
       // since they can no longer be removed after the order has been created
-      const calculationLinesCleanup = this.model.map(async (offerline) => {
+      const calculationLinesCleanup = this.offerlines.map(async (offerline) => {
         const calculationLines = await offerline.calculationLines;
         const emptyCalculationLines = calculationLines.filter((calculationLine) => {
           return isEmpty(calculationLine.description) && isEmpty(calculationLine.amount);
@@ -124,15 +108,14 @@ export default class OrderController extends Controller {
       });
       yield all(calculationLinesCleanup);
 
-      this.router.transitionTo('main.case.order.edit', this.case.current.case.id, order);
+      this.router.transitionTo('main.case.order.edit', this.case.id, order.id);
     }
   }
 
   @action
   cancel() {
-    this.model.forEach((o) => (o.isOrdered = false));
-    const _case = this.case.current.case;
-    this.router.transitionTo('main.case.offer.edit', _case.id, this.offer.id);
+    this.offerlines.forEach((o) => (o.isOrdered = false));
+    this.router.transitionTo('main.case.offer.edit', this.case.id, this.offer.id);
   }
 
   openIncompatibleVatRatesModal() {

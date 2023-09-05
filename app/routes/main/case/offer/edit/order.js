@@ -2,38 +2,38 @@ import Route from '@ember/routing/route';
 import { debug } from '@ember/debug';
 import { inject as service } from '@ember/service';
 
-export default class OrderRoute extends Route {
+export default class MainCaseOfferEditOrderRoute extends Route {
   @service store;
   @service router;
 
   async beforeModel() {
     const offer = this.modelFor('main.case.offer.edit');
-    const order = await offer.order;
+    const _case = this.modelFor('main.case');
+    const order = await _case.order;
     if (order) {
-      const _case = this.modelFor('main.case');
       debug(`Order already exists for offer ${offer.id}. Transition directly to order edit route.`);
-      this.router.transitionTo('main.case.order.edit', _case, order);
+      this.router.transitionTo('main.case.order.edit', _case.id, order.id);
     }
   }
 
-  model() {
+  async model() {
     const offer = this.modelFor('main.case.offer.edit');
-    // TODO use offer.offerlines once the relation is defined
-    return this.store.query('offerline', {
-      'filter[:exact:offer]': offer.uri,
+    const _case = this.modelFor('main.case');
+    const offerlines = await this.store.query('offerline', {
+      'filter[offer][:uri:]': offer.uri,
       sort: 'position',
       page: { size: 100 },
     });
-  }
 
-  setupController(controller) {
-    super.setupController(...arguments);
-    const offer = this.modelFor('main.case.offer.edit');
-    controller.set('offer', offer);
+    return {
+      case: _case,
+      offer,
+      offerlines,
+    };
   }
 
   resetController(controller) {
-    const offerlines = controller.model;
+    const offerlines = controller.model.offerlines;
     offerlines.forEach((line) => (line.isOrdered = false));
   }
 }

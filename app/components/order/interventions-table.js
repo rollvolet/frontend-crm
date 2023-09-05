@@ -2,7 +2,9 @@ import FilterComponent from '../data-table-filter';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { isBlank } from '@ember/utils';
 import { restartableTask } from 'ember-concurrency';
+import onlyNumericChars from '../../utils/only-numeric-chars';
 
 export default class OrderInterventionsTableComponent extends FilterComponent {
   @service router;
@@ -23,6 +25,14 @@ export default class OrderInterventionsTableComponent extends FilterComponent {
     this.search.perform(filter);
   }
 
+  get isEmptySearch() {
+    return ['number', 'name', 'postalCode', 'city', 'street'].every((f) => isBlank(f));
+  }
+
+  get hasNoLinkedInterventions() {
+    return this.interventions.length == 0 && this.isEmptySearch;
+  }
+
   @restartableTask
   *search(filter) {
     this.interventions = yield this.store.query('intervention', {
@@ -31,17 +41,21 @@ export default class OrderInterventionsTableComponent extends FilterComponent {
         number: this.page,
       },
       sort: this.sort,
-      include: 'customer',
+      include: 'case.customer',
       filter: {
         origin: {
-          id: this.args.order.id,
+          ':uri:': this.args.order.uri,
         },
-        number: filter.number,
-        customer: {
-          name: filter.name,
-          'postal-code': filter.postalCode,
-          city: filter.city,
-          street: filter.street,
+        number: onlyNumericChars(filter.number),
+        case: {
+          customer: {
+            name: filter.name,
+            address: {
+              street: filter.street,
+              'postal-code': filter.postalCode,
+              city: filter.city,
+            },
+          },
         },
       },
     });

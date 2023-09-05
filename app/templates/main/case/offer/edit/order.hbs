@@ -5,7 +5,7 @@
       <div class="flex justify-between items-center">
         <div>
           <h2 class="text-2xl font-bold font-display text-gray-900">
-            Bestelling maken voor AD{{format-request-number this.offer.requestNumber}} {{this.visitor.initials}}
+            Bestelling maken voor {{format-request-number this.case.request.number}} {{this.case.request.visitor.initials}}
           </h2>
           <p class="mt-1 text-sm text-gray-400">
             Selecteer de producten om toe te voegen aan de bestelling
@@ -17,7 +17,7 @@
 
   {{!-- Card content --}}
   <div class="px-6 py-4 space-y-6">
-    {{#if (or this.updateOfferVatRate.isRunning this.createOrder.isRunning)}}
+    {{#if (or this.updateCaseVatRate.isRunning this.createOrder.isRunning)}}
       <div class="h-32">
         <Util::LoadingSpinner @label="Bestelling aanmaken..." />
       </div>
@@ -29,9 +29,9 @@
             class="shadow" />
         </div>
       {{/if}}
-      {{#if @model.length}}
+      {{#if this.offerlines.length}}
         <ul class="space-y-2">
-          {{#each @model as |offerline|}}
+          {{#each this.offerlines as |offerline|}}
             <li role="button"
               class="px-4 sm:py-6 sm:px-6 flex justify-between border rounded-md text-sm {{if offerline.isOrdered "text-red-600 border-red-300 bg-red-50" "text-gray-500 border-gray-200"}}"
               {{on "click" (toggle "isOrdered" offerline)}}>
@@ -78,8 +78,8 @@
             </button>
           {{else}}
             <button type="button"
-              onClick={{perform this.createOrder}}
-              class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+              class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
+              {{on "click" (perform this.createOrder)}}>
               Ga verder
               {{svg-jar "heroicons-md-chevron-right" class="ml-2 -mr-1 h-5 w-5"}}
             </button>
@@ -107,10 +107,10 @@
         </h3>
         <div class="mt-2 space-y-2">
           <p class="text-sm text-gray-500">
-            Het BTW-tarief van de offerte is {{this.offer.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{this.orderedVatRate.rate}}% hebben.
+            Het BTW-tarief van het dossier is {{this.case.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{this.orderedVatRate.rate}}% hebben.
           </p>
           <p class="text-sm text-gray-500">
-            Mag het BTW-tarief van de offerte aangepast worden naar {{this.orderedVatRate.rate}}%?
+            Mag het BTW-tarief van het dossier aangepast worden naar {{this.orderedVatRate.rate}}%?
           </p>
         </div>
       </div>
@@ -119,7 +119,7 @@
     <:footer>
     <button type="button"
       class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200 sm:ml-3 sm:w-auto sm:text-sm"
-      {{on "click" (perform this.updateOfferVatRate)}}>
+      {{on "click" (perform this.updateCaseVatRate)}}>
       Pas BTW-tarief aan
     </button>
     </:footer>

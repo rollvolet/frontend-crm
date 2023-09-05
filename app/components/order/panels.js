@@ -26,7 +26,7 @@ export default class OrderPanelsComponent extends Component {
       !this.hasInvoice &&
       !this.hasDepositInvoices &&
       !this.args.model.isMasteredByAccess &&
-      !this.case?.isCancelled
+      this.case?.isOngoing
     );
   }
 

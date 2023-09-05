@@ -77,13 +77,19 @@ export default class InterventionDetailPanelComponent extends Component {
   }
 
   @keepLatestTask
-  *synchronizeCalendarEvent() {
+  *forceCalendarEventSynchronization() {
+    yield this.synchronizeCalendarEvent.perform({ force: true });
+  }
+
+  @keepLatestTask
+  *synchronizeCalendarEvent({ force = false } = {}) {
     const visit = yield this.args.model.visit;
     if (visit) {
       yield setCalendarEventProperties(visit, {
         intervention: this.args.model,
       });
-      if (!visit.isNew) {
+      const mustUpdate = force || visit.hasDirtyAttributes;
+      if (!visit.isNew && mustUpdate) {
         // only save if it has already been saved before (by selecting a date/period)
         yield this.saveCalendarEvent.perform(visit);
       }
@@ -170,7 +176,7 @@ export default class InterventionDetailPanelComponent extends Component {
     this.editMode = false;
     const calendarEvent = await this.args.model.visit;
     if (calendarEvent && calendarEvent.isNew) {
-      await this.calendarEvent.destroyRecord();
+      await calendarEvent.destroyRecord();
     }
   }
 
