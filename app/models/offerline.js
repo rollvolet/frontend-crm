@@ -23,10 +23,10 @@ export default class OfferlineModel extends ValidatedModel {
   @attr description;
   @attr('number') amount;
 
-  @belongsTo('vat-rate') vatRate;
+  @belongsTo('vat-rate', { inverse: 'offerlines' }) vatRate;
   @belongsTo('offer', { inverse: 'offerlines' }) offer;
 
-  @hasMany('calculation-line') calculationLines;
+  @hasMany('calculation-line', { inverse: 'offerline' }) calculationLines;
 
   get arithmeticAmount() {
     return this.amount;
