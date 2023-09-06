@@ -14,10 +14,11 @@
         <div class="flex">
           <p class="font-semibold text-gray-700">
             {{#if @model.isCreditNote}}
-              Creditnota {{format-invoice-number @model.number}}
+              Creditnota
             {{else}}
-              Voorschotfactuur {{format-invoice-number @model.number}}
+              Voorschotfactuur
             {{/if}}
+            {{format-invoice-number @model.number}}
           </p>
           {{#if @model.isBooked}}
             <p class="ml-2 items-center inline-flex text-xs text-blue-800">
@@ -42,7 +43,7 @@
           </div>
           <div class="mt-2 flex flex-none items-center text-sm text-gray-500 sm:mt-0">
             <p class="flex items-center text-sm text-gray-700 font-medium">
-              <Fmt::Currency @value={{this.netAmount}} /> + {{@vatRate.rate}}% btw = <Fmt::Currency @value={{this.grossAmount}} />
+              <Fmt::Currency @value={{this.netAmount}} /> + {{this.vatRate.rate}}% btw = <Fmt::Currency @value={{this.grossAmount}} />
             </p>
           </div>
         </div>
@@ -62,7 +63,7 @@
                 <AlertMessage::Warning
                   @message="De factuur is reeds geboekt. Enkel beperkte wijzigingen zijn nog mogelijk."
                   class="py-2 my-4" />
-              {{else if @hasFinalInvoice}}
+              {{else if this.hasFinalInvoice}}
                 <AlertMessage::Warning
                   @message="De eindfactuur is reeds opgemaakt. Enkel beperkte wijzigingen zijn nog mogelijk."
                   class="py-2 my-4" />
@@ -77,7 +78,7 @@
                     @onChange={{queue (fn (mut @model.invoiceDate)) (perform this.save)}}
                     class="mt-1" />
                 </div>
-                <div class="xl:col-start-4">
+                <div class="xl:col-start-3">
                   <InputField::Checkbox
                     @id={{concat this.fieldId "-is-creditnote-checkbox"}}
                     @label="Creditnota"
@@ -99,17 +100,6 @@
                   @onChange={{queue (fn (mut @model.paymentDate)) (perform this.save)}}
                   class="mt-1" />
               </div>
-              <div>
-                <label for="reference" class="block text-sm font-medium text-gray-700">
-                  Referentie klant
-                </label>
-                <Input
-                  id={{concat this.fieldId "-reference"}}
-                  @type="text"
-                  @value={{@model.case.reference}}
-                  class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-                  {{on "focusout" (perform this.save)}} />
-              </div>
               {{#unless this.isLimitedUpdateOnly}}
                 <div>
                   <InputField::DecimalInput
@@ -125,7 +115,7 @@
                     BTW
                   </label>
                   <div class="mt-1 text-sm text-gray-900">
-                    <Fmt::Currency @value={{this.vatAmount}} /> ({{@vatRate.rate}}%)
+                    <Fmt::Currency @value={{this.vatAmount}} /> ({{this.vatRate.rate}}%)
                   </div>
                 </div>
               {{/unless}}
@@ -146,7 +136,7 @@
                 </label>
                 <Textarea
                   id={{concat this.fieldId "-comment"}}
-                  @value={{@model.case.comment}}
+                  @value={{@model.comment}}
                   class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
                   rows="5"
                   {{on "focusout" (perform this.save)}} />
@@ -178,15 +168,7 @@
                   <Fmt::Date @value={{@model.paymentDate}} />
                 </dd>
               </div>
-              <div class="sm:col-span-1">
-                <dt class="text-sm font-medium text-gray-500">
-                  Referentie
-                </dt>
-                <dd class="mt-1 text-sm text-gray-900">
-                  {{@model.case.reference}}
-                </dd>
-              </div>
-              <div class="sm:col-span-1">
+              <div class="sm:col-span-1 xl:col-start-1">
                 <dt class="text-sm font-medium text-gray-500">
                   Nettobedrag
                 </dt>
@@ -210,14 +192,6 @@
                   {{format-bank-reference @model.bankReference}}
                 </dd>
               </div>
-              <div class="sm:col-span-1">
-                <dt class="text-sm font-medium text-gray-500">
-                  BTW attest
-                </dt>
-                <dd class="mt-1 text-sm text-gray-900">
-                  <Certificate::InlineEdit @model={{@model}} />
-                </dd>
-              </div>
               <div class="sm:col-span-2 xl:col-span-4">
                 <dt class="text-sm font-medium text-gray-500">
                   Mededeling <span class="text-gray-400 font-normal">(zichtbaar in document)</span>
@@ -239,8 +213,8 @@
                   Interne opmerking <span class="text-gray-400 font-normal">(niet zichtbaar in document)</span>
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900">
-                  {{#if @model.case.comment}}
-                    <span class="whitespace-pre-wrap">{{@model.case.comment}}</span>
+                  {{#if @model.comment}}
+                    <span class="whitespace-pre-wrap">{{@model.comment}}</span>
                   {{else}}
                     <p class="italic text-gray-400 text-xs">
                       Geen opmerking

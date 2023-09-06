@@ -70,8 +70,6 @@
               <DepositInvoice::ListItem
                 @model={{depositInvoice}}
                 @initialEditMode={{eq depositInvoice.id @newlyCreatedDepositInvoice.id}}
-                @vatRate={{this.vatRate}}
-                @hasFinalInvoice={{this.invoice}}
                 @onCredit={{this.createNewCreditNoteForDepositInvoice}}
                 @isDisabledEdit={{this.isDisabledEdit}}
                 @onCloseEdit={{@onCloseEdit}} />

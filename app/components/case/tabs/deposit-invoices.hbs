@@ -18,7 +18,11 @@
                 <span class="flex space-x-2 items-center">
                   <span class="text-xs text-gray-500">
                     {{#if @model.depositInvoices.length}}
-                      {{@model.depositInvoices.length}} facturen gemaakt
+                      {{#if (eq @model.depositInvoices.length 1)}}
+                        {{@model.depositInvoices.length}} factuur gemaakt
+                      {{else}}
+                        {{@model.depositInvoices.length}} facturen gemaakt
+                      {{/if}}
                     {{else}}
                       Nog geen facturen
                     {{/if}}

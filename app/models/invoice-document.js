@@ -23,8 +23,6 @@ export default class InvoiceDocumentModel extends ValidatedModel {
   @attr('date') bookingDate;
   @attr('date') paymentDate;
   @attr('string') documentOutro;
-  @attr('boolean') certificateRequired;
-  @attr('boolean') certificateReceived;
 
   @attr totalAmountNet;
   // TODO remove? can be calculated ad hoc?

@@ -88,8 +88,6 @@ export default class DepositInvoicePanelsComponent extends Component {
     const depositInvoice = this.store.createRecord('deposit-invoice', {
       invoiceDate,
       dueDate,
-      certificateRequired: this.vatRate.rate == 6,
-      certificateReceived: false,
       totalAmountNet: amount,
       case: this.args.case,
       customer: customerSnap,
@@ -121,8 +119,6 @@ export default class DepositInvoicePanelsComponent extends Component {
       type: INVOICE_TYPES.CREDIT_NOTE,
       invoiceDate,
       dueDate,
-      certificateRequired: false,
-      certificateReceived: false,
       totalAmountNet: invoice.totalAmountNet,
       creditedInvoice: invoice,
       case: this.args.case,

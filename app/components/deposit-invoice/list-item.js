@@ -3,15 +3,16 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
-import { debug, warn } from '@ember/debug';
+import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
+import { trackedFunction } from 'ember-resources/util/function';
+import { isPresent } from '@ember/utils';
 import constants from '../../config/constants';
 
 const { INVOICE_TYPES } = constants;
 
 export default class DepositInvoiceListItemComponent extends Component {
   @service documentGeneration;
-  @service case;
 
   @tracked isExpanded;
   @tracked editMode;
@@ -22,12 +23,24 @@ export default class DepositInvoiceListItemComponent extends Component {
     this.isExpanded = this.args.initialEditMode || false;
   }
 
+  caseData = trackedFunction(this, async () => {
+    return await this.args.model.case;
+  });
+
+  vatRateData = trackedFunction(this, async () => {
+    return await this.case?.vatRate;
+  });
+
   get fieldId() {
     return `${guidFor(this)}`;
   }
 
-  get vatPercentage() {
-    return this.args.vatRate && this.args.vatRate.rate / 100;
+  get case() {
+    return this.caseData.value;
+  }
+
+  get vatRate() {
+    return this.vatRateData.value;
   }
 
   get netAmount() {
@@ -35,15 +48,19 @@ export default class DepositInvoiceListItemComponent extends Component {
   }
 
   get vatAmount() {
-    return this.netAmount * this.vatPercentage;
+    return this.netAmount * (this.vatRate?.rate / 100);
   }
 
   get grossAmount() {
     return this.netAmount + this.vatAmount;
   }
 
+  get hasFinalInvoice() {
+    return isPresent(this.case?.invoice.get('id'));
+  }
+
   get isLimitedUpdateOnly() {
-    return this.args.model.isBooked || this.args.hasFinalInvoice;
+    return this.args.model.isBooked || this.hasFinalInvoice;
   }
 
   @action
@@ -54,30 +71,8 @@ export default class DepositInvoiceListItemComponent extends Component {
   @task
   *save() {
     const { validations } = yield this.args.model.validate();
-    let requiresOfferReload = false;
     if (validations.isValid) {
-      const _case = yield this.args.model.case;
-      const changedAttributes = _case.changedAttributes();
-      // TODO remove syncing once order is refactored to triplestore
-      const fieldsToSyncWithOrder = ['reference', 'comment'];
-      const order = this.case.current?.order;
-      for (let field of fieldsToSyncWithOrder) {
-        if (changedAttributes[field]) {
-          if (order) {
-            debug(`Syncing ${field} of offer/order with updated ${field} of case`);
-            order[field] = _case[field];
-            yield order.save();
-          }
-          requiresOfferReload = true;
-        }
-      }
-
       yield this.args.model.save();
-      yield _case.save();
-
-      if (order && requiresOfferReload) {
-        yield order.belongsTo('offer').reload();
-      }
     }
   }
 
