@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import snippets from '../../../../../config/snippets';
 import getDocumentLanguageCode from '../../../../../utils/get-document-language-code';
+import { updateCalendarEvent } from '../../../../../utils/calendar-helpers';
 
 export default class MainCaseRequestEditOfferRoute extends Route {
   @service configuration;
@@ -17,6 +18,7 @@ export default class MainCaseRequestEditOfferRoute extends Route {
       if (employee) {
         request.visitor = employee.firstName;
         await request.save();
+        await updateCalendarEvent({ request }); // order doesn't exist yet
       }
     }
   }

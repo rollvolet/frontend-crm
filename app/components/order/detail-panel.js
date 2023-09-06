@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { keepLatestTask, task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
-import { setCalendarEventProperties } from '../../utils/calendar-helpers';
+import { setCalendarEventProperties, updateCalendarEvent } from '../../utils/calendar-helpers';
 import CalendarPeriod from '../../classes/calendar-period';
 
 export default class OrderDetailPanelComponent extends Component {
@@ -132,13 +132,7 @@ export default class OrderDetailPanelComponent extends Component {
   *setVisitor(visitor) {
     this.request.visitor = visitor;
     yield this.request.save();
-    const visit = yield this.request?.visit;
-    if (visit) {
-      yield setCalendarEventProperties(visit, {
-        request: this.request,
-      });
-      yield visit.save();
-    }
+    yield updateCalendarEvent({ request: this.request });
   }
 
   @action

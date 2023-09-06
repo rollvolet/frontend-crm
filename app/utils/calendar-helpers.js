@@ -87,7 +87,7 @@ export async function setCalendarEventProperties(calendarEvent, records) {
 function requestSubject(request, customer, calendarPeriod, visitor) {
   const timeSpec = calendarPeriod.toSubjectString();
   const requestNumber = formatRequestNumber([request.number]);
-  const initials = visitor ? `(${visitor.initials})` : '';
+  const initials = visitor ? `${visitor.initials}` : '';
   const requestReference = `AD${requestNumber} ${initials}`.trim();
   const description = request.description;
   return [timeSpec, customer.name, requestReference, description]

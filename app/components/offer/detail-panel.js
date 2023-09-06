@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { keepLatestTask, task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
-import { setCalendarEventProperties } from '../../utils/calendar-helpers';
+import { updateCalendarEvent } from '../../utils/calendar-helpers';
 
 export default class OfferDetailPanelComponent extends Component {
   @service store;
@@ -58,20 +58,15 @@ export default class OfferDetailPanelComponent extends Component {
 
   @keepLatestTask
   *synchronizeCalendarEvent() {
-    const visit = yield this.request?.visit;
-    if (visit) {
-      yield setCalendarEventProperties(visit, {
-        request: this.request,
-      });
-      yield visit.save();
-    }
+    yield updateCalendarEvent({ request: this.request });
   }
 
   @task
   *setVisitor(visitor) {
     this.request.visitor = visitor;
     yield this.request.save();
-    yield this.synchronizeCalendarEvent.perform();
+    const order = yield this.case.order;
+    yield updateCalendarEvent({ request: this.request, order });
   }
 
   @action
