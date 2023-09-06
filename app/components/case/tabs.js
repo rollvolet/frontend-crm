@@ -34,6 +34,14 @@ export default class CaseTabsComponent extends Component {
     }
   }
 
+  get isDisabledEditVatRate() {
+    return (
+      this.args.model.order.get('id') ||
+      this.args.model.invoice.get('id') ||
+      this.args.model.depositInvoices.get('length') > 0
+    );
+  }
+
   @keepLatestTask
   *save() {
     yield this.args.model.save();

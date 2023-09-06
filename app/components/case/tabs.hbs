@@ -41,7 +41,7 @@
         <div class="shrink-0">
           <InputField::Editable
             @label="BTW tarief"
-            @disabled={{@model.isCancelled}}
+            @disabled={{or @model.isCancelled this.isDisabledEditVatRate}}
             @isSaving={{this.save.isRunning}}
             @onCancel={{reset-relation @model "vatRate"}}>
             <:read>
