@@ -55,18 +55,16 @@
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                       </td>
                     </tr>
+                  {{/unless}}
+                  {{#if @model.case.order}}
                     <tr>
                       <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {{#if @model.case.order}}
-                          <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model.case.order.id}}>
-                            Voorschotfacturen
-                            <span class="text-gray-400 relative -top-0.5">
-                              {{svg-jar "heroicons-sm-external-link" class="inline h-4 w-4"}}
-                            </span>
-                          </LinkTo>
-                        {{else}}
+                        <LinkTo @route="main.case.order.edit.deposit-invoices" @model={{@model.case.order.id}}>
                           Voorschotfacturen
-                        {{/if}}
+                          <span class="text-gray-400 relative -top-0.5">
+                            {{svg-jar "heroicons-sm-external-link" class="inline h-4 w-4"}}
+                          </span>
+                        </LinkTo>
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                         &minus; <Fmt::Currency @value={{this.depositInvoicesAmount}} />
@@ -77,8 +75,7 @@
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                       </td>
                     </tr>
-                  {{/unless}}
-
+                  {{/if}}
                   <tr class="border-t">
                     <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Subtotaal

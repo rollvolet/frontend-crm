@@ -14,12 +14,10 @@ export default class MainCaseInterventionEditInvoiceRoute extends Route {
 
   async model() {
     const _case = this.modelFor('main.case');
-    const intervention = this.modelFor('main.case.intervention.edit');
-    const [vatRate, customer, contact, building] = await Promise.all([
-      _case.vatRate,
-      intervention.customer,
-      intervention.contact,
-      intervention.building,
+    const [customer, contact, building] = await Promise.all([
+      _case.customer,
+      _case.contact,
+      _case.building,
     ]);
 
     const invoiceDate = new Date();
@@ -36,8 +34,6 @@ export default class MainCaseInterventionEditInvoiceRoute extends Route {
       invoiceDate,
       dueDate,
       number,
-      certificateRequired: vatRate.rate == 6,
-      certificateReceived: false,
       case: _case,
       customer: customerSnap,
       contact: contactSnap,
@@ -51,6 +47,6 @@ export default class MainCaseInterventionEditInvoiceRoute extends Route {
 
   afterModel(model) {
     const _case = this.modelFor('main.case');
-    this.router.transitionTo('main.case.invoice.edit', _case, model);
+    this.router.transitionTo('main.case.invoice.edit', _case.id, model.id);
   }
 }

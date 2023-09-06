@@ -24,17 +24,15 @@ export default class InvoiceRoute extends Route {
   async model() {
     const _case = this.modelFor('main.case');
     const order = this.modelFor('main.case.order.edit');
-    // TODO use order.invoicelines once the relation is defined
-    const [invoicelines, vatRate, customer, contact, building] = await Promise.all([
+    const [invoicelines, customer, contact, building] = await Promise.all([
       this.store.query('invoiceline', {
-        'filter[:exact:order]': _case.order,
+        'filter[order][:uri:]': order.uri,
         sort: 'position',
         page: { size: 100 },
       }),
-      _case.vatRate,
-      order.customer,
-      order.contact,
-      order.building,
+      _case.customer,
+      _case.contact,
+      _case.building,
     ]);
 
     const invoiceDate = new Date();
@@ -53,8 +51,6 @@ export default class InvoiceRoute extends Route {
       dueDate,
       number,
       totalAmountNet: orderAmount,
-      certificateRequired: vatRate.rate == 6,
-      certificateReceived: false,
       case: _case,
       customer: customerSnap,
       contact: contactSnap,
@@ -75,6 +71,6 @@ export default class InvoiceRoute extends Route {
 
   afterModel(model) {
     const _case = this.modelFor('main.case');
-    this.router.transitionTo('main.case.invoice.edit', _case, model);
+    this.router.transitionTo('main.case.invoice.edit', _case.id, model.id);
   }
 }

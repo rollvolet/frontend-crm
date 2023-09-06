@@ -12,13 +12,11 @@ export default class InvoiceCalculationPanelComponent extends Component {
   });
 
   vatRateData = trackedFunction(this, async () => {
-    const _case = this.caseData.value;
-    return await _case?.vatRate;
+    return await this.case?.vatRate;
   });
 
   depositInvoicesData = trackedFunction(this, async () => {
-    const _case = this.caseData.value;
-    return _case ? await _case.depositInvoices : [];
+    return this.case ? await this.case.depositInvoices : [];
   });
 
   get isLoading() {

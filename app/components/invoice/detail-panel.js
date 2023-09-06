@@ -2,22 +2,25 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { debug } from '@ember/debug';
 import { task } from 'ember-concurrency';
+import { trackedFunction } from 'ember-resources/util/function';
 import constants from '../../config/constants';
 
 const { INVOICE_TYPES } = constants;
 
 export default class InvoiceDetailPanelComponent extends Component {
-  @service case;
   @service store;
   @service documentGeneration;
 
   @tracked editMode = false;
   @tracked isOpenWorkingHoursModal = false;
 
-  get order() {
-    return this.case.current?.order;
+  caseData = trackedFunction(this, async () => {
+    return await this.args.model.case;
+  });
+
+  get case() {
+    return this.caseData.value;
   }
 
   get technicianNames() {
@@ -31,38 +34,9 @@ export default class InvoiceDetailPanelComponent extends Component {
   @task
   *save() {
     const { validations } = yield this.args.model.validate();
-    let requiresOfferReload = false;
     if (validations.isValid) {
-      const _case = yield this.args.model.case;
-      const changedAttributes = _case.changedAttributes();
-      // TODO remove syncing once order is refactored to triplestore
-      const fieldsToSyncWithOrder = ['reference', 'comment'];
-      for (let field of fieldsToSyncWithOrder) {
-        if (changedAttributes[field]) {
-          if (this.order) {
-            debug(`Syncing ${field} of offer/order with updated ${field} of case`);
-            this.order[field] = _case[field];
-            yield this.order.save();
-          }
-          requiresOfferReload = true;
-        }
-      }
-
       yield this.args.model.save();
-      yield _case.save();
-
-      if (this.order && requiresOfferReload) {
-        yield this.order.belongsTo('offer').reload();
-      }
     }
-  }
-
-  @action
-  async setVatRate(vatRate) {
-    const _case = await this.args.model.case;
-    _case.vatRate = vatRate;
-    this.args.model.certificateRequired = vatRate?.rate == 6;
-    this.args.onChangeVatRate(vatRate);
   }
 
   @action
@@ -72,8 +46,8 @@ export default class InvoiceDetailPanelComponent extends Component {
 
   @action
   async downloadProductionTicket() {
-    const order = await this.order;
-    await this.documentGeneration.downloadProductionTicket(order);
+    const order = await this.case?.order;
+    this.documentGeneration.downloadProductionTicket(order);
   }
 
   @action

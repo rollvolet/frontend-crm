@@ -1,19 +1,16 @@
 import Component from '@glimmer/component';
-import { all, task } from 'ember-concurrency';
+import { trackedFunction } from 'ember-resources/util/function';
 
 export default class InvoicePanelsComponent extends Component {
-  get isDisabledEdit() {
-    return this.args.model.isMasteredByAccess;
+  caseData = trackedFunction(this, async () => {
+    return await this.args.model.case;
+  });
+
+  get case() {
+    return this.caseData.value;
   }
 
-  @task
-  *updateInvoicelinesVatRate(vatRate) {
-    const invoicelines = yield this.args.model.invoicelines;
-    yield all(
-      invoicelines.map((invoiceline) => {
-        invoiceline.vatRate = vatRate;
-        return invoiceline.save();
-      })
-    );
+  get isDisabledEdit() {
+    return this.args.model.isMasteredByAccess || this.case?.isCancelled;
   }
 }

@@ -21,8 +21,6 @@ export default class MainCustomersEditInvoiceRoute extends Route {
       invoiceDate,
       dueDate,
       number,
-      certificateRequired: vatRate.rate == 6,
-      certificateReceived: false,
       customer: customerSnap,
     });
     await invoice.save();

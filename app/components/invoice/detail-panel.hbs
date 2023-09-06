@@ -57,17 +57,6 @@
     {{#if this.editMode}}
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {{#if @model.isBooked}}
-          <div class="md:col-span-2">
-            <label for="reference" class="block text-sm font-medium text-gray-700">
-              Referentie klant
-            </label>
-            <Input
-              id="reference"
-              @type="text"
-              @value={{@model.case.reference}}
-              class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-              {{on "focusout" (perform this.save)}} />
-          </div>
           <div>
             <InputField::Date
               @label="Betaald"
@@ -79,7 +68,7 @@
             <label for="booking-date" class="block text-sm font-medium text-gray-700">
               Geboekt
             </label>
-            <div class="mt-2 text-gray-900">
+            <div class="mt-2 text-sm text-gray-900">
               <Fmt::Date @value={{@model.bookingDate}} />
             </div>
           </div>
@@ -90,27 +79,6 @@
               @label="Creditnota"
               @value={{@model.isCreditNote}}
               @onChange={{queue this.setCreditNoteFlag (perform this.save)}} />
-          </div>
-          {{#if (or @model.case.isIsolated @model.case.intervention)}}
-            <div>
-              <InputField::VatRateSelect
-                @value={{@model.case.vatRate}}
-                @label="BTW tarief"
-                @onSelectionChange={{queue this.setVatRate (perform this.save)}}
-                @allowClear={{false}}
-                class="mt-1" />
-            </div>
-          {{/if}}
-          <div class="md:col-span-2">
-            <label for="reference" class="block text-sm font-medium text-gray-700">
-              Referentie klant
-            </label>
-            <Input
-              id="reference"
-              @type="text"
-              @value={{@model.case.reference}}
-              class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-              {{on "focusout" (perform this.save)}} />
           </div>
           <div class="col-start-1">
             <InputField::Date
@@ -142,17 +110,6 @@
             </div>
           </div>
         {{/if}}
-        <div class="sm:col-span-2 lg:col-span-4">
-          <label for="comment" class="block text-sm font-medium text-gray-700">
-            Interne opmerking <span class="text-gray-400 font-normal">(niet zichtbaar in document)</span>
-          </label>
-          <Textarea
-            id="comment"
-            @value={{@model.case.comment}}
-            class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            rows="5"
-            {{on "focusout" (perform this.save)}} />
-        </div>
       </div>
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -171,27 +128,11 @@
               <Fmt::Date @value={{@model.paymentDate}} />
             </Util::DetailSubitem>
           </Util::DetailItem>
-          <Util::DetailItem @label="Referentie">
-            {{@model.case.reference}}
-          </Util::DetailItem>
         </div>
         <div class="space-y-2">
-          <Util::DetailItem @label="Creditnota" class="items-center">
-            <Util::DisplayCheckbox @value={{@model.isCreditNote}} />
-          </Util::DetailItem>
-          {{#if @model.case.isIsolated}}
-            <Util::DetailItem @label="BTW tarief">
-              {{format-vat-rate (await @model.case.vatRate)}}
-            </Util::DetailItem>
-          {{/if}}
           <Util::DetailItem @label="Betaalref.">
             {{format-bank-reference @model.bankReference}}
           </Util::DetailItem>
-          {{#if @model.certificateRequired}}
-            <Util::DetailItem @label="BTW-attest" @class="layout-align-start-center">
-              <Certificate::InlineEdit @model={{@model}} />
-            </Util::DetailItem>
-          {{/if}}
           {{#unless @model.case.isIsolated}}
             <Util::DetailItem @label="Productiebon" class="items-center">
               <div class="flex items-center">
@@ -214,11 +155,6 @@
             {{else}}
               {{svg-jar "heroicons-sm-plus-circle" class="h-5 w-5 text-gray-400 inline"}}
             {{/if}}
-          </Util::DetailItem>
-        </div>
-        <div class="sm:col-span-2">
-          <Util::DetailItem @label="Interne opmerking">
-            <span class="whitespace-pre-wrap">{{@model.case.comment}}</span>
           </Util::DetailItem>
         </div>
       </dl>
