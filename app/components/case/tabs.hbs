@@ -42,7 +42,7 @@
           <InputField::Editable
             @label="BTW tarief"
             @disabled={{or @model.isCancelled this.isDisabledEditVatRate}}
-            @isSaving={{this.save.isRunning}}
+            @isSaving={{or this.setVatRate.isRunning this.save.isRunning}}
             @onCancel={{reset-relation @model "vatRate"}}>
             <:read>
             <dd class="mt-1 text-sm text-gray-900">
@@ -56,7 +56,7 @@
             <:edit as |_ closeEditMode|>
             <InputField::VatRateSelect
               @value={{@model.vatRate}}
-              @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform this.save) closeEditMode}}
+              @onSelectionChange={{queue (perform this.setVatRate) (perform this.save) closeEditMode}}
               @allowClear={{false}}
               class="mt-1 w-44" />
             </:edit>

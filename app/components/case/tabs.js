@@ -35,11 +35,30 @@ export default class CaseTabsComponent extends Component {
   }
 
   get isDisabledEditVatRate() {
-    return (
-      this.args.model.order.get('id') ||
-      this.args.model.invoice.get('id') ||
-      this.args.model.depositInvoices.get('length') > 0
-    );
+    if (this.args.model.isIsolated || this.args.model.intervention.get('id')) {
+      return this.args.model.invoice.get('isBooked');
+    } else {
+      return (
+        this.args.model.order.get('id') ||
+        this.args.model.invoice.get('id') ||
+        this.args.model.depositInvoices.get('length') > 0
+      );
+    }
+  }
+
+  @keepLatestTask
+  *setVatRate(vatRate) {
+    this.args.model.vatRate = vatRate;
+    const invoice = yield this.args.model.invoice;
+    if (invoice) {
+      const invoicelines = yield invoice.invoicelines;
+      yield Promise.all(
+        invoicelines.map((invoiceline) => {
+          invoiceline.vatRate = vatRate;
+          return invoiceline.save();
+        })
+      );
+    }
   }
 
   @keepLatestTask
