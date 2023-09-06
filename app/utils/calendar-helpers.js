@@ -6,6 +6,36 @@ import constants from '../config/constants';
 
 const { DELIVERY_METHODS } = constants;
 
+export async function updateCalendarEvent({ request, intervention, order }) {
+  if (request) {
+    const visit = await request.visit;
+    if (visit) {
+      await setCalendarEventProperties(visit, { request });
+      if (visit.hasDirtyAttributes) {
+        await visit.save();
+      }
+    }
+  }
+  if (intervention) {
+    const visit = await intervention.visit;
+    if (visit) {
+      await setCalendarEventProperties(visit, { intervention });
+      if (visit.hasDirtyAttributes) {
+        await visit.save();
+      }
+    }
+  }
+  if (order) {
+    const planning = await order.planning;
+    if (planning) {
+      await setCalendarEventProperties(planning, { order });
+      if (planning.hasDirtyAttributes) {
+        await planning.save();
+      }
+    }
+  }
+}
+
 export async function setCalendarEventProperties(calendarEvent, records) {
   let { request, intervention, order, calendarPeriod } = records;
   if (!calendarPeriod) {

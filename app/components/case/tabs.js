@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
 import { cancelCase, reopenCase } from '../../utils/case-helpers';
+import { updateCalendarEvent } from '../../utils/calendar-helpers';
 
 export default class CaseTabsComponent extends Component {
   @service router;
@@ -58,5 +59,11 @@ export default class CaseTabsComponent extends Component {
   async confirmReopen() {
     this.isOpenCancellationModal = false;
     await reopenCase(this.args.model);
+  }
+
+  @action
+  async updateOrderPlanning() {
+    const order = await this.args.model.order;
+    await updateCalendarEvent({ order });
   }
 }

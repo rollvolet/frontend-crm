@@ -69,46 +69,48 @@
             @disabled={{@model.isCancelled}}
             @onSave={{queue (fn (mut @model.reference)) (perform this.save)}} />
         </div>
-        <div class="shrink-0">
-          <InputField::Editable
-            @label="Uitvoering"
-            @disabled={{@model.isCancelled}}
-            @isSaving={{this.save.isRunning}}
-            @onCancel={{reset-relation @model "deliveryMethod"}}>
-            <:read>
-            <dd class="mt-1 text-sm text-gray-900">
-              {{or @model.deliveryMethod.label "-"}}
-            </dd>
-            </:read>
-            <:edit as |_ closeEditMode|>
-            <InputField::DeliveryMethodSelect
-              @value={{@model.deliveryMethod}}
-              @onSelectionChange={{queue (fn (mut @model.deliveryMethod)) (perform this.save) closeEditMode}}
-              class="mt-1 w-36" />
-            </:edit>
-          </InputField::Editable>
-        </div>
-        <div class="flex-1 overflow-y-hidden">
-          <InputField::Editable
-            @label="Opmerking"
-            @disabled={{@model.isCancelled}}
-            @isSaving={{this.save.isRunning}}>
-            <:read>
-            <dd class="mt-1 text-sm text-gray-900 truncate">
-              {{or @model.comment "-"}}
-            </dd>
-            </:read>
-            <:edit as |elementId closeEditMode|>
-            <Textarea
-              id={{elementId}}
-              @value={{@model.comment}}
-              class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-              rows="5"
-              autofocus
-              {{on "focusout" (queue (perform this.save) closeEditMode)}} />
-            </:edit>
-          </InputField::Editable>
-        </div>
+        {{# if @model.request}}
+          <div class="shrink-0">
+            <InputField::Editable
+              @label="Uitvoering"
+              @disabled={{@model.isCancelled}}
+              @isSaving={{this.save.isRunning}}
+              @onCancel={{reset-relation @model "deliveryMethod"}}>
+              <:read>
+              <dd class="mt-1 text-sm text-gray-900">
+                {{or @model.deliveryMethod.label "-"}}
+              </dd>
+              </:read>
+              <:edit as |_ closeEditMode|>
+              <InputField::DeliveryMethodSelect
+                @value={{@model.deliveryMethod}}
+                @onSelectionChange={{queue (fn (mut @model.deliveryMethod)) (perform this.save) closeEditMode this.updateOrderPlanning}}
+                class="mt-1 w-36" />
+              </:edit>
+            </InputField::Editable>
+          </div>
+          <div class="flex-1 overflow-y-hidden">
+            <InputField::Editable
+              @label="Opmerking"
+              @disabled={{@model.isCancelled}}
+              @isSaving={{this.save.isRunning}}>
+              <:read>
+              <dd class="mt-1 text-sm text-gray-900 truncate">
+                {{or @model.comment "-"}}
+              </dd>
+              </:read>
+              <:edit as |elementId closeEditMode|>
+              <Textarea
+                id={{elementId}}
+                @value={{@model.comment}}
+                class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                rows="5"
+                autofocus
+                {{on "focusout" (queue (perform this.save) closeEditMode)}} />
+              </:edit>
+            </InputField::Editable>
+          </div>
+        {{/if}}
       </div>
     </div>
 
