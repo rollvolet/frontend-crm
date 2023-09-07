@@ -18,7 +18,7 @@
                 Klant
               </th>
               <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Gemeente
+                Gebouw
               </th>
               <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Uitvoering
@@ -104,45 +104,43 @@
                 </td>
               </tr>
             {{else}}
-              {{#each this.outstandingJobs as |row|}}
+              {{#each this.orders as |row|}}
                 <tr>
-                  <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
-                    <LinkTo @route="main.orders.edit" @model={{row.orderId}}
+                  <td class="px-2 py-2 whitespace-nowrap text-left text-xs text-gray-500">
+                    <LinkTo @route="main.orders.edit" @model={{row.id}}
                       class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      AD{{format-request-number row.requestId}}
+                      AD{{format-request-number row.case.request.number}}
                     </LinkTo>
                   </td>
                   <td class="px-3 py-2 text-xs font-medium text-gray-900">
                     <Fmt::Date @value={{row.orderDate}} />
                   </td>
                   <td class="px-3 py-2 text-xs font-medium text-gray-900">
-                    {{row.customerNumber}}
+                    {{row.case.customer.number}}
                   </td>
-                  <td class="px-3 py-2 text-xs font-medium text-gray-900">
-                    {{row.customerName}}
-                    <br>{{row.customerAddress1}}
-                    {{#if row.buildingAddress1}}
-                      <br>{{row.buildingAddress1}}
-                    {{/if}}
+                  <td class="px-3 py-2 text-xs font-medium">
+                    <span class="text-gray-900">
+                      <Fmt::CustomerName @model={{row.case.customer}} />
+                    </span>
+                    <span class="text-gray-500">
+                      <br>{{row.case.customer.address.street}}
+                      <br>{{row.case.customer.address.postalCode}} {{row.case.customer.address.city}}
+                    </span>
                   </td>
                   <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
-                    <br>
-                    {{row.customerPostalCode}} {{row.customerCity}}
-                    {{#if row.buildingCity}}
-                      <br>{{row.buildingPostalCode}} {{row.buildingCity}}
-                    {{/if}}
+                    <span class="text-gray-900">
+                      <Fmt::CustomerName @model={{row.case.building}} />
+                    </span>
+                    <span class="text-gray-500">
+                      <br>{{row.case.building.address.street}}
+                      <br>{{row.case.building.address.postalCode}} {{row.case.building.address.city}}
+                    </span>
                   </td>
                   <td class="px-3 py-2 text-xs text-gray-500">
-                    {{#if row.mustBeDelivered}}
-                      {{order-execution 'delivery'}}
-                    {{else if row.mustBeInstalled}}
-                      {{order-execution 'installation'}}
-                    {{else}}
-                      {{order-execution 'pickup'}}
-                    {{/if}}
+                    {{row.case.deliveryMethod.label}}
                   </td>
                   <td class="px-3 py-2 text-center text-xs text-gray-400">
-                    {{#if row.hasProductionTicket}}
+                    {{#if row.case.hasProductionTicket}}
                       {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
                     {{else}}
                       -
@@ -161,17 +159,17 @@
                     </div>
                     <div>
                       <span class="text-gray-400 italic inline-block w-5">Pl</span>
-                      <Fmt::Date @value={{row.planningDate}} />
+                      <Fmt::Date @value={{row.planning.date}} />
                     </div>
                   </td>
                   <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
                     {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
-                    {{#each row.techniciansList as |technician|}}
-                      <br>{{technician}}
+                    {{#each row.technicians as |technician|}}
+                      <br>{{technician.firstName}}
                     {{/each}}
                   </td>
                   <td class="px-3 py-2 text-center text-xs text-gray-400">
-                    {{#if row.productIsReady}}
+                    {{#if row.isReady}}
                       {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
                     {{else}}
                       -
@@ -191,12 +189,12 @@
       </div>
     </div>
   </div>
-  {{#if this.outstandingJobs}}
+  {{#if this.orders}}
     <DataTable::Pagination
       @textSize="small"
       @page={{this.page}}
       @size={{this.size}}
-      @total={{this.outstandingJobs.meta.count}}
+      @total={{this.orders.meta.count}}
       @onPrevious={{this.previousPage}}
       @onNext={{this.nextPage}}
       @onSelectPage={{this.selectPage}} />

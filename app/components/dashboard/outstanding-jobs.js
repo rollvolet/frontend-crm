@@ -1,14 +1,19 @@
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { keepLatestTask } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { fetchOutstandingJobs } from '../../utils/fetch-outstanding-jobs';
+import constants from '../../config/constants';
+
+const { CASE_STATUSES } = constants;
 
 export default class DashboardOutstandingJobsComponent extends Component {
+  @service store;
+
   @tracked size = 25;
   @tracked page = 0;
   @tracked sort = '-order-date';
-  @tracked outstandingJobs = [];
+  @tracked orders = [];
 
   constructor() {
     super(...arguments);
@@ -18,18 +23,25 @@ export default class DashboardOutstandingJobsComponent extends Component {
   @keepLatestTask
   *loadData() {
     if (this.args.employee) {
-      const searchParams = new URLSearchParams(
-        Object.entries({
-          'page[size]': this.size,
-          'page[number]': this.page,
-          sort: this.sort,
-          'filter[visitor]': this.args.employee.firstName,
-          'filter[mustBeDelivered]': -1,
-          'filter[mustBeInstalled]': -1,
-        })
-      );
-
-      this.outstandingJobs = yield fetchOutstandingJobs(searchParams);
+      this.orders = yield this.store.query('order', {
+        page: {
+          size: this.size,
+          number: this.page,
+        },
+        sort: this.sort,
+        include: 'case.customer.address,case.building.address',
+        filter: {
+          case: {
+            request: {
+              visitor: {
+                ':uri:': this.args.employee.uri,
+              },
+            },
+            ':has-no:invoice': true,
+            status: CASE_STATUSES.ONGOING,
+          },
+        },
+      });
     }
   }
 

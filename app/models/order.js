@@ -45,4 +45,8 @@ export default class OrderModel extends ValidatedModel {
   get isMasteredByAccess() {
     return this.source == 'Access';
   }
+
+  get isOverdue() {
+    return this.dueDate && this.dueDate < new Date();
+  }
 }
