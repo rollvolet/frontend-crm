@@ -9,9 +9,14 @@
           <dl>
             <dt class="text-sm font-medium text-gray-500 truncate">Plaatsing</dt>
             <dd>
-              <div class="text-lg font-medium text-gray-900">
-                {{ceil this.averagePlacementDurationInWeeks}} weken
-              </div>
+              {{#if this.calculateAveragePlacementDuration.isRunning}}
+                <div class="bg-gray-200 mt-1 h-6 w-24 animate-pulse">
+                </div>
+              {{else}}
+                <div class="text-lg font-medium text-gray-900">
+                  {{ceil this.averagePlacementDurationInWeeks}} weken
+                </div>
+              {{/if}}
             </dd>
           </dl>
         </div>
@@ -29,9 +34,14 @@
           <dl>
             <dt class="text-sm font-medium text-gray-500 truncate">Interventie</dt>
             <dd>
-              <div class="text-lg font-medium text-gray-900">
-                {{ceil this.averageInterventionDuration}} dagen
-              </div>
+              {{#if this.calculateAverageInterventionDuration.isRunning}}
+                <div class="bg-gray-200 mt-1 h-6 w-24 animate-pulse">
+                </div>
+              {{else}}
+                <div class="text-lg font-medium text-gray-900">
+                  {{ceil this.averageInterventionDuration}} dagen
+                </div>
+              {{/if}}
             </dd>
           </dl>
         </div>

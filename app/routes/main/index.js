@@ -1,10 +1,10 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class IndexRoute extends Route {
+export default class MainIndexRoute extends Route {
   @service userInfo;
 
   afterModel() {
-    return this.userInfo.employee;
+    return this.userInfo.employee; // ensure data gets loaded
   }
 }
