@@ -3,6 +3,11 @@ import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import subYears from 'date-fns/subYears';
+import formatISO from 'date-fns/formatISO';
+import constants from '../../config/constants';
+
+const { CASE_STATUSES } = constants;
 
 export default class DashboardProductionTicketsComponent extends Component {
   @service store;
@@ -21,25 +26,27 @@ export default class DashboardProductionTicketsComponent extends Component {
   @keepLatestTask
   *loadData() {
     if (this.args.employee) {
-      const yearAgo = new Date();
-      yearAgo.setYear(yearAgo.getFullYear() - 1);
+      const yearAgo = subYears(new Date(), 1);
+
       this.orders = yield this.store.query('order', {
-        include: 'customer,customer.honorific-prefix,building',
         page: {
           size: this.size,
           number: this.page,
         },
         sort: this.sort,
+        include: 'case.customer,case.building',
         filter: {
-          offer: {
+          ':gt:order-date': formatISO(yearAgo, { representation: 'date' }),
+          case: {
             request: {
-              visitor: this.args.employee.firstName,
+              visitor: {
+                ':uri:': this.args.employee.uri,
+              },
             },
+            ':has-no:invoice': true,
+            status: CASE_STATUSES.ONGOING,
+            'has-production-ticket': false,
           },
-          hasProductionTicket: 0,
-          hasInvoice: 0,
-          isCancelled: 0,
-          ':gt:order-date': yearAgo.toISOString(),
         },
       });
     }

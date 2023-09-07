@@ -66,48 +66,47 @@
                     <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
                       <LinkTo @route="main.orders.edit" @model={{row.id}}
                         class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                        AD{{format-request-number row.requestNumber}}
+                        AD{{format-request-number row.case.request.number}}
                       </LinkTo>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-900">
                       <Fmt::Date @value={{row.orderDate}} />
                     </td>
-                    <td class="px-3 py-2 text-xs font-medium text-gray-900">
-                      <div class="flex">
-                        {{#if row.building}}
-                          {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
-                          <div class="space-y-1">
-                            {{#if row.building.printName}}
-                              <div>
-                                {{row.building.printName}}
-                              </div>
-                            {{else}}
-                              <div class="text-gray-400 italic font-normal">
-                                Naamloos
-                              </div>
-                            {{/if}}
-                            <div class="text-gray-400 text-xs"><Fmt::CustomerName @model={{row.customer}} /></div>
-                          </div>
-                        {{else}}
-                          {{#if row.customer}}
-                            {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
-                            <Fmt::CustomerName @model={{row.customer}} />
+                    {{#let row.case as |case|}}
+                      <td class="px-3 py-2 text-xs font-medium text-gray-900">
+                        <div class="flex">
+                          {{#if case.building}}
+                            {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                            <div class="space-y-1">
+                              {{#if case.building.printName}}
+                                <div>
+                                  {{case.building.printName}}
+                                </div>
+                              {{else}}
+                                <div class="text-gray-400 italic font-normal">
+                                  Naamloos
+                                </div>
+                              {{/if}}
+                              <div class="text-gray-400 text-xs"><Fmt::CustomerName @model={{case.customer}} /></div>
+                            </div>
                           {{else}}
-                            {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
-                            <span class="text-gray-400 italic">Geen klant gekoppeld</span>
+                            {{#if case.customer}}
+                              {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                              <Fmt::CustomerName @model={{case.customer}} />
+                            {{else}}
+                              {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
+                              <span class="text-gray-400 italic">Geen klant gekoppeld</span>
+                            {{/if}}
                           {{/if}}
-                        {{/if}}
-                      </div>
-                    </td>
-                    <td class="px-3 py-2 text-xs text-gray-500">
-                      {{#if row.building}}
-                        {{row.building.address1}}<br>
-                        {{row.building.postalCode}} {{row.building.city}}
-                      {{else}}
-                        {{row.customer.address1}}<br>
-                        {{row.customer.postalCode}} {{row.customer.city}}
-                      {{/if}}
-                    </td>
+                        </div>
+                      </td>
+                      <td class="px-3 py-2 text-xs text-gray-500">
+                        {{#let (or case.building.address case.customer.address) as |address|}}
+                          {{address.street}}<br>
+                          {{address.postalCode}} {{address.city}}
+                        {{/let}}
+                      </td>
+                    {{/let}}
                   </tr>
               {{else}}
                   <tr>
