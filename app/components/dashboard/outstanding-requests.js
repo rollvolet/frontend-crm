@@ -3,6 +3,11 @@ import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import subYears from 'date-fns/subYears';
+import formatISO from 'date-fns/formatISO';
+import constants from '../../config/constants';
+
+const { CASE_STATUSES } = constants;
 
 export default class DashboardOutstandingRequestsComponent extends Component {
   @service store;
@@ -35,28 +40,35 @@ export default class DashboardOutstandingRequestsComponent extends Component {
   @keepLatestTask
   *loadData() {
     if (this.args.employee) {
-      const yearAgo = new Date();
-      yearAgo.setYear(yearAgo.getFullYear() - 1);
+      const yearAgo = subYears(new Date(), 1);
 
       const filter = {
-        visitor: this.args.employee.firstName,
-        hasOffer: 0,
-        isCancelled: 0,
-        ':gt:request-date': yearAgo.toISOString(),
+        ':gt:request-date': formatISO(yearAgo, { representation: 'date' }),
+        visitor: {
+          ':uri:': this.args.employee.uri,
+        },
+        case: {
+          ':has-no:offer': true,
+          status: CASE_STATUSES.ONGOING,
+        },
       };
 
-      const now = new Date();
       if (!this.showFutureVisits) {
-        filter[':lte:visit-date'] = now.toISOString();
+        filter[':or:'] = {
+          visit: {
+            ':lte:date': formatISO(new Date(), { representation: 'date' }),
+          },
+          ':has-no:visit': true,
+        };
       }
 
       this.requests = yield this.store.query('request', {
-        include: 'customer,customer.honorific-prefix,building',
         page: {
           size: this.size,
           number: this.page,
         },
         sort: this.sort,
+        include: 'case.customer,case.building',
         filter,
       });
     }

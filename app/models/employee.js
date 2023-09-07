@@ -5,6 +5,7 @@ import constants from 'rollvolet-crm/config/constants';
 const { EMPLOYEE_TYPES } = constants;
 
 export default class EmployeeClass extends Model {
+  @attr('string') uri;
   @attr('string') type;
   @attr('string') firstName;
   @attr('string') lastName;
