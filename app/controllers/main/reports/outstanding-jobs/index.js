@@ -2,8 +2,9 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { guidFor } from '@ember/object/internals';
 import moment from 'moment';
+import subYears from 'date-fns/subYears';
+import formatISO from 'date-fns/formatISO';
 
 export default class MainReportsOutstandingJobsIndexController extends Controller {
   @service router;
@@ -13,18 +14,12 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
   @tracked sort = 'order-date';
 
   @tracked hasProductionTicket = -1;
-  @tracked execution = 'na';
   @tracked isProductReady = -1;
+  @tracked deliveryMethod;
+  @tracked deliveryMethodUri;
   @tracked visitor;
-  @tracked visitorName;
+  @tracked visitorUri;
   @tracked orderDate;
-
-  executionOptions = [
-    { label: 'n.v.t.', value: 'na', id: `na-${guidFor(this)}` },
-    { label: 'te leveren', value: 'delivery', id: `delivery-${guidFor(this)}` },
-    { label: 'te plaatsen', value: 'installation', id: `installation-${guidFor(this)}` },
-    { label: 'af te halen', value: 'pickup', id: `pickup-${guidFor(this)}` },
-  ];
 
   @tracked sortDirectionOptions; // initialized in route
   @tracked sortFieldOptions; // initialized in route
@@ -35,9 +30,8 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
   constructor() {
     super(...arguments);
     if (!this.orderDate) {
-      const orderDate = new Date();
-      orderDate.setYear(orderDate.getFullYear() - 1);
-      this.orderDate = orderDate.toISOString().substr(0, 10);
+      const yearAgo = subYears(new Date(), 1);
+      this.orderDate = formatISO(yearAgo, { representation: 'date' });
     }
   }
 
@@ -48,25 +42,25 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
   @action
   selectVisitor(employee) {
     this.visitor = employee;
-    this.visitorName = employee && employee.firstName;
+    this.visitorUri = employee && employee.uri;
   }
 
   @action
-  selectExecution(event) {
-    this.execution = event.target.value;
+  selectDeliveryMethod(deliveryMethod) {
+    this.deliveryMethod = deliveryMethod;
+    this.deliveryMethodUri = deliveryMethod && deliveryMethod.uri;
   }
 
   @action
   setOrderDate(date) {
-    const orderDate = date.toISOString().substr(0, 10); // yyyy-mm-dd
-    this.orderDate = orderDate;
+    this.orderDate = formatISO(date, { representation: 'date' });
   }
 
   @action
   print() {
     this.router.transitionTo('main.reports.outstanding-jobs.print', {
       queryParams: {
-        visitorName: this.visitorName,
+        visitorUri: this.visitorUri,
         orderDate: this.orderDate,
         hasProductionTicket: this.hasProductionTicket,
         execution: this.execution,

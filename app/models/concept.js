@@ -5,6 +5,7 @@ export default class ConceptModel extends Model {
   @attr('string') label;
   @attr('languageStringSet') langLabel;
   @attr('string') altLabel;
+  @attr('string') notation;
   @attr('number') position;
 
   @hasMany('concept-scheme', { inverse: 'concepts' }) conceptSchemes;

@@ -1,70 +1,65 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import fetch, { Headers } from 'fetch';
-import OutstandingJob from '../../../../classes/outstanding-job';
+import filterFlagToBoolean from '../../../../utils/filter-flag-to-boolean';
+import constants from '../../../../config/constants';
+
+const { CASE_STATUSES } = constants;
 
 export default class MainReportsOutstandingJobsPrintRoute extends Route {
   @service store;
 
   queryParams = {
-    visitorName: { refreshModel: true },
+    visitorUri: { refreshModel: true },
     orderDate: { refreshModel: true }, // format yyyy-mm-dd
     hasProductionTicket: { refreshModel: true },
-    execution: { refreshModel: true },
+    deliveryMethodUri: { refreshModel: true },
     isProductReady: { refreshModel: true },
   };
 
   async model(params) {
-    const endpoint = new URL(`/api/reports/outstanding-jobs`, window.location.origin);
-    const searchParams = new URLSearchParams(
-      Object.entries({
-        'page[size]': 5000, // for printing we need all entries
-        'page[number]': 0,
-      })
-    );
+    const filter = {
+      ':gt:order-date': params.orderDate,
+      case: {
+        status: CASE_STATUSES.ONGOING,
+      },
+    };
 
-    if (params.visitorName) searchParams.append('filter[visitor]', params.visitorName);
-
-    if (params.execution == 'delivery') {
-      searchParams.append('filter[mustBeDelivered]', 1);
-      searchParams.append('filter[mustBeInstalled]', 0);
-    } else if (params.execution == 'installation') {
-      searchParams.append('filter[mustBeDelivered]', 0);
-      searchParams.append('filter[mustBeInstalled]', 1);
-    } else if (params.execution == 'take-out') {
-      searchParams.append('filter[mustBeDelivered]', 0);
-      searchParams.append('filter[mustBeInstalled]', 0);
+    filter['is-ready'] = filterFlagToBoolean(params.isProductReady);
+    filter['case']['has-production-ticket'] = filterFlagToBoolean(params.hasProductionTicket);
+    if (params.deliveryMethodUri) {
+      filter['case']['delivery-method'] = {
+        ':uri:': params.deliveryMethodUri,
+      };
+      this.deliveryMethod = await this.store.findRecordByUri('concept', params.deliveryMethodUri);
     } else {
-      searchParams.append('filter[mustBeDelivered]', -1);
-      searchParams.append('filter[mustBeInstalled]', -1);
+      this.deliveryMethod = null;
     }
 
-    if (params.orderDate) searchParams.append('filter[orderDate]', params.orderDate);
+    if (params.visitorUri) {
+      filter['case']['request'] = {
+        visitor: {
+          ':uri:': params.visitorUri,
+        },
+      };
+      this.visitor = await this.store.findRecordByUri('employee', params.visitorUri);
+    } else {
+      this.visitor = null;
+    }
 
-    searchParams.append('filter[hasProductionTicket]', params.hasProductionTicket);
-    searchParams.append('filter[isProductReady]', params.isProductReady);
-
-    endpoint.search = searchParams.toString();
-
-    const response = await fetch(endpoint, {
-      headers: new Headers({
-        Accept: 'application/json',
-      }),
+    return this.store.query('order', {
+      page: {
+        size: 500, // for printing we need all entries
+        number: 0,
+      },
+      sort: '-order-date',
+      include: ['case.request.visitor', 'case.customer.address', 'case.building.address'].join(','),
+      filter,
     });
-    const json = await response.json();
-    const entries = json.data.map((item) => new OutstandingJob(item.attributes));
-
-    return entries;
   }
 
-  async afterModel(model) {
-    let visitors = this.store.peekAll('employee');
-    if (!visitors.length) {
-      visitors = await this.store.findAll('employee');
-    }
-    model.forEach((row) => {
-      const visitor = visitors.find((e) => e.firstName == row.visitor);
-      row.visitorInitials = visitor && visitor.initials;
-    });
+  setupController(controller) {
+    super.setupController(...arguments);
+    controller.visitor = this.visitor;
+    controller.deliveryMethod = this.deliveryMethod;
   }
 }

@@ -6,7 +6,7 @@
   </div>
   <div class="flex grow-0">
     <LinkTo @route="main.reports.outstanding-jobs.print"
-      @query={{hash visitorName=this.visitorName orderDate=this.orderDate hasProductionTicket=this.hasProductionTicket execution=this.execution isProductReady=this.isProductReady}}
+      @query={{hash visitorUri=this.visitorUri orderDate=this.orderDate hasProductionTicket=this.hasProductionTicket deliveryMethodUri=this.deliveryMethodUri isProductReady=this.isProductReady}}
       class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
       {{svg-jar "heroicons-md-printer" class="-ml-1 mr-2 h-5 w-5"}}
       Afdrukken
@@ -25,7 +25,7 @@
           </h4>
         </div>
         <div class="ml-6 sm:ml-2 text-gray-500 text-xs">
-          (<span class="font-medium">{{@model.jobs.meta.count}}</span> resultaten gevonden)
+          (<span class="font-medium">{{@model.orders.meta.count}}</span> resultaten gevonden)
         </div>
       </div>
     </div>
@@ -88,25 +88,13 @@
         </div>
       </div>
       <div class="space-y-4">
-        <div role="group" aria-labelledby="label-executions" class="space-y-2">
-          <div id="label-executions" class="font-medium text-sm text-gray-700">
-            Uitvoering
-          </div>
-          {{#each this.executionOptions as |option|}}
-            <div class="flex items-center">
-              <input
-                id="execution-opt-{{option.id}}"
-                type="radio"
-                value={{option.value}}
-                name="execution-opt-group"
-                class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300"
-                checked={{eq this.execution option.value}}
-                {{on "input" this.selectExecution}} />
-              <label for="execution-opt-{{option.id}}" class="ml-3 block text-sm font-medium text-gray-700">
-                {{option.label}}
-              </label>
-            </div>
-          {{/each}}
+        <div>
+          <InputField::DeliveryMethodSelect
+            @label="Uitvoering"
+            @value={{this.deliveryMethod}}
+            @allowClear={{true}}
+            @onSelectionChange={{this.selectDeliveryMethod}}
+            class="mt-1" />
         </div>
       </div>
     </div>
@@ -114,9 +102,9 @@
 </div>
 
 <div class="mt-6 bg-white shadow rounded-lg">
-  <div class="flex flex-col">
-    <div class="-my-2 sm:-mx-6 lg:-mx-8">
-      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+  <div class="flex flex-col overflow-x-auto">
+    <div class="-my-2">
+      <div class="py-2 align-middle inline-block min-w-full">
         <div class="border-b border-gray-200">
           <table class="min-w-full divide-y divide-gray-200">
             <thead>
@@ -131,14 +119,11 @@
                 <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Besteldat.
                 </th>
-                <th class="px-3 py-3 bg-gray-200 whitespace-nowrap text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Kl. nr.
-                </th>
                 <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Klant
                 </th>
                 <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Gemeente
+                  Gebouw
                 </th>
                 <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Uitvoering
@@ -155,10 +140,6 @@
                 </th>
                 <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Uren
-                  <br>
-                  <span class="lowercase text-gray-400">
-                    {{round @model.report.totalHours}}u
-                  </span>
                 </th>
                 <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Klaar?
@@ -169,174 +150,95 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              {{#if this.isLoadingModel}}
-                <tr class="animate-pulse">
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-12 bg-gray-300"></div>
+              {{#each this.model.orders as |row|}}
+                <tr>
+                  <td class="px-2 py-2 whitespace-nowrap text-left text-xs text-gray-500">
+                    <LinkTo @route="main.orders.edit" @model={{row.id}}
+                      class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      AD{{format-request-number row.case.request.number}}
+                    </LinkTo>
                   </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-12 bg-gray-300"></div>
+                  <td class="px-3 py-2 text-xs text-gray-500">
+                    {{row.case.request.visitor.firstName}}
                   </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-24 bg-gray-300"></div>
+                  <td class="px-3 py-2 text-xs font-medium text-gray-900">
+                    <Fmt::Date @value={{row.orderDate}} />
                   </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-14 bg-gray-300"></div>
+                  <td class="px-3 py-2 text-xs font-medium">
+                    <span>
+                      <span class="text-gray-500">
+                        {{row.case.customer.number}}
+                      </span>
+                      <span class="text-gray-900">
+                        <Fmt::CustomerName @model={{row.case.customer}} />
+                      </span>
+                    </span>
+                    <span class="text-gray-500 whitespace-nowrap">
+                      <br>{{row.case.customer.address.street}}
+                      <br>{{row.case.customer.address.postalCode}} {{row.case.customer.address.city}}
+                    </span>
                   </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-28 bg-gray-300"></div>
+                  <td class="px-3 py-2 text-xs text-gray-500">
+                    <span class="text-gray-900">
+                      <Fmt::CustomerName @model={{row.case.building}} />
+                    </span>
+                    <span class="text-gray-500 whitespace-nowrap">
+                      <br>{{row.case.building.address.street}}
+                      <br>{{row.case.building.address.postalCode}} {{row.case.building.address.city}}
+                    </span>
                   </td>
-                  <td>
-                    <div class="h-8 w-20 bg-gray-300"></div>
+                  <td class="px-3 py-2 text-xs text-gray-500">
+                    {{row.case.deliveryMethod.label}}
                   </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-18 bg-gray-300"></div>
+                  <td class="px-3 py-2 text-center text-xs text-gray-400">
+                    {{#if row.case.hasProductionTicket}}
+                      {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
+                    {{else}}
+                      -
+                    {{/if}}
                   </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-12 bg-gray-300"></div>
+                  <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+                    <div>
+                      <span class="text-gray-400 italic inline-block w-5">Vw</span>
+                      <Fmt::Date @value={{row.expectedDate}} />
+                    </div>
+                    <div>
+                      <span class="text-gray-400 italic inline-block w-5">Ve</span>
+                      <span class="{{if row.isOverdue "bg-red-200"}}">
+                        <Fmt::Date @value={{row.dueDate}} />
+                      </span>
+                    </div>
+                    <div>
+                      <span class="text-gray-400 italic inline-block w-5">Pl</span>
+                      <Fmt::Date @value={{row.planning.date}} />
+                    </div>
                   </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-24 bg-gray-300"></div>
+                  <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
+                    {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
+                    {{#each row.technicians as |technician|}}
+                      <br>{{technician.firstName}}
+                    {{/each}}
                   </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-18 bg-gray-300"></div>
+                  <td class="px-3 py-2 text-center text-xs text-gray-400">
+                    {{#if row.isReady}}
+                      {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
+                    {{else}}
+                      -
+                    {{/if}}
                   </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-12 bg-gray-300"></div>
-                  </td>
-                  <td>
-                    <div class="h-8 w-20 bg-gray-300"></div>
+                  <td class="px-3 py-2 text-xs text-gray-500 max-w-xs {{unless row.expandComment "truncate"}}"
+                    role="button"
+                    {{on "click" (fn this.toggleComment row)}}>
+                    {{row.case.comment}}
                   </td>
                 </tr>
-                <tr class="animate-pulse">
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-12 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-12 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-24 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-14 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-24 bg-gray-300"></div>
-                  </td>
-                  <td>
-                    <div class="h-8 w-24 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-16 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-12 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-28 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-16 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-12 bg-gray-300"></div>
-                  </td>
-                  <td>
-                    <div class="h-8 w-20 bg-gray-300"></div>
-                  </td>
-                </tr>
-              {{else}}
-                {{#each this.model.jobs as |row|}}
-                  <tr>
-                    <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
-                      <LinkTo @route="main.orders.edit" @model={{row.orderId}}
-                        class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                        AD{{format-request-number row.requestId}}
-                      </LinkTo>
-                    </td>
-                    <td class="px-3 py-2 text-xs text-gray-500">
-                      {{row.visitor}}
-                    </td>
-                    <td class="px-3 py-2 text-xs font-medium text-gray-900">
-                      <Fmt::Date @value={{row.orderDate}} />
-                    </td>
-                    <td class="px-3 py-2 text-xs font-medium text-gray-900">
-                      {{row.customerNumber}}
-                    </td>
-                    <td class="px-3 py-2 text-xs font-medium text-gray-900">
-                      {{row.customerName}}
-                      <br>{{row.customerAddress1}}
-                      {{#if row.buildingAddress1}}
-                        <br>{{row.buildingAddress1}}
-                      {{/if}}
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
-                      <br>
-                      {{row.customerPostalCode}} {{row.customerCity}}
-                      {{#if row.buildingCity}}
-                        <br>{{row.buildingPostalCode}} {{row.buildingCity}}
-                      {{/if}}
-                    </td>
-                    <td class="px-3 py-2 text-xs text-gray-500">
-                      {{#if row.mustBeDelivered}}
-                        {{order-execution 'delivery'}}
-                      {{else if row.mustBeInstalled}}
-                        {{order-execution 'installation'}}
-                      {{else}}
-                        {{order-execution 'pickup'}}
-                      {{/if}}
-                    </td>
-                    <td class="px-3 py-2 text-center text-xs text-gray-400">
-                      {{#if row.hasProductionTicket}}
-                        {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
-                      {{else}}
-                        -
-                      {{/if}}
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
-                      <div>
-                        <span class="text-gray-400 italic inline-block w-5">Vw</span>
-                        <Fmt::Date @value={{row.expectedDate}} />
-                      </div>
-                      <div>
-                        <span class="text-gray-400 italic inline-block w-5">Ve</span>
-                        <span class="{{if row.isOverdue "bg-red-200"}}">
-                          <Fmt::Date @value={{row.dueDate}} />
-                        </span>
-                      </div>
-                      <div>
-                        <span class="text-gray-400 italic inline-block w-5">Pl</span>
-                        <Fmt::Date @value={{row.planningDate}} />
-                      </div>
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
-                      {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
-                      {{#each row.techniciansList as |technician|}}
-                        <br>{{technician}}
-                      {{/each}}
-                    </td>
-                    <td class="px-3 py-2 text-center text-xs text-gray-400">
-                      {{#if row.productIsReady}}
-                        {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
-                      {{else}}
-                        -
-                      {{/if}}
-                    </td>
-                    <td class="px-3 py-2 text-xs text-gray-500 max-w-xs {{unless row.expandComment "truncate"}}"
-                      role="button"
-                      {{on "click" (fn this.toggleComment row)}}>
-                      {{row.comment}}
-                    </td>
-                  </tr>
                 {{else}}
-                  <tr>
-                    <td colspan="12" class="px-6 py-4 text-center text-sm text-gray-500">
-                      Geen uit te voeren werken.
-                    </td>
-                  </tr>
-                {{/each}}
-              {{/if}}
+                <tr>
+                  <td colspan="12" class="px-6 py-4 text-center text-sm text-gray-500">
+                    Geen uit te voeren werken.
+                  </td>
+                </tr>
+              {{/each}}
             </tbody>
           </table>
         </div>
@@ -346,7 +248,7 @@
   <DataTable::Pagination
     @page={{this.page}}
     @size={{this.size}}
-    @total={{this.model.jobs.meta.count}}
+    @total={{this.model.orders.meta.count}}
     @onPrevious={{this.previousPage}}
     @onNext={{this.nextPage}}
     @onSelectPage={{this.selectPage}} />

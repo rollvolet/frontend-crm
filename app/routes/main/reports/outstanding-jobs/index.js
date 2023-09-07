@@ -2,11 +2,13 @@ import Route from '@ember/routing/route';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { hash } from 'rsvp';
+import subYears from 'date-fns/subYears';
+import formatISO from 'date-fns/formatISO';
 import Snapshot from '../../../../utils/snapshot';
-import {
-  fetchOutstandingJobs,
-  fetchOutstandingJobsReport,
-} from '../../../../utils/fetch-outstanding-jobs';
+import filterFlagToBoolean from '../../../../utils/filter-flag-to-boolean';
+import constants from '../../../../config/constants';
+
+const { CASE_STATUSES } = constants;
 
 export default class MainReportsOutstandingJobsIndexRoute extends Route {
   @service store;
@@ -15,18 +17,18 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
-    visitorName: { refreshModel: true },
+    visitorUri: { refreshModel: true },
     orderDate: { refreshModel: true }, // format yyyy-mm-dd
     hasProductionTicket: { refreshModel: true },
-    execution: { refreshModel: true },
+    deliveryMethodUri: { refreshModel: true },
     isProductReady: { refreshModel: true },
   };
 
   sortFieldOptions = [
     { label: 'Besteldatum', value: 'order-date' },
     { label: 'Verwachte datum', value: 'expected-date' },
-    { label: 'Vereiste datum', value: 'required-date' },
-    { label: 'Geplande datum', value: 'planning-date' },
+    { label: 'Vereiste datum', value: 'due-date' },
+    { label: 'Geplande datum', value: 'planning.date' },
   ];
 
   sortDirectionOptions = [
@@ -41,9 +43,8 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
 
   async model(params) {
     if (!params.orderDate) {
-      const orderDate = new Date();
-      orderDate.setYear(orderDate.getFullYear() - 1);
-      params.orderDate = orderDate.toISOString().substr(0, 10);
+      const yearAgo = subYears(new Date(), 1);
+      params.orderDate = formatISO(yearAgo, { representation: 'date' });
     }
 
     this.lastParams.stageLive(params);
@@ -56,19 +57,56 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
       params.page = 0;
     }
 
-    const searchParams = this.getSearchParams(params);
-    const outstandingJobs = await fetchOutstandingJobs(searchParams);
-    const report = await fetchOutstandingJobsReport(searchParams);
+    const filter = {
+      ':gt:order-date': params.orderDate,
+      case: {
+        status: CASE_STATUSES.ONGOING,
+      },
+    };
+
+    filter['is-ready'] = filterFlagToBoolean(params.isProductReady);
+    filter['case']['has-production-ticket'] = filterFlagToBoolean(params.hasProductionTicket);
+    if (params.deliveryMethodUri) {
+      filter['case']['delivery-method'] = {
+        ':uri:': params.deliveryMethodUri,
+      };
+    }
+    if (params.visitorUri) {
+      filter['case']['request'] = {
+        visitor: {
+          ':uri:': params.visitorUri,
+        },
+      };
+    }
+
+    const orders = await this.store.query('order', {
+      page: {
+        size: params.size,
+        number: params.page,
+      },
+      sort: params.sort,
+      include: ['case.request.visitor', 'case.customer.address', 'case.building.address'].join(','),
+      filter,
+    });
+
+    const numberOverdueFilter = JSON.parse(JSON.stringify(filter)); // TODO use a decent deep clone method
+    numberOverdueFilter[':lt:due-date'] = formatISO(new Date(), { representation: 'date' });
+    const numberOverdue = await this.store.count('order', {
+      sort: params.sort,
+      filter: numberOverdueFilter,
+    });
 
     // Preload selected values value for ember-power-select
-    if (params.visitorName) {
-      let visitors = this.store.peekAll('employee');
-      if (!visitors.length) {
-        visitors = await this.store.findAll('employee');
-      }
-      this.visitor = visitors.find((e) => e.firstName == params.visitorName);
+    if (params.visitorUri) {
+      this.visitor = await this.store.findRecordByUri('employee', params.visitorUri);
     } else {
       this.visitor = null;
+    }
+
+    if (params.deliveryMethodUri) {
+      this.deliveryMethod = await this.store.findRecordByUri('concept', params.deliveryMethodUri);
+    } else {
+      this.deliveryMethod = null;
     }
 
     if (params.sort) {
@@ -84,8 +122,10 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     this.lastParams.commit();
 
     return hash({
-      jobs: outstandingJobs,
-      report,
+      orders,
+      report: {
+        numberOverdue,
+      },
     });
   }
 
@@ -96,56 +136,12 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     controller.sortFieldOptions = this.sortFieldOptions;
 
     controller.visitor = this.visitor;
+    controller.deliveryMethod = this.deliveryMethod;
     controller.sortDirection = this.sortDirection;
     controller.sortField = this.sortField;
 
     if (controller.page != this.lastParams.committed.page) {
       controller.page = this.lastParams.committed.page;
     }
-  }
-
-  @action
-  loading(transition) {
-    const controller = this.controllerFor(this.routeName);
-    controller.set('isLoadingModel', true);
-    transition.promise.finally(function () {
-      controller.set('isLoadingModel', false);
-    });
-
-    return true; // bubble the loading event
-  }
-
-  getSearchParams(params) {
-    const searchParams = new URLSearchParams(
-      Object.entries({
-        'page[size]': params.size,
-        'page[number]': params.page,
-        sort: params.sort,
-      })
-    );
-
-    if (params.visitorName) {
-      searchParams.append('filter[visitor]', params.visitorName);
-    }
-
-    if (params.execution == 'delivery') {
-      searchParams.append('filter[mustBeDelivered]', 1);
-      searchParams.append('filter[mustBeInstalled]', 0);
-    } else if (params.execution == 'installation') {
-      searchParams.append('filter[mustBeDelivered]', 0);
-      searchParams.append('filter[mustBeInstalled]', 1);
-    } else if (params.execution == 'pickup') {
-      searchParams.append('filter[mustBeDelivered]', 0);
-      searchParams.append('filter[mustBeInstalled]', 0);
-    } else {
-      searchParams.append('filter[mustBeDelivered]', -1);
-      searchParams.append('filter[mustBeInstalled]', -1);
-    }
-
-    searchParams.append('filter[orderDate]', params.orderDate);
-    searchParams.append('filter[hasProductionTicket]', params.hasProductionTicket);
-    searchParams.append('filter[isProductReady]', params.isProductReady);
-
-    return searchParams;
   }
 }
