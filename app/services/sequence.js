@@ -16,7 +16,7 @@ export default class SequenceService extends Service {
 
   async fetchNextCustomerNumber() {
     const customer = await this.store.queryOne('customer', { sort: '-number' });
-    return customer.number + 1;
+    return customer ? customer.number + 1 : 1;
   }
 
   async fetchNextContactPosition(customer) {

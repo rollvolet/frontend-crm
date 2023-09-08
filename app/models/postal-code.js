@@ -25,8 +25,8 @@ const additionalLabelMap = {
 };
 
 export default class PostalCodeModel extends Model {
-  @attr code;
-  @attr name;
+  @attr('string') code;
+  @attr('string') name;
 
   get search() {
     let search = `${this.code} ${this.name}`;
