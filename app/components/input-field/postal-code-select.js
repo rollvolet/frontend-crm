@@ -17,7 +17,7 @@ export default class PostalCodeSelect extends Component {
   constructor() {
     super(...arguments);
 
-    this.postalCodes = this.store.peekAll('postal-code');
+    this.postalCodes = this.store.peekAll('postal-code').sortBy('code');
 
     if (this.args.postalCode && this.args.city) {
       const value = this.postalCodes.find(

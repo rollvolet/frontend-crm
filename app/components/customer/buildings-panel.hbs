@@ -3,7 +3,8 @@
     <Building::DetailPanel
       @model={{this.selectedBuilding}}
       @initialEditMode={{this.isNewBuilding}}
-      @onCloseDetail={{this.closeDetail}} />
+      @onCloseDetail={{this.closeDetail}}
+      @onDelete={{perform this.deleteBuilding}} />
   {{else}}
     <Customer::BuildingsTable
       @customer={{@customer}}

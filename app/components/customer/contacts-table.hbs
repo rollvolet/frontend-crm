@@ -202,7 +202,9 @@
                     {{row.address.postalCode}}
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.address.city}} ({{row.address.country.code}})
+                    {{#if row.address.city}}
+                      {{row.address.city}} ({{row.address.country.code}})
+                    {{/if}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {{row.language.name}}

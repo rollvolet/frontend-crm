@@ -2,6 +2,8 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { task } from 'ember-concurrency';
+import { warn } from '@ember/debug';
 
 export default class ContactsPanel extends Component {
   @service store;
@@ -30,6 +32,26 @@ export default class ContactsPanel extends Component {
     });
 
     return contact.save();
+  }
+
+  @task
+  *deleteContact() {
+    try {
+      const [address, telephones, emails] = yield Promise.all([
+        this.selectedContact.address,
+        this.selectedContact.telephones,
+        this.selectedContact.emails,
+      ]);
+
+      const records = [address, ...telephones.toArray(), ...emails.toArray()];
+      yield Promise.all(records.map((t) => t.destroyRecord()));
+      yield this.selectedContact.destroyRecord();
+      this.closeDetail();
+    } catch (e) {
+      warn(`Something went wrong while destroying contact ${this.selectedContact.id}`, {
+        id: 'destroy-failure',
+      });
+    }
   }
 
   @action

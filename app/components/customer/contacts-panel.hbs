@@ -3,7 +3,8 @@
     <Contact::DetailPanel
       @model={{this.selectedContact}}
       @initialEditMode={{this.isNewContact}}
-      @onCloseDetail={{this.closeDetail}} />
+      @onCloseDetail={{this.closeDetail}}
+      @onDelete={{perform this.deleteContact}} />
   {{else}}
     <Customer::ContactsTable
       @customer={{@customer}}
