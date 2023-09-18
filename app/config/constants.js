@@ -42,4 +42,8 @@ export default {
     TO_BE_DELIVERED: 'http://data.rollvolet.be/concepts/e8ac5c18-628f-435a-ac36-3c6704c3ff19',
     TO_BE_INSTALLED: 'http://data.rollvolet.be/concepts/89db0214-65d1-444d-9c19-a0e772113b8a',
   },
+  ACCOUNTANCY_EXPORT_TYPES: {
+    DRY_RUN: 'http://data.rollvolet.be/vocabularies/crm/DryRunAccountancyExport',
+    FINAL: 'http://data.rollvolet.be/vocabularies/crm/FinalAccountancyExport',
+  },
 };

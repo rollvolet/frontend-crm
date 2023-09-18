@@ -10,7 +10,7 @@ export default class InvoiceDocumentModel extends ValidatedModel {
       presence: true,
     }),
     totalAmountNet: new Validator('number', {
-      allowBlank: true,
+      allowBlank: false,
       positive: true,
     }),
   };
@@ -23,12 +23,12 @@ export default class InvoiceDocumentModel extends ValidatedModel {
   @attr('date') bookingDate;
   @attr('date') paymentDate;
   @attr('string') documentOutro;
-
-  @attr totalAmountNet;
-  // TODO remove? can be calculated ad hoc?
-  // @attr paymentAmountNet;
-  // @attr vatAmount;
-
+  @attr('number', {
+    defaultValue() {
+      return 0.0;
+    },
+  })
+  totalAmountNet;
   @attr('string', {
     defaultValue() {
       return 'EUR';

@@ -25,7 +25,7 @@ export default class InvoiceTableComponent extends Component {
         number: this.page,
       },
       sort: this.sort,
-      include: 'customer,building',
+      include: 'customer.address.country,building.address.country,case',
     });
   }
 

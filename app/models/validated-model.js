@@ -3,8 +3,9 @@ import ArrayProxy from '@ember/array/proxy';
 import { validate } from 'ember-validators';
 import { typeOf } from '@ember/utils';
 import { keepLatestTask, all } from 'ember-concurrency';
-import Messages from '../validators/messages';
 import { isHTMLSafe } from '@ember/template';
+import { tracked } from '@glimmer/tracking';
+import Messages from '../validators/messages';
 
 export class Validator {
   constructor(type, options) {
@@ -85,16 +86,9 @@ export class ValidationResult {
 }
 
 export default class ValidatedModel extends Model {
-  validators = {};
+  @tracked validations = new ValidationResult(this.constructor);
 
-  get validations() {
-    if (this.validateTask.lastSuccessful) {
-      return this.validateTask.lastSuccessful.value.validations;
-    } else {
-      // validations haven't been executed yet. Return an empty ValidationResult.
-      return new ValidationResult(this.constructor);
-    }
-  }
+  validators = {};
 
   get isValidating() {
     return this.validateTask.isRunning;
@@ -125,6 +119,6 @@ export default class ValidatedModel extends Model {
       }
     }
 
-    return { validations: new ValidationResult(this.constructor, errors) };
+    this.validations = new ValidationResult(this.constructor, errors);
   }
 }

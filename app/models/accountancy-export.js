@@ -1,5 +1,8 @@
 import { attr } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
+import constants from '../config/constants';
+
+const { ACCOUNTANCY_EXPORT_TYPES } = constants;
 
 export default class AccountancyExport extends ValidatedModel {
   validators = {
@@ -27,9 +30,11 @@ export default class AccountancyExport extends ValidatedModel {
   };
 
   @attr('datetime') date;
-  @attr('datetime') fromDate;
-  @attr('datetime') untilDate;
-  @attr fromNumber;
-  @attr untilNumber;
-  @attr isDryRun;
+  @attr('string') type;
+  @attr('number') fromNumber;
+  @attr('number') untilNumber;
+
+  get isDryRun() {
+    return this.type == ACCOUNTANCY_EXPORT_TYPES.DRY_RUN;
+  }
 }
