@@ -260,22 +260,7 @@
                     {{row.visitor.firstName}}
                   </td>
                   <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                    <div class="flex">
-                      {{#if row.case.building}}
-                        {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
-                        <div class="space-y-1">
-                          {{#if row.case.building.printName}}
-                            <div>
-                              {{row.case.building.printName}}
-                            </div>
-                          {{else}}
-                            <div class="text-gray-400 italic font-normal">
-                              Naamloos
-                            </div>
-                          {{/if}}
-                        </div>
-                      {{/if}}
-                    </div>
+                    <Fmt::BuildingName @model={{row.case.building}} />
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
                     {{row.case.building.address.street}}

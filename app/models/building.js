@@ -1,5 +1,6 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
+import { isBlank } from '@ember/utils';
 
 export default class BuildingModel extends ValidatedModel {
   validators = {
@@ -41,6 +42,10 @@ export default class BuildingModel extends ValidatedModel {
   @belongsTo('customer', { inverse: 'buildings' }) customer;
   @hasMany('case', { inverse: 'building' }) cases;
   @hasMany('building-snapshot', { inverse: 'source' }) snapshots;
+
+  get hasBlankName() {
+    return [this.prefix, this.name, this.suffix].every((n) => isBlank(n));
+  }
 
   get printName() {
     let name = '';

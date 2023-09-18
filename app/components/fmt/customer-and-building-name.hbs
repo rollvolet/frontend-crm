@@ -1,0 +1,18 @@
+<div class="flex">
+  {{#if @case.building}}
+    <div class="space-y-1">
+      <Fmt::BuildingName @model={{@case.building}} />
+      <div class="text-gray-400 text-xs">
+        <Fmt::CustomerName @model={{@case.customer}} />
+      </div>
+    </div>
+  {{else}}
+    {{#if @case.customer}}
+      {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+      <Fmt::CustomerName @model={{@case.customer}} />
+    {{else}}
+      {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
+      <span class="text-gray-400 italic">Geen klant gekoppeld</span>
+    {{/if}}
+  {{/if}}
+</div>

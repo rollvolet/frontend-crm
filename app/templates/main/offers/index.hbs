@@ -135,33 +135,7 @@
                       {{row.case.request.visitor.firstName}}
                     </td>
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                      <div class="flex">
-                        {{#if row.case.building}}
-                          {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
-                          <div class="space-y-1">
-                            {{#if row.case.building.printName}}
-                              <div>
-                                {{row.case.building.printName}}
-                              </div>
-                            {{else}}
-                              <div class="text-gray-400 italic font-normal">
-                                Naamloos
-                              </div>
-                            {{/if}}
-                            <div class="text-gray-400 text-xs">
-                              <Fmt::CustomerName @model={{row.case.customer}} />
-                            </div>
-                          </div>
-                        {{else}}
-                          {{#if row.case.customer}}
-                            {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
-                            <Fmt::CustomerName @model={{row.case.customer}} />
-                          {{else}}
-                            {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
-                            <span class="text-gray-400 italic">Geen klant gekoppeld</span>
-                          {{/if}}
-                        {{/if}}
-                      </div>
+                      <Fmt::CustomerAndBuildingName @case={{row.case}} />
                     </td>
                     {{#let (if row.case.building row.case.building.address row.case.customer.address) as |address|}}
                       <td class="px-6 py-4 text-sm text-gray-500">
