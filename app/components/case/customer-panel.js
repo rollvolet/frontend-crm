@@ -5,7 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
-import { setCalendarEventProperties } from '../../utils/calendar-helpers';
+import { updateCalendarEvent } from '../../utils/calendar-helpers';
 
 export default class CaseCustomerPanelComponent extends Component {
   @service router;
@@ -136,29 +136,6 @@ export default class CaseCustomerPanelComponent extends Component {
       this.args.model.order,
     ]);
 
-    const [visitor, requestVisit, interventionVisit, orderPlanning] = yield Promise.all([
-      request?.visitor,
-      request?.visit,
-      intervention?.visit,
-      order?.planning,
-    ]);
-
-    const calendarEvents = [];
-    if (requestVisit) {
-      calendarEvents.push(
-        yield setCalendarEventProperties(requestVisit, {
-          request,
-          visitor,
-        })
-      );
-    }
-    if (interventionVisit) {
-      calendarEvents.push(yield setCalendarEventProperties(interventionVisit, { intervention }));
-    }
-    if (orderPlanning) {
-      calendarEvents.push(yield setCalendarEventProperties(orderPlanning, { order }));
-    }
-
-    yield Promise.all(calendarEvents.map((calendarEvent) => calendarEvent.save()));
+    yield updateCalendarEvent({ request, intervention, order });
   }
 }

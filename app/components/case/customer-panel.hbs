@@ -42,13 +42,9 @@
               </div>
             </Util::DetailItem>
 
-            {{#let @model.customer.address as |address|}}
-              <Util::DetailItem @width={{20}} @label="Adres">
-                <div>{{address.street}}</div>
-                <div>{{address.postalCode}} {{address.city}}</div>
-                <div>{{address.country.name}}</div>
-              </Util::DetailItem>
-            {{/let}}
+            <Util::DetailItem @width={{20}} @label="Adres">
+              <Address::DetailView @model={{@model.customer.address}} />
+            </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="Taal">
               {{@model.customer.language.name}}

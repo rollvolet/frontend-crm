@@ -1,15 +1,11 @@
 <div class="space-y-2">
   <Util::DetailItem @width={{20}} @label="Naam">
-    {{@model.printName}}
+    <Fmt::CustomerName @model={{@model}} />
   </Util::DetailItem>
 
-  {{#let @model.address as |address|}}
-    <Util::DetailItem @width={{20}} @label="Adres">
-      <div>{{address.street}}</div>
-      <div>{{address.postalCode}} {{address.city}}</div>
-      <div>{{address.country.name}}</div>
-    </Util::DetailItem>
-  {{/let}}
+  <Util::DetailItem @width={{20}} @label="Adres">
+    <Address::DetailView @model={{@model.address}} />
+  </Util::DetailItem>
 
   <Util::DetailItem @width={{20}} @label="Telefoon">
     <Telephone::List @model={{@model.telephones}} />

@@ -10,9 +10,7 @@
     </Util::DetailItem>
 
     <Util::DetailItem @label="Adres">
-      <div>{{@model.address.street}}</div>
-      <div>{{@model.address.postalCode}} {{@model.address.city}}</div>
-      <div>{{@model.address.country.name}}</div>
+      <Address::DetailView @model={{@model.address}} />
     </Util::DetailItem>
 
     <Util::DetailItem @label="Taal">

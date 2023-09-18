@@ -1,0 +1,5 @@
+<div>{{@model.street}}</div>
+<div>{{@model.postalCode}} {{@model.city}}</div>
+{{#if @model.postalCode}}
+  <div>{{@model.country.name}}</div>
+{{/if}}
