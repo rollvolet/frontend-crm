@@ -1,6 +1,5 @@
 import Service, { inject as service } from '@ember/service';
 import fetch, { Headers } from 'fetch';
-import getLegacyIdFromUri from '../utils/get-legacy-id-from-uri';
 
 export default class DocumentGenerationService extends Service {
   @service store;
@@ -20,8 +19,15 @@ export default class DocumentGenerationService extends Service {
   }
 
   async interventionReport(intervention) {
-    await this._generate(`/api/interventions/${intervention.get('id')}/reports`);
-    this.downloadInterventionReport(intervention);
+    const data = {
+      data: {
+        type: 'document-generators',
+      },
+    };
+
+    const response = await this._generate(`/interventions/${intervention.id}/documents`, data);
+    const blob = await response.blob();
+    this.previewBlob(blob);
   }
 
   async offerDocument(offer) {
@@ -47,27 +53,8 @@ export default class DocumentGenerationService extends Service {
   async invoiceDocument(invoice) {
     const resource =
       invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    const [customer, contact, building] = await Promise.all([
-      invoice.customer,
-      invoice.contact,
-      invoice.building,
-    ]);
-    const addresses = await Promise.all([customer.address, contact?.address, building?.address]);
     const _case = await invoice.case;
-    const related = await Promise.all(
-      ['request', 'offer', 'order', 'intervention'].map((rel) => {
-        if (_case[rel]) {
-          const id = getLegacyIdFromUri(_case[rel]);
-          return this.store.findRecord(rel, id);
-        } else {
-          return null;
-        }
-      })
-    );
-    const included = [customer, contact, building, ...addresses, ...related]
-      .filter((r) => r)
-      .map((r) => r.serialize({ includeId: true }))
-      .map((r) => r.data);
+    const [customer, contact] = await Promise.all([_case.customer, _case.contact]);
     const language = contact ? await contact.language : await customer.language;
 
     const data = {
@@ -76,13 +63,11 @@ export default class DocumentGenerationService extends Service {
         attributes: {
           language: language?.code,
         },
-        included,
       },
     };
 
     const response = await this._generate(`/${resource}/${invoice.id}/documents`, data);
     const blob = await response.blob();
-    await this._uploadDocument(`/invoices/${invoice.id}/files`, blob);
     this.previewBlob(blob);
   }
 
@@ -198,21 +183,6 @@ export default class DocumentGenerationService extends Service {
         'Content-Type': 'application/json',
       }),
       body: body ? JSON.stringify(body) : '',
-    });
-
-    if (result.ok) {
-      return result;
-    } else {
-      throw result;
-    }
-  }
-
-  async _uploadDocument(url, blob) {
-    const formData = new FormData();
-    formData.append('file', blob);
-    const result = await fetch(url, {
-      method: 'POST',
-      body: formData,
     });
 
     if (result.ok) {
