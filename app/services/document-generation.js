@@ -1,95 +1,64 @@
 import Service, { inject as service } from '@ember/service';
 import fetch, { Headers } from 'fetch';
 
+async function _bodyWithLanguage(record) {
+  let language = null;
+  if (record) {
+    const _case = await record.case;
+    const [customer, contact] = await Promise.all([_case.customer, _case.contact]);
+    language = contact ? await contact.language : await customer.language;
+  }
+
+  return {
+    data: {
+      type: 'document-generators',
+      attributes: {
+        language: language?.code,
+      },
+    },
+  };
+}
+
 export default class DocumentGenerationService extends Service {
   @service store;
 
   // Document generation
 
   async visitReport(request) {
-    const data = {
-      data: {
-        type: 'document-generators',
-      },
-    };
-
-    const response = await this._generate(`/requests/${request.id}/documents`, data);
-    const blob = await response.blob();
-    this.previewBlob(blob);
+    const data = await _bodyWithLanguage();
+    await this._generate(`/requests/${request.id}/documents`, data);
   }
 
   async interventionReport(intervention) {
-    const data = {
-      data: {
-        type: 'document-generators',
-      },
-    };
-
-    const response = await this._generate(`/interventions/${intervention.id}/documents`, data);
-    const blob = await response.blob();
-    this.previewBlob(blob);
+    const data = await _bodyWithLanguage();
+    await this._generate(`/interventions/${intervention.id}/documents`, data);
   }
 
   async offerDocument(offer) {
-    await this._generate(`/api/offers/${offer.get('id')}/documents`);
-    this.downloadOfferDocument(offer);
+    const data = await _bodyWithLanguage(offer);
+    await this._generate(`/offers/${offer.id}/documents`, data);
   }
 
   async orderDocument(order) {
-    await this._generate(`/api/orders/${order.get('id')}/documents`);
-    this.downloadOrderDocument(order);
+    const data = await _bodyWithLanguage(order);
+    await this._generate(`/orders/${order.id}/documents`, data);
   }
 
   async deliveryNote(order) {
-    await this._generate(`/api/orders/${order.get('id')}/delivery-notes`);
-    this.downloadDeliveryNote(order);
+    const data = await _bodyWithLanguage(order);
+    await this._generate(`/orders/${order.id}/delivery-notes`, data);
   }
 
-  async productionTicketTemplate(order) {
-    await this._generate(`/api/orders/${order.get('id')}/production-tickets`);
-    this.downloadProductionTicketTemplate(order);
+  async productionTicketTemplate(_case) {
+    const data = await _bodyWithLanguage();
+    await this._generate(`/cases/${_case.id}/production-ticket-templates`, data);
   }
 
   async invoiceDocument(invoice) {
     const resource =
       invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    const _case = await invoice.case;
-    const [customer, contact] = await Promise.all([_case.customer, _case.contact]);
-    const language = contact ? await contact.language : await customer.language;
-
-    const data = {
-      data: {
-        type: 'invoice-document-generators',
-        attributes: {
-          language: language?.code,
-        },
-      },
-    };
-
-    const response = await this._generate(`/${resource}/${invoice.id}/documents`, data);
-    const blob = await response.blob();
-    this.previewBlob(blob);
-  }
-
-  async certificateTemplate(invoice) {
-    const resource =
-      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    await this._generate(`/api/${resource}/${invoice.get('id')}/certificates`);
-    this.downloadCertificateTemplate(invoice);
-  }
-
-  async recycleCertificate(sourceInvoice, targetInvoice) {
-    const resource =
-      targetInvoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    const body = {
-      id: sourceInvoice.get('id'),
-      type:
-        sourceInvoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices',
-    };
-    await this._generate(
-      `/api/${resource}/${targetInvoice.get('id')}/certificate-recyclations`,
-      JSON.stringify(body)
-    );
+    const data = await _bodyWithLanguage(invoice);
+    await this._generate(`/${resource}/${invoice.id}/documents`, data);
   }
 
   // Document uploads
@@ -99,25 +68,11 @@ export default class DocumentGenerationService extends Service {
     return file.upload(`/api/${resource}/${model.id}/production-ticket`);
   }
 
-  uploadCertificate(invoice, file) {
-    const resource =
-      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    return file.upload(`/api/${resource}/${invoice.id}/certificate`);
-  }
-
   // Document removal
 
   deleteProductionTicket(model) {
     const resource = model.constructor.modelName == 'order' ? 'orders' : 'interventions';
     return fetch(`/api/${resource}/${model.id}/production-ticket`, {
-      method: 'DELETE',
-    });
-  }
-
-  deleteCertificate(invoice) {
-    const resource =
-      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    return fetch(`/api/${resource}/${invoice.id}/certificate`, {
       method: 'DELETE',
     });
   }
@@ -176,7 +131,7 @@ export default class DocumentGenerationService extends Service {
 
   // Core helpers
   async _generate(url, body) {
-    const result = await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: new Headers({
         Accept: 'application/pdf',
@@ -185,10 +140,11 @@ export default class DocumentGenerationService extends Service {
       body: body ? JSON.stringify(body) : '',
     });
 
-    if (result.ok) {
-      return result;
+    if (response.ok) {
+      const blob = await response.blob();
+      this.previewBlob(blob);
     } else {
-      throw result;
+      throw response;
     }
   }
 
