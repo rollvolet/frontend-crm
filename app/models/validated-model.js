@@ -95,8 +95,9 @@ export default class ValidatedModel extends Model {
   }
 
   // defined to be compliant with ember-cp-validations interface
-  validate() {
-    return this.validateTask.perform();
+  async validate() {
+    this.validations = await this.validateTask.perform();
+    return { validations: this.validations };
   }
 
   @keepLatestTask
@@ -119,6 +120,6 @@ export default class ValidatedModel extends Model {
       }
     }
 
-    this.validations = new ValidationResult(this.constructor, errors);
+    return new ValidationResult(this.constructor, errors);
   }
 }
