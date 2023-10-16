@@ -1,64 +1,38 @@
-import Service, { inject as service } from '@ember/service';
-import fetch, { Headers } from 'fetch';
-
-async function _bodyWithLanguage(record) {
-  let language = null;
-  if (record) {
-    const _case = await record.case;
-    const [customer, contact] = await Promise.all([_case.customer, _case.contact]);
-    language = contact ? await contact.language : await customer.language;
-  }
-
-  return {
-    data: {
-      type: 'document-generators',
-      attributes: {
-        language: language?.code,
-      },
-    },
-  };
-}
+import Service from '@ember/service';
+import fetch from 'fetch';
+import previewDocument from '../utils/preview-document';
 
 export default class DocumentGenerationService extends Service {
-  @service store;
-
   // Document generation
 
   async visitReport(request) {
-    const data = await _bodyWithLanguage();
-    await this._generate(`/requests/${request.id}/documents`, data);
+    await previewDocument(`/requests/${request.id}/documents`, request);
   }
 
   async interventionReport(intervention) {
-    const data = await _bodyWithLanguage();
-    await this._generate(`/interventions/${intervention.id}/documents`, data);
+    await previewDocument(`/interventions/${intervention.id}/documents`, intervention);
   }
 
   async offerDocument(offer) {
-    const data = await _bodyWithLanguage(offer);
-    await this._generate(`/offers/${offer.id}/documents`, data);
+    await previewDocument(`/offers/${offer.id}/documents`, offer);
   }
 
   async orderDocument(order) {
-    const data = await _bodyWithLanguage(order);
-    await this._generate(`/orders/${order.id}/documents`, data);
+    await previewDocument(`/orders/${order.id}/documents`, order);
   }
 
   async deliveryNote(order) {
-    const data = await _bodyWithLanguage(order);
-    await this._generate(`/orders/${order.id}/delivery-notes`, data);
+    await previewDocument(`/orders/${order.id}/delivery-notes`, order);
   }
 
   async productionTicketTemplate(_case) {
-    const data = await _bodyWithLanguage();
-    await this._generate(`/cases/${_case.id}/production-ticket-templates`, data);
+    await previewDocument(`/cases/${_case.id}/production-ticket-templates`, _case);
   }
 
   async invoiceDocument(invoice) {
     const resource =
       invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    const data = await _bodyWithLanguage(invoice);
-    await this._generate(`/${resource}/${invoice.id}/documents`, data);
+    await previewDocument(`/${resource}/${invoice.id}/documents`, invoice);
   }
 
   // Document uploads
@@ -130,28 +104,6 @@ export default class DocumentGenerationService extends Service {
   }
 
   // Core helpers
-  async _generate(url, body) {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: new Headers({
-        Accept: 'application/pdf',
-        'Content-Type': 'application/json',
-      }),
-      body: body ? JSON.stringify(body) : '',
-    });
-
-    if (response.ok) {
-      const blob = await response.blob();
-      this.previewBlob(blob);
-    } else {
-      throw response;
-    }
-  }
-
-  previewBlob(blob) {
-    var blobURL = URL.createObjectURL(blob);
-    window.open(blobURL);
-  }
 
   async previewFile(file) {
     const download = await fetch(`/files/${file.id}/download`);
