@@ -65,14 +65,6 @@ export default class InvoiceDocumentModel extends ValidatedModel {
     return this.isCreditNote ? this.totalAmountNet * -1.0 : this.totalAmountNet;
   }
 
-  get bankReference() {
-    const base = this.isCreditNote ? 8000000000 : 0;
-    const ref = base + this.number;
-    let modulo = `${ref % 97}`.padStart(2, '0');
-    if (modulo == '00') modulo = '97';
-    return `${ref}${modulo}`.padStart(12, '0');
-  }
-
   get isMasteredByAccess() {
     return this.source == 'Access';
   }
