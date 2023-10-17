@@ -1,4 +1,4 @@
-{{#each @model as |tel|}}
+{{#each (sort-by "telephoneType.code:desc" "position" @model) as |tel|}}
   <div>
     <span class="text-xs uppercase tracking-wider text-gray-400">
       {{tel.telephoneType.code}}

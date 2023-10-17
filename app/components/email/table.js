@@ -28,7 +28,7 @@ export default class EmailTableComponent extends Component {
   *loadData() {
     // TODO increase page size [?]
     const emails = yield this.args.model.emails;
-    this.emails = emails.toArray();
+    this.emails = emails.sortBy('value').toArray();
   }
 
   @task
