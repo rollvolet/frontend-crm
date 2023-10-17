@@ -139,7 +139,7 @@
                     </td>
                     {{#let (if row.case.building row.case.building.address row.case.customer.address) as |address|}}
                       <td class="px-6 py-4 text-sm text-gray-500">
-                        {{address.street}}
+                        <div class="whitespace-pre-wrap">{{address.street}}</div>
                       </td>
                       <td class="px-6 py-4 text-sm text-gray-500">
                         {{address.postalCode}}

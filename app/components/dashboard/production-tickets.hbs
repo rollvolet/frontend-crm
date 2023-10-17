@@ -78,7 +78,7 @@
                       </td>
                       <td class="px-3 py-2 text-xs text-gray-500">
                         {{#let (or case.building.address case.customer.address) as |address|}}
-                          {{address.street}}<br>
+                          <span class="whitespace-pre-wrap">{{address.street}}</span><br>
                           {{address.postalCode}} {{address.city}}
                         {{/let}}
                       </td>

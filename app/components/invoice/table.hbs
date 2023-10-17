@@ -105,7 +105,7 @@
                   </td>
                   {{#let (if row.building row.building.address row.customer.address) as |address|}}
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{address.street}}<br>
+                      <span class="whitespace-pre-wrap">{{address.street}}</span><br>
                       {{address.postalCode}} {{address.city}}
                     </td>
                   {{/let}}

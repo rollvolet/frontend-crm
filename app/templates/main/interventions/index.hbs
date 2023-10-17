@@ -146,18 +146,14 @@
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">
                       <Fmt::CustomerAndBuildingName @case={{row.case}} />
                     </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <div>
-                        {{if row.case.building row.case.building.address.street row.case.customer.address.street}}
-                      </div>
-                      <div>
-                        {{#if row.case.building}}
-                          {{row.case.building.address.postalCode}} {{row.case.building.address.city}}
-                        {{else}}
-                          {{row.case.customer.address.postalCode}} {{row.case.customer.address.city}}
-                        {{/if}}
-                      </div>
-                    </td>
+                    {{#let (if row.case.building row.case.building.address row.case.customer.address) as |address|}}
+                      <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div class="whitespace-pre-wrap">{{address.street}}</div>
+                        <div>
+                          {{address.postalCode}} {{address.city}}
+                        </div>
+                      </td>
+                    {{/let}}
                     <td class="px-4 py-4 text-xs text-gray-500 {{unless row.isExpandedDescription "block w-96 whitespace-nowrap overflow-hidden overflow-ellipsis"}}" data-expandable
                       {{on "click" (fn this.toggleDescription row)}} role="button">
                       {{row.description}}

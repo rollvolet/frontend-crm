@@ -174,7 +174,7 @@
                       </span>
                     </span>
                     <span class="text-gray-500 whitespace-nowrap">
-                      <br>{{row.case.customer.address.street}}
+                      <br><span class="whitespace-pre-wrap">{{row.case.customer.address.street}}</span>
                       <br>{{row.case.customer.address.postalCode}} {{row.case.customer.address.city}}
                     </span>
                   </td>
@@ -183,7 +183,7 @@
                       <Fmt::CustomerName @model={{row.case.building}} />
                     </span>
                     <span class="text-gray-500 whitespace-nowrap">
-                      <br>{{row.case.building.address.street}}
+                      <br><span class="whitespace-pre-wrap">{{row.case.building.address.street}}</span>
                       <br>{{row.case.building.address.postalCode}} {{row.case.building.address.city}}
                     </span>
                   </td>
