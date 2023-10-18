@@ -45,18 +45,6 @@ export default class DocumentGenerationService extends Service {
     this._openInNewTab(`/api/files/production-tickets/${order.get('id')}?${query}`);
   }
 
-  downloadCertificateTemplate(invoice) {
-    const resource =
-      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}/certificate-template`);
-  }
-
-  downloadCertificate(invoice) {
-    const resource =
-      invoice.constructor.modelName == 'deposit-invoice' ? 'deposit-invoices' : 'invoices';
-    this._openInNewTab(`/api/files/${resource}/${invoice.get('id')}/certificate`);
-  }
-
   // Core helpers
   _openInNewTab(href) {
     Object.assign(document.createElement('a'), {
