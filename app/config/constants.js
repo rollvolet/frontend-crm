@@ -46,4 +46,18 @@ export default {
     DRY_RUN: 'http://data.rollvolet.be/vocabularies/crm/DryRunAccountancyExport',
     FINAL: 'http://data.rollvolet.be/vocabularies/crm/FinalAccountancyExport',
   },
+  FILE_TYPES: {
+    VISIT_REPORT: 'http://data.rollvolet.be/concepts/f5b9c371-a0ed-4476-90a1-3e73d5d4f09e',
+    INTERVENTION_REPORT: 'http://data.rollvolet.be/concepts/5d7f3d76-b78e-4481-ba66-89879ea1b3eb',
+    OFFER: 'http://data.rollvolet.be/concepts/51577f19-9d90-4abf-a0d2-187770f76fc9',
+    ORDER: 'http://data.rollvolet.be/concepts/6d080a6b-41f1-45f1-9698-7cbd3c846494',
+    DELIVERY_NOTE: 'http://data.rollvolet.be/concepts/dcf1aa80-6b1b-4423-8ce1-4df7ffe85684',
+    DEPOSIT_INVOICE: 'http://data.rollvolet.be/concepts/5c93373f-30f3-454c-8835-15140ff6d1d4',
+    INVOICE: 'http://data.rollvolet.be/concepts/3abc9905-29b9-47f2-a77d-e94a4025f8c3',
+    CASE_ATTACHMENT: 'http://data.rollvolet.be/concepts/44e7a6a6-b0e6-4a9c-ae4c-1f66275f730d',
+    INVOICE_ACCOUNTANCY_EXPORT:
+      'http://data.rollvolet.be/concepts/6fbc15d2-11c0-4868-8b11-d15b8f1a3802',
+    CUSTOMER_ACCOUNTANCY_EXPORT:
+      'http://data.rollvolet.be/concepts/7afecda8-f128-4043-a69c-a68cbaaedac5',
+  },
 };

@@ -4,9 +4,13 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task, all, keepLatestTask } from 'ember-concurrency';
+import generateDocument from '../../utils/generate-document';
+import previewDocument from '../../utils/preview-document';
+import constants from '../../config/constants';
+
+const { FILE_TYPES } = constants;
 
 export default class OfferDocumentPanelComponent extends Component {
-  @service documentGeneration;
   @service store;
 
   @tracked versionEditMode = false;
@@ -44,7 +48,9 @@ export default class OfferDocumentPanelComponent extends Component {
   @task
   *generateOfferDocument() {
     try {
-      yield this.documentGeneration.offerDocument(this.args.model);
+      yield generateDocument(`/offers/${this.args.model.id}/documents`, {
+        record: this.args.model,
+      });
     } catch (e) {
       warn(`Something went wrong while generating the offer document`, {
         id: 'document-generation-failure',
@@ -193,7 +199,7 @@ export default class OfferDocumentPanelComponent extends Component {
 
   @action
   downloadOfferDocument() {
-    this.documentGeneration.downloadOfferDocument(this.args.model);
+    previewDocument(FILE_TYPES.OFFER, this.args.model.uri);
   }
 
   @action

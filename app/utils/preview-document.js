@@ -1,44 +1,31 @@
-import fetch, { Headers } from 'fetch';
+import fetch from 'fetch';
 
-async function bodyWithLanguage(record) {
-  let language = null;
-  if (record) {
-    const _case = await record.case;
-    const [customer, contact] = await Promise.all([_case.customer, _case.contact]);
-    language = contact ? await contact.language : await customer.language;
-  }
-
-  return {
-    data: {
-      type: 'document-generators',
-      attributes: {
-        language: language?.code,
-      },
-    },
-  };
+export default async function previewDocument(type, resource) {
+  const response = await fetch(encodeURI(`/downloads?type=${type}&resource=${resource}`));
+  return handleResponse(response);
 }
 
-function previewBlob(blob) {
+export async function previewFile(file) {
+  const response = await fetch(`/files/${file.id}/download`);
+  return handleResponse(response);
+}
+
+export function previewBlob(blob) {
   var blobURL = URL.createObjectURL(blob);
   window.open(blobURL);
 }
 
-export async function previewDocument(url, { record } = {}) {
-  const body = await bodyWithLanguage(record);
-
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: new Headers({
-      Accept: 'application/pdf',
-      'Content-Type': 'application/json',
-    }),
-    body: body ? JSON.stringify(body) : '',
-  });
-
+async function handleResponse(response) {
   if (response.ok) {
-    const blob = await response.blob();
-    previewBlob(blob);
+    const location = response.headers.get('Location');
+    if (location) {
+      const result = await fetch(location);
+      const blob = await result.blob();
+      previewBlob(blob);
+    }
+  } else if (response.status == 404) {
+    window.alert('Document niet gevonden');
   } else {
-    throw response;
+    throw new Error('Unable to preview document');
   }
 }

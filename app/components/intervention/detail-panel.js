@@ -6,13 +6,13 @@ import { keepLatestTask, task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
 import { isPresent } from '@ember/utils';
 import { setCalendarEventProperties } from '../../utils/calendar-helpers';
+import generateDocument from '../../utils/generate-document';
 import CalendarPeriod from '../../classes/calendar-period';
 
 export default class InterventionDetailPanelComponent extends Component {
   @service router;
   @service store;
   @service sequence;
-  @service documentGeneration;
 
   @tracked editMode = false;
   @tracked isOpenOptionsMenu = false;
@@ -162,7 +162,9 @@ export default class InterventionDetailPanelComponent extends Component {
 
   @action
   generateInterventionReport() {
-    return this.documentGeneration.interventionReport(this.args.model);
+    generateDocument(`/interventions/${this.args.model.id}/documents`, {
+      record: this.args.model,
+    });
   }
 
   @action

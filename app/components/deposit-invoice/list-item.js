@@ -1,5 +1,4 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
@@ -7,13 +6,13 @@ import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
 import { isPresent } from '@ember/utils';
+import generateDocument from '../../utils/generate-document';
+import previewDocument from '../../utils/preview-document';
 import constants from '../../config/constants';
 
-const { INVOICE_TYPES } = constants;
+const { FILE_TYPES, INVOICE_TYPES } = constants;
 
 export default class DepositInvoiceListItemComponent extends Component {
-  @service documentGeneration;
-
   @tracked isExpanded;
   @tracked editMode;
 
@@ -79,19 +78,19 @@ export default class DepositInvoiceListItemComponent extends Component {
   @task
   *generateInvoiceDocument() {
     try {
-      yield this.documentGeneration.invoiceDocument(this.args.model);
-      yield this.args.model.belongsTo('document').reload();
+      yield generateDocument(`/deposit-invoices/${this.args.model.id}/documents`, {
+        record: this.args.model,
+      });
     } catch (e) {
-      warn(`Something went wrong while generating the invoice document`, {
+      warn(`Something went wrong while generating the deposit-invoice document`, {
         id: 'document-generation-failure',
       });
     }
   }
 
   @action
-  async downloadInvoiceDocument() {
-    const file = await this.args.model.document;
-    this.documentGeneration.previewFile(file);
+  downloadInvoiceDocument() {
+    previewDocument(FILE_TYPES.DEPOSIT_INVOICE, this.args.model.uri);
   }
 
   @action

@@ -7,10 +7,10 @@ import { debug, warn } from '@ember/debug';
 import { isPresent } from '@ember/utils';
 import { task, keepLatestTask } from 'ember-concurrency';
 import { setCalendarEventProperties } from '../../utils/calendar-helpers';
+import generateDocument from '../../utils/generate-document';
 import CalendarPeriod from '../../classes/calendar-period';
 
 export default class RequestDetailPanelComponent extends Component {
-  @service documentGeneration;
   @service store;
 
   @tracked editMode = false;
@@ -131,7 +131,9 @@ export default class RequestDetailPanelComponent extends Component {
 
   @action
   generateVisitReport() {
-    return this.documentGeneration.visitReport(this.args.model);
+    generateDocument(`/requests/${this.args.model.id}/documents`, {
+      record: this.args.model,
+    });
   }
 
   @action

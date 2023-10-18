@@ -1,16 +1,20 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
+import generateDocument from '../../utils/generate-document';
+import previewDocument from '../../utils/preview-document';
+import constants from '../../config/constants';
+
+const { FILE_TYPES } = constants;
 
 export default class OrderDocumentPanelComponent extends Component {
-  @service documentGeneration;
-
   @task
   *generateOrderDocument() {
     try {
-      yield this.documentGeneration.orderDocument(this.args.model);
+      yield generateDocument(`/orders/${this.args.model.id}/documents`, {
+        record: this.args.model,
+      });
     } catch (e) {
       warn(`Something went wrong while generating the order document`, {
         id: 'document-generation-failure',
@@ -21,7 +25,9 @@ export default class OrderDocumentPanelComponent extends Component {
   @task
   *generateDeliveryNote() {
     try {
-      yield this.documentGeneration.deliveryNote(this.args.model);
+      yield generateDocument(`/orders/${this.args.model.id}/delivery-notes`, {
+        record: this.args.model,
+      });
     } catch (e) {
       warn(`Something went wrong while generating the delivery note`, {
         id: 'document-generation-failure',
@@ -31,11 +37,11 @@ export default class OrderDocumentPanelComponent extends Component {
 
   @action
   downloadOrderDocument() {
-    this.documentGeneration.downloadOrderDocument(this.args.model);
+    previewDocument(FILE_TYPES.ORDER, this.args.model.uri);
   }
 
   @action
   downloadDeliveryNote() {
-    this.documentGeneration.downloadDeliveryNote(this.args.model);
+    previewDocument(FILE_TYPES.DELIVERY_NOTE, this.args.model.uri);
   }
 }

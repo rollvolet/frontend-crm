@@ -3,10 +3,14 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task, keepLatestTask } from 'ember-concurrency';
+import generateDocument from '../../utils/generate-document';
+import previewDocument from '../../utils/preview-document';
 import sum from '../../utils/math/sum';
+import constants from '../../config/constants';
+
+const { FILE_TYPES } = constants;
 
 export default class InvoiceProductPanelComponent extends Component {
-  @service documentGeneration;
   @service store;
 
   constructor() {
@@ -79,8 +83,9 @@ export default class InvoiceProductPanelComponent extends Component {
   @task
   *generateInvoiceDocument() {
     try {
-      yield this.documentGeneration.invoiceDocument(this.args.model);
-      yield this.args.model.belongsTo('document').reload();
+      yield generateDocument(`/invoices/${this.args.model.id}/documents`, {
+        record: this.args.model,
+      });
     } catch (e) {
       warn(`Something went wrong while generating the invoice document`, {
         id: 'document-generation-failure',
@@ -89,9 +94,8 @@ export default class InvoiceProductPanelComponent extends Component {
   }
 
   @action
-  async downloadInvoiceDocument() {
-    const file = await this.args.model.document;
-    this.documentGeneration.previewFile(file);
+  downloadInvoiceDocument() {
+    previewDocument(FILE_TYPES.INVOICE, this.args.model.uri);
   }
 
   @keepLatestTask
