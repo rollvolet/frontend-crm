@@ -7,6 +7,10 @@ import { guidFor } from '@ember/object/internals';
 import { enqueueTask, task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
 import generateDocument from '../../utils/generate-document';
+import previewDocument from '../../utils/preview-document';
+import constants from '../../config/constants';
+
+const { FILE_TYPES } = constants;
 
 export default class ProductionTicketInlineEditComponent extends Component {
   @service documentGeneration;
@@ -43,19 +47,11 @@ export default class ProductionTicketInlineEditComponent extends Component {
     }
   }
 
-  @task
-  *deleteProductionTicket() {
-    this.closeActionMenu();
-    this.case.hasProductionTicket = false;
-    yield this.case.save();
-    yield this.documentGeneration.deleteProductionTicket(this.args.model);
-  }
-
   @enqueueTask
   *uploadProductionTicket(file) {
     this.closeActionMenu();
     try {
-      yield this.documentGeneration.uploadProductionTicket(this.args.model, file);
+      yield file.upload(`/cases/${this.case.id}/production-tickets`);
       this.case.hasProductionTicket = true;
       yield this.case.save();
     } catch (e) {
@@ -70,10 +66,23 @@ export default class ProductionTicketInlineEditComponent extends Component {
     }
   }
 
+  @task
+  *deleteProductionTicket() {
+    this.closeActionMenu();
+    this.case.hasProductionTicket = false;
+    yield this.case.save();
+    yield fetch(
+      encodeURI(`/downloads?type=${FILE_TYPES.PRODUCTION_TICKET}&resource=${this.case.uri}`),
+      {
+        method: 'DELETE',
+      }
+    );
+  }
+
   @action
   downloadProductionTicket() {
     this.closeActionMenu();
-    this.documentGeneration.downloadProductionTicket(this.args.model);
+    previewDocument(FILE_TYPES.PRODUCTION_TICKET, this.case.uri);
   }
 
   @action

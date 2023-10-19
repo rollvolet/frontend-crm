@@ -55,6 +55,7 @@ export default {
     DEPOSIT_INVOICE: 'http://data.rollvolet.be/concepts/5c93373f-30f3-454c-8835-15140ff6d1d4',
     INVOICE: 'http://data.rollvolet.be/concepts/3abc9905-29b9-47f2-a77d-e94a4025f8c3',
     CASE_ATTACHMENT: 'http://data.rollvolet.be/concepts/44e7a6a6-b0e6-4a9c-ae4c-1f66275f730d',
+    PRODUCTION_TICKET: 'http://data.rollvolet.be/concepts/bcc644a0-eff3-4cf6-a60a-9d4e490d47f0',
     INVOICE_ACCOUNTANCY_EXPORT:
       'http://data.rollvolet.be/concepts/6fbc15d2-11c0-4868-8b11-d15b8f1a3802',
     CUSTOMER_ACCOUNTANCY_EXPORT:
