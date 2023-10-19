@@ -5,6 +5,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import subYears from 'date-fns/subYears';
 import formatISO from 'date-fns/formatISO';
+import generateDocument from '../../utils/generate-document';
 import constants from '../../config/constants';
 
 const { CASE_STATUSES } = constants;
@@ -12,7 +13,6 @@ const { CASE_STATUSES } = constants;
 export default class DashboardOutstandingRequestsComponent extends Component {
   @service store;
   @service router;
-  @service documentGeneration;
 
   @tracked size = 25;
   @tracked page = 0;
@@ -105,8 +105,16 @@ export default class DashboardOutstandingRequestsComponent extends Component {
 
   @action
   printVisitReport() {
-    const requestIds = this.selectedRequests.sortBy('id').mapBy('id');
-    this.documentGeneration.downloadVisitSummary(requestIds);
+    generateDocument(`/documents/visit-summaries`, {
+      body: {
+        data: {
+          type: 'document-generators',
+          attributes: {
+            'request-ids': this.selectedRequests.sortBy('id').mapBy('id'),
+          },
+        },
+      },
+    });
   }
 
   @action

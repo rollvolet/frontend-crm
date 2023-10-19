@@ -1,8 +1,8 @@
 import fetch, { Headers } from 'fetch';
 import { previewBlob } from './preview-document';
 
-export default async function generateDocument(url, { record } = {}) {
-  const body = await bodyWithLanguage(record);
+export default async function generateDocument(url, { record, body } = {}) {
+  const requestBody = body || (await bodyWithLanguage(record));
 
   const response = await fetch(url, {
     method: 'POST',
@@ -10,7 +10,7 @@ export default async function generateDocument(url, { record } = {}) {
       Accept: 'application/pdf',
       'Content-Type': 'application/json',
     }),
-    body: body ? JSON.stringify(body) : '',
+    body: JSON.stringify(requestBody),
   });
 
   if (response.ok) {
