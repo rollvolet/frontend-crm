@@ -10,6 +10,7 @@ export default class CaseTabsComponent extends Component {
   @service router;
 
   @tracked isOpenCancellationModal = false;
+  @tracked isExpandedComment = false;
 
   get currentStep() {
     if (this.args.model.invoice.get('id')) {
