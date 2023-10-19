@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
 import { enqueueTask, keepLatestTask, task, timeout } from 'ember-concurrency';
 import fetch, { Headers } from 'fetch';
+import { previewFile } from '../../utils/preview-document';
 
 export default class CaseAttachmentsPanelComponent extends Component {
   @service store;
@@ -70,11 +71,6 @@ export default class CaseAttachmentsPanelComponent extends Component {
 
   @task
   *downloadAttachment(file) {
-    const result = yield fetch(`/files/${file.id}/download`);
-
-    if (result.ok) {
-      const downloadUrl = result.headers.get('Location');
-      window.open(downloadUrl);
-    }
+    yield previewFile(file);
   }
 }
