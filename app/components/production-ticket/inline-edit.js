@@ -1,5 +1,4 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
@@ -13,8 +12,6 @@ import constants from '../../config/constants';
 const { FILE_TYPES } = constants;
 
 export default class ProductionTicketInlineEditComponent extends Component {
-  @service documentGeneration;
-
   @tracked isOpenActionMenu = false;
 
   caseData = trackedFunction(this, async () => {

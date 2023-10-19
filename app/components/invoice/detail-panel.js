@@ -3,25 +3,16 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
+import previewDocument from '../../utils/preview-document';
 import constants from '../../config/constants';
 
-const { INVOICE_TYPES } = constants;
+const { INVOICE_TYPES, FILE_TYPES } = constants;
 
 export default class InvoiceDetailPanelComponent extends Component {
   @service store;
-  @service documentGeneration;
 
   @tracked editMode = false;
   @tracked isOpenWorkingHoursModal = false;
-
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
-  get case() {
-    return this.caseData.value;
-  }
 
   get technicianNames() {
     return this.args.model.technicalWorkActivities
@@ -46,8 +37,8 @@ export default class InvoiceDetailPanelComponent extends Component {
 
   @action
   async downloadProductionTicket() {
-    const order = await this.case?.order;
-    this.documentGeneration.downloadProductionTicket(order);
+    const _case = await this.args.model.case;
+    previewDocument(FILE_TYPES.PRODUCTION_TICKET, _case.uri);
   }
 
   @action
