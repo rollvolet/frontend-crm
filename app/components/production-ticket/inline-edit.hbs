@@ -3,7 +3,7 @@
 {{else}}
   <div class="flex items-center">
     <div>
-      <Util::DisplayAvailability @value={{@model.hasProductionTicket}} />
+      <Util::DisplayAvailability @value={{this.case.hasProductionTicket}} />
     </div>
     <div class="ml-3 relative inline-block text-left">
       <div>
@@ -36,7 +36,7 @@
               onClick={{perform this.generateTemplate}}>
               Maak nieuwe productiebon
             </button>
-            {{#if @model.hasProductionTicket}}
+            {{#if this.case.hasProductionTicket}}
               <button type="button"
                 class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
                 role="menuitem"

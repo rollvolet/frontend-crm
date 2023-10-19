@@ -1,13 +1,7 @@
 import Service from '@ember/service';
 import fetch from 'fetch';
-import generateDocument from '../utils/generate-document';
 
 export default class DocumentGenerationService extends Service {
-  // Document generation
-
-  async productionTicketTemplate(_case) {
-    await generateDocument(`/cases/${_case.id}/production-ticket-templates`, _case);
-  }
 
   // Document uploads
 
@@ -30,10 +24,6 @@ export default class DocumentGenerationService extends Service {
   downloadVisitSummary(requestIds) {
     const queryParams = requestIds.map((id) => `ids=${id}`).join('&');
     this._openInNewTab(`/api/files/visit-summary?${queryParams}`);
-  }
-
-  downloadProductionTicketTemplate(order) {
-    this._openInNewTab(`/api/files/production-ticket-templates/${order.get('id')}`);
   }
 
   downloadProductionTicket(order, options) {
