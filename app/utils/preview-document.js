@@ -15,17 +15,24 @@ export function previewBlob(blob) {
   window.open(blobURL);
 }
 
-async function handleResponse(response) {
+export async function fetchDocumentBlob(type, resource) {
+  const response = await fetch(encodeURI(`/downloads?type=${type}&resource=${resource}`));
+  return handleResponse(response, (blob) => blob);
+}
+
+async function handleResponse(response, callback = previewBlob) {
   if (response.ok) {
     const location = response.headers.get('Location');
     if (location) {
       const result = await fetch(location);
       const blob = await result.blob();
-      previewBlob(blob);
+      return callback(blob);
     }
   } else if (response.status == 404) {
     window.alert('Document niet gevonden');
   } else {
     throw new Error('Unable to preview document');
   }
+
+  return null;
 }
