@@ -8,7 +8,7 @@
     </div>
   {{else if @onCancel}}
     <button type="button"
-      {{on "click" this.cancelEditMode}}
+      {{on "click" (perform this.cancel)}}
       class="group flex items-center space-x-1 text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
       <label for={{this.elementId}} class="block text-sm font-medium text-gray-700">
         {{@label}}
@@ -23,7 +23,7 @@
     </label>
   {{/if}}
   {{#if (has-block "edit")}}
-    {{yield this.elementId this.closeEditMode to="edit"}}
+    {{yield this.elementId (perform this.save) (perform this.cancel) to="edit"}}
   {{else}}
     <Input
       id={{this.elementId}}
@@ -31,7 +31,8 @@
       @value={{@value}}
       class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
       autofocus
-      {{on "focusout" (perform this.save)}} />
+      {{on "focusout" (perform this.save @value)}}
+      {{on-key "Escape" (perform this.cancel)}} />
   {{/if}}
 {{else}}
   {{#if @disabled}}

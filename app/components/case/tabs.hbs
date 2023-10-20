@@ -42,7 +42,7 @@
           <InputField::Editable
             @label="BTW tarief"
             @disabled={{or @model.isCancelled this.isDisabledEditVatRate}}
-            @isSaving={{or this.setVatRate.isRunning this.save.isRunning}}
+            @onSave={{queue (perform this.setVatRate) (perform this.save)}}
             @onCancel={{reset-relation @model "vatRate"}}>
             <:read>
             <dd class="mt-1 text-sm text-gray-900">
@@ -53,11 +53,12 @@
               {{/if}}
             </dd>
             </:read>
-            <:edit as |_ closeEditMode|>
+            <:edit as |_ onSave onCancel|>
             <InputField::VatRateSelect
               @value={{@model.vatRate}}
-              @onSelectionChange={{queue (perform this.setVatRate) (perform this.save) closeEditMode}}
+              @onSelectionChange={{onSave}}
               @allowClear={{false}}
+              {{on-key "Escape" onCancel}}
               class="mt-1 w-44" />
             </:edit>
           </InputField::Editable>
@@ -67,24 +68,26 @@
             @label="Referentie"
             @value={{@model.reference}}
             @disabled={{@model.isCancelled}}
-            @onSave={{queue (fn (mut @model.reference)) (perform this.save)}} />
+            @onSave={{queue (fn (mut @model.reference)) (perform this.save)}}
+            @onCancel={{reset-attribute @model "reference"}} />
         </div>
-        {{# if @model.request}}
+        {{#if @model.request}}
           <div class="shrink-0">
             <InputField::Editable
               @label="Uitvoering"
               @disabled={{@model.isCancelled}}
-              @isSaving={{this.save.isRunning}}
+              @onSave={{queue (fn (mut @model.deliveryMethod)) (perform this.save) this.updateOrderPlanning}}
               @onCancel={{reset-relation @model "deliveryMethod"}}>
               <:read>
               <dd class="mt-1 text-sm text-gray-900">
                 {{or @model.deliveryMethod.label "-"}}
               </dd>
               </:read>
-              <:edit as |_ closeEditMode|>
+              <:edit as |_ onSave onCancel|>
               <InputField::DeliveryMethodSelect
                 @value={{@model.deliveryMethod}}
-                @onSelectionChange={{queue (fn (mut @model.deliveryMethod)) (perform this.save) closeEditMode this.updateOrderPlanning}}
+                @onSelectionChange={{onSave}}
+                {{on-key "Escape" onCancel}}
                 class="mt-1 w-36" />
               </:edit>
             </InputField::Editable>
@@ -93,22 +96,23 @@
             <InputField::Editable
               @label="Opmerking"
               @disabled={{@model.isCancelled}}
-              @isSaving={{this.save.isRunning}}>
+              @onSave={{perform this.save}}
+              @onCancel={{reset-attribute @model "comment"}}>
               <:read>
               <dd {{on "click" (toggle "isExpandedComment" this)}}
                 class="mt-1 text-sm text-gray-900 {{unless this.isExpandedComment "truncate"}}">
                 {{or @model.comment "-"}}
               </dd>
               </:read>
-              <:edit as |elementId closeEditMode|>
+              <:edit as |elementId onSave onCancel|>
               <Textarea
                 id={{elementId}}
                 @value={{@model.comment}}
                 class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
                 rows="5"
                 autofocus
-                {{on-key "Escape" (queue (reset-attribute @model "comment") closeEditMode)}}
-                {{on "focusout" (queue (perform this.save) closeEditMode)}} />
+                {{on-key "Escape" onCancel}}
+                {{on "focusout" onSave}} />
               </:edit>
             </InputField::Editable>
           </div>

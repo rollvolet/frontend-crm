@@ -12,9 +12,17 @@ export default class InputFieldEditableComponent extends Component {
   }
 
   @task
-  *save() {
-    this.editMode = false;
-    yield this.args.onSave(this.args.value);
+  *save(value) {
+    yield this.args.onSave(value);
+    this.closeEditMode();
+  }
+
+  @task
+  *cancel() {
+    if (this.args.onCancel) {
+      yield this.args.onCancel();
+    }
+    this.closeEditMode();
   }
 
   @action
@@ -24,12 +32,6 @@ export default class InputFieldEditableComponent extends Component {
 
   @action
   closeEditMode() {
-    this.editMode = false;
-  }
-
-  @action
-  async cancelEditMode() {
-    await this.args.onCancel();
     this.editMode = false;
   }
 }
