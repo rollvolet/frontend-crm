@@ -6,6 +6,7 @@ import { keepLatestTask, task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
 import { isPresent } from '@ember/utils';
 import { setCalendarEventProperties } from '../../utils/calendar-helpers';
+import { createCase } from '../../utils/case-helpers';
 import generateDocument from '../../utils/generate-document';
 import CalendarPeriod from '../../classes/calendar-period';
 
@@ -135,7 +136,7 @@ export default class InterventionDetailPanelComponent extends Component {
       this.case.vatRate,
       this.args.model.employee,
       this.args.model.origin,
-      this.sequence.fetchNextCaseNumber(),
+      this.sequence.fetchNextInterventionNumber(),
     ]);
 
     const intervention = this.store.createRecord('intervention', {
@@ -147,15 +148,13 @@ export default class InterventionDetailPanelComponent extends Component {
 
     yield intervention.save();
 
-    const _case = this.store.createRecord('case', {
-      identifier: `IR-${number}`,
+    const _case = yield createCase({
       customer,
       contact,
       building,
       vatRate,
       intervention,
     });
-    yield _case.save();
 
     this.router.transitionTo('main.case.intervention.edit.index', _case.id, intervention.id);
   }

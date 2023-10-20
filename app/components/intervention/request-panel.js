@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
-import { cancelCase } from '../../utils/case-helpers';
+import { createCase, cancelCase } from '../../utils/case-helpers';
 
 export default class InterventionRequestPanelComponent extends Component {
   @service router;
@@ -27,7 +27,7 @@ export default class InterventionRequestPanelComponent extends Component {
       _case.contact,
       _case.building,
       this.args.model.employee,
-      this.sequence.fetchNextCaseNumber(),
+      this.sequence.fetchNextInterventionNumber(),
     ]);
     const wayOfEntry = this.configuration.defaultWayOfEntry;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
@@ -41,16 +41,13 @@ export default class InterventionRequestPanelComponent extends Component {
     });
     yield request.save();
 
-    const newCase = this.store.createRecord('case', {
-      identifier: `AD-${number}`,
+    const newCase = yield createCase({
       customer,
       contact,
       building,
       vatRate,
       request,
     });
-
-    yield newCase.save();
 
     yield cancelCase(_case, 'Nieuwe aanvraag gestart');
 

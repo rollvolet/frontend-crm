@@ -2,6 +2,37 @@ import constants from '../config/constants';
 
 const { ACTIVITY_TYPES, CASE_STATUSES } = constants;
 
+async function createCase(properties) {
+  let store, number, namespace;
+  const { request, intervention, invoice } = properties;
+  if (request) {
+    store = request.store;
+    number = request.number;
+    namespace = 'AD';
+  } else if (intervention) {
+    store = intervention.store;
+    number = intervention.number;
+    namespace = 'IR';
+  } else if (invoice) {
+    store = invoice.store;
+    number = invoice.number;
+    namespace = 'F';
+  }
+
+  const structuredIdentifier = store.createRecord('structured-identifier', {
+    identifier: number,
+    namespace,
+  });
+
+  await structuredIdentifier.save();
+
+  properties.identifier = `${namespace}-${number}`;
+  const _case = store.createRecord('case', properties);
+  await _case.save();
+
+  return _case;
+}
+
 async function cancelCase(_case, reason) {
   const store = _case.store;
 
@@ -26,4 +57,4 @@ async function reopenCase(_case) {
   await _case.save();
 }
 
-export { cancelCase, reopenCase };
+export { createCase, cancelCase, reopenCase };

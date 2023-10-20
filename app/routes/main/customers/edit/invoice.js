@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import moment from 'moment';
 import { createCustomerSnapshot } from '../../../../utils/invoice-helpers';
+import { createCase } from '../../../../utils/case-helpers';
 
 export default class MainCustomersEditInvoiceRoute extends Route {
   @service store;
@@ -25,8 +26,7 @@ export default class MainCustomersEditInvoiceRoute extends Route {
     });
     await invoice.save();
 
-    const _case = this.store.createRecord('case', {
-      identifier: `F-${invoice.number}`,
+    const _case = await createCase({
       customer,
       vatRate,
       invoice,

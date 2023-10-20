@@ -16,6 +16,7 @@ export default class CaseModel extends Model {
   @attr('string') comment;
   @attr('boolean') hasProductionTicket;
 
+  @belongsTo('structured-identifier', { inverse: 'case' }) structuredIdentifier;
   @belongsTo('customer', { inverse: 'cases' }) customer;
   @belongsTo('contact', { inverse: 'cases' }) contact;
   @belongsTo('building', { inverse: 'cases' }) building;

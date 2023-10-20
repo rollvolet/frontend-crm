@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { createCase } from '../../../../utils/case-helpers';
 
 export default class MainCustomersEditRequestRoute extends Route {
   @service configuration;
@@ -14,7 +15,7 @@ export default class MainCustomersEditRequestRoute extends Route {
     const wayOfEntry = this.configuration.defaultWayOfEntry;
     const deliveryMethod = this.configuration.defaultDeliveryMethod;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
-    const number = await this.sequence.fetchNextCaseNumber();
+    const number = await this.sequence.fetchNextRequestNumber();
 
     const request = this.store.createRecord('request', {
       requestDate: new Date(),
@@ -25,15 +26,12 @@ export default class MainCustomersEditRequestRoute extends Route {
 
     await request.save();
 
-    const _case = this.store.createRecord('case', {
-      identifier: `AD-${number}`,
+    const _case = await createCase({
       customer,
       request,
       vatRate,
       deliveryMethod,
     });
-
-    await _case.save();
 
     return { case: _case, request };
   }

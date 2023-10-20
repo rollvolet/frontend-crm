@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { createCase } from '../../../../utils/case-helpers';
 
 export default class MainCustomersEditInterventionRoute extends Route {
   @service userInfo;
@@ -11,7 +12,7 @@ export default class MainCustomersEditInterventionRoute extends Route {
     const customer = this.modelFor('main.customers.edit');
     const employee = this.userInfo.employee;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 6);
-    const number = await this.sequence.fetchNextCaseNumber();
+    const number = await this.sequence.fetchNextInterventionNumber();
 
     const intervention = this.store.createRecord('intervention', {
       interventionDate: new Date(),
@@ -21,14 +22,12 @@ export default class MainCustomersEditInterventionRoute extends Route {
 
     await intervention.save();
 
-    const _case = this.store.createRecord('case', {
+    const _case = await createCase({
       identifier: `IR-${number}`,
       customer,
       intervention,
       vatRate,
     });
-
-    await _case.save();
 
     return { case: _case, intervention };
   }
