@@ -57,19 +57,6 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
   }
 
   @action
-  print() {
-    this.router.transitionTo('main.reports.outstanding-jobs.print', {
-      queryParams: {
-        visitorUri: this.visitorUri,
-        orderDate: this.orderDate,
-        hasProductionTicket: this.hasProductionTicket,
-        execution: this.execution,
-        isProductReady: this.isProductReady,
-      },
-    });
-  }
-
-  @action
   toggleComment(row) {
     row.expandComment = !row.expandComment;
   }

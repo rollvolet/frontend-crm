@@ -1,16 +1,8 @@
-<div class="flex items-center justify-between">
+<div class="flex items-center">
   <div class="flex-1 min-w-0">
     <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
       Uit te voeren werken
     </h2>
-  </div>
-  <div class="flex grow-0">
-    <LinkTo @route="main.reports.outstanding-jobs.print"
-      @query={{hash visitorUri=this.visitorUri orderDate=this.orderDate hasProductionTicket=this.hasProductionTicket deliveryMethodUri=this.deliveryMethodUri isProductReady=this.isProductReady}}
-      class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-      {{svg-jar "heroicons-md-printer" class="-ml-1 mr-2 h-5 w-5"}}
-      Afdrukken
-    </LinkTo>
   </div>
 </div>
 

@@ -47,9 +47,9 @@
     </div>
   {{/unless}}
 
-  <div class="flex flex-col w-0 flex-1 overflow-hidden print:overflow-visible">
+  <div class="flex flex-col w-0 flex-1 overflow-hidden">
     {{!-- Top toolbar on mobile and small screens --}}
-    <div class="2xl:hidden print:hidden relative z-10 flex flex-none h-16 bg-red-700 shadow">
+    <div class="2xl:hidden relative z-10 flex flex-none h-16 bg-red-700 shadow">
       <button type="button"
         disabled={{this.isLoading}}
         {{on "click" this.openMenu}}
@@ -85,9 +85,9 @@
     </div>
 
     {{!-- Main outlet --}}
-    <main class="flex-1 relative overflow-y-auto print:overflow-visible focus:outline-none main-outlet" tabindex="0">
+    <main class="flex-1 relative overflow-y-auto focus:outline-none main-outlet" tabindex="0">
       {{#if (not this.userInfo.employee)}}
-        <div class="sticky z-10 absolute inset-x-0 top-0 h-12 print:hidden">
+        <div class="sticky z-10 absolute inset-x-0 top-0 h-12">
           <div class="bg-red-50 p-4 shadow-md">
             <div class="flex items-center">
               <div class="shrink-0">
@@ -107,7 +107,7 @@
           </div>
         </div>
       {{else if this.userInfo.isImpersonation}}
-        <div class="sticky z-10 absolute inset-x-0 top-0 h-12 print:hidden">
+        <div class="sticky z-10 absolute inset-x-0 top-0 h-12">
           <div class="bg-yellow-50 p-4 shadow-md">
             <div class="flex items-center">
               <div class="shrink-0">
