@@ -6,6 +6,17 @@
     <div class="ml-3">
       {{#if (has-block)}}
         {{yield}}
+      {{else if (or (has-block "title") (has-block "message"))}}
+        {{#if (has-block "title")}}
+          <h3 class="text-sm font-medium {{concat "text-" this.color "-800"}}">
+            {{yield to="title"}}
+          </h3>
+        {{/if}}
+        {{#if (has-block "message")}}
+          <div class="{{if (has-block "title") "mt-2"}} text-sm {{concat "text-" this.color "-700"}}">
+            {{yield to="message"}}
+          </div>
+        {{/if}}
       {{else}}
         {{#if @title}}
           <h3 class="text-sm font-medium {{concat "text-" this.color "-800"}}">
