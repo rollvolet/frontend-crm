@@ -5,7 +5,6 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import subYears from 'date-fns/subYears';
 import formatISO from 'date-fns/formatISO';
-import generateDocument from '../../utils/generate-document';
 import constants from '../../config/constants';
 
 const { CASE_STATUSES } = constants;
@@ -20,21 +19,10 @@ export default class DashboardOutstandingRequestsComponent extends Component {
   @tracked showFutureVisits = false;
 
   @tracked requests = [];
-  @tracked selectedRequests = [];
 
   constructor() {
     super(...arguments);
     this.loadData.perform();
-  }
-
-  get isSelectedAll() {
-    if (this.requests.length) {
-      const requestIds = this.requests.sortBy('id').mapBy('id');
-      const selectedRequestIds = this.selectedRequests.sortBy('id').mapBy('id');
-      return requestIds == selectedRequestIds;
-    } else {
-      return false;
-    }
   }
 
   @keepLatestTask
@@ -78,43 +66,6 @@ export default class DashboardOutstandingRequestsComponent extends Component {
   toggleShowFutureVisits(value) {
     this.showFutureVisits = value;
     this.loadData.perform();
-    if (!this.showFutureVisits) {
-      // Future requests are removed from list, hence selection might be outdated.
-      // Just reset selection to prevent landing in an inconsistent state.
-      this.selectedRequests = [];
-    }
-  }
-
-  @action
-  toggleSelection(request, checked) {
-    if (checked) {
-      this.selectedRequests.addObject(request);
-    } else {
-      this.selectedRequests.removeObject(request);
-    }
-  }
-
-  @action
-  toggleSelectionAll(checked) {
-    if (checked) {
-      this.selectedRequests = this.requests.slice(0);
-    } else {
-      this.selectedRequests = [];
-    }
-  }
-
-  @action
-  printVisitReport() {
-    generateDocument(`/documents/visit-summaries`, {
-      body: {
-        data: {
-          type: 'document-generators',
-          attributes: {
-            'request-ids': this.selectedRequests.sortBy('id').mapBy('id'),
-          },
-        },
-      },
-    });
   }
 
   @action
