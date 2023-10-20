@@ -8,6 +8,7 @@ import { updateCalendarEvent } from '../../utils/calendar-helpers';
 
 export default class CaseTabsComponent extends Component {
   @service router;
+  @service userInfo;
 
   @tracked isOpenCancellationModal = false;
   @tracked isExpandedComment = false;
@@ -80,7 +81,7 @@ export default class CaseTabsComponent extends Component {
   @action
   async confirmCancellation(reason) {
     this.isOpenCancellationModal = false;
-    await cancelCase(this.args.model, reason);
+    await cancelCase(this.args.model, reason, this.userInfo.user);
   }
 
   @action

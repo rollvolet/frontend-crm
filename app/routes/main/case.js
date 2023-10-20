@@ -15,6 +15,7 @@ export default class MainCaseRoute extends Route {
         'offer',
         'order',
         'invoice',
+        'invalidation',
       ].join(','),
     });
   }

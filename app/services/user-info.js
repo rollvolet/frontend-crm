@@ -9,6 +9,7 @@ export default class UserInfoService extends Service {
   @tracked name;
   @tracked username;
   @tracked userGroups = [];
+  @tracked user;
   @tracked employee;
 
   get isLoaded() {
@@ -54,22 +55,17 @@ export default class UserInfoService extends Service {
       const sessionData = authenticatedData.relationships || authenticatedData.data.relationships;
       const accountId = sessionData.account?.data.id;
       const account = yield this.store.findRecord('account', accountId);
-      const user = yield account.user;
-      this.name = user.name;
+      this.user = yield account.user;
+      this.name = this.user.name;
       this.username = account.accountName;
-      this.userGroups = user.userGroups;
+      this.userGroups = this.user.userGroups;
       yield this.fetchEmployee();
     } else {
+      this.user = null;
       this.name = null;
       this.username = null;
       this.userGroups = [];
     }
-  }
-
-  clearUserInfo() {
-    this.name = null;
-    this.username = null;
-    this.userGroups = [];
   }
 
   async fetchEmployee() {

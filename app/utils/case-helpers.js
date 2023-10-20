@@ -33,7 +33,7 @@ async function createCase(properties) {
   return _case;
 }
 
-async function cancelCase(_case, reason) {
+async function cancelCase(_case, reason, user) {
   const store = _case.store;
 
   const invalidation = store.createRecord('activity', {
@@ -41,6 +41,7 @@ async function cancelCase(_case, reason) {
     type: ACTIVITY_TYPES.INVALIDATION,
     description: reason,
     case: _case,
+    user,
   });
   await invalidation.save();
 

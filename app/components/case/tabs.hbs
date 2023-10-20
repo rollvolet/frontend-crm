@@ -117,11 +117,14 @@
     </div>
 
     {{#if @model.isCancelled}}
-      <AlertMessage
-        @level="error"
-        @title="Het dossier is afgesloten. Er zijn geen wijzigingen meer mogelijk."
-        @message={{@model.invalidation.description}}
-        class="mt-2 rounded-none" />
+      <AlertMessage @level="error" class="mt-2 rounded-none">
+        <:title>
+        Het dossier is afgesloten op {{moment-format @model.invalidation.date "DD/MM/YY [om] HH[u]mm"}}{{#if @model.invalidation.user}} door {{@model.invalidation.user.firstName}}{{/if}}. Er zijn geen wijzigingen meer mogelijk.
+        </:title>
+        <:message>
+        {{@model.invalidation.description}}
+        </:message>
+      </AlertMessage>
     {{/if}}
 
     <nav aria-label="Progress">

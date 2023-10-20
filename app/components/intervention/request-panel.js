@@ -7,6 +7,7 @@ import { createCase, cancelCase } from '../../utils/case-helpers';
 export default class InterventionRequestPanelComponent extends Component {
   @service router;
   @service store;
+  @service userInfo;
   @service configuration;
   @service sequence;
 
@@ -49,7 +50,7 @@ export default class InterventionRequestPanelComponent extends Component {
       request,
     });
 
-    yield cancelCase(_case, 'Nieuwe aanvraag gestart');
+    yield cancelCase(_case, 'Nieuwe aanvraag gestart', this.userInfo.user);
 
     this.router.transitionTo('main.case.request.edit.index', newCase.id, request.id, {
       queryParams: { editMode: true },
