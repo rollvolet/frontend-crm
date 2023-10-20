@@ -9,7 +9,8 @@
 {{else}}
   <div class="space-y-4">
     {{#if (and this.case.isOngoing this.hasInvoice)}}
-      <AlertMessage::Warning
+      <AlertMessage
+        @level="warning"
         @message="Er is reeds een factuur gemaakt. Er zijn geen wijzigingen meer mogelijk."
         class="shadow" />
     {{/if}}

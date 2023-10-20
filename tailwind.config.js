@@ -3,7 +3,6 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors');
 
 module.exports = {
-  mode: 'jit',
   content: [
     './app/**/*.{hbs,js,ts,html}',
     './public/assets/icons/*.svg',
@@ -11,17 +10,21 @@ module.exports = {
   ],
   safelist: [
     { pattern: /^ember-tooltip.*/ },
-    { pattern: /^ember-power-select.*/ }
+    { pattern: /^ember-power-select.*/ },
+    // alert message component
+    { pattern: /bg-(red|green|yellow|blue)-50/ },
+    { pattern: /text-(red|green|yellow|blue)-(400|700|800)/},
   ],
   theme: {
     extend: {
+      colors: {
+        green: colors.emerald,
+        yellow: colors.amber,
+        gray: colors.slate,
+      },
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
         display: ['Dosis', 'Inter var', ...defaultTheme.fontFamily.sans]
-      },
-      color: {
-        green: colors.emerald,
-        yellow: colors.amber
       },
       height: {
         '128': '32rem',

@@ -1,7 +1,8 @@
 <div class="space-y-4">
   <div class="mx-4 sm:mx-6 lg:mx-8">
     {{#unless @customer.name}}
-      <AlertMessage::Warning
+      <AlertMessage
+        @level="warning"
         @message="Klant heeft geen naam. Er kan geen nieuwe interventie gemaakt worden."
         class="shadow" />
     {{/unless}}

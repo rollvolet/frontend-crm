@@ -34,7 +34,8 @@
       <Invoice::Stats @model={{@model}} />
     </div>
     {{#if @model.isMasteredByAccess}}
-      <AlertMessage::Warning
+      <AlertMessage
+        @level="warning"
         @message="De factuur is aangemaakt in Access en kan hier niet volledig weergegeven worden. Open de PDF om alle details te bekijken." />
     {{/if}}
     <div>

@@ -24,7 +24,8 @@
     {{else}}
       {{#if this.hasMixedVatRates}}
         <div class="">
-          <AlertMessage::Warning
+          <AlertMessage
+            @level="warning"
             @message="De geselecteerde lijnen bevatten verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden."
             class="shadow" />
         </div>

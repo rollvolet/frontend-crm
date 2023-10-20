@@ -9,7 +9,8 @@
 {{else}}
   <div class="space-y-4">
     {{#if (and this.case.isOngoing this.hasOffer)}}
-      <AlertMessage::Warning
+      <AlertMessage
+        @level="warning"
         @message="Er is reeds een offerte gemaakt. Enkel beperkte wijzigingen zijn nog mogelijk."
         class="shadow" />
     {{/if}}

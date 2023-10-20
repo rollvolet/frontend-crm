@@ -60,11 +60,13 @@
           {{#if this.editMode}}
             {{#if this.isLimitedUpdateOnly}}
               {{#if @model.isBooked}}
-                <AlertMessage::Warning
+                <AlertMessage
+                  @level="warning"
                   @message="De factuur is reeds geboekt. Enkel beperkte wijzigingen zijn nog mogelijk."
                   class="py-2 my-4" />
               {{else if this.hasFinalInvoice}}
-                <AlertMessage::Warning
+                <AlertMessage
+                  @level="warning"
                   @message="De eindfactuur is reeds opgemaakt. Enkel beperkte wijzigingen zijn nog mogelijk."
                   class="py-2 my-4" />
               {{/if}}

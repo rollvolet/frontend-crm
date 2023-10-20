@@ -5,11 +5,13 @@
 {{else}}
   <div class="space-y-4">
     {{#if @model.isMasteredByAccess}}
-      <AlertMessage::Warning
+      <AlertMessage
+        @level="warning"
         @message="De factuur is aangemaakt in Access en kan hier niet gewijzigd worden."
         class="shadow" />
     {{else if @model.isBooked}}
-      <AlertMessage::Warning
+      <AlertMessage
+        @level="warning"
         @message="De factuur is reeds geboekt. Enkel beperkte wijzigingen zijn nog mogelijk."
         class="shadow" />
     {{/if}}

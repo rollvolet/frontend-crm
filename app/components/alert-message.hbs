@@ -1,19 +1,19 @@
-<div class="rounded-md bg-red-50 p-4" ...attributes>
+<div class="rounded-md {{concat "bg-" this.color "-50"}} p-4" ...attributes>
   <div class="flex">
     <div class="shrink-0">
-      {{svg-jar "heroicons-sm-x-circle" class="h-5 w-5 text-red-400"}}
+      {{svg-jar this.icon class=(concat 'h-5 w-5 text-' this.color '-400')}}
     </div>
     <div class="ml-3">
       {{#if (has-block)}}
         {{yield}}
       {{else}}
         {{#if @title}}
-          <h3 class="text-sm font-medium text-red-800">
+          <h3 class="text-sm font-medium {{concat "text-" this.color "-800"}}">
             {{@title}}
           </h3>
         {{/if}}
         {{#if @message}}
-          <div class="{{if @title "mt-2"}} text-sm text-red-700">
+          <div class="{{if @title "mt-2"}} text-sm {{concat "text-" this.color "-700"}}">
             <span class="whitespace-pre-wrap">{{@message}}</span>
           </div>
         {{/if}}

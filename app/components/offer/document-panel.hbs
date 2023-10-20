@@ -68,7 +68,8 @@
       </div>
     {{else}}
       {{#if this.hasMixedVatRates}}
-        <AlertMessage::Info
+        <AlertMessage
+          @level="info"
           @message="De offerte bevat items met verschillende BTW tarieven. Hier kan geen bestelling voor opgesteld worden." />
       {{/if}}
       <Document::Line

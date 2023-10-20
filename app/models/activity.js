@@ -7,4 +7,5 @@ export default class ActivityModel extends Model {
   @attr('string') description;
 
   @belongsTo('case', { inverse: 'invalidation' }) case;
+  @belongsTo('user', { inverse: 'activities' }) user;
 }

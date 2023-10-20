@@ -117,7 +117,8 @@
     </div>
 
     {{#if @model.isCancelled}}
-      <AlertMessage::Error
+      <AlertMessage
+        @level="error"
         @title="Het dossier is afgesloten. Er zijn geen wijzigingen meer mogelijk."
         @message={{@model.invalidation.description}}
         class="mt-2 rounded-none" />

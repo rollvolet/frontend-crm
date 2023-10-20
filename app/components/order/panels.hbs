@@ -10,11 +10,13 @@
   <div class="space-y-4">
     {{#if this.case.isOngoing}}
       {{#if this.hasInvoice}}
-        <AlertMessage::Warning
+        <AlertMessage
+          @level="warning"
           @message="De factuur is reeds opgemaakt. Er zijn geen wijzigingen meer mogelijk."
           class="shadow" />
       {{else if @model.isMasteredByAccess}}
-        <AlertMessage::Warning
+        <AlertMessage
+          @level="warning"
           @message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."
           class="shadow" />
       {{/if}}
