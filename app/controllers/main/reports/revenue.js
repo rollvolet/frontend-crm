@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 import sum from '../../../utils/math/sum';
 
 const MONTHS = [
@@ -18,8 +19,9 @@ const MONTHS = [
 ];
 
 export default class MainReportsRevenueController extends Controller {
-  @tracked fromYear = new Date().getFullYear() - 4;
-  @tracked untilYear = new Date().getFullYear();
+  @tracked fromYear = this.currentYear - this.nbOfYears;
+  @tracked untilYear = this.currentYear;
+  nbOfYears = 4;
 
   get matrix() {
     const matrix = [];
@@ -46,5 +48,29 @@ export default class MainReportsRevenueController extends Controller {
 
   get months() {
     return this.model.uniqBy('month').sortBy('month').mapBy('month');
+  }
+
+  get currentYear() {
+    return new Date().getFullYear();
+  }
+
+  get hasNext() {
+    return this.untilYear < this.currentYear;
+  }
+
+  get hasPrevious() {
+    return true;
+  }
+
+  @action
+  goToPrevious() {
+    this.untilYear = this.untilYear - 1;
+    this.fromYear = this.untilYear - this.nbOfYears;
+  }
+
+  @action
+  goToNext() {
+    this.untilYear = this.untilYear + 1;
+    this.fromYear = this.untilYear - this.nbOfYears;
   }
 }
