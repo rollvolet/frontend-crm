@@ -16,16 +16,14 @@
     </div>
   </div>
 
-  <div class="font-mono text-gray-500 whitespace-pre-wrap break-words">
-    <pre>
-      {{this.model.fileName}}:{{this.model.lineNumber}}:{{this.model.columnNumber}}
-    </pre>
-    <pre>
-      {{this.model.message}}
-    </pre>
-    <pre>
-      {{this.model.stack}}
-    </pre>
+  <div class="font-mono text-gray-500 whitespace-pre-wrap">
+    {{#if this.model.fileName}}
+      <pre>{{this.model.fileName}}:{{this.model.lineNumber}}:{{this.model.columnNumber}}</pre>
+      <pre>{{this.model.message}}</pre>
+      <pre>{{this.model.stack}}</pre>
+    {{else}}
+      <pre>XHR request to {{this.model.url}} failed with status [{{this.model.status}}] {{this.model.statusText}}</pre>
+    {{/if}}
   </div>
   <div class="flex justify-end">
     <button type="button"
