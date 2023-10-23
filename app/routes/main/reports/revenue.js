@@ -11,7 +11,7 @@ export default class MainReportsRevenueRoute extends Route {
     fromYear: {
       refreshModel: true,
     },
-    toYear: {
+    untilYear: {
       refreshModel: true,
     },
   };
@@ -23,18 +23,20 @@ export default class MainReportsRevenueRoute extends Route {
   }
 
   async model(params) {
-    const endpoint = new URL(`/api/reports/revenue`, window.location.origin);
-    const urlParams = new URLSearchParams(
-      Object.entries({
-        fromYear: params.fromYear,
-        toYear: params.toYear,
-      })
-    );
-
-    endpoint.search = urlParams.toString();
-    const response = await fetch(endpoint, {
+    const response = await fetch('/revenue-reports', {
+      method: 'POST',
       headers: new Headers({
-        Accept: 'application/json',
+        Accept: 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+      }),
+      body: JSON.stringify({
+        data: {
+          type: 'revenue-reports',
+          attributes: {
+            'from-year': params.fromYear,
+            'until-year': params.untilYear,
+          },
+        },
       }),
     });
     const json = await response.json();

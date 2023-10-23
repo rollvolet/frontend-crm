@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+import { tracked } from '@glimmer/tracking';
 import sum from '../../../utils/math/sum';
 
 const MONTHS = [
@@ -17,8 +18,8 @@ const MONTHS = [
 ];
 
 export default class MainReportsRevenueController extends Controller {
-  toYear = new Date().getFullYear();
-  fromYear = new Date().getFullYear() - 4;
+  @tracked fromYear = new Date().getFullYear() - 4;
+  @tracked untilYear = new Date().getFullYear();
 
   get matrix() {
     const matrix = [];
