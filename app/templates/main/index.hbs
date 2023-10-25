@@ -12,7 +12,7 @@
             <dl class="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
               <dt class="sr-only">Username</dt>
               <dd class="flex items-center text-sm text-gray-500 font-medium sm:mr-6">
-                {{svg-jar "heroicons-md-identification" class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"}}
+                {{svg-jar "account-box-line" class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400 fill-current"}}
                 {{this.userInfo.username}}
               </dd>
             </dl>
@@ -50,7 +50,7 @@
     </h2>
     <LinkTo @route="main.reports.outstanding-jobs.index"
       class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-      {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
+      {{svg-jar "external-link-line" class="h-5 w-5 fill-current"}}
       <EmberTooltip @text="Ga naar uit te voeren werken" @side="top" />
     </LinkTo>
   </div>

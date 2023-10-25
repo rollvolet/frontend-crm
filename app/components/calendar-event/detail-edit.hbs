@@ -4,7 +4,7 @@
       <div class="flex justify-between items-center">
         <div class="flex flex-row items-center">
           <div class="flex-none">
-            {{svg-jar "heroicons-md-calendar" class="h-5 w-5 text-gray-500"}}
+            {{svg-jar "calendar-event-line" class="h-5 w-5 text-gray-500 fill-current"}}
           </div>
           <div class="ml-3 text-lg font-semibold text-gray-600">
             {{capitalize @title}}
@@ -21,7 +21,7 @@
             <button type="button"
               {{on "click" (perform this.delete)}}
               class="inline-flex items-center text-sm text-gray-700 underline lg:no-underline hover:underline focus:outline-none focus:ring-2 focus:ring-red-200">
-              {{svg-jar "heroicons-sm-ban" class="-ml-0.5 mr-1 h-4 w-4 text-gray-400"}}
+              {{svg-jar "prohibited-line" class="-ml-0.5 mr-1 h-4 w-4 text-gray-400 fill-current"}}
               Wis {{@title}}
             </button>
           {{/if}}
@@ -94,7 +94,7 @@
         <div class="flex justify-between items-center">
           <div class="flex flex-row items-center">
             <div class="flex-none">
-              {{svg-jar "heroicons-md-calendar" class="h-5 w-5 text-gray-500"}}
+              {{svg-jar "calendar-event-line" class="h-5 w-5 text-gray-500 fill-current"}}
             </div>
             <div class="ml-3 text-lg font-semibold text-gray-600">
               {{capitalize @title}}

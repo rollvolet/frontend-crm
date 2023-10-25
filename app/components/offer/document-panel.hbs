@@ -19,7 +19,7 @@
               <button type="button"
                 class="ml-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
                 {{on "click" this.closeVersionEdit}}>
-                {{svg-jar "heroicons-md-logout" class="h-5 w-5"}}
+                {{svg-jar "logout-box-r-line" class="h-5 w-5 fill-current"}}
                 <EmberTooltip @text="Sluiten" />
               </button>
             {{else}}
@@ -30,7 +30,7 @@
                 <button type="button"
                   class="ml-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
                   {{on "click" this.openVersionEdit}}>
-                  {{svg-jar "heroicons-md-pencil" class="h-4 w-4"}}
+                  {{svg-jar "pencil-line" class="h-4 w-4 fill-current"}}
                 </button>
               {{/unless}}
             {{/if}}
@@ -41,7 +41,7 @@
         <button type="button"
           {{on "click" this.downloadOfferDocument}}
           class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-          {{svg-jar "heroicons-md-eye" class="-ml-1 mr-2 h-5 w-5"}}
+          {{svg-jar "eye-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
           Bekijken
         </button>
         {{#unless @isDisabledEdit}}
@@ -51,7 +51,7 @@
             {{#if this.generateOfferDocument.isRunning}}
               {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
             {{else}}
-              {{svg-jar "heroicons-md-play" class="-ml-1 mr-2 h-5 w-5"}}
+              {{svg-jar "play-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
               Maken
             {{/if}}
           </button>
@@ -116,7 +116,7 @@
                   disabled={{this.addOfferline.isRunning}}
                   class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
                   {{on "click" (perform this.addOfferline)}}>
-                  {{svg-jar "heroicons-sm-plus" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
+                  {{svg-jar "add-line" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400 fill-current"}}
                   <span>Lijn toevoegen</span>
                 </button>
               </div>

@@ -8,10 +8,10 @@
     </div>
   {{else}}
     {{#if @case.customer}}
-      {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+      {{svg-jar "user-3-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
       <Fmt::CustomerName @model={{@case.customer}} />
     {{else}}
-      {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
+      {{svg-jar "code-s-slash-line" class="mr-2 flex-none h-5 w-5 text-gray-400 fill-current"}}
       <span class="text-gray-400 italic">Geen klant gekoppeld</span>
     {{/if}}
   {{/if}}

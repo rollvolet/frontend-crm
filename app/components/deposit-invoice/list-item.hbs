@@ -5,7 +5,7 @@
         {{on "click" this.toggleExpand}}
         class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
         {{svg-jar
-            (if this.isExpanded "heroicons-md-chevron-down" "heroicons-md-chevron-right")
+            (if this.isExpanded "arrow-down-s-line" "arrow-right-s-line")
             class="shrink-0 mr-1.5 h-5 w-5"}}
       </button>
     </div>
@@ -22,7 +22,7 @@
           </p>
           {{#if @model.isBooked}}
             <p class="ml-2 items-center inline-flex text-xs text-blue-800">
-              {{svg-jar "heroicons-md-clipboard-check" class="shrink-0 h-5 w-5"}}
+              {{svg-jar "file-lock-line" class="shrink-0 h-5 w-5 fill-current"}}
               <EmberTooltip @text="Geboekt" @side="bottom" />
             </p>
           {{/if}}
@@ -37,7 +37,7 @@
         <div class="mt-2 sm:flex sm:justify-between">
           <div class="sm:flex sm:flex-grow">
             <p class="flex flex-none items-center text-sm text-gray-500">
-              {{svg-jar "heroicons-md-calendar" class="shrink-0 mr-1.5 h-5 w-5 text-gray-400"}}
+              {{svg-jar "calendar-event-line" class="shrink-0 mr-1.5 h-5 w-5 text-gray-400 fill-current"}}
               <Fmt::Date @value={{@model.invoiceDate}} />
             </p>
           </div>
@@ -237,7 +237,7 @@
               {{#if this.generateInvoiceDocument.isRunning}}
                 {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-4 w-14"}}
               {{else}}
-                {{svg-jar "heroicons-md-play" class="-ml-0.5 mr-2 h-4 w-4"}}
+                {{svg-jar "play-line" class="-ml-0.5 mr-2 h-4 w-4 fill-current"}}
                 Maken
               {{/if}}
             </button>
@@ -247,7 +247,7 @@
           <button type="button"
             {{on "click" this.closeEdit}}
             class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "heroicons-md-logout" class="h-5 w-5"}}
+            {{svg-jar "logout-box-r-line" class="h-5 w-5 fill-current"}}
             <EmberTooltip @text="Sluiten" />
           </button>
         </div>
@@ -264,7 +264,7 @@
             <button type="button"
               {{on "click" this.downloadInvoiceDocument}}
               class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-              {{svg-jar "heroicons-md-eye" class="-ml-0.5 mr-2 h-4 w-4"}}
+              {{svg-jar "eye-line" class="-ml-0.5 mr-2 h-4 w-4 fill-current"}}
               Bekijken
             </button>
             {{#unless @model.isMasteredByAccess}}
@@ -274,7 +274,7 @@
                 {{#if this.generateInvoiceDocument.isRunning}}
                   {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-4 w-14"}}
                 {{else}}
-                  {{svg-jar "heroicons-md-play" class="-ml-0.5 mr-2 h-4 w-4"}}
+                  {{svg-jar "play-line" class="-ml-0.5 mr-2 h-4 w-4 fill-current"}}
                   Maken
                 {{/if}}
               </button>
@@ -284,7 +284,7 @@
                 <button type="button"
                   {{on "click" (perform @onCredit @model)}}
                   class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-                  {{svg-jar "heroicons-md-receipt-refund" class="-ml-0.5 mr-2 h-4 w-4"}}
+                  {{svg-jar "exchange-funds-line" class="-ml-0.5 mr-2 h-4 w-4 fill-current"}}
                   Crediteren
                 </button>
               {{/unless}}
@@ -292,7 +292,7 @@
             <button type="button"
               {{on "click" this.openEdit}}
               class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-              {{svg-jar "heroicons-md-pencil" class="-ml-0.5 mr-2 h-4 w-4"}}
+              {{svg-jar "pencil-line" class="-ml-0.5 mr-2 h-4 w-4 fill-current"}}
               Wijzigen
             </button>
           </div>

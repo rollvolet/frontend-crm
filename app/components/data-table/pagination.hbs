@@ -33,7 +33,7 @@
             disabled={{not this.hasPrevious}}
             {{on "click" @onPrevious}}
             class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white {{this.textSizeClass}} leading-5 font-medium text-gray-500 disabled:text-gray-300 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200" aria-label="Vorige">
-              {{svg-jar "heroicons-sm-chevron-left" class="h-5 w-5"}}
+              {{svg-jar "arrow-left-s-line" class="h-5 w-5 fill-current"}}
           </button>
           {{#each this.pages as |zeroBasedPage|}}
             {{#let (add zeroBasedPage 1) as |page|}}
@@ -54,7 +54,7 @@
             disabled={{not this.hasNext}}
             {{on "click" @onNext}}
             class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white {{this.textSizeClass}} leading-5 font-medium text-gray-500 disabled:text-gray-300 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200" aria-label="Volgende">
-            {{svg-jar "heroicons-sm-chevron-right" class="h-5 w-5"}}
+            {{svg-jar "arrow-right-s-line" class="h-5 w-5 fill-current"}}
           </button>
         </nav>
       {{/if}}

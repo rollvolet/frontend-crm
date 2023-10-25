@@ -7,7 +7,7 @@
   <div class="flex grow-0">
     <LinkTo @route="main.customers.new"
       class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-      {{svg-jar "heroicons-md-plus" class="-ml-1 mr-2 h-5 w-5"}}
+      {{svg-jar "add-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
       Nieuw
     </LinkTo>
   </div>
@@ -116,9 +116,9 @@
                     <td class="pl-4 pr-6 py-4 text-sm font-medium text-gray-900">
                       <div class="flex items-center">
                         {{#if row.isCompany}}
-                          {{svg-jar "heroicons-md-office-building" class="mr-1.5 flex-none h-5 w-5 text-gray-400"}}
+                          {{svg-jar "building-4-line" class="mr-1.5 flex-none h-5 w-5 text-gray-400 fill-current"}}
                         {{else}}
-                          {{svg-jar "heroicons-md-user" class="mr-1.5 flex-none h-5 w-5 text-gray-400"}}
+                          {{svg-jar "user-3-line" class="mr-1.5 flex-none h-5 w-5 text-gray-400 fill-current"}}
                         {{/if}}
                         <Fmt::CustomerName @model={{row}} />
                       </div>

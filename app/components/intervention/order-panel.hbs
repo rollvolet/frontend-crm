@@ -10,7 +10,7 @@
           {{#if this.order}}
             <LinkTo @route="main.orders.edit" @model={{this.order.id}}
               class="ml-2 block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "heroicons-md-external-link" class="h-5 w-5"}}
+              {{svg-jar "external-link-line" class="h-5 w-5 fill-current"}}
               <EmberTooltip @text="Open bestelling" @side="bottom" />
             </LinkTo>
           {{/if}}
@@ -24,14 +24,14 @@
           <button type="button"
             {{on "click" (perform this.unlink)}}
             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-            {{svg-jar "heroicons-md-minus-sm" class="-ml-1 mr-2 h-5 w-5"}}
+            {{svg-jar "subtract-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
             Ontkoppel bestelling
           </button>
         {{else}}
           <button type="button"
             {{on "click" this.openOrderModal}}
             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-            {{svg-jar "heroicons-md-link" class="-ml-1 mr-2 h-5 w-5"}}
+            {{svg-jar "link" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
             Koppel bestelling
           </button>
         {{/if}}
@@ -55,7 +55,7 @@
           <Util::DetailItem @label="Productiebon" class="items-baseline">
             {{#if this.order.case.hasProductionTicket}}
               <button {{on "click" this.downloadProductionTicket}} type="button">
-                {{svg-jar "heroicons-md-document-search" class="h-6 w-6 text-gray-400"}}
+                {{svg-jar "file-search-line" class="h-6 w-6 text-gray-400 fill-current"}}
               </button>
             {{else}}
               <div class="italic text-gray-400 text-sm">
@@ -71,7 +71,7 @@
         <button type="button"
           {{on "click" this.openOrderModal}}
           class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-          {{svg-jar "heroicons-sm-link" class="h-4 w-4"}}
+          {{svg-jar "link" class="h-4 w-4 fill-current"}}
           <EmberTooltip @text="Koppel bestelling" @side="top" />
         </button>
         om een bestelling te koppelen.

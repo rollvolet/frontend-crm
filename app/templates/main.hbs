@@ -26,7 +26,7 @@
               {{on "click" this.closeMenu}}
             class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white {{if this.showMenuContent "block" "hidden"}}">
               <span class="sr-only">Close sidebar</span>
-              {{svg-jar "heroicons-md-x" class="h-6 w-6 text-white"}}
+              {{svg-jar "close-line" class="h-6 w-6 text-white fill-current"}}
             </button>
           </div>
           <Menu::Sidebar @onLogout={{this.logout}} />
@@ -55,7 +55,7 @@
         {{on "click" this.openMenu}}
         class="px-4 border-r border-red-800 text-red-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
         <span class="sr-only">Open sidebar</span>
-        {{svg-jar "heroicons-md-menu-alt-2" class="h-6 w-6"}}
+        {{svg-jar "menu-line" class="h-6 w-6 fill-current"}}
       </button>
       <div class="px-4 my-auto flex flex-1 justify-between">
         <div class="w-auto text-3xl text-white font-display font-bold">Klantenbeheer</div>
@@ -76,7 +76,7 @@
             <button type="button"
               {{on "click" this.logout}}
     class="ml-4 p-1 border-2 border-transparent text-white rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-red-600" aria-label="Log out">
-              {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
+              {{svg-jar "logout-box-line" class="h-6 w-6 fill-current"}}
               <EmberTooltip @text="Log uit" />
             </button>
           </div>
@@ -91,7 +91,7 @@
           <div class="bg-red-50 p-4 shadow-md">
             <div class="flex items-center">
               <div class="shrink-0">
-                {{svg-jar "heroicons-sm-x-circle" class="h-5 w-5 text-red-400"}}
+                {{svg-jar "close-circle-fill" class="h-5 w-5 text-red-400 fill-current"}}
               </div>
               <div class="ml-3 flex space-x-2 items-center">
                 <p class="text-sm text-red-700">
@@ -111,7 +111,7 @@
           <div class="bg-yellow-50 p-4 shadow-md">
             <div class="flex items-center">
               <div class="shrink-0">
-                {{svg-jar "heroicons-sm-information-circle" class="h-5 w-5 text-yellow-400"}}
+                {{svg-jar "information-fill" class="h-5 w-5 text-yellow-400 fill-current"}}
               </div>
               <div class="ml-3 flex space-x-2 items-center">
                 <p class="text-sm text-yellow-700">
@@ -138,7 +138,7 @@
           <div class="rounded-md bg-red-50 p-4">
             <div class="flex">
               <div class="shrink-0">
-                {{svg-jar "heroicons-sm-x-circle" class="h-5 w-5 text-red-400"}}
+                {{svg-jar "close-circle-fill" class="h-5 w-5 text-red-400 fill-current"}}
               </div>
               <div class="ml-3">
                 <p class="text-sm text-red-700">

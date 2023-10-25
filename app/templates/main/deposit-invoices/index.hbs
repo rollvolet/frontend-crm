@@ -133,7 +133,7 @@
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 text-sm text-gray-500">
                       {{#let (if row.isPaid "text-green-600" "text-red-600") as |color|}}
-                        {{svg-jar "heroicons-sm-currency-euro" class=(concat "h-4 w-4 mx-auto " color)}}
+                        {{svg-jar "money-euro-circle-fill" class=(concat "h-4 w-4 mx-auto fill-current " color)}}
                       {{/let}}
                     </td>
                     <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -148,7 +148,7 @@
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">
                       <div class="flex">
                         {{#if row.building}}
-                          {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                          {{svg-jar "building-4-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
                           <div class="space-y-1">
                             {{#if row.building.name}}
                               <div>
@@ -163,10 +163,10 @@
                           </div>
                         {{else}}
                           {{#if row.customer}}
-                            {{svg-jar "heroicons-md-user" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                            {{svg-jar "user-3-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
                             {{row.customer.name}}
                           {{else}}
-                            {{svg-jar "heroicons-md-code" class="mr-2 flex-none h-5 w-5 text-gray-400"}}
+                            {{svg-jar "code-s-slash-line" class="mr-2 flex-none h-5 w-5 text-gray-400 fill-current"}}
                             <span class="text-gray-400 italic">Geen klant gekoppeld</span>
                           {{/if}}
                         {{/if}}

@@ -11,7 +11,7 @@
     <div class="flex justify-between items-center">
       <div class="sm:flex sm:items-center">
         <div class="flex items-center">
-          {{svg-jar "heroicons-md-search" class="shrink-0 mr-2 h-4 w-4 text-gray-500"}}
+          {{svg-jar "search-line" class="shrink-0 mr-2 h-4 w-4 text-gray-500 fill-current"}}
           <h4 class="text-gray-700 text-sm uppercase tracking-wide">
             Zoeken
           </h4>
@@ -184,7 +184,7 @@
                   </td>
                   <td class="px-3 py-2 text-center text-xs text-gray-400">
                     {{#if row.case.hasProductionTicket}}
-                      {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
+                      {{svg-jar "checkbox-circle-fill" class="block m-auto h-5 w-5 fill-current"}}
                     {{else}}
                       -
                     {{/if}}
@@ -213,7 +213,7 @@
                   </td>
                   <td class="px-3 py-2 text-center text-xs text-gray-400">
                     {{#if row.isReady}}
-                      {{svg-jar "heroicons-sm-check-circle" class="block m-auto h-5 w-5"}}
+                      {{svg-jar "checkbox-circle-fill" class="block m-auto h-5 w-5 fill-current"}}
                     {{else}}
                       -
                     {{/if}}

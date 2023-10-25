@@ -3,11 +3,11 @@
   {{on "click" this.updateSort}}>
   <div class="flex">
     {{#if this.isAscending}}
-      {{svg-jar "heroicons-sm-arrow-narrow-down" class="mr-1 sm:-ml-4 mr-1 h-3 w-3 text-gray-900"}}
+      {{svg-jar "arrow-down-line" class="mr-1 sm:-ml-4 mr-1 h-3 w-3 text-gray-900 fill-current"}}
     {{else if this.isDescending}}
-      {{svg-jar "heroicons-sm-arrow-narrow-up" class="mr-1 sm:-ml-4 mr-1 h-3 w-3 text-gray-900"}}
+      {{svg-jar "arrow-up-line" class="mr-1 sm:-ml-4 mr-1 h-3 w-3 text-gray-900 fill-current"}}
     {{else}}
-      {{svg-jar "heroicons-sm-switch-vertical" class="mr-1 sm:-ml-4 h-4 w-4 text-gray-400 group-hover:text-gray-700"}}
+      {{svg-jar "arrow-up-down-line" class="mr-1 sm:-ml-4 h-4 w-4 text-gray-400 group-hover:text-gray-700 fill-current"}}
     {{/if}}
     <span class="group-hover:text-gray-900">
       {{yield}}

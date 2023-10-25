@@ -1,18 +1,18 @@
 <div class="inline-block" ...attributes>
   {{#if (or @task.isRunning @model.isValidating @isSaving)}}
-    {{svg-jar "heroicons-md-refresh" class="animate-spin h-5 w-5 text-blue-500"}}
+    {{svg-jar "loop-right-line" class="animate-spin h-5 w-5 text-blue-500 fill-current"}}
     <EmberTooltip @text="Aan het opslaan" />
   {{else if @isDeleting}}
-    {{svg-jar "heroicons-md-refresh" class="animate-spin h-5 w-5 text-blue-500"}}
+    {{svg-jar "loop-right-line" class="animate-spin h-5 w-5 text-blue-500 fill-current"}}
     <EmberTooltip @text="Aan het verwijderen" />
   {{else if (or @isInvalid @model.validations.isInvalid)}}
-    {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-400"}}
+    {{svg-jar "alert-fill-circle" class="h-5 w-5 text-red-400 fill-current"}}
     <EmberTooltip @text="Ongeldig" />
   {{else if (or @isError @model.isError @task.last.isError)}}
-    {{svg-jar "heroicons-md-exclamation-circle" class="h-5 w-5 text-red-400"}}
+    {{svg-jar "alert-fill-circle" class="h-5 w-5 text-red-400 fill-current"}}
     <EmberTooltip @text="Fout bij het opslaan" />
   {{else}}
-    {{svg-jar "heroicons-md-check-circle" class="h-5 w-5 text-green-500"}}
+    {{svg-jar "check-line-circle" class="h-5 w-5 text-green-500 fill-current"}}
     <EmberTooltip @text="Opgeslagen" />
   {{/if}}
 </div>

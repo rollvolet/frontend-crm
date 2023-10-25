@@ -2,7 +2,7 @@
   <div class="mx-4 sm:mx-6 lg:mx-8 space-y-4 xl:flex xl:flex-row-reverse xl:space-x-8 xl:space-x-reverse xl:items-start xl:space-y-0">
     <div class="p-4 lg:px-6 space-y-4 lg:flex lg:items-start lg:space-x-12 lg:space-y-0 bg-gray-50 rounded">
       <div class="flex items-center">
-        {{svg-jar "heroicons-md-search" class="shrink-0 mr-2 h-4 w-4 text-gray-500"}}
+        {{svg-jar "search-line" class="shrink-0 mr-2 h-4 w-4 text-gray-500 fill-current"}}
         <h4 class="text-gray-700 text-sm uppercase tracking-wide">
           Zoeken
         </h4>
@@ -90,7 +90,7 @@
         <button type="button"
           onClick={{this.resetFilters}}
         class="inline-flex items-center text-sm text-gray-700 underline lg:no-underline hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-          {{svg-jar "heroicons-sm-filter" class="-ml-0.5 mr-2 h-4 w-4 text-gray-400"}}
+          {{svg-jar "filter-line" class="-ml-0.5 mr-2 h-4 w-4 text-gray-400 fill-current"}}
           Wis filters
         </button>
       </div>
@@ -219,7 +219,7 @@
                 <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                   <td class="py-2 text-center text-xs text-red-400">
                     {{#if row.case.isCancelled}}
-                      {{svg-jar "heroicons-sm-ban" class="block m-auto h-5 w-5"}}
+                      {{svg-jar "prohibited-line" class="block m-auto h-5 w-5 fill-current"}}
                     {{/if}}
                   </td>
                   <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
@@ -237,7 +237,7 @@
                   <td class="px-6 py-4 text-sm font-medium text-gray-900">
                     <div class="flex">
                       {{#if row.building}}
-                        {{svg-jar "heroicons-md-office-building" class="mr-1 flex-none h-5 w-5 text-gray-400"}}
+                        {{svg-jar "building-4-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
                         <div class="space-y-1">
                           {{#if row.building.name}}
                             <div>

@@ -16,13 +16,13 @@
             <button type="button"
               {{on "click" @onDelete}}
               class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "heroicons-md-trash" class="h-6 w-6"}}
+              {{svg-jar "delete-bin-line" class="h-6 w-6 fill-current"}}
             </button>
           {{/if}}
           <button type="button"
             {{on "click" this.closeEdit}}
             class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
+            {{svg-jar "logout-box-r-line" class="h-6 w-6 fill-current"}}
             <EmberTooltip @text="Sluiten" />
           </button>
         {{else}}
@@ -30,7 +30,7 @@
             <button type="button"
               {{on "click" this.openEdit}}
               class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
+              {{svg-jar "pencil-line" class="h-6 w-6 fill-current"}}
             </button>
           {{/unless}}
         {{/if}}

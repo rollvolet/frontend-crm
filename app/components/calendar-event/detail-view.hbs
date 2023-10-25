@@ -10,7 +10,7 @@
       <div class="flex justify-between items-center">
         <div class="flex flex-row items-center">
           <div class="flex-none">
-            {{svg-jar "heroicons-md-calendar" class="h-5 w-5 text-gray-500"}}
+            {{svg-jar "calendar-event-line" class="h-5 w-5 text-gray-500 fill-current"}}
           </div>
           <div class="ml-3 text-lg font-semibold text-gray-600">
             {{capitalize @title}}
@@ -22,9 +22,9 @@
               {{on "click" (perform this.synchronize)}}
               class="text-gray-500 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
               {{#if this.synchronize.isRunning}}
-                {{svg-jar "heroicons-md-refresh" class="animate-spin text-blue-500 h-5 w-5"}}
+                {{svg-jar "loop-right-line" class="animate-spin text-blue-500 h-5 w-5 fill-current"}}
               {{else}}
-                {{svg-jar "heroicons-md-refresh" class="h-5 w-5"}}
+                {{svg-jar "loop-right-line" class="h-5 w-5 fill-current"}}
               {{/if}}
               <EmberTooltip @text="Stuur wijzigingen naar agenda" @side="bottom" />
             </button>
@@ -56,7 +56,7 @@
       <div class="flex justify-between items-center">
         <div class="flex flex-row items-center">
           <div class="flex-none">
-            {{svg-jar "heroicons-md-calendar" class="h-5 w-5 text-gray-500"}}
+            {{svg-jar "calendar-event-line" class="h-5 w-5 text-gray-500 fill-current"}}
           </div>
           <div class="ml-3 text-lg font-semibold text-gray-600">
             {{capitalize @title}}

@@ -16,7 +16,7 @@
         {{else}}
           {{#if @model.isBooked}}
             <span class="ml-2 items-center inline-flex text-xs text-blue-800">
-              {{svg-jar "heroicons-md-clipboard-check" class="shrink-0 h-5 w-5"}}
+              {{svg-jar "file-lock-line" class="shrink-0 h-5 w-5 fill-current"}}
               <EmberTooltip @text="Geboekt" @side="bottom" />
             </span>
           {{/if}}
@@ -27,7 +27,7 @@
           <button type="button"
             {{on "click" this.closeEdit}}
             class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "heroicons-md-logout" class="h-6 w-6"}}
+            {{svg-jar "logout-box-r-line" class="h-6 w-6 fill-current"}}
             <EmberTooltip @text="Sluiten" />
           </button>
         {{else}}
@@ -44,7 +44,7 @@
             <button type="button"
               {{on "click" this.openEdit}}
               class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "heroicons-md-pencil" class="h-6 w-6"}}
+              {{svg-jar "pencil-line" class="h-6 w-6 fill-current"}}
             </button>
           {{/unless}}
         {{/if}}
@@ -141,7 +141,7 @@
                   <button type="button"
                     class="ml-2 text-gray-500 text-sm hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-200"
                     {{on "click" this.downloadProductionTicket}}>
-                    {{svg-jar "heroicons-md-cloud-download" class="h-5 w-5"}}
+                    {{svg-jar "download-cloud-2-line" class="h-5 w-5 fill-current"}}
                     <EmberTooltip @text="Productiebon bekijken" />
                   </button>
                 {{/if}}
@@ -151,9 +151,9 @@
           <Util::DetailItem @label="Techniekers" {{on "click" this.openWorkingHoursModal}} class="cursor-pointer">
             {{#if this.technicianNames.length}}
               {{join ", " this.technicianNames}}
-              {{svg-jar "heroicons-sm-information-circle" class="h-5 w-5 text-gray-400 inline"}}
+              {{svg-jar "information-fill" class="h-5 w-5 text-gray-400 inline fill-current"}}
             {{else}}
-              {{svg-jar "heroicons-sm-plus-circle" class="h-5 w-5 text-gray-400 inline"}}
+              {{svg-jar "add-line-circle" class="h-5 w-5 text-gray-400 inline fill-current"}}
             {{/if}}
           </Util::DetailItem>
         </div>

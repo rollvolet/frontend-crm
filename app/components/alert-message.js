@@ -19,13 +19,13 @@ export default class AlertMessageComponent extends Component {
 
   get icon() {
     if (this.level == 'error') {
-      return 'heroicons-sm-x-circle';
+      return 'close-circle-fill';
     } else if (this.level == 'warning') {
-      return 'heroicons-sm-exclamation';
+      return 'alert-fill';
     } else if (this.level == 'success') {
-      return 'heroicons-sm-check-circle';
+      return 'checkbox-circle-fill';
     } else {
-      return 'heroicons-sm-information-circle';
+      return 'information-fill';
     }
   }
 }

@@ -4,7 +4,7 @@
       <label for={{this.elementId}} class="block text-sm font-medium text-gray-700">
         {{@label}}
       </label>
-      {{svg-jar "heroicons-md-cog" class="h-4 w-4 text-blue-500 animate-spin"}}
+      {{svg-jar "settings-3-line" class="h-4 w-4 text-blue-500 animate-spin fill-current"}}
     </div>
   {{else if @onCancel}}
     <button type="button"
@@ -14,7 +14,7 @@
         {{@label}}
       </label>
       <span class="h-4 w-4 group-focus:text-red-400">
-        {{svg-jar "heroicons-md-x-circle" class="h-4 w-4"}}
+        {{svg-jar "close-circle-line" class="h-4 w-4 fill-current"}}
       </span>
     </button>
   {{else}}
@@ -47,7 +47,7 @@
         {{@label}}
       </dt>
       <span class="h-4 w-4 invisible group-hover:visible group-focus:text-red-400">
-        {{svg-jar "heroicons-md-pencil" class="h-4 w-4"}}
+        {{svg-jar "pencil-line" class="h-4 w-4 fill-current"}}
       </span>
     </button>
   {{/if}}

@@ -38,7 +38,7 @@
               {{on "click" (toggle "isOrdered" offerline)}}>
               <div class="flex space-x-4 items-start">
                 <div>
-                  {{svg-jar (if offerline.isOrdered "checkbox-checked" "checkbox-intermediate")
+                  {{svg-jar (if offerline.isOrdered "checkbox-line" "checkbox-intermediate-line")
                       class=(if offerline.isOrdered "h-6 w-6 text-red-600" "h-6 w-6 text-gray-300")}}
                 </div>
                 <div>
@@ -75,14 +75,14 @@
               disabled="disabled"
               class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-gray-400 bg-gray-100">
               Ga verder
-              {{svg-jar "heroicons-md-chevron-right" class="ml-2 -mr-1 h-5 w-5"}}
+              {{svg-jar "arrow-right-s-line" class="ml-2 -mr-1 h-5 w-5 fill-current"}}
             </button>
           {{else}}
             <button type="button"
               class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
               {{on "click" (perform this.createOrder)}}>
               Ga verder
-              {{svg-jar "heroicons-md-chevron-right" class="ml-2 -mr-1 h-5 w-5"}}
+              {{svg-jar "arrow-right-s-line" class="ml-2 -mr-1 h-5 w-5 fill-current"}}
             </button>
           {{/if}}
         </div>
@@ -100,7 +100,7 @@
     <:body>
     <div class="sm:flex sm:items-start">
       <div class="mx-auto shrink-0 flex flex-none items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-        {{svg-jar "heroicons-md-exclamation" class="h-6 w-6 text-red-600"}}
+        {{svg-jar "alert-fill" class="h-6 w-6 text-red-600 fill-current"}}
       </div>
       <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
         <h3 class="text-lg leading-6 font-medium text-gray-900">

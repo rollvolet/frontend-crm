@@ -10,7 +10,7 @@
             <button type="button"
               class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
               {{on "click" @onMoveUp}}>
-              {{svg-jar "heroicons-md-arrow-sm-up" class="h-5 w-5"}}
+              {{svg-jar "arrow-up-line" class="h-5 w-5 fill-current"}}
               <EmberTooltip @text="Verplaats omhoog" />
             </button>
           {{/if}}
@@ -18,7 +18,7 @@
             <button type="button"
               class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
               {{on "click" @onMoveDown}}>
-              {{svg-jar "heroicons-md-arrow-sm-down" class="h-5 w-5"}}
+              {{svg-jar "arrow-down-line" class="h-5 w-5 fill-current"}}
               <EmberTooltip @text="Verplaats omlaag" />
             </button>
           {{/if}}
@@ -26,7 +26,7 @@
         <button type="button"
           class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
           {{on "click" (perform this.copyOfferline)}}>
-          {{svg-jar "heroicons-md-duplicate" class="h-5 w-5"}}
+          {{svg-jar "file-copy-line" class="h-5 w-5 fill-current"}}
           <EmberTooltip @text="Lijn kopiëren" />
         </button>
       {{/unless}}
@@ -72,12 +72,12 @@
         <button type="button"
           class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
           {{on "click" @onDelete}}>
-          {{svg-jar "heroicons-md-trash" class="h-5 w-5"}}
+          {{svg-jar "delete-bin-line" class="h-5 w-5 fill-current"}}
         </button>
         <button type="button"
           class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
           {{on "click" this.closeEdit}}>
-          {{svg-jar "heroicons-md-logout" class="h-5 w-5"}}
+          {{svg-jar "logout-box-r-line" class="h-5 w-5 fill-current"}}
           <EmberTooltip @text="Sluiten" />
         </button>
       </div>
@@ -99,7 +99,7 @@
             <button type="button"
               class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
               {{on "click" this.openEdit}}>
-              {{svg-jar "heroicons-md-pencil" class="h-5 w-5"}}
+              {{svg-jar "pencil-line" class="h-5 w-5 fill-current"}}
             </button>
           </div>
         {{/unless}}
@@ -109,7 +109,7 @@
   <div class="px-4 py-2 bg-gray-50 border-t rounded-b border-gray-200 overflow-auto">
     <div {{on "click" this.toggleCalculation}} role="button" class="mt-1 flex items-center justify-between">
       <div class="flex items-center text-xs tracking-wider text-gray-600 font-medium uppercase">
-        {{svg-jar "heroicons-md-calculator" class="text-gray-400 h-5 w-5"}}
+        {{svg-jar "calculator-line" class="text-gray-400 h-5 w-5 fill-current"}}
         <div class="ml-1">
           Rekenblad
         </div>
@@ -118,7 +118,7 @@
         <button type="button"
           class="p-1 rounded-full {{if this.isShownCalculation "bg-gray-100 text-red-400" "text-gray-400 hover:text-red-400 hover:bg-gray-100"}} focus:outline-none focus:ring-2 focus:ring-red-200">
           {{svg-jar
-              (if this.isShownCalculation "heroicons-md-chevron-up" "heroicons-md-chevron-down")
+              (if this.isShownCalculation "arrow-up-s-line" "arrow-down-s-line")
               class="h-5 w-5"}}
         </button>
       {{/unless}}
@@ -177,7 +177,7 @@
           <button type="button"
             class="flex text-sm text-gray-600 font-medium underline hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
             {{on "click" (perform this.addCalculationLine)}}>
-            {{svg-jar "heroicons-sm-plus" class="-ml-1 h-5 w-5"}}
+            {{svg-jar "add-line" class="-ml-1 h-5 w-5 fill-current"}}
             <span>Rekenlijn toevoegen</span>
           </button>
         </div>

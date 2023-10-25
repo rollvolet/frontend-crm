@@ -11,13 +11,13 @@
               <button type="button"
                 {{on "click" (perform this.unlinkCustomer)}}
                 class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                {{svg-jar "heroicons-md-user-remove" class="h-6 w-6"}}
+                {{svg-jar "user-unfollow-line" class="h-6 w-6 fill-current"}}
                 <EmberTooltip @text="Ontkoppel klant" @side="bottom" />
               </button>
             {{/if}}
             <LinkTo @route="main.customers.edit.index" @model={{@model.customer.id}}
               class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "heroicons-md-external-link" class="h-6 w-6"}}
+              {{svg-jar "external-link-line" class="h-6 w-6 fill-current"}}
               <EmberTooltip @text="Open klant" @side="bottom" />
             </LinkTo>
           </div>
@@ -67,9 +67,9 @@
                 <div>
                   <button class="text-gray-400 text-sm" type="button" {{on "click" this.toggleComment}}>
                     {{#if this.isCommentExpanded}}
-                      Verbergen {{svg-jar "heroicons-sm-chevron-up" class="h-4 w-4 inline"}}
+                      Verbergen {{svg-jar "arrow-up-s-line" class="h-4 w-4 inline fill-current"}}
                     {{else}}
-                      Tonen {{svg-jar "heroicons-sm-chevron-down" class="h-4 w-4 inline"}}
+                      Tonen {{svg-jar "arrow-down-s-line" class="h-4 w-4 inline fill-current"}}
                     {{/if}}
                   </button>
                 </div>
@@ -88,9 +88,9 @@
                 <div>
                   <button class="text-gray-400 text-sm" type="button" {{on "click" this.toggleMemo}}>
                     {{#if this.isMemoExpanded}}
-                      Verbergen {{svg-jar "heroicons-sm-chevron-up" class="h-4 w-4 inline"}}
+                      Verbergen {{svg-jar "arrow-up-s-line" class="h-4 w-4 inline fill-current"}}
                     {{else}}
-                      Tonen {{svg-jar "heroicons-sm-chevron-down" class="h-4 w-4 inline"}}
+                      Tonen {{svg-jar "arrow-down-s-line" class="h-4 w-4 inline fill-current"}}
                     {{/if}}
                   </button>
                 </div>
@@ -131,14 +131,14 @@
                     <button type="button"
                       {{on "click" this.toggleBuildingEdit}}
                       class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      {{svg-jar "heroicons-md-x" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
+                      {{svg-jar "close-line" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400 fill-current"}}
                       <span>Annuleer</span>
                     </button>
                   {{else}}
                     <button type="button"
                       {{on "click" this.toggleBuildingEdit}}
                       class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      {{svg-jar "heroicons-md-cursor-click" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
+                      {{svg-jar "cursor-line" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400 fill-current"}}
                       <span>Selecteer</span>
                     </button>
                   {{/if}}
@@ -176,14 +176,14 @@
                     <button type="button"
                       {{on "click" this.toggleContactEdit}}
                       class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      {{svg-jar "heroicons-md-x" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
+                      {{svg-jar "close-line" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400 fill-current"}}
                       <span>Annuleer</span>
                     </button>
                   {{else}}
                     <button type="button"
                       {{on "click" this.toggleContactEdit}}
                       class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      {{svg-jar "heroicons-md-cursor-click" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400"}}
+                      {{svg-jar "cursor-line" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400 fill-current"}}
                       <span>Selecteer</span>
                     </button>
                   {{/if}}
@@ -231,13 +231,13 @@
             {{#if @model.request}}
               <LinkTo @route="main.case.request.edit.customer" @models={{array @model.id @model.request.id}}
                 class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                {{svg-jar "heroicons-md-link" class="h-6 w-6"}}
+                {{svg-jar "link" class="h-6 w-6 fill-current"}}
                 <EmberTooltip @text="Koppel klant" @side="bottom" />
               </LinkTo>
             {{else if @model.intervention}}
               <LinkTo @route="main.case.intervention.edit.customer" @models={{array @model.id @model.intervention.id}}
                 class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                {{svg-jar "heroicons-md-link" class="h-6 w-6"}}
+                {{svg-jar "link" class="h-6 w-6 fill-current"}}
                 <EmberTooltip @text="Koppel klant" @side="bottom" />
               </LinkTo>
             {{/if}}

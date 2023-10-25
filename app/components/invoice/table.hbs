@@ -88,7 +88,7 @@
                 <tr>
                   <td class="px-2 py-4 text-sm text-gray-500">
                     {{#let (if row.isCreditNote "text-blue-600" (if row.isPaid "text-green-600" "text-red-600")) as |color|}}
-                      {{svg-jar "heroicons-sm-currency-euro" class=(concat "h-4 w-4 mx-auto " color)}}
+                      {{svg-jar "money-euro-circle-fill" class=(concat "h-4 w-4 mx-auto  fill-current " color)}}
                     {{/let}}
                   </td>
                   <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
