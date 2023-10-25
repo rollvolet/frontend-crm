@@ -10,6 +10,9 @@ module.exports = function (defaults) {
     'ember-simple-auth': {
       useSessionSetupMethod: true,
     },
+    svgJar: {
+      sourceDirs: ['public', 'node_modules/remixicon/icons'],
+    },
   });
 
   return app.toTree();
