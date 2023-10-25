@@ -1,0 +1,13 @@
+<div ...attributes>
+  {{#if @label}}
+    <label for={{this.fieldId}} class="block text-sm font-medium text-gray-700">
+      {{@label}}
+    </label>
+  {{/if}}
+  <input
+    id={{this.fieldId}}
+    type="text"
+    value={{@value}}
+    class="{{if @label "mt-1"}} shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+    {{on "input" @onInput}} />
+</div>

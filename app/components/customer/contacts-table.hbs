@@ -1,96 +1,44 @@
 <div class="space-y-4" {{did-update (perform this.search this.filter) @customer}}>
-  <div class="mx-4 sm:mx-6 lg:mx-8 space-y-4 xl:flex xl:flex-row-reverse xl:space-x-8 xl:space-x-reverse xl:items-start xl:space-y-0">
-    <div class="text-right xl:mt-4">
-      <button
-        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200" type="button" {{on "click" @onCreateNew}}>
-        {{svg-jar "add-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
-        Nieuw
-      </button>
-    </div>
-    <div class="p-4 lg:px-6 space-y-4 lg:flex lg:items-start lg:space-x-12 lg:space-y-0 bg-gray-50 rounded">
-      <div class="flex items-center">
-        {{svg-jar "search-line" class="shrink-0 mr-2 h-4 w-4 text-gray-500 fill-current"}}
-        <h4 class="text-gray-700 text-sm uppercase tracking-wide">
-          Zoeken
-        </h4>
-      </div>
+  <div class="mx-4 space-y-4 xl:flex xl:flex-row-reverse xl:gap-x-2 xl:space-x-reverse xl:items-center xl:space-y-0">
+    <button
+      class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200" type="button" {{on "click" @onCreateNew}}>
+      {{svg-jar "add-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
+      Nieuw
+    </button>
+    <Filter::Panel @onReset={{this.resetFilters}} as |Fields|>
       <div class="grid sm:grid-cols-5 lg:grid-cols-7 gap-4">
-        <div class="sm:col-span-2 xl:col-span-1">
-          <label for="dt-filter-number" class="block text-sm font-medium text-gray-700">
-            Nummer
-          </label>
-          <input
-            id="dt-filter-number"
-            type="text"
-            value={{this.filter.number}}
-            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            {{on "input" (perform this.debounceFilter "number")}} />
-        </div>
-        <div class="sm:col-span-2">
-          <label for="dt-filter-contact-name" class="block text-sm font-medium text-gray-700">
-            Naam
-          </label>
-          <input
-            id="dt-filter-contact-name"
-            type="text"
-            value={{this.filter.name}}
-            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            {{on "input" (perform this.debounceFilter "name")}} />
-        </div>
-        <div class="sm:col-span-3 lg:col-start-1 lg:col-span-2">
-          <label for="dt-filter-contact-street" class="block text-sm font-medium text-gray-700">
-            Straat
-          </label>
-          <input
-            id="dt-filter-contact-street"
-            type="text"
-            value={{this.filter.street}}
-            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            {{on "input" (perform this.debounceFilter "street")}} />
-        </div>
-        <div class="">
-          <label for="dt-filter-contact-postal-code" class="block text-sm font-medium text-gray-700">
-            Postcode
-          </label>
-          <input
-            id="dt-filter-contact-postal-code"
-            type="text"
-            value={{this.filter.postalCode}}
-            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            {{on "input" (perform this.debounceFilter "postalCode")}} />
-        </div>
-        <div class="sm:col-span-2">
-          <label for="dt-filter-contact-city" class="block text-sm font-medium text-gray-700">
-            Gemeente
-          </label>
-          <input
-            id="dt-filter-contact-city"
-            type="text"
-            value={{this.filter.city}}
-            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            {{on "input" (perform this.debounceFilter "city")}} />
-        </div>
-        <div class="sm:col-span-2">
-          <label for="dt-filter-contact-phone" class="block text-sm font-medium text-gray-700">
-            Telefoon
-          </label>
-          <input
-            id="dt-filter-contact-phone"
-            type="text"
-            value={{this.filter.telephone}}
-            class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-            {{on "input" (perform this.debounceFilter "telephone")}} />
-        </div>
+        <Fields.TextInput
+          @label="Nummer"
+          @value={{this.filter.number}}
+          @onInput={{perform this.debounceFilter "number"}}
+          class="sm:col-span-2 xl:col-span-1" />
+        <Fields.TextInput
+          @label="Naam"
+          @value={{this.filter.visitor}}
+          @onInput={{perform this.debounceFilter "name"}}
+          class="sm:col-span-2" />
+        <Fields.TextInput
+          @label="Straat"
+          @value={{this.filter.street}}
+          @onInput={{perform this.debounceFilter "street"}}
+          class="sm:col-span-3 lg:col-start-1 lg:col-span-2" />
+        <Fields.TextInput
+          @label="Postcode"
+          @value={{this.filter.postalCode}}
+          @onInput={{perform this.debounceFilter "postalCode"}}
+          class="col-span-1" />
+        <Fields.TextInput
+          @label="Gemeente"
+          @value={{this.filter.city}}
+          @onInput={{perform this.debounceFilter "city"}}
+          class="sm:col-span-2" />
+        <Fields.TextInput
+          @label="Telefoon"
+          @value={{this.filter.telephone}}
+          @onInput={{perform this.debounceFilter "telephone"}}
+          class="sm:col-span-2" />
       </div>
-      <div class="shrink-0">
-        <button type="button"
-          onClick={{this.resetFilters}}
-        class="inline-flex items-center text-sm text-gray-700 underline lg:no-underline hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-          {{svg-jar "filter-line" class="-ml-0.5 mr-2 h-4 w-4 text-gray-400 fill-current"}}
-          Wis filters
-        </button>
-      </div>
-    </div>
+    </Filter::Panel>
   </div>
 
   <div class="-my-2 overflow-x-auto">
