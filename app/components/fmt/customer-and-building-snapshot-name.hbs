@@ -1,24 +1,26 @@
 <div class="flex">
-  {{#if @case.building}}
+  {{#if @model.building}}
     <div class="space-y-1">
       <div class="flex items-base">
         {{svg-jar "building-2-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
-        <Fmt::BuildingName @model={{@case.building}} />
+        <Fmt::BuildingSnapshotName @model={{@model.building}} />
       </div>
       <div class="ml-6 text-gray-400 text-xs">
-        <Fmt::CustomerName @model={{@case.customer}} />
+        {{@model.customer.name}}
       </div>
     </div>
   {{else}}
-    {{#if @case.customer}}
+    {{#if @model.customer}}
       <div class="flex items-base">
         {{svg-jar "user-3-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
-        <Fmt::CustomerName @model={{@case.customer}} />
+        <div>
+          {{@model.customer.name}}
+        </div>
       </div>
     {{else}}
       <div class="flex items-center">
         {{svg-jar "code-s-slash-line" class="mr-2 flex-none h-5 w-5 text-gray-400 fill-current"}}
-        <span class="text-gray-400 italic">Geen klant gekoppeld</span>
+        <div class="italic">Geen klant gekoppeld</div>
       </div>
     {{/if}}
   {{/if}}

@@ -88,13 +88,6 @@
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                P.Code
-              </DataTable::Th>
-              <DataTable::Th
-                @field="building.address.city"
-                @currentSort={{this.sort}}
-                @onUpdateSort={{this.setSort}}
-                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Gemeente
               </DataTable::Th>
               <th class="px-6 py-3 bg-gray-50"></th>
@@ -124,9 +117,6 @@
                 <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-32 bg-gray-300"></div>
-                </td>
                 <td>
                 </td>
               </tr>
@@ -152,9 +142,6 @@
                 <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
-                <td class="py-2 px-4">
-                  <div class="h-8 w-24 bg-gray-300"></div>
-                </td>
                 <td>
                 </td>
               </tr>
@@ -179,31 +166,13 @@
                     {{row.case.request.visitor.firstName}}
                   </td>
                   <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                    <div class="flex">
-                      {{#if row.building}}
-                        {{svg-jar "building-4-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
-                        <div class="space-y-1">
-                          {{#if row.building.name}}
-                            <div>
-                              {{row.building.name}}
-                            </div>
-                          {{else}}
-                            <div class="text-gray-400 italic font-normal">
-                              Naamloos
-                            </div>
-                          {{/if}}
-                        </div>
-                      {{/if}}
-                    </div>
+                    <Fmt::BuildingSnapshotName @model={{row.building}} />
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
                     <div class="whitespace-pre-wrap">{{row.building.address.street}}</div>
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.building.address.postalCode}}
-                  </td>
-                  <td class="px-6 py-4 text-sm text-gray-500">
-                    {{row.building.address.city}}
+                    {{row.building.address.postalCode}} {{row.building.address.city}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <LinkTo @route="main.invoices.edit" @model={{row.id}}

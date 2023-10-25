@@ -1,5 +1,5 @@
 <div class="whitespace-pre-wrap">{{@model.street}}</div>
 <div>{{@model.postalCode}} {{@model.city}}</div>
-{{#if @model.postalCode}} {{!-- Don't show country if no other details are available --}}
+{{#if this.showCountry}}
   <div>{{@model.country.name}}</div>
 {{/if}}

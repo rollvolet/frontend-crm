@@ -56,13 +56,7 @@
                   Naam
                 </th>
                 <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Straat
-                </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  P.Code
-                </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Gemeente
+                  Adres
                 </th>
                 <th class="px-6 py-3 bg-gray-200 rounded-tr-lg"></th>
               </tr>
@@ -86,12 +80,6 @@
                     <div class="h-8 w-28 bg-gray-300"></div>
                   </td>
                   <td class="py-2 px-4">
-                    <div class="h-8 w-36 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-12 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
                     <div class="h-8 w-32 bg-gray-300"></div>
                   </td>
                   <td>
@@ -112,12 +100,6 @@
                   </td>
                   <td class="py-2 px-4">
                     <div class="h-8 w-36 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-48 bg-gray-300"></div>
-                  </td>
-                  <td class="py-2 px-4">
-                    <div class="h-8 w-12 bg-gray-300"></div>
                   </td>
                   <td class="py-2 px-4">
                     <div class="h-8 w-24 bg-gray-300"></div>
@@ -143,19 +125,11 @@
                       <Fmt::Date @value={{row.invoiceDate}} />
                     </td>
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                      <Fmt::CustomerAndBuildingName @case={{row.case}} />
+                      <Fmt::CustomerAndBuildingSnapshotName @model={{row}} />
                     </td>
-                    {{#let (if row.building row.building.address row.customer.address) as |address|}}
-                      <td class="px-6 py-4 text-sm text-gray-500">
-                        <div class="whitespace-pre-wrap">{{address.street}}</div>
-                      </td>
-                      <td class="px-6 py-4 text-sm text-gray-500">
-                        {{address.postalCode}}
-                      </td>
-                      <td class="px-6 py-4 text-sm text-gray-500">
-                        {{address.city}}
-                      </td>
-                    {{/let}}
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <Address::DetailView @model={{or row.building.address row.customer.address}} />
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <LinkTo @route="main.invoices.edit" @model={{row.id}}
                         class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
