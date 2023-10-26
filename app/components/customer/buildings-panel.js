@@ -7,7 +7,7 @@ import { warn } from '@ember/debug';
 
 export default class BuildingsPanel extends Component {
   @service store;
-  @service configuration;
+  @service codelist;
   @service sequence;
 
   @tracked selectedBuilding = null;
@@ -15,7 +15,7 @@ export default class BuildingsPanel extends Component {
 
   async createNewBuilding() {
     const address = this.store.createRecord('address', {
-      country: this.configuration.defaultCountry,
+      country: this.codelist.defaultCountry,
     });
     const [position] = await Promise.all([
       this.sequence.fetchNextBuildingPosition(this.args.customer),
@@ -26,7 +26,7 @@ export default class BuildingsPanel extends Component {
       printInFront: true,
       printPrefix: true,
       printSuffix: true,
-      language: this.configuration.defaultLanguage,
+      language: this.codelist.defaultLanguage,
       address,
       customer: this.args.customer,
     });

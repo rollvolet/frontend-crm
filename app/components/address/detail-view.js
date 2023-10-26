@@ -2,10 +2,10 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 
 export default class AddressDetailViewComponent extends Component {
-  @service configuration;
+  @service codelist;
 
   get isDefaultCountry() {
-    return this.args.model?.get('country.id') == this.configuration.defaultCountry?.id;
+    return this.args.model?.get('country.id') == this.codelist.defaultCountry?.id;
   }
 
   get showCountry() {

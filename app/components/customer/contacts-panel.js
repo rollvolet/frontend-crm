@@ -7,7 +7,7 @@ import { warn } from '@ember/debug';
 
 export default class ContactsPanel extends Component {
   @service store;
-  @service configuration;
+  @service codelist;
   @service sequence;
 
   @tracked selectedContact = null;
@@ -15,7 +15,7 @@ export default class ContactsPanel extends Component {
 
   async createNewContact() {
     const address = this.store.createRecord('address', {
-      country: this.configuration.defaultCountry,
+      country: this.codelist.defaultCountry,
     });
     const [position] = await Promise.all([
       this.sequence.fetchNextContactPosition(this.args.customer),
@@ -26,7 +26,7 @@ export default class ContactsPanel extends Component {
       printInFront: true,
       printPrefix: true,
       printSuffix: true,
-      language: this.configuration.defaultLanguage,
+      language: this.codelist.defaultLanguage,
       address,
       customer: this.args.customer,
     });

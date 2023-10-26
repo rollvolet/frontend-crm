@@ -8,7 +8,7 @@ export default class InterventionRequestPanelComponent extends Component {
   @service router;
   @service store;
   @service userInfo;
-  @service configuration;
+  @service codelist;
   @service sequence;
 
   requestData = trackedFunction(this, async () => {
@@ -30,7 +30,7 @@ export default class InterventionRequestPanelComponent extends Component {
       this.args.model.employee,
       this.sequence.fetchNextInterventionNumber(),
     ]);
-    const wayOfEntry = this.configuration.defaultWayOfEntry;
+    const wayOfEntry = this.codelist.defaultWayOfEntry;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
 
     const request = this.store.createRecord('request', {

@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import { later } from '@ember/runloop';
 
 export default class MainController extends Controller {
-  @service configuration;
+  @service codelist;
   @service router;
   @service session;
   @service userInfo;
@@ -19,11 +19,11 @@ export default class MainController extends Controller {
   }
 
   get isLoading() {
-    return this.configuration.preloadStaticLists.isRunning;
+    return this.codelist.load.isRunning;
   }
 
   get applicationInitializationFailed() {
-    return this.configuration.preloadStaticLists.isError;
+    return this.codelist.load.isError;
   }
 
   get isIndexPage() {

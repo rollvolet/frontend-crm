@@ -5,7 +5,7 @@ import { tracked } from '@glimmer/tracking';
 
 export default class TelephoneTableComponent extends Component {
   @service store;
-  @service configuration;
+  @service codelist;
 
   @tracked scope = this.args.scope || 'customer'; // one of 'customer', 'contact', 'building'
   @tracked telephones = [];
@@ -41,8 +41,8 @@ export default class TelephoneTableComponent extends Component {
     const position = this.telephones.length
       ? Math.max(...this.telephones.map((l) => l.position))
       : 0;
-    const country = this.configuration.defaultCountry;
-    const telephoneType = this.configuration.defaultTelephoneType;
+    const country = this.codelist.defaultCountry;
+    const telephoneType = this.codelist.defaultTelephoneType;
     const telephone = this.store.createRecord('telephone', {
       position: position + 1,
       [`${this.scope}`]: this.args.model,

@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { createCase } from '../../../utils/case-helpers';
 
 export default class MainRequestsNewRoute extends Route {
-  @service configuration;
+  @service codelist;
   @service userInfo;
   @service sequence;
   @service store;
@@ -11,8 +11,8 @@ export default class MainRequestsNewRoute extends Route {
 
   async model() {
     const employee = this.userInfo.employee;
-    const wayOfEntry = this.configuration.defaultWayOfEntry;
-    const deliveryMethod = this.configuration.defaultDeliveryMethod;
+    const wayOfEntry = this.codelist.defaultWayOfEntry;
+    const deliveryMethod = this.codelist.defaultDeliveryMethod;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
     const number = await this.sequence.fetchNextRequestNumber();
 

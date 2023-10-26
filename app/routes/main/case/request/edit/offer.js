@@ -5,7 +5,7 @@ import getDocumentLanguageCode from '../../../../../utils/get-document-language-
 import { updateCalendarEvent } from '../../../../../utils/calendar-helpers';
 
 export default class MainCaseRequestEditOfferRoute extends Route {
-  @service configuration;
+  @service codelist;
   @service userInfo;
   @service sequence;
   @service store;
@@ -14,7 +14,7 @@ export default class MainCaseRequestEditOfferRoute extends Route {
   async beforeModel() {
     const request = this.modelFor('main.case.request.edit');
     if (!request.visitor) {
-      const employee = this.userInfo.employee || this.configuration.defaultVisitor;
+      const employee = this.userInfo.employee || this.codelist.defaultVisitor;
       if (employee) {
         request.visitor = employee.firstName;
         await request.save();

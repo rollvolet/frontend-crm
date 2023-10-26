@@ -11,8 +11,7 @@ export default class ConfigurationService extends Service {
   @service store;
 
   @dropTask
-  *preloadStaticLists() {
-    debug('Preloading static lists');
+  *load() {
     const entities = [
       'country',
       'telephone-type',
