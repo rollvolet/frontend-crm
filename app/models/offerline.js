@@ -9,8 +9,9 @@ export default class OfferlineModel extends ValidatedModel {
     currency: new Validator('presence', {
       presence: true,
     }),
-    // Enable validation once https://github.com/offirgolan/ember-cp-validations/issues/651 is fixed
-    // vatRate: new Validator('presence', { presence: true })
+    vatRate: new Validator('presence', {
+      presence: true,
+    }),
   };
 
   @attr position;

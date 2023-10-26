@@ -18,19 +18,24 @@ async function createCase(properties) {
     number = invoice.number;
     namespace = 'F';
   }
-
-  const structuredIdentifier = store.createRecord('structured-identifier', {
-    identifier: number,
-    namespace,
-  });
-
-  await structuredIdentifier.save();
-
   properties.identifier = `${namespace}-${number}`;
-  const _case = store.createRecord('case', properties);
-  await _case.save();
 
-  return _case;
+  const _case = store.createRecord('case', properties);
+  const { validations } = await _case.validate();
+  if (validations.isValid) {
+    await _case.save();
+
+    const structuredIdentifier = store.createRecord('structured-identifier', {
+      identifier: number,
+      namespace,
+      case: _case,
+    });
+    await structuredIdentifier.save();
+
+    return _case;
+  } else {
+    throw new Error(`Invalid case. Unable to save.\n${validations.messages.join('\n')}`);
+  }
 }
 
 async function cancelCase(_case, reason, user) {

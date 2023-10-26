@@ -1,9 +1,24 @@
-import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
+import { attr, belongsTo, hasMany } from '@ember-data/model';
+import ValidatedModel, { Validator } from './validated-model';
 import constants from '../config/constants';
-
 const { CASE_STATUSES } = constants;
 
-export default class CaseModel extends Model {
+export default class CaseModel extends ValidatedModel {
+  validators = {
+    identifier: new Validator('presence', {
+      presence: true,
+    }),
+    status: new Validator('presence', {
+      presence: true,
+    }),
+    vatRate: new Validator('presence', {
+      presence: true,
+    }),
+    customer: new Validator('presence', {
+      presence: true,
+    }),
+  };
+
   @attr('string') uri;
   @attr('string') identifier;
   @attr('string', {

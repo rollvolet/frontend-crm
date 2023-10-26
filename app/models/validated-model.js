@@ -68,6 +68,13 @@ export class ValidationResult {
     return this.errors;
   }
 
+  get messages() {
+    const messages = Object.keys(this.attrs).map((attr) => {
+      return this.attrs[attr].map((error) => `[${attr}] ${error.message}`);
+    });
+    return messages.flat();
+  }
+
   createErrorMessage(type, value, options = {}) {
     if (!options.description) {
       options.description = Messages.defaultDescription;

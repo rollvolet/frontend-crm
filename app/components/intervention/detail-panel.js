@@ -129,6 +129,7 @@ export default class InterventionDetailPanelComponent extends Component {
 
   @task
   *createNewIntervention() {
+    this.closeOptionsMenu();
     const [customer, contact, building, vatRate, employee, origin, number] = yield Promise.all([
       this.case.customer,
       this.case.contact,
