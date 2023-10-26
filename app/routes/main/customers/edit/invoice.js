@@ -31,7 +31,6 @@ export default class MainCustomersEditInvoiceRoute extends Route {
       vatRate,
       invoice,
     });
-    await _case.save();
 
     return { case: _case, invoice };
   }
