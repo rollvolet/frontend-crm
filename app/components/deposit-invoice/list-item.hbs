@@ -231,16 +231,10 @@
       {{#if this.editMode}}
         <div class="mt-6 space-x-2 flex items-center justify-end">
           {{#unless @model.isMasteredByAccess}}
-            <button type="button"
-              {{on "click" (perform this.generateInvoiceDocument)}}
-              class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-              {{#if this.generateInvoiceDocument.isRunning}}
-                {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-4 w-14"}}
-              {{else}}
-                {{svg-jar "play-line" class="-ml-0.5 mr-2 h-4 w-4 fill-current"}}
-                Maken
-              {{/if}}
-            </button>
+            <Document::GenerateButton
+              @size="small"
+              @onClick={{perform this.generateInvoiceDocument}}
+              @isLoading={{this.generateInvoiceDocument.isRunning}} />
           {{/unless}}
 
           <Util::SaveStatus @model={{@model}} @task={{this.save}} />
@@ -261,23 +255,12 @@
             </button>
           </div>
           <div class="mt-2 space-x-0 space-y-2 flex flex-col sm:mt-0 sm:flex-none sm:flex-row sm:space-x-2 sm:space-y-0">
-            <button type="button"
-              {{on "click" this.downloadInvoiceDocument}}
-              class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-              {{svg-jar "eye-line" class="-ml-0.5 mr-2 h-4 w-4 fill-current"}}
-              Bekijken
-            </button>
+            <Document::ViewButton @size="small" @onClick={{this.downloadInvoiceDocument}} />
             {{#unless @model.isMasteredByAccess}}
-              <button type="button"
-                {{on "click" (perform this.generateInvoiceDocument)}}
-              class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-                {{#if this.generateInvoiceDocument.isRunning}}
-                  {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-4 w-14"}}
-                {{else}}
-                  {{svg-jar "play-line" class="-ml-0.5 mr-2 h-4 w-4 fill-current"}}
-                  Maken
-                {{/if}}
-              </button>
+              <Document::GenerateButton
+                @size="small"
+                @onClick={{perform this.generateInvoiceDocument}}
+                @isLoading={{this.generateInvoiceDocument.isRunning}} />
             {{/unless}}
             {{#unless @isDisabledEdit}}
               {{#unless @model.isCreditNote}}
