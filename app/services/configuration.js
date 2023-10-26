@@ -2,6 +2,7 @@ import Service, { inject as service } from '@ember/service';
 import { debug, warn } from '@ember/debug';
 import { all, dropTask } from 'ember-concurrency';
 import constants from '../config/constants';
+import { PAGE_SIZE } from '../config';
 
 const { COUNTRIES, CONCEPT_SCHEMES, LANGUAGES, TELEPHONE_TYPES, DELIVERY_METHODS, WAY_OF_ENTRIES } =
   constants;
@@ -32,12 +33,13 @@ export default class ConfigurationService extends Service {
     ];
     yield all([
       ...entities.map((type) => {
-        this.store.queryAll(type);
+        this.store.queryAll(type, { 'page[size]': PAGE_SIZE.CODELISTS });
       }),
       ...conceptSchemes.map((conceptScheme) => {
         this.store.queryAll('concept', {
           'filter[concept-schemes][:uri:]': conceptScheme,
           sort: 'position',
+          'page[size]': PAGE_SIZE.CODELISTS,
         });
       }),
     ]);

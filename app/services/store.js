@@ -41,11 +41,16 @@ export default class ExtendedStoreService extends Store {
 
   async queryAll(modelName, query, options) {
     query = query || {}; // eslint-disable-line no-param-reassign
-    const count = await this.count(modelName, query, options);
-    const batchSize = query.page?.size || 100;
+    let batchSize = query['page[size]'] || (query.page && query.page.size);
+    if (!batchSize) {
+      batchSize = 100;
+      query['page[size]'] = batchSize;
+    }
+    const firstBatch = await this.query(modelName, query, options);
+    const count = firstBatch.meta.count;
     const nbOfBatches = Math.ceil(count / batchSize);
     const batches = [];
-    for (let i = 0; i < nbOfBatches; i++) {
+    for (let i = 1; i < nbOfBatches; i++) {
       const queryForBatch = Object.assign({}, query, {
         'page[size]': batchSize,
         'page[number]': i,
@@ -56,7 +61,7 @@ export default class ExtendedStoreService extends Store {
 
     const results = await Promise.all(batches);
     return ArrayProxy.create({
-      content: results.map((result) => result.toArray()).flat(),
+      content: [firstBatch, ...results].map((result) => result.toArray()).flat(),
       meta: {
         count,
       },

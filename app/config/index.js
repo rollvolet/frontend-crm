@@ -1,4 +1,4 @@
 export const PAGE_SIZE = {
-  CODELISTS: 100,
+  CODELISTS: 500,
   AVERAGE_NUMBER_REPORTS: 100,
 };
