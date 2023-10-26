@@ -18,7 +18,7 @@ export default class MainCaseOrderEditDepositInvoicesController extends Controll
   @action
   updateList(depositInvoice) {
     this.newlyCreatedDepositInvoice = depositInvoice;
-    this.router.refresh();
+    this.router.refresh('main.case.order.edit.deposit-invoices');
   }
 
   @action

@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { PAGE_SIZE } from '../../../../../config';
 
 export default class MainCaseOrderEditDepositInvoicesRoute extends Route {
   @service store;
@@ -10,7 +11,7 @@ export default class MainCaseOrderEditDepositInvoicesRoute extends Route {
     const depositInvoices = await this.store.query('deposit-invoice', {
       sort: '-number',
       page: {
-        size: 1000, // we don't expect more than 1000 deposit invoices for 1 case
+        size: PAGE_SIZE.DEPOSIT_INVOICES_FOR_CASE,
       },
       include: 'case.vat-rate',
       'filter[case][:uri:]': _case.uri,
