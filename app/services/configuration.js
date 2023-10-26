@@ -10,14 +10,9 @@ const { COUNTRIES, CONCEPT_SCHEMES, LANGUAGES, TELEPHONE_TYPES, DELIVERY_METHODS
 export default class ConfigurationService extends Service {
   @service store;
 
-  constructor() {
-    super(...arguments);
-    debug('Preloading static lists');
-    this.preloadStaticLists.perform();
-  }
-
   @dropTask
   *preloadStaticLists() {
+    debug('Preloading static lists');
     const entities = [
       'country',
       'telephone-type',

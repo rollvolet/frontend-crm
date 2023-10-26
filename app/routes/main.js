@@ -4,14 +4,17 @@ import { inject as service } from '@ember/service';
 export default class MainRoute extends Route {
   @service session;
   @service userInfo;
+  @service configuration;
 
-  beforeModel(transition) {
+  async beforeModel(transition) {
     const isAuthenticated = this.session.requireAuthentication(transition, 'login');
 
     if (isAuthenticated) {
-      return this.userInfo.fetchUserInfo.perform();
-    } else {
-      return null;
+      // Non blocking requests. Loading state will be shown in template.
+      this.configuration.preloadStaticLists.perform();
+
+      // Blocking request
+      await this.userInfo.fetchUserInfo.perform();
     }
   }
 }
