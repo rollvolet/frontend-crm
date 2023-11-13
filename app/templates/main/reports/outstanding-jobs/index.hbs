@@ -145,13 +145,13 @@
               {{#each this.model.orders as |row|}}
                 <tr>
                   <td class="px-2 py-2 whitespace-nowrap text-left text-xs text-gray-500">
-                    <LinkTo @route="main.orders.edit" @model={{row.id}}
+                    <LinkTo @route="main.orders.edit" @model={{row.uuid}}
                       class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      AD{{format-request-number row.case.request.number}}
+                      {{format-case-number row.caseId}}
                     </LinkTo>
                   </td>
                   <td class="px-3 py-2 text-xs text-gray-500">
-                    {{row.case.request.visitor.firstName}}
+                    {{row.visitorName}}
                   </td>
                   <td class="px-3 py-2 text-xs font-medium text-gray-900">
                     <Fmt::Date @value={{row.orderDate}} />
@@ -159,29 +159,29 @@
                   <td class="px-3 py-2 text-xs font-medium">
                     <div>
                       <span class="text-gray-500">
-                        {{row.case.customer.number}}
+                        {{row.customer.number}}
                       </span>
                       <span class="text-gray-900">
-                        <Fmt::CustomerName @model={{row.case.customer}} />
+                        <Fmt::CustomerName @model={{row.customer}} />
                       </span>
                     </div>
                     <div class="text-gray-500 whitespace-nowrap">
-                      <Address::DetailView @model={{row.case.customer.address}} />
+                      <Address::DetailView @model={{row.customer}} />
                     </div>
                   </td>
                   <td class="px-3 py-2 text-xs text-gray-500">
                     <div class="text-gray-900">
-                      <Fmt::CustomerName @model={{row.case.building}} />
+                      <Fmt::CustomerName @model={{row.building}} />
                     </div>
                     <div class="text-gray-500 whitespace-nowrap">
-                      <Address::DetailView @model={{row.case.building.address}} />
+                      <Address::DetailView @model={{row.building}} />
                     </div>
                   </td>
                   <td class="px-3 py-2 text-xs text-gray-500">
-                    {{row.case.deliveryMethod.label}}
+                    {{row.deliveryMethodLabel}}
                   </td>
                   <td class="px-3 py-2 text-center text-xs text-gray-400">
-                    {{#if row.case.hasProductionTicket}}
+                    {{#if row.hasProductionTicket}}
                       {{svg-jar "checkbox-circle-fill" class="block m-auto h-5 w-5 fill-current"}}
                     {{else}}
                       -
@@ -200,13 +200,13 @@
                     </div>
                     <div>
                       <span class="text-gray-400 italic inline-block w-5">Pl</span>
-                      <Fmt::Date @value={{row.planning.date}} />
+                      <Fmt::Date @value={{row.plannedDate}} />
                     </div>
                   </td>
                   <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
                     {{row.scheduledNbOfHours}} x {{row.scheduledNbOfPersons}} T
-                    {{#each row.technicians as |technician|}}
-                      <br>{{technician.firstName}}
+                    {{#each row.technicianNames as |name|}}
+                      <br>{{name}}
                     {{/each}}
                   </td>
                   <td class="px-3 py-2 text-center text-xs text-gray-400">
@@ -219,7 +219,7 @@
                   <td class="px-3 py-2 text-xs text-gray-500 max-w-xs {{unless row.expandComment "truncate"}}"
                     role="button"
                     {{on "click" (fn this.toggleComment row)}}>
-                    {{row.case.comment}}
+                    {{row.comment}}
                   </td>
                 </tr>
                 {{else}}

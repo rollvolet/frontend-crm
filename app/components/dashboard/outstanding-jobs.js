@@ -3,6 +3,7 @@ import Component from '@glimmer/component';
 import { keepLatestTask } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import search from '../../utils/mu-search';
 import constants from '../../config/constants';
 
 const { CASE_STATUSES } = constants;
@@ -23,25 +24,21 @@ export default class DashboardOutstandingJobsComponent extends Component {
   @keepLatestTask
   *loadData() {
     if (this.args.employee) {
-      this.orders = yield this.store.query('order', {
-        page: {
-          size: this.size,
-          number: this.page,
+      this.orders = yield search(
+        'orders',
+        this.page,
+        this.size,
+        this.sort,
+        {
+          caseStatus: CASE_STATUSES.ONGOING,
+          ':has-no:invoiceId': 't',
+          visitorName: this.args.employee.firstName,
         },
-        sort: this.sort,
-        include: 'case.customer.address,case.building.address',
-        filter: {
-          case: {
-            request: {
-              visitor: {
-                ':uri:': this.args.employee.uri,
-              },
-            },
-            ':has-no:invoice': true,
-            status: CASE_STATUSES.ONGOING,
-          },
-        },
-      });
+        (entry) => {
+          const attributes = entry.attributes;
+          return attributes;
+        }
+      );
     }
   }
 

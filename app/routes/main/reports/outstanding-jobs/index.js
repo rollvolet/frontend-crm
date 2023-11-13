@@ -1,10 +1,10 @@
 import Route from '@ember/routing/route';
-import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { hash } from 'rsvp';
 import subYears from 'date-fns/subYears';
 import formatISO from 'date-fns/formatISO';
 import Snapshot from '../../../../utils/snapshot';
+import search from '../../../../utils/mu-search';
 import filterFlagToBoolean from '../../../../utils/filter-flag-to-boolean';
 import constants from '../../../../config/constants';
 
@@ -28,7 +28,7 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     { label: 'Besteldatum', value: 'order-date' },
     { label: 'Verwachte datum', value: 'expected-date' },
     { label: 'Vereiste datum', value: 'due-date' },
-    { label: 'Geplande datum', value: 'planning.date' },
+    { label: 'Geplande datum', value: 'planned-date' },
   ];
 
   sortDirectionOptions = [
@@ -44,7 +44,7 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
   async model(params) {
     if (!params.orderDate) {
       const yearAgo = subYears(new Date(), 1);
-      params.orderDate = formatISO(yearAgo, { representation: 'date' });
+      params.orderDate = formatISO(yearAgo);
     }
 
     this.lastParams.stageLive(params);
@@ -58,43 +58,57 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     }
 
     const filter = {
-      ':gt:order-date': params.orderDate,
-      case: {
-        status: CASE_STATUSES.ONGOING,
-      },
+      ':gt:orderDate': params.orderDate,
+      caseStatus: CASE_STATUSES.ONGOING,
+      ':has-no:invoiceId': 't',
     };
 
-    filter['is-ready'] = filterFlagToBoolean(params.isProductReady);
-    filter['case']['has-production-ticket'] = filterFlagToBoolean(params.hasProductionTicket);
-    if (params.deliveryMethodUri) {
-      filter['case']['delivery-method'] = {
-        ':uri:': params.deliveryMethodUri,
-      };
-    }
-    if (params.visitorUri) {
-      filter['case']['request'] = {
-        visitor: {
-          ':uri:': params.visitorUri,
-        },
-      };
+    if (params.isProductReady >= 0) {
+      filter['isReady'] = filterFlagToBoolean(params.isProductReady);
     }
 
-    const orders = await this.store.query('order', {
-      page: {
-        size: params.size,
-        number: params.page,
-      },
-      sort: params.sort,
-      include: ['case.request.visitor', 'case.customer.address', 'case.building.address'].join(','),
+    if (params.hasProductionTicket >= 0) {
+      filter['hasProductionTicket'] = filterFlagToBoolean(params.hasProductionTicket);
+    }
+
+    if (params.deliveryMethodUri) {
+      filter['deliveryMethodUri'] = params.deliveryMethodUri;
+    }
+
+    let visitor;
+    if (params.visitorUri) {
+      visitor = await this.store.findRecordByUri('employee', params.visitorUri);
+      filter['visitorName'] = visitor?.firstName;
+    }
+
+    const orders = await search(
+      'orders',
+      params.page,
+      params.size,
+      params.sort,
       filter,
-    });
+      (entry) => {
+        const attributes = entry.attributes;
+        return attributes;
+      }
+    );
 
     const numberOverdueFilter = JSON.parse(JSON.stringify(filter)); // TODO use a decent deep clone method
-    numberOverdueFilter[':lt:due-date'] = formatISO(new Date(), { representation: 'date' });
-    const numberOverdue = await this.store.count('order', {
-      sort: params.sort,
-      filter: numberOverdueFilter,
+    numberOverdueFilter[':lt:dueDate'] = formatISO(new Date(), { representation: 'date' });
+    const numberOverdue = await search('orders', 0, 1, params.sort, numberOverdueFilter);
+
+    this.lastParams.commit();
+
+    return hash({
+      orders,
+      report: {
+        numberOverdue: numberOverdue.meta.count,
+      },
     });
+  }
+
+  async afterModel() {
+    const params = this.lastParams.committed;
 
     // Preload selected values value for ember-power-select
     if (params.visitorUri) {
@@ -118,15 +132,6 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
         this.sortField = this.sortFieldOptions.find((o) => o.value == params.sort);
       }
     }
-
-    this.lastParams.commit();
-
-    return hash({
-      orders,
-      report: {
-        numberOverdue,
-      },
-    });
   }
 
   setupController(controller) {
