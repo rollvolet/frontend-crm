@@ -18,15 +18,11 @@
     @number={{this.number}}
     @visitor={{this.visitor}}
     @reference={{this.reference}}
-    @cName={{this.cName}}
-    @cStreet={{this.cStreet}}
-    @cPostalCode={{this.cPostalCode}}
-    @cCity={{this.cCity}}
-    @cTelephone={{this.cTelephone}}
-    @bName={{this.bName}}
-    @bPostalCode={{this.bPostalCode}}
-    @bCity={{this.bCity}}
-    @bStreet={{this.bStreet}}
+    @name={{this.name}}
+    @street={{this.street}}
+    @postalCode={{this.postalCode}}
+    @city={{this.city}}
+    @telephone={{this.telephone}}
     @isCancelled={{this.isCancelled}}
     @hasOffer={{this.hasOffer}}
     @resultCount={{this.model.meta.count}}
@@ -49,21 +45,21 @@
                   AD
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="request-date"
+                  @field="requestDate"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Datum
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="visitor.first-name"
+                  @field="visitorName"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Bezoek
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="case.reference"
+                  @field="reference"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -128,25 +124,26 @@
                 {{#each this.model as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      {{format-request-number row.number}}
+                      {{format-case-number row.case.identifier showPrefix=false}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <Fmt::Date @value={{row.requestDate}} />
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{row.visitor.firstName}}
+                      {{row.visitorName}}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{row.case.reference}}
+                      {{row.reference}}
                     </td>
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                      <Fmt::CustomerAndBuildingName @case={{row.case}} />
+                      <Fmt::CustomerAndBuildingName
+                        @case={{hash customer=row.customer building=row.building}} />
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <Address::DetailView @model={{or row.case.building.address row.case.customer.address}} />
+                      <Address::DetailView @model={{or row.building row.customer}} />
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <LinkTo @route="main.requests.edit" @model={{row.id}}
+                      <LinkTo @route="main.case.request.edit.index" @models={{array row.case.uuid row.uuid}}
                         class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                         Bekijk
                       </LinkTo>
@@ -154,7 +151,7 @@
                   </tr>
                 {{else}}
                   <tr>
-                    <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">
+                    <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">
                       Geen aanvragen gevonden.
                     </td>
                   </tr>

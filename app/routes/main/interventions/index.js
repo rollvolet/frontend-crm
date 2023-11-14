@@ -1,81 +1,71 @@
-import DataTableRoute from '../../../utils/data-table-route';
-import onlyNumericChars from '../../../utils/only-numeric-chars';
+import Route from '@ember/routing/route';
+import Snapshot from '../../../utils/snapshot';
+import search from '../../../utils/mu-search';
+import MuSearchFilter from '../../../utils/mu-search-filter';
 import constants from '../../../config/constants';
 
-const { CASE_STATUSES } = constants;
+const { CASE_STATUSES: STATUSES } = constants;
 
-export default class MainInterventionsIndexRoute extends DataTableRoute {
-  modelName = 'intervention';
-
+export default class MainInterventionsIndexRoute extends Route {
   queryParams = {
     page: { refreshModel: true },
     size: { refreshModel: true },
     sort: { refreshModel: true },
     // filter params
     number: { refreshModel: true },
+    reference: { refreshModel: true },
     hasInvoice: { refreshModel: true },
     isCancelled: { refreshModel: true },
     isPlanned: { refreshModel: true },
-    cName: { refreshModel: true },
-    cPostalCode: { refreshModel: true },
-    cCity: { refreshModel: true },
-    cStreet: { refreshModel: true },
-    cTelephone: { refreshModel: true },
-    bName: { refreshModel: true },
-    bPostalCode: { refreshModel: true },
-    bCity: { refreshModel: true },
-    bStreet: { refreshModel: true },
+    name: { refreshModel: true },
+    postalCode: { refreshModel: true },
+    city: { refreshModel: true },
+    street: { refreshModel: true },
+    telephone: { refreshModel: true },
   };
 
-  mergeQueryOptions(params) {
-    let caseStatus = undefined;
-    if (params.isCancelled == 0) {
-      caseStatus = CASE_STATUSES.ONGOING;
-    } else if (params.isCancelled == 1) {
-      caseStatus = CASE_STATUSES.CANCELLED;
+  constructor() {
+    super(...arguments);
+    this.lastParams = new Snapshot();
+  }
+
+  async model(params) {
+    this.lastParams.stageLive(params);
+
+    // Reset page number if any of the filters has changed
+    const paramHasChanged = this.lastParams.anyFieldChanged(
+      Object.keys(params).filter((key) => key !== 'page')
+    );
+    if (paramHasChanged) {
+      params.page = 0;
     }
 
-    const queryOptions = {
-      include: 'case.customer.address,case.building.address,visit',
-      filter: {
-        number: onlyNumericChars(params.number),
-        case: {
-          status: caseStatus,
-          customer: {
-            name: params.cName,
-            address: {
-              street: params.cStreet,
-              'postal-code': params.cPostalCode,
-              city: params.cCity,
-            },
-            telephones: {
-              value: params.cTelephone,
-            },
-          },
-          building: {
-            name: params.bName,
-            address: {
-              street: params.bStreet,
-              'postal-code': params.bPostalCode,
-              city: params.bCity,
-            },
-          },
-        },
-      },
-    };
+    const filter = new MuSearchFilter({
+      ':prefix:searchPostalCode': params.postalCode,
+      ':sqs:customer.prefix,customer.name,customer.suffix': params.name,
+    });
 
-    if (params.hasInvoice == 0) {
-      queryOptions.filter.case[':has-no:invoice'] = 't';
-    } else if (params.hasInvoice == 1) {
-      queryOptions.filter.case[':has:invoice'] = 't';
-    }
+    filter.setFilterFlag('case.status', params.isCancelled, STATUSES.CANCELLED, STATUSES.ONGOING);
+    filter.ensureExistance('case.identifier');
+    filter.setCaseIdentifierFilter('case.identifier', params.number);
+    filter.setExistanceFlag('invoiceId', params.hasInvoice);
+    filter.setWildcardFilter('reference', params.reference);
+    filter.setExistanceFlag('plannedDate', params.isPlanned);
+    filter.setWildcardFilter('searchStreet', params.street);
+    filter.setWildcardFilter('searchPostalCode', params.postalCode);
+    filter.setWildcardFilter('searchCity', params.city);
+    filter.setWildcardFilter('searchTelephones', params.telephone);
 
-    if (params.isPlanned == 0) {
-      queryOptions.filter[':has-no:visit'] = 't';
-    } else if (params.isPlanned == 1) {
-      queryOptions.filter[':has:visit'] = 't';
-    }
+    const interventions = await search(
+      'interventions',
+      params.page,
+      params.size,
+      params.sort,
+      filter.value
+    );
 
-    return queryOptions;
+    this.lastParams.commit();
+
+    return interventions;
   }
 }

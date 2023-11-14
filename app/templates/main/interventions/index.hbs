@@ -16,15 +16,12 @@
 <div class="mt-6 bg-white shadow rounded-lg">
   <Intervention::DataTableFilter
     @number={{this.number}}
-    @cName={{this.cName}}
-    @cStreet={{this.cStreet}}
-    @cPostalCode={{this.cPostalCode}}
-    @cCity={{this.cCity}}
-    @cTelephone={{this.cTelephone}}
-    @bName={{this.bName}}
-    @bPostalCode={{this.bPostalCode}}
-    @bCity={{this.bCity}}
-    @bStreet={{this.bStreet}}
+    @reference={{this.reference}}
+    @name={{this.name}}
+    @street={{this.street}}
+    @postalCode={{this.postalCode}}
+    @city={{this.city}}
+    @telephone={{this.telephone}}
     @isCancelled={{this.isCancelled}}
     @hasInvoice={{this.hasInvoice}}
     @isPlanned={{this.isPlanned}}
@@ -48,14 +45,14 @@
                   IR
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="intervention-date"
+                  @field="interventionDate"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Datum
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="visit.date"
+                  @field="planned-date"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -67,9 +64,13 @@
                 <th class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Naam
                 </th>
-                <th class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <DataTable::Th
+                  @field="sortPostalCode"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Adres
-                </th>
+                </DataTable::Th>
                 <th class="xl:w-1/3 px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Beschrijving
                 </th>
@@ -132,29 +133,30 @@
                 {{#each this.model as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      {{format-intervention-number row.number}}
+                      {{format-case-number row.case.identifier showPrefix=false}}
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                       <Fmt::Date @value={{row.interventionDate}} />
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <Fmt::Date @value={{row.visit.date}} />
+                      <Fmt::Date @value={{row.plannedDate}} />
                     </td>
                     <td class="px-2 py-4 text-sm text-gray-500">
                       {{row.scheduledNbOfPersons}}
                     </td>
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                      <Fmt::CustomerAndBuildingName @case={{row.case}} />
+                      <Fmt::CustomerAndBuildingName
+                        @case={{hash customer=row.customer building=row.building}} />
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <Address::DetailView @model={{or row.case.building.address row.case.customer.address}} />
+                      <Address::DetailView @model={{or row.building row.customer}} />
                     </td>
                     <td class="px-4 py-4 text-xs text-gray-500 {{unless row.isExpandedDescription "block w-96 whitespace-nowrap overflow-hidden overflow-ellipsis"}}" data-expandable
                       {{on "click" (fn this.toggleDescription row)}} role="button">
                       {{row.description}}
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <LinkTo @route="main.interventions.edit" @model={{row.id}}
+                      <LinkTo @route="main.case.intervention.edit.index" @models={{array row.case.uuid row.uuid}}
                         class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                         Bekijk
                       </LinkTo>
@@ -162,7 +164,7 @@
                   </tr>
                 {{else}}
                   <tr>
-                    <td colspan="10" class="px-4 py-4 text-center text-sm text-gray-500">
+                    <td colspan="8" class="px-4 py-4 text-center text-sm text-gray-500">
                       Geen interventies gevonden.
                     </td>
                   </tr>

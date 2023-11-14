@@ -71,8 +71,15 @@ function fixBooleanValues(object) {
 
 async function muSearch(index, page, size, sort, filter, dataMapping, highlightConfig) {
   if (!dataMapping) {
-    dataMapping = (entry) => entry;
+    dataMapping = (entry) => entry.attributes;
   }
+
+  for (let key in filter) {
+    if (filter[key] == null) {
+      delete filter[key]; // mu-search doesn't work well with unspecified filters
+    }
+  }
+
   const endpoint = new URL(`/${index}/search`, window.location.origin);
   const params = new URLSearchParams(
     Object.entries({
@@ -87,7 +94,9 @@ async function muSearch(index, page, size, sort, filter, dataMapping, highlightC
   }
 
   if (sort) {
-    params.append(`sort[${snakeToCamel(stripSort(sort))}]`, sortOrder(sort));
+    sort.split(',').forEach((s) => {
+      params.append(`sort[${snakeToCamel(stripSort(s))}]`, sortOrder(s));
+    });
   }
 
   if (highlightConfig) {

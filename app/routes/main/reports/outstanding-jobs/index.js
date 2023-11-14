@@ -5,7 +5,7 @@ import subYears from 'date-fns/subYears';
 import formatISO from 'date-fns/formatISO';
 import Snapshot from '../../../../utils/snapshot';
 import search from '../../../../utils/mu-search';
-import filterFlagToBoolean from '../../../../utils/filter-flag-to-boolean';
+import MuSearchFilter from '../../../../utils/mu-search-filter';
 import constants from '../../../../config/constants';
 
 const { CASE_STATUSES } = constants;
@@ -57,43 +57,25 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
       params.page = 0;
     }
 
-    const filter = {
-      ':gt:orderDate': params.orderDate,
-      caseStatus: CASE_STATUSES.ONGOING,
-      ':has-no:invoiceId': 't',
-    };
-
-    if (params.isProductReady >= 0) {
-      filter['isReady'] = filterFlagToBoolean(params.isProductReady);
-    }
-
-    if (params.hasProductionTicket >= 0) {
-      filter['hasProductionTicket'] = filterFlagToBoolean(params.hasProductionTicket);
-    }
-
-    if (params.deliveryMethodUri) {
-      filter['deliveryMethodUri'] = params.deliveryMethodUri;
-    }
-
     let visitor;
     if (params.visitorUri) {
       visitor = await this.store.findRecordByUri('employee', params.visitorUri);
-      filter['visitorName'] = visitor?.firstName;
     }
 
-    const orders = await search(
-      'orders',
-      params.page,
-      params.size,
-      params.sort,
-      filter,
-      (entry) => {
-        const attributes = entry.attributes;
-        return attributes;
-      }
-    );
+    const filter = new MuSearchFilter({
+      ':gt:orderDate': params.orderDate,
+      'case.status': CASE_STATUSES.ONGOING,
+      deliveryMethodUri: params.deliveryMethodUri,
+      visitorName: visitor?.firstName,
+    });
 
-    const numberOverdueFilter = JSON.parse(JSON.stringify(filter)); // TODO use a decent deep clone method
+    filter.setFilterFlag('isReady', params.isProductReady);
+    filter.setFilterFlag('hasProductionTicket', params.hasProductionTicket);
+    filter.noExistance('invoiceId');
+
+    const orders = await search('orders', params.page, params.size, params.sort, filter.value);
+
+    const numberOverdueFilter = JSON.parse(JSON.stringify(filter.value)); // TODO use a decent deep clone method
     numberOverdueFilter[':lt:dueDate'] = formatISO(new Date(), { representation: 'date' });
     const numberOverdue = await search('orders', 0, 1, params.sort, numberOverdueFilter);
 

@@ -101,11 +101,7 @@
                       </td>
                       <td class="px-6 py-4 text-sm font-medium text-gray-900">
                         <div class="flex items-center">
-                          {{#if row.isCompany}}
-                            {{svg-jar "building-4-line" class="mr-1.5 flex-none h-5 w-5 text-gray-400 fill-current"}}
-                          {{else}}
-                            {{svg-jar "user-3-line" class="mr-1.5 flex-none h-5 w-5 text-gray-400 fill-current"}}
-                          {{/if}}
+                          <Customer::TypeIcon @uri={{row.type}} />
                           <Fmt::CustomerName @model={{row}} />
                         </div>
                       </td>

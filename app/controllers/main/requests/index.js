@@ -35,6 +35,6 @@ export default class MainRequestsIndexController extends Controller {
 
   @action
   navigateToDetail(request) {
-    this.router.transitionTo('main.requests.edit', request.id);
+    this.router.transitionTo('main.case.request.edit.index', request.case.uuid, request.uuid);
   }
 }

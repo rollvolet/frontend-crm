@@ -34,6 +34,6 @@ export default class MainDepositInvoicesIndexController extends Controller {
 
   @action
   navigateToDetail(depositInvoice) {
-    this.router.transitionTo('main.deposit-invoices.edit', depositInvoice.id);
+    this.router.transitionTo('main.deposit-invoices.edit', depositInvoice.uuid);
   }
 }

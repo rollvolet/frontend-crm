@@ -34,6 +34,6 @@ export default class MainInvoicesIndexController extends Controller {
 
   @action
   navigateToDetail(invoice) {
-    this.router.transitionTo('main.invoices.edit', invoice.id);
+    this.router.transitionTo('main.case.invoice.edit.index', invoice.case.uuid, invoice.uuid);
   }
 }

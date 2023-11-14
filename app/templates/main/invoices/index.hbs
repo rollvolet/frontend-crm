@@ -11,20 +11,15 @@
     @number={{this.number}}
     @reference={{this.reference}}
     @caseIdentifier={{this.caseIdentifier}}
-    @cName={{this.cName}}
-    @cStreet={{this.cStreet}}
-    @cPostalCode={{this.cPostalCode}}
-    @cCity={{this.cCity}}
-    @cTelephone={{this.cTelephone}}
-    @bName={{this.bName}}
-    @bPostalCode={{this.bPostalCode}}
-    @bCity={{this.bCity}}
-    @bStreet={{this.bStreet}}
+    @name={{this.name}}
+    @street={{this.street}}
+    @postalCode={{this.postalCode}}
+    @city={{this.city}}
+    @telephone={{this.telephone}}
     @isCancelled={{this.isCancelled}}
     @resultCount={{this.model.meta.count}}
     @onChange={{this.applyFilter}} />
 </div>
-
 
 <div class="mt-6 bg-white shadow rounded-lg">
   <div class="flex flex-col">
@@ -42,11 +37,15 @@
                   class="px-6 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Nr.
                 </DataTable::Th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Dossier
-                </th>
                 <DataTable::Th
-                  @field="invoice-date"
+                  @field="case.idNumber"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-6 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Dossier
+                </DataTable::Th>
+                <DataTable::Th
+                  @field="invoiceDate"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -125,13 +124,14 @@
                       <Fmt::Date @value={{row.invoiceDate}} />
                     </td>
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                      <Fmt::CustomerAndBuildingSnapshotName @model={{row}} />
+                      <Fmt::CustomerAndBuildingName
+                        @case={{hash customer=row.customer building=row.building}} />
                     </td>
                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <Address::DetailView @model={{or row.building.address row.customer.address}} />
+                      <Address::DetailView @model={{or row.building row.customer}} />
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <LinkTo @route="main.invoices.edit" @model={{row.id}}
+                      <LinkTo @route="main.case.invoice.edit.index" @models={{array row.case.uuid row.uuid}}
                         class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                         Bekijk
                       </LinkTo>

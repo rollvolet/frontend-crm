@@ -9,7 +9,7 @@ export default class MainCustomersIndexController extends Controller {
 
   @tracked page = 0;
   @tracked size = 25;
-  @tracked sort = 'name,prefix';
+  @tracked sort = 'number'; // 'name,prefix';
 
   @action
   applyFilter(filter) {
@@ -33,7 +33,7 @@ export default class MainCustomersIndexController extends Controller {
 
   @action
   navigateToDetail(customer) {
-    this.router.transitionTo('main.customers.edit.index', customer.id, {
+    this.router.transitionTo('main.customers.edit.index', customer.uuid, {
       queryParams: {
         tab: 'requests',
       },

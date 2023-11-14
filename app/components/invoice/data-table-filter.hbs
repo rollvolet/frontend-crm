@@ -24,38 +24,26 @@
   </div>
   <div class="mt-4 grid sm:grid-cols-12 gap-4">
     <div class="sm:col-span-2 lg:col-span-1">
-      <label for="filter-invoice-number" class="block text-sm font-medium text-gray-700">
-        Factuurnr.
-      </label>
-      <input
-        id="filter-invoice-number"
-        type="text"
-        value={{this.filter.number}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "number")}}
-        {{did-insert this.autofocus}} />
+      <Filter::TextInput
+        @label="Factuurnr."
+        @value={{this.filter.number}}
+        @onInput={{perform this.debounceFilter "number"}} />
     </div>
     <div class="sm:col-span-2">
-      <label for="filter-case-identifier" class="block text-sm font-medium text-gray-700">
-        Dossier
-      </label>
-      <input
-        id="filter-case-identifier"
-        type="text"
-        value={{this.filter.caseIdentifier}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "caseIdentifier")}} />
+      <Filter::TextInput
+        @label="Dossier"
+        @value={{this.filter.caseIdentifier}}
+        @onInput={{perform this.debounceFilter "caseIdentifier"}} />
     </div>
     <div class="sm:col-span-2">
-      <label for="filter-reference" class="block text-sm font-medium text-gray-700">
-        Referentie
-      </label>
-      <input
-        id="filter-reference"
-        type="text"
-        value={{this.filter.reference}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "reference")}} />
+      <Filter::TextInput
+        @label="Referentie"
+        @value={{this.filter.reference}}
+        @onInput={{perform this.debounceFilter "reference"}}>
+        <:tooltip>
+        <Tooltip::WildcardSearch />
+        </:tooltip>
+      </Filter::TextInput>
     </div>
     <div class="space-y-4 sm:col-span-12 md:col-span-6 sm:flex sm:gap-4 sm:space-y-0">
       <div>
@@ -64,118 +52,51 @@
           @onChange={{fn this.setFilter "isCancelled"}} />
       </div>
     </div>
-  </div>
-  <div class="mt-4 grid sm:grid-cols-12 gap-4 bg-gray-50 p-4 rounded">
-    <div class="sm:col-span-2 lg:col-span-1">
-      <div class="text-gray-500 text-sm uppercase tracking-wide">
-        Klant
-      </div>
+    <div class="sm:col-span-5 lg:col-span-3">
+      <Filter::TextInput
+        @label="Naam"
+        @value={{this.filter.name}}
+        @onInput={{perform this.debounceFilter "name"}}>
+        <:tooltip>
+        <Tooltip::SqsSearch />
+        </:tooltip>
+      </Filter::TextInput>
     </div>
     <div class="sm:col-span-5 lg:col-span-3">
-      <label for="filter-customer-name" class="block text-sm font-medium text-gray-700">
-        Naam
-      </label>
-      <input
-        id="filter-customer-name"
-        type="text"
-        value={{this.filter.cName}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "cName")}} />
-    </div>
-    <div class="sm:col-span-5 lg:col-span-3">
-      <label for="filter-customer-street" class="block text-sm font-medium text-gray-700">
-        Straat
-      </label>
-      <input
-        id="filter-customer-street"
-        type="text"
-        value={{this.filter.cStreet}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "cStreet")}} />
+      <Filter::TextInput
+        @label="Straat"
+        @value={{this.filter.street}}
+        @onInput={{perform this.debounceFilter "street"}}>
+        <:tooltip>
+        <Tooltip::WildcardSearch />
+        </:tooltip>
+      </Filter::TextInput>
     </div>
     <div class="sm:col-span-2 lg:col-span-1">
-      <label for="filter-customer-postal-code" class="block text-sm font-medium text-gray-700">
-        Postcode
-      </label>
-      <input
-        id="filter-customer-postal-code"
-        type="text"
-        value={{this.filter.cPostalCode}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "cPostalCode")}} />
+      <Filter::TextInput
+        @label="Postcode"
+        @value={{this.filter.postalCode}}
+        @onInput={{perform this.debounceFilter "postalCode"}} />
     </div>
     <div class="sm:col-span-5 lg:col-span-2">
-      <label for="filter-customer-city" class="block text-sm font-medium text-gray-700">
-        Gemeente
-      </label>
-      <input
-        id="filter-customer-city"
-        type="text"
-        value={{this.filter.cCity}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "cCity")}} />
+      <Filter::TextInput
+        @label="Gemeente"
+        @value={{this.filter.city}}
+        @onInput={{perform this.debounceFilter "city"}}>
+        <:tooltip>
+        <Tooltip::WildcardSearch />
+        </:tooltip>
+      </Filter::TextInput>
     </div>
     <div class="sm:col-span-5 lg:col-span-2">
-      <label for="filter-customer-telephone" class="block text-sm font-medium text-gray-700">
-        Telefoon
-      </label>
-      <input
-        id="filter-customer-telephone"
-        type="text"
-        value={{this.filter.cTelephone}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "cTelephone")}} />
-    </div>
-  </div>
-  <div class="mt-3 grid sm:grid-cols-12 gap-4 bg-gray-50 p-4 rounded">
-    <div class="sm:col-span-2 lg:col-span-1">
-      <div class="text-gray-500 text-sm uppercase tracking-wide">
-        Gebouw
-      </div>
-    </div>
-    <div class="sm:col-span-5 lg:col-span-3">
-      <label for="filter-building-name" class="block text-sm font-medium text-gray-700">
-        Naam
-      </label>
-      <input
-        id="filter-building-name"
-        type="text"
-        value={{this.filter.bName}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "bName")}} />
-    </div>
-    <div class="sm:col-span-5 lg:col-span-3">
-      <label for="filter-building-street" class="block text-sm font-medium text-gray-700">
-        Straat
-      </label>
-      <input
-        id="filter-building-street"
-        type="text"
-        value={{this.filter.bStreet}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "bStreet")}} />
-    </div>
-    <div class="sm:col-span-2 lg:col-span-1">
-      <label for="filter-building-postal-code" class="block text-sm font-medium text-gray-700">
-        Postcode
-      </label>
-      <input
-        id="filter-building-postal-code"
-        type="text"
-        value={{this.filter.bPostalCode}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "bPostalCode")}} />
-    </div>
-    <div class="sm:col-span-5 lg:col-span-2">
-      <label for="filter-building-city" class="block text-sm font-medium text-gray-700">
-        Gemeente
-      </label>
-      <input
-        id="filter-building-city"
-        type="text"
-        value={{this.filter.bCity}}
-        class="shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-        {{on "input" (perform this.debounceFilter "bCity")}} />
+      <Filter::TextInput
+        @label="Telefoon"
+        @value={{this.filter.telephone}}
+        @onInput={{perform this.debounceFilter "telephone"}}>
+        <:tooltip>
+        <Tooltip::WildcardSearch />
+        </:tooltip>
+      </Filter::TextInput>
     </div>
   </div>
 </div>

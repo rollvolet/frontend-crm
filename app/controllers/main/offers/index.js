@@ -35,6 +35,6 @@ export default class MainOffersIndexController extends Controller {
 
   @action
   navigateToDetail(offer) {
-    this.router.transitionTo('main.offers.edit', offer.id);
+    this.router.transitionTo('main.case.offer.edit.index', offer.case.uuid, offer.uuid);
   }
 }

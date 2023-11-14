@@ -1,7 +1,13 @@
 <div ...attributes>
   {{#if @label}}
-    <label for={{this.fieldId}} class="block text-sm font-medium text-gray-700">
-      {{@label}}
+    <label for={{this.fieldId}} class="block text-sm font-medium text-gray-700 flex items-center space-x-1">
+      <span>{{@label}}</span>
+      {{#if (has-block "tooltip")}}
+        <span>
+          {{svg-jar "information-line" class="h-4 w-4 text-gray-400 fill-current"}}
+          {{yield to="tooltip"}}
+        </span>
+      {{/if}}
     </label>
   {{/if}}
   <input

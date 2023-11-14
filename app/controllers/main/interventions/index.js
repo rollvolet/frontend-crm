@@ -1,10 +1,11 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import applyFilterParams from '../../../utils/apply-filter-params';
 
-export default class IndexController extends Controller {
+export default class MainInterventionsIndexController extends Controller {
   @service router;
 
   @tracked page = 0;
@@ -21,7 +22,7 @@ export default class IndexController extends Controller {
 
   @action
   toggleDescription(row) {
-    row.set('isExpandedDescription', !row.isExpandedDescription);
+    set(row, 'isExpandedDescription', !row.isExpandedDescription);
   }
 
   @action
@@ -43,7 +44,11 @@ export default class IndexController extends Controller {
   navigateToDetail(intervention, event) {
     const isExpandableElement = event.srcElement?.hasAttribute('data-expandable');
     if (!isExpandableElement) {
-      this.router.transitionTo('main.interventions.edit', intervention.id);
+      this.router.transitionTo(
+        'main.case.intervention.edit.index',
+        intervention.case.uuid,
+        intervention.uuid
+      );
     }
   }
 }

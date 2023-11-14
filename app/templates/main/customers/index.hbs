@@ -51,7 +51,7 @@
                   Straat
                 </th>
                 <DataTable::Th
-                  @field="address.postal-code"
+                  @field="postalCode"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -102,22 +102,18 @@
                     </td>
                     <td class="pl-4 pr-6 py-4 text-sm font-medium text-gray-900">
                       <div class="flex items-center">
-                        {{#if row.isCompany}}
-                          {{svg-jar "building-4-line" class="mr-1.5 flex-none h-5 w-5 text-gray-400 fill-current"}}
-                        {{else}}
-                          {{svg-jar "user-3-line" class="mr-1.5 flex-none h-5 w-5 text-gray-400 fill-current"}}
-                        {{/if}}
+                        <Customer::TypeIcon @uri={{row.type}} />
                         <Fmt::CustomerName @model={{row}} />
                       </div>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      <div class="whitespace-pre-wrap">{{row.address.street}}</div>
+                      <div class="whitespace-pre-wrap">{{row.street}}</div>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
-                      {{row.address.postalCode}} {{row.address.city}}
+                      {{row.postalCode}} {{row.city}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <LinkTo @route="main.customers.edit.index" @model={{row.id}}
+                      <LinkTo @route="main.customers.edit.index" @model={{row.uuid}} @query={{hash tab="requests"}}
                         class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                         Bekijk
                       </LinkTo>
@@ -125,7 +121,7 @@
                   </tr>
                 {{else}}
                   <tr>
-                    <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
+                    <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">
                       Geen klanten gevonden.
                     </td>
                   </tr>
