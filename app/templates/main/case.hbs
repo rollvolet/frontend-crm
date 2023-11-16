@@ -1,10 +1,12 @@
 <Case::Tabs @model={{@model}} />
 
 <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
-  <div class="lg:col-span-2">
+  <div class="{{if this.isLinkingCustomer "lg:col-span-3" "lg:col-span-2"}}">
     {{outlet}}
   </div>
-  <div class="lg:col-span-1">
-    <Case::CustomerPanel @model={{@model}} />
-  </div>
+  {{#unless this.isLinkingCustomer}}
+    <div class="lg:col-span-1">
+      <Case::CustomerPanel @model={{@model}} />
+    </div>
+  {{/unless}}
 </div>
