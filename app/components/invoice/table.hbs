@@ -10,7 +10,6 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
-              <th class="px-6 py-3 bg-gray-50 rounded-tl-lg"></th>
               <DataTable::Th
                 @field="number"
                 @currentSort={{this.sort}}
@@ -41,9 +40,6 @@
             {{#if this.loadData.isRunning}}
               <tr class="animate-pulse">
                 <td class="py-2 px-4">
-                  <div class="h-8 w-4 bg-gray-300"></div>
-                </td>
-                <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
@@ -62,9 +58,6 @@
                 </td>
               </tr>
               <tr class="animate-pulse">
-                <td class="py-2 px-4">
-                  <div class="h-8 w-4 bg-gray-300"></div>
-                </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
@@ -87,12 +80,10 @@
               {{#each this.invoices as |row|}}
                 <tr>
                   <td class="px-2 py-4 text-sm text-gray-500">
-                    {{#let (if row.isCreditNote "text-blue-600" (if row.isPaid "text-green-600" "text-red-600")) as |color|}}
-                      {{svg-jar "money-euro-circle-fill" class=(concat "h-4 w-4 mx-auto  fill-current " color)}}
-                    {{/let}}
-                  </td>
-                  <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{format-invoice-number row.number}}
+                    <div class="flex items-center space-x-1">
+                      <Invoice::PaymentStatusIcon @isPaid={{row.paymentDate}} />
+                      <span>{{format-invoice-number row.number}}</span>
+                    </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {{format-case-number row.case.identifier}}
@@ -115,7 +106,7 @@
                 </tr>
             {{else}}
                 <tr>
-                  <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">
+                  <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
                     Geen facturen gevonden.
                   </td>
                 </tr>

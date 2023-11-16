@@ -124,7 +124,10 @@
                 {{#each this.model as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      {{format-case-number row.case.identifier showPrefix=false}}
+                      <div class="flex items-center space-x-1">
+                        <Case::StatusIcon @uri={{row.case.status}} />
+                        <span>{{format-case-number row.case.identifier showPrefix=false}}</span>
+                      </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <Fmt::Date @value={{row.requestDate}} />

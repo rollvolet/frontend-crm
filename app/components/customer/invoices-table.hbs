@@ -52,9 +52,6 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
-              <th class="bg-gray-50 w-5">
-                {{!-- cancelled icon --}}
-              </th>
               <DataTable::Th
                 @field="number"
                 @currentSort={{this.sort}}
@@ -154,13 +151,11 @@
             {{else}}
               {{#each this.invoices as |row|}}
                 <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
-                  <td class="py-2 text-center text-xs text-red-400">
-                    {{#if row.case.isCancelled}}
-                      {{svg-jar "prohibited-line" class="block m-auto h-5 w-5 fill-current"}}
-                    {{/if}}
-                  </td>
                   <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                    {{format-invoice-number row.number}}
+                    <div class="flex items-center space-x-1">
+                      <Invoice::PaymentStatusIcon @isPaid={{row.paymentDate}} />
+                      <span>{{format-invoice-number row.number}}</span>
+                    </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <Fmt::Date @value={{row.invoiceDate}} />
@@ -189,7 +184,7 @@
                 </tr>
             {{else}}
                 <tr>
-                  <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">
+                  <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">
                     Nog geen facturen
                   </td>
                 </tr>

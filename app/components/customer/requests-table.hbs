@@ -64,9 +64,6 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
-              <th class="bg-gray-50 w-5">
-                {{!-- cancelled icon --}}
-              </th>
               <DataTable::Th
                 @field="number"
                 @currentSort={{this.sort}}
@@ -114,9 +111,6 @@
           <tbody class="bg-white divide-y divide-gray-200">
             {{#if this.search.isRunning}}
               <tr class="animate-pulse">
-                <td class="py-2 px-2">
-                  <div class="h-8 w-12 bg-gray-300"></div>
-                </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
@@ -142,9 +136,6 @@
                 </td>
               </tr>
               <tr class="animate-pulse">
-                <td class="py-2 px-2">
-                  <div class="h-8 w-12 bg-gray-300"></div>
-                </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
@@ -172,13 +163,11 @@
             {{else}}
               {{#each this.requests as |row|}}
                 <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
-                  <td class="py-2 text-center text-xs text-red-400">
-                    {{#if row.case.isCancelled}}
-                      {{svg-jar "prohibited-line" class="block m-auto h-5 w-5 fill-current"}}
-                    {{/if}}
-                  </td>
                   <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{format-request-number row.number}}
+                    <div class="flex items-center space-x-1">
+                      <Case::StatusIcon @uri={{row.case.status}} />
+                      <span>{{format-request-number row.number}}</span>
+                    </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <Fmt::Date @value={{row.requestDate}} />
@@ -207,7 +196,7 @@
                 </tr>
             {{else}}
                 <tr>
-                  <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">
+                  <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">
                     Nog geen aanvragen
                   </td>
                 </tr>
