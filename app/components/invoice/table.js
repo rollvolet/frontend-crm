@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
+import search from '../../utils/mu-search';
 
 export default class InvoiceTableComponent extends Component {
   @service store;
@@ -19,14 +20,7 @@ export default class InvoiceTableComponent extends Component {
 
   @restartableTask
   *loadData() {
-    this.invoices = yield this.store.query('invoice', {
-      page: {
-        size: this.size,
-        number: this.page,
-      },
-      sort: this.sort,
-      include: 'customer.address.country,building.address.country,case',
-    });
+    this.invoices = yield search('invoices', this.page, this.size, this.sort);
   }
 
   @action

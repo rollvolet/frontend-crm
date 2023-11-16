@@ -9,7 +9,7 @@ export default class MainCustomersIndexController extends Controller {
 
   @tracked page = 0;
   @tracked size = 25;
-  @tracked sort = 'number'; // 'name,prefix';
+  @tracked sort = 'number'; // TODO: reset to 'name,prefix';
 
   @action
   applyFilter(filter) {

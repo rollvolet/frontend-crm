@@ -92,13 +92,14 @@
                     <Fmt::Date @value={{row.invoiceDate}} />
                   </td>
                   <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                    <Fmt::CustomerAndBuildingName @case={{row.case}} />
+                    <Fmt::CustomerAndBuildingName
+                      @case={{hash customer=row.customer building=row.building}} />
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
-                    <Address::DetailView @model={{or row.building.address row.customer.address}} />
+                    <Address::DetailView @model={{or row.building row.customer}} />
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <LinkTo @route="main.invoices.edit" @model={{row.id}}
+                    <LinkTo @route="main.invoices.edit" @model={{row.uuid}}
                       class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
                       Bekijk
                     </LinkTo>

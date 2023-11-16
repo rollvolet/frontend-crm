@@ -7,17 +7,19 @@ import applyFilterParams from '../../../../../utils/apply-filter-params';
 
 export default class MainCaseRequestEditCustomerController extends Controller {
   @service router;
+  @service store;
 
   @tracked page = 0;
   @tracked size = 25;
-  @tracked sort = 'name';
+  @tracked sort = 'number'; // TODO: reset to 'name,prefix';
 
   case;
   request;
 
   @task
   *linkCustomerToRequest(customer) {
-    this.case.customer = customer;
+    const customerRecord = yield this.store.findRecord('customer', customer.uuid);
+    this.case.customer = customerRecord;
     yield this.case.save();
     this.router.transitionTo('main.case.request.edit.index', this.case.id, this.request.id);
   }

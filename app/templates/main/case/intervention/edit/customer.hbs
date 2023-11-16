@@ -50,7 +50,7 @@
                     Straat
                   </th>
                   <DataTable::Th
-                    @field="address.postal-code"
+                    @field="postal-code"
                     @currentSort={{this.sort}}
                     @onUpdateSort={{fn (mut this.sort)}}
                     class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -106,10 +106,10 @@
                         </div>
                       </td>
                       <td class="px-6 py-4 text-sm text-gray-500">
-                        <div class="whitespace-pre-wrap">{{row.address.street}}</div>
+                        <div class="whitespace-pre-wrap">{{row.street}}</div>
                       </td>
                       <td class="px-6 py-4 text-sm text-gray-500">
-                        {{row.address.postalCode}} {{row.address.city}}
+                        {{row.postalCode}} {{row.city}}
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button type="button"
@@ -121,7 +121,7 @@
                     </tr>
                   {{else}}
                     <tr>
-                      <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
+                      <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">
                         Geen klanten gevonden.
                       </td>
                     </tr>
