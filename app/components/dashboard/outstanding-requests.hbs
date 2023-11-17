@@ -87,29 +87,28 @@
                 {{#each this.requests as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
-                      <LinkTo @route="main.requests.edit" @model={{row.id}}
+                      <LinkTo @route="main.case.request.edit.index" @models={{array row.case.uuid row.uuid}}
                         class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                        AD{{format-request-number row.number}}
+                        {{format-case-number row.case.identifier}}
                       </LinkTo>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-900">
                       <Fmt::Date @value={{row.requestDate}} />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-900">
-                      <Fmt::Date @value={{row.visit.date}} />
+                      <Fmt::Date @value={{row.plannedDate}} />
                     </td>
-                    {{#let row.case as |case|}}
-                      <td class="px-3 py-2 text-xs font-medium text-gray-900">
-                        <Fmt::CustomerAndBuildingName @case={{case}} />
-                      </td>
-                      <td class="px-3 py-2 text-xs text-gray-500">
-                        <Address::DetailView @model={{or case.building.address case.customer.address}} />
-                      </td>
-                    {{/let}}
+                    <td class="px-3 py-2 text-xs font-medium text-gray-900">
+                      <Fmt::CustomerAndBuildingName
+                        @case={{hash customer=row.customer building=row.building}} />
+                    </td>
+                    <td class="px-3 py-2 text-xs text-gray-500">
+                      <Address::DetailView @model={{or row.building row.customer}} />
+                    </td>
                   </tr>
               {{else}}
                   <tr>
-                    <td colspan="4" class="px-6 py-4 text-center text-xs text-gray-500">
+                    <td colspan="5" class="px-6 py-4 text-center text-xs text-gray-500">
                       Geen openstaande aanvragen gevonden.
                     </td>
                   </tr>

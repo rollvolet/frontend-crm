@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import subYears from 'date-fns/subYears';
 import formatISO from 'date-fns/formatISO';
 import constants from '../../config/constants';
+import search from '../../utils/mu-search';
 
 const { CASE_STATUSES } = constants;
 
@@ -31,34 +32,20 @@ export default class DashboardOutstandingRequestsComponent extends Component {
       const yearAgo = subYears(new Date(), 1);
 
       const filter = {
-        ':gt:request-date': formatISO(yearAgo, { representation: 'date' }),
-        visitor: {
-          ':uri:': this.args.employee.uri,
-        },
-        case: {
-          ':has-no:offer': true,
-          status: CASE_STATUSES.ONGOING,
-        },
+        ':gt:requestDate': formatISO(yearAgo, { representation: 'date' }),
+        visitorName: this.args.employee.firstName,
+        ':has-no:offerId': 't',
+        'case.status': CASE_STATUSES.ONGOING,
       };
 
       if (!this.showFutureVisits) {
-        filter[':or:'] = {
-          visit: {
-            ':lte:date': formatISO(new Date(), { representation: 'date' }),
-          },
-          ':has-no:visit': true,
-        };
+        const today = formatISO(new Date(), { representation: 'date' });
+        filter[
+          ':query:plannedDate'
+        ] = `(plannedDate:{* TO ${today}}) OR (NOT _exists_:plannedDate)`;
       }
 
-      this.requests = yield this.store.query('request', {
-        page: {
-          size: this.size,
-          number: this.page,
-        },
-        sort: this.sort,
-        include: 'case.customer,case.building',
-        filter,
-      });
+      this.requests = yield search('requests', this.page, this.size, this.sort, filter);
     }
   }
 
@@ -69,11 +56,8 @@ export default class DashboardOutstandingRequestsComponent extends Component {
   }
 
   @action
-  async navigateToDetail(request, event) {
-    if (event.srcElement.attributes['type']?.value != 'checkbox') {
-      this.router.transitionTo('main.requests.edit', request.id);
-    }
-    // else: checkbox on row has been clicked. Prevent transition to other route
+  navigateToDetail(request) {
+    this.router.transitionTo('main.case.request.edit.index', request.case.uuid, request.uuid);
   }
 
   @action
