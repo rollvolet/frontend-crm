@@ -107,9 +107,9 @@
               {{#each this.orders as |row|}}
                 <tr>
                   <td class="px-2 py-2 whitespace-nowrap text-left text-xs text-gray-500">
-                    <LinkTo @route="main.orders.edit" @model={{row.uuid}}
+                    <LinkTo @route="main.case.order.edit.index" @models={{array row.case.uuid row.uuid}}
                       class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      {{format-case-number row.caseId}}
+                      {{format-case-number row.case.identifier}}
                     </LinkTo>
                   </td>
                   <td class="px-3 py-2 text-xs font-medium text-gray-900">
