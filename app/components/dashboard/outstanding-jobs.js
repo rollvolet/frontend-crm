@@ -24,21 +24,11 @@ export default class DashboardOutstandingJobsComponent extends Component {
   @keepLatestTask
   *loadData() {
     if (this.args.employee) {
-      this.orders = yield search(
-        'orders',
-        this.page,
-        this.size,
-        this.sort,
-        {
-          caseStatus: CASE_STATUSES.ONGOING,
-          ':has-no:invoiceId': 't',
-          visitorName: this.args.employee.firstName,
-        },
-        (entry) => {
-          const attributes = entry.attributes;
-          return attributes;
-        }
-      );
+      this.orders = yield search('orders', this.page, this.size, this.sort, {
+        'case.status': CASE_STATUSES.ONGOING,
+        ':has-no:invoiceId': 't',
+        visitorName: this.args.employee.firstName,
+      });
     }
   }
 
