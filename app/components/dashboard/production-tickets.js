@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import subYears from 'date-fns/subYears';
 import formatISO from 'date-fns/formatISO';
 import constants from '../../config/constants';
+import search from '../../utils/mu-search';
 
 const { CASE_STATUSES } = constants;
 
@@ -28,33 +29,19 @@ export default class DashboardProductionTicketsComponent extends Component {
     if (this.args.employee) {
       const yearAgo = subYears(new Date(), 1);
 
-      this.orders = yield this.store.query('order', {
-        page: {
-          size: this.size,
-          number: this.page,
-        },
-        sort: this.sort,
-        include: 'case.customer,case.building',
-        filter: {
-          ':gt:order-date': formatISO(yearAgo, { representation: 'date' }),
-          case: {
-            request: {
-              visitor: {
-                ':uri:': this.args.employee.uri,
-              },
-            },
-            ':has-no:invoice': true,
-            status: CASE_STATUSES.ONGOING,
-            'has-production-ticket': false,
-          },
-        },
+      this.orders = yield search('orders', this.page, this.size, this.sort, {
+        ':gt:orderDate': formatISO(yearAgo, { representation: 'date' }),
+        visitorName: this.args.employee.firstName,
+        ':has-no:invoiceId': 't',
+        'case.status': CASE_STATUSES.ONGOING,
+        hasProductionTicket: false,
       });
     }
   }
 
   @action
   navigateToDetail(order) {
-    this.router.transitionTo('main.orders.edit', order.id);
+    this.router.transitionTo('main.case.order.edit.index', order.case.uuid, order.uuid);
   }
 
   @action
