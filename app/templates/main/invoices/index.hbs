@@ -53,9 +53,13 @@
                 <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Naam
                 </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <DataTable::Th
+                  @field="sortPostalCode"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Adres
-                </th>
+                </DataTable::Th>
                 <th class="px-6 py-3 bg-gray-200 rounded-tr-lg"></th>
               </tr>
             </thead>
