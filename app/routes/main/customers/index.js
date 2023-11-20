@@ -36,7 +36,7 @@ export default class MainCustomersIndexRoute extends Route {
     const filter = new MuSearchFilter({
       ':prefix:searchNumber': params.number,
       ':prefix:searchPostalCode': params.postalCode,
-      ':sqs:prefix,name,suffix': params.name,
+      ':sqs:searchName': params.name,
     });
 
     filter.setWildcardFilter('searchStreet', params.street);

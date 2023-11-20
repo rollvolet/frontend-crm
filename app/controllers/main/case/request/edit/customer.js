@@ -11,7 +11,7 @@ export default class MainCaseRequestEditCustomerController extends Controller {
 
   @tracked page = 0;
   @tracked size = 25;
-  @tracked sort = 'number'; // TODO: reset to 'name,prefix';
+  @tracked sort = 'name,prefix';
 
   case;
   request;
