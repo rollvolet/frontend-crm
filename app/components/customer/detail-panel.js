@@ -3,6 +3,9 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
 import { keepLatestTask } from 'ember-concurrency';
+import constants from '../../config/constants';
+
+const { CUSTOMER_STATUSES } = constants;
 
 export default class CustomerDetailPanelComponent extends Component {
   @tracked editMode = false;
@@ -26,6 +29,16 @@ export default class CustomerDetailPanelComponent extends Component {
       yield address.save();
       yield this.args.model.save();
     }
+  }
+
+  @action
+  async toggleCustomerStatus() {
+    if (this.args.model.isActive) {
+      this.args.model.status = CUSTOMER_STATUSES.INACTIVE;
+    } else {
+      this.args.model.status = CUSTOMER_STATUSES.ACTIVE;
+    }
+    await this.args.model.save();
   }
 
   @action

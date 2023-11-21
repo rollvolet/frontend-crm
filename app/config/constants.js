@@ -19,6 +19,10 @@ export default {
     INDIVIDUAL: 'http://www.w3.org/2006/vcard/ns#Individual',
     ORGANIZATION: 'http://www.w3.org/2006/vcard/ns#Organization',
   },
+  CUSTOMER_STATUSES: {
+    ACTIVE: 'http://data.rollvolet.be/concepts/28feacd2-62cf-4ae9-843c-1da595aebf65',
+    INACTIVE: 'http://data.rollvolet.be/concepts/2ffb1b3c-7932-4369-98ac-37539efd2cbe',
+  },
   CASE_STATUSES: {
     ONGOING: 'http://data.rollvolet.be/concepts/2fb2bd3f-1df3-4c45-94a0-69a6af2ab735',
     CANCELLED: 'http://data.rollvolet.be/concepts/2ffb1b3c-7932-4369-98ac-37539efd2cbe',

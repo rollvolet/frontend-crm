@@ -4,7 +4,7 @@ import ValidatedModel, { Validator } from './validated-model';
 import UniqueVatNumberValidator from '../validators/unique-vat-number';
 import constants from '../config/constants';
 
-const { CUSTOMER_TYPES } = constants;
+const { CUSTOMER_TYPES, CUSTOMER_STATUSES } = constants;
 
 export default class CustomerModel extends ValidatedModel {
   validators = {
@@ -47,6 +47,11 @@ export default class CustomerModel extends ValidatedModel {
   };
 
   @attr('string') uri;
+  @attr('string', {
+    defaultValue() {
+      return CUSTOMER_STATUSES.ACTIVE;
+    },
+  }) status;
   @attr('string') type; // individual or organization
   @attr('number') number;
   @attr('string') honorificPrefix;
@@ -85,5 +90,9 @@ export default class CustomerModel extends ValidatedModel {
 
   get isCompany() {
     return this.type == CUSTOMER_TYPES.ORGANIZATION;
+  }
+
+  get isActive() {
+    return this.status == CUSTOMER_STATUSES.ACTIVE;
   }
 }

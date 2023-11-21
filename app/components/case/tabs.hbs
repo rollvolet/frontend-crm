@@ -13,26 +13,11 @@
         </h2>
         <div>
           {{#if @model.isCancelled}}
-            <button class="inline-flex items-center gap-x-1.5 rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700 focus:outline-none focus:ring-2 focus:ring-red-200" type="button" {{on "click" this.openCancellationModal}}>
-              <svg class="h-1.5 w-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
-                <circle cx="3" cy="3" r="3" />
-              </svg>
-              Afgesloten
-            </button>
+            <Rlv::Pill @label="Afgesloten" @color="red" @onClick={{this.openCancellationModal}} />
           {{else if @model.invoice.isBooked}}
-            <span class="inline-flex items-center gap-x-1.5 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700">
-              <svg class="h-1.5 w-1.5 fill-blue-500" viewBox="0 0 6 6" aria-hidden="true">
-                <circle cx="3" cy="3" r="3" />
-              </svg>
-              Geboekt
-            </span>
+            <Rlv::Pill @label="Geboekt" @color="blue" />
           {{else}}
-            <button class="inline-flex items-center gap-x-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 focus:outline-none focus:ring-2 focus:ring-green-200" type="button" {{on "click" this.openCancellationModal}}>
-              <svg class="h-1.5 w-1.5 fill-green-500" viewBox="0 0 6 6" aria-hidden="true">
-                <circle cx="3" cy="3" r="3" />
-              </svg>
-              Geopend
-            </button>
+            <Rlv::Pill @label="Geopend" @color="green" @onClick={{this.openCancellationModal}} />
           {{/if}}
         </div>
       </div>

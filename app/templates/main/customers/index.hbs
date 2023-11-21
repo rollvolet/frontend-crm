@@ -98,12 +98,17 @@
                 {{#each this.model as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                      {{row.number}}
+                      <div class="flex items-center space-x-1">
+                        {{row.number}}
+                      </div>
                     </td>
                     <td class="pl-4 pr-6 py-4 text-sm font-medium text-gray-900">
                       <div class="flex items-center">
                         <Customer::TypeIcon @uri={{row.type}} />
                         <Fmt::CustomerName @model={{row}} />
+                        <span class="ml-1">
+                          <Customer::StatusIcon @uri={{row.status}} />
+                        </span>
                       </div>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
