@@ -6,13 +6,13 @@
     {{svg-jar "loop-right-line" class="animate-spin h-5 w-5 text-blue-500 fill-current"}}
     <EmberTooltip @text="Aan het verwijderen" />
   {{else if (or @isInvalid @model.validations.isInvalid)}}
-    {{svg-jar "alert-fill-circle" class="h-5 w-5 text-red-400 fill-current"}}
+    {{svg-jar "error-warning-line" class="h-5 w-5 text-red-400 fill-current"}}
     <EmberTooltip @text="Ongeldig" />
   {{else if (or @isError @model.isError @task.last.isError)}}
-    {{svg-jar "alert-fill-circle" class="h-5 w-5 text-red-400 fill-current"}}
+    {{svg-jar "error-warning-line" class="h-5 w-5 text-red-400 fill-current"}}
     <EmberTooltip @text="Fout bij het opslaan" />
   {{else}}
-    {{svg-jar "check-line-circle" class="h-5 w-5 text-green-500 fill-current"}}
+    {{svg-jar "checkbox-circle-line" class="h-5 w-5 text-green-500 fill-current"}}
     <EmberTooltip @text="Opgeslagen" />
   {{/if}}
 </div>
