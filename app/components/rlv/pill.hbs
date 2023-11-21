@@ -1,0 +1,15 @@
+{{#if @onClick}}
+  <button class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium {{this.bgColor}} {{this.textColor}} focus:outline-none focus:ring-2 {{this.focusRingColor}}" type="button" {{on "click" @onClick}} ...attributes>
+    <svg class="h-1.5 w-1.5 {{this.fillColor}}" viewBox="0 0 6 6" aria-hidden="true">
+      <circle cx="3" cy="3" r="3" />
+    </svg>
+    {{@label}}
+  </button>
+{{else}}
+  <span class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium {{this.bgColor}} {{this.textColor}} focus:outline-none focus:ring-2 {{this.focusRingColor}}" ...attributes>
+    <svg class="h-1.5 w-1.5 {{this.fillColor}}" viewBox="0 0 6 6" aria-hidden="true">
+      <circle cx="3" cy="3" r="3" />
+    </svg>
+    {{@label}}
+  </span>
+{{/if}}
