@@ -2,6 +2,9 @@ import Route from '@ember/routing/route';
 import Snapshot from '../../../utils/snapshot';
 import search from '../../../utils/mu-search';
 import MuSearchFilter from '../../../utils/mu-search-filter';
+import constants from '../../../config/constants';
+
+const { CUSTOMER_STATUSES } = constants;
 
 export default class MainCustomersIndexRoute extends Route {
   queryParams = {
@@ -15,6 +18,7 @@ export default class MainCustomersIndexRoute extends Route {
     city: { refreshModel: true },
     street: { refreshModel: true },
     telephone: { refreshModel: true },
+    onlyActive: { refreshModel: true },
   };
 
   constructor() {
@@ -39,6 +43,9 @@ export default class MainCustomersIndexRoute extends Route {
       ':sqs:searchName': params.name,
     });
 
+    if (params.onlyActive) {
+      filter.set('status', CUSTOMER_STATUSES.ACTIVE);
+    }
     filter.setWildcardFilter('searchStreet', params.street);
     filter.setWildcardFilter('searchPostalCode', params.postalCode);
     filter.setWildcardFilter('searchCity', params.city);

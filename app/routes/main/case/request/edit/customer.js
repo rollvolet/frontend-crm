@@ -2,6 +2,9 @@ import Route from '@ember/routing/route';
 import Snapshot from '../../../../../utils/snapshot';
 import search from '../../../../../utils/mu-search';
 import MuSearchFilter from '../../../../../utils/mu-search-filter';
+import constants from '../../../../../config/constants';
+
+const { CUSTOMER_STATUSES } = constants;
 
 export default class MainCaseRequestEditCustomerRoute extends Route {
   queryParams = {
@@ -37,6 +40,7 @@ export default class MainCaseRequestEditCustomerRoute extends Route {
       ':prefix:searchNumber': params.number,
       ':prefix:searchPostalCode': params.postalCode,
       ':sqs:searchName': params.name,
+      status: CUSTOMER_STATUSES.ACTIVE,
     });
 
     filter.setWildcardFilter('searchStreet', params.street);

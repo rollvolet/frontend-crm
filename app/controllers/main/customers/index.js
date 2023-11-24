@@ -10,6 +10,7 @@ export default class MainCustomersIndexController extends Controller {
   @tracked page = 0;
   @tracked size = 25;
   @tracked sort = 'name,prefix';
+  @tracked onlyActive = true;
 
   @action
   applyFilter(filter) {

@@ -75,5 +75,15 @@
         </:tooltip>
       </Filter::TextInput>
     </div>
+    {{#unless (is-empty this.filter.onlyActive)}}
+      <div class="sm:col-span-6 lg:col-span-4">
+        <InputField::Checkbox
+          @id="filter-status-field"
+          @label="Zoek ook in slapende klanten"
+          @value={{not this.filter.onlyActive}}
+          @onChange={{fn this.toggleFilter "onlyActive"}}
+          class="mt-1" />
+      </div>
+    {{/unless}}
   </div>
 </div>

@@ -5,6 +5,8 @@ export default function applyFilterParams(filter) {
     let value = undefined;
     if (Number.isInteger(filter[key])) {
       value = filter[key];
+    } else if (filter[key] === true || filter[key] === false) {
+      value = filter[key];
     } else {
       value = filter[key] && !isEmpty(filter[key]) ? filter[key] : undefined;
     }

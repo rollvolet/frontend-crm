@@ -22,6 +22,10 @@ export default class MuSearchFilter {
     return this.filter[key] != null;
   }
 
+  set(property, value) {
+    this.filter[property] = value;
+  }
+
   setFilterFlag(filterKey, flag, trueValue = true, falseValue = false) {
     this.filter[filterKey] = filterFlagToBoolean(flag, trueValue, falseValue);
   }
