@@ -4,7 +4,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
 
-export default class MsalLoginComponent extends Component {
+export default class LoginMsalComponent extends Component {
   @service session;
 
   @tracked errorMessage;

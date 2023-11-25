@@ -56,14 +56,4 @@ export default class MainController extends Controller {
       300
     ); // delay to finish leave CSS animation
   }
-
-  @action
-  selectEmployee(employee) {
-    this.userInfo.employee = employee;
-  }
-
-  @action
-  clearEmployee() {
-    this.userInfo.employee = null;
-  }
 }

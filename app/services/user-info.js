@@ -47,6 +47,14 @@ export default class UserInfoService extends Service {
     }
   }
 
+  impersonate(asEmployee) {
+    this.employee = asEmployee;
+  }
+
+  async resetImpersonation() {
+    this.employee = await this.user.employee;
+  }
+
   @keepLatestTask
   *fetchUserInfo() {
     if (this.session.isAuthenticated) {
