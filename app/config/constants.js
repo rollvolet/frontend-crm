@@ -65,4 +65,9 @@ export default {
     CUSTOMER_ACCOUNTANCY_EXPORT:
       'http://data.rollvolet.be/concepts/7afecda8-f128-4043-a69c-a68cbaaedac5',
   },
+  USER_GROUPS: {
+    ADMIN: 'http://data.rollvolet.be/user-groups/admin',
+    BOARD: 'http://data.rollvolet.be/user-groups/board',
+    EMPLOYEE: 'http://data.rollvolet.be/user-groups/employee',
+  },
 };
