@@ -11,6 +11,7 @@ export default class UserInfoService extends Service {
 
   @tracked account;
   @tracked user;
+  @tracked userGroups;
   @tracked employee;
   @tracked firstName; // firstName of logged in user, regardless of impersonation
 
@@ -19,15 +20,15 @@ export default class UserInfoService extends Service {
   }
 
   get isAdmin() {
-    return this.user.userGroups.includes(USER_GROUPS.ADMIN);
+    return this.userGroups.find((group) => group.uri == USER_GROUPS.ADMIN);
   }
 
   get isBoard() {
-    return this.user.userGroups.includes(USER_GROUPS.BOARD);
+    return this.userGroups.find((group) => group.uri == USER_GROUPS.BOARD);
   }
 
   get isEmployee() {
-    return this.user.userGroups.includes(USER_GROUPS.EMPLOYEE);
+    return this.userGroups.find((group) => group.uri == USER_GROUPS.EMPLOYEE);
   }
 
   get isImpersonation() {
@@ -57,8 +58,11 @@ export default class UserInfoService extends Service {
         include: 'user.employee',
       });
       this.user = yield this.account.user;
-      this.employee = yield this.user.employee;
-      this.firstName = this.employee ? this.employee.firstName : this.user.name?.split(' ')[0];
+      [this.userGroups, this.employee] = yield Promise.all([
+        this.user.userGroups,
+        this.user.employee,
+      ]);
+      this.firstName = this.employee ? this.employee.firstName : this.user.firstName;
     } else {
       this.account = null;
       this.user = null;

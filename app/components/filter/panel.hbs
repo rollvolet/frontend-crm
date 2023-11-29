@@ -1,5 +1,5 @@
 <div class="p-4 lg:px-6 space-y-4 w-full lg:flex lg:items-start lg:justify-between lg:gap-6 lg:space-y-0 bg-gray-50 rounded">
-  <button class="flex items-center justify-between {{if this.isCollapsed "w-full"}} focus:outline-none focus:ring-2 focus:ring-red-200" {{on "click" (toggle "isCollapsed" this)}}>
+  <button class="flex items-center justify-between {{if this.isCollapsed "w-full"}} focus:outline-none focus:ring-2 focus:ring-red-200" type="button" {{on "click" (toggle "isCollapsed" this)}}>
     <span class="flex items-center">
       {{svg-jar "search-line" class="shrink-0 mr-2 h-4 w-4 text-gray-400 fill-current"}}
       <h4 class="text-gray-700 text-sm uppercase tracking-wide">

@@ -1,0 +1,132 @@
+{{page-title "Gebruikersbeheer"}}
+
+<div class="flex items-center justify-between">
+  <div class="flex-1 min-w-0">
+    <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
+      Gebruikersbeheer
+    </h2>
+  </div>
+  <div class="flex grow-0">
+    <button
+      {{on "click" this.createNewEmployee}}
+      class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+      {{svg-jar "add-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
+      Nieuwe gebruiker
+    </button>
+  </div>
+</div>
+
+<div class="mt-6">
+  <InputField::Checkbox
+    @id="filter-status-field"
+    @label="Toon ook werknemers buiten dienst"
+    @value={{not this.onlyActive}}
+    @onChange={{fn (toggle "onlyActive" this)}}
+    class="mt-1" />
+</div>
+
+<div class="mt-4 bg-white shadow rounded-lg">
+  <div class="flex flex-col">
+    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="overflow-hidden border-b border-gray-200">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <DataTable::Th
+                    @field="first-name"
+                    @currentSort={{this.sort}}
+                    @onUpdateSort={{fn (mut this.sort)}}
+                    class="px-6 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+                  Voornaam
+                </DataTable::Th>
+                <DataTable::Th
+                  @field="last-name"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="px-6 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider-lg">
+                  Achternaam
+                </DataTable::Th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Initialen
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Rol
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Account
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Groepen
+                </th>
+                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">
+                  {{!-- Actions --}}
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {{#each this.model as |employee|}}
+                <tr>
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                    <div class="flex items-center space-x-2">
+                      {{#unless this.onlyActive}}
+                        {{#if employee.endDate}}
+                          {{svg-jar "user-unfollow-line" class="text-red-400 h-5 w-5 text-gray-400 fill-current"}}
+                          <EmberTooltip @text="Buiten dienst" />
+                        {{else}}
+                          {{svg-jar "user-follow-line" class="text-green-400 h-5 w-5 text-gray-400 fill-current"}}
+                          <EmberTooltip @text="In dienst" />
+                        {{/if}}
+                      {{/unless}}
+                      <span>{{employee.firstName}}</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                    {{employee.lastName}}
+                  </td>
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                    {{employee.initials}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    <Concept::Label @uri={{employee.type}} />
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    {{employee.user.account.accountName}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500 space-x-2">
+                    {{#each (sort-by "name" employee.user.userGroups) as |group|}}
+                      <Rlv::Pill @label={{group.name}} />
+                    {{/each}}
+                  </td>
+                  <td class="px-6 py-4 text-center text-sm text-gray-500">
+                    <button type="button"
+                      {{on "click" (fn this.openEditModal employee)}}
+                      class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                      {{svg-jar "pencil-line" class="h-5 w-5 fill-current"}}
+                    </button>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <DataTable::Pagination
+    @page={{this.page}}
+    @size={{this.size}}
+    @total={{this.model.meta.count}}
+    @onPrevious={{this.previousPage}}
+    @onNext={{this.nextPage}}
+    @onSelectPage={{this.selectPage}} />
+</div>
+{{outlet}}
+
+{{#if this.isOpenEditModal}}
+  <Employee::EditModal
+    @model={{this.selectedEmployee}}
+    @didSave={{this.refreshModel}}
+    @didTerminate={{this.refreshModel}}
+    @onClose={{this.closeEditModal}} />
+{{/if}}

@@ -1,4 +1,4 @@
-import Model, { attr, hasMany } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { isPresent, isBlank } from '@ember/utils';
 import constants from 'rollvolet-crm/config/constants';
 
@@ -12,6 +12,7 @@ export default class EmployeeClass extends Model {
   @attr('string') initials;
   @attr('datetime') endDate;
 
+  @belongsTo('user', { inverse: 'employee' }) user;
   @hasMany('request', { inverse: 'employee' }) acceptedRequests;
   @hasMany('request', { inverse: 'visitor' }) visitedRequests;
   @hasMany('intervention', { inverse: 'employee' }) acceptedInterventions;

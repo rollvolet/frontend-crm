@@ -5,6 +5,7 @@ export default {
     WAY_OF_ENTRIES: 'http://data.rollvolet.be/concept-scheme/9d8087db-4307-4f6d-82f3-a414a5cb2076',
     DELIVERY_METHODS:
       'http://data.rollvolet.be/concept-scheme/5ea87803-699c-4f83-801c-34add5be9baa',
+    EMPLOYEE_TYPES: 'http://data.rollvolet.be/concept-schemes/894b0bab-f0f6-45b3-90a3-cbe04319d5b3',
   },
   EMPLOYEE_TYPES: {
     ADMINISTRATIVE: 'http://data.rollvolet.be/employee-types/18734ab3-b8c4-428c-aca3-beb4d8e0e0ea',

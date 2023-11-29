@@ -1,5 +1,5 @@
 import Service, { inject as service } from '@ember/service';
-import { debug, warn } from '@ember/debug';
+import { warn } from '@ember/debug';
 import { all, dropTask } from 'ember-concurrency';
 import constants from '../config/constants';
 import { PAGE_SIZE } from '../config';
@@ -24,6 +24,7 @@ export default class ConfigurationService extends Service {
       CONCEPT_SCHEMES.HONORIFIC_PREFIXES,
       CONCEPT_SCHEMES.WAY_OF_ENTRIES,
       CONCEPT_SCHEMES.DELIVERY_METHODS,
+      CONCEPT_SCHEMES.EMPLOYEE_TYPES,
     ];
     yield all([
       ...entities.map((type) => {

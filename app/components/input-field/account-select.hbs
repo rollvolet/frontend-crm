@@ -1,5 +1,5 @@
 {{#if @label}}
-  <label for="country-select" class="block text-sm font-medium text-gray-700">
+  <label for="account-select" class="block text-sm font-medium text-gray-700">
     {{@label}}
   </label>
 {{/if}}
@@ -10,13 +10,13 @@
     @options={{this.options}}
     @selected={{@value}}
     @searchEnabled={{true}}
-    @searchField="name"
+    @searchField="accountName"
     @onChange={{@onSelectionChange}}
     @noMatchesMessage="Geen resultaten"
     @allowClear={{true}}
     @disabled={{@disabled}}
     as |option select|
   >
-    {{highlight-substr option.name select.lastSearchedText}}
+    {{highlight-substr option.accountName select.lastSearchedText}}
   </PowerSelect>
 </div>

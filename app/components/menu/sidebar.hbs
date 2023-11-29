@@ -101,6 +101,17 @@
         {{/if}}
       </div>
     </div>
+    <div class="space-y-1">
+      {{#if this.userInfo.isBoard}}
+        <LinkTo @route="main.users.index"
+          @query={{hash page=0 sort="type,first-name"}}
+          @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
+          class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+          {{svg-jar "user-settings-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
+          Gebruikersbeheer
+        </LinkTo>
+      {{/if}}
+    </div>
   </nav>
 </div>
 <div class="flex justify-between items-center border-t border-red-800 px-4 pt-4">

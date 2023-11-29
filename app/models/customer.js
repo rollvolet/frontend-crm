@@ -51,7 +51,8 @@ export default class CustomerModel extends ValidatedModel {
     defaultValue() {
       return CUSTOMER_STATUSES.ACTIVE;
     },
-  }) status;
+  })
+  status;
   @attr('string') type; // individual or organization
   @attr('number') number;
   @attr('string') honorificPrefix;
