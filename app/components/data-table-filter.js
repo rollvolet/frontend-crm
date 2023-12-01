@@ -39,7 +39,7 @@ export default class DataTableFilterComponent extends Component {
   @action
   setFilter(key, value) {
     this.filter.set(key, isBlank(value) ? undefined : value);
-    this.onChange(this.action);
+    this.onChange(this.filter);
   }
 
   @action
