@@ -22,12 +22,11 @@
       </div>
       <div class="flex flex-none space-x-4">
         {{#unless this.request}}
-          <button type="button"
-            {{on "click" (perform this.createFollowUpRequest)}}
-            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-            {{svg-jar "add-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
-            Start nieuwe aanvraag
-          </button>
+          <Rlv::Button
+            @label="Start nieuwe aanvraag"
+            @icon="add-line"
+            @skin="secondary"
+            {{on "click" (perform this.createFollowUpRequest)}} />
         {{/unless}}
       </div>
     </div>

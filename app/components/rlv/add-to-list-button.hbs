@@ -1,0 +1,14 @@
+<div class="my-2 relative">
+  <div class="absolute inset-0 flex items-center" aria-hidden="true">
+    <div class="w-full border-t border-gray-300"></div>
+  </div>
+  <div class="relative flex justify-center">
+    <Rlv::Button
+      @label={{or @label "Lijn toevoegen"}}
+      @icon={{or @icon "add-line"}}
+      @skin="tertiary"
+      @size={{@size}}
+      @disabled={{this.click.isRunning}}
+      {{on "click" (perform this.click)}} />
+  </div>
+</div>

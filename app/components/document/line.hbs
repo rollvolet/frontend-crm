@@ -8,12 +8,14 @@
       @focusOut={{perform @saveTask}} />
     <div class="absolute bottom-0 right-0 px-4 py-2">
       <Util::SaveStatus @model={{@model}} @task={{@saveTask}} />
-      <button type="button"
-        {{on "click" this.closeEdit}}
-        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-        {{svg-jar "logout-box-r-line" class="h-5 w-5 fill-current"}}
-        <EmberTooltip @text="Sluiten" />
-      </button>
+      <Rlv::Button
+        @label="Sluiten"
+        @hideText={{true}}
+        @icon="logout-box-r-line"
+        @skin="secondary-naked"
+        @size="large"
+        class="p-0"
+        {{on "click" this.closeEdit}} />
     </div>
   </div>
 {{else}}
@@ -30,11 +32,14 @@
       {{/if}}
       {{#unless @isDisabledEdit}}
         <div class="grow-0 flex-auto flex items-end">
-          <button type="button"
-            {{on "click" this.openEdit}}
-            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "pencil-line" class="h-5 w-5 fill-current"}}
-          </button>
+          <Rlv::Button
+            @label="Bewerk"
+            @hideText={{true}}
+            @icon="pencil-line"
+            @skin="secondary-naked"
+            @size="large"
+            class="p-0"
+            {{on "click" this.openEdit}} />
         </div>
       {{/unless}}
     </div>

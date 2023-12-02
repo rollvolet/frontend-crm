@@ -10,45 +10,63 @@
           <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
         {{/if}}
       </div>
-      <div class="flex flex-none space-x-4">
+      <div class="flex flex-none">
         {{#if this.editMode}}
           {{#if @isEnabledDelete}}
-            <button type="button"
-              {{on "click" @onDelete}}
-              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "delete-bin-line" class="h-6 w-6 fill-current"}}
-            </button>
+            <Rlv::Button
+              @label="Verwijder"
+              @hideText={{true}}
+              @icon="delete-bin-line"
+              @skin="secondary-naked"
+              @size="xlarge"
+              class="px-2"
+              {{on "click" @onDelete}} />
           {{/if}}
-          <button type="button"
-            {{on "click" this.closeEdit}}
-            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "logout-box-r-line" class="h-6 w-6 fill-current"}}
-            <EmberTooltip @text="Sluiten" />
-          </button>
+          <Rlv::Button
+            @label="Sluiten"
+            @hideText={{true}}
+            @icon="logout-box-r-line"
+            @skin="secondary-naked"
+            @size="xlarge"
+            class="px-2"
+            {{on "click" this.closeEdit}} />
         {{else}}
           {{#if this.isLinkedToCustomer}}
-            <button type="button"
-              {{on "click" this.generateInterventionReport}}
-              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "file-text-line" class="h-6 w-6 fill-current"}}
+            <Rlv::Button
+              @label="Interventierapport"
+              @hideText={{true}}
+              @icon="file-text-line"
+              @skin="secondary-naked"
+              @size="xlarge"
+              class="px-2"
+              {{on "click" this.generateInterventionReport}}>
+              <:tooltip>
               <EmberTooltip @text="Interventierapport" @side="bottom" />
-            </button>
+              </:tooltip>
+            </Rlv::Button>
           {{/if}}
           {{#unless @isDisabledEdit}}
-            <button type="button"
-              {{on "click" this.openEdit}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "pencil-line" class="h-6 w-6 fill-current"}}
-            </button>
+            <Rlv::Button
+              @label="Bewerk"
+              @hideText={{true}}
+              @icon="pencil-line"
+              @skin="secondary-naked"
+              @size="xlarge"
+              class="px-2"
+              {{on "click" this.openEdit}} />
           {{/unless}}
           <div class="relative inline-block text-left">
             <div>
-              <button type="button"
-                {{on "click" this.openOptionsMenu}}
-                class="bg-white rounded-full flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-200" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                <span class="sr-only">Open menu</span>
-                {{svg-jar "more-2-fill" class="h-6 w-6 fill-current"}}
-              </button>
+              <Rlv::Button
+                id="menu-button"
+                @label="Open opties"
+                @hideText={{true}}
+                @icon="more-2-fill"
+                @skin="secondary-naked"
+                @size="xlarge"
+                aria-expanded="true"
+                aria-haspopup="true"
+                {{on "click" this.openOptionsMenu}} />
             </div>
             {{#if this.isOpenOptionsMenu}}
               <div class="z-10 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"

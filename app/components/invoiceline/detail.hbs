@@ -51,18 +51,23 @@
       <div class="absolute bottom-0 right-0 px-4 py-2">
         <Util::SaveStatus @model={{@model}} @task={{@saveTask}} />
         {{#if this.editPriceMode}}
-          <button type="button"
-            onClick={{@onDelete}}
-            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "delete-bin-line" class="h-5 w-5 fill-current"}}
-          </button>
+          <Rlv::Button
+            @label="Verwijder"
+            @hideText={{true}}
+            @icon="delete-bin-line"
+            @skin="secondary-naked"
+            @size="large"
+            class="p-0"
+            {{on "click" @onDelete}} />
         {{/if}}
-        <button type="button"
-          onClick={{this.closeEdit}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-          {{svg-jar "logout-box-r-line" class="h-5 w-5 fill-current"}}
-          <EmberTooltip @text="Sluiten" />
-        </button>
+        <Rlv::Button
+          @label="Sluiten"
+          @hideText={{true}}
+          @icon="logout-box-r-line"
+          @skin="secondary-naked"
+          @size="large"
+          class="p-0"
+          {{on "click" this.closeEdit}} />
       </div>
     </div>
   {{else}}
@@ -73,11 +78,14 @@
         </div>
         {{#unless this.isDisabledEdit}}
           <div class="grow-0 flex-auto flex items-end">
-            <button type="button"
-              onClick={{this.openEdit}}
-                class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "pencil-line" class="h-5 w-5 fill-current"}}
-            </button>
+            <Rlv::Button
+              @label="Bewerk"
+              @hideText={{true}}
+              @icon="pencil-line"
+              @skin="secondary-naked"
+              @size="large"
+              class="p-0"
+              {{on "click" this.openEdit}} />
           </div>
         {{/unless}}
       </div>

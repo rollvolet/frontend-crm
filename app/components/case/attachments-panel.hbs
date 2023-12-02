@@ -25,25 +25,23 @@
           <li class="pl-3 pr-4 py-3 flex items-center justify-between {{if (gt index 0) "border-t border-gray-200"}}">
             {{svg-jar "attachment-2" class="h-5 w-5 text-gray-400 fill-current"}}
             <div class="ml-2 flex-1 w-0">
-              <button type="button"
-                class="max-w-100 text-left text-gray-900 text-sm hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-                {{on "click" (perform this.downloadAttachment attachment)}}>
-                {{attachment.filename}}
-              </button>
+              <Rlv::Button
+                @label={{attachment.filename}}
+                @skin="secondary-link"
+                class="max-w-100 text-left"
+                {{on "click" (perform this.downloadAttachment attachment)}} />
               <div class="mt-1 text-xs text-gray-400">
                 {{moment-format attachment.created}} - <span class="whitespace-nowrap">{{attachment.humanReadableSize}}</span>
               </div>
             </div>
-            <button type="button"
-              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-              disabled={{attachment.isDeleted}}
-              {{on "click" (perform this.deleteAttachment attachment)}}>
-              {{#if attachment.isDeleted}}
-                {{svg-jar "loading-circle" class="animate-spin h-5 w-5"}}
-              {{else}}
-                {{svg-jar "delete-bin-line" class="h-5 w-5 fill-current"}}
-              {{/if}}
-            </button>
+            <Rlv::Button
+              @label="Verwijder"
+              @hideText={{true}}
+              @icon={{if attachment.isDeleted "loading-circle" "delete-bin-line"}}
+              @skin="secondary-naked"
+              @size="large"
+              @disabled={{attachment.isDeleted}}
+              {{on "click" (perform this.deleteAttachment attachment)}} />
           </li>
         {{/each}}
       </ul>

@@ -10,28 +10,36 @@
           <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
         {{/if}}
       </div>
-      <div class="flex flex-none space-x-4">
+      <div class="flex flex-none">
         {{#if this.editMode}}
           {{#if @isEnabledDelete}}
-            <button type="button"
-              {{on "click" @onDelete}}
-              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "delete-bin-line" class="h-6 w-6 fill-current"}}
-            </button>
+            <Rlv::Button
+              @label="Verwijder"
+              @hideText={{true}}
+              @icon="delete-bin-line"
+              @skin="secondary-naked"
+              @size="xlarge"
+              class="px-2"
+              {{on "click" @onDelete}} />
           {{/if}}
-          <button type="button"
-            {{on "click" this.closeEdit}}
-            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "logout-box-r-line" class="h-6 w-6 fill-current"}}
-            <EmberTooltip @text="Sluiten" />
-          </button>
+          <Rlv::Button
+            @label="Sluiten"
+            @hideText={{true}}
+            @icon="logout-box-r-line"
+            @skin="secondary-naked"
+            @size="xlarge"
+            class="px-2"
+            {{on "click" this.closeEdit}} />
         {{else}}
           {{#unless @isDisabledEdit}}
-            <button type="button"
-              {{on "click" this.openEdit}}
-              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "pencil-line" class="h-6 w-6 fill-current"}}
-            </button>
+            <Rlv::Button
+              @label="Bewerk"
+              @hideText={{true}}
+              @icon="pencil-line"
+              @skin="secondary-naked"
+              @size="xlarge"
+              class="px-2"
+              {{on "click" this.openEdit}} />
           {{/unless}}
         {{/if}}
       </div>

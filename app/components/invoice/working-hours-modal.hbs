@@ -33,11 +33,11 @@
                     {{workingHour.employee.firstName}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button type="button"
-                      class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-                      {{on "click" (perform this.deleteWorkingHour workingHour)}}>
-                      Verwijder
-                    </button>
+                    <Rlv::Button
+                      @label="Verwijder"
+                      @skin="naked"
+                      @alert={{true}}
+                      {{on "click" (perform this.deleteWorkingHour workingHour)}} />
                   </td>
                 </tr>
               {{else}}
@@ -72,18 +72,11 @@
             class="mt-1" />
         </div>
         <div class="sm:mt-6">
-          {{#if this.isDisabledAddWorkingHour}}
-            <button type="button" disabled
-              class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-gray-100">
-              Toevoegen
-            </button>
-          {{else}}
-            <button type="button"
-              class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              {{on "click" (perform this.addWorkingHour)}}>
-              Toevoegen
-            </button>
-          {{/if}}
+          <Rlv::Button
+            @label="Toevoegen"
+            @skin="primary"
+            @disabled={{this.isDisabledAddWorkingHour}}
+            {{on "click" (perform this.addWorkingHour)}} />
         </div>
       {{/unless}}
     </div>

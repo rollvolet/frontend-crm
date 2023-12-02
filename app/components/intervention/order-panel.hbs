@@ -21,19 +21,17 @@
       </div>
       <div class="flex flex-none space-x-4">
         {{#if this.order}}
-          <button type="button"
-            {{on "click" (perform this.unlink)}}
-            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-            {{svg-jar "subtract-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
-            Ontkoppel bestelling
-          </button>
+          <Rlv::Button
+            @label="Ontkoppel bestelling"
+            @icon="subtract-line"
+            @skin="secondary"
+            {{on "click" (perform this.unlink)}} />
         {{else}}
-          <button type="button"
-            {{on "click" this.openOrderModal}}
-            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-            {{svg-jar "link" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
-            Koppel bestelling
-          </button>
+          <Rlv::Button
+            @label="Koppel bestelling"
+            @icon="link"
+            @skin="secondary"
+            {{on "click" this.openOrderModal}} />
         {{/if}}
       </div>
     </div>
@@ -52,11 +50,16 @@
           </Util::DetailItem>
         </div>
         <div class="space-y-6">
-          <Util::DetailItem @label="Productiebon" class="items-baseline">
+          <Util::DetailItem @label="Productiebon" class="">
             {{#if this.order.case.hasProductionTicket}}
-              <button {{on "click" this.downloadProductionTicket}} type="button">
-                {{svg-jar "file-search-line" class="h-6 w-6 text-gray-400 fill-current"}}
-              </button>
+              <Rlv::Button
+                @label="Productiebon bekijken"
+                @hideText={{true}}
+                @icon="file-download-line"
+                @skin="secondary-naked"
+                @size="large"
+                class="p-0"
+                {{on "click" this.downloadProductionTicket}} />
             {{else}}
               <div class="italic text-gray-400 text-sm">
                 Niet beschikbaar
@@ -68,12 +71,14 @@
     {{else}}
       <p class="italic text-gray-400 text-sm">
         Deze interventie is niet gekoppeld aan een (eerdere) bestelling. Klik
-        <button type="button"
-          {{on "click" this.openOrderModal}}
-          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-          {{svg-jar "link" class="h-4 w-4 fill-current"}}
-          <EmberTooltip @text="Koppel bestelling" @side="top" />
-        </button>
+        <Rlv::Button
+          @label="Koppel bestelling"
+          @hideText={{true}}
+          @icon="link"
+          @skin="secondary-naked"
+          @size="small"
+          class="p-0"
+          {{on "click" this.openOrderModal}} />
         om een bestelling te koppelen.
       </p>
     {{/if}}

@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 
 @import "tailwindcss/components";
+@import "components/button";
 @import "components/ember-tooltip";
 @import "components/ember-power-select";
 @import "components/scanning-bar";

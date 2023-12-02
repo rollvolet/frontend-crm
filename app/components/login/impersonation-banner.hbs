@@ -29,12 +29,11 @@
           <p class="text-sm text-yellow-700">
             Gebruiker {{this.userInfo.firstName}} werkt momenteel in naam van <span class="font-bold">{{this.userInfo.employee.firstName}}</span>.
           </p>
-          <button
-            type="button"
-            class="underline text-sm text-yellow-700"
-            {{on "click" this.resetImpersonation}}>
-            Wijzigen
-          </button>
+          <Rlv::Button
+            @label="Wijzigen"
+            @skin="secondary-link"
+            class="text-yellow-700 hover:text-yellow-800"
+            {{on "click" this.resetImpersonation}} />
         </div>
       </div>
     </div>

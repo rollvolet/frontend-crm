@@ -7,28 +7,46 @@
       {{#unless @isDisabledEdit}}
         <div class="flex items-center">
           {{#if @onMoveUp}}
-            <button type="button"
-              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+            <Rlv::Button
+              @label="Verplaats omhoog"
+              @hideText={{true}}
+              @icon="arrow-up-line"
+              @skin="secondary-naked"
+              @size="large"
+              class="p-0"
               {{on "click" @onMoveUp}}>
-              {{svg-jar "arrow-up-line" class="h-5 w-5 fill-current"}}
+              <:tooltip>
               <EmberTooltip @text="Verplaats omhoog" />
-            </button>
+              </:tooltip>
+            </Rlv::Button>
           {{/if}}
           {{#if @onMoveDown}}
-            <button type="button"
-              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+            <Rlv::Button
+              @label="Verplaats omlaag"
+              @hideText={{true}}
+              @icon="arrow-down-line"
+              @skin="secondary-naked"
+              @size="large"
+              class="p-0"
               {{on "click" @onMoveDown}}>
-              {{svg-jar "arrow-down-line" class="h-5 w-5 fill-current"}}
+              <:tooltip>
               <EmberTooltip @text="Verplaats omlaag" />
-            </button>
+              </:tooltip>
+            </Rlv::Button>
           {{/if}}
         </div>
-        <button type="button"
-          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
+        <Rlv::Button
+          @label="Dupliceer"
+          @hideText={{true}}
+          @icon="file-copy-line"
+          @skin="secondary-naked"
+          @size="large"
+          class="p-0"
           {{on "click" (perform this.copyOfferline)}}>
-          {{svg-jar "file-copy-line" class="h-5 w-5 fill-current"}}
+          <:tooltip>
           <EmberTooltip @text="Lijn kopiëren" />
-        </button>
+          </:tooltip>
+        </Rlv::Button>
       {{/unless}}
     </div>
     <div class="flex flex-col sm:flex-row justify-end items-end sm:items-center sm:space-x-2">
@@ -69,17 +87,22 @@
         @focusOut={{perform @saveTask @model}} />
       <div class="absolute bottom-0 right-0 px-4 py-2">
         <Util::SaveStatus @model={{@model}} @task={{@saveTask}} />
-        <button type="button"
-          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-          {{on "click" @onDelete}}>
-          {{svg-jar "delete-bin-line" class="h-5 w-5 fill-current"}}
-        </button>
-        <button type="button"
-          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-          {{on "click" this.closeEdit}}>
-          {{svg-jar "logout-box-r-line" class="h-5 w-5 fill-current"}}
-          <EmberTooltip @text="Sluiten" />
-        </button>
+        <Rlv::Button
+          @label="Verwijder"
+          @hideText={{true}}
+          @icon="delete-bin-line"
+          @skin="secondary-naked"
+          @size="large"
+          class="p-0"
+          {{on "click" @onDelete}} />
+        <Rlv::Button
+          @label="Sluiten"
+          @hideText={{true}}
+          @icon="logout-box-r-line"
+          @skin="secondary-naked"
+          @size="large"
+          class="p-0"
+          {{on "click" this.closeEdit}} />
       </div>
     </div>
   {{else}}
@@ -96,11 +119,14 @@
         {{/if}}
         {{#unless @isDisabledEdit}}
           <div class="grow-0 flex-auto flex items-end">
-            <button type="button"
-              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-              {{on "click" this.openEdit}}>
-              {{svg-jar "pencil-line" class="h-5 w-5 fill-current"}}
-            </button>
+            <Rlv::Button
+              @label="Bewerk"
+              @hideText={{true}}
+              @icon="pencil-line"
+              @skin="secondary-naked"
+              @size="large"
+              class="p-0"
+              {{on "click" this.openEdit}} />
           </div>
         {{/unless}}
       </div>
@@ -115,12 +141,13 @@
         </div>
       </div>
       {{#unless @model.isNew}}
-        <button type="button"
-          class="p-1 rounded-full {{if this.isShownCalculation "bg-gray-100 text-red-400" "text-gray-400 hover:text-red-400 hover:bg-gray-100"}} focus:outline-none focus:ring-2 focus:ring-red-200">
-          {{svg-jar
-              (if this.isShownCalculation "arrow-up-s-line" "arrow-down-s-line")
-              class="h-5 w-5"}}
-        </button>
+        <Rlv::Button
+          @label="Rekenlijnen openen"
+          @hideText={{true}}
+          @icon={{if this.isShownCalculation "arrow-up-s-line" "arrow-down-s-line"}}
+          @skin="secondary-naked"
+          @size="large"
+          class="p-1 rounded-full" />
       {{/unless}}
     </div>
     {{#if this.isShownCalculation}}
@@ -174,12 +201,13 @@
       </table>
       {{#unless @isDisabledEdit}}
         <div class="mt-4 flex justify-end">
-          <button type="button"
-            class="flex text-sm text-gray-600 font-medium underline hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-            {{on "click" (perform this.addCalculationLine)}}>
-            {{svg-jar "add-line" class="-ml-1 h-5 w-5 fill-current"}}
-            <span>Rekenlijn toevoegen</span>
-          </button>
+          <Rlv::Button
+            @label="Rekenlijn toevoegen"
+            @icon="add-line"
+            @skin="secondary-link"
+            @size="small"
+            class="underline"
+            {{on "click" (perform this.addCalculationLine)}} />
         </div>
       {{/unless}}
     {{/if}}

@@ -2,32 +2,42 @@
   <div class="pl-1 shrink-0 grow-0 flex flex-col items-center {{unless this.editMode "justify-between"}}">
     {{#if this.editMode}}
       <Util::SaveStatus @model={{@model}} @task={{this.save}} />
-      <button type="button"
-        {{on "click" this.closeEdit}}
-        class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-        {{svg-jar "logout-box-line" class="h-5 w-5 fill-current"}}
-        <EmberTooltip @text="Sluiten" />
-      </button>
+      <Rlv::Button
+        @label="Sluiten"
+        @hideText={{true}}
+        @icon="logout-box-line"
+        @skin="secondary-naked"
+        @size="large"
+        class="p-2"
+        {{on "click" this.closeEdit}} />
     {{else}}
-      <button type="button"
-        {{on "click" @onCloseDetail}}
-        class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-        {{svg-jar "arrow-left-s-line" class="h-5 w-5 fill-current"}}
-        <EmberTooltip @text="Terug" />
-      </button>
+      <Rlv::Button
+        @label="Terug"
+        @hideText={{true}}
+        @icon="arrow-left-s-line"
+        @skin="secondary-naked"
+        @size="large"
+        class="p-2"
+        {{on "click" @onCloseDetail}} />
       <div class="flex flex-col items-center space-y-2">
         {{#if this.isEnabledDelete}}
-          <button type="button"
-            {{on "click" @onDelete}}
-            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "delete-bin-line" class="h-5 w-5 fill-current"}}
-          </button>
+          <Rlv::Button
+            @label="Verwijder"
+            @hideText={{true}}
+            @icon="delete-bin-line"
+            @skin="secondary-naked"
+            @size="large"
+            class="p-2"
+            {{on "click" @onDelete}} />
         {{/if}}
-        <button type="button"
-          {{on "click" this.openEdit}}
-          class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-          {{svg-jar "pencil-line" class="h-5 w-5 fill-current"}}
-        </button>
+        <Rlv::Button
+          @label="Bewerk"
+          @hideText={{true}}
+          @icon="pencil-line"
+          @skin="secondary-naked"
+          @size="large"
+          class="p-2"
+          {{on "click" this.openEdit}} />
       </div>
     {{/if}}
   </div>

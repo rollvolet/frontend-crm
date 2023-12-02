@@ -2,7 +2,7 @@
   {{!-- Card header --}}
   <div class="px-6 pt-6 pb-4">
     <div class="flex justify-between items-center">
-      <div class="flex items-center">
+      <div class="flex items-center space-x-4">
         <h2 class="text-2xl font-bold font-display text-gray-900">
           {{#if @model.isCreditNote}}
             Creditnota
@@ -15,37 +15,38 @@
           <Util::SaveStatus @model={{@model}} @task={{this.save}} class="ml-2" />
         {{else}}
           {{#if @model.isBooked}}
-            <span class="ml-2 items-center inline-flex text-xs text-blue-800">
+            <span class="items-center inline-flex text-xs text-blue-800">
               {{svg-jar "file-lock-line" class="shrink-0 h-5 w-5 fill-current"}}
               <EmberTooltip @text="Geboekt" @side="bottom" />
             </span>
           {{/if}}
+          {{#if @model.isPaid}}
+            <Rlv::Pill @label="Betaald" @color="green" @hideDot={{true}} />
+          {{else}}
+            <Rlv::Pill @label="Niet betaald" @color="red" @hideDot={{true}} />
+          {{/if}}
         {{/if}}
       </div>
-      <div class="flex flex-none space-x-4">
+      <div class="flex flex-none items-center">
         {{#if this.editMode}}
-          <button type="button"
-            {{on "click" this.closeEdit}}
-            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "logout-box-r-line" class="h-6 w-6 fill-current"}}
-            <EmberTooltip @text="Sluiten" />
-          </button>
+          <Rlv::Button
+            @label="Sluiten"
+            @hideText={{true}}
+            @icon="logout-box-r-line"
+            @skin="secondary-naked"
+            @size="xlarge"
+            class="px-2"
+            {{on "click" this.closeEdit}} />
         {{else}}
-          {{#if @model.isPaid}}
-            <span class="ml-4 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-              Betaald
-            </span>
-          {{else}}
-            <span class="ml-4 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
-              Niet betaald
-            </span>
-          {{/if}}
           {{#unless @isDisabledEdit}}
-            <button type="button"
-              {{on "click" this.openEdit}}
-              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "pencil-line" class="h-6 w-6 fill-current"}}
-            </button>
+            <Rlv::Button
+              @label="Bewerk"
+              @hideText={{true}}
+              @icon="pencil-line"
+              @skin="secondary-naked"
+              @size="xlarge"
+              class="px-2"
+              {{on "click" this.openEdit}} />
           {{/unless}}
         {{/if}}
       </div>
@@ -138,12 +139,14 @@
               <div class="flex items-center">
                 <Util::DisplayAvailability @value={{@model.case.hasProductionTicket}} />
                 {{#if @model.case.hasProductionTicket}}
-                  <button type="button"
-                    class="ml-2 text-gray-500 text-sm hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-200"
-                    {{on "click" this.downloadProductionTicket}}>
-                    {{svg-jar "download-cloud-2-line" class="h-5 w-5 fill-current"}}
-                    <EmberTooltip @text="Productiebon bekijken" />
-                  </button>
+                  <Rlv::Button
+                    @label="Productiebon bekijken"
+                    @hideText={{true}}
+                    @icon="download-cloud-2-line"
+                    @skin="secondary-naked"
+                    @size="large"
+                    class="ml-2 p-0"
+                    {{on "click" this.downloadProductionTicket}} />
                 {{/if}}
               </div>
             </Util::DetailItem>

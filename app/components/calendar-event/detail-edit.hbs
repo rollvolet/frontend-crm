@@ -18,12 +18,12 @@
         </div>
         <div>
           {{#if (and @onDelete (not @model.isNew))}}
-            <button type="button"
-              {{on "click" (perform this.delete)}}
-              class="inline-flex items-center text-sm text-gray-700 underline lg:no-underline hover:underline focus:outline-none focus:ring-2 focus:ring-red-200">
-              {{svg-jar "prohibited-line" class="-ml-0.5 mr-1 h-4 w-4 text-gray-400 fill-current"}}
-              Wis {{@title}}
-            </button>
+            <Rlv::Button
+              @label={{concat "Wis " @title}}
+              @icon="prohibited-line"
+              @skin="secondary-link"
+              @size="small"
+              {{on "click" (perform this.delete)}} />
           {{/if}}
         </div>
       </div>

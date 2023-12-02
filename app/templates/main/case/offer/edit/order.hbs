@@ -38,8 +38,8 @@
               {{on "click" (toggle "isOrdered" offerline)}}>
               <div class="flex space-x-4 items-start">
                 <div>
-                  {{svg-jar (if offerline.isOrdered "checkbox-line" "checkbox-intermediate-line")
-                      class=(if offerline.isOrdered "h-6 w-6 text-red-600" "h-6 w-6 text-gray-300")}}
+                  {{svg-jar (if offerline.isOrdered "checkbox-line" "checkbox-indeterminate-line")
+                      class=(concat "h-6 w-6 fill-current " (if offerline.isOrdered "text-red-600" "text-gray-300"))}}
                 </div>
                 <div>
                   {{{offerline.description}}}
@@ -65,26 +65,17 @@
           </div>
         </div>
         <div class=" px-2 flex justify-end space-x-2">
-          <button type="button"
-            onClick={{this.cancel}}
-            class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-            Annuleren
-          </button>
-          {{#if this.isDisabledCreate}}
-            <button type="button"
-              disabled="disabled"
-              class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-gray-400 bg-gray-100">
-              Ga verder
-              {{svg-jar "arrow-right-s-line" class="ml-2 -mr-1 h-5 w-5 fill-current"}}
-            </button>
-          {{else}}
-            <button type="button"
-              class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-              {{on "click" (perform this.createOrder)}}>
-              Ga verder
-              {{svg-jar "arrow-right-s-line" class="ml-2 -mr-1 h-5 w-5 fill-current"}}
-            </button>
-          {{/if}}
+          <Rlv::Button
+            @label="Annuleren"
+            @skin="secondary"
+            {{on "click" this.cancel}} />
+          <Rlv::Button
+            @label="Ga verder"
+            @icon="arrow-right-s-line"
+            @iconAlignment="right"
+            @skin="primary"
+            @disabled={{this.isDisabledCreate}}
+            {{on "click" (perform this.createOrder)}} />
         </div>
       {{else}}
         <p class="text-gray-400 italic">
@@ -118,11 +109,11 @@
     </div>
     </:body>
     <:footer>
-    <button type="button"
-      class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200 sm:ml-3 sm:w-auto sm:text-sm"
-      {{on "click" (perform this.updateCaseVatRate)}}>
-      Pas BTW-tarief aan
-    </button>
+    <Rlv::Button
+      @label="Pas BTW-tarief aan"
+      @skin="primary"
+      class="sm:ml-3"
+      {{on "click" (perform this.updateCaseVatRate)}} />
     </:footer>
   </Rlv::Modal>
 {{/if}}

@@ -54,13 +54,14 @@
       <Util::DetailItem @label="Memo">
         {{#if @model.memo}}
           <div>
-            <button class="text-gray-400 text-sm" type="button" {{on "click" this.toggleMemo}}>
-              {{#if this.isMemoExpanded}}
-                Sluiten {{svg-jar "arrow-up-s-line" class="h-4 w-4 inline fill-current"}}
-              {{else}}
-                Openen {{svg-jar "arrow-down-s-line" class="h-4 w-4 inline fill-current"}}
-              {{/if}}
-            </button>
+            <Rlv::Button
+              @label={{if this.isMemoExpanded "Verbergen" "Tonen"}}
+              @icon={{if this.isMemoExpanded "arrow-up-s-line" "arrow-down-s-line"}}
+              @iconAlignment="right"
+              @skin="secondary-naked"
+              @size="small"
+              class="p-0"
+              {{on "click" this.toggleMemo}} />
           </div>
           {{#if this.isMemoExpanded}}
             <span class="whitespace-pre-wrap">{{@model.memo}}</span>

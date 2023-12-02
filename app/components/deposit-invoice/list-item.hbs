@@ -1,13 +1,14 @@
 <li class="pl-2 pr-4 py-4 sm:pl-4 sm:pr-6">
   <div class="flex">
     <div class="flex-none mt-0.5">
-      <button type="button"
-        {{on "click" this.toggleExpand}}
-        class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-        {{svg-jar
-            (if this.isExpanded "arrow-down-s-line" "arrow-right-s-line")
-            class="shrink-0 mr-1.5 h-5 w-5"}}
-      </button>
+      <Rlv::Button
+        @label="Toggle"
+        @hideText={{true}}
+        @icon={{if this.isExpanded "arrow-down-s-line" "arrow-right-s-line"}}
+        @skin="secondary-naked"
+        @size="large"
+        class="p-0 text-gray-700"
+        {{on "click" this.toggleExpand}} />
     </div>
     <div class="flex-grow">
       <div class="space-y-1 sm:flex sm:items-center sm:justify-between sm:space-y-0">
@@ -238,21 +239,23 @@
           {{/unless}}
 
           <Util::SaveStatus @model={{@model}} @task={{this.save}} />
-          <button type="button"
-            {{on "click" this.closeEdit}}
-            class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-            {{svg-jar "logout-box-r-line" class="h-5 w-5 fill-current"}}
-            <EmberTooltip @text="Sluiten" />
-          </button>
+          <Rlv::Button
+            @label="Sluiten"
+            @hideText={{true}}
+            @icon="logout-box-r-line"
+            @skin="secondary-naked"
+            @size="large"
+            class="p-0"
+            {{on "click" this.closeEdit}} />
         </div>
       {{else}}
         <div class="mt-6 sm:flex sm:justify-between">
           <div>
-            <button type="button"
-              {{on "click" this.toggleExpand}}
-              class="text-xs text-gray-500 underline hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-              {{#if this.isExpanded}}Toon minder{{else}}Toon meer{{/if}}
-            </button>
+            <Rlv::Button
+              @label={{if this.isExpanded "Toon minder" "Toon meer"}}
+              @skin="secondary-link"
+              @size="small"
+              {{on "click" this.toggleExpand}} />
           </div>
           <div class="mt-2 space-x-0 space-y-2 flex flex-col sm:mt-0 sm:flex-none sm:flex-row sm:space-x-2 sm:space-y-0">
             <Document::ViewButton @size="small" @onClick={{this.downloadInvoiceDocument}} />
@@ -264,20 +267,21 @@
             {{/unless}}
             {{#unless @isDisabledEdit}}
               {{#unless @model.isCreditNote}}
-                <button type="button"
-                  {{on "click" (perform @onCredit @model)}}
-                  class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-                  {{svg-jar "exchange-funds-line" class="-ml-0.5 mr-2 h-4 w-4 fill-current"}}
-                  Crediteren
-                </button>
+                <Rlv::Button
+                  @label="Crediteren"
+                  @icon="exchange-funds-line"
+                  @skin="secondary"
+                  @size="small"
+                  @loading={{@isLoading}}
+                  {{on "click" (perform @onCredit @model)}} />
               {{/unless}}
             {{/unless}}
-            <button type="button"
-              {{on "click" this.openEdit}}
-              class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded text-xs text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-              {{svg-jar "pencil-line" class="-ml-0.5 mr-2 h-4 w-4 fill-current"}}
-              Wijzigen
-            </button>
+            <Rlv::Button
+              @label="Wijzigen"
+              @icon="pencil-line"
+              @skin="secondary"
+              @size="small"
+              {{on "click" this.openEdit}} />
           </div>
         </div>
       {{/if}}

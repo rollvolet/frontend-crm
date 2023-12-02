@@ -23,16 +23,12 @@
           </h2>
           <div>
             {{#unless this.isDisabledEdit}}
-              <button type="button"
-                {{on "click" (perform this.createNewDepositInvoice)}}
-                class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-                {{#if this.createNewDepositInvoice.isRunning}}
-                  {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-4 w-14"}}
-                {{else}}
-                  {{svg-jar "add-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
-                  Nieuw
-                {{/if}}
-              </button>
+              <Rlv::Button
+                @label="Nieuw"
+                @icon="add-line"
+                @skin="secondary"
+                @loading={{this.createNewDepositInvoice.isRunning}}
+                {{on "click" (perform this.createNewDepositInvoice)}} />
             {{/unless}}
           </div>
         </div>

@@ -7,12 +7,12 @@
     </h2>
   </div>
   <div class="flex grow-0">
-    <button
-      {{on "click" this.createNewEmployee}}
-      class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-      {{svg-jar "add-line" class="-ml-1 mr-2 h-5 w-5 fill-current"}}
-      Nieuwe gebruiker
-    </button>
+    <Rlv::Button
+      @label="Nieuwe gebruiker"
+      @icon="add-line"
+      @skin="primary"
+      class="ml-3"
+      {{on "click" this.createNewEmployee}} />
   </div>
 </div>
 
@@ -99,11 +99,13 @@
                     {{/each}}
                   </td>
                   <td class="px-6 py-4 text-center text-sm text-gray-500">
-                    <button type="button"
-                      {{on "click" (fn this.openEditModal employee)}}
-                      class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      {{svg-jar "pencil-line" class="h-5 w-5 fill-current"}}
-                    </button>
+                    <Rlv::Button
+                      @label="Bewerk"
+                      @icon="pencil-line"
+                      @skin="secondary-naked"
+                      @size="large"
+                      @hideText={{true}}
+                      {{on "click" (fn this.openEditModal employee)}} />
                   </td>
                 </tr>
               {{/each}}

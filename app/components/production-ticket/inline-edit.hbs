@@ -5,69 +5,31 @@
     <div>
       <Util::DisplayAvailability @value={{this.case.hasProductionTicket}} />
     </div>
-    <div class="ml-3 relative inline-block text-left">
-      <div>
-        <button type="button"
-          class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-200"
-          id="menu-button"
-          aria-expanded="true"
-          aria-haspopup="true"
-          {{on "click" this.openActionMenu}}>
-          Acties
-          {{svg-jar "arrow-down-s-line" class="-mr-0.5 ml-1 h-4 w-4 fill-current"}}
-        </button>
-      </div>
-      {{#if this.isOpenActionMenu}}
-        <div class="z-10 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
-          {{on-click-outside this.closeActionMenu}}
-          {{!-- TODO make CSS transition work on leave --}}
-          {{css-transition
-              enterClass="transform opacity-0 scale-95"
-              enterActiveClass="transition ease-out duration-100"
-              enterToClass="transform opacity-100 scale-100"
-              leaveClass="transform opacity-100 scale-100"
-              leaveActiveClass="transition ease-in duration-75"
-              leaveToClass="transform opacity-0 scale-95"}}>
-          <div class="py-1" role="none">
-            <button type="button"
-              class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
-              role="menuitem"
-              tabindex="-1"
-              onClick={{perform this.generateTemplate}}>
-              Maak nieuwe productiebon
-            </button>
-            {{#if this.case.hasProductionTicket}}
-              <button type="button"
-                class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-                tabindex="-1"
-                onClick={{this.downloadProductionTicket}}>
-                Bekijk productiebon
-              </button>
-              <button type="button"
-                class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-                tabindex="-1"
-                onClick={{perform this.deleteProductionTicket}}>
-                Verwijder productiebon
-              </button>
-            {{else}}
-              <FileUpload
-                @name={{this.uploadFieldName}}
-                @accept="application/pdf"
-                class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
-                @onFileAdd={{perform this.uploadProductionTicket}}
-                as |queue|>
-                {{#if queue.files.length}}
-                  {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
-                {{else}}
-                  Laad productiebon op
-                {{/if}}
-              </FileUpload>
-            {{/if}}
-          </div>
-        </div>
+    <Rlv::ActionMenu class="ml-3" as |Menu|>
+      {{#if this.case.hasProductionTicket}}
+        <Menu.Item
+          @label="Maak nieuwe productiebon"
+          @onClick={{perform this.generateTemplate}} />
+        <Menu.Item
+          @label="Bekijk productiebon"
+          @onClick={{this.downloadProductionTicket}} />
+        <Menu.Item
+          @label="Verwijder productiebon"
+          @onClick={{perform this.deleteProductionTicket}} />
+      {{else}}
+        <FileUpload
+          @name={{this.uploadFieldName}}
+          @accept="application/pdf"
+          class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
+          @onFileAdd={{queue Menu.Close (perform this.uploadProductionTicket)}}
+          as |queue|>
+          {{#if queue.files.length}}
+            {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
+          {{else}}
+            Laad productiebon op
+          {{/if}}
+        </FileUpload>
       {{/if}}
-    </div>
+    </Rlv::ActionMenu>
   </div>
 {{/if}}

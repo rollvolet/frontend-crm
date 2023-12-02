@@ -23,19 +23,21 @@
                   {{#let (and (eq index 0) this.hasPrevious) (and (eq index (dec this.years.length)) this.hasNext) as |hasPreviousNav hasNextNav|}}
                     <span class="w-full inline-flex items-center {{if hasPreviousNav "justify-between" "justify-end"}}">
                       {{#if hasPreviousNav}}
-                        <button type="button"
-                          class="flex-none inline-flex items-center border border-transparent text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-                          {{on "click" this.goToPrevious}}>
-                          {{svg-jar "arrow-left-s-line" class="h-4 w-4 fill-current"}}
-                        </button>
+                        <Rlv::Button
+                          @label="Previous"
+                          @hideText={{true}}
+                          @icon="arrow-left-s-line"
+                          @skin="secondary-naked"
+                          {{on "click" this.goToPrevious}} />
                       {{/if}}
                       <span>{{year}}</span>
                       {{#if hasNextNav}}
-                        <button type="button"
-                          class="ml-2 flex-none inline-flex items-center border border-transparent text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200"
-                          {{on "click" this.goToNext}}>
-                          {{svg-jar "arrow-right-s-line" class="h-4 w-4 fill-current"}}
-                        </button>
+                        <Rlv::Button
+                          @label="Next"
+                          @hideText={{true}}
+                          @icon="arrow-right-s-line"
+                          @skin="secondary-naked"
+                          {{on "click" this.goToNext}} />
                       {{/if}}
                     </span>
                   {{/let}}

@@ -1,0 +1,93 @@
+{{#if @route}}
+  <LinkTo
+    class={{this.buttonClass}}
+    disabled={{@disabled}}
+    @route={{@route}}
+    @models={{this.models}}
+    @query={{this.queryParams}}
+    ...attributes
+  >
+    {{#if this.hasIconLeft}}
+      {{svg-jar @icon class=(concat "button--icon " (unless @hideText "button--icon-text"))}}
+    {{/if}}
+    {{#if @label}}
+      {{#if @hideText}}
+        <span class="sr-only">{{@label}}</span>
+      {{else}}
+        {{@label}}
+      {{/if}}
+    {{else}}
+      {{yield}}
+    {{/if}}
+    {{#if this.hasIconRight}}
+      {{svg-jar @icon class=(concat "button--icon button--icon-right " (unless @hideText "button--icon-text"))}}
+    {{/if}}
+    {{yield to="tooltip"}}
+  </LinkTo>
+{{else if @href}}
+  <a
+    class={{this.buttonClass}}
+    disabled={{@disabled}}
+    href={{@href}}
+    ...attributes
+  >
+    {{#if this.hasIconLeft}}
+      {{svg-jar @icon class=(concat "button--icon " (unless @hideText "button--icon-text"))}}
+    {{/if}}
+    {{#if @label}}
+      {{#if @hideText}}
+        <span class="sr-only">{{@label}}</span>
+      {{else}}
+        {{@label}}
+      {{/if}}
+    {{else}}
+      {{yield}}
+    {{/if}}
+    {{#if this.hasIconRight}}
+      {{svg-jar @icon class=(concat "button--icon button--icon-right " (unless @hideText "button--icon-text"))}}
+    {{/if}}
+    {{yield to="tooltip"}}
+  </a>
+{{else if @loading}}
+  <button type="button"
+    class={{this.buttonClass}}
+    disabled={{true}}
+    ...attributes
+  >
+    {{#if @icon}}
+      {{svg-jar "loading-circle" class=(concat "animate-spin h-4 w-4 " (unless @hideText "mr-2"))}}
+      {{#unless @hideText}}
+        {{or @loadingMessage @label}}
+      {{/unless}}
+    {{else}}
+      {{svg-jar "loading-circle" class=(concat "animate-spin h-4 w-4 " (if @loadingMessage "mr-2"))}}
+      {{#if @loadingMessage}}
+        {{@loadingMessage}}
+      {{/if}}
+    {{/if}}
+    {{yield to="tooltip"}}
+  </button>
+{{else}}
+  <button type="button"
+    class={{this.buttonClass}}
+    disabled={{@disabled}}
+    ...attributes
+  >
+    {{#if this.hasIconLeft}}
+      {{svg-jar @icon class=(concat "button--icon " (unless @hideText "button--icon-text"))}}
+    {{/if}}
+    {{#if @label}}
+      {{#if @hideText}}
+        <span class="sr-only">{{@label}}</span>
+      {{else}}
+        {{@label}}
+      {{/if}}
+    {{else}}
+      {{yield}}
+    {{/if}}
+    {{#if this.hasIconRight}}
+      {{svg-jar @icon class=(concat "button--icon button--icon-right " (unless @hideText "button--icon-text"))}}
+    {{/if}}
+    {{yield to="tooltip"}}
+  </button>
+{{/if}}

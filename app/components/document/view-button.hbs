@@ -1,10 +1,7 @@
-<button type="button"
-  {{on "click" @onClick}}
-  class="inline-flex items-center {{if (eq @size "small") "px-2.5 py-1.5 text-xs" "px-4 py-2 text-sm"}} border border-gray-300 rounded-md text-gray-500 hover:text-red-400 hover:border-red-300 focus:border-red-300 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-  {{#if @isLoading}}
-    {{svg-jar "loading-circle" class=(concat "animate-spin mx-1.5 w-14 " (if (eq @size "small") "h-4" "h-5"))}}
-  {{else}}
-    {{svg-jar "file-pdf-2-line" class=(if (eq @size "small") "-ml-0.5 mr-2 h-4 w-4 fill-current" "-ml-1 mr-2 h-5 w-5 fill-current")}}
-    Bekijken
-  {{/if}}
-</button>
+<Rlv::Button
+  @label="Bekijken"
+  @icon="file-pdf-2-line"
+  @skin="secondary"
+  @size={{@size}}
+  @loading={{@isLoading}}
+  {{on "click" @onClick}} />

@@ -1,6 +1,5 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
 import { guidFor } from '@ember/object/internals';
 import { enqueueTask, task } from 'ember-concurrency';
@@ -12,8 +11,6 @@ import constants from '../../config/constants';
 const { FILE_TYPES } = constants;
 
 export default class ProductionTicketInlineEditComponent extends Component {
-  @tracked isOpenActionMenu = false;
-
   caseData = trackedFunction(this, async () => {
     return await this.args.model.case;
   });
@@ -34,7 +31,6 @@ export default class ProductionTicketInlineEditComponent extends Component {
 
   @task
   *generateTemplate() {
-    this.closeActionMenu();
     try {
       yield generateDocument(`/cases/${this.case.id}/production-ticket-templates`);
     } catch (e) {
@@ -46,7 +42,6 @@ export default class ProductionTicketInlineEditComponent extends Component {
 
   @enqueueTask
   *uploadProductionTicket(file) {
-    this.closeActionMenu();
     try {
       yield file.upload(`/cases/${this.case.id}/production-tickets`);
       this.case.hasProductionTicket = true;
@@ -65,7 +60,6 @@ export default class ProductionTicketInlineEditComponent extends Component {
 
   @task
   *deleteProductionTicket() {
-    this.closeActionMenu();
     this.case.hasProductionTicket = false;
     yield this.case.save();
     yield fetch(
@@ -78,17 +72,6 @@ export default class ProductionTicketInlineEditComponent extends Component {
 
   @action
   downloadProductionTicket() {
-    this.closeActionMenu();
     previewDocument(FILE_TYPES.PRODUCTION_TICKET, this.case.uri);
-  }
-
-  @action
-  openActionMenu() {
-    this.isOpenActionMenu = true;
-  }
-
-  @action
-  closeActionMenu() {
-    this.isOpenActionMenu = false;
   }
 }

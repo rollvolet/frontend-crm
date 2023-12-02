@@ -44,11 +44,14 @@
           @isInvalid={{this.isAmountInvalid}} />
         {{#unless this.isAmountInvalid}}
           <span class="pt-1">
-            <button type="button"
-              class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-              {{on "click" this.closeEdit}}>
-              {{svg-jar "logout-box-r-line" class="h-5 w-5 fill-current"}}
-            </button>
+            <Rlv::Button
+              @label="Sluiten"
+              @hideText={{true}}
+              @icon="logout-box-r-line"
+              @skin="secondary-naked"
+              @size="large"
+              class="p-0"
+              {{on "click" this.closeEdit}} />
           </span>
         {{/unless}}
       </div>
@@ -70,16 +73,22 @@
     </td>
     {{#unless @isDisabledEdit}}
       <td class="py-2 text-right">
-        <button type="button"
-          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-          {{on "click" @onDelete}}>
-          {{svg-jar "delete-bin-line" class="h-5 w-5 fill-current"}}
-        </button>
-        <button type="button"
-          class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200"
-          {{on "click" this.openEdit}}>
-          {{svg-jar "pencil-line" class="h-5 w-5 fill-current"}}
-        </button>
+        <Rlv::Button
+          @label="Verwijder"
+          @hideText={{true}}
+          @icon="delete-bin-line"
+          @skin="secondary-naked"
+          @size="large"
+          class="p-0"
+          {{on "click" @onDelete}} />
+        <Rlv::Button
+          @label="Bewerk"
+          @hideText={{true}}
+          @icon="pencil-line"
+          @skin="secondary-naked"
+          @size="large"
+          class="p-0"
+          {{on "click" this.openEdit}} />
       </td>
     {{/unless}}
   {{/if}}

@@ -8,18 +8,32 @@
           </h3>
           <div class="flex grow-0 flex-row items-end space-x-3 pb-2">
             {{#if this.isEnabledUnlinkCustomer}}
-              <button type="button"
-                {{on "click" (perform this.unlinkCustomer)}}
-                class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                {{svg-jar "user-unfollow-line" class="h-6 w-6 fill-current"}}
+              <Rlv::Button
+                @label="Ontkoppel klant"
+                @hideText={{true}}
+                @icon="user-unfollow-line"
+                @skin="secondary-naked"
+                @size="xlarge"
+                class="p-0"
+                {{on "click" (perform this.unlinkCustomer)}}>
+                <:tooltip>
                 <EmberTooltip @text="Ontkoppel klant" @side="bottom" />
-              </button>
+                </:tooltip>
+              </Rlv::Button>
             {{/if}}
-            <LinkTo @route="main.customers.edit.index" @model={{@model.customer.id}}
-              class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "external-link-line" class="h-6 w-6 fill-current"}}
+            <Rlv::Button
+              @route="main.customers.edit.index"
+              @model={{@model.customer.id}}
+              @label="Open klant"
+              @hideText={{true}}
+              @icon="external-link-line"
+              @skin="secondary-naked"
+              @size="xlarge"
+              class="p-0">
+              <:tooltip>
               <EmberTooltip @text="Open klant" @side="bottom" />
-            </LinkTo>
+              </:tooltip>
+            </Rlv::Button>
           </div>
         </div>
         <div class="flex items-center space-x-3">
@@ -72,13 +86,14 @@
             <Util::DetailItem @width={{20}} @label="Opmerking">
               {{#if @model.customer.comment}}
                 <div>
-                  <button class="text-gray-400 text-sm" type="button" {{on "click" this.toggleComment}}>
-                    {{#if this.isCommentExpanded}}
-                      Verbergen {{svg-jar "arrow-up-s-line" class="h-4 w-4 inline fill-current"}}
-                    {{else}}
-                      Tonen {{svg-jar "arrow-down-s-line" class="h-4 w-4 inline fill-current"}}
-                    {{/if}}
-                  </button>
+                  <Rlv::Button
+                    @label={{if this.isCommentExpanded "Verbergen" "Tonen"}}
+                    @icon={{if this.isCommentExpanded "arrow-up-s-line" "arrow-down-s-line"}}
+                    @iconAlignment="right"
+                    @skin="secondary-naked"
+                    @size="small"
+                    class="p-0"
+                    {{on "click" this.toggleComment}} />
                 </div>
                 {{#if this.isCommentExpanded}}
                   <span class="whitespace-pre-wrap">{{@model.customer.comment}}</span>
@@ -93,13 +108,14 @@
             <Util::DetailItem @width={{20}} @label="Memo">
               {{#if @model.customer.memo}}
                 <div>
-                  <button class="text-gray-400 text-sm" type="button" {{on "click" this.toggleMemo}}>
-                    {{#if this.isMemoExpanded}}
-                      Verbergen {{svg-jar "arrow-up-s-line" class="h-4 w-4 inline fill-current"}}
-                    {{else}}
-                      Tonen {{svg-jar "arrow-down-s-line" class="h-4 w-4 inline fill-current"}}
-                    {{/if}}
-                  </button>
+                  <Rlv::Button
+                    @label={{if this.isMemoExpanded "Verbergen" "Tonen"}}
+                    @icon={{if this.isMemoExpanded "arrow-up-s-line" "arrow-down-s-line"}}
+                    @iconAlignment="right"
+                    @skin="secondary-naked"
+                    @size="small"
+                    class="p-0"
+                    {{on "click" this.toggleMemo}} />
                 </div>
                 {{#if this.isMemoExpanded}}
                   <span class="whitespace-pre-wrap">{{@model.customer.memo}}</span>
@@ -135,19 +151,17 @@
                     Gebouw
                   </span>
                   {{#if this.isEnabledEditBuilding}}
-                    <button type="button"
-                      {{on "click" this.toggleBuildingEdit}}
-                      class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      {{svg-jar "close-line" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400 fill-current"}}
-                      <span>Annuleer</span>
-                    </button>
+                    <Rlv::Button
+                      @label="Annuleer"
+                      @icon="close-line"
+                      @skin="tertiary"
+                      {{on "click" this.toggleBuildingEdit}} />
                   {{else}}
-                    <button type="button"
-                      {{on "click" this.toggleBuildingEdit}}
-                      class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      {{svg-jar "cursor-line" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400 fill-current"}}
-                      <span>Selecteer</span>
-                    </button>
+                    <Rlv::Button
+                      @label="Selecteer"
+                      @icon="cursor-line"
+                      @skin="tertiary"
+                      {{on "click" this.toggleBuildingEdit}} />
                   {{/if}}
                 </div>
               </div>
@@ -180,19 +194,17 @@
                     Contact
                   </span>
                   {{#if this.isEnabledEditContact}}
-                    <button type="button"
-                      {{on "click" this.toggleContactEdit}}
-                      class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      {{svg-jar "close-line" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400 fill-current"}}
-                      <span>Annuleer</span>
-                    </button>
+                    <Rlv::Button
+                      @label="Annuleer"
+                      @icon="close-line"
+                      @skin="tertiary"
+                      {{on "click" this.toggleContactEdit}} />
                   {{else}}
-                    <button type="button"
-                      {{on "click" this.toggleContactEdit}}
-                      class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                      {{svg-jar "cursor-line" class="-ml-1.5 mr-1 h-5 w-5 text-gray-400 fill-current"}}
-                      <span>Selecteer</span>
-                    </button>
+                    <Rlv::Button
+                      @label="Selecteer"
+                      @icon="cursor-line"
+                      @skin="tertiary"
+                      {{on "click" this.toggleContactEdit}} />
                   {{/if}}
                 </div>
               </div>

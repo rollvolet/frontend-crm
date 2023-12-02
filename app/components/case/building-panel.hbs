@@ -17,11 +17,14 @@
 </div>
 
 <div class="flex justify-end">
-  <button type="button"
-    {{on "click" this.openEditModal}}
-    class="p-2 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-    {{svg-jar "pencil-line" class="h-5 w-5 fill-current"}}
-  </button>
+  <Rlv::Button
+    @label="Bewerk"
+    @hideText={{true}}
+    @icon="pencil-line"
+    @skin="secondary-naked"
+    @size="large"
+    class="p-2"
+    {{on "click" this.openEditModal}} />
 </div>
 
 {{#if this.isOpenEditModal}}
@@ -29,12 +32,14 @@
     <:header>
     <div class="absolute top-0 right-0 pt-4 pr-4">
       <Util::SaveStatus @model={{@model}} @task={{this.save}} class="mb-0.5" />
-      <button type="button"
-        {{on "click" this.closeEditModal}}
-        class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-        <span class="sr-only">Close</span>
-        {{svg-jar "close-line" class="h-6 w-6 fill-current"}}
-      </button>
+      <Rlv::Button
+        @label="Sluiten"
+        @hideText={{true}}
+        @icon="close-line"
+        @skin="secondary-naked"
+        @size="xlarge"
+        class="px-2"
+        {{on "click" this.closeEditModal}} />
     </div>
     </:header>
     <:body>
