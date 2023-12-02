@@ -1,0 +1,10 @@
+<LinkTo
+  @route={{@route}}
+  @query={{or @query (hash)}}
+  @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
+  class="text-red-100 {{if (eq @level 2) "pl-12 pr-2 py-2 text-sm" "px-2 py-2 text-base"}} flex items-center font-medium rounded-md hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
+  {{#if @icon}}
+    {{svg-jar @icon class="mr-4 h-6 w-6 text-red-300 fill-current"}}
+  {{/if}}
+  {{@label}}
+</LinkTo>

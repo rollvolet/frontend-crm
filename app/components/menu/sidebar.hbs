@@ -10,106 +10,87 @@
 <div class="mt-5 2xl:mt-3 flex-1 h-0 overflow-y-auto">
   <nav class="px-2 space-y-8">
     <div class="space-y-1">
-      <LinkTo @route="main.index"
-        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-        class="text-red-100 group flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
-        {{svg-jar "home-2-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
-        Home
-      </LinkTo>
+      <Menu::Sidebar::Item
+        @route="main.index"
+        @icon="home-2-line"
+        @label="Home" />
 
-      <LinkTo @route="main.customers.index"
+      <Menu::Sidebar::Item
+        @route="main.customers.index"
         @query={{hash page=0 number=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined}}
-        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-        {{svg-jar "team-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
-        Klanten
-      </LinkTo>
+        @icon="team-line"
+        @label="Klanten" />
 
-      <LinkTo @route="main.requests.index"
+      <Menu::Sidebar::Item
+        @route="main.requests.index"
         @query={{hash page=0 number=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasOffer=-1 isCancelled=0}}
-        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-        {{svg-jar "message-2-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
-        Aanvragen
-      </LinkTo>
+        @icon="message-2-line"
+        @label="Aanvragen" />
 
-      <LinkTo @route="main.interventions.index"
+      <Menu::Sidebar::Item
+        @route="main.interventions.index"
         @query={{hash page=0 number=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasInvoice=0 isCancelled=0 isPlanned=-1}}
-        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-        {{svg-jar "tools-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
-        Interventies
-      </LinkTo>
+        @icon="tools-line"
+        @label="Interventies" />
 
-      <LinkTo @route="main.offers.index"
+      <Menu::Sidebar::Item
+        @route="main.offers.index"
         @query={{hash page=0 number=undefined reference=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasOrder=-1}}
-        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-        {{svg-jar "calculator-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
-        Offertes
-      </LinkTo>
+        @icon="calculator-line"
+        @label="Offertes" />
 
-      <LinkTo @route="main.orders.index"
+      <Menu::Sidebar::Item
+        @route="main.orders.index"
         @query={{hash page=0 reference=undefined offerNumber=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasInvoice=-1 isCancelled=0}}
-        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-        {{svg-jar "shopping-bag-3-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
-        Bestellingen
-      </LinkTo>
+        @icon="shopping-bag-3-line"
+        @label="Bestellingen" />
 
-      <LinkTo @route="main.deposit-invoices.index"
+      <Menu::Sidebar::Item
+        @route="main.deposit-invoices.index"
         @query={{hash page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined}}
-        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-        {{svg-jar "coupon-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
-        Voorschotfacturen
-      </LinkTo>
+        @icon="coupon-line"
+        @label="Voorschotfacturen" />
 
-      <LinkTo @route="main.invoices.index"
+      <Menu::Sidebar::Item
+        @route="main.invoices.index"
         @query={{hash page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined}}
-        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-        {{svg-jar "money-euro-circle-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
-        Facturen
-      </LinkTo>
+        @icon="money-euro-circle-line"
+        @label="Facturen" />
     </div>
+
     <div class="space-y-1">
-      <LinkTo @route="main.reports.outstanding-jobs.index"
+      <Menu::Sidebar::Item
+        @route="main.reports.outstanding-jobs.index"
         @query={{hash page=0 visitorName=undefined orderDate=undefined hasProductionTicket="-1" isProductReady="-1" execution="na" sort="order-date"}}
-        @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-        class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-        {{svg-jar "calendar-event-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
-        Uit te voeren werken
-      </LinkTo>
-      <div class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
+        @icon="calendar-event-line"
+        @label="Uit te voeren werken" />
+
+      <div class="text-red-100 flex items-center px-2 py-2 text-base font-medium">
         {{svg-jar "bar-chart-2-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
         Rapporten
       </div>
       <div class="space-y-1">
-        <LinkTo @route="main.accountancy.exports"
+        <Menu::Sidebar::Item
+          @route="main.accountancy.exports"
           @query={{hash page=0}}
-          @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-          class="text-red-100 w-full flex items-center pl-12 pr-2 py-2 text-sm font-medium text-red-100 rounded-md hover:text-white hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
-          Export boekhouding
-        </LinkTo>
+          @label="Export boekhouding"
+          @level={{2}} />
         {{#if this.userInfo.isBoard}}
-          <LinkTo @route="main.reports.revenue"
-            @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-            class="text-red-100 w-full flex items-center pl-12 pr-2 py-2 text-sm font-medium text-red-100 rounded-md hover:text-white hover:bg-red-600 focus:outline-none focus:text-white focus:bg-red-600">
-            Omzet
-          </LinkTo>
+          <Menu::Sidebar::Item
+            @route="main.reports.revenue"
+            @query={{hash page=0}}
+            @label="Omzet"
+            @level={{2}} />
         {{/if}}
       </div>
     </div>
     <div class="space-y-1">
       {{#if this.userInfo.isBoard}}
-        <LinkTo @route="main.users.index"
+        <Menu::Sidebar::Item
+          @route="main.users.index"
           @query={{hash page=0 sort="type,first-name"}}
-          @activeClass="bg-red-800 text-white hover:bg-red-800 hover:text-white"
-          class="text-red-100 hover:bg-red-600 group flex items-center px-2 py-2 text-base font-medium rounded-md focus:outline-none focus:text-white focus:bg-red-600">
-          {{svg-jar "user-settings-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
-          Gebruikersbeheer
-        </LinkTo>
+          @icon="user-settings-line"
+          @label="Gebruikersbeheer" />
       {{/if}}
     </div>
   </nav>
