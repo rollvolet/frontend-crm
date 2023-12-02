@@ -1,4 +1,4 @@
-{{#each (sort-by "value" @model) as |email|}}
+{{#each (take this.visibleNbOfItems (sort-by "value" @model)) as |email|}}
   <div>
     <Fmt::Email @value={{email.value}} />
     {{#if email.note}}
@@ -6,3 +6,11 @@
     {{/if}}
   </div>
 {{/each}}
+
+{{#if this.isCollapsible}}
+  <Rlv::Button
+    @label={{if this.isCollapsed "Toon meer" "Toon minder"}}
+    @skin="secondary-link"
+    @size="small"
+    {{on "click" this.toggleCollapse}} />
+{{/if}}

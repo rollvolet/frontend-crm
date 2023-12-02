@@ -1,4 +1,4 @@
-{{#each (sort-by "telephoneType.code:desc" "position" @model) as |tel|}}
+{{#each (take this.visibleNbOfItems (sort-by "telephoneType.code:desc" "position" @model)) as |tel|}}
   <div>
     <span class="text-xs uppercase tracking-wider text-gray-400">
       {{tel.telephoneType.code}}
@@ -9,3 +9,11 @@
     {{/if}}
   </div>
 {{/each}}
+
+{{#if this.isCollapsible}}
+  <Rlv::Button
+    @label={{if this.isCollapsed "Toon meer" "Toon minder"}}
+    @skin="secondary-link"
+    @size="small"
+    {{on "click" this.toggleCollapse}} />
+{{/if}}

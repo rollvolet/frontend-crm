@@ -72,11 +72,11 @@
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="Telefoon">
-              <Telephone::List @model={{@model.customer.telephones}} />
+              <Telephone::List @model={{@model.customer.telephones}} @collapsible={{true}} />
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="E-mail">
-              <Email::List @model={{@model.customer.emails}} />
+              <Email::List @model={{@model.customer.emails}} @collapsible={{true}} />
             </Util::DetailItem>
 
             <Util::DetailItem @width={{20}} @label="Website">
