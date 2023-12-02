@@ -55,50 +55,34 @@
               class="px-2"
               {{on "click" this.openEdit}} />
           {{/unless}}
-          <div class="relative inline-block text-left">
-            <div>
-              <Rlv::Button
-                id="menu-button"
-                @label="Open opties"
-                @hideText={{true}}
-                @icon="more-2-fill"
-                @skin="secondary-naked"
-                @size="xlarge"
-                aria-expanded="true"
-                aria-haspopup="true"
-                {{on "click" this.openOptionsMenu}} />
-            </div>
-            {{#if this.isOpenOptionsMenu}}
-              <div class="z-10 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
-                {{on-click-outside this.closeOptionsMenu}}
-                {{!-- TODO make CSS transition work on leave --}}
-                {{css-transition
-                    enterClass="transform opacity-0 scale-95"
-                    enterActiveClass="transition ease-out duration-100"
-                    enterToClass="transform opacity-100 scale-100"
-                    leaveClass="transform opacity-100 scale-100"
-                    leaveActiveClass="transition ease-in duration-75"
-                    leaveToClass="transform opacity-0 scale-95"}}>
-                <div class="py-1" role="none">
-                  {{#if (and this.case.isOngoing (not this.hasInvoice))}}
-                    {{#if this.isLinkedToCustomer}}
-                      <LinkTo role="menuitem" tabindex="-1"
-                        @route="main.case.intervention.edit.invoice"
-                        @models={{array this.case.id @model.id}}
-                        class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                        Factuur opstellen
-                      </LinkTo>
-                    {{/if}}
-                  {{/if}}
-                  <div role="menuitem" tabindex="-1"
-                    {{on "click" (perform this.createNewIntervention)}}
-                    class="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100">
-                    Nieuwe interventie
-                  </div>
-                </div>
-              </div>
+
+          <Rlv::ActionMenu>
+            <:trigger as |Trigger|>
+            <Rlv::Button
+              id="menu-button"
+              @label="Open opties"
+              @hideText={{true}}
+              @icon="more-2-fill"
+              @skin="secondary-naked"
+              @size="xlarge"
+              aria-expanded="true"
+              aria-haspopup="true"
+              {{on "click" Trigger.Open}} />
+            </:trigger>
+            <:default as |Menu|>
+            {{#if (and this.case.isOngoing (not this.hasInvoice))}}
+              {{#if this.isLinkedToCustomer}}
+                <Menu.Item
+                  @route="main.case.intervention.edit.invoice"
+                  @models={{array this.case.id @model.id}}
+                  @label="Factuur opstellen" />
+              {{/if}}
             {{/if}}
-          </div>
+            <Menu.Item
+              @label="Nieuwe interventie"
+              @onClick={{perform this.createNewIntervention}} />
+            </:default>
+          </Rlv::ActionMenu>
         {{/if}}
       </div>
     </div>

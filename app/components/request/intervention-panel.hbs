@@ -9,11 +9,19 @@
             {{#if @model.origin}}{{format-intervention-number @model.origin.number}}{{/if}}
           </h2>
           {{#if @model.origin}}
-            <LinkTo @route="main.interventions.edit" @model={{@model.origin.id}}
-              class="ml-2 block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "external-link-line" class="h-5 w-5 fill-current"}}
+            <Rlv::Button
+              @route="main.interventions.edit"
+              @model={{@model.origin.id}}
+              @label="Open interventie"
+              @hideText={{true}}
+              @icon="external-link-line"
+              @skin="secondary-naked"
+              @size="large"
+              class="px-2">
+              <:tooltip>
               <EmberTooltip @text="Open interventie" @side="bottom" />
-            </LinkTo>
+              </:tooltip>
+            </Rlv::Button>
           {{/if}}
         </div>
         <p class="text-sm text-gray-400">

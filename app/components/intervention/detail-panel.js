@@ -16,7 +16,6 @@ export default class InterventionDetailPanelComponent extends Component {
   @service sequence;
 
   @tracked editMode = false;
-  @tracked isOpenOptionsMenu = false;
 
   caseData = trackedFunction(this, async () => {
     return await this.args.model.case;
@@ -129,7 +128,6 @@ export default class InterventionDetailPanelComponent extends Component {
 
   @task
   *createNewIntervention() {
-    this.closeOptionsMenu();
     const [customer, contact, building, vatRate, employee, origin, number] = yield Promise.all([
       this.case.customer,
       this.case.contact,
@@ -180,15 +178,5 @@ export default class InterventionDetailPanelComponent extends Component {
     if (calendarEvent && calendarEvent.isNew) {
       await calendarEvent.destroyRecord();
     }
-  }
-
-  @action
-  openOptionsMenu() {
-    this.isOpenOptionsMenu = true;
-  }
-
-  @action
-  closeOptionsMenu() {
-    this.isOpenOptionsMenu = false;
   }
 }

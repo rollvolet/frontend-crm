@@ -3,11 +3,18 @@
     <h2 class="text-lg leading-6 font-medium text-gray-900">
       Te maken offertes laatste jaar
     </h2>
-    <LinkTo @route="main.requests.index"
-      class="text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-200">
-      {{svg-jar "external-link-line" class="h-5 w-5 fill-current"}}
+    <Rlv::Button
+      @route="main.requests.index"
+      @label="Ga naar aanvragen"
+      @hideText={{true}}
+      @icon="external-link-line"
+      @skin="secondary-naked"
+      @size="large"
+      class="p-0">
+      <:tooltip>
       <EmberTooltip @text="Ga naar aanvragen" @side="top" />
-    </LinkTo>
+      </:tooltip>
+    </Rlv::Button>
   </div>
   <div class="mr-4 flex items-center space-x-2">
     <InputField::Checkbox
@@ -87,10 +94,13 @@
                 {{#each this.requests as |row|}}
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-2 whitespace-nowrap text-center text-xs text-gray-500">
-                      <LinkTo @route="main.case.request.edit.index" @models={{array row.case.uuid row.uuid}}
-                        class="underline hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                        {{format-case-number row.case.identifier}}
-                      </LinkTo>
+                      <Rlv::Button
+                        @label={{format-case-number row.case.identifier}}
+                        @route="main.case.request.edit.index"
+                        @models={{array row.case.uuid row.uuid}}
+                        @skin="secondary-link"
+                        @size="small"
+                        class="text-gray-500" />
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-900">
                       <Fmt::Date @value={{row.requestDate}} />

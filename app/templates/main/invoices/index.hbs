@@ -126,10 +126,11 @@
                       <Address::DetailView @model={{or row.building row.customer}} />
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <LinkTo @route="main.case.invoice.edit.index" @models={{array row.case.uuid row.uuid}}
-                        class="text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                        Bekijk
-                      </LinkTo>
+                      <Rlv::Button
+                        @label="Bekijk"
+                        @route="main.case.invoice.edit.index"
+                        @models={{array row.case.uuid row.uuid}}
+                        @skin="link" />
                     </td>
                   </tr>
               {{else}}

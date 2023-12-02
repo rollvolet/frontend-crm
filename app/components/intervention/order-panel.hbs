@@ -8,11 +8,19 @@
             Bestelling {{format-case-number this.order.case.identifier}}
           </h2>
           {{#if this.order}}
-            <LinkTo @route="main.orders.edit" @model={{this.order.id}}
-              class="ml-2 block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-              {{svg-jar "external-link-line" class="h-5 w-5 fill-current"}}
+            <Rlv::Button
+              @route="main.orders.edit"
+              @model={{this.order.id}}
+              @label="Open bestelling"
+              @hideText={{true}}
+              @icon="external-link-line"
+              @skin="secondary-naked"
+              @size="large"
+              class="px-2">
+              <:tooltip>
               <EmberTooltip @text="Open bestelling" @side="bottom" />
-            </LinkTo>
+              </:tooltip>
+            </Rlv::Button>
           {{/if}}
         </div>
         <p class="text-sm text-gray-400">

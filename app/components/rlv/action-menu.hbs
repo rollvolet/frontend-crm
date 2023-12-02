@@ -1,15 +1,19 @@
 <div class="relative inline-block text-left" ...attributes>
-  <div>
-    <button type="button"
-      class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-200"
-      id="menu-button"
-      aria-expanded="true"
-      aria-haspopup="true"
-      {{on "click" this.openActionMenu}}>
-      {{or @label "Acties"}}
-      {{svg-jar "arrow-down-s-line" class="-mr-0.5 ml-1 h-4 w-4 fill-current"}}
-    </button>
-  </div>
+  {{#if (has-block "trigger")}}
+    {{yield (hash Open=this.openActionMenu) to="trigger"}}
+  {{else}}
+    <div>
+      <button type="button"
+        class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-200"
+        id="menu-button"
+        aria-expanded="true"
+        aria-haspopup="true"
+        {{on "click" this.openActionMenu}}>
+        {{or @label "Acties"}}
+        {{svg-jar "arrow-down-s-line" class="-mr-0.5 ml-1 h-4 w-4 fill-current"}}
+      </button>
+    </div>
+  {{/if}}
   {{#if this.isOpenActionMenu}}
     <div class="z-10 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
       {{on-click-outside this.closeActionMenu}}

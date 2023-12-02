@@ -248,17 +248,33 @@
         <div>
           {{#unless @model.isCancelled}}
             {{#if @model.request}}
-              <LinkTo @route="main.case.request.edit.customer" @models={{array @model.id @model.request.id}}
-                class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                {{svg-jar "link" class="h-6 w-6 fill-current"}}
+              <Rlv::Button
+                @route="main.case.request.edit.customer"
+                @models={{array @model.id @model.request.id}}
+                @label="Koppel klant"
+                @hideText={{true}}
+                @icon="link"
+                @skin="secondary-naked"
+                @size="xlarge"
+                class="p-0">
+                <:tooltip>
                 <EmberTooltip @text="Koppel klant" @side="bottom" />
-              </LinkTo>
+                </:tooltip>
+              </Rlv::Button>
             {{else if @model.intervention}}
-              <LinkTo @route="main.case.intervention.edit.customer" @models={{array @model.id @model.intervention.id}}
-                class="block text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                {{svg-jar "link" class="h-6 w-6 fill-current"}}
+              <Rlv::Button
+                @route="main.case.intervention.edit.customer"
+                @models={{array @model.id @model.intervention.id}}
+                @label="Koppel klant"
+                @hideText={{true}}
+                @icon="link"
+                @skin="secondary-naked"
+                @size="xlarge"
+                class="p-0">
+                <:tooltip>
                 <EmberTooltip @text="Koppel klant" @side="bottom" />
-              </LinkTo>
+                </:tooltip>
+              </Rlv::Button>
             {{/if}}
           {{/unless}}
         </div>
