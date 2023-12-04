@@ -1,0 +1,34 @@
+<div class="grid grid-cols-3 gap-4">
+  {{#each (array @block.left @block.right) as |units|}}
+    <div>
+      <dt class="pl-4 py-1 border-l-4 border-gray-200 bg-gray-50 text-sm font-medium text-gray-500">
+        {{@label}}
+      </dt>
+      <dd class="text-sm text-gray-900">
+        {{#each units as |unit|}}
+          {{#if unit.value}}
+            <div
+              class="pl-4 py-2 border-l-4 {{if unit.isAccepted "border-green-500 bg-green-50" "border-red-500 bg-red-50"}}"
+              role="button"
+              {{on "click" (fn this.toggleStatus unit)}}
+              ...attributes>
+              {{yield unit.value unit.record}}
+            </div>
+          {{/if}}
+        {{/each}}
+      </dd>
+    </div>
+  {{/each}}
+  <div>
+    <dt class="pl-4 py-1 border-l-4 border-gray-200 bg-gray-50 text-sm font-medium text-gray-500">
+      {{@label}}
+    </dt>
+    <dd class="text-sm text-gray-900">
+      {{#each @block.resolvedValues as |value|}}
+        <div class="pl-4 py-2 border-l-4 border-gray-200 bg-gray-50">
+          {{yield value @block.acceptedUnit.record}}
+        </div>
+      {{/each}}
+    </dd>
+  </div>
+</div>

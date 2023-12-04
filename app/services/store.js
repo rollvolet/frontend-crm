@@ -59,9 +59,9 @@ export default class ExtendedStoreService extends Store {
       batches.push(batch);
     }
 
-    const results = await Promise.all(batches);
+    const otherBatches = await Promise.all(batches);
     return ArrayProxy.create({
-      content: [firstBatch, ...results].map((result) => result.toArray()).flat(),
+      content: [firstBatch, ...otherBatches].map((batch) => batch.toArray()).flat(),
       meta: {
         count,
       },
