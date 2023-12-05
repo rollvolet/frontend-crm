@@ -40,7 +40,7 @@
           <h2 class="text-2xl font-bold font-display text-gray-900">
             <Fmt::CustomerName @model={{@model.customer}} />
           </h2>
-          {{#if @model.isActive}}
+          {{#if @model.customer.isActive}}
             <Rlv::Pill @label="Actief" @color="green" />
           {{else}}
             <Rlv::Pill @label="Slapend" @color="blue" />
