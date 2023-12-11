@@ -11,9 +11,6 @@ export default class CaseModel extends ValidatedModel {
     status: new Validator('presence', {
       presence: true,
     }),
-    vatRate: new Validator('presence', {
-      presence: true,
-    }),
   };
 
   @attr('string') uri;
