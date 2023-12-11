@@ -6,10 +6,10 @@
       <Util::DisplayAvailability @value={{this.case.hasProductionTicket}} />
     </div>
     <Rlv::ActionMenu class="ml-3" as |Menu|>
+      <Menu.Item
+        @label="Maak nieuwe productiebon"
+        @onClick={{perform this.generateTemplate}} />
       {{#if this.case.hasProductionTicket}}
-        <Menu.Item
-          @label="Maak nieuwe productiebon"
-          @onClick={{perform this.generateTemplate}} />
         <Menu.Item
           @label="Bekijk productiebon"
           @onClick={{this.downloadProductionTicket}} />
