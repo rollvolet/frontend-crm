@@ -36,8 +36,8 @@
           {{#unless @model.isMasteredByAccess}}
             <Document::GenerateButton
               @size="small"
-              @onClick={{perform this.generateDeliveryNoteDocument}}
-              @isLoading={{this.generateDeliveryNoteDocument.isRunning}} />
+              @onClick={{perform this.generateDeliveryNote}}
+              @isLoading={{this.generateDeliveryNote.isRunning}} />
           {{/unless}}
         </div>
       </li>
