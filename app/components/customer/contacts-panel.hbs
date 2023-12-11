@@ -1,14 +1,20 @@
-<div {{did-update this.closeDetail @customer}}>
-  {{#if this.selectedContact}}
-    <Contact::DetailPanel
-      @model={{this.selectedContact}}
-      @initialEditMode={{this.isNewContact}}
-      @onCloseDetail={{this.closeDetail}}
-      @onDelete={{perform this.deleteContact}} />
-  {{else}}
-    <Customer::ContactsTable
-      @customer={{@customer}}
-      @onOpenDetail={{this.openDetail}}
-      @onCreateNew={{this.openCreate}} />
-  {{/if}}
-</div>
+{{#if (or this.deleteContact.isRunning this.selectedContact.isDeleted)}}
+  <div class="h-32 text-sm">
+    <Util::LoadingSpinner @label="Aan het verwijderen..." />
+  </div>
+{{else}}
+  <div {{did-update this.closeDetail @customer}}>
+    {{#if this.selectedContact}}
+      <Contact::DetailPanel
+        @model={{this.selectedContact}}
+        @initialEditMode={{this.isNewContact}}
+        @onCloseDetail={{this.closeDetail}}
+        @onDelete={{perform this.deleteContact}} />
+    {{else}}
+      <Customer::ContactsTable
+        @customer={{@customer}}
+        @onOpenDetail={{this.openDetail}}
+        @onCreateNew={{this.openCreate}} />
+    {{/if}}
+  </div>
+{{/if}}

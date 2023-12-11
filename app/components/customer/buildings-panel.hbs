@@ -1,14 +1,20 @@
-<div {{did-update this.closeDetail @customer}}>
-  {{#if this.selectedBuilding}}
-    <Building::DetailPanel
-      @model={{this.selectedBuilding}}
-      @initialEditMode={{this.isNewBuilding}}
-      @onCloseDetail={{this.closeDetail}}
-      @onDelete={{perform this.deleteBuilding}} />
-  {{else}}
-    <Customer::BuildingsTable
-      @customer={{@customer}}
-      @onOpenDetail={{this.openDetail}}
-      @onCreateNew={{this.openCreate}} />
-  {{/if}}
-</div>
+{{#if (or true this.deleteBuilding.isRunning this.selectedBuilding.isDeleted)}}
+  <div class="h-32 text-sm">
+    <Util::LoadingSpinner @label="Aan het verwijderen..." />
+  </div>
+{{else}}
+  <div {{did-update this.closeDetail @customer}}>
+    {{#if this.selectedBuilding}}
+      <Building::DetailPanel
+        @model={{this.selectedBuilding}}
+        @initialEditMode={{this.isNewBuilding}}
+        @onCloseDetail={{this.closeDetail}}
+        @onDelete={{perform this.deleteBuilding}} />
+    {{else}}
+      <Customer::BuildingsTable
+        @customer={{@customer}}
+        @onOpenDetail={{this.openDetail}}
+        @onCreateNew={{this.openCreate}} />
+    {{/if}}
+  </div>
+{{/if}}
