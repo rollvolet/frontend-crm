@@ -31,9 +31,7 @@
           {{#if (not this.canCreateNew)}}
             <Case::Tabs::Placeholder @label="Bestelling" />
           {{else if this.isNextStep}}
-            <LinkTo @route="main.case.offer.edit.order"
-              @models={{array @model.id @model.offer.id}}
-              class="group" aria-current="step">
+            <button class="group" aria-current="step" {{on "click" this.navigateToOrderRoute}}>
               <span class="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full" aria-hidden="true"></span>
               <span class="flex items-start px-6 py-5 text-sm lg:pl-9">
                 <span class="flex-shrink-0">
@@ -41,12 +39,12 @@
                     {{svg-jar "add-line" class="h-5 w-5 fill-current"}}
                   </span>
                 </span>
-                <span class="ml-4 mt-0.5 flex min-w-0 flex-col">
+                <span class="ml-4 mt-0.5 flex min-w-0 flex-col text-left">
                   <span class="text-sm font-medium text-gray-500 group-hover:text-gray-800">Bestelling</span>
                   <span class="text-xs text-gray-400">Voeg bestelling toe</span>
                 </span>
               </span>
-            </LinkTo>
+            </button>
             <Case::Tabs::Separator />
           {{/if}}
         {{/if}}
@@ -55,4 +53,29 @@
       <Case::Tabs::Placeholder @label="Bestelling" />
     {{/if}}
   </li>
+{{/if}}
+
+{{#if this.isOpenMissingDeliveryMethodModal}}
+  <Rlv::Modal @onClose={{this.closeMissingDeliveryMethodModal}}>
+    <:body>
+    <div class="sm:flex sm:items-start">
+      <div class="mx-auto shrink-0 flex flex-none items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+        {{svg-jar "alert-fill" class="h-6 w-6 text-red-600 fill-current"}}
+      </div>
+      <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+          Uitvoering ontbreekt
+        </h3>
+        <div class="mt-2 space-y-2">
+          <p class="text-sm text-gray-500">
+            De bestelling kan niet gemaakt worden, omdat de uitvoeringsmethode ontbreekt.
+          </p>
+          <p class="text-sm text-gray-500">
+            Vul het veld 'Uitvoering' van het dossier in en probeer opnieuw.
+          </p>
+        </div>
+      </div>
+    </div>
+    </:body>
+  </Rlv::Modal>
 {{/if}}
