@@ -1,4 +1,4 @@
-{{#if (or true this.deleteBuilding.isRunning this.selectedBuilding.isDeleted)}}
+{{#if (or this.deleteBuilding.isRunning this.selectedBuilding.isDeleted)}}
   <div class="h-32 text-sm">
     <Util::LoadingSpinner @label="Aan het verwijderen..." />
   </div>
