@@ -13,7 +13,7 @@ export default class DashboardOutstandingJobsComponent extends Component {
 
   @tracked size = 25;
   @tracked page = 0;
-  @tracked sort = '-order-date';
+  @tracked sort = 'order-date';
   @tracked orders = [];
 
   constructor() {
