@@ -80,6 +80,27 @@
               </:edit>
             </InputField::Editable>
           </div>
+          <div class="shrink-0">
+            <InputField::Editable
+              @label="Voorschot nodig"
+              @disabled={{@model.isCancelled}}
+              @onSave={{queue (fn (mut @model.depositRequired)) (perform this.save)}}
+              @onCancel={{reset-relation @model "deliveryMethod"}}>
+              <:read>
+              <dd class="mt-1 text-sm text-gray-900">
+                <Util::DisplayCheckbox @value={{@model.depositRequired}} />
+              </dd>
+              </:read>
+              <:edit as |_ onSave onCancel|>
+              <InputField::Checkbox
+                @id="deposit-required-checkbox"
+                @value={{@model.depositRequired}}
+                @onChange={{onSave}}
+                {{on-key "Escape" onCancel}}
+                class="mt-1" />
+              </:edit>
+            </InputField::Editable>
+          </div>
           <div class="flex-1 overflow-y-hidden">
             <InputField::Editable
               @label="Opmerking"

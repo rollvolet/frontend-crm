@@ -1,9 +1,9 @@
 {{#if this.isProcessing}}
-  {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14 text-gray-500"}}
+  {{svg-jar "loading-circle" class="animate-spin h-4 text-gray-500"}}
 {{else}}
   <div class="flex items-center">
     <div>
-      <Util::DisplayAvailability @value={{this.case.hasProductionTicket}} />
+      <Util::DisplayCheckbox @value={{this.case.hasProductionTicket}} />
     </div>
     <Rlv::ActionMenu class="ml-3" as |Menu|>
       <Menu.Item
@@ -24,7 +24,7 @@
           @onFileAdd={{queue Menu.Close (perform this.uploadProductionTicket)}}
           as |queue|>
           {{#if queue.files.length}}
-            {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
+            {{svg-jar "loading-circle" class="animate-spin h-4"}}
           {{else}}
             Laad productiebon op
           {{/if}}
