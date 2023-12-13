@@ -2,45 +2,45 @@
   <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
       <div class="border-b border-gray-200 max-h-128 overflow-y-auto">
-        <table class="min-w-full divide-y divide-gray-200">
+        <table class="rlv-dt-sm min-w-full divide-y divide-gray-200">
           <thead class="sticky top-0">
             <tr>
               <DataTable::Th
                 @field="case.idNumber"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{queue (fn (mut this.sort)) (perform this.loadData)}}
-                class="pl-4 pr-2 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="rlv-dt-th">
                 AD
               </DataTable::Th>
               <DataTable::Th
                 @field="orderDate"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{queue (fn (mut this.sort)) (perform this.loadData)}}
-                class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="rlv-dt-th">
                 Besteldat.
               </DataTable::Th>
-              <th class="px-3 py-3 bg-gray-200 whitespace-nowrap text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="rlv-dt-th whitespace-nowrap">
                 Kl. nr.
               </th>
-              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="rlv-dt-th">
                 Klant
               </th>
-              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="rlv-dt-th">
                 Gebouw
               </th>
-              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="rlv-dt-th">
                 Uitvoering
               </th>
-              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="rlv-dt-th">
                 Pr. bon
               </th>
-              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="rlv-dt-th">
                 Planning
               </th>
-              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="rlv-dt-th">
                 Uren
               </th>
-              <th class="px-3 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="rlv-dt-th">
                 Klaar?
               </th>
             </tr>

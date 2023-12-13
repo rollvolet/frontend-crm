@@ -44,41 +44,41 @@
   <div class="-my-2 overflow-x-auto">
     <div class="py-2 align-middle inline-block min-w-full">
       <div class="overflow-hidden border-b border-gray-200">
-        <table class="min-w-full divide-y divide-gray-200">
+        <table class="rlv-dt-panel min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
               <DataTable::Th
                 @field="position"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
-                class="pl-4 pr-2 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="rlv-dt-th">
                 Nr.
               </DataTable::Th>
               <DataTable::Th
                 @field="name"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
-                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="rlv-dt-th">
                 Naam
               </DataTable::Th>
               <DataTable::Th
                 @field="address.street"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
-                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="rlv-dt-th">
                 Straat
               </DataTable::Th>
               <DataTable::Th
                 @field="address.postal-code"
                 @currentSort={{this.sort}}
                 @onUpdateSort={{this.setSort}}
-                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="rlv-dt-th">
                 Gemeente
               </DataTable::Th>
-              <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="rlv-dt-th">
                 Taal
               </th>
-              <th class="px-6 py-3 bg-gray-50"></th>
+              <th class="rlv-dt-th"></th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">

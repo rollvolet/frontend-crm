@@ -34,32 +34,32 @@
             <thead>
               <tr>
                 <DataTable::Th
-                    @field="first-name"
-                    @currentSort={{this.sort}}
-                    @onUpdateSort={{fn (mut this.sort)}}
-                    class="px-6 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+                  @field="first-name"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="rlv-dt-th">
                   Voornaam
                 </DataTable::Th>
                 <DataTable::Th
                   @field="last-name"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
-                  class="px-6 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider-lg">
+                  class="rlv-dt-th">
                   Achternaam
                 </DataTable::Th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th class="rlv-dt-th">
                   Initialen
                 </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th class="rlv-dt-th">
                   Rol
                 </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th class="rlv-dt-th">
                   Account
                 </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th class="rlv-dt-th">
                   Groepen
                 </th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">
+                <th class="rlv-dt-th">
                   {{!-- Actions --}}
                 </th>
               </tr>

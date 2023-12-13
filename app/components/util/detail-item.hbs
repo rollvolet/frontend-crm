@@ -2,7 +2,7 @@
   <dt class="flex-none w-{{this.width}} pr-4 text-sm text-right font-medium text-gray-500">
     {{@label}}
   </dt>
-  <dd class="flex {{if this.displayRow "flex-row" "flex-col"}} text-sm text-gray-900 space-y-2">
+  <dd class="{{if this.displayRow "flex-row" "flex-col"}} text-sm text-gray-900 space-y-2">
     {{yield}}
   </dd>
 </div>
