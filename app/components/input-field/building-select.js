@@ -2,8 +2,11 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
+import constants from '../../config/constants';
 
-export default class BuildingSelect extends Component {
+const { CUSTOMER_STATUSES } = constants;
+
+export default class InputFieldBuildingSelectComponent extends Component {
   @service store;
 
   @tracked options = [];
@@ -18,13 +21,13 @@ export default class BuildingSelect extends Component {
     if (this.args.customer) {
       // By using query we force ember-data to reload the relationship.
       // Ember data may otherwise assume it has already loaded the relation when it only fetched 1 page
-      this.options = yield this.store.query('building', {
-        page: { size: 1000 },
+      this.options = yield this.store.queryAll('building', {
         sort: 'position',
         filter: {
           customer: {
             ':uri:': this.args.customer.uri,
           },
+          status: CUSTOMER_STATUSES.ACTIVE,
         },
       });
     }

@@ -153,6 +153,7 @@
         <InputField::LanguageSelect
           @label="Taal"
           @value={{@model.language}}
+          @allowClear={{false}}
           @onSelectionChange={{queue this.setLanguage @onSave}}
           class="mt-1" />
       </div>

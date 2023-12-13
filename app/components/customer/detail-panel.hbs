@@ -10,11 +10,7 @@
         {{#if this.editMode}}
           <Util::SaveStatus @model={{@model}} @task={{this.save}} />
         {{else}}
-          {{#if @model.isActive}}
-            <Rlv::Pill @label="Actief" @color="green" @onClick={{this.toggleCustomerStatus}} />
-          {{else}}
-            <Rlv::Pill @label="Slapend" @color="blue" @onClick={{this.toggleCustomerStatus}} />
-          {{/if}}
+          <Customer::StatusPill @model={{@model}} @onChange={{this.toggleCustomerStatus}} />
         {{/if}}
       </div>
       <div class="flex flex-none">
