@@ -8,3 +8,15 @@
 @import "components/mu-login";
 
 @import "tailwindcss/utilities";
+
+.rlv-page-title {
+  @apply text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate;
+}
+
+.rlv-page-subtitle {
+  @apply text-xl font-bold leading-7 font-display text-gray-900 sm:text-2xl sm:truncate;
+}
+
+.rlv-panel-title {
+  @apply text-2xl font-bold font-display text-gray-900;
+}
