@@ -25,7 +25,7 @@
           <div class="py-2">
             <Util::LoadingSpinner @label="" />
           </div>
-        {{else}}
+        {{else if (gte this.loadData.performCount 1)}}
           <ul>
             {{#each this.sortedInvoicelines as |line|}}
               <li class="py-2">

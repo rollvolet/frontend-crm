@@ -39,6 +39,7 @@ export default class OfferDocumentPanelComponent extends Component {
   *loadData() {
     const offerlines = yield this.store.query('offerline', {
       'filter[offer][:uri:]': this.args.model.uri,
+      include: 'vat-rate',
       sort: 'position',
       page: { size: 100 },
     });
