@@ -154,9 +154,9 @@
           <Util::DetailItem @label="Techniekers" {{on "click" this.openWorkingHoursModal}} class="cursor-pointer">
             {{#if this.technicianNames.length}}
               {{join ", " this.technicianNames}}
-              {{svg-jar "information-fill" class="h-5 w-5 text-gray-400 inline fill-current"}}
+              {{svg-jar "information-line" class="h-5 w-5 text-gray-400 inline fill-current"}}
             {{else}}
-              {{svg-jar "add-line-circle" class="h-5 w-5 text-gray-400 inline fill-current"}}
+              {{svg-jar "add-circle-line" class="h-5 w-5 text-gray-400 inline fill-current"}}
             {{/if}}
           </Util::DetailItem>
         </div>
