@@ -71,7 +71,7 @@
             </:trigger>
             <:default as |Menu|>
             {{#if (and this.case.isOngoing (not this.hasInvoice))}}
-              {{#if this.isLinkedToCustomer}}
+              {{#if (and this.isLinkedToCustomer this.case.vatRate)}}
                 <Menu.Item
                   @route="main.case.intervention.edit.invoice"
                   @models={{array this.case.id @model.id}}
