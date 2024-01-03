@@ -36,15 +36,17 @@ export default class InterventionOrderPanelComponent extends Component {
   async downloadProductionTicket() {
     const _originCase = await this.order.case;
     const blob = await fetchDocumentBlob(FILE_TYPES.PRODUCTION_TICKET, _originCase.uri);
-    const formData = new FormData();
-    formData.append('file', blob);
-    const response = await fetch(`/cases/${_originCase.id}/watermarked-production-tickets`, {
-      method: 'POST',
-      body: formData,
-    });
-    if (response.ok) {
-      const watermarkedBlob = await response.blob();
-      previewBlob(watermarkedBlob);
+    if (blob) {
+      const formData = new FormData();
+      formData.append('file', blob);
+      const response = await fetch(`/cases/${_originCase.id}/watermarked-production-tickets`, {
+        method: 'POST',
+        body: formData,
+      });
+      if (response.ok) {
+        const watermarkedBlob = await response.blob();
+        previewBlob(watermarkedBlob);
+      }
     }
   }
 
