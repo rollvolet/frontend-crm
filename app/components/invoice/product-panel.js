@@ -20,7 +20,8 @@ export default class InvoiceProductPanelComponent extends Component {
 
   @keepLatestTask
   *loadData() {
-    yield this.args.model.hasMany('invoicelines').reload();
+    const invoicelines = yield this.args.model.hasMany('invoicelines').reload();
+    yield Promise.all(invoicelines.map((line) => line.vatRate));
   }
 
   get sortedInvoicelines() {

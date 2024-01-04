@@ -43,15 +43,14 @@ export default class MainInvoicesIndexRoute extends Route {
     const filter = new MuSearchFilter({
       ':prefix:searchNumber': onlyNumericChars(params.number),
       ':prefix:searchPostalCode': params.postalCode,
-      ':sqs:customer.prefix,customer.name,customer.suffix': params.name,
     });
 
     filter.setFilterFlag('case.status', params.isCancelled, STATUSES.CANCELLED, STATUSES.ONGOING);
     filter.ensureExistance('case.identifier');
     filter.setCaseIdentifierFilter('case.identifier', params.caseIdentifier);
     filter.setWildcardFilter('reference', params.reference);
+    filter.setWildcardFilter('customer.name', params.name);
     filter.setWildcardFilter('searchStreet', params.street);
-    filter.setWildcardFilter('searchPostalCode', params.postalCode);
     filter.setWildcardFilter('searchCity', params.city);
     filter.setWildcardFilter('searchTelephones', params.telephone);
 

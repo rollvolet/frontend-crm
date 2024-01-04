@@ -3,7 +3,7 @@
   <div class="px-6 pt-6 pb-4">
     <div class="flex justify-between items-center">
       <div class="flex items-center">
-        <h2 class="text-2xl font-bold font-display text-gray-900">
+        <h2 class="rlv-panel-title">
           Interventie {{format-intervention-number @model.number}}
         </h2>
         {{#if this.editMode}}
@@ -71,7 +71,7 @@
             </:trigger>
             <:default as |Menu|>
             {{#if (and this.case.isOngoing (not this.hasInvoice))}}
-              {{#if this.isLinkedToCustomer}}
+              {{#if (and this.isLinkedToCustomer this.case.vatRate)}}
                 <Menu.Item
                   @route="main.case.intervention.edit.invoice"
                   @models={{array this.case.id @model.id}}

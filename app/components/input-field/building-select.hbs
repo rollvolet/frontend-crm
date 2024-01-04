@@ -3,7 +3,9 @@
     {{@label}}
   </label>
 {{/if}}
-<div ...attributes {{did-update (perform this.loadData) @customer}}>
+<div ...attributes
+  class={{if this.loadData.isRunning "animate-pulse"}}
+  {{did-update (perform this.loadData) @customer}}>
   <PowerSelect
     @placeholder={{this.placeholder}}
     @searchPlaceholder="Typ om te zoeken"
@@ -15,7 +17,7 @@
     @noMatchesMessage="Geen resultaten"
     @renderInPlace={{true}}
     @allowClear={{true}}
-    @disabled={{@disabled}}
+    @disabled={{or this.loadData.isRunning @disabled}}
     as |option select|
   >
     {{highlight-substr option.searchName select.lastSearchedText}}

@@ -8,3 +8,40 @@
 @import "components/mu-login";
 
 @import "tailwindcss/utilities";
+
+.rlv-page-title {
+  @apply text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate;
+}
+
+.rlv-page-subtitle {
+  @apply text-xl font-bold leading-7 font-display text-gray-900 sm:text-2xl sm:truncate;
+}
+
+.rlv-panel-title {
+  @apply text-2xl font-bold font-display text-gray-900;
+}
+
+.rlv-dt-th {
+  @apply px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.rlv-dt-th:first-of-type {
+  @apply pl-4 pr-2 rounded-tl-lg;
+}
+
+.rlv-dt-th:last-of-type {
+  @apply rounded-tr-lg;
+}
+
+.rlv-dt-sm .rlv-dt-th {
+  @apply px-3;
+}
+
+.rlv-dt-panel .rlv-dt-th {
+  @apply bg-gray-50;
+}
+
+.rlv-dt-panel .rlv-dt-th:first-of-type,
+.rlv-dt-panel .rlv-dt-th:last-of-type {
+  @apply rounded-none;
+}

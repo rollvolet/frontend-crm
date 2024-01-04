@@ -62,7 +62,7 @@
         @value={{this.filter.name}}
         @onInput={{perform this.debounceFilter "name"}}>
         <:tooltip>
-        <Tooltip::SqsSearch />
+        <Tooltip::WildcardSearch @side="right" />
         </:tooltip>
       </Filter::TextInput>
     </div>

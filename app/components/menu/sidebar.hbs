@@ -17,43 +17,43 @@
 
       <Menu::Sidebar::Item
         @route="main.customers.index"
-        @query={{hash page=0 number=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined}}
+        @query={{hash page=0 number=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined onlyActive=true}}
         @icon="team-line"
         @label="Klanten" />
 
       <Menu::Sidebar::Item
         @route="main.requests.index"
-        @query={{hash page=0 number=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasOffer=-1 isCancelled=0}}
+        @query={{hash page=0 number=undefined visitor=undefined reference=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined hasOffer=-1 isCancelled=0}}
         @icon="message-2-line"
         @label="Aanvragen" />
 
       <Menu::Sidebar::Item
         @route="main.interventions.index"
-        @query={{hash page=0 number=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasInvoice=0 isCancelled=0 isPlanned=-1}}
+        @query={{hash page=0 number=undefined reference=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined hasInvoice=0 isCancelled=0 isPlanned=-1}}
         @icon="tools-line"
         @label="Interventies" />
 
       <Menu::Sidebar::Item
         @route="main.offers.index"
-        @query={{hash page=0 number=undefined reference=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasOrder=-1}}
+        @query={{hash page=0 reference=undefined requestNumber=undefined visitor=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined hasOrder=-1 isCancelled=0}}
         @icon="calculator-line"
         @label="Offertes" />
 
       <Menu::Sidebar::Item
         @route="main.orders.index"
-        @query={{hash page=0 reference=undefined offerNumber=undefined requestNumber=undefined visitor=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined hasInvoice=-1 isCancelled=0}}
+        @query={{hash page=0 reference=undefined requestNumber=undefined visitor=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined hasInvoice=-1 isCancelled=0}}
         @icon="shopping-bag-3-line"
         @label="Bestellingen" />
 
       <Menu::Sidebar::Item
         @route="main.deposit-invoices.index"
-        @query={{hash page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined}}
+        @query={{hash page=0 number=undefined reference=undefined requestNumber=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined isCancelled=0}}
         @icon="coupon-line"
         @label="Voorschotfacturen" />
 
       <Menu::Sidebar::Item
         @route="main.invoices.index"
-        @query={{hash page=0 number=undefined reference=undefined offerNumber=undefined requestNumber=undefined cName=undefined cPostalCode=undefined cCity=undefined cStreet=undefined cTelephone=undefined bName=undefined bPostalCode=undefined bCity=undefined bStreet=undefined}}
+        @query={{hash page=0 number=undefined reference=undefined caseIdentifier=undefined requestNumber=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined isCancelled=0}}
         @icon="money-euro-circle-line"
         @label="Facturen" />
     </div>
@@ -61,7 +61,7 @@
     <div class="space-y-1">
       <Menu::Sidebar::Item
         @route="main.reports.outstanding-jobs.index"
-        @query={{hash page=0 visitorName=undefined orderDate=undefined hasProductionTicket="-1" isProductReady="-1" execution="na" sort="order-date"}}
+        @query={{hash page=0 visitorUri=undefined orderDate=undefined hasProductionTicket="-1" isProductReady="-1" deliveryMethodUri=undefined sort="order-date"}}
         @icon="calendar-event-line"
         @label="Uit te voeren werken" />
 

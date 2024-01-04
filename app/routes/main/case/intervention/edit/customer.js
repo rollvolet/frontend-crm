@@ -39,12 +39,11 @@ export default class MainCaseInterventionEditCustomerRoute extends Route {
     const filter = new MuSearchFilter({
       ':prefix:searchNumber': params.number,
       ':prefix:searchPostalCode': params.postalCode,
-      ':sqs:searchName': params.name,
       status: CUSTOMER_STATUSES.ACTIVE,
     });
 
+    filter.setWildcardFilter('name', params.name);
     filter.setWildcardFilter('searchStreet', params.street);
-    filter.setWildcardFilter('searchPostalCode', params.postalCode);
     filter.setWildcardFilter('searchCity', params.city);
     filter.setWildcardFilter('searchTelephones', params.telephone);
 

@@ -78,7 +78,6 @@ export default class MainCaseOfferEditOrderController extends Controller {
         orderDate: new Date(),
         scheduledNbOfHours: 0,
         scheduledNbOfPersons: 2,
-        depositRequired: true,
         isReady: false,
         case: this.case,
       });

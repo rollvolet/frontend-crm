@@ -1,5 +1,8 @@
 import Service, { inject as service } from '@ember/service';
-import moment from 'moment';
+import startOfYearFn from 'date-fns/startOfYear';
+import addYears from 'date-fns/addYears';
+import format from 'date-fns/format';
+import formatISO from 'date-fns/formatISO';
 
 export default class SequenceService extends Service {
   @service store;
@@ -36,9 +39,7 @@ export default class SequenceService extends Service {
   }
 
   async fetchNextOfferNumber() {
-    const now = moment();
-    now.add(10, 'years');
-    const number = now.format('YY/MM/DD');
+    const number = format(addYears(new Date(), 10), 'yy/MM/dd');
     const offer = await this.store.queryOne('offer', {
       sort: '-number',
       'filter[number]': number,
@@ -53,14 +54,25 @@ export default class SequenceService extends Service {
   }
 
   async fetchNextInvoiceNumber() {
-    // TODO create year into account such that count starts at 0 automatically
-    // at the start of a new year?
+    const startOfYear = startOfYearFn(new Date());
     const invoices = await Promise.all([
-      this.store.queryOne('invoice', { sort: '-number' }),
-      this.store.queryOne('deposit-invoice', { sort: '-number' }),
+      this.store.queryOne('invoice', {
+        sort: '-number',
+        'filter[:gte:invoice-date]': formatISO(startOfYear, { representation: 'date' }),
+      }),
+      this.store.queryOne('deposit-invoice', {
+        sort: '-number',
+        'filter[:gte:invoice-date]': formatISO(startOfYear, { representation: 'date' }),
+      }),
     ]);
+    const number = Math.max(...invoices.map((invoice) => invoice?.number || 0));
 
-    const number = Math.max(...invoices.map((invoice) => invoice?.number));
-    return number + 1;
+    if (number > 0) {
+      return number + 1;
+    } else {
+      // First invoice of a new year
+      const prefix = parseInt(format(startOfYear, 'yy')) + 10;
+      return prefix * 10000 + 1; // e.g. 340001
+    }
   }
 }

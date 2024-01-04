@@ -1,0 +1,5 @@
+{{#if @model.isActive}}
+  <Rlv::Pill @label="Actief" @color="green" @onClick={{@onChange}} />
+{{else}}
+  <Rlv::Pill @label="Slapend" @color="blue" @onClick={{@onChange}} />
+{{/if}}

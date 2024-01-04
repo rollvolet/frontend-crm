@@ -20,7 +20,6 @@ export default class OrderModel extends ValidatedModel {
   @attr('date') orderDate;
   @attr('date') expectedDate;
   @attr('date') dueDate;
-  @attr('boolean') depositRequired;
   @attr('boolean') isReady;
   @attr('number') scheduledNbOfHours;
   @attr('number') scheduledNbOfPersons;

@@ -4,6 +4,9 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { keepLatestTask } from 'ember-concurrency';
 import titleCase from '../../utils/title-case-string';
+import constants from '../../config/constants';
+
+const { CUSTOMER_STATUSES } = constants;
 
 export default class BuildingDetailPanelComponent extends Component {
   @service store;
@@ -41,12 +44,28 @@ export default class BuildingDetailPanelComponent extends Component {
   }
 
   @action
+  async toggleStatus() {
+    if (this.args.model.isActive) {
+      this.args.model.status = CUSTOMER_STATUSES.INACTIVE;
+    } else {
+      this.args.model.status = CUSTOMER_STATUSES.ACTIVE;
+    }
+    await this.args.model.save();
+  }
+
+  @action
   openEdit() {
     this.editMode = true;
   }
 
   @action
-  closeEdit() {
+  async closeEdit() {
+    // rollback invalid values that couldn't be saved and revalidate for consistent state
+    const address = await this.args.model.address;
+    [address, this.args.model].forEach((record) => {
+      record.rollbackAttributes();
+      record.validate();
+    });
     this.editMode = false;
   }
 }

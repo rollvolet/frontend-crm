@@ -3,7 +3,7 @@
   <div class="px-6 pt-6 pb-4">
     <div class="flex justify-between items-center">
       <div class="flex items-center space-x-4">
-        <h2 class="text-2xl font-bold font-display text-gray-900">
+        <h2 class="rlv-panel-title">
           {{#if @model.isCreditNote}}
             Creditnota
           {{else}}
@@ -137,7 +137,7 @@
           {{#unless @model.case.isIsolated}}
             <Util::DetailItem @label="Productiebon" class="items-center">
               <div class="flex items-center">
-                <Util::DisplayAvailability @value={{@model.case.hasProductionTicket}} />
+                <Util::DisplayCheckbox @value={{@model.case.hasProductionTicket}} />
                 {{#if @model.case.hasProductionTicket}}
                   <Rlv::Button
                     @label="Productiebon bekijken"
@@ -154,9 +154,9 @@
           <Util::DetailItem @label="Techniekers" {{on "click" this.openWorkingHoursModal}} class="cursor-pointer">
             {{#if this.technicianNames.length}}
               {{join ", " this.technicianNames}}
-              {{svg-jar "information-fill" class="h-5 w-5 text-gray-400 inline fill-current"}}
+              {{svg-jar "information-line" class="h-5 w-5 text-gray-400 inline fill-current"}}
             {{else}}
-              {{svg-jar "add-line-circle" class="h-5 w-5 text-gray-400 inline fill-current"}}
+              {{svg-jar "add-circle-line" class="h-5 w-5 text-gray-400 inline fill-current"}}
             {{/if}}
           </Util::DetailItem>
         </div>

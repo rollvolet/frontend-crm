@@ -1,6 +1,6 @@
 <div class="flex items-center justify-between">
   <div class="flex-1 min-w-0">
-    <h2 class="text-2xl font-bold leading-7 font-display text-gray-900 sm:text-3xl sm:truncate">
+    <h2 class=rlv-page-title>
       Facturen
     </h2>
   </div>
@@ -33,34 +33,35 @@
                   @field="number"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
-                  class="px-6 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+                  class="rlv-dt-th">
                   Nr.
                 </DataTable::Th>
                 <DataTable::Th
                   @field="case.idNumber"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
-                  class="px-6 py-3 bg-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  class="rlv-dt-th">
                   Dossier
                 </DataTable::Th>
                 <DataTable::Th
                   @field="invoiceDate"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
-                  class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  class="rlv-dt-th">
                   Datum
                 </DataTable::Th>
-                <th class="px-6 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th class="rlv-dt-th">
                   Naam
                 </th>
                 <DataTable::Th
                   @field="sortPostalCode"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
-                  class="px-4 py-3 bg-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  class="rlv-dt-th">
                   Adres
                 </DataTable::Th>
-                <th class="px-6 py-3 bg-gray-200 rounded-tr-lg"></th>
+                <th class="rlv-dt-th">Bedrag</th>
+                <th class="rlv-dt-th"></th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -81,6 +82,9 @@
                   <td class="py-2 px-4">
                     <div class="h-8 w-32 bg-gray-300"></div>
                   </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
                   <td>
                   </td>
                 </tr>
@@ -99,6 +103,9 @@
                   </td>
                   <td class="py-2 px-4">
                     <div class="h-8 w-24 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
                   </td>
                   <td>
                   </td>
@@ -122,8 +129,11 @@
                       <Fmt::CustomerAndBuildingName
                         @case={{hash customer=row.customer building=row.building}} />
                     </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <Address::DetailView @model={{or row.building row.customer}} />
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <Fmt::Currency @value={{row.totalAmountNet}} />
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Rlv::Button

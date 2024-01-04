@@ -2,7 +2,7 @@
   <div class="divide-y divide-gray-200">
     <div class="px-6 py-4">
       <div class="flex space-x-4 items-center">
-        <h2 class="text-2xl font-bold font-display text-gray-900">
+        <h2 class="rlv-panel-title">
           {{#if @model.request}}
             AD {{format-request-number @model.request.number}} {{@model.request.visitor.initials}}
           {{else if @model.intervention}}
@@ -23,20 +23,23 @@
       </div>
 
       <div class="mt-4 flex space-x-16">
-        <div class="shrink-0">
+        <div class="shrink-0 {{unless @model.vatRate "border-2 border-dashed border-red-400 px-1"}}">
           <InputField::Editable
             @label="BTW tarief"
             @disabled={{or @model.isCancelled this.isDisabledEditVatRate}}
             @onSave={{queue (perform this.setVatRate) (perform this.save)}}
             @onCancel={{reset-relation @model "vatRate"}}>
             <:read>
-            <dd class="mt-1 text-sm text-gray-900">
-              {{#if @model.vatRate}}
+            {{#if @model.vatRate}}
+              <dd class="mt-1 text-sm text-gray-900">
                 {{@model.vatRate.rate}}% BTW
-              {{else}}
-                -
-              {{/if}}
-            </dd>
+              </dd>
+            {{else}}
+              <dd class="mt-1 pb-1 text-sm text-red-600">
+                {{svg-jar "error-warning-fill" class="h-4 w-4 fill-current"}}
+              </dd>
+              <EmberTooltip @text="BTW-tarief ontbreekt" />
+            {{/if}}
             </:read>
             <:edit as |_ onSave onCancel|>
             <InputField::VatRateSelect
@@ -74,6 +77,27 @@
                 @onSelectionChange={{onSave}}
                 {{on-key "Escape" onCancel}}
                 class="mt-1 w-36" />
+              </:edit>
+            </InputField::Editable>
+          </div>
+          <div class="shrink-0">
+            <InputField::Editable
+              @label="Voorschot nodig"
+              @disabled={{@model.isCancelled}}
+              @onSave={{queue (fn (mut @model.depositRequired)) (perform this.save)}}
+              @onCancel={{reset-relation @model "deliveryMethod"}}>
+              <:read>
+              <dd class="mt-1 text-sm text-gray-900">
+                <Util::DisplayCheckbox @value={{@model.depositRequired}} />
+              </dd>
+              </:read>
+              <:edit as |_ onSave onCancel|>
+              <InputField::Checkbox
+                @id="deposit-required-checkbox"
+                @value={{@model.depositRequired}}
+                @onChange={{onSave}}
+                {{on-key "Escape" onCancel}}
+                class="mt-1" />
               </:edit>
             </InputField::Editable>
           </div>

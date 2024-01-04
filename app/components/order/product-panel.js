@@ -17,6 +17,7 @@ export default class OrderProductPanelComponent extends Component {
   *loadData() {
     const invoicelines = yield this.store.query('invoiceline', {
       'filter[order][:uri:]': this.args.model.uri,
+      include: 'vat-rate',
       sort: 'position',
       page: { size: 100 },
     });

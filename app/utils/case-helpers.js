@@ -9,6 +9,8 @@ async function createCase(properties) {
     store = request.store;
     number = request.number;
     namespace = 'AD';
+    properties.depositRequired = true;
+    properties.hasProductionTicket = false;
   } else if (intervention) {
     store = intervention.store;
     number = intervention.number;

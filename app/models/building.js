@@ -1,6 +1,9 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
 import { isBlank } from '@ember/utils';
+import constants from '../config/constants';
+
+const { CUSTOMER_STATUSES } = constants;
 
 export default class BuildingModel extends ValidatedModel {
   validators = {
@@ -12,6 +15,12 @@ export default class BuildingModel extends ValidatedModel {
   };
 
   @attr('string') uri;
+  @attr('string', {
+    defaultValue() {
+      return CUSTOMER_STATUSES.ACTIVE;
+    },
+  })
+  status;
   @attr('number') position;
   @attr('string') honorificPrefix;
   @attr('string') prefix;
@@ -61,5 +70,9 @@ export default class BuildingModel extends ValidatedModel {
 
   get searchName() {
     return `[${this.position}] ${this.printName}`;
+  }
+
+  get isActive() {
+    return this.status == CUSTOMER_STATUSES.ACTIVE;
   }
 }

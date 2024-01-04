@@ -42,7 +42,6 @@ export default class MainInterventionsIndexRoute extends Route {
 
     const filter = new MuSearchFilter({
       ':prefix:searchPostalCode': params.postalCode,
-      ':sqs:customer.prefix,customer.name,customer.suffix': params.name,
     });
 
     filter.setFilterFlag('case.status', params.isCancelled, STATUSES.CANCELLED, STATUSES.ONGOING);
@@ -51,8 +50,8 @@ export default class MainInterventionsIndexRoute extends Route {
     filter.setExistanceFlag('invoiceId', params.hasInvoice);
     filter.setWildcardFilter('reference', params.reference);
     filter.setExistanceFlag('plannedDate', params.isPlanned);
+    filter.setWildcardFilter('customer.name', params.name);
     filter.setWildcardFilter('searchStreet', params.street);
-    filter.setWildcardFilter('searchPostalCode', params.postalCode);
     filter.setWildcardFilter('searchCity', params.city);
     filter.setWildcardFilter('searchTelephones', params.telephone);
 

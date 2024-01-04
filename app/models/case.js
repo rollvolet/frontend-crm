@@ -11,9 +11,6 @@ export default class CaseModel extends ValidatedModel {
     status: new Validator('presence', {
       presence: true,
     }),
-    vatRate: new Validator('presence', {
-      presence: true,
-    }),
   };
 
   @attr('string') uri;
@@ -27,6 +24,7 @@ export default class CaseModel extends ValidatedModel {
   @attr('string') reference;
   @attr('string') comment;
   @attr('boolean') hasProductionTicket;
+  @attr('boolean') depositRequired;
 
   @belongsTo('structured-identifier', { inverse: 'case' }) structuredIdentifier;
   @belongsTo('customer', { inverse: 'cases' }) customer;

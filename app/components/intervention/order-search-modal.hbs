@@ -3,7 +3,7 @@
   <div class="space-y-4">
     <div class="flex justify-between items-start">
       <div class="space-y-2">
-        <h2 class="text-2xl font-bold font-display text-gray-900">
+        <h2 class="rlv-panel-title">
           Bestelling zoeken voor interventie {{format-intervention-number @model.number}}
         </h2>
       </div>
@@ -106,48 +106,48 @@
     <div class="-my-2 overflow-x-auto">
       <div class="py-2 align-middle inline-block min-w-full">
         <div class="overflow-hidden border-b border-gray-200">
-          <table class="min-w-full divide-y divide-gray-200">
+          <table class="rlv-dt-panel min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
                 <DataTable::Th
                   @field="case.request.number"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{this.setSort}}
-                  class="pl-4 pr-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  class="rlv-dt-th">
                   AD
                 </DataTable::Th>
                 <DataTable::Th
                   @field="order-date"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{this.setSort}}
-                  class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  class="rlv-dt-th">
                   Datum
                 </DataTable::Th>
                 <DataTable::Th
                   @field="case.reference"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{this.setSort}}
-                  class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  class="rlv-dt-th">
                   Referentie
                 </DataTable::Th>
                 <DataTable::Th
                   @field="case.request.visitor.first-name"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{this.setSort}}
-                  class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  class="rlv-dt-th">
                   Bezoeker
                 </DataTable::Th>
                 <DataTable::Th
                   @field="case.customer.name"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{this.setSort}}
-                  class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  class="rlv-dt-th">
                   Klant
                 </DataTable::Th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th class="rlv-dt-th">
                   Adres
                 </th>
-                <th class="px-6 py-3 bg-gray-50"></th>
+                <th class="rlv-dt-th"></th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
