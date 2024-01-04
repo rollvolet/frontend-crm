@@ -59,12 +59,22 @@ export default class ExtendedStoreService extends Store {
       batches.push(batch);
     }
 
-    const results = await Promise.all(batches);
+    const otherBatches = await Promise.all(batches);
     return ArrayProxy.create({
-      content: [firstBatch, ...results].map((result) => result.toArray()).flat(),
+      content: [firstBatch, ...otherBatches].map((batch) => batch.toArray()).flat(),
       meta: {
         count,
       },
     });
+  }
+
+  // Force cache clearing of a resource type by executing a dummy save on
+  // a random record of that type.
+  // TODO remove once cache clearing has been fixed for requests containing filters
+  async forceCacheClear(modelName) {
+    const record = this.peekAll(modelName).firstObject || (await this.queryOne(modelName));
+    if (record) {
+      await record.save();
+    }
   }
 }

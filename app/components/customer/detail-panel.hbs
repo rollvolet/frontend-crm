@@ -35,11 +35,25 @@
             {{on "click" this.closeEdit}} />
         {{else}}
           <Rlv::Button
+            @route="main.customers.edit.merge.index"
+            @model={{@model}}
+            @label="Klant samenvoegen"
+            @hideText={{true}}
+            @icon="merge-cells-horizontal"
+            @skin="secondary-naked"
+            @size="xlarge"
+            class="px-2">
+            <:tooltip>
+            <EmberTooltip @text="Klant samenvoegen" />
+            </:tooltip>
+          </Rlv::Button>
+          <Rlv::Button
             @label="Bewerk"
             @hideText={{true}}
             @icon="pencil-line"
             @skin="secondary-naked"
             @size="xlarge"
+            class="px-2"
             {{on "click" this.openEdit}} />
         {{/if}}
       </div>

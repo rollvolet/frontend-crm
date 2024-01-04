@@ -19,6 +19,9 @@ Router.map(function () {
         this.route('request'); // create a new request with accompanying case
         this.route('intervention'); // create a new intervention with accompanying case
         this.route('invoice'); // create a new isolated invoice with accompanying case
+        this.route('merge', function () {
+          this.route('edit', { path: '/:other_customer_id' });
+        });
       });
     });
     this.route('requests', function () {

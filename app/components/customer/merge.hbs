@@ -1,0 +1,139 @@
+{{#if this.merge.isRunning}}
+  <div class="mt-8">
+    <Util::LoadingSpinner @label="Klanten aan het samenvoegen..." />
+  </div>
+{{else}}
+  <div class="mt-6 bg-white shadow rounded-lg overflow-hidden">
+    <div class="divide-y divide-y-200">
+      {{!-- Card content --}}
+      <div class="py-6">
+        <dl>
+          <div class="space-y-2">
+            <Customer::Merge::Block
+              @label="Naam"
+              @block={{find-by "property" "name" this.blocks}}
+              as |_ record|>
+              <h2 class="text-2xl font-bold font-display text-gray-900">
+                <span class="text-gray-400 mr-2">{{record.number}}</span>
+                <Fmt::CustomerName @model={{record}} />
+              </h2>
+            </Customer::Merge::Block>
+
+            <Customer::Merge::Block
+              @label="BTW-nummer"
+              @block={{find-by "property" "vatNumber" this.blocks}}
+              as |vatNumber|>
+              <Fmt::VatNumber @value={{vatNumber}} />
+            </Customer::Merge::Block>
+
+            <Customer::Merge::Block
+              @label="Adres"
+              @block={{find-by "property" "address" this.blocks}}
+              as |address|>
+              <Address::DetailView @model={{address}} />
+            </Customer::Merge::Block>
+
+            <Customer::Merge::Block
+              @label="Taal"
+              @block={{find-by "property" "language" this.blocks}}
+              as |language|>
+              {{language.name}}
+            </Customer::Merge::Block>
+
+            <Customer::Merge::Block
+              @label="Tags"
+              @block={{find-by "property" "tags" this.blocks}}
+              as |tag|>
+              {{tag}}
+            </Customer::Merge::Block>
+
+            <Customer::Merge::Block
+              @label="Telefoon"
+              @block={{find-by "property" "telephones" this.blocks}}
+              as |tel|>
+              <div>
+                <span class="text-xs uppercase tracking-wider text-gray-400">
+                  {{tel.telephoneType.code}}
+                </span>
+                {{format-phone tel.country.telephonePrefix tel.value}}
+                {{#if tel.note}}
+                  <span class="text-gray-400">({{tel.note}})</span>
+                {{/if}}
+              </div>
+            </Customer::Merge::Block>
+
+            <Customer::Merge::Block
+              @label="Email"
+              @block={{find-by "property" "emails" this.blocks}}
+              as |email|>
+              <div>
+                <Fmt::Email @value={{email.value}} />
+                {{#if email.note}}
+                  <span class="text-gray-400">({{email.note}})</span>
+                {{/if}}
+              </div>
+            </Customer::Merge::Block>
+
+            <Customer::Merge::Block
+              @label="Website"
+              @block={{find-by "property" "url" this.blocks}}
+              as |url|>
+              {{url}}
+            </Customer::Merge::Block>
+
+            <Customer::Merge::Block
+              @label="Opmerking"
+              @block={{find-by "property" "comment" this.blocks}}
+              as |comment|>
+              <span class="whitespace-pre-wrap">{{comment}}</span>
+            </Customer::Merge::Block>
+
+            <Customer::Merge::Block
+              @label="Memo"
+              @block={{find-by "property" "memo" this.blocks}}
+              as |memo|>
+              <span class="whitespace-pre-wrap">{{memo}}</span>
+            </Customer::Merge::Block>
+          </div>
+
+          <div class="mt-12 space-y-2">
+            {{#each (array
+                 (hash label="Contacten" relation="contact")
+                 (hash label="Gebouwen" relation="building")
+                 (hash label="Aanvragen" relation="case.request")
+                 (hash label="Interventies" relation="case.intervention")
+                 (hash label="Offertes" relation="case.offer")
+                 (hash label="Bestellingen" relation="case.order")
+                 (hash label="Voorschotfacturen" relation="case.deposit-invoice")
+                 (hash label="Facturen" relation="case.invoice")
+                 ) as |block|}}
+              <Customer::Merge::RelationCount
+                @label={{block.label}}
+                @relation={{block.relation}}
+                @left={{@left}}
+                @right={{@right}} />
+            {{/each}}
+          </div>
+        </dl>
+      </div>
+
+      {{!-- Card footer --}}
+      <div class="px-6 py-4">
+        <div class="grid grid-cols-3 gap-4">
+          {{#each (array @left @right) as |record|}}
+            <div class="italic text-xs text-gray-400">
+              Aangemaakt: {{moment-format record.created}}
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 flex justify-end">
+    <Rlv::Button
+      @label="Samenvoegen"
+      @skin="primary"
+      {{on "click" (perform this.merge)}} />
+  </div>
+{{/if}}
