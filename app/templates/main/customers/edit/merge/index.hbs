@@ -121,11 +121,18 @@
                       {{row.postalCode}} {{row.city}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Rlv::Button
-                        @label="Voeg samen"
-                        @route="main.customers.edit.merge.edit"
-                        @models={{array this.customer.id row.uuid}}
-                        @skin="link" />
+                      {{#if (eq this.customer.id row.uuid)}}
+                        <Rlv::Button
+                          @label="Voeg samen"
+                          @skin="link"
+                          @disabled={{true}} />
+                      {{else}}
+                        <Rlv::Button
+                          @label="Voeg samen"
+                          @route="main.customers.edit.merge.edit"
+                          @models={{array this.customer.id row.uuid}}
+                          @skin="link" />
+                      {{/if}}
                     </td>
                   </tr>
                 {{else}}
