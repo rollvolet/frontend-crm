@@ -92,6 +92,18 @@ export default class CustomerMergeComponent extends Component {
       })
     );
 
+    debug('Going to force cache clearing for all related resources');
+    // TODO remove once cache clearing is fixed for requests containing filters
+    const relatedModels = [
+      'request',
+      'intervention',
+      'offer',
+      'order',
+      'deposit-invoice',
+      'invoice',
+    ];
+    yield Promise.all(relatedModels.map((modelName) => this.store.forceCacheClear(modelName)));
+
     // Remove (dangling) rejected records
     debug('The following (dangling) records will be destroyed');
     yield Promise.all(
