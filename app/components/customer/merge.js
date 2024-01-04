@@ -60,15 +60,27 @@ export default class CustomerMergeComponent extends Component {
     debug(`Slave record of the merge operation is ${this.rejectedCustomer.id}`);
 
     // Update properties of master record to merged state
+    const relatedRecordsToSave = [];
     for (const block of this.blocks) {
-      const properties = block.resolve();
-      for (const [key, value] of properties) {
-        this.acceptedCustomer[key] = value;
+      if (['telephones', 'emails'].includes(block.property)) {
+        // hasMany-relation
+        const [[_property, records]] = block.resolve(); // eslint-disable-line no-unused-vars
+        for (const record of records) {
+          record.customer = this.acceptedCustomer;
+          relatedRecordsToSave.push(record);
+        }
+      } else {
+        // regular attribute or belongsTo-relation
+        const properties = block.resolve();
+        for (const [key, value] of properties) {
+          this.acceptedCustomer[key] = value;
+        }
       }
     }
     this.acceptedCustomer.status = CUSTOMER_STATUSES.ACTIVE;
     this.acceptedCustomer.modified = new Date();
     yield this.acceptedCustomer.save();
+    yield Promise.all(relatedRecordsToSave.map((record) => record.save()));
 
     // Relink contacts/buildings/cases from slave record to master
     const [contacts, buildings, cases] = (yield Promise.all([
