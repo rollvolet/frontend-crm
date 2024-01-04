@@ -1,0 +1,10 @@
+<div class="grid grid-cols-3 gap-4">
+  {{#each this.counts as |count|}}
+    <div class="pl-4 py-1 border-l-4 border-green-500 bg-green-50 text-sm font-medium text-gray-500">
+      {{@label}}: {{count}}
+    </div>
+  {{/each}}
+  <div class="pl-4 py-1 border-l-4 border-gray-200 bg-gray-50 text-sm font-medium text-gray-500">
+    {{@label}}: {{this.total}}
+  </div>
+</div>
