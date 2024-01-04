@@ -60,6 +60,7 @@
                   class="rlv-dt-th">
                   Adres
                 </DataTable::Th>
+                <th class="rlv-dt-th">Bedrag</th>
                 <th class="rlv-dt-th"></th>
               </tr>
             </thead>
@@ -81,6 +82,9 @@
                   <td class="py-2 px-4">
                     <div class="h-8 w-32 bg-gray-300"></div>
                   </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
+                  </td>
                   <td>
                   </td>
                 </tr>
@@ -99,6 +103,9 @@
                   </td>
                   <td class="py-2 px-4">
                     <div class="h-8 w-24 bg-gray-300"></div>
+                  </td>
+                  <td class="py-2 px-4">
+                    <div class="h-8 w-12 bg-gray-300"></div>
                   </td>
                   <td>
                   </td>
@@ -122,8 +129,11 @@
                       <Fmt::CustomerAndBuildingName
                         @case={{hash customer=row.customer building=row.building}} />
                     </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <Address::DetailView @model={{or row.building row.customer}} />
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <Fmt::Currency @value={{row.totalAmountNet}} />
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Rlv::Button
