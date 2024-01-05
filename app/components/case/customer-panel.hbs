@@ -131,7 +131,7 @@
       </div>
       <div class="px-6 py-4">
         <div class="italic text-xs text-gray-400">
-          Aangemaakt: {{moment-format @model.customer.created}}
+          Aangemaakt: <Fmt::DateTime @value={{@model.customer.created}} />
         </div>
       </div>
     </div>

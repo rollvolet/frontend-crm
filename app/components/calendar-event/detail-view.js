@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import fetch, { Headers } from 'fetch';
-import moment from 'moment';
+import format from 'date-fns/format';
+import parseISO from 'date-fns/parseISO';
 import { keepLatestTask } from 'ember-concurrency';
 import { task as trackedTask } from 'ember-resources/util/ember-concurrency';
 
@@ -30,7 +31,7 @@ export default class CalendarEventDetailViewComponent extends Component {
         }
       } else if (response.status == 409) {
         const json = yield response.json();
-        const date = moment(json.data.attributes.date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+        const date = format(parseISO(json.data.attributes.date), 'dd-MM-yyyy');
         return `Andere datum (${date}) in agenda`;
       } else {
         return 'Probleem in agenda';

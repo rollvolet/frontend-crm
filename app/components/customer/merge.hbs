@@ -122,7 +122,7 @@
         <div class="grid grid-cols-3 gap-4">
           {{#each (array @left @right) as |record|}}
             <div class="italic text-xs text-gray-400">
-              Aangemaakt: {{moment-format record.created}}
+              Aangemaakt: <Fmt::DateTime @value={{record.created}} />
             </div>
           {{/each}}
         </div>

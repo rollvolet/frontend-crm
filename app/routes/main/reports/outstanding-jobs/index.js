@@ -44,7 +44,7 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
   async model(params) {
     if (!params.orderDate) {
       const yearAgo = subYears(new Date(), 1);
-      params.orderDate = formatISO(yearAgo);
+      params.orderDate = formatISO(yearAgo, { representation: 'date' });
     }
 
     this.lastParams.stageLive(params);
@@ -92,6 +92,8 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
   async afterModel() {
     const params = this.lastParams.committed;
 
+    this.orderDate = params.orderDate;
+
     // Preload selected values value for ember-power-select
     if (params.visitorUri) {
       this.visitor = await this.store.findRecordByUri('employee', params.visitorUri);
@@ -122,6 +124,7 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
     controller.sortDirectionOptions = this.sortDirectionOptions;
     controller.sortFieldOptions = this.sortFieldOptions;
 
+    controller.orderDate = this.orderDate;
     controller.visitor = this.visitor;
     controller.deliveryMethod = this.deliveryMethod;
     controller.sortDirection = this.sortDirection;

@@ -1,10 +1,10 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import moment from 'moment';
-import sum from '../../utils/math/sum';
+import addDays from 'date-fns/addDays';
 import { task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
 import { isPresent } from '@ember/utils';
+import sum from '../../utils/math/sum';
 import {
   createCustomerSnapshot,
   createContactSnapshot,
@@ -81,7 +81,7 @@ export default class DepositInvoicePanelsComponent extends Component {
     ]);
 
     const invoiceDate = new Date();
-    const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+    const dueDate = addDays(invoiceDate, 14);
 
     const amount = this.orderAmount * 0.3; // default to 30% of order amount
 
@@ -107,7 +107,7 @@ export default class DepositInvoicePanelsComponent extends Component {
   @task
   *createNewCreditNoteForDepositInvoice(invoice) {
     const invoiceDate = new Date();
-    const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+    const dueDate = addDays(invoiceDate, 14);
 
     const [customer, contact, building] = yield Promise.all([
       invoice.customer,

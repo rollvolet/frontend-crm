@@ -6,6 +6,6 @@ export default class FmtDateComponent extends Component {
   }
 
   get format() {
-    return this.args.format || 'L';
+    return this.args.format || 'dd-MM-yyyy';
   }
 }

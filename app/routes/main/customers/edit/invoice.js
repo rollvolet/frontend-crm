@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import moment from 'moment';
+import addDays from 'date-fns/addDays';
 import { createCustomerSnapshot } from '../../../../utils/invoice-helpers';
 import { createCase } from '../../../../utils/case-helpers';
 
@@ -14,7 +14,7 @@ export default class MainCustomersEditInvoiceRoute extends Route {
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
 
     const invoiceDate = new Date();
-    const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+    const dueDate = addDays(invoiceDate, 14);
     const customerSnap = await createCustomerSnapshot(customer);
     const number = await this.sequence.fetchNextInvoiceNumber();
 

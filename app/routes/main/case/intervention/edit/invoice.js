@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import moment from 'moment';
+import addDays from 'date-fns/addDays';
 import {
   createCustomerSnapshot,
   createContactSnapshot,
@@ -21,7 +21,7 @@ export default class MainCaseInterventionEditInvoiceRoute extends Route {
     ]);
 
     const invoiceDate = new Date();
-    const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+    const dueDate = addDays(invoiceDate, 14);
 
     const [customerSnap, contactSnap, buildingSnap] = await Promise.all([
       createCustomerSnapshot(customer),

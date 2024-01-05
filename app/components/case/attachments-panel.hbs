@@ -36,7 +36,7 @@
                 class="max-w-100 text-left"
                 {{on "click" (perform this.downloadAttachment attachment)}} />
               <div class="mt-1 text-xs text-gray-400">
-                {{moment-format attachment.created}} - <span class="whitespace-nowrap">{{attachment.humanReadableSize}}</span>
+                <Fmt::DateTime @value={{attachment.created}} /> - <span class="whitespace-nowrap">{{attachment.humanReadableSize}}</span>
               </div>
             </div>
             <Rlv::Button

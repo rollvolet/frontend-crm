@@ -5,7 +5,7 @@
     Bewerkt
   {{/if}}
   {{#if @date}}
-    op {{moment-format @date}}
+    op <Fmt::DateTime @value={{@date}} />
   {{/if}}
   {{#if this.by}}
     door {{this.by}}

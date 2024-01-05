@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import moment from 'moment';
+import addDays from 'date-fns/addDays';
 import sum from '../../../../../utils/math/sum';
 import {
   createCustomerSnapshot,
@@ -36,7 +36,7 @@ export default class InvoiceRoute extends Route {
     ]);
 
     const invoiceDate = new Date();
-    const dueDate = moment(invoiceDate).add(14, 'days').toDate();
+    const dueDate = addDays(invoiceDate, 14);
     const orderAmount = sum(invoicelines.map((line) => line.arithmeticAmount));
 
     const [customerSnap, contactSnap, buildingSnap] = await Promise.all([
