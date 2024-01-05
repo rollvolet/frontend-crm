@@ -17,18 +17,26 @@
           @label="Verwijder productiebon"
           @onClick={{perform this.deleteProductionTicket}} />
       {{else}}
-        <FileUpload
-          @name={{this.uploadFieldName}}
-          @accept="application/pdf"
-          class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900"
-          @onFileAdd={{queue Menu.Close (perform this.uploadProductionTicket)}}
-          as |queue|>
-          {{#if queue.files.length}}
-            {{svg-jar "loading-circle" class="animate-spin h-4"}}
-          {{else}}
-            Laad productiebon op
-          {{/if}}
-        </FileUpload>
+        {{#let (file-queue
+             name=this.uploadFieldName
+             onFileAdded=(queue Menu.Close (perform this.uploadProductionTicket))) as |queue|}}
+          <label
+            for={{this.uploadFieldName}}
+            role="button"
+            class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900">
+            {{#if (or queue.files.length this.uploadProductionTicket.isRunning)}}
+              {{svg-jar "loading-circle" class="animate-spin h-4"}}
+            {{else}}
+              Laad productiebon op
+            {{/if}}
+          </label>
+          <input
+            type="file"
+            id={{this.uploadFieldName}}
+            accept="application/pdf"
+            hidden
+            {{queue.selectFile}}>
+        {{/let}}
       {{/if}}
     </Rlv::ActionMenu>
   </div>

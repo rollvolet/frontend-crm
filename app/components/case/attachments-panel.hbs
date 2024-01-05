@@ -4,18 +4,23 @@
       <h2 class="rlv-panel-title">
         Bijlagen
       </h2>
-      <FileUpload
-        @name="case-attachment"
-        class="inline-flex items-center px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200 cursor-pointer"
-        @onFileAdd={{perform this.uploadAttachment}}
-        @multiple={{true}}
-        as |queue|>
-        {{#if (or queue.files.length this.uploadAttachment.isRunning)}}
-          {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
-        {{else}}
-          Voeg bijlage toe
-        {{/if}}
-      </FileUpload>
+      {{#let (file-queue name="case-attachments" onFileAdded=(perform this.uploadAttachment)) as |queue|}}
+        <label
+          for="upload-attachment"
+          class="inline-flex items-center px-4 py-1.5 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200 cursor-pointer">
+          {{#if (or queue.files.length this.uploadAttachment.isRunning)}}
+            {{svg-jar "loading-circle" class="animate-spin mx-1.5 h-5 w-14"}}
+          {{else}}
+            Voeg bijlage toe
+          {{/if}}
+        </label>
+        <input
+          type="file"
+          id="upload-attachment"
+          multiple
+          hidden
+          {{queue.selectFile}}>
+      {{/let}}
     </div>
   </div>
   <div class="px-6 py-4">
