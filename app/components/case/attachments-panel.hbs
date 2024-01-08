@@ -1,4 +1,4 @@
-<div class="divide-y divide-gray-200" {{did-update (perform this.loadAttachments) @model}}>
+<div class="divide-y divide-gray-200" {{did-update (perform this.initializeAttachments) @model}}>
   <div class="px-6 py-4">
     <div class="flex justify-between items-center">
       <h2 class="rlv-panel-title">
@@ -19,36 +19,40 @@
     </div>
   </div>
   <div class="px-6 py-4">
-    {{#if this.attachments}}
-      <ul class="border border-gray-200 rounded-md">
-        {{#each this.attachments as |attachment index|}}
-          <li class="pl-3 pr-4 py-3 flex items-center justify-between {{if (gt index 0) "border-t border-gray-200"}}">
-            {{svg-jar "attachment-2" class="h-5 w-5 text-gray-400 fill-current"}}
-            <div class="ml-2 flex-1 w-0">
-              <Rlv::Button
-                @label={{attachment.filename}}
-                @skin="secondary-link"
-                class="max-w-100 text-left"
-                {{on "click" (perform this.downloadAttachment attachment)}} />
-              <div class="mt-1 text-xs text-gray-400">
-                {{moment-format attachment.created}} - <span class="whitespace-nowrap">{{attachment.humanReadableSize}}</span>
-              </div>
-            </div>
-            <Rlv::Button
-              @label="Verwijder"
-              @hideText={{true}}
-              @icon={{if attachment.isDeleted "loading-circle" "delete-bin-line"}}
-              @skin="secondary-naked"
-              @size="large"
-              @disabled={{attachment.isDeleted}}
-              {{on "click" (perform this.deleteAttachment attachment)}} />
-          </li>
-        {{/each}}
-      </ul>
+    {{#if this.initializeAttachments.isRunning}}
+      <Util::LoadingSpinner @label="" />
     {{else}}
-      <div class="italic text-sm text-gray-400">
-        Geen bijlagen toegevoegd
-      </div>
+      {{#if this.attachments}}
+        <ul class="border border-gray-200 rounded-md">
+          {{#each this.attachments as |attachment index|}}
+            <li class="pl-3 pr-4 py-3 flex items-center justify-between {{if (gt index 0) "border-t border-gray-200"}}">
+              {{svg-jar "attachment-2" class="h-5 w-5 text-gray-400 fill-current"}}
+              <div class="ml-2 flex-1 w-0">
+                <Rlv::Button
+                  @label={{attachment.filename}}
+                  @skin="secondary-link"
+                  class="max-w-100 text-left"
+                  {{on "click" (perform this.downloadAttachment attachment)}} />
+                <div class="mt-1 text-xs text-gray-400">
+                  {{moment-format attachment.created}} - <span class="whitespace-nowrap">{{attachment.humanReadableSize}}</span>
+                </div>
+              </div>
+              <Rlv::Button
+                @label="Verwijder"
+                @hideText={{true}}
+                @icon={{if attachment.isDeleted "loading-circle" "delete-bin-line"}}
+                @skin="secondary-naked"
+                @size="large"
+                @disabled={{attachment.isDeleted}}
+                {{on "click" (perform this.deleteAttachment attachment)}} />
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <div class="italic text-sm text-gray-400">
+          Geen bijlagen toegevoegd
+        </div>
+      {{/if}}
     {{/if}}
   </div>
 </div>
