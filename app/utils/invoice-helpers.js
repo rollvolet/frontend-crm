@@ -26,7 +26,7 @@ export async function createCustomerSnapshot(customer) {
       name,
       number: customer.number,
       vatNumber: customer.vatNumber,
-      source: customer.uri,
+      source: customer,
       address: addressSnapshot,
       language,
     });
@@ -53,7 +53,7 @@ export async function createContactSnapshot(contact) {
     const snapshot = store.createRecord('contact-snapshot', {
       name: contact.printName,
       position: contact.position,
-      source: contact.uri,
+      source: contact,
       address: addressSnapshot,
       language,
     });
@@ -80,7 +80,7 @@ export async function createBuildingSnapshot(building) {
     const snapshot = store.createRecord('building-snapshot', {
       name: building.printName,
       position: building.position,
-      source: building.uri,
+      source: building,
       address: addressSnapshot,
     });
     await snapshot.save();
