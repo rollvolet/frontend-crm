@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import addDays from 'date-fns/addDays';
 import subYears from 'date-fns/subYears';
 import formatISO from 'date-fns/formatISO';
 import constants from '../../config/constants';
@@ -39,10 +40,10 @@ export default class DashboardOutstandingRequestsComponent extends Component {
       };
 
       if (!this.showFutureVisits) {
-        const today = formatISO(new Date(), { representation: 'date' });
+        const tomorrow = formatISO(addDays(new Date(), 1), { representation: 'date' });
         filter[
           ':query:plannedDate'
-        ] = `(plannedDate:{* TO ${today}}) OR (NOT _exists_:plannedDate)`;
+        ] = `(plannedDate:{* TO ${tomorrow}}) OR (NOT _exists_:plannedDate)`;
       }
 
       this.requests = yield search('requests', this.page, this.size, this.sort, filter);
