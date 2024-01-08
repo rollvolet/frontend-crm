@@ -76,6 +76,14 @@ export default class UserEditModalComponent extends Component {
   }
 
   @action
+  async activateEmployee() {
+    await this.rollback();
+    this.args.model.endDate = null;
+    await this.args.model.save();
+    this.args.didSave();
+  }
+
+  @action
   async cancel() {
     await this.rollback();
     this.args.onClose();
