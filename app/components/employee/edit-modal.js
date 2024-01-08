@@ -57,7 +57,7 @@ export default class UserEditModalComponent extends Component {
 
   @action
   async selectAccount(account) {
-    const user = await account.user;
+    const user = await account?.user;
     this.args.model.user = user;
   }
 
@@ -76,6 +76,14 @@ export default class UserEditModalComponent extends Component {
   }
 
   @action
+  async activateEmployee() {
+    await this.rollback();
+    this.args.model.endDate = null;
+    await this.args.model.save();
+    this.args.didSave();
+  }
+
+  @action
   async cancel() {
     await this.rollback();
     this.args.onClose();
@@ -86,7 +94,9 @@ export default class UserEditModalComponent extends Component {
     event.preventDefault();
     await this.args.model.save();
     const user = await this.args.model.user;
-    await user.save();
+    if (user) {
+      await user.save();
+    }
     this.args.didSave();
   }
 }

@@ -6,14 +6,19 @@
   <div class="mt-6 bg-white shadow rounded-lg overflow-hidden">
     <div class="divide-y divide-y-200">
       {{!-- Card content --}}
-      <div class="py-6">
+      <div class="pt-4 pb-2 grid grid-cols-3 gap-4">
+        <div class="pl-4 text-2xl font-bold font-display text-gray-900">Klant 1</div>
+        <div class="pl-4 text-2xl font-bold font-display text-gray-900">Klant 2</div>
+        <div class="pl-4 text-2xl font-bold font-display text-gray-900">Resultaat</div>
+      </div>
+      <div class="py-4">
         <dl>
           <div class="space-y-2">
             <Customer::Merge::Block
               @label="Naam"
               @block={{find-by "property" "name" this.blocks}}
               as |_ record|>
-              <h2 class="text-2xl font-bold font-display text-gray-900">
+              <h2 class="text-xl font-bold font-display text-gray-900">
                 <span class="text-gray-400 mr-2">{{record.number}}</span>
                 <Fmt::CustomerName @model={{record}} />
               </h2>

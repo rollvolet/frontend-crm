@@ -29,6 +29,7 @@ export default class InputFieldContactSelectComponent extends Component {
           },
           status: CUSTOMER_STATUSES.ACTIVE,
         },
+        include: 'address',
       });
     }
   }
