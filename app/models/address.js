@@ -1,5 +1,5 @@
 import { attr, belongsTo } from '@ember-data/model';
-import { isPresent } from '@ember/utils';
+import { isPresent, isBlank } from '@ember/utils';
 import ValidatedModel, { Validator } from './validated-model';
 
 export default class AddressModel extends ValidatedModel {
@@ -23,8 +23,12 @@ export default class AddressModel extends ValidatedModel {
   @belongsTo('building-snapshot', { inverse: 'address' }) buildingSnapshot;
 
   get fullAddress() {
-    return [this.address, `${this.postalCode || ''} ${this.city || ''}`]
+    return [this.street, `${this.postalCode || ''} ${this.city || ''}`]
       .filter((line) => isPresent(line))
       .join(', ');
+  }
+
+  get isBlank() {
+    return isBlank(this.street) && isBlank(this.postalCode) && isBlank(this.city);
   }
 }
