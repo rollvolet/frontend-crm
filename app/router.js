@@ -44,6 +44,7 @@ Router.map(function () {
     this.route('invoices', function () {
       this.route('edit', { path: '/:invoice_id' }); // shortcut for main.case.invoice.edit.index
     });
+    this.route('legacy-case', { path: '/legacy-case/:customer_id' }); // redirect route for legacy SQL IDs
     this.route('case', { path: '/case/:case_id' }, function () {
       this.route('request', function () {
         this.route('edit', { path: '/:request_id' }, function () {
