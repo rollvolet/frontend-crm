@@ -6,15 +6,30 @@ export default class MainCaseRoute extends Route {
   @service router;
 
   async beforeModel(transition) {
-    const caseId = this.paramsFor('main.case').case_id;
-    if (`${caseId}`.length < 10) {
+    let routeInfo = transition.to;
+    let caseId, type, recordId = null;
+
+    while (routeInfo) {
+      const params = routeInfo.params;
+      if (params.case_id) {
+        caseId = params.case_id;
+      }
+      for (let key of ['request', 'order', 'intervention']) {
+        if (params[`${key}_id`]) {
+          type = key;
+          recordId = params[`${key}_id`];
+        }
+      }
+
+      routeInfo = routeInfo.parent;
+    }
+
+    if (caseId && `${caseId}`.length < 10) {
       // it's a legacy SQL ID instead of a UUID
-      const type = transition.to.name.split('.')[2]; // request, order or intervention
-      const id = this.paramsFor(`main.case.${type}.edit`)[`${type}_id`];
       this.router.transitionTo('main.legacy-case', caseId, {
         queryParams: {
           type,
-          id,
+          id: recordId,
         },
       });
     } // else: just continue the regular flow
