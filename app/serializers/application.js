@@ -1,7 +1,5 @@
 import JSONAPISerializer from '@ember-data/serializer/json-api';
-import classic from 'ember-classic-decorator';
 
-@classic
 export default class ApplicationJSONAPISerializer extends JSONAPISerializer {
   /**
       Parse the links in the JSONAPI response and convert to a meta-object
