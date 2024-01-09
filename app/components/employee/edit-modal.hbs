@@ -69,11 +69,19 @@
 
       <div class="pt-6 sm:pt-5 flex items-center {{if @model.isNew "justify-end" "justify-between"}}">
         {{#unless @model.isNew}}
-          <Rlv::Button
-            @label="Buiten dienst stellen"
-            @icon="delete-bin-line"
-            @skin="secondary"
-            {{on "click" this.terminateEmployee}} />
+          {{#if @model.isActive}}
+            <Rlv::Button
+              @label="Buiten dienst stellen"
+              @icon="delete-bin-line"
+              @skin="secondary"
+              {{on "click" this.terminateEmployee}} />
+          {{else}}
+            <Rlv::Button
+              @label="Opnieuw in dienst stellen"
+              @icon="user-shared-2-line"
+              @skin="secondary"
+              {{on "click" this.activateEmployee}} />
+          {{/if}}
         {{/unless}}
         <Rlv::Button
           type="submit"

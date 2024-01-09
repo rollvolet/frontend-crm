@@ -28,7 +28,7 @@ export default class InterventionRequestPanelComponent extends Component {
       _case.contact,
       _case.building,
       this.args.model.employee,
-      this.sequence.fetchNextInterventionNumber(),
+      this.sequence.fetchNextRequestNumber(),
     ]);
     const wayOfEntry = this.codelist.defaultWayOfEntry;
     const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);

@@ -13,7 +13,7 @@ export default class CaseAttachmentsPanelComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.loadAttachments.perform();
+    this.initializeAttachments.perform();
   }
 
   @keepLatestTask
@@ -25,6 +25,18 @@ export default class CaseAttachmentsPanelComponent extends Component {
       },
       sort: '-created',
     });
+  }
+
+  // 2 alias-methods for loadAttachments because we only want to show
+  // a loading state during initialization and not during reload
+  @keepLatestTask
+  *initializeAttachments() {
+    yield this.loadAttachments.perform();
+  }
+
+  @keepLatestTask
+  *reloadAttachments() {
+    yield this.loadAttachments.perform();
   }
 
   @enqueueTask({ maxConcurrency: 3 })
