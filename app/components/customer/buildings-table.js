@@ -1,6 +1,6 @@
 import FilterComponent from '../data-table-filter';
 import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 import onlyNumericChars from '../../utils/only-numeric-chars';
 

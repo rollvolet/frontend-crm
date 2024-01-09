@@ -1,4 +1,4 @@
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import ToriiAuthenticator from 'ember-simple-auth/authenticators/torii';
 import fetch, { Headers } from 'fetch';
 

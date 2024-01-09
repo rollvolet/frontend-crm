@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import applyFilterParams from '../../../utils/apply-filter-params';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';

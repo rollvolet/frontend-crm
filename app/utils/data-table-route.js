@@ -1,6 +1,6 @@
 import { action } from '@ember/object';
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 // Inspired by the Route mixin of mu-semtech/ember-data-table
 export default class DataTableRoute extends Route {

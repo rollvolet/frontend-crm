@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import snippets from '../../../../../config/snippets';
 import getDocumentLanguageCode from '../../../../../utils/get-document-language-code';
 import { updateCalendarEvent } from '../../../../../utils/calendar-helpers';

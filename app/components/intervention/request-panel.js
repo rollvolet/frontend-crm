@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
 import { createCase, cancelCase } from '../../utils/case-helpers';

@@ -1,4 +1,4 @@
-import Service, { inject as service } from '@ember/service';
+import Service, { service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { all, dropTask } from 'ember-concurrency';
 import constants from '../config/constants';

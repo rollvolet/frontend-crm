@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
 import { isPresent } from '@ember/utils';

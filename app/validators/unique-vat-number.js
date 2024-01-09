@@ -1,4 +1,4 @@
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { setOwner } from '@ember/application';
 
 export default class UniqueVatNumberValidator {

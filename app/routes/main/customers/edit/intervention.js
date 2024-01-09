@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { createCase } from '../../../../utils/case-helpers';
 
 export default class MainCustomersEditInterventionRoute extends Route {

@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { PAGE_SIZE } from '../../../../../config';
 
 export default class MainCaseOrderEditDepositInvoicesRoute extends Route {

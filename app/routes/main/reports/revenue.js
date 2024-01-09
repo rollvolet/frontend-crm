@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import fetch, { Headers } from 'fetch';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import MonthlySalesEntry from '../../../classes/monthly-sales-entry';
 
 export default class MainReportsRevenueRoute extends Route {
