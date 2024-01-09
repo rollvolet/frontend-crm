@@ -45,9 +45,10 @@
               <Rlv::Button
                 @label="Verwijder"
                 @hideText={{true}}
-                @icon={{if attachment.isDeleted "loading-circle" "delete-bin-line"}}
+                @icon="delete-bin-line"
                 @skin="secondary-naked"
                 @size="large"
+                @loading={{attachment.isDeleted}}
                 @disabled={{attachment.isDeleted}}
                 {{on "click" (perform this.deleteAttachment attachment)}} />
             </li>
