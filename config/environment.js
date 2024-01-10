@@ -17,11 +17,6 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
-    moment: {
-      includeLocales: ['nl'],
-      outputFormat: 'DD-MM-YYYY HH:mm:ss',
-      allowEmpty: true,
-    },
     torii: {
       disableRedirectInitializer: true,
       providers: {
