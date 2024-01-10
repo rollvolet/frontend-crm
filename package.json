@@ -103,10 +103,6 @@
     "tracked-built-ins": "^3.3.0",
     "webpack": "5.74.0"
   },
-  "overrides": {
-    "@embroider/macros": "0.50.2",
-    "@embroider/shared-internals": "0.50.2"
-  },
   "engines": {
     "node": "14.* || 16.* || >= 18"
   },
