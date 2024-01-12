@@ -2,8 +2,8 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import moment from 'moment';
 import subYears from 'date-fns/subYears';
+import parseISO from 'date-fns/parseISO';
 import formatISO from 'date-fns/formatISO';
 
 export default class MainReportsOutstandingJobsIndexController extends Controller {
@@ -27,16 +27,8 @@ export default class MainReportsOutstandingJobsIndexController extends Controlle
   @tracked sortField;
   @tracked sortDirection;
 
-  constructor() {
-    super(...arguments);
-    if (!this.orderDate) {
-      const yearAgo = subYears(new Date(), 1);
-      this.orderDate = formatISO(yearAgo, { representation: 'date' });
-    }
-  }
-
   get orderDateObject() {
-    return moment(this.orderDate, 'YYYY-MM-DD').toDate();
+    return parseISO(this.orderDate);
   }
 
   @action
