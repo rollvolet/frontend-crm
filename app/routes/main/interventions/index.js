@@ -53,7 +53,7 @@ export default class MainInterventionsIndexRoute extends Route {
     filter.setWildcardFilter('customer.name', params.name);
     filter.setWildcardFilter('searchStreet', params.street);
     filter.setWildcardFilter('searchCity', params.city);
-    filter.setWildcardFilter('searchTelephones', params.telephone);
+    filter.setWildcardFilter('searchTelephones', params.telephone?.replace(/\D/g, ''));
 
     const interventions = await search(
       'interventions',

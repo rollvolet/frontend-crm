@@ -52,7 +52,7 @@ export default class MainInvoicesIndexRoute extends Route {
     filter.setWildcardFilter('customer.name', params.name);
     filter.setWildcardFilter('searchStreet', params.street);
     filter.setWildcardFilter('searchCity', params.city);
-    filter.setWildcardFilter('searchTelephones', params.telephone);
+    filter.setWildcardFilter('searchTelephones', params.telephone?.replace(/\D/g, ''));
 
     const invoices = await search('invoices', params.page, params.size, params.sort, filter.value);
 

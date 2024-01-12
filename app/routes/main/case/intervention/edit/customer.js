@@ -45,7 +45,7 @@ export default class MainCaseInterventionEditCustomerRoute extends Route {
     filter.setWildcardFilter('name', params.name);
     filter.setWildcardFilter('searchStreet', params.street);
     filter.setWildcardFilter('searchCity', params.city);
-    filter.setWildcardFilter('searchTelephones', params.telephone);
+    filter.setWildcardFilter('searchTelephones', params.telephone?.replace(/\D/g, ''));
 
     const customers = await search(
       'customers',
