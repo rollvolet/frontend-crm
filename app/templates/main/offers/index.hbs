@@ -38,7 +38,7 @@
                   AD
                 </DataTable::Th>
                 <DataTable::Th
-                  @field="offerDate"
+                  @field="offerDate,-number"
                   @currentSort={{this.sort}}
                   @onUpdateSort={{fn (mut this.sort)}}
                   class="rlv-dt-th">
@@ -112,6 +112,7 @@
                         <Case::StatusIcon @uri={{row.case.status}} />
                         <span>{{format-case-number row.case.identifier showPrefix=false}}</span>
                       </div>
+                      <div class="ml-3 text-xs">{{row.number}}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <Fmt::Date @value={{row.offerDate}} />

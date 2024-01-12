@@ -9,7 +9,7 @@ export default class MainOffersIndexController extends Controller {
 
   @tracked page = 0;
   @tracked size = 25;
-  @tracked sort = '-offer-date';
+  @tracked sort = '-offer-date,-number';
   hasOrder = -1;
   isCancelled = 0;
 
