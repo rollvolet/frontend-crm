@@ -6,7 +6,8 @@
           @label="AD nr."
           @value={{this.filter.requestNumber}}
           @onInput={{perform this.debounceFilter "requestNumber"}}
-          class="lg:col-span-2 xl:col-span-1" />
+          class="lg:col-span-2 xl:col-span-1"
+          {{autofocus}} />
         <Fields.TextInput
           @label="Bezoeker"
           @value={{this.filter.visitor}}

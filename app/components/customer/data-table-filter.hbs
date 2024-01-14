@@ -32,7 +32,8 @@
       <Filter::TextInput
         @label="Naam"
         @value={{this.filter.name}}
-        @onInput={{perform this.debounceFilter "name"}}>
+        @onInput={{perform this.debounceFilter "name"}}
+        {{autofocus}}>
         <:tooltip>
         <Tooltip::WildcardSearch @side="right" />
         </:tooltip>

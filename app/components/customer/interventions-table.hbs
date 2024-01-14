@@ -23,7 +23,8 @@
           @label="IR nr."
           @value={{this.filter.number}}
           @onInput={{perform this.debounceFilter "number"}}
-          class="col-span-1" />
+          class="col-span-1"
+          {{autofocus}} />
         <Fields.TextInput
           @label="Gebouw"
           @value={{this.filter.name}}
