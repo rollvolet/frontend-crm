@@ -85,7 +85,7 @@ async function muSearch(index, page, size, sort, filter, dataMapping, highlightC
     Object.entries({
       'page[size]': size,
       'page[number]': page,
-      collapse_uuids: 't',
+      count: 'exact',
     })
   );
 
