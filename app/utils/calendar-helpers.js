@@ -7,31 +7,34 @@ import constants from '../config/constants';
 const { DELIVERY_METHODS } = constants;
 
 export async function updateCalendarEvent({ request, intervention, order }) {
+  const saveCalendarEvent = async function (calendarEvent) {
+    if (calendarEvent.hasDirtyAttributes) {
+      const { validations } = await calendarEvent.validate();
+      if (validations.isValid) {
+        await calendarEvent.save();
+      }
+    }
+  };
+
   if (request) {
     const visit = await request.visit;
     if (visit) {
       await setCalendarEventProperties(visit, { request });
-      if (visit.hasDirtyAttributes) {
-        await visit.save();
-      }
+      await saveCalendarEvent(visit);
     }
   }
   if (intervention) {
     const visit = await intervention.visit;
     if (visit) {
       await setCalendarEventProperties(visit, { intervention });
-      if (visit.hasDirtyAttributes) {
-        await visit.save();
-      }
+      await saveCalendarEvent(visit);
     }
   }
   if (order) {
     const planning = await order.planning;
     if (planning) {
       await setCalendarEventProperties(planning, { order });
-      if (planning.hasDirtyAttributes) {
-        await planning.save();
-      }
+      await saveCalendarEvent(planning);
     }
   }
 }
