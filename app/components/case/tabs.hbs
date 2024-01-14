@@ -109,9 +109,7 @@
               @onCancel={{reset-attribute @model "comment"}}>
               <:read>
               <dd {{on "click" (toggle "isExpandedComment" this)}}
-                class="mt-1 text-sm text-gray-900 {{unless this.isExpandedComment "truncate"}}">
-                {{or @model.comment "-"}}
-              </dd>
+                class="mt-1 text-sm text-gray-900 {{if this.isExpandedComment "whitespace-pre-wrap" "truncate"}}">{{or @model.comment "-"}}</dd>
               </:read>
               <:edit as |elementId onSave onCancel|>
               <Textarea
