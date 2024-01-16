@@ -29,13 +29,25 @@ export default class SequenceService extends Service {
   }
 
   async fetchNextInterventionNumber() {
-    const intervention = await this.store.queryOne('intervention', { sort: '-number' });
-    return intervention ? intervention.number + 1 : 1;
+    let isUnique = false;
+    let nextNumber;
+    while (!isUnique) {
+      const intervention = await this.store.queryOne('intervention', { sort: '-number' });
+      nextNumber = intervention ? intervention.number + 1 : 1;
+      isUnique = (await this.store.count('intervention', { 'filter[number]': nextNumber })) == 0;
+    }
+    return nextNumber;
   }
 
   async fetchNextRequestNumber() {
-    const request = await this.store.queryOne('request', { sort: '-number' });
-    return request ? request.number + 1 : 1;
+    let isUnique = false;
+    let nextNumber;
+    while (!isUnique) {
+      const request = await this.store.queryOne('request', { sort: '-number' });
+      nextNumber = request ? request.number + 1 : 1;
+      isUnique = (await this.store.count('request', { 'filter[number]': nextNumber })) == 0;
+    }
+    return nextNumber;
   }
 
   async fetchNextOfferNumber() {
