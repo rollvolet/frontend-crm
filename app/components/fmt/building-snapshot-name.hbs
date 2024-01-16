@@ -1,9 +1,11 @@
-{{#if @model.name}}
-  <div>
-    {{@model.name}}
-  </div>
-{{else}}
-  <div class="text-gray-400 font-normal">
-    Naamloos
-  </div>
+{{#if @model}}
+  {{#if @model.hasBlankName}}
+    <div class="text-gray-400 font-normal">
+      Naamloos
+    </div>
+  {{else}}
+    <div>
+      {{@model.name}}
+    </div>
+  {{/if}}
 {{/if}}
