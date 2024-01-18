@@ -71,4 +71,13 @@ export default {
     BOARD: 'http://data.rollvolet.be/user-groups/board',
     EMPLOYEE: 'http://data.rollvolet.be/user-groups/employee',
   },
+  RESOURCE_CLASSES: {
+    REQUEST: 'http://data.rollvolet.be/vocabularies/crm/Request',
+    INTERVENTION: 'http://data.rollvolet.be/vocabularies/crm/Intervention',
+    OFFER: 'http://schema.org/Offer',
+    INVOICE_DOCUMENT: 'https://purl.org/p2p-o/document#E-Invoice',
+    CUSTOMER: 'http://www.w3.org/2006/vcard/ns#Vcard',
+    CONTACT: 'http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact',
+    BUILDING: 'https://data.vlaanderen.be/ns/gebouw#Gebouw',
+  },
 };
