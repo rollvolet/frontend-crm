@@ -9,7 +9,7 @@ export default class VatRateSelect extends Component {
 
   constructor() {
     super(...arguments);
-    this.options = this.store.peekAll('vat-rate').sortBy('order');
+    this.options = this.store.peekAll('vat-rate').sortBy('position');
   }
 
   get required() {
