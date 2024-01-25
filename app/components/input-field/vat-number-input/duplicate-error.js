@@ -1,12 +1,13 @@
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { keepLatestTask } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
 
 export default class InputFieldVatNumberInputDuplicateError extends Component {
   @service store;
   @service router;
 
-  @service duplicate;
+  @tracked duplicate;
 
   constructor() {
     super(...arguments);
@@ -23,15 +24,14 @@ export default class InputFieldVatNumberInputDuplicateError extends Component {
       if (duplicate) {
         this.duplicate = duplicate;
       } else {
-        const duplicates = yield this.store.query('customer', {
-          page: { size: 1 },
+        const duplicates = yield this.store.queryOne('customer', {
           filter: {
             'vat-number': this.args.customer.vatNumber,
           },
         });
 
         if (duplicates.length) {
-          this.duplicate = duplicates.firstObject;
+          this.duplicate = duplicates[0];
         }
       }
     }
