@@ -1,4 +1,5 @@
 import Component from '@glimmer/component';
+import { action } from '@ember/object';
 import { exec } from 'pell';
 
 const defaultOptions = {
@@ -34,5 +35,16 @@ export default class InputFieldRichTextAreaComponent extends Component {
     const options = Object.assign({}, defaultOptions, customOptions);
     options.classes.content = `pell-content ${this.args.textAreaHeight || 'h-full'}`;
     return options;
+  }
+
+  @action
+  updateValue(html) {
+    let cleanedHtml = html;
+    if (!this.args.keepInlineStyle) {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      doc.querySelectorAll('[style]').forEach((el) => el.removeAttribute('style'));
+      cleanedHtml = doc.getElementsByTagName('body')[0].innerHTML;
+    }
+    this.args.onChange(cleanedHtml);
   }
 }
