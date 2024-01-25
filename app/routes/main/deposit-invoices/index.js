@@ -52,7 +52,7 @@ export default class MainDepositInvoicesIndexRoute extends Route {
     filter.setWildcardFilter('customer.name', params.name);
     filter.setWildcardFilter('searchStreet', params.street);
     filter.setWildcardFilter('searchCity', params.city);
-    filter.setWildcardFilter('searchTelephones', params.telephone?.replace(/[^\\*\\?[0-9]]/g, ''));
+    filter.setWildcardFilter('searchTelephones', params.telephone?.replace(/[^0-9?*]/g, ''));
 
     const depositInvoices = await search(
       'deposit-invoices',

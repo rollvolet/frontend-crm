@@ -48,7 +48,7 @@ export default class MainCustomersEditMergeIndexRoute extends Route {
     filter.setWildcardFilter('name', params.name);
     filter.setWildcardFilter('searchStreet', params.street);
     filter.setWildcardFilter('searchCity', params.city);
-    filter.setWildcardFilter('searchTelephones', params.telephone?.replace(/[^\\*\\?[0-9]]/g, ''));
+    filter.setWildcardFilter('searchTelephones', params.telephone?.replace(/[^0-9?*]/g, ''));
 
     const customers = await search(
       'customers',
