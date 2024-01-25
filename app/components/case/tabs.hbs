@@ -32,7 +32,7 @@
             <:read>
             {{#if @model.vatRate}}
               <dd class="mt-1 text-sm text-gray-900">
-                {{@model.vatRate.rate}}% BTW
+                {{@model.vatRate.name}}
               </dd>
             {{else}}
               <dd class="mt-1 pb-1 text-sm text-red-600">
@@ -47,7 +47,7 @@
               @onSelectionChange={{onSave}}
               @allowClear={{false}}
               {{on-key "Escape" onCancel}}
-              class="mt-1 w-44" />
+              class="mt-1 w-60" />
             </:edit>
           </InputField::Editable>
         </div>
