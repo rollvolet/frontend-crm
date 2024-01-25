@@ -13,7 +13,7 @@ export default class BuildingSnapshotModel extends Model {
   created;
 
   get hasBlankName() {
-    return isBlank(name);
+    return isBlank(this.name);
   }
 
   @belongsTo('address', { inverse: 'buildingSnapshot' }) address;
