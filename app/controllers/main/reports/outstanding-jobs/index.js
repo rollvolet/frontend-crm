@@ -2,7 +2,6 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import subYears from 'date-fns/subYears';
 import parseISO from 'date-fns/parseISO';
 import formatISO from 'date-fns/formatISO';
 

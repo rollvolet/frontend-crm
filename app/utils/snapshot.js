@@ -31,7 +31,7 @@ export default class Snapshot {
 
   fieldChanged(field) {
     if (!this.hasBase || !this.hasStaging) {
-      return this.baseOrEmpty.hasOwnProperty(field) || this.futureOrEmpty.hasOwnProperty(field);
+      return Object.hasOwn(this.baseOrEmpty, field) || Object.hasOwn(this.futureOrEmpty, field);
     } else {
       return compare(this.base[field], this.future[field]) !== 0;
     }

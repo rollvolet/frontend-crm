@@ -7,7 +7,9 @@ export default class MainCaseRoute extends Route {
 
   async beforeModel(transition) {
     let routeInfo = transition.to;
-    let caseId, type, recordId = null;
+    let caseId,
+      type,
+      recordId = null;
 
     while (routeInfo) {
       const params = routeInfo.params;
