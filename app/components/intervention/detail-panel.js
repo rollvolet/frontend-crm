@@ -45,10 +45,6 @@ export default class InterventionDetailPanelComponent extends Component {
     return isPresent(this.case?.customer.get('id'));
   }
 
-  get hasInvoice() {
-    return isPresent(this.case?.invoice.get('id'));
-  }
-
   get hasFollowUpRequest() {
     return isPresent(this.args.model.followUpRequest?.get('id'));
   }
@@ -124,38 +120,6 @@ export default class InterventionDetailPanelComponent extends Component {
     const visit = yield this.args.model.visit;
     yield visit?.destroyRecord();
     yield this.ensureCalendarEvent();
-  }
-
-  @task
-  *createNewIntervention() {
-    const [customer, contact, building, vatRate, employee, origin, number] = yield Promise.all([
-      this.case.customer,
-      this.case.contact,
-      this.case.building,
-      this.case.vatRate,
-      this.args.model.employee,
-      this.args.model.origin,
-      this.sequence.fetchNextInterventionNumber(),
-    ]);
-
-    const intervention = this.store.createRecord('intervention', {
-      interventionDate: new Date(),
-      number,
-      employee,
-      origin,
-    });
-
-    yield intervention.save();
-
-    const _case = yield createCase({
-      customer,
-      contact,
-      building,
-      vatRate,
-      intervention,
-    });
-
-    this.router.transitionTo('main.case.intervention.edit.index', _case.id, intervention.id);
   }
 
   @action

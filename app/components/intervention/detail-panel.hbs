@@ -55,34 +55,6 @@
               class="px-2"
               {{on "click" this.openEdit}} />
           {{/unless}}
-
-          <Rlv::ActionMenu>
-            <:trigger as |Trigger|>
-            <Rlv::Button
-              id="menu-button"
-              @label="Open opties"
-              @hideText={{true}}
-              @icon="more-2-fill"
-              @skin="secondary-naked"
-              @size="xlarge"
-              aria-expanded="true"
-              aria-haspopup="true"
-              {{on "click" Trigger.Open}} />
-            </:trigger>
-            <:default as |Menu|>
-            {{#if (and this.case.isOngoing (not this.hasInvoice))}}
-              {{#if (and this.isLinkedToCustomer this.case.vatRate)}}
-                <Menu.Item
-                  @route="main.case.intervention.edit.invoice"
-                  @models={{array this.case.id @model.id}}
-                  @label="Factuur opstellen" />
-              {{/if}}
-            {{/if}}
-            <Menu.Item
-              @label="Nieuwe interventie"
-              @onClick={{perform this.createNewIntervention}} />
-            </:default>
-          </Rlv::ActionMenu>
         {{/if}}
       </div>
     </div>
