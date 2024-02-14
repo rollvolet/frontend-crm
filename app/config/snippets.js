@@ -1,7 +1,7 @@
 export default {
   NED: {
     offerDocumentIntro:
-      '<p class="aanhef">Geachte heer, mevrouw,</p><br><div>Met genoegen bezorgen wij u onze beste prijs voor:</div>',
+      '<p class="aanhef">Beste klant,</p><br><div>Met genoegen bezorgen wij u onze beste prijs voor:</div>',
     offerDocumentOutro:
       '<p>Deze offerte is 30 dagen geldig.</p><br><div>Indien u akkoord gaat met deze offerte vragen wij u vriendelijk ons dit schriftelijk te bevestigen, via email of per post. Wij bezorgen u daarna een voorschotfactuur van 30% van het totale bedrag.</div><br><div>Door goedkeuring van deze offerte verklaart u zich akkoord met de bijgevoegde algemene voorwaarden.</div>',
   },
