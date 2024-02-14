@@ -34,7 +34,7 @@ export default class MainCaseRequestEditOfferRoute extends Route {
       number,
       offerDate: new Date(),
       documentIntro: snippets[languageCode]['offerDocumentIntro'],
-      documentOutro: snippets[languageCode]['offerDocumentOutro'],
+      documentOutro: snippets[languageCode]['offerDocumentOutro'](_case.depositRequired),
       documentVersion: 'v1',
       case: _case,
     });
