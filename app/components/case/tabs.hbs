@@ -30,24 +30,25 @@
             @onSave={{queue (perform this.setVatRate) (perform this.save)}}
             @onCancel={{reset-relation @model "vatRate"}}>
             <:read>
-            {{#if @model.vatRate}}
-              <dd class="mt-1 text-sm text-gray-900">
-                {{@model.vatRate.name}}
-              </dd>
-            {{else}}
-              <dd class="mt-1 pb-1 text-sm text-red-600">
-                {{svg-jar "error-warning-fill" class="h-4 w-4 fill-current"}}
-              </dd>
-              <EmberTooltip @text="BTW-tarief ontbreekt" />
-            {{/if}}
+              {{#if @model.vatRate}}
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{@model.vatRate.name}}
+                </dd>
+              {{else}}
+                <dd class="mt-1 pb-1 text-sm text-red-600">
+                  {{svg-jar "error-warning-fill" class="h-4 w-4 fill-current"}}
+                </dd>
+                <EmberTooltip @text="BTW-tarief ontbreekt" />
+              {{/if}}
             </:read>
             <:edit as |_ onSave onCancel|>
-            <InputField::VatRateSelect
-              @value={{@model.vatRate}}
-              @onSelectionChange={{onSave}}
-              @allowClear={{false}}
-              {{on-key "Escape" onCancel}}
-              class="mt-1 w-60" />
+              <InputField::VatRateSelect
+                @value={{@model.vatRate}}
+                @isB2B={{@model.customer.isCompany}}
+                @onSelectionChange={{onSave}}
+                @allowClear={{false}}
+                {{on-key "Escape" onCancel}}
+                class="mt-1 w-60" />
             </:edit>
           </InputField::Editable>
         </div>

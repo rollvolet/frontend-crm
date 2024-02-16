@@ -37,6 +37,9 @@ export default {
   LANGUAGES: {
     NL: 'http://data.rollvolet.be/languages/20b7a74c-22ef-41e2-b98f-f85b12570540',
   },
+  VAT_RATES: {
+    TAXFREE: 'http://data.rollvolet.be/vat-rates/79b5aafb-d4da-49c4-a631-665f2dda807f',
+  },
   ACTIVITY_TYPES: {
     INVALIDATION: 'http://data.rollvolet.be/concepts/5b0eb3d6-bbfb-449a-88c1-ec23ae341dca',
   },
