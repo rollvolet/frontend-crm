@@ -91,6 +91,7 @@ export default class MainReportsOutstandingJobsIndexRoute extends Route {
 
   async afterModel() {
     const params = this.lastParams.committed;
+    this.orderDate = params.orderDate;
 
     this.orderDate = params.orderDate;
 

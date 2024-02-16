@@ -10,7 +10,7 @@ export default class MainInterventionsIndexController extends Controller {
 
   @tracked page = 0;
   @tracked size = 25;
-  @tracked sort = '-intervention-date';
+  @tracked sort = '-number';
   isCancelled = 0;
   hasInvoice = 0;
   isPlanned = -1;

@@ -1,6 +1,9 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
+import constants from '../../config/constants';
+
+const { TAXFREE } = constants.VAT_RATES;
 
 export default class VatRateSelect extends Component {
   @service store;
@@ -9,7 +12,7 @@ export default class VatRateSelect extends Component {
 
   constructor() {
     super(...arguments);
-    this.options = this.store.peekAll('vat-rate').sortBy('order');
+    this.options = this.store.peekAll('vat-rate').sortBy('position');
   }
 
   get required() {
@@ -22,5 +25,13 @@ export default class VatRateSelect extends Component {
 
   get allowClear() {
     return this.args.allowClear !== false; // default to true
+  }
+
+  get filteredOptions() {
+    if (this.args.isB2B) {
+      return this.options;
+    } else {
+      return this.options.filter((opt) => opt.uri != TAXFREE);
+    }
   }
 }

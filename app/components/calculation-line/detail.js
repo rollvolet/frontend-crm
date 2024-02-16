@@ -26,7 +26,7 @@ export default class CalculationLineDetailComponent extends Component {
   }
 
   get isAmountInvalid() {
-    return this.args.isAmountRequired && !this.args.model.amount;
+    return this.args.isAmountRequired && this.args.model.amount == null;
   }
 
   @task

@@ -62,7 +62,7 @@ export default class InvoiceRoute extends Route {
     await Promise.all(
       invoicelines.map((invoiceline) => {
         invoiceline.invoice = invoice;
-        invoiceline.save();
+        return invoiceline.save();
       })
     );
 

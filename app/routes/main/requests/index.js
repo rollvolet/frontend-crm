@@ -53,7 +53,7 @@ export default class MainRequestsIndexRoute extends Route {
     filter.setWildcardFilter('customer.name', params.name);
     filter.setWildcardFilter('searchStreet', params.street);
     filter.setWildcardFilter('searchCity', params.city);
-    filter.setWildcardFilter('searchTelephones', params.telephone);
+    filter.setWildcardFilter('searchTelephones', params.telephone?.replace(/[^0-9?*]/g, ''));
 
     const requests = await search('requests', params.page, params.size, params.sort, filter.value);
 

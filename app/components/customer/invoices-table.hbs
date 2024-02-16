@@ -12,7 +12,8 @@
           @label="Nummer"
           @value={{this.filter.number}}
           @onInput={{perform this.debounceFilter "number"}}
-          class="lg:col-span-2 xl:col-span-1" />
+          class="lg:col-span-2 xl:col-span-1"
+          {{autofocus}} />
         <Fields.TextInput
           @label="Bezoeker"
           @value={{this.filter.visitor}}
@@ -93,6 +94,9 @@
                 class="rlv-dt-th">
                 Gemeente
               </DataTable::Th>
+              <th class="rlv-dt-th">
+                Bedrag
+              </th>
               <th class="rlv-dt-th"></th>
             </tr>
           </thead>
@@ -116,6 +120,9 @@
                 </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-36 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
+                  <div class="h-8 w-8 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
@@ -143,6 +150,9 @@
                   <div class="h-8 w-48 bg-gray-300"></div>
                 </td>
                 <td class="py-2 px-4">
+                  <div class="h-8 w-8 bg-gray-300"></div>
+                </td>
+                <td class="py-2 px-4">
                   <div class="h-8 w-12 bg-gray-300"></div>
                 </td>
                 <td>
@@ -156,6 +166,9 @@
                       <Invoice::PaymentStatusIcon @isPaid={{row.paymentDate}} />
                       <span>{{format-invoice-number row.number}}</span>
                     </div>
+                    {{#if row.isCreditNote}}
+                      <div class="text-xs">Creditnota</div>
+                    {{/if}}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <Fmt::Date @value={{row.invoiceDate}} />
@@ -174,6 +187,9 @@
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
                     {{row.building.address.postalCode}} {{row.building.address.city}}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-500">
+                    <Fmt::Currency @value={{row.totalAmountNet}} />
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <Rlv::Button

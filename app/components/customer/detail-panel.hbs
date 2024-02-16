@@ -37,6 +37,7 @@
           <Rlv::Button
             @route="main.customers.edit.merge.index"
             @model={{@model}}
+            @query={{hash page=0 number=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined onlyActive=true}}
             @label="Klant samenvoegen"
             @hideText={{true}}
             @icon="merge-cells-horizontal"

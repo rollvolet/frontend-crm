@@ -16,7 +16,8 @@
           @label="Naam"
           @value={{this.filter.visitor}}
           @onInput={{perform this.debounceFilter "name"}}
-          class="sm:col-span-2" />
+          class="sm:col-span-2"
+          {{autofocus}} />
         <Fields.TextInput
           @label="Straat"
           @value={{this.filter.street}}

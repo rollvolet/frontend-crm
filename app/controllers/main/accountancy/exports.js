@@ -1,17 +1,23 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { task } from 'ember-concurrency';
+import { task, timeout } from 'ember-concurrency';
 
-export default class ExportsController extends Controller {
+export default class MainAccountancyExportsController extends Controller {
+  @service router;
+
   @tracked page = 0;
   @tracked size = 10;
   @tracked sort = '-date';
 
   @task
   *runExport(accountancyExport) {
-    yield accountancyExport.save();
-    this.send('refreshModel');
+    yield Promise.all([
+      accountancyExport.save(),
+      timeout(3000), // workaround to await async cache clearing for quick exports
+    ]);
+    this.router.refresh('main.accountancy.exports');
   }
 
   @action

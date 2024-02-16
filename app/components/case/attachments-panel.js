@@ -5,6 +5,9 @@ import { warn } from '@ember/debug';
 import { enqueueTask, keepLatestTask, task, timeout } from 'ember-concurrency';
 import fetch, { Headers } from 'fetch';
 import { previewFile } from '../../utils/preview-document';
+import constants from '../../config/constants';
+
+const { PRODUCTION_TICKET } = constants.FILE_TYPES;
 
 export default class CaseAttachmentsPanelComponent extends Component {
   @service store;
@@ -20,6 +23,7 @@ export default class CaseAttachmentsPanelComponent extends Component {
   *loadAttachments() {
     this.attachments = yield this.store.query('file', {
       'filter[case][:uri:]': this.args.model.uri,
+      'filter[:not:type]': PRODUCTION_TICKET,
       page: {
         size: 100,
       },

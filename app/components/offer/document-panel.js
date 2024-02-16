@@ -44,6 +44,10 @@ export default class OfferDocumentPanelComponent extends Component {
       page: { size: 100 },
     });
     this.offerlines = offerlines.toArray();
+
+    // Data required for VAT rate list on offerlines
+    const _case = yield this.args.model.case;
+    yield _case.customer;
   }
 
   @task

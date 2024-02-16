@@ -17,7 +17,7 @@ export default class DashboardOutstandingRequestsComponent extends Component {
 
   @tracked size = 25;
   @tracked page = 0;
-  @tracked sort = '-request-date';
+  @tracked sort = '-number';
   @tracked showFutureVisits = false;
 
   @tracked requests = [];

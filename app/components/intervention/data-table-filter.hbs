@@ -26,7 +26,8 @@
       <Filter::TextInput
         @label="Nummer"
         @value={{this.filter.number}}
-        @onInput={{perform this.debounceFilter "number"}} />
+        @onInput={{perform this.debounceFilter "number"}}
+        {{autofocus}} />
     </div>
     <div class="sm:col-span-2">
       <Filter::TextInput

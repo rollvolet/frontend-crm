@@ -1,4 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
+import { isBlank } from '@ember/utils';
 
 export default class BuildingSnapshotModel extends Model {
   @attr('string') uri;
@@ -10,6 +11,10 @@ export default class BuildingSnapshotModel extends Model {
     },
   })
   created;
+
+  get hasBlankName() {
+    return isBlank(this.name);
+  }
 
   @belongsTo('address', { inverse: 'buildingSnapshot' }) address;
   @belongsTo('invoice-document', { inverse: 'building', polymorphic: true }) invoice;

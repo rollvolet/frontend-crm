@@ -16,7 +16,7 @@ export default class DashboardProductionTicketsComponent extends Component {
 
   @tracked size = 25;
   @tracked page = 0;
-  @tracked sort = '-order-date';
+  @tracked sort = '-orderDate,-case.idNumber';
   @tracked orders = [];
 
   constructor() {
