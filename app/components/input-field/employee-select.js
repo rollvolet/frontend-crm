@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
+import { compare } from '@ember/utils';
 
 export default class EmployeeSelect extends Component {
   @service store;
@@ -31,7 +32,7 @@ export default class EmployeeSelect extends Component {
   }
 
   get options() {
-    return this.employees.sortBy(this.sort);
+    return this.employees.slice(0).sort((a, b) => compare(a[this.sort], b[this.sort]));
   }
 
   get required() {

@@ -15,7 +15,9 @@ module.exports = {
   env: {
     browser: true,
   },
-  rules: {},
+  rules: {
+    'ember/no-array-prototype-extensions': 'error',
+  },
   overrides: [
     // node files
     {

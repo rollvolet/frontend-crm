@@ -59,7 +59,7 @@ export class MergeablePropertyBlock {
   async initUnits(record, status) {
     let value = await record[this.property];
     if (record.relationshipFor(this.property)?.meta.kind == 'hasMany') {
-      value = value.toArray();
+      value = value.slice(0);
     }
 
     if (Array.isArray(value)) {

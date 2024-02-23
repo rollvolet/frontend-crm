@@ -3,6 +3,7 @@ import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
+import { compare } from '@ember/utils';
 
 export default class InvoiceWorkingHoursModalComponent extends Component {
   @service store;
@@ -12,11 +13,11 @@ export default class InvoiceWorkingHoursModalComponent extends Component {
   @tracked newWorkingHourTechnician = null;
 
   get sortedWorkingHours() {
-    return this.args.model.technicalWorkActivities.sortBy('date');
+    return this.args.model.technicalWorkActivities.sort((a, b) => compare(a.date, b.date));
   }
 
   get defaultDate() {
-    return this.sortedWorkingHours.get('lastObject.date') || new Date();
+    return this.sortedWorkingHours[this.sortedWorkingHours.length - 1]?.date || new Date();
   }
 
   get isDisabledAddWorkingHour() {

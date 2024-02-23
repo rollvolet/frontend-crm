@@ -103,7 +103,10 @@ async function interventionSubject(intervention, customer, calendarPeriod) {
   const interventionNumber = formatInterventionNumber([intervention.number]);
   const nbOfPersons = intervention.scheduledNbOfPersons || 0;
   const technicians = await intervention.technicians;
-  const technicianNames = technicians.sortBy('firstName').mapBy('firstName').join(', ');
+  const technicianNames = technicians
+    .map((item) => item.firstName)
+    .sort()
+    .join(', ');
   const workload = `${nbOfPersons}p ${technicianNames}`.trim();
   return [timeSpec, customer.name, `IR${interventionNumber}`, workload]
     .filter((f) => isPresent(f))
@@ -120,7 +123,10 @@ async function orderSubject(order, customer, calendarPeriod, request, visitor, d
   const nbOfPersons = order.scheduledNbOfPersons || 0;
   const nbOfHours = order.scheduledNbOfHours || 0;
   const technicians = await order.technicians;
-  const technicianNames = technicians.sortBy('firstName').mapBy('firstName').join(', ');
+  const technicianNames = technicians
+    .map((item) => item.firstName)
+    .sort()
+    .join(', ');
   const workload = `${nbOfHours}u x ${nbOfPersons}p ${technicianNames}`.trim();
   return [timeSpec, customer.name, requestReference, execution, workload]
     .filter((f) => isPresent(f))

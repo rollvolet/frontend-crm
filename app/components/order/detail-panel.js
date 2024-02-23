@@ -46,7 +46,7 @@ export default class OrderDetailPanelComponent extends Component {
   }
 
   get technicianNames() {
-    return this.args.model.technicians.sortBy('firstName').mapBy('firstName');
+    return this.args.model.technicians.map((technician) => technician.firstName).sort();
   }
 
   get isNbOfPersonsWarning() {

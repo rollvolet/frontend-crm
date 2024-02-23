@@ -3,6 +3,7 @@ import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task, keepLatestTask } from 'ember-concurrency';
+import { compare } from '@ember/utils';
 import generateDocument from '../../utils/generate-document';
 import previewDocument from '../../utils/preview-document';
 import sum from '../../utils/math/sum';
@@ -25,7 +26,7 @@ export default class InvoiceProductPanelComponent extends Component {
   }
 
   get sortedInvoicelines() {
-    return this.args.model.invoicelines.sortBy('position');
+    return this.args.model.invoicelines.slice(0).sort((a, b) => compare(a.position, b.position));
   }
 
   get isEnabledAddingInvoicelines() {

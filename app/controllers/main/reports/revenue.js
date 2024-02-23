@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import uniqBy from 'lodash/uniqBy';
 import sum from '../../../utils/math/sum';
 
 const MONTHS = [
@@ -43,11 +44,15 @@ export default class MainReportsRevenueController extends Controller {
   }
 
   get years() {
-    return this.model.uniqBy('year').sortBy('year').mapBy('year');
+    return uniqBy(this.model, 'year')
+      .map((e) => e.year)
+      .sort((a, b) => a - b);
   }
 
   get months() {
-    return this.model.uniqBy('month').sortBy('month').mapBy('month');
+    return uniqBy(this.model, 'month')
+      .map((e) => e.month)
+      .sort((a, b) => a - b);
   }
 
   get currentYear() {

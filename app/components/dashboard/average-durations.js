@@ -34,7 +34,7 @@ export default class DashboardOutstandingJobsComponent extends Component {
       ':has:invoiceId': 't',
     });
 
-    const dayDiffs = orders.toArray().map((order) => {
+    const dayDiffs = orders.map((order) => {
       const invoiceDate = new Date(Date.parse(order.invoiceDate));
       const orderDate = new Date(Date.parse(order.orderDate));
       return differenceInDays(invoiceDate, orderDate);
@@ -55,7 +55,7 @@ export default class DashboardOutstandingJobsComponent extends Component {
       }
     );
 
-    const dayDiffs = interventions.toArray().map((intervention) => {
+    const dayDiffs = interventions.map((intervention) => {
       const invoiceDate = new Date(Date.parse(intervention.invoiceDate));
       const interventionDate = new Date(Date.parse(intervention.interventionDate));
       return differenceInDays(invoiceDate, interventionDate);

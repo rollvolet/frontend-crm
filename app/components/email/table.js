@@ -2,12 +2,14 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task, keepLatestTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
+import { compare } from '@ember/utils';
+import { TrackedArray } from 'tracked-built-ins';
 
 export default class EmailTableComponent extends Component {
   @service store;
 
   @tracked scope = this.args.scope || 'customer'; // one of 'customer', 'contact', 'building'
-  @tracked emails = [];
+  @tracked emails = new TrackedArray([]);
 
   constructor() {
     super(...arguments);
@@ -28,7 +30,8 @@ export default class EmailTableComponent extends Component {
   *loadData() {
     // TODO increase page size [?]
     const emails = yield this.args.model.emails;
-    this.emails = emails.sortBy('value').toArray();
+    const sortedEmails = emails.slice(0).sort((a, b) => compare(a.value, b.value));
+    this.emails = new TrackedArray(sortedEmails);
   }
 
   @task
@@ -40,7 +43,7 @@ export default class EmailTableComponent extends Component {
 
     yield this.saveEmail.perform(email);
 
-    this.emails.pushObject(email);
+    this.emails.push(email);
   }
 
   @task
@@ -53,7 +56,10 @@ export default class EmailTableComponent extends Component {
 
   @task
   *deleteEmail(email) {
-    this.emails.removeObject(email);
+    const i = this.emails.indexOf(email);
+    if (i >= 0) {
+      this.emails.splice(i, 1);
+    }
     if (!email.isDeleted) {
       yield email.destroyRecord();
     }

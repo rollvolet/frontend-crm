@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
+import { compare } from '@ember/utils';
 import { keepLatestTask } from 'ember-concurrency';
 
 export default class InputFieldUserGroupsSelectComponent extends Component {
@@ -26,7 +27,7 @@ export default class InputFieldUserGroupsSelectComponent extends Component {
   }
 
   get sortedOptions() {
-    return this.options.sortBy('name');
+    return this.options.slice(0).sort((a, b) => compare(a.name, b.name));
   }
 
   @action

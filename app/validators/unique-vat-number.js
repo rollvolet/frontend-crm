@@ -11,14 +11,13 @@ export default class UniqueVatNumberValidator {
   async validate(value, model /*, attribute*/) {
     if (value && model.changedAttributes().vatNumber) {
       if (value.length > 2) {
-        const customers = await this.store.query('customer', {
-          page: { size: 1 },
+        const customer = await this.store.queryOne('customer', {
           filter: {
             'vat-number': value,
           },
         });
 
-        if (customers.length && customers.firstObject.id != model.id) {
+        if (customer && customer.id != model.id) {
           return {
             type: 'uniqueVatNumber',
             value,

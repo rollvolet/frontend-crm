@@ -83,7 +83,7 @@ export default class CustomerMergeComponent extends Component {
     yield Promise.all(relatedRecordsToSave.map((record) => record.save()));
 
     // Relink contacts/buildings/cases from slave record to master
-    const [contacts, buildings, cases] = (yield Promise.all([
+    const [contacts, buildings, cases] = yield Promise.all([
       this.store.queryAll('contact', {
         'filter[customer][:id:]': this.rejectedCustomer.id,
       }),
@@ -93,7 +93,7 @@ export default class CustomerMergeComponent extends Component {
       this.store.queryAll('case', {
         'filter[customer][:id:]': this.rejectedCustomer.id,
       }),
-    ])).map((a) => a.toArray());
+    ]);
 
     debug('Going to relink resources to the master record');
     yield Promise.all(

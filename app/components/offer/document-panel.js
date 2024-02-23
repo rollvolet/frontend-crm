@@ -4,6 +4,8 @@ import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task, all, keepLatestTask } from 'ember-concurrency';
+import { TrackedArray } from 'tracked-built-ins';
+import { compare } from '@ember/utils';
 import generateDocument from '../../utils/generate-document';
 import previewDocument from '../../utils/preview-document';
 import constants from '../../config/constants';
@@ -14,7 +16,7 @@ export default class OfferDocumentPanelComponent extends Component {
   @service store;
 
   @tracked versionEditMode = false;
-  @tracked offerlines = [];
+  @tracked offerlines = new TrackedArray([]);
 
   constructor() {
     super(...arguments);
@@ -28,7 +30,7 @@ export default class OfferDocumentPanelComponent extends Component {
   }
 
   get sortedOfferlines() {
-    return this.offerlines.sortBy('position');
+    return this.offerlines.slice(0).sort((a, b) => compare(a.position, b.position));
   }
 
   get hasMixedVatRates() {
@@ -43,7 +45,7 @@ export default class OfferDocumentPanelComponent extends Component {
       sort: 'position',
       page: { size: 100 },
     });
-    this.offerlines = offerlines.toArray();
+    this.offerlines = new TrackedArray(offerlines);
 
     // Data required for VAT rate list on offerlines
     const _case = yield this.args.model.case;
@@ -90,7 +92,7 @@ export default class OfferDocumentPanelComponent extends Component {
       yield calculationLine.save();
     }
 
-    this.offerlines.pushObject(offerline);
+    this.offerlines.push(offerline);
   }
 
   @task
@@ -128,7 +130,7 @@ export default class OfferDocumentPanelComponent extends Component {
       })
     );
 
-    this.offerlines.pushObject(copiedOfferline);
+    this.offerlines.push(copiedOfferline);
   }
 
   @task
@@ -173,7 +175,10 @@ export default class OfferDocumentPanelComponent extends Component {
 
   @task
   *deleteOfferline(offerline) {
-    this.offerlines.removeObject(offerline);
+    const i = this.offerlines.indexOf(offerline);
+    if (i >= 0) {
+      this.offerlines.splice(i, 1);
+    }
     if (!offerline.isNew) {
       offerline.rollbackAttributes();
     }

@@ -12,7 +12,7 @@ export default class ExtendedStoreService extends Store {
     }
     const results = await this.query(modelName, query, options);
     if (results.length) {
-      return results.firstObject;
+      return results[0];
     } else {
       return null;
     }
@@ -29,7 +29,7 @@ export default class ExtendedStoreService extends Store {
   }
 
   findRecordByUri(modelName, uri) {
-    const cachedRecord = this.peekAll(modelName).findBy('uri', uri);
+    const cachedRecord = this.peekAll(modelName).find((item) => item.uri == uri);
     if (cachedRecord) {
       return cachedRecord;
     } else {
@@ -61,7 +61,7 @@ export default class ExtendedStoreService extends Store {
 
     const otherBatches = await Promise.all(batches);
     return ArrayProxy.create({
-      content: [firstBatch, ...otherBatches].map((batch) => batch.toArray()).flat(),
+      content: [firstBatch, ...otherBatches].flat(),
       meta: {
         count,
       },
@@ -72,7 +72,7 @@ export default class ExtendedStoreService extends Store {
   // a random record of that type.
   // TODO remove once cache clearing has been fixed for requests containing filters
   async forceCacheClear(modelName) {
-    const record = this.peekAll(modelName).firstObject || (await this.queryOne(modelName));
+    const record = this.peekAll(modelName)[0] || (await this.queryOne(modelName));
     if (record) {
       await record.save();
     }

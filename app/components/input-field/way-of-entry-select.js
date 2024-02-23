@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
+import { compare } from '@ember/utils';
 import constants from '../../config/constants';
 
 const { CONCEPT_SCHEMES } = constants;
@@ -33,6 +34,6 @@ export default class InputFieldWayOfEntrySelectComponent extends Component {
   }
 
   get sortedOptions() {
-    return this.options.sortBy('position');
+    return this.options.slice(0).sort((a, b) => compare(a.position, b.position));
   }
 }

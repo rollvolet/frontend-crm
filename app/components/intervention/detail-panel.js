@@ -2,11 +2,10 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
-import { keepLatestTask, task } from 'ember-concurrency';
+import { keepLatestTask } from 'ember-concurrency';
 import { trackedFunction } from 'ember-resources/util/function';
 import { isPresent } from '@ember/utils';
 import { setCalendarEventProperties } from '../../utils/calendar-helpers';
-import { createCase } from '../../utils/case-helpers';
 import generateDocument from '../../utils/generate-document';
 import CalendarPeriod from '../../classes/calendar-period';
 
@@ -34,7 +33,7 @@ export default class InterventionDetailPanelComponent extends Component {
   }
 
   get technicianNames() {
-    return this.args.model.technicians.sortBy('firstName').mapBy('firstName');
+    return this.args.model.technicians.map((technician) => technician.firstName).sort();
   }
 
   get isNbOfPersonsWarning() {

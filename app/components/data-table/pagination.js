@@ -72,9 +72,7 @@ export default class DataTablePaginationComponent extends Component {
         const leftWindow = [x, x + 1, x + 2].filter((i) => i <= this.lastPage);
         const y = this.lastPage;
         const rightWindow = [y - 2, y - 1, y].filter((i) => i >= this.firstPage);
-        const pages = [...leftWindow, ...rightWindow].uniq().sort(function (a, b) {
-          return a - b;
-        });
+        const pages = [...new Set([...leftWindow, ...rightWindow])].sort((a, b) => a - b);
         if (pages.length == 6 && pages[2] < pages[3] - 1) {
           return [...leftWindow, more, ...rightWindow];
         } else {

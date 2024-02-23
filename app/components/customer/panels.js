@@ -46,7 +46,7 @@ export default class CustomerPanelsComponent extends Component {
         this.args.model.emails,
       ]);
 
-      const records = [address, ...telephones.toArray(), ...emails.toArray()].filter((v) => v);
+      const records = [address, ...telephones, ...emails].filter((v) => v);
       yield Promise.all(records.map((t) => t.destroyRecord()));
       yield this.args.model.destroyRecord();
     } catch (e) {

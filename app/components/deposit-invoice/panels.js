@@ -56,7 +56,8 @@ export default class DepositInvoicePanelsComponent extends Component {
   }
 
   get totalAmount() {
-    return sum(this.args.model.mapBy('arithmeticAmount'));
+    const amounts = this.args.model.map((invoice) => invoice.arithmeticAmount);
+    return sum(amounts);
   }
 
   get vatPercentage() {

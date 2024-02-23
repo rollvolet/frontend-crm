@@ -43,7 +43,7 @@ export default class ContactsPanel extends Component {
         this.selectedContact.emails,
       ]);
 
-      const records = [address, ...telephones.toArray(), ...emails.toArray()];
+      const records = [address, ...telephones, ...emails].filter((v) => v);
       yield Promise.all(records.map((t) => t.destroyRecord()));
       yield this.selectedContact.destroyRecord();
       this.closeDetail();

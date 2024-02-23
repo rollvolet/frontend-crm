@@ -45,7 +45,9 @@ export default class InvoiceCalculationPanelComponent extends Component {
   }
 
   get depositInvoicesAmount() {
-    return sum(this.depositInvoicesData.value?.mapBy('arithmeticAmount'));
+    const depositInvoices = this.depositInvoicesData.value || [];
+    const amounts = depositInvoices.map((invoice) => invoice.arithmeticAmount);
+    return sum(amounts);
   }
 
   get depositInvoicesVat() {

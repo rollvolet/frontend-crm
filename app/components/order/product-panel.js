@@ -2,11 +2,13 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { keepLatestTask, task } from 'ember-concurrency';
+import { compare } from '@ember/utils';
+import { TrackedArray } from 'tracked-built-ins';
 
 export default class OrderProductPanelComponent extends Component {
   @service store;
 
-  @tracked invoicelines = [];
+  @tracked invoicelines = new TrackedArray([]);
 
   constructor() {
     super(...arguments);
@@ -21,11 +23,11 @@ export default class OrderProductPanelComponent extends Component {
       sort: 'position',
       page: { size: 100 },
     });
-    this.invoicelines = invoicelines.toArray();
+    this.invoicelines = new TrackedArray(invoicelines);
   }
 
   get sortedInvoicelines() {
-    return this.invoicelines.sortBy('position');
+    return this.invoicelines.slice(0).sort((a, b) => compare(a.position, b.position));
   }
 
   @task
@@ -43,7 +45,7 @@ export default class OrderProductPanelComponent extends Component {
 
     yield this.saveInvoiceline.perform(invoiceline);
 
-    this.invoicelines.pushObject(invoiceline);
+    this.invoicelines.push(invoiceline);
   }
 
   @task
@@ -56,7 +58,10 @@ export default class OrderProductPanelComponent extends Component {
 
   @task
   *deleteInvoiceline(invoiceline) {
-    this.invoicelines.removeObject(invoiceline);
+    const i = this.invoicelines.indexOf(invoiceline);
+    if (i >= 0) {
+      this.invoicelines.splice(i, 1);
+    }
     if (!invoiceline.isNew) {
       invoiceline.rollbackAttributes();
     }

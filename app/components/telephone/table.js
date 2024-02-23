@@ -2,13 +2,15 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task, keepLatestTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
+import { compare } from '@ember/utils';
+import { TrackedArray } from 'tracked-built-ins';
 
 export default class TelephoneTableComponent extends Component {
   @service store;
   @service codelist;
 
   @tracked scope = this.args.scope || 'customer'; // one of 'customer', 'contact', 'building'
-  @tracked telephones = [];
+  @tracked telephones = new TrackedArray([]);
 
   constructor() {
     super(...arguments);
@@ -26,14 +28,14 @@ export default class TelephoneTableComponent extends Component {
   }
 
   get sortedTelephones() {
-    return this.telephones.sortBy('position');
+    return this.telephones.slice(0).sort((a, b) => compare(a.position, b.position));
   }
 
   @keepLatestTask
   *loadData() {
     // TODO increase page size [?]
     const telephones = yield this.args.model.telephones;
-    this.telephones = telephones.toArray();
+    this.telephones = new TrackedArray(telephones);
   }
 
   @task
@@ -53,7 +55,7 @@ export default class TelephoneTableComponent extends Component {
 
     yield this.saveTelephone.perform(telephone);
 
-    this.telephones.pushObject(telephone);
+    this.telephones.push(telephone);
   }
 
   @task
@@ -66,7 +68,10 @@ export default class TelephoneTableComponent extends Component {
 
   @task
   *deleteTelephone(telephone) {
-    this.telephones.removeObject(telephone);
+    const i = this.telephones.indexOf(telephone);
+    if (i >= 0) {
+      this.telephones.splice(i, 1);
+    }
     if (!telephone.isDeleted) {
       yield telephone.destroyRecord();
     }
