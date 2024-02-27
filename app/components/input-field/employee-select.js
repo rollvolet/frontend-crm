@@ -6,7 +6,10 @@ export default class EmployeeSelect extends Component {
   @service store;
 
   get employees() {
-    let employees = this.store.peekAll('employee').sortBy('firstName');
+    let employees = this.store
+      .peekAll('employee')
+      .slice(0)
+      .sort((a, b) => compare(a.firstName, b.firstName));
 
     if (this.isActive) {
       employees = employees.filter((e) => e.isActive);

@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import { isEmpty } from '@ember/utils';
+import { isEmpty, compare } from '@ember/utils';
 import { timeout, keepLatestTask } from 'ember-concurrency';
 
 export default class PostalCodeSelect extends Component {
@@ -17,7 +17,10 @@ export default class PostalCodeSelect extends Component {
   constructor() {
     super(...arguments);
 
-    this.postalCodes = this.store.peekAll('postal-code').sortBy('code');
+    this.postalCodes = this.store
+      .peekAll('postal-code')
+      .slice(0)
+      .sort((a, b) => compare(a.code, b.code));
 
     if (this.args.postalCode && this.args.city) {
       const value = this.postalCodes.find(

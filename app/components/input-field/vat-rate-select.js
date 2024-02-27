@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
+import { compare } from '@ember/utils';
 import constants from '../../config/constants';
 
 const { TAXFREE } = constants.VAT_RATES;
@@ -12,7 +13,10 @@ export default class VatRateSelect extends Component {
 
   constructor() {
     super(...arguments);
-    this.options = this.store.peekAll('vat-rate').sortBy('position');
+    this.options = this.store
+      .peekAll('vat-rate')
+      .slice(0)
+      .sort((a, b) => compare(a.position, b.position));
   }
 
   get required() {
