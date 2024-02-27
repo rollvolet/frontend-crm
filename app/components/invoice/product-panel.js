@@ -102,7 +102,7 @@ export default class InvoiceProductPanelComponent extends Component {
 
   @keepLatestTask
   *updateInvoicelinesTotalAmount() {
-    const invoicelinesAmount = sum(this.sortedInvoicelines.mapBy('arithmeticAmount'));
+    const invoicelinesAmount = sum(this.sortedInvoicelines.map((line) => line.arithmeticAmount));
     this.args.model.totalAmountNet = invoicelinesAmount;
     if (this.args.model.hasDirtyAttributes) {
       // only save if totalAmountNet actually changed

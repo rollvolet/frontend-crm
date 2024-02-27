@@ -18,7 +18,11 @@ export default class EmployeeClass extends Model {
   @hasMany('intervention', { inverse: 'employee', async: true }) acceptedInterventions;
   @hasMany('intervention', { inverse: 'technicians', async: true }) interventions;
   @hasMany('order', { inverse: 'technicians', async: true }) orders;
-  @hasMany('technical-work-activities', { inverse: 'employee', async: true }) technicalWorkActivities;
+  @hasMany('technical-work-activities', {
+    inverse: 'employee',
+    async: true,
+  })
+  technicalWorkActivities;
 
   get isTechnician() {
     return this.type == EMPLOYEE_TYPES.TECHNICIAN;
