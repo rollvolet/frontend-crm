@@ -1,6 +1,5 @@
 import fetch from 'fetch';
 import ArrayProxy from '@ember/array/proxy';
-import { A } from '@ember/array';
 
 function getPaginationMetadata(pageNumber, size, total) {
   const pagination = {};
@@ -113,13 +112,11 @@ async function muSearch(index, page, size, sort, filter, dataMapping, highlightC
 
   const { count, data } = await (await fetch(endpoint)).json();
   const pagination = getPaginationMetadata(page, size, count);
-  const entries = A(
-    await Promise.all(
-      data.map((entry) => {
-        fixBooleanValues(entry);
-        return dataMapping(entry);
-      })
-    )
+  const entries = await Promise.all(
+    data.map((entry) => {
+      fixBooleanValues(entry);
+      return dataMapping(entry);
+    })
   );
 
   return ArrayProxy.create({
