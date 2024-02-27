@@ -12,13 +12,13 @@ export default class EmployeeClass extends Model {
   @attr('string') initials;
   @attr('datetime') endDate;
 
-  @belongsTo('user', { inverse: 'employee' }) user;
-  @hasMany('request', { inverse: 'employee' }) acceptedRequests;
-  @hasMany('request', { inverse: 'visitor' }) visitedRequests;
-  @hasMany('intervention', { inverse: 'employee' }) acceptedInterventions;
-  @hasMany('intervention', { inverse: 'technicians' }) interventions;
-  @hasMany('order', { inverse: 'technicians' }) orders;
-  @hasMany('technical-work-activities', { inverse: 'employee' }) technicalWorkActivities;
+  @belongsTo('user', { inverse: 'employee', async: true }) user;
+  @hasMany('request', { inverse: 'employee', async: true }) acceptedRequests;
+  @hasMany('request', { inverse: 'visitor', async: true }) visitedRequests;
+  @hasMany('intervention', { inverse: 'employee', async: true }) acceptedInterventions;
+  @hasMany('intervention', { inverse: 'technicians', async: true }) interventions;
+  @hasMany('order', { inverse: 'technicians', async: true }) orders;
+  @hasMany('technical-work-activities', { inverse: 'employee', async: true }) technicalWorkActivities;
 
   get isTechnician() {
     return this.type == EMPLOYEE_TYPES.TECHNICIAN;

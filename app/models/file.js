@@ -9,12 +9,12 @@ export default class FileModel extends Model {
   @attr('string') extension;
   @attr('datetime') created;
 
-  @belongsTo('remote-file') download;
-  @belongsTo('case', { inverse: 'attachments' }) case;
-  @belongsTo('intervention', { inverse: 'document' }) intervention;
-  @belongsTo('offer', { inverse: 'document' }) offer;
-  @belongsTo('order', { inverse: 'documents' }) order;
-  @belongsTo('invoice-document', { inverse: 'document', polymorphic: true }) invoice;
+  @belongsTo('remote-file', { inverse: 'dataSource', async: true }) download;
+  @belongsTo('case', { inverse: 'attachments', async: true }) case;
+  @belongsTo('intervention', { inverse: 'document', async: true }) intervention;
+  @belongsTo('offer', { inverse: 'document', async: true }) offer;
+  @belongsTo('order', { inverse: 'documents', async: true }) order;
+  @belongsTo('invoice-document', { inverse: 'document', async: true, polymorphic: true }) invoice;
 
   get humanReadableSize() {
     const bytes = this.size;

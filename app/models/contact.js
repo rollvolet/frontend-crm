@@ -43,13 +43,13 @@ export default class ContactModel extends ValidatedModel {
   @attr('boolean') printSuffix;
   @attr('boolean') printInFront;
 
-  @belongsTo('address', { inverse: 'contact' }) address;
-  @belongsTo('language', { inverse: 'contacts' }) language;
-  @hasMany('telephone', { inverse: 'contact' }) telephones;
-  @hasMany('email', { inverse: 'contact' }) emails;
-  @belongsTo('customer', { inverse: 'contacts' }) customer;
-  @hasMany('case', { inverse: 'contact' }) cases;
-  @hasMany('contact-snapshot', { inverse: 'source' }) snapshots;
+  @belongsTo('address', { inverse: 'contact', async: true }) address;
+  @belongsTo('language', { inverse: 'contacts', async: true }) language;
+  @hasMany('telephone', { inverse: 'contact', async: true }) telephones;
+  @hasMany('email', { inverse: 'contact', async: true }) emails;
+  @belongsTo('customer', { inverse: 'contacts', async: true }) customer;
+  @hasMany('case', { inverse: 'contact', async: true }) cases;
+  @hasMany('contact-snapshot', { inverse: 'source', async: true }) snapshots;
 
   get printName() {
     let name = '';

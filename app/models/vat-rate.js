@@ -6,7 +6,7 @@ export default class VatRateModel extends Model {
   @attr('string') rate;
   @attr('number') position;
 
-  @hasMany('offerline', { inverse: 'vatRate' }) offerlines;
-  @hasMany('invoicelines', { inverse: 'vatRate' }) invoicelines;
-  @hasMany('case', { inverse: 'vatRate' }) cases;
+  @hasMany('offerline', { inverse: 'vatRate', async: true }) offerlines;
+  @hasMany('invoicelines', { inverse: 'vatRate', async: true }) invoicelines;
+  @hasMany('case', { inverse: 'vatRate', async: true }) cases;
 }

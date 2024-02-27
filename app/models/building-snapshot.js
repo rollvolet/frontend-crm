@@ -16,7 +16,7 @@ export default class BuildingSnapshotModel extends Model {
     return isBlank(this.name);
   }
 
-  @belongsTo('address', { inverse: 'buildingSnapshot' }) address;
-  @belongsTo('invoice-document', { inverse: 'building', polymorphic: true }) invoice;
-  @belongsTo('building', { inverse: 'snapshots' }) source;
+  @belongsTo('address', { inverse: 'buildingSnapshot', async: true }) address;
+  @belongsTo('invoice-document', { inverse: 'building', async: true, polymorphic: true }) invoice;
+  @belongsTo('building', { inverse: 'snapshots', async: true }) source;
 }

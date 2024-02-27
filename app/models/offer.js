@@ -21,9 +21,9 @@ export default class OfferModel extends ValidatedModel {
   })
   source;
 
-  @belongsTo('case', { inverse: 'offer' }) case;
-  @hasMany('offerline', { inverse: 'offer' }) offerlines;
-  @belongsTo('file', { inverse: 'offer' }) document;
+  @belongsTo('case', { inverse: 'offer', async: true }) case;
+  @hasMany('offerline', { inverse: 'offer', async: true }) offerlines;
+  @belongsTo('file', { inverse: 'offer', async: true }) document;
 
   get isMasteredByAccess() {
     return this.source == 'Access';

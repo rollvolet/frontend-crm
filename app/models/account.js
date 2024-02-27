@@ -5,5 +5,5 @@ export default class UserClass extends Model {
   @attr('string') accountName;
   @attr('string') accountServiceHomepage;
 
-  @belongsTo('user', { inverse: 'account' }) user;
+  @belongsTo('user', { inverse: 'account', async: true }) user;
 }

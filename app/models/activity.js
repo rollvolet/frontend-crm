@@ -6,6 +6,6 @@ export default class ActivityModel extends Model {
   @attr('datetime') date;
   @attr('string') description;
 
-  @belongsTo('case', { inverse: 'invalidation' }) case;
-  @belongsTo('user', { inverse: 'activities' }) user;
+  @belongsTo('case', { inverse: 'invalidation', async: true }) case;
+  @belongsTo('user', { inverse: 'activities', async: true }) user;
 }

@@ -10,5 +10,5 @@ export default class RemoteFileModel extends Model {
   @attr msIdentifier;
   @attr url;
 
-  @belongsTo('file') dataSource;
+  @belongsTo('file', { inverse: 'download', async: true }) dataSource;
 }

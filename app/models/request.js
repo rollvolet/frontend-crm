@@ -23,12 +23,12 @@ export default class RequestModel extends ValidatedModel {
   })
   source;
 
-  @belongsTo('case', { inverse: 'request' }) case;
-  @belongsTo('calendar-event', { inverse: 'request' }) visit;
-  @belongsTo('concept', { inverse: null }) wayOfEntry;
-  @belongsTo('employee', { inverse: 'acceptedRequests' }) employee;
-  @belongsTo('employee', { inverse: 'visitedRequests' }) visitor;
-  @belongsTo('intervention', { inverse: 'followUpRequest' }) origin;
+  @belongsTo('case', { inverse: 'request', async: true }) case;
+  @belongsTo('calendar-event', { inverse: 'request', async: true }) visit;
+  @belongsTo('concept', { inverse: null, async: true }) wayOfEntry;
+  @belongsTo('employee', { inverse: 'acceptedRequests', async: true }) employee;
+  @belongsTo('employee', { inverse: 'visitedRequests', async: true }) visitor;
+  @belongsTo('intervention', { inverse: 'followUpRequest', async: true }) origin;
 
   get isMasteredByAccess() {
     return this.source == 'Access';

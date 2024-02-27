@@ -4,6 +4,6 @@ export default class StructuredIdentifier extends Model {
   @attr('number') identifier;
   @attr('string') namespace;
 
-  @belongsTo('case', { inverse: 'structuredIdentifier' })
+  @belongsTo('case', { inverse: 'structuredIdentifier', async: true })
   case;
 }

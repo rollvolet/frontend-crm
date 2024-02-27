@@ -16,10 +16,10 @@ export default class CustomerSnapshotModel extends Model {
   })
   created;
 
-  @belongsTo('address', { inverse: 'customerSnapshot' }) address;
-  @belongsTo('invoice-document', { inverse: 'customer', polymorphic: true }) invoice;
-  @belongsTo('language', { inverse: 'customerSnapshots' }) language;
-  @belongsTo('customer', { inverse: 'snapshots' }) source;
+  @belongsTo('address', { inverse: 'customerSnapshot', async: true }) address;
+  @belongsTo('invoice-document', { inverse: 'customer', async: true, polymorphic: true }) invoice;
+  @belongsTo('language', { inverse: 'customerSnapshots', async: true }) language;
+  @belongsTo('customer', { inverse: 'snapshots', async: true }) source;
 
   get isCompany() {
     return this.type == CUSTOMER_TYPES.ORGANIZATION;

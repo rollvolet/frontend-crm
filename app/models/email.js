@@ -9,7 +9,7 @@ export default class EmailModel extends ValidatedModel {
   @attr('email') value;
   @attr('string') note;
 
-  @belongsTo('customer', { inverse: 'emails' }) customer;
-  @belongsTo('contact', { inverse: 'emails' }) contact;
-  @belongsTo('building', { inverse: 'emails' }) building;
+  @belongsTo('customer', { inverse: 'emails', async: true }) customer;
+  @belongsTo('contact', { inverse: 'emails', async: true }) contact;
+  @belongsTo('building', { inverse: 'emails', async: true }) building;
 }

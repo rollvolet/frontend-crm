@@ -30,12 +30,12 @@ export default class OrderModel extends ValidatedModel {
   })
   source;
 
-  @belongsTo('case', { inverse: 'order' }) case;
-  @hasMany('file', { inverse: 'order' }) documents;
-  @belongsTo('calendar-event', { inverse: 'order' }) planning;
-  @hasMany('invoiceline', { inverse: 'order' }) invoicelines;
-  @hasMany('interventions', { inverse: 'origin' }) interventions;
-  @hasMany('employee', { inverse: 'orders' }) technicians;
+  @belongsTo('case', { inverse: 'order', async: true }) case;
+  @hasMany('file', { inverse: 'order', async: true }) documents;
+  @belongsTo('calendar-event', { inverse: 'order', async: true }) planning;
+  @hasMany('invoiceline', { inverse: 'order', async: true }) invoicelines;
+  @hasMany('interventions', { inverse: 'origin', async: true }) interventions;
+  @hasMany('employee', { inverse: 'orders', async: true }) technicians;
 
   get scheduledTotal() {
     return this.scheduledNbOfHours * this.scheduledNbOfPersons;

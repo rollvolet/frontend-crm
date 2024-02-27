@@ -26,7 +26,7 @@ export default class CalculationLineModel extends ValidatedModel {
   currency;
   @attr description;
 
-  @belongsTo('offerline', { inverse: 'calculationLines' }) offerline;
+  @belongsTo('offerline', { inverse: 'calculationLines', async: true }) offerline;
 
   get reductionPercentage() {
     return this.reductionRate ? this.reductionRate * 100 : null;

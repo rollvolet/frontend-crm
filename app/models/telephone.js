@@ -13,9 +13,9 @@ export default class TelephoneModel extends ValidatedModel {
   @attr('number') position;
   @attr('string') note;
 
-  @belongsTo('country', { inverse: 'telephones' }) country;
-  @belongsTo('telephone-type', { inverse: 'telephones' }) telephoneType;
-  @belongsTo('customer', { inverse: 'telephones' }) customer;
-  @belongsTo('contact', { inverse: 'telephones' }) contact;
-  @belongsTo('building', { inverse: 'telephones' }) building;
+  @belongsTo('country', { inverse: 'telephones', async: true }) country;
+  @belongsTo('telephone-type', { inverse: 'telephones', async: true }) telephoneType;
+  @belongsTo('customer', { inverse: 'telephones', async: true }) customer;
+  @belongsTo('contact', { inverse: 'telephones', async: true }) contact;
+  @belongsTo('building', { inverse: 'telephones', async: true }) building;
 }

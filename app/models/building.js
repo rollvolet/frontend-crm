@@ -44,13 +44,13 @@ export default class BuildingModel extends ValidatedModel {
   @attr('boolean') printSuffix;
   @attr('boolean') printInFront;
 
-  @belongsTo('address', { inverse: 'building' }) address;
-  @belongsTo('language', { inverse: 'buildings' }) language;
-  @hasMany('telephone', { inverse: 'building' }) telephones;
-  @hasMany('email', { inverse: 'building' }) emails;
-  @belongsTo('customer', { inverse: 'buildings' }) customer;
-  @hasMany('case', { inverse: 'building' }) cases;
-  @hasMany('building-snapshot', { inverse: 'source' }) snapshots;
+  @belongsTo('address', { inverse: 'building', async: true }) address;
+  @belongsTo('language', { inverse: 'buildings', async: true }) language;
+  @hasMany('telephone', { inverse: 'building', async: true }) telephones;
+  @hasMany('email', { inverse: 'building', async: true }) emails;
+  @belongsTo('customer', { inverse: 'buildings', async: true }) customer;
+  @hasMany('case', { inverse: 'building', async: true }) cases;
+  @hasMany('building-snapshot', { inverse: 'source', async: true }) snapshots;
 
   get hasBlankName() {
     return [this.prefix, this.name, this.suffix].every((n) => isBlank(n));

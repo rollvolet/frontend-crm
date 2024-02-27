@@ -6,6 +6,6 @@ export default class CountryModel extends Model {
   @attr('string') name;
   @attr('string') telephonePrefix;
 
-  @hasMany('telephone', { inverse: 'country' }) telephones;
-  @hasMany('address', { inverse: 'country' }) addresses;
+  @hasMany('telephone', { inverse: 'country', async: true }) telephones;
+  @hasMany('address', { inverse: 'country', async: true }) addresses;
 }

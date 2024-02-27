@@ -28,9 +28,9 @@ export default class CalendarEventModel extends ValidatedModel {
   })
   source;
 
-  @belongsTo('request', { inverse: 'visit' }) request;
-  @belongsTo('intervention', { inverse: 'visit' }) intervention;
-  @belongsTo('order', { inverse: 'planning' }) order;
+  @belongsTo('request', { inverse: 'visit', async: true }) request;
+  @belongsTo('intervention', { inverse: 'visit', async: true }) intervention;
+  @belongsTo('order', { inverse: 'planning', async: true }) order;
 
   get isMasteredByAccess() {
     return this.source == 'Access';

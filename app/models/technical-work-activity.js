@@ -16,6 +16,6 @@ export default class TechnicalWorkActivityModel extends ValidatedModel {
 
   @attr('date') date;
 
-  @belongsTo('invoice', { inverse: 'technicalWorkActivities' }) invoice;
-  @belongsTo('employee', { inverse: 'technicalWorkActivities' }) employee;
+  @belongsTo('invoice', { inverse: 'technicalWorkActivities', async: true }) invoice;
+  @belongsTo('employee', { inverse: 'technicalWorkActivities', async: true }) employee;
 }

@@ -8,8 +8,8 @@ export default class ConceptModel extends Model {
   @attr('string') notation;
   @attr('number') position;
 
-  @hasMany('concept-scheme', { inverse: 'concepts' }) conceptSchemes;
-  @hasMany('concept-scheme', { inverse: 'topConcepts' }) topConceptSchemes;
-  @hasMany('concept', { inverse: 'broader' }) narrower;
-  @belongsTo('concept', { inverse: 'narrower' }) broader;
+  @hasMany('concept-scheme', { inverse: 'concepts', async: true }) conceptSchemes;
+  @hasMany('concept-scheme', { inverse: 'topConcepts', async: true }) topConceptSchemes;
+  @hasMany('concept', { inverse: 'broader', async: true }) narrower;
+  @belongsTo('concept', { inverse: 'narrower', async: true }) broader;
 }

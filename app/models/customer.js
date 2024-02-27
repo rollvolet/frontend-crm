@@ -80,14 +80,14 @@ export default class CustomerModel extends ValidatedModel {
   @attr('boolean') printSuffix;
   @attr('boolean') printInFront;
 
-  @belongsTo('address', { inverse: 'customer' }) address;
-  @belongsTo('language', { inverse: 'customers' }) language;
-  @hasMany('telephone', { inverse: 'customer' }) telephones;
-  @hasMany('email', { inverse: 'customer' }) emails;
-  @hasMany('contact', { inverse: 'customer' }) contacts;
-  @hasMany('building', { inverse: 'customer' }) buildings;
-  @hasMany('case', { inverse: 'customer' }) cases;
-  @hasMany('customer-snapshot', { inverse: 'source' }) snapshots;
+  @belongsTo('address', { inverse: 'customer', async: true }) address;
+  @belongsTo('language', { inverse: 'customers', async: true }) language;
+  @hasMany('telephone', { inverse: 'customer', async: true }) telephones;
+  @hasMany('email', { inverse: 'customer', async: true }) emails;
+  @hasMany('contact', { inverse: 'customer', async: true }) contacts;
+  @hasMany('building', { inverse: 'customer', async: true }) buildings;
+  @hasMany('case', { inverse: 'customer', async: true }) cases;
+  @hasMany('customer-snapshot', { inverse: 'source', async: true }) snapshots;
 
   get isCompany() {
     return this.type == CUSTOMER_TYPES.ORGANIZATION;

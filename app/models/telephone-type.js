@@ -5,5 +5,5 @@ export default class TelephoneTypeModel extends Model {
   @attr('string') code;
   @attr('string') label;
 
-  @hasMany('telephone', { inverse: 'telephoneType' }) telephones;
+  @hasMany('telephone', { inverse: 'telephoneType', async: true }) telephones;
 }

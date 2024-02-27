@@ -5,7 +5,7 @@ import generateBankReference from '../utils/generate-bank-reference';
 export default class DepositInvoiceModel extends InvoiceDocumentModel {
   @attr('string') comment;
 
-  @belongsTo('case', { inverse: 'depositInvoices' }) case;
+  @belongsTo('case', { inverse: 'depositInvoices', async: true }) case;
 
   get bankReference() {
     const base = this.isCreditNote ? 8000000000 : 5000000000;

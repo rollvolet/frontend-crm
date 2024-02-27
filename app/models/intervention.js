@@ -25,14 +25,14 @@ export default class InterventionModel extends ValidatedModel {
   })
   source;
 
-  @belongsTo('case', { inverse: 'intervention' }) case;
-  @belongsTo('calendar-event', { inverse: 'intervention' }) visit;
-  @belongsTo('concept', { inverse: null }) wayOfEntry;
-  @belongsTo('employee', { inverse: 'acceptedInterventions' }) employee;
-  @hasMany('employee', { inverse: 'interventions' }) technicians;
-  @belongsTo('file', { inverse: 'intervention' }) document;
-  @belongsTo('order', { inverse: 'interventions' }) origin;
-  @belongsTo('request', { inverse: 'origin' }) followUpRequest;
+  @belongsTo('case', { inverse: 'intervention', async: true }) case;
+  @belongsTo('calendar-event', { inverse: 'intervention', async: true }) visit;
+  @belongsTo('concept', { inverse: null, async: true }) wayOfEntry;
+  @belongsTo('employee', { inverse: 'acceptedInterventions', async: true }) employee;
+  @hasMany('employee', { inverse: 'interventions', async: true }) technicians;
+  @belongsTo('file', { inverse: 'intervention', async: true }) document;
+  @belongsTo('order', { inverse: 'interventions', async: true }) origin;
+  @belongsTo('request', { inverse: 'origin', async: true }) followUpRequest;
 
   get isMasteredByAccess() {
     return this.source == 'Access';

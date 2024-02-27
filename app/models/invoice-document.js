@@ -42,12 +42,12 @@ export default class InvoiceDocumentModel extends ValidatedModel {
   })
   source;
 
-  @belongsTo('customer-snapshot', { inverse: 'invoice' }) customer;
-  @belongsTo('contact-snapshot', { inverse: 'invoice' }) contact;
-  @belongsTo('building-snapshot', { inverse: 'invoice' }) building;
-  @belongsTo('invoice-document', { inverse: 'creditedInvoice', polymorphic: true }) creditNote;
-  @belongsTo('invoice-document', { inverse: 'creditNote', polymorphic: true }) creditedInvoice;
-  @belongsTo('file', { inverse: 'invoice' }) document;
+  @belongsTo('customer-snapshot', { inverse: 'invoice', async: true }) customer;
+  @belongsTo('contact-snapshot', { inverse: 'invoice', async: true }) contact;
+  @belongsTo('building-snapshot', { inverse: 'invoice', async: true }) building;
+  @belongsTo('invoice-document', { inverse: 'creditedInvoice', async: true, polymorphic: true }) creditNote;
+  @belongsTo('invoice-document', { inverse: 'creditNote', async: true, polymorphic: true }) creditedInvoice;
+  @belongsTo('file', { inverse: 'invoice', async: true }) document;
 
   get isBooked() {
     return this.bookingDate != null;
