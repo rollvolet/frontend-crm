@@ -1,8 +1,10 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
+import uniqBy from 'lodash/uniqBy';
+import { TrackedAsyncData } from 'ember-async-data';
 import previewDocument from '../../utils/preview-document';
 import constants from '../../config/constants';
 
@@ -14,12 +16,17 @@ export default class InvoiceDetailPanelComponent extends Component {
   @tracked editMode = false;
   @tracked isOpenWorkingHoursModal = false;
 
+  @cached
   get technicianNames() {
-    return this.args.model.technicalWorkActivities
-      .mapBy('employee')
-      .uniqBy('firstName')
-      .sortBy('firstName')
-      .mapBy('firstName');
+    const technicianNamesPromise = (async () => {
+      const employees = await Promise.all(
+        this.args.model.technicalWorkActivities.map((activity) => activity.employee)
+      );
+      const uniqEmployees = uniqBy(employees, 'firstName');
+      return uniqEmployees.map((employee) => employee.firstName).sort();
+    })();
+
+    return new TrackedAsyncData(technicianNamesPromise);
   }
 
   @task

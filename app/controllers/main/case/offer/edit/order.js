@@ -5,6 +5,8 @@ import { service } from '@ember/service';
 import { all, task } from 'ember-concurrency';
 import { debug } from '@ember/debug';
 import { isEmpty } from '@ember/utils';
+import uniqBy from 'lodash/uniqBy';
+import { TrackedAsyncData } from 'ember-async-data';
 import sum from '../../../../../utils/math/sum';
 
 export default class MainCaseOfferEditOrderController extends Controller {
@@ -26,15 +28,23 @@ export default class MainCaseOfferEditOrderController extends Controller {
   }
 
   get orderedOfferlines() {
-    return this.offerlines.filterBy('isOrdered');
+    return this.offerlines.filter((offerline) => offerline.isOrdered);
   }
 
   get hasSelectedLines() {
     return this.orderedOfferlines.length > 0;
   }
 
+  get offerlineVatRates() {
+    return new TrackedAsyncData(Promise.all(this.offerlines.map((offerline) => offerline.vatRate)));
+  }
+
   get hasMixedVatRates() {
-    return this.orderedOfferlines.mapBy('vatRate').uniqBy('uri').length > 1;
+    if (this.offerlineVatRates.isResolved) {
+      return uniqBy(this.offerlineVatRates.value, 'uri').length > 1;
+    } else {
+      return true;
+    }
   }
 
   get isDisabledCreate() {
@@ -42,11 +52,15 @@ export default class MainCaseOfferEditOrderController extends Controller {
   }
 
   get orderedVatRate() {
-    return this.orderedOfferlines.mapBy('vatRate').firstObject;
+    if (this.offerlineVatRates.isResolved) {
+      return this.offerlineVatRates[0];
+    } else {
+      return null;
+    }
   }
 
   get orderedAmount() {
-    return sum(this.orderedOfferlines.mapBy('arithmeticAmount'));
+    return sum(this.offerlines.map((offerline) => offerline.arithmeticAmount));
   }
 
   @task
@@ -61,12 +75,12 @@ export default class MainCaseOfferEditOrderController extends Controller {
   *createOrder() {
     let vatRate = yield this.case.vatRate;
 
-    if (vatRate && this.orderedVatRate && this.orderedVatRate.get('id') != vatRate.get('id')) {
+    if (vatRate && this.orderedVatRate && this.orderedVatRate?.id != vatRate.id) {
       this.openIncompatibleVatRatesModal();
     } else {
       if (!vatRate) {
         vatRate = this.orderedVatRate;
-        const vatRateCode = this.orderedVatRate.get('code');
+        const vatRateCode = this.orderedVatRate.code;
         debug(
           `Case doesn't have a VAT rate yet. Updating VAT rate to ordered VAT rate. ${vatRateCode}.`
         );

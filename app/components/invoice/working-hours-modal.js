@@ -13,7 +13,7 @@ export default class InvoiceWorkingHoursModalComponent extends Component {
   @tracked newWorkingHourTechnician = null;
 
   get sortedWorkingHours() {
-    return this.args.model.technicalWorkActivities.sort((a, b) => compare(a.date, b.date));
+    return this.args.model.technicalWorkActivities.slice(0).sort((a, b) => compare(a.date, b.date));
   }
 
   get defaultDate() {

@@ -6,6 +6,8 @@ import { warn } from '@ember/debug';
 import { task, all, keepLatestTask } from 'ember-concurrency';
 import { TrackedArray } from 'tracked-built-ins';
 import { compare } from '@ember/utils';
+import uniqBy from 'lodash/uniqBy';
+import { TrackedAsyncData } from 'ember-async-data';
 import generateDocument from '../../utils/generate-document';
 import previewDocument from '../../utils/preview-document';
 import constants from '../../config/constants';
@@ -34,7 +36,11 @@ export default class OfferDocumentPanelComponent extends Component {
   }
 
   get hasMixedVatRates() {
-    return this.offerlines.mapBy('vatRate').uniqBy('uri').length > 1;
+    const promise = (async () => {
+      const vatRates = await Promise.all(this.offerlines.map((offerline) => offerline.vatRate));
+      return uniqBy(vatRates, 'uri').length > 1;
+    })();
+    return new TrackedAsyncData(promise);
   }
 
   @keepLatestTask
