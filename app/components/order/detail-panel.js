@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { action } from '@ember/object';
 import { keepLatestTask, task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
 import { setCalendarEventProperties, updateCalendarEvent } from '../../utils/calendar-helpers';
 import CalendarPeriod from '../../classes/calendar-period';
 
@@ -13,40 +13,18 @@ export default class OrderDetailPanelComponent extends Component {
   @tracked editMode = false;
   @tracked isOpenCancellationModal = false;
 
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
-  requestData = trackedFunction(this, async () => {
-    return await this.case?.request;
-  });
-
-  visitorData = trackedFunction(this, async () => {
-    return await this.request?.visitor;
-  });
-
-  planningData = trackedFunction(this, async () => {
-    return await this.args.model.planning;
-  });
-
+  @cached
   get case() {
-    return this.caseData.value;
+    return new TrackedAsyncData(this.args.model.case);
   }
 
+  @cached
   get request() {
-    return this.requestData.value;
-  }
-
-  get visitor() {
-    return this.visitorData.value;
-  }
-
-  get planning() {
-    return this.planningData.value;
-  }
-
-  get technicianNames() {
-    return this.args.model.technicians.map((technician) => technician.firstName).sort();
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.request);
+    } else {
+      return null;
+    }
   }
 
   get isNbOfPersonsWarning() {
@@ -130,9 +108,11 @@ export default class OrderDetailPanelComponent extends Component {
 
   @task
   *setVisitor(visitor) {
-    this.request.visitor = visitor;
-    yield this.request.save();
-    yield updateCalendarEvent({ request: this.request });
+    if (this.request.isResolved) {
+      this.request.value.visitor = visitor;
+      yield this.request.save();
+      yield updateCalendarEvent({ request: this.request });
+    }
   }
 
   @action
