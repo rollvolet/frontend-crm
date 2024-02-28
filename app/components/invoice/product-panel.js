@@ -1,9 +1,11 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { cached } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task, keepLatestTask } from 'ember-concurrency';
 import { compare } from '@ember/utils';
+import { TrackedAsyncData } from 'ember-async-data';
 import generateDocument from '../../utils/generate-document';
 import previewDocument from '../../utils/preview-document';
 import sum from '../../utils/math/sum';
@@ -14,25 +16,47 @@ const { FILE_TYPES } = constants;
 export default class InvoiceProductPanelComponent extends Component {
   @service store;
 
-  constructor() {
-    super(...arguments);
-    this.loadData.perform();
+  get isLoading() {
+    return this.invoicelines.isPending;
   }
 
-  @keepLatestTask
-  *loadData() {
-    const invoicelines = yield this.args.model.hasMany('invoicelines').reload();
-    yield Promise.all(invoicelines.map((line) => line.vatRate));
+  @cached
+  get invoicelines() {
+    const promise = (async () => {
+      const invoicelines = await this.args.model.hasMany('invoicelines').reload();
+      await Promise.all(invoicelines.map((line) => line.vatRate));
+      return invoicelines;
+    })();
+    return new TrackedAsyncData(promise);
   }
 
   get sortedInvoicelines() {
-    return this.args.model.invoicelines.slice(0).sort((a, b) => compare(a.position, b.position));
+    if (this.invoicelines.isResolved) {
+      return this.invoicelines.value.slice(0).sort((a, b) => compare(a.position, b.position));
+    } else {
+      return [];
+    }
+  }
+
+  @cached
+  get case() {
+    return new TrackedAsyncData(this.args.model.case);
+  }
+
+  @cached
+  get vatRate() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.vatRate);
+    } else {
+      return null;
+    }
   }
 
   get isEnabledAddingInvoicelines() {
     return (
       !this.args.model.isBooked &&
-      this.args.model.case.get('vatRate.id') != null &&
+      this.vatRate?.isResolved &&
+      this.vatRate.value != null &&
       !this.args.isDisabledEdit
     );
   }
@@ -40,7 +64,7 @@ export default class InvoiceProductPanelComponent extends Component {
   @task
   *addInvoiceline() {
     const position = this.sortedInvoicelines.length
-      ? Math.max(...this.sortedInvoicelines.map((l) => l.position))
+      ? this.sortedInvoicelines[this.sortedInvoicelines.length - 1].position
       : 0;
     const _case = yield this.args.model.case;
     const vatRate = yield _case.vatRate;
@@ -102,7 +126,8 @@ export default class InvoiceProductPanelComponent extends Component {
 
   @keepLatestTask
   *updateInvoicelinesTotalAmount() {
-    const invoicelinesAmount = sum(this.sortedInvoicelines.map((line) => line.arithmeticAmount));
+    const amounts = this.sortedInvoicelines.map((line) => line.arithmeticAmount);
+    const invoicelinesAmount = sum(amounts);
     this.args.model.totalAmountNet = invoicelinesAmount;
     if (this.args.model.hasDirtyAttributes) {
       // only save if totalAmountNet actually changed

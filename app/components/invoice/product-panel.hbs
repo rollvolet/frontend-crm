@@ -5,16 +5,14 @@
       <h2 class="rlv-panel-title">
         Gefactureerde producten
       </h2>
-      {{#unless this.loadData.isRunning}}
-        <div class="mt-3 flex flex-none space-x-4 sm:mt-0 sm:ml-4">
-          <Document::ViewButton @onClick={{this.downloadInvoiceDocument}} />
-          {{#unless @model.isMasteredByAccess}}
-            <Document::GenerateButton
-              @onClick={{perform this.generateInvoiceDocument}}
-              @isLoading={{this.generateInvoiceDocument.isRunning}} />
-          {{/unless}}
-        </div>
-      {{/unless}}
+      <div class="mt-3 flex flex-none space-x-4 sm:mt-0 sm:ml-4">
+        <Document::ViewButton @onClick={{this.downloadInvoiceDocument}} />
+        {{#unless @model.isMasteredByAccess}}
+          <Document::GenerateButton
+            @onClick={{perform this.generateInvoiceDocument}}
+            @isLoading={{this.generateInvoiceDocument.isRunning}} />
+        {{/unless}}
+      </div>
     </div>
   </div>
 
@@ -29,11 +27,11 @@
         @message="De factuur is aangemaakt in Access en kan hier niet volledig weergegeven worden. Open de PDF om alle details te bekijken." />
     {{/if}}
     <div>
-      {{#if this.loadData.isRunning}}
+      {{#if this.isLoading}}
         <div class="py-2">
           <Util::LoadingSpinner @label="" />
         </div>
-      {{else if (gte this.loadData.performCount 1)}}
+      {{else}}
         <ul>
           {{#each this.sortedInvoicelines as |line|}}
             <li class="py-2">

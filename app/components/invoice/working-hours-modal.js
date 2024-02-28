@@ -1,9 +1,10 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
 import { compare } from '@ember/utils';
+import { TrackedAsyncData } from 'ember-async-data';
 
 export default class InvoiceWorkingHoursModalComponent extends Component {
   @service store;
@@ -12,8 +13,21 @@ export default class InvoiceWorkingHoursModalComponent extends Component {
   @tracked newWorkingHourDate;
   @tracked newWorkingHourTechnician = null;
 
+  get isLoading() {
+    return this.technicalWorkActivities.isPending;
+  }
+
+  @cached
+  get technicalWorkActivities() {
+    return new TrackedAsyncData(this.args.model.technicalWorkActivities);
+  }
+
   get sortedWorkingHours() {
-    return this.args.model.technicalWorkActivities.slice(0).sort((a, b) => compare(a.date, b.date));
+    if (this.technicalWorkActivities.isResolved) {
+      return this.technicalWorkActivities.value.slice(0).sort((a, b) => compare(a.date, b.date));
+    } else {
+      return [];
+    }
   }
 
   get defaultDate() {
