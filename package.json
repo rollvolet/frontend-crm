@@ -43,6 +43,7 @@
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^8.0.1",
     "date-fns": "^2.30.0",
+    "ember-async-data": "^1.0.3",
     "ember-auto-import": "^2.6.3",
     "ember-autofocus-modifier": "^1.1.0",
     "ember-cli": "~4.12.2",
