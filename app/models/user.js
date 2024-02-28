@@ -4,7 +4,6 @@ export default class UserClass extends Model {
   @attr('string') uri;
   @attr('string') identifier;
   @attr('string') name;
-  @attr('uri-set') userGroups;
 
   @hasMany('user-group', { inverse: 'users', async: true }) userGroups;
   @belongsTo('account', { inverse: 'user', async: true }) account;
