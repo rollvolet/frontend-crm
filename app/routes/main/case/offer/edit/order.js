@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { debug } from '@ember/debug';
 import { service } from '@ember/service';
+import { TrackedObject } from 'tracked-built-ins';
 
 export default class MainCaseOfferEditOrderRoute extends Route {
   @service store;
@@ -24,16 +25,19 @@ export default class MainCaseOfferEditOrderRoute extends Route {
       sort: 'position',
       page: { size: 100 },
     });
+    const offerlineContainers = offerlines.map(
+      (offerline) => new TrackedObject({ offerline, isOrdered: false })
+    );
 
     return {
       case: _case,
       offer,
-      offerlines,
+      offerlineContainers,
     };
   }
 
   resetController(controller) {
-    const offerlines = controller.model.offerlines;
-    offerlines.forEach((line) => (line.isOrdered = false));
+    const containers = controller.model.offerlineContainers;
+    containers.forEach((container) => (container.isOrdered = false));
   }
 }

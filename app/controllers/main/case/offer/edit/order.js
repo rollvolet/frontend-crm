@@ -1,8 +1,8 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import { all, task } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
 import { debug } from '@ember/debug';
 import { isEmpty } from '@ember/utils';
 import uniqBy from 'lodash/uniqBy';
@@ -23,25 +23,40 @@ export default class MainCaseOfferEditOrderController extends Controller {
     return this.model.offer;
   }
 
-  get offerlines() {
-    return this.model.offerlines;
+  get offerlineContainers() {
+    return this.model.offerlineContainers;
   }
 
   get orderedOfferlines() {
-    return this.offerlines.filter((offerline) => offerline.isOrdered);
+    return this.offerlineContainers.filter((container) => container.isOrdered);
   }
 
   get hasSelectedLines() {
     return this.orderedOfferlines.length > 0;
   }
 
-  get offerlineVatRates() {
-    return new TrackedAsyncData(Promise.all(this.offerlines.map((offerline) => offerline.vatRate)));
+  @cached
+  get orderedVatRates() {
+    return new TrackedAsyncData(
+      Promise.all(this.orderedOfferlines.map((container) => container.offerline.vatRate))
+    );
+  }
+
+  get orderedVatRate() {
+    if (this.orderedVatRates.isResolved) {
+      return this.orderedVatRates.value[0];
+    } else {
+      return null;
+    }
+  }
+
+  get orderedAmount() {
+    return sum(this.orderedOfferlines.map((container) => container.offerline.arithmeticAmount));
   }
 
   get hasMixedVatRates() {
-    if (this.offerlineVatRates.isResolved) {
-      return uniqBy(this.offerlineVatRates.value, 'uri').length > 1;
+    if (this.orderedVatRates.isResolved) {
+      return uniqBy(this.orderedVatRates.value, 'uri').length > 1;
     } else {
       return true;
     }
@@ -49,18 +64,6 @@ export default class MainCaseOfferEditOrderController extends Controller {
 
   get isDisabledCreate() {
     return !this.hasSelectedLines || this.hasMixedVatRates;
-  }
-
-  get orderedVatRate() {
-    if (this.offerlineVatRates.isResolved) {
-      return this.offerlineVatRates[0];
-    } else {
-      return null;
-    }
-  }
-
-  get orderedAmount() {
-    return sum(this.offerlines.map((offerline) => offerline.arithmeticAmount));
   }
 
   @task
@@ -98,7 +101,7 @@ export default class MainCaseOfferEditOrderController extends Controller {
 
       yield order.save();
 
-      const invoicelines = this.orderedOfferlines.map(async (offerline) => {
+      const invoicelines = this.orderedOfferlines.map(async ({ offerline }) => {
         const invoiceline = this.store.createRecord('invoiceline', {
           position: offerline.position,
           description: offerline.description,
@@ -108,18 +111,18 @@ export default class MainCaseOfferEditOrderController extends Controller {
         });
         await invoiceline.save();
       });
-      yield all(invoicelines);
+      yield Promise.all(invoicelines);
 
       // cleanup empty calculation-lines
       // since they can no longer be removed after the order has been created
-      const calculationLinesCleanup = this.offerlines.map(async (offerline) => {
+      const calculationLinesCleanup = this.offerlineContainers.map(async ({ offerline }) => {
         const calculationLines = await offerline.calculationLines;
         const emptyCalculationLines = calculationLines.filter((calculationLine) => {
           return isEmpty(calculationLine.description) && isEmpty(calculationLine.amount);
         });
         await Promise.all(emptyCalculationLines.map((line) => line.destroyRecord()));
       });
-      yield all(calculationLinesCleanup);
+      yield Promise.all(calculationLinesCleanup);
 
       this.router.transitionTo('main.case.order.edit', this.case.id, order.id);
     }
@@ -127,7 +130,7 @@ export default class MainCaseOfferEditOrderController extends Controller {
 
   @action
   cancel() {
-    this.offerlines.forEach((o) => (o.isOrdered = false));
+    this.offerlineContainers.forEach((o) => (o.isOrdered = false));
     this.router.transitionTo('main.case.offer.edit', this.case.id, this.offer.id);
   }
 

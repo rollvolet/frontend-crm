@@ -30,30 +30,32 @@
             class="shadow" />
         </div>
       {{/if}}
-      {{#if this.offerlines.length}}
+      {{#if this.offerlineContainers.length}}
         <ul class="space-y-2">
-          {{#each this.offerlines as |offerline|}}
-            <li role="button"
-              class="px-4 sm:py-6 sm:px-6 flex justify-between border rounded-md text-sm {{if offerline.isOrdered "text-red-600 border-red-300 bg-red-50" "text-gray-500 border-gray-200"}}"
-              {{on "click" (toggle "isOrdered" offerline)}}>
-              <div class="flex space-x-4 items-start">
-                <div>
-                  {{svg-jar (if offerline.isOrdered "checkbox-line" "checkbox-indeterminate-line")
-                      class=(concat "h-6 w-6 fill-current " (if offerline.isOrdered "text-red-600" "text-gray-300"))}}
+          {{#each this.offerlineContainers as |container|}}
+            {{#let container.offerline container.isOrdered as |offerline isOrdered|}}
+              <li role="button"
+                class="px-4 sm:py-6 sm:px-6 flex justify-between border rounded-md text-sm {{if isOrdered "text-red-600 border-red-300 bg-red-50" "text-gray-500 border-gray-200"}}"
+                {{on "click" (toggle "isOrdered" container)}}>
+                <div class="flex space-x-4 items-start">
+                  <div>
+                    {{svg-jar (if isOrdered "checkbox-line" "checkbox-indeterminate-line")
+                        class=(concat "h-6 w-6 fill-current " (if isOrdered "text-red-600" "text-gray-300"))}}
+                  </div>
+                  <div>
+                    {{{offerline.description}}}
+                  </div>
                 </div>
-                <div>
-                  {{{offerline.description}}}
+                <div class="text-right">
+                  <div class="font-semibold">
+                    <Fmt::Currency @value={{offerline.amount}} />
+                  </div>
+                  <div class="text-xs">
+                    + {{offerline.vatRate.rate}}% btw
+                  </div>
                 </div>
-              </div>
-              <div class="text-right">
-                <div class="font-semibold">
-                  <Fmt::Currency @value={{offerline.amount}} />
-                </div>
-                <div class="text-xs">
-                  + {{offerline.vatRate.rate}}% btw
-                </div>
-              </div>
-            </li>
+              </li>
+            {{/let}}
           {{/each}}
         </ul>
         <div class="px-2 flex justify-end space-x-4 items-baseline">

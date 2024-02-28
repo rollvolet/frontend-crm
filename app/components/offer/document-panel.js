@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { warn } from '@ember/debug';
 import { task, all, keepLatestTask } from 'ember-concurrency';
@@ -35,6 +35,7 @@ export default class OfferDocumentPanelComponent extends Component {
     return this.offerlines.slice(0).sort((a, b) => compare(a.position, b.position));
   }
 
+  @cached
   get hasMixedVatRates() {
     const promise = (async () => {
       const vatRates = await Promise.all(this.offerlines.map((offerline) => offerline.vatRate));
