@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
 import { service } from '@ember/service';
-import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
 import { isPresent } from '@ember/utils';
 
@@ -30,24 +29,17 @@ export default class MainCaseRequestEditIndexController extends Controller {
   @task
   *delete() {
     const customer = yield this.case.customer;
-    try {
-      const visit = yield this.request.visit;
-      if (visit) {
-        yield visit.destroyRecord();
-      }
-      yield this.request.destroyRecord();
-      yield this.case.destroyRecord();
-    } catch (e) {
-      warn(`Something went wrong while destroying request ${this.request.id}`, {
-        id: 'destroy-failure',
-      });
-      yield this.request.rollbackAttributes(); // undo delete-state
-    } finally {
-      if (customer) {
-        this.router.transitionTo('main.customers.edit.index', customer.id);
-      } else {
-        this.router.transitionTo('main.requests.index');
-      }
+    const visit = yield this.request.visit;
+    if (visit) {
+      yield visit.destroyRecord();
+    }
+    yield this.request.destroyRecord();
+    yield this.case.destroyRecord();
+
+    if (customer) {
+      this.router.transitionTo('main.customers.edit.index', customer.id);
+    } else {
+      this.router.transitionTo('main.requests.index');
     }
   }
 }

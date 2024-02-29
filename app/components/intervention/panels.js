@@ -2,7 +2,6 @@ import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
 import { TrackedAsyncData } from 'ember-async-data';
 import { service } from '@ember/service';
-import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
 
 export default class InterventionPanelsComponent extends Component {
@@ -43,24 +42,19 @@ export default class InterventionPanelsComponent extends Component {
   *delete() {
     const _case = yield this.args.model.case;
     const customer = yield _case.value.customer;
-    try {
-      const visit = yield this.args.model.visit;
-      if (visit) {
-        yield visit.destroyRecord();
-      }
-      yield this.args.model.destroyRecord();
-      yield _case.destroyRecord();
-    } catch (e) {
-      warn(`Something went wrong while destroying intervention ${this.args.model.id}`, {
-        id: 'destroy-failure',
-      });
-      yield this.args.model.rollbackAttributes(); // undo delete-state
-    } finally {
-      if (customer) {
-        this.router.transitionTo('main.customers.edit.index', customer.id);
-      } else {
-        this.router.transitionTo('main.interventions.index');
-      }
+
+    const visit = yield this.args.model.visit;
+    if (visit) {
+      yield visit.destroyRecord();
+    }
+
+    yield this.args.model.destroyRecord();
+    yield _case.destroyRecord();
+
+    if (customer) {
+      this.router.transitionTo('main.customers.edit.index', customer.id);
+    } else {
+      this.router.transitionTo('main.interventions.index');
     }
   }
 }

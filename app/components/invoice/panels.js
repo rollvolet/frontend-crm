@@ -50,48 +50,41 @@ export default class InvoicePanelsComponent extends Component {
 
   @task
   *delete() {
-    try {
-      const nextInvoiceNumber = yield this.sequence.fetchNextInvoiceNumber();
-      if (nextInvoiceNumber == this.args.model.number + 1) {
-        const invoicelines = yield this.store.query('invoiceline', {
-          'filter[invoice][:uri:]': this.args.model.uri,
-          sort: 'position',
-          page: { size: 100 },
-        });
-        yield Promise.all(
-          invoicelines.map((invoiceline) => {
-            invoiceline.invoice = null;
-            return invoiceline.save();
-          })
-        );
-
-        const _case = yield this.args.model.case;
-        const [intervention, order, customer] = yield Promise.all([
-          _case.intervention,
-          _case.order,
-          _case.customer,
-        ]);
-        const caseId = this.case.id;
-        yield this.args.model.destroyRecord();
-
-        if (intervention) {
-          this.router.transitionTo('main.case.intervention.edit', caseId, intervention.id);
-        } else if (order) {
-          this.router.transitionTo('main.case.order.edit', caseId, order.id);
-        } else if (customer) {
-          this.router.transitionTo('main.customers.edit.index', customer.id);
-        } else {
-          this.router.transitionTo('main.index');
-        }
-      } else {
-        warn(`Not the last invoice anymore. Unable to destroy.`, { id: 'destroy-failure' });
-        this.isOpenUnableToDeleteModal = true;
-      }
-    } catch (e) {
-      warn(`Something went wrong while destroying invoice ${this.args.model.id}`, {
-        id: 'destroy-failure',
+    const nextInvoiceNumber = yield this.sequence.fetchNextInvoiceNumber();
+    if (nextInvoiceNumber == this.args.model.number + 1) {
+      const invoicelines = yield this.store.query('invoiceline', {
+        'filter[invoice][:uri:]': this.args.model.uri,
+        sort: 'position',
+        page: { size: 100 },
       });
-      yield this.args.model.rollbackAttributes(); // undo delete-state
+      yield Promise.all(
+        invoicelines.map((invoiceline) => {
+          invoiceline.invoice = null;
+          return invoiceline.save();
+        })
+      );
+
+      const _case = yield this.args.model.case;
+      const [intervention, order, customer] = yield Promise.all([
+        _case.intervention,
+        _case.order,
+        _case.customer,
+      ]);
+      const caseId = this.case.id;
+      yield this.args.model.destroyRecord();
+
+      if (intervention) {
+        this.router.transitionTo('main.case.intervention.edit', caseId, intervention.id);
+      } else if (order) {
+        this.router.transitionTo('main.case.order.edit', caseId, order.id);
+      } else if (customer) {
+        this.router.transitionTo('main.customers.edit.index', customer.id);
+      } else {
+        this.router.transitionTo('main.index');
+      }
+    } else {
+      warn(`Not the last invoice anymore. Unable to destroy.`, { id: 'destroy-failure' });
+      this.isOpenUnableToDeleteModal = true;
     }
   }
 

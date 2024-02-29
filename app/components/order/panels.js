@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { all, task } from 'ember-concurrency';
-import { warn } from '@ember/debug';
 import { trackedFunction } from 'ember-resources/util/function';
 import { isPresent } from '@ember/utils';
 
@@ -40,28 +39,23 @@ export default class OrderPanelsComponent extends Component {
 
   @task
   *delete() {
-    try {
-      const invoicelines = yield this.store.query('invoiceline', {
-        'filter[order][:uri:]': this.args.model.uri,
-        sort: 'position',
-        page: { size: 100 },
-      });
-      yield all(invoicelines.map((t) => t.destroyRecord()));
+    const _case = yield this.args.model.case;
 
-      const calendarEvent = yield this.args.model.planning;
-      if (calendarEvent) {
-        yield calendarEvent.destroyRecord();
-      }
+    const invoicelines = yield this.store.query('invoiceline', {
+      'filter[order][:uri:]': this.args.model.uri,
+      sort: 'position',
+      page: { size: 100 },
+    });
+    yield all(invoicelines.map((t) => t.destroyRecord()));
 
-      yield this.args.model.destroyRecord();
-
-      const offer = yield this.case.offer;
-      this.router.transitionTo('main.case.offer.edit', this.case.id, offer.id);
-    } catch (e) {
-      warn(`Something went wrong while destroying order ${this.args.model.id}`, {
-        id: 'destroy-failure',
-      });
-      yield this.args.model.rollbackAttributes(); // undo delete-state
+    const calendarEvent = yield this.args.model.planning;
+    if (calendarEvent) {
+      yield calendarEvent.destroyRecord();
     }
+
+    yield this.args.model.destroyRecord();
+
+    const offer = yield _case.offer;
+    this.router.transitionTo('main.case.offer.edit', _case.id, offer.id);
   }
 }
