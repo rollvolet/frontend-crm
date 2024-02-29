@@ -1,31 +1,45 @@
 import Component from '@glimmer/component';
+import { cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { service } from '@ember/service';
 import { all, task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
-import { isPresent } from '@ember/utils';
 
 export default class OfferPanelsComponent extends Component {
   @service store;
   @service router;
 
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
+  @cached
   get case() {
-    return this.caseData.value;
+    return new TrackedAsyncData(this.args.model.case);
   }
 
-  get isDisabledEdit() {
-    return this.hasOrder || this.args.model.isMasteredByAccess || this.case?.isCancelled;
-  }
-
-  get isEnabledDelete() {
-    return !this.hasOrder && !this.args.model.isMasteredByAccess && this.case?.isOngoing;
+  @cached
+  get order() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.order);
+    } else {
+      return null;
+    }
   }
 
   get hasOrder() {
-    return isPresent(this.case?.order.get('id'));
+    return this.order?.isResolved && this.order.value != null;
+  }
+
+  get isDisabledEdit() {
+    return (
+      this.hasOrder ||
+      this.args.model.isMasteredByAccess ||
+      (this.case.isResolved && this.case.value.isCancelled)
+    );
+  }
+
+  get isEnabledDelete() {
+    return (
+      !this.hasOrder ||
+      !this.args.model.isMasteredByAccess ||
+      (this.case.isResolved && this.case.value.isOngoing)
+    );
   }
 
   @task
