@@ -24,7 +24,9 @@
                     Netto
                   </th>
                   <th class="rlv-dt-th !bg-white !py-2">
-                    {{this.vatRate.rate}}% BTW
+                    {{#if this.vatRate.isResolved}}
+                      {{this.vatRate.value.rate}}% BTW
+                    {{/if}}
                   </th>
                   <th class="rlv-dt-th !bg-white !py-2">
                     Bruto
@@ -34,15 +36,15 @@
               <tbody>
                 {{#if this.isLoading}}
                   <tr>
-                    <td colspan="4" class="px-6 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Aan het berekenen...
+                    <td colspan="4" class="px-6 py-2">
+                      <Util::LoadingSpinner @label="" />
                     </td>
                   </tr>
                 {{else}}
-                  {{#unless @model.case.isIsolated}}
+                  {{#unless @model.case.value.isIsolated}}
                     <tr>
                       <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Totaal {{#if @model.case.intervention}}interventie{{else}}bestelling{{/if}}
+                        Totaal {{#if @model.case.value.intervention}}interventie{{else}}bestelling{{/if}}
                       </td>
                       <td class="px-6 py-2 text-xs font-medium text-gray-700 uppercase tracking-wider">
                         <Fmt::Currency @value={{this.totalOrderAmount}} />
@@ -56,12 +58,12 @@
                       </td>
                     </tr>
                   {{/unless}}
-                  {{#if @model.case.order}}
+                  {{#if this.hasOrder}}
                     <tr>
                       <td class="px-6 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                         <Rlv::Button
                           @route="main.case.order.edit.deposit-invoices"
-                          @model={{@model.case.order.id}}
+                          @model={{this.order.value.id}}
                           @label="Voorschotfacturen"
                           @icon="external-link-line"
                           @iconAlignment="right"
