@@ -1,10 +1,9 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
-import { trackedFunction } from 'ember-resources/util/function';
+import { tracked, cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { action } from '@ember/object';
 import { debug, warn } from '@ember/debug';
-import { isPresent } from '@ember/utils';
 import { task, keepLatestTask } from 'ember-concurrency';
 import { setCalendarEventProperties } from '../../utils/calendar-helpers';
 import generateDocument from '../../utils/generate-document';
@@ -15,28 +14,35 @@ export default class RequestDetailPanelComponent extends Component {
 
   @tracked editMode = false;
 
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
-  visitData = trackedFunction(this, async () => {
-    return await this.args.model.visit;
-  });
-
+  @cached
   get case() {
-    return this.caseData.value;
+    return new TrackedAsyncData(this.args.model.case);
   }
 
-  get visit() {
-    return this.visitData.value;
+  @cached
+  get customer() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.customer);
+    } else {
+      return null;
+    }
+  }
+
+  @cached
+  get offer() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.offer);
+    } else {
+      return null;
+    }
   }
 
   get isLinkedToCustomer() {
-    return isPresent(this.case?.customer.get('id'));
+    return this.customer?.isResolved && this.customer.value != null;
   }
 
   get hasOffer() {
-    return isPresent(this.case?.offer.get('id'));
+    return this.offer?.isResolved && this.offer.value != null;
   }
 
   get isLimitedEdit() {
