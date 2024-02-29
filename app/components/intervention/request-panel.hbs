@@ -6,12 +6,14 @@
         <div class="flex items-center">
           <h2 class="rlv-panel-title">
             Aanvraag
-            {{#if this.request}}{{format-request-number this.request.number}}{{/if}}
+            {{#if this.request.isResolved}}
+              {{format-request-number this.request.value.number}}
+            {{/if}}
           </h2>
-          {{#if this.request}}
+          {{#if this.hasRequest}}
             <Rlv::Button
               @route="main.requests.edit"
-              @model={{this.request.id}}
+              @model={{this.request.value.id}}
               @label="Open aanvraag"
               @hideText={{true}}
               @icon="external-link-line"
@@ -19,7 +21,7 @@
               @size="large"
               class="px-2">
               <:tooltip>
-              <EmberTooltip @text="Open aanvraag" @side="bottom" />
+                <EmberTooltip @text="Open aanvraag" @side="bottom" />
               </:tooltip>
             </Rlv::Button>
           {{/if}}
@@ -29,27 +31,31 @@
         </p>
       </div>
       <div class="flex flex-none space-x-4">
-        {{#unless this.request}}
+        {{#if (and this.request.isResolved (not this.hasRequest))}}
           <Rlv::Button
             @label="Start nieuwe aanvraag"
             @icon="add-line"
             @skin="secondary"
             {{on "click" (perform this.createFollowUpRequest)}} />
-        {{/unless}}
+        {{/if}}
       </div>
     </div>
   </div>
 
   {{!-- Card content --}}
   <div class="p-6">
-    {{#if this.request}}
+    {{#if this.request.isPending}}
+      <Util::LoadingSpinner @label="" />
+    {{else if this.createFollowUpRequest.isRunning}}
+      <Util::LoadingSpinner @label="Aanvraag aan het maken..." class="text-sm text-gray-700" />
+    {{else if this.hasRequest}}
       <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
         <div class="space-y-1">
           <Util::DetailItem @label="Datum">
-            <Fmt::Date @value={{this.request.requestDate}} />
+            <Fmt::Date @value={{this.request.value.requestDate}} />
           </Util::DetailItem>
           <Util::DetailItem @label="Bezoeker">
-            {{this.request.visitor.firstName}}
+            {{this.request.value.visitor.firstName}}
           </Util::DetailItem>
         </div>
       </dl>

@@ -1,7 +1,8 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
+import { cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { createCase, cancelCase } from '../../utils/case-helpers';
 
 export default class InterventionRequestPanelComponent extends Component {
@@ -11,12 +12,13 @@ export default class InterventionRequestPanelComponent extends Component {
   @service codelist;
   @service sequence;
 
-  requestData = trackedFunction(this, async () => {
-    return await this.args.model.followUpRequest;
-  });
-
+  @cached
   get request() {
-    return this.requestData.value;
+    return new TrackedAsyncData(this.args.model.followUpRequest);
+  }
+
+  get hasRequest() {
+    return this.request.isResolved && this.request.value != null;
   }
 
   @task

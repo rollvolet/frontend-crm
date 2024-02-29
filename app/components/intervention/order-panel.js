@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { action } from '@ember/object';
-import { trackedFunction } from 'ember-resources/util/function';
 import { task } from 'ember-concurrency';
 import { fetchDocumentBlob, previewBlob } from '../../utils/preview-document';
 import constants from '../../config/constants';
@@ -11,12 +11,22 @@ const { FILE_TYPES } = constants;
 export default class InterventionOrderPanelComponent extends Component {
   @tracked isOpenOrderModal = false;
 
-  orderData = trackedFunction(this, async () => {
-    return await this.args.model.origin;
-  });
-
+  @cached
   get order() {
-    return this.orderData.value;
+    return new TrackedAsyncData(this.args.model.origin);
+  }
+
+  @cached
+  get originCase() {
+    if (this.hasOrder) {
+      return new TrackedAsyncData(this.order.value.case);
+    } else {
+      return null;
+    }
+  }
+
+  get hasOrder() {
+    return this.order.isResolved && this.order.value != null;
   }
 
   @task
@@ -34,15 +44,17 @@ export default class InterventionOrderPanelComponent extends Component {
 
   @action
   async downloadProductionTicket() {
-    const _originCase = await this.order.case;
-    const blob = await fetchDocumentBlob(FILE_TYPES.PRODUCTION_TICKET, _originCase.uri);
+    const blob = await fetchDocumentBlob(FILE_TYPES.PRODUCTION_TICKET, this.originCase.value.uri);
     if (blob) {
       const formData = new FormData();
       formData.append('file', blob);
-      const response = await fetch(`/cases/${_originCase.id}/watermarked-production-tickets`, {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        `/cases/${this.originCase.value.id}/watermarked-production-tickets`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
       if (response.ok) {
         const watermarkedBlob = await response.blob();
         previewBlob(watermarkedBlob);

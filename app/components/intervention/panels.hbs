@@ -8,7 +8,7 @@
   </div>
 {{else}}
   <div class="space-y-4">
-    {{#if (and this.case.isOngoing this.hasInvoice)}}
+    {{#if (and this.case.isResolved this.case.value.isOngoing this.hasInvoice)}}
       <AlertMessage
         @level="warning"
         @message="Er is reeds een factuur gemaakt. Er zijn geen wijzigingen meer mogelijk."
