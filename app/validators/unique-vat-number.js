@@ -13,7 +13,7 @@ export default class UniqueVatNumberValidator {
       if (value.length > 2) {
         const customer = await this.store.queryOne('customer', {
           filter: {
-            'vat-number': value,
+            ':exact:vat-number': value,
           },
         });
 
