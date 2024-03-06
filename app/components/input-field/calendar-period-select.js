@@ -1,8 +1,7 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
-import { trackedFunction } from 'ember-resources/util/function';
 
 export default class InputFieldCalendarPeriodSelectComponent extends Component {
   @service store;
@@ -23,12 +22,9 @@ export default class InputFieldCalendarPeriodSelectComponent extends Component {
     ];
   }
 
-  selectedOptionData = trackedFunction(this, () => {
-    return this.options.find((o) => o.value == this.args.value);
-  });
-
+  @cached
   get selectedOption() {
-    return this.selectedOptionData.value;
+    return this.options.find((o) => o.value == this.args.value);
   }
 
   get required() {

@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
+import { tracked, cached } from '@glimmer/tracking';
 import { keepLatestTask } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
 import constants from '../../config/constants';
 
 const { CONCEPT_SCHEMES } = constants;
@@ -35,8 +35,18 @@ export default class HonorificPrefixSelect extends Component {
     return this.required ? `${this.args.label} *` : this.args.label;
   }
 
-  /** Selected honorific prefix Ember Data concept based on @value label */
-  selectedValueData = trackedFunction(this, () => {
+  @cached
+  get language() {
+    return new TrackedAsyncData(this.args.language);
+  }
+
+  get languageTag() {
+    return (this.language.isResolved && this.language.value?.langTag) || fallbackLangTag;
+  }
+
+  /** Selected honorific prefix Ember Data record based on @value label */
+  @cached
+  get selectedValue() {
     if (this.args.value) {
       return this.honorificPrefixes.find((honorificPrefix) => {
         return honorificPrefix.langLabel.map((l) => l.content).includes(this.args.value);
@@ -44,10 +54,6 @@ export default class HonorificPrefixSelect extends Component {
     } else {
       return null;
     }
-  });
-
-  get selectedValue() {
-    return this.selectedValueData.value;
   }
 
   /** List of options for PowerSelect component containing labels in selected language */
@@ -61,17 +67,9 @@ export default class HonorificPrefixSelect extends Component {
     });
   }
 
+  @cached
   get selectedOption() {
     return this.options.find((opt) => opt.uri == this.selectedValue?.uri);
-  }
-
-  languageTagData = trackedFunction(this, async () => {
-    const language = await this.args.language;
-    return language.langTag;
-  });
-
-  get languageTag() {
-    return this.languageTagData.value || fallbackLangTag;
   }
 
   @action
