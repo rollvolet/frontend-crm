@@ -1,15 +1,15 @@
-{{#if this.isProcessing}}
+{{#if (or this.isProcessing this.isLoading)}}
   {{svg-jar "loading-circle" class="animate-spin h-4 text-gray-500"}}
 {{else}}
   <div class="flex items-center">
     <div>
-      <Util::DisplayCheckbox @value={{this.case.hasProductionTicket}} />
+      <Util::DisplayCheckbox @value={{this.case.value.hasProductionTicket}} />
     </div>
     <Rlv::ActionMenu class="ml-3" as |Menu|>
       <Menu.Item
         @label="Maak nieuwe productiebon"
         @onClick={{perform this.generateTemplate}} />
-      {{#if this.case.hasProductionTicket}}
+      {{#if this.case.value.hasProductionTicket}}
         <Menu.Item
           @label="Bekijk productiebon"
           @onClick={{this.downloadProductionTicket}} />
