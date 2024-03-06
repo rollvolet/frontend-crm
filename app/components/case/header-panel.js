@@ -14,17 +14,6 @@ export default class CaseHeaderPanelComponent extends Component {
   @tracked isOpenCancellationModal = false;
   @tracked isExpandedComment = false;
 
-  get isLoading() {
-    return [
-      this.request,
-      this.intervention,
-      this.offer,
-      this.order,
-      this.invoice,
-      this.depositInvoices,
-    ].some((promise) => promise.isPending);
-  }
-
   @cached
   get request() {
     return new TrackedAsyncData(this.args.model.request);

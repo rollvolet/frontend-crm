@@ -1,84 +1,88 @@
-<div class="space-y-4">
-  {{#if @case.isOngoing}}
-    {{#if this.hasInvoice}}
-      <AlertMessage
-        @level="warning"
-        @message="De factuur is reeds opgemaakt. Er zijn geen wijzigingen meer mogelijk."
-        class="shadow" />
-    {{else if this.order.isMasteredByAccess}}
-      <AlertMessage
-        @level="warning"
-        @message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."
-        class="shadow" />
+{{#if this.isLoading}}
+  <Util::LoadingSpinner @label="" />
+{{else}}
+  <div class="space-y-4">
+    {{#if @case.isOngoing}}
+      {{#if this.hasInvoice}}
+        <AlertMessage
+          @level="warning"
+          @message="De factuur is reeds opgemaakt. Er zijn geen wijzigingen meer mogelijk."
+          class="shadow" />
+      {{else if this.order.value.isMasteredByAccess}}
+        <AlertMessage
+          @level="warning"
+          @message="De bestelling is aangemaakt in Access en kan hier niet gewijzigd worden."
+          class="shadow" />
+      {{/if}}
     {{/if}}
-  {{/if}}
 
-  <div class="bg-white shadow rounded-lg overflow-hidden">
-    <div class="divide-y divide-y-200">
-      {{!-- Card header --}}
-      <div class="px-6 pt-6 pb-4">
-        <div class="space-y-2 space-x-4 sm:flex sm:items-center sm:space-y-0">
-          <h2 class="rlv-panel-title">
-            Voorschotfacturen
-          </h2>
-          <div>
-            {{#unless this.isDisabledEdit}}
-              <Rlv::Button
-                @label="Nieuw"
-                @icon="add-line"
-                @skin="secondary"
-                @loading={{this.createNewDepositInvoice.isRunning}}
-                {{on "click" (perform this.createNewDepositInvoice)}} />
-            {{/unless}}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <div class="divide-y divide-y-200">
+        {{!-- Card header --}}
+        <div class="px-6 pt-6 pb-4">
+          <div class="space-y-2 space-x-4 sm:flex sm:items-center sm:space-y-0">
+            <h2 class="rlv-panel-title">
+              Voorschotfacturen
+            </h2>
+            <div>
+              {{#unless this.isDisabledEdit}}
+                <Rlv::Button
+                  @label="Nieuw"
+                  @icon="add-line"
+                  @skin="secondary"
+                  @loading={{this.createNewDepositInvoice.isRunning}}
+                  {{on "click" (perform this.createNewDepositInvoice)}} />
+              {{/unless}}
+            </div>
           </div>
         </div>
-      </div>
 
-      {{!-- Card content --}}
-      <div class="p-6">
-        <dl class="rounded-lg bg-white grid sm:grid-cols-3 sm:divide-x">
-          <div class="flex flex-col p-4 text-center">
-            <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
-              Netto bestelling
-            </dt>
-            <dd class="order-1 text-lg font-medium text-red-700">
-              <Fmt::Currency @value={{this.orderAmount}} />
-            </dd>
-          </div>
-          <div class="flex flex-col p-4 text-center">
-            <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
-              Netto voorschotfacturen
-            </dt>
-            <dd class="order-1 text-lg font-medium text-red-700">
-              <Fmt::Currency @value={{this.totalAmount}} />
-            </dd>
-          </div>
-          <div class="flex flex-col p-4 text-center">
-            <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
-              {{this.vatRate.rate}}% BTW voorschotfacturen
-            </dt>
-            <dd class="order-1 text-lg font-medium text-red-700">
-              <Fmt::Currency @value={{this.totalVat}} />
-            </dd>
-          </div>
-        </dl>
-        {{#if @model.length}}
-          <ul class="divide-y divide-gray-200">
-            {{#each @model as |depositInvoice|}}
-              <DepositInvoice::ListItem
-                @model={{depositInvoice}}
-                @initialEditMode={{eq depositInvoice.id @newlyCreatedDepositInvoice.id}}
-                @onCredit={{this.createNewCreditNoteForDepositInvoice}}
-                @isDisabledEdit={{this.isDisabledEdit}}
-                @onCloseEdit={{@onCloseEdit}} />
-            {{/each}}
-          </ul>
+        {{!-- Card content --}}
+        <div class="p-6">
+          <dl class="rounded-lg bg-white grid sm:grid-cols-3 sm:divide-x">
+            <div class="flex flex-col p-4 text-center">
+              <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+                Netto bestelling
+              </dt>
+              <dd class="order-1 text-lg font-medium text-red-700">
+                <Fmt::Currency @value={{this.orderAmount}} />
+              </dd>
+            </div>
+            <div class="flex flex-col p-4 text-center">
+              <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+                Netto voorschotfacturen
+              </dt>
+              <dd class="order-1 text-lg font-medium text-red-700">
+                <Fmt::Currency @value={{this.totalAmount}} />
+              </dd>
+            </div>
+            <div class="flex flex-col p-4 text-center">
+              <dt class="order-2 mt-2 text-sm leading-6 font-medium text-gray-500 truncate">
+                {{this.vatRate.value.rate}}% BTW voorschotfacturen
+              </dt>
+              <dd class="order-1 text-lg font-medium text-red-700">
+                <Fmt::Currency @value={{this.totalVat}} />
+              </dd>
+            </div>
+          </dl>
+          {{#if @model.length}}
+            <ul class="divide-y divide-gray-200">
+              {{#each @model as |depositInvoice|}}
+                <DepositInvoice::ListItem
+                  @model={{depositInvoice}}
+                  @initialEditMode={{eq depositInvoice.id @newlyCreatedDepositInvoice.id}}
+                  @onCredit={{this.createNewCreditNoteForDepositInvoice}}
+                  @isDisabledEdit={{this.isDisabledEdit}}
+                  @onCloseEdit={{@onCloseEdit}} />
+              {{/each}}
+            </ul>
         {{else}}
-          <p class="mt-8 text-center italic text-gray-400 text-sm">
-            Nog geen voorschotfacturen toegevoegd
-          </p>
-        {{/if}}
+            <p class="mt-8 text-center italic text-gray-400 text-sm">
+              Nog geen voorschotfacturen toegevoegd
+            </p>
+          {{/if}}
+        </div>
       </div>
     </div>
   </div>
-</div>
+{{/if}}
