@@ -1,10 +1,10 @@
 import { warn } from '@ember/debug';
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
 import { updateCalendarEvent } from '../../utils/calendar-helpers';
 
 export default class CaseCustomerPanelComponent extends Component {
@@ -23,20 +23,43 @@ export default class CaseCustomerPanelComponent extends Component {
     return this.updateBuilding.isRunning;
   }
 
-  isInStartupPhase = trackedFunction(this, async () => {
-    const [request, offer, intervention, invoice] = await Promise.all([
-      this.args.model.request,
-      this.args.model.offer,
-      this.args.model.intervention,
-      this.args.model.invoice,
-    ]);
-    const isRequestWithoutOffer = request != null && offer == null;
-    const isInterventionWithoutInvoice = intervention != null && invoice == null;
-    return isRequestWithoutOffer || isInterventionWithoutInvoice;
-  });
+  @cached
+  get caseSteps() {
+    const promise = (async () => {
+      const [request, offer, intervention, invoice] = await Promise.all([
+        this.args.model.request,
+        this.args.model.offer,
+        this.args.model.intervention,
+        this.args.model.invoice,
+      ]);
+
+      return { request, offer, intervention, invoice };
+    })();
+    return new TrackedAsyncData(promise);
+  }
+
+  get isRequestWithoutOffer() {
+    if (this.caseSteps.isResolved) {
+      const { request, offer } = this.caseSteps.value;
+      return request != null && offer == null;
+    } else {
+      return false;
+    }
+  }
+
+  get isInterventionWithoutInvoice() {
+    if (this.caseSteps.isResolved) {
+      const { intervention, invoice } = this.caseSteps.value;
+      return intervention != null && invoice == null;
+    } else {
+      return false;
+    }
+  }
 
   get isEnabledUnlinkCustomer() {
-    return this.args.model.isOngoing && this.isInStartupPhase.value;
+    return (
+      this.args.model.isOngoing && (this.isRequestWithoutOffer || this.isInterventionWithoutInvoice)
+    );
   }
 
   @task
