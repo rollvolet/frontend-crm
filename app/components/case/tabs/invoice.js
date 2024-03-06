@@ -54,7 +54,7 @@ export default class CaseTabsOrderComponent extends Component {
       !this.args.model.isCancelled &&
       this.hasOrder &&
       !this.hasInvoice &&
-      this.order.value.isMasteredByAccess;
+      !this.order.value.isMasteredByAccess;
     const canCreateNewInvoiceForIntervention =
       !this.args.model.isCancelled &&
       this.hasLinkedCustomer &&
