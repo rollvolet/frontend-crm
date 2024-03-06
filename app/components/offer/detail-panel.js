@@ -4,7 +4,6 @@ import { tracked, cached } from '@glimmer/tracking';
 import { TrackedAsyncData } from 'ember-async-data';
 import { action } from '@ember/object';
 import { keepLatestTask, task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
 import { updateCalendarEvent } from '../../utils/calendar-helpers';
 
 export default class OfferDetailPanelComponent extends Component {
