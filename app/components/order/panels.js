@@ -1,23 +1,50 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
-import { all, task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
-import { isPresent } from '@ember/utils';
+import { cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
+import { task } from 'ember-concurrency';
 
 export default class OrderPanelsComponent extends Component {
   @service router;
   @service store;
 
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
+  @cached
   get case() {
-    return this.caseData.value;
+    return new TrackedAsyncData(this.args.model.case);
+  }
+
+  @cached
+  get depositInvoices() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.depositInvoices);
+    } else {
+      return [];
+    }
+  }
+
+  @cached
+  get invoice() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.invoice);
+    } else {
+      return null;
+    }
+  }
+
+  get hasDepositInvoices() {
+    return this.depositInvoices?.isResolved && this.depositInvoices.value.length > 0;
+  }
+
+  get hasInvoice() {
+    return this.invoice?.isResolved && this.invoice.value != null;
   }
 
   get isDisabledEdit() {
-    return this.hasInvoice || this.args.model.isMasteredByAccess || this.case?.isCancelled;
+    return (
+      this.hasInvoice ||
+      this.args.model.isMasteredByAccess ||
+      (this.case.isResolved && this.case.value.isCancelled)
+    );
   }
 
   get isEnabledDelete() {
@@ -25,16 +52,9 @@ export default class OrderPanelsComponent extends Component {
       !this.hasInvoice &&
       !this.hasDepositInvoices &&
       !this.args.model.isMasteredByAccess &&
-      this.case?.isOngoing
+      this.case.isResolved &&
+      this.case.value.isOngoing
     );
-  }
-
-  get hasDepositInvoices() {
-    return this.case?.depositInvoices.get('length');
-  }
-
-  get hasInvoice() {
-    return isPresent(this.case?.invoice.get('id'));
   }
 
   @task
@@ -46,7 +66,7 @@ export default class OrderPanelsComponent extends Component {
       sort: 'position',
       page: { size: 100 },
     });
-    yield all(invoicelines.map((t) => t.destroyRecord()));
+    yield Promise.all(invoicelines.map((t) => t.destroyRecord()));
 
     const calendarEvent = yield this.args.model.planning;
     if (calendarEvent) {

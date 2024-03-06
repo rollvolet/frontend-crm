@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
 import { TrackedAsyncData } from 'ember-async-data';
 import { service } from '@ember/service';
-import { all, task } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
 
 export default class OfferPanelsComponent extends Component {
   @service store;
@@ -51,7 +51,7 @@ export default class OfferPanelsComponent extends Component {
       sort: 'position',
       page: { size: 100 },
     });
-    yield all(offerlines.map((t) => t.destroyRecord()));
+    yield Promise.all(offerlines.map((t) => t.destroyRecord()));
     yield this.args.model.destroyRecord();
 
     const request = yield _case.request;
