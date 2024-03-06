@@ -3,7 +3,7 @@ import fetch, { Headers } from 'fetch';
 import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 import { keepLatestTask } from 'ember-concurrency';
-import { task as trackedTask } from 'ember-resources/util/ember-concurrency';
+import { task as trackedTask } from 'reactiveweb/ember-concurrency';
 
 export default class CalendarEventDetailViewComponent extends Component {
   errorMessage = trackedTask(this, this.checkExistenceInMsCalendar, () => [this.args.model]);
