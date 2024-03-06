@@ -43,8 +43,9 @@
         <div class="sm:col-span-2">
           <InputField::EmployeeTypeSelect
             @label="Rol"
-            @value={{this.employeeType}}
+            @value={{this.employeeType.value}}
             @onSelectionChange={{this.selectType}}
+            @disabled={{this.employeeType.isPending}}
             class="mt-1" />
         </div>
       </div>
@@ -52,16 +53,18 @@
         <div class="sm:col-span-2">
           <InputField::AccountSelect
             @label="Microsoft account"
-            @value={{this.account}}
+            @value={{this.account.value}}
             @onSelectionChange={{this.selectAccount}}
+            @disabled={{this.account.isPending}}
             class="mt-1" />
         </div>
         {{#if @model.user}}
           <div class="sm:col-span-4">
             <InputField::UserGroupsSelect
               @label="Groepen"
-              @value={{this.userGroups}}
+              @value={{this.userGroups.value}}
               @onSelectionChange={{this.setUserGroups}}
+              @disabled={{this.userGroups.isPending}}
               class="mt-1" />
           </div>
         {{/if}}
