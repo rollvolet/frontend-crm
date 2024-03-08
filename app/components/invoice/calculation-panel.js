@@ -1,38 +1,51 @@
 import Component from '@glimmer/component';
-import { service } from '@ember/service';
-import { trackedFunction } from 'ember-resources/util/function';
+import { cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceCalculationPanelComponent extends Component {
-  @service router;
-  @service store;
-
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
-  vatRateData = trackedFunction(this, async () => {
-    return await this.case?.vatRate;
-  });
-
-  depositInvoicesData = trackedFunction(this, async () => {
-    return this.case ? await this.case.depositInvoices : [];
-  });
-
   get isLoading() {
-    return this.case == null || this.vatRate == null || this.depositInvoicesData == null;
+    return this.case.isPending || this.vatRate.isPending || this.depositInvoices.isPending;
   }
 
+  @cached
   get case() {
-    return this.caseData.value;
+    return new TrackedAsyncData(this.args.model.case);
   }
 
+  @cached
   get vatRate() {
-    return this.vatRateData.value;
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.vatRate);
+    } else {
+      return null;
+    }
+  }
+
+  @cached
+  get order() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.order);
+    } else {
+      return null;
+    }
+  }
+
+  @cached
+  get depositInvoices() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.depositInvoices);
+    } else {
+      return [];
+    }
+  }
+
+  get hasOrder() {
+    return this.order?.isResolved && this.order.value != null;
   }
 
   get vatPercentage() {
-    return this.vatRate && this.vatRate.rate / 100;
+    return this.vatRate.isResolved && this.vatRate.value.rate / 100;
   }
 
   get totalOrderAmount() {
@@ -45,7 +58,7 @@ export default class InvoiceCalculationPanelComponent extends Component {
   }
 
   get depositInvoicesAmount() {
-    const depositInvoices = this.depositInvoicesData.value || [];
+    const depositInvoices = this.depositInvoices.isResolved ? this.depositInvoices.value : [];
     const amounts = depositInvoices.map((invoice) => invoice.arithmeticAmount);
     return sum(amounts);
   }

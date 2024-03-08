@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { action } from '@ember/object';
 import { keepLatestTask, task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
 import { updateCalendarEvent } from '../../utils/calendar-helpers';
 
 export default class OfferDetailPanelComponent extends Component {
@@ -16,36 +16,18 @@ export default class OfferDetailPanelComponent extends Component {
     this.editMode = this.args.initialEditMode || false;
   }
 
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
-  requestData = trackedFunction(this, async () => {
-    return await this.case?.request;
-  });
-
-  visitData = trackedFunction(this, async () => {
-    return await this.request?.visit;
-  });
-
-  visitorData = trackedFunction(this, async () => {
-    return await this.request?.visitor;
-  });
-
+  @cached
   get case() {
-    return this.caseData.value;
+    return new TrackedAsyncData(this.args.model.case);
   }
 
+  @cached
   get request() {
-    return this.requestData.value;
-  }
-
-  get visit() {
-    return this.visitData.value;
-  }
-
-  get visitor() {
-    return this.visitorData.value;
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.request);
+    } else {
+      return null;
+    }
   }
 
   @task
@@ -58,15 +40,17 @@ export default class OfferDetailPanelComponent extends Component {
 
   @keepLatestTask
   *synchronizeCalendarEvent() {
-    yield updateCalendarEvent({ request: this.request });
+    const request = this.request.isResolved && this.request.value;
+    yield updateCalendarEvent({ request });
   }
 
   @task
   *setVisitor(visitor) {
-    this.request.visitor = visitor;
-    yield this.request.save();
+    const request = this.request.isResolved && this.request.value;
+    request.visitor = visitor;
+    yield request.save();
     const order = yield this.case.order;
-    yield updateCalendarEvent({ request: this.request, order });
+    yield updateCalendarEvent({ request, order });
   }
 
   @action

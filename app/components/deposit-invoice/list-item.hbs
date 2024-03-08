@@ -44,7 +44,9 @@
           </div>
           <div class="mt-2 flex flex-none items-center text-sm text-gray-500 sm:mt-0">
             <p class="flex items-center text-sm text-gray-700 font-medium">
-              <Fmt::Currency @value={{this.netAmount}} /> + {{this.vatRate.rate}}% btw = <Fmt::Currency @value={{this.grossAmount}} />
+              {{#if this.vatRate.isResolved}}
+                <Fmt::Currency @value={{this.netAmount}} /> + {{this.vatRate.value.rate}}% btw = <Fmt::Currency @value={{this.grossAmount}} />
+              {{/if}}
             </p>
           </div>
         </div>
@@ -118,7 +120,9 @@
                     BTW
                   </label>
                   <div class="mt-1 text-sm text-gray-900">
-                    <Fmt::Currency @value={{this.vatAmount}} /> ({{this.vatRate.rate}}%)
+                    {{#if this.vatRate.isResolved}}
+                      <Fmt::Currency @value={{this.vatAmount}} /> ({{this.vatRate.value.rate}}%)
+                    {{/if}}
                   </div>
                 </div>
               {{/unless}}

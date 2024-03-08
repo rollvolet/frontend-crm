@@ -5,12 +5,15 @@
       <div class="space-y-1">
         <div class="flex items-center">
           <h2 class="rlv-panel-title">
-            Bestelling {{format-case-number this.order.case.identifier}}
+            Bestelling
+            {{#if this.originCase.isResolved}}
+              {{format-case-number this.originCase.value.identifier}}
+            {{/if}}
           </h2>
-          {{#if this.order}}
+          {{#if this.hasOrder}}
             <Rlv::Button
               @route="main.orders.edit"
-              @model={{this.order.id}}
+              @model={{this.order.value.id}}
               @label="Open bestelling"
               @hideText={{true}}
               @icon="external-link-line"
@@ -18,7 +21,7 @@
               @size="large"
               class="px-2">
               <:tooltip>
-              <EmberTooltip @text="Open bestelling" @side="bottom" />
+                <EmberTooltip @text="Open bestelling" @side="bottom" />
               </:tooltip>
             </Rlv::Button>
           {{/if}}
@@ -28,7 +31,7 @@
         </p>
       </div>
       <div class="flex flex-none space-x-4">
-        {{#if this.order}}
+        {{#if this.hasOrder}}
           <Rlv::Button
             @label="Ontkoppel bestelling"
             @icon="subtract-line"
@@ -47,19 +50,21 @@
 
   {{!-- Card content --}}
   <div class="p-6">
-    {{#if this.order}}
+    {{#if this.order.isPending}}
+      <Util::LoadingSpinner @label="" />
+    {{else if this.hasOrder}}
       <dl class="grid grid-cols-1 gap-1 sm:grid-cols-2">
         <div class="space-y-1">
           <Util::DetailItem @label="Datum">
-            <Fmt::Date @value={{this.order.orderDate}} />
+            <Fmt::Date @value={{this.order.value.orderDate}} />
           </Util::DetailItem>
           <Util::DetailItem @label="Referentie">
-            {{this.order.case.reference}}
+            {{this.order.value.case.reference}}
           </Util::DetailItem>
         </div>
         <div class="space-y-6">
           <Util::DetailItem @label="Productiebon" class="">
-            {{#if this.order.case.hasProductionTicket}}
+            {{#if this.order.value.case.hasProductionTicket}}
               <Rlv::Button
                 @label="Productiebon bekijken"
                 @hideText={{true}}

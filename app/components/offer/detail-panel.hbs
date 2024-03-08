@@ -51,10 +51,16 @@
     {{#if this.editMode}}
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          <CalendarEvent::DetailView
-            @title="bezoek"
-            @model={{this.visit}}
-            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+          {{#if this.request.isResolved}}
+            {{#let (load this.request.value.visit) as |visit|}}
+              {{#if visit.isResolved}}
+                <CalendarEvent::DetailView
+                  @title="bezoek"
+                  @model={{visit.value}}
+                  @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+              {{/if}}
+            {{/let}}
+          {{/if}}
         </div>
         <div class="grid grid-cols-1 gap-y-6 gap-x-4 lg:grid-cols-2">
           <div>
@@ -65,24 +71,36 @@
               class="mt-1" />
           </div>
           <div>
-            <InputField::EmployeeSelect
-              @label="Bezoeker"
-              @value={{this.visitor}}
-              @isAdministrative={{true}}
-              @isTechnician={{true}}
-              @allowClear={{false}}
-              @onSelectionChange={{queue (perform this.setVisitor) (perform this.save)}}
-              class="mt-1" />
+            {{#if this.request.isResolved}}
+              {{#let (load this.request.value.visitor) as |visitor|}}
+                {{#if visitor.isResolved}}
+                  <InputField::EmployeeSelect
+                    @label="Bezoeker"
+                    @value={{visitor.value}}
+                    @isAdministrative={{true}}
+                    @isTechnician={{true}}
+                    @allowClear={{false}}
+                    @onSelectionChange={{queue (perform this.setVisitor) (perform this.save)}}
+                    class="mt-1" />
+                {{/if}}
+              {{/let}}
+            {{/if}}
           </div>
         </div>
       </div>
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          <CalendarEvent::DetailView
-            @title="bezoek"
-            @model={{this.visit}}
-            @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+          {{#if this.request.isResolved}}
+            {{#let (load this.request.value.visit) as |visit|}}
+              {{#if visit.isResolved}}
+                <CalendarEvent::DetailView
+                  @title="bezoek"
+                  @model={{visit.value}}
+                  @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+              {{/if}}
+            {{/let}}
+          {{/if}}
         </div>
         <div class="space-y-2 sm:order-1">
           <Util::DetailItem @label="Datum">
@@ -92,10 +110,10 @@
             {{@model.number}}
           </Util::DetailItem>
           <Util::DetailItem @label="Aanmelding">
-            {{this.request.wayOfEntry.label}}
+            {{@model.case.request.wayOfEntry.label}}
           </Util::DetailItem>
           <Util::DetailItem @label="Bezoeker">
-            {{this.visitor.firstName}}
+            {{@model.case.request.visitor.firstName}}
           </Util::DetailItem>
         </div>
       </dl>

@@ -1,44 +1,42 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
-import { trackedFunction } from 'ember-resources/util/function';
+import { cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 
 export default class UserEditModalComponent extends Component {
   @service store;
 
-  employeeTypeData = trackedFunction(this, async () => {
+  @cached
+  get employeeType() {
     if (this.args.model.type) {
-      return await this.store.findRecordByUri('concept', this.args.model.type);
+      return new TrackedAsyncData(this.store.findRecordByUri('concept', this.args.model.type));
     } else {
       return null;
     }
-  });
+  }
 
-  userGroupsData = trackedFunction(this, async () => {
-    const user = await this.args.model.user;
-    if (user) {
-      const userGroups = await user.userGroups;
-      return userGroups;
+  @cached
+  get user() {
+    return new TrackedAsyncData(this.args.model.user);
+  }
+
+  @cached
+  get userGroups() {
+    if (this.user.isResolved && this.user.value) {
+      return new TrackedAsyncData(this.user.value.userGroups);
     } else {
       return [];
     }
-  });
-
-  accountData = trackedFunction(this, async () => {
-    const user = await this.args.model.user;
-    return await user?.account;
-  });
-
-  get employeeType() {
-    return this.employeeTypeData.value;
   }
 
-  get userGroups() {
-    return this.userGroupsData.value;
-  }
-
+  @cached
   get account() {
-    return this.accountData.value;
+    if (this.user.isResolved && this.user.value) {
+      return new TrackedAsyncData(this.user.value.account);
+    } else {
+      return null;
+    }
   }
 
   async rollback() {

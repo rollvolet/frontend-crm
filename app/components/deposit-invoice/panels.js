@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
+import { cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import addDays from 'date-fns/addDays';
 import { task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
-import { isPresent } from '@ember/utils';
 import sum from '../../utils/math/sum';
 import {
   createCustomerSnapshot,
@@ -18,54 +18,65 @@ export default class DepositInvoicePanelsComponent extends Component {
   @service store;
   @service sequence;
 
-  orderData = trackedFunction(this, async () => {
-    return await this.args.case.order;
-  });
+  get isLoading() {
+    return [this.order, this.vatRate, this.invoice, this.invoicelines].some((p) => p.isPending);
+  }
 
-  orderAmountData = trackedFunction(this, async () => {
-    if (this.order) {
-      const lines = await this.order.invoicelines;
-      return sum(lines.map((line) => line.arithmeticAmount));
-    } else {
-      return null;
-    }
-  });
-
-  vatRateData = trackedFunction(this, async () => {
-    return await this.args.case.vatRate;
-  });
-
+  @cached
   get order() {
-    return this.orderData.value;
+    return new TrackedAsyncData(this.args.case.order);
   }
 
-  get orderAmount() {
-    return this.orderAmountData.value;
-  }
-
+  @cached
   get vatRate() {
-    return this.vatRateData.value;
+    return new TrackedAsyncData(this.args.case.vatRate);
   }
 
-  get isDisabledEdit() {
-    return this.hasInvoice || this.order?.isMasteredByAccess || this.args.case.isCancelled;
+  @cached
+  get invoice() {
+    return new TrackedAsyncData(this.args.case.invoice);
   }
 
   get hasInvoice() {
-    return isPresent(this.args.case.invoice.get('id'));
+    return this.invoice.isResolved && this.invoice.value != null;
   }
 
-  get totalAmount() {
-    const amounts = this.args.model.map((invoice) => invoice.arithmeticAmount);
-    return sum(amounts);
+  @cached
+  get invoicelines() {
+    if (this.order.isResolved) {
+      return new TrackedAsyncData(this.order.value.invoicelines);
+    } else {
+      return [];
+    }
+  }
+
+  get orderAmount() {
+    if (this.invoicelines.isResolved) {
+      return sum(this.invoicelines.value.map((line) => line.arithmeticAmount));
+    } else {
+      return null;
+    }
   }
 
   get vatPercentage() {
-    return this.vatRate && this.vatRate.rate / 100;
+    return this.vatRate.isResolved && this.vatRate.value.rate / 100;
+  }
+
+  get totalAmount() {
+    const amounts = this.args.model.map((depositInvoice) => depositInvoice.arithmeticAmount);
+    return sum(amounts);
   }
 
   get totalVat() {
     return this.totalAmount * this.vatPercentage;
+  }
+
+  get isDisabledEdit() {
+    return (
+      (this.invoice.isResolved && this.invoice.value != null) ||
+      (this.order.isResolved && this.order.value.isMasteredByAccess) ||
+      this.args.case.isCancelled
+    );
   }
 
   @task

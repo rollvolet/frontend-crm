@@ -111,12 +111,16 @@
         </div>
         <div class="space-y-6">
           {{#if this.isLinkedToCustomer}}
-            <CalendarEvent::DetailEdit
-              @title="planning"
-              @model={{this.visit}}
-              @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
-              @saveTask={{this.saveCalendarEvent}}
-              @onDelete={{perform this.deleteCalendarEvent}} />
+            {{#let (load @model.visit) as |visit|}}
+              {{#if visit.isResolved}}
+                <CalendarEvent::DetailEdit
+                  @title="planning"
+                  @model={{visit.value}}
+                  @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
+                  @saveTask={{this.saveCalendarEvent}}
+                  @onDelete={{perform this.deleteCalendarEvent}} />
+              {{/if}}
+            {{/let}}
           {{/if}}
         </div>
         <div class="sm:col-span-2">
@@ -160,14 +164,18 @@
             {{/if}}
           </Util::DetailItem>
           <Util::DetailItem @label="Techniekers">
-            {{join ", " this.technicianNames}}
+            {{join ", " (map-by "firstName" (sort-by "firstName" @model.technicians))}}
           </Util::DetailItem>
         </div>
         <div>
-          <CalendarEvent::DetailView
-            @title="planning"
-            @model={{this.visit}}
-            @onSynchronize={{perform this.forceCalendarEventSynchronization}} />
+          {{#let (load @model.visit) as |visit|}}
+            {{#if visit.isResolved}}
+              <CalendarEvent::DetailView
+                @title="planning"
+                @model={{visit.value}}
+                @onSynchronize={{perform this.forceCalendarEventSynchronization}} />
+            {{/if}}
+          {{/let}}
         </div>
         <div class="sm:col-span-2 space-y-2">
           <Util::DetailItem @label="Beschrijving">

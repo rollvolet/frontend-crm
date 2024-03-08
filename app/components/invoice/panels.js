@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
-import { trackedFunction } from 'ember-resources/util/function';
+import { cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { warn } from '@ember/debug';
@@ -13,75 +14,77 @@ export default class InvoicePanelsComponent extends Component {
 
   @tracked isOpenUnableToDeleteModal = false;
 
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
-  isLastInvoiceData = trackedFunction(this, async () => {
-    const nextInvoiceNumber = await this.sequence.fetchNextInvoiceNumber();
-    return nextInvoiceNumber == this.args.model.number + 1;
-  });
-
+  @cached
   get case() {
-    return this.caseData.value;
+    return new TrackedAsyncData(this.args.model.case);
+  }
+
+  @cached
+  get nextInvoiceNumber() {
+    return new TrackedAsyncData(this.sequence.fetchNextInvoiceNumber());
+  }
+
+  get isLastInvoice() {
+    if (this.nextInvoiceNumber.isResolved) {
+      return this.nextInvoiceNumber.value == this.args.model.number + 1;
+    } else {
+      return false;
+    }
   }
 
   get isDisabledEdit() {
-    return this.args.model.isMasteredByAccess || this.case?.isCancelled;
+    return (
+      this.args.model.isMasteredByAccess || (this.case.isResolved && this.case.value.isCancelled)
+    );
   }
 
   get isEnabledDelete() {
     return (
-      this.isLastInvoiceData.value &&
+      this.isLastInvoice &&
       !this.args.model.isBooked &&
       !this.args.model.isMasteredByAccess &&
-      this.case?.isOngoing
+      this.case.isResolved &&
+      this.case.value.isOngoing
     );
   }
 
   @task
   *delete() {
-    try {
-      const nextInvoiceNumber = yield this.sequence.fetchNextInvoiceNumber();
-      if (nextInvoiceNumber == this.args.model.number + 1) {
-        const invoicelines = yield this.store.query('invoiceline', {
-          'filter[invoice][:uri:]': this.args.model.uri,
-          sort: 'position',
-          page: { size: 100 },
-        });
-        yield Promise.all(
-          invoicelines.map((invoiceline) => {
-            invoiceline.invoice = null;
-            return invoiceline.save();
-          })
-        );
-
-        const [intervention, order, customer] = yield Promise.all([
-          this.case.intervention,
-          this.case.order,
-          this.case.customer,
-        ]);
-        const caseId = this.case.id;
-        yield this.args.model.destroyRecord();
-
-        if (intervention) {
-          this.router.transitionTo('main.case.intervention.edit', caseId, intervention.id);
-        } else if (order) {
-          this.router.transitionTo('main.case.order.edit', caseId, order.id);
-        } else if (customer) {
-          this.router.transitionTo('main.customers.edit.index', customer.id);
-        } else {
-          this.router.transitionTo('main.index');
-        }
-      } else {
-        warn(`Not the last invoice anymore. Unable to destroy.`, { id: 'destroy-failure' });
-        this.isOpenUnableToDeleteModal = true;
-      }
-    } catch (e) {
-      warn(`Something went wrong while destroying invoice ${this.args.model.id}`, {
-        id: 'destroy-failure',
+    const nextInvoiceNumber = yield this.sequence.fetchNextInvoiceNumber();
+    if (nextInvoiceNumber == this.args.model.number + 1) {
+      const invoicelines = yield this.store.query('invoiceline', {
+        'filter[invoice][:uri:]': this.args.model.uri,
+        sort: 'position',
+        page: { size: 100 },
       });
-      yield this.args.model.rollbackAttributes(); // undo delete-state
+      yield Promise.all(
+        invoicelines.map((invoiceline) => {
+          invoiceline.invoice = null;
+          return invoiceline.save();
+        })
+      );
+
+      const _case = yield this.args.model.case;
+      const [intervention, order, customer] = yield Promise.all([
+        _case.intervention,
+        _case.order,
+        _case.customer,
+      ]);
+      const caseId = this.case.id;
+      yield this.args.model.destroyRecord();
+
+      if (intervention) {
+        this.router.transitionTo('main.case.intervention.edit', caseId, intervention.id);
+      } else if (order) {
+        this.router.transitionTo('main.case.order.edit', caseId, order.id);
+      } else if (customer) {
+        this.router.transitionTo('main.customers.edit.index', customer.id);
+      } else {
+        this.router.transitionTo('main.index');
+      }
+    } else {
+      warn(`Not the last invoice anymore. Unable to destroy.`, { id: 'destroy-failure' });
+      this.isOpenUnableToDeleteModal = true;
     }
   }
 

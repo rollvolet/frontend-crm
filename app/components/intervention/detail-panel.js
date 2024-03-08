@@ -1,39 +1,30 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
-import { isPresent } from '@ember/utils';
 import { setCalendarEventProperties } from '../../utils/calendar-helpers';
 import generateDocument from '../../utils/generate-document';
 import CalendarPeriod from '../../classes/calendar-period';
 
 export default class InterventionDetailPanelComponent extends Component {
-  @service router;
   @service store;
-  @service sequence;
 
   @tracked editMode = false;
 
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
-  visitData = trackedFunction(this, async () => {
-    return await this.args.model.visit;
-  });
-
+  @cached
   get case() {
-    return this.caseData.value;
+    return new TrackedAsyncData(this.args.model.case);
   }
 
-  get visit() {
-    return this.visitData.value;
-  }
-
-  get technicianNames() {
-    return this.args.model.technicians.map((technician) => technician.firstName).sort();
+  @cached
+  get customer() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.customer);
+    } else {
+      return null;
+    }
   }
 
   get isNbOfPersonsWarning() {
@@ -41,11 +32,7 @@ export default class InterventionDetailPanelComponent extends Component {
   }
 
   get isLinkedToCustomer() {
-    return isPresent(this.case?.customer.get('id'));
-  }
-
-  get hasFollowUpRequest() {
-    return isPresent(this.args.model.followUpRequest?.get('id'));
+    return this.customer?.isResolved && this.customer.value != null;
   }
 
   @keepLatestTask

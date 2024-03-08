@@ -1,26 +1,81 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
 import { cancelCase, reopenCase } from '../../utils/case-helpers';
 import { updateCalendarEvent } from '../../utils/calendar-helpers';
 
-export default class CaseTabsComponent extends Component {
+export default class CaseHeaderPanelComponent extends Component {
   @service router;
   @service userInfo;
 
   @tracked isOpenCancellationModal = false;
   @tracked isExpandedComment = false;
 
+  @cached
+  get request() {
+    return new TrackedAsyncData(this.args.model.request);
+  }
+
+  get hasRequest() {
+    return this.request.isResolved && this.request.value != null;
+  }
+
+  @cached
+  get intervention() {
+    return new TrackedAsyncData(this.args.model.intervention);
+  }
+
+  get hasIntervention() {
+    return this.intervention.isResolved && this.intervention.value != null;
+  }
+
+  @cached
+  get offer() {
+    return new TrackedAsyncData(this.args.model.offer);
+  }
+
+  get hasOffer() {
+    return this.offer.isResolved && this.offer.value != null;
+  }
+
+  @cached
+  get order() {
+    return new TrackedAsyncData(this.args.model.order);
+  }
+
+  get hasOrder() {
+    return this.order.isResolved && this.order.value != null;
+  }
+
+  @cached
+  get depositInvoices() {
+    return new TrackedAsyncData(this.args.model.depositInvoices);
+  }
+
+  get hasDepositInvoices() {
+    return this.depositInvoices.isResolved && this.depositInvoices.value.length > 0;
+  }
+
+  @cached
+  get invoice() {
+    return new TrackedAsyncData(this.args.model.invoice);
+  }
+
+  get hasInvoice() {
+    return this.invoice.isResolved && this.invoice.value != null;
+  }
+
   get currentStep() {
-    if (this.args.model.invoice.get('id')) {
+    if (this.hasInvoice) {
       return 'invoice';
-    } else if (this.args.model.intervention.get('id')) {
+    } else if (this.hasIntervention) {
       return 'intervention';
-    } else if (this.args.model.order.get('id')) {
+    } else if (this.hasOrder) {
       return 'order';
-    } else if (this.args.model.offer.get('id')) {
+    } else if (this.hasOffer) {
       return 'offer';
     } else {
       return 'request';
@@ -37,14 +92,10 @@ export default class CaseTabsComponent extends Component {
   }
 
   get isDisabledEditVatRate() {
-    if (this.args.model.isIsolated || this.args.model.intervention.get('id')) {
-      return this.args.model.invoice.get('isBooked');
+    if (this.args.model.isIsolated || this.hasIntervention) {
+      return this.hasInvoice && this.invoice.value.isBooked;
     } else {
-      return (
-        this.args.model.order.get('id') ||
-        this.args.model.invoice.get('id') ||
-        this.args.model.depositInvoices.get('length') > 0
-      );
+      return this.hasOrder || this.hasInvoice || this.hasDepositInvoices;
     }
   }
 

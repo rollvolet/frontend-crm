@@ -1,11 +1,10 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
-import { isPresent } from '@ember/utils';
+import { TrackedAsyncData } from 'ember-async-data';
 import generateDocument from '../../utils/generate-document';
 import previewDocument from '../../utils/preview-document';
 import constants from '../../config/constants';
@@ -22,24 +21,35 @@ export default class DepositInvoiceListItemComponent extends Component {
     this.isExpanded = this.args.initialEditMode || false;
   }
 
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
-  vatRateData = trackedFunction(this, async () => {
-    return await this.case?.vatRate;
-  });
-
   get fieldId() {
     return `${guidFor(this)}`;
   }
 
+  @cached
   get case() {
-    return this.caseData.value;
+    return new TrackedAsyncData(this.args.model.case);
   }
 
+  @cached
   get vatRate() {
-    return this.vatRateData.value;
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.vatRate);
+    } else {
+      return null;
+    }
+  }
+
+  @cached
+  get invoice() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.invoice);
+    } else {
+      return null;
+    }
+  }
+
+  get vatPercentage() {
+    return this.vatRate?.isResolved && this.vatRate.value.rate / 100;
   }
 
   get netAmount() {
@@ -47,7 +57,7 @@ export default class DepositInvoiceListItemComponent extends Component {
   }
 
   get vatAmount() {
-    return this.netAmount * (this.vatRate?.rate / 100);
+    return this.netAmount * this.vatPercentage;
   }
 
   get grossAmount() {
@@ -55,7 +65,7 @@ export default class DepositInvoiceListItemComponent extends Component {
   }
 
   get hasFinalInvoice() {
-    return isPresent(this.case?.invoice.get('id'));
+    return this.invoice?.isResolved && this.invoice.value != null;
   }
 
   get isLimitedUpdateOnly() {

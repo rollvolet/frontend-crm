@@ -66,18 +66,22 @@
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
           {{#if this.isLinkedToCustomer}}
-            {{#if @model.visit.isMasteredByAccess}}
-              <CalendarEvent::DetailView
-                @title="bezoek"
-                @model={{this.visit}}
-                @onSynchronize={{perform this.synchronizeCalendarEvent}} />
-            {{else if @model.visit.id}}
-              <CalendarEvent::DetailEdit
-                @title="bezoek"
-                @model={{this.visit}}
-                @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
-                @saveTask={{this.saveCalendarEvent}} />
-            {{/if}}
+            {{#let (load @model.visit) as |visit|}}
+              {{#if visit.isResolved}}
+                {{#if visit.value.isMasteredByAccess}}
+                  <CalendarEvent::DetailView
+                    @title="bezoek"
+                    @model={{visit.value}}
+                    @onSynchronize={{perform this.synchronizeCalendarEvent}} />
+                {{else if visit.value}}
+                  <CalendarEvent::DetailEdit
+                    @title="bezoek"
+                    @model={{visit.value}}
+                    @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
+                    @saveTask={{this.saveCalendarEvent}} />
+                {{/if}}
+              {{/if}}
+            {{/let}}
           {{/if}}
         </div>
         <div>
@@ -165,10 +169,14 @@
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          <CalendarEvent::DetailView
-            @title="bezoek"
-            @model={{this.visit}}
-            @onSynchronize={{perform this.forceCalendarEventSynchronization}} />
+          {{#let (load @model.visit) as |visit|}}
+            {{#if visit.isResolved}}
+              <CalendarEvent::DetailView
+                @title="bezoek"
+                @model={{visit.value}}
+                @onSynchronize={{perform this.forceCalendarEventSynchronization}} />
+            {{/if}}
+          {{/let}}
         </div>
         <div class="space-y-2 sm:order-1">
           <Util::DetailItem @label="Datum">

@@ -8,7 +8,7 @@
   </div>
 {{else}}
   <div class="space-y-4">
-    {{#if this.case.isOngoing}}
+    {{#if (and this.case.isResolved this.case.value.isOngoing)}}
       {{#if this.hasInvoice}}
         <AlertMessage
           @level="warning"
@@ -47,6 +47,5 @@
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <Order::InterventionPanel @order={{@model}} />
     </div>
-
   </div>
 {{/if}}

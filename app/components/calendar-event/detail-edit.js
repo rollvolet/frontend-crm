@@ -1,20 +1,17 @@
 import Component from '@glimmer/component';
+import { cached } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
-import { trackedFunction } from 'ember-resources/util/function';
 import CalendarPeriod from '../../classes/calendar-period';
 
 export default class CalendarEventDetailEditComponent extends Component {
-  calendarPeriodData = trackedFunction(this, () => {
+  @cached
+  get calendarPeriod() {
     if (this.args.model) {
       return CalendarPeriod.parse(this.args.model.subject);
     } else {
       return null;
     }
-  });
-
-  get calendarPeriod() {
-    return this.calendarPeriodData.value;
   }
 
   @action

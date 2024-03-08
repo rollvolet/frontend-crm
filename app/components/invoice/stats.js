@@ -1,31 +1,34 @@
 import Component from '@glimmer/component';
-import { service } from '@ember/service';
-import { trackedFunction } from 'ember-resources/util/function';
+import { cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import sum from '../../utils/math/sum';
 
 export default class InvoiceStatsComponent extends Component {
-  @service store;
-
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
-  vatRateData = trackedFunction(this, async () => {
-    const _case = this.caseData.value;
-    return await _case?.vatRate;
-  });
-
-  depositInvoicesData = trackedFunction(this, async () => {
-    const _case = this.caseData.value;
-    return _case ? await _case.depositInvoices : [];
-  });
-
-  get case() {
-    return this.caseData.value;
+  get isLoading() {
+    return this.case.isPending || this.vatRate.isPending || this.depositInvoices.isPending;
   }
 
+  @cached
+  get case() {
+    return new TrackedAsyncData(this.args.model.case);
+  }
+
+  @cached
   get vatRate() {
-    return this.vatRateData.value;
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.vatRate);
+    } else {
+      return null;
+    }
+  }
+
+  @cached
+  get depositInvoices() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.depositInvoices);
+    } else {
+      return [];
+    }
   }
 
   get totalAmount() {
@@ -34,7 +37,7 @@ export default class InvoiceStatsComponent extends Component {
   }
 
   get vatPercentage() {
-    return this.vatRate && this.vatRate.rate / 100;
+    return this.vatRate.isResolved && this.vatRate.value.rate / 100;
   }
 
   get totalVat() {
@@ -47,7 +50,7 @@ export default class InvoiceStatsComponent extends Component {
   }
 
   get depositInvoicesAmount() {
-    const depositInvoices = this.depositInvoicesData.value || [];
+    const depositInvoices = this.depositInvoices.isResolved ? this.depositInvoices.value : [];
     const amounts = depositInvoices.map((invoice) => invoice.arithmeticAmount);
     return sum(amounts);
   }

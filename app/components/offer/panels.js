@@ -1,51 +1,60 @@
 import Component from '@glimmer/component';
+import { cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
 import { service } from '@ember/service';
-import { all, task } from 'ember-concurrency';
-import { warn } from '@ember/debug';
-import { trackedFunction } from 'ember-resources/util/function';
-import { isPresent } from '@ember/utils';
+import { task } from 'ember-concurrency';
 
 export default class OfferPanelsComponent extends Component {
   @service store;
   @service router;
 
-  caseData = trackedFunction(this, async () => {
-    return await this.args.model.case;
-  });
-
+  @cached
   get case() {
-    return this.caseData.value;
+    return new TrackedAsyncData(this.args.model.case);
   }
 
-  get isDisabledEdit() {
-    return this.hasOrder || this.args.model.isMasteredByAccess || this.case?.isCancelled;
-  }
-
-  get isEnabledDelete() {
-    return !this.hasOrder && !this.args.model.isMasteredByAccess && this.case?.isOngoing;
+  @cached
+  get order() {
+    if (this.case.isResolved) {
+      return new TrackedAsyncData(this.case.value.order);
+    } else {
+      return null;
+    }
   }
 
   get hasOrder() {
-    return isPresent(this.case?.order.get('id'));
+    return this.order?.isResolved && this.order.value != null;
+  }
+
+  get isDisabledEdit() {
+    return (
+      this.hasOrder ||
+      this.args.model.isMasteredByAccess ||
+      (this.case.isResolved && this.case.value.isCancelled)
+    );
+  }
+
+  get isEnabledDelete() {
+    return (
+      !this.hasOrder ||
+      !this.args.model.isMasteredByAccess ||
+      (this.case.isResolved && this.case.value.isOngoing)
+    );
   }
 
   @task
   *delete() {
-    try {
-      const offerlines = yield this.store.query('offerline', {
-        'filter[offer][:uri:]': this.args.model.uri,
-        sort: 'position',
-        page: { size: 100 },
-      });
-      yield all(offerlines.map((t) => t.destroyRecord()));
-      yield this.args.model.destroyRecord();
-      const request = yield this.case.request;
-      this.router.transitionTo('main.case.request.edit.index', this.case.id, request.id);
-    } catch (e) {
-      warn(`Something went wrong while destroying offer ${this.args.model.id}`, {
-        id: 'destroy-failure',
-      });
-      yield this.args.model.rollbackAttributes(); // undo delete-state
-    }
+    const _case = yield this.args.model.case;
+
+    const offerlines = yield this.store.query('offerline', {
+      'filter[offer][:uri:]': this.args.model.uri,
+      sort: 'position',
+      page: { size: 100 },
+    });
+    yield Promise.all(offerlines.map((t) => t.destroyRecord()));
+    yield this.args.model.destroyRecord();
+
+    const request = yield _case.request;
+    this.router.transitionTo('main.case.request.edit.index', _case.id, request.id);
   }
 }

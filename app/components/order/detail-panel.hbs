@@ -73,13 +73,15 @@
               class="mt-1" />
           </div>
           <div>
-            <InputField::EmployeeSelect
-              @label="Bezoeker"
-              @value={{this.visitor}}
-              @isAdministrative={{true}}
-              @isTechnician={{true}}
-              @onSelectionChange={{queue (perform this.setVisitor) (perform this.save)}}
-              class="mt-1" />
+            {{#if this.request.isResolved}}
+              <InputField::EmployeeSelect
+                @label="Bezoeker"
+                @value={{this.request.value.visitor}}
+                @isAdministrative={{true}}
+                @isTechnician={{true}}
+                @onSelectionChange={{queue (perform this.setVisitor) (perform this.save)}}
+                class="mt-1" />
+            {{/if}}
           </div>
           <div class="lg:col-span-2">
             <div class="flex items-baseline space-x-2">
@@ -120,12 +122,16 @@
           </div>
         </div>
         <div class="space-y-6">
-          <CalendarEvent::DetailEdit
-            @title="planning"
-            @model={{this.planning}}
-            @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
-            @saveTask={{this.saveCalendarEvent}}
-            @onDelete={{perform this.deleteCalendarEvent}} />
+          {{#let (load @model.planning) as |planning|}}
+            {{#if planning.isResolved}}
+              <CalendarEvent::DetailEdit
+                @title="planning"
+                @model={{planning.value}}
+                @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
+                @saveTask={{this.saveCalendarEvent}}
+                @onDelete={{perform this.deleteCalendarEvent}} />
+            {{/if}}
+          {{/let}}
           <div>
             <div class="flex items-center">
               <div class="font-semibold text-sm text-gray-700">
@@ -167,7 +173,9 @@
             </Util::DetailSubitem>
           </Util::DetailItem>
           <Util::DetailItem @label="Bezoeker">
-            {{this.visitor.firstName}}
+            {{#if this.request.isResolved}}
+              {{this.request.value.visitor.firstName}}
+            {{/if}}
           </Util::DetailItem>
           <Util::DetailItem @label="Werkuren" @displayRow={{true}}>
             <Fmt::Decimal @value={{@model.scheduledNbOfHours}} /> uur x
@@ -175,17 +183,19 @@
             = {{@model.scheduledTotal}} uur
           </Util::DetailItem>
           <Util::DetailItem @label="Techniekers">
-            {{#if this.technicianNames}}
-              {{join ", " this.technicianNames}}
-            {{/if}}
+            {{join ", " (map-by "firstName" (sort-by "firstName" @model.technicians))}}
           </Util::DetailItem>
         </div>
         <div class="mb-4 sm:mb-0 space-y-2">
           <div class="mb-4">
-            <CalendarEvent::DetailView
-              @title="planning"
-              @model={{this.planning}}
-              @onSynchronize={{perform this.forceCalendarEventSynchronization}} />
+            {{#let (load @model.planning) as |planning|}}
+              {{#if planning.isResolved}}
+                <CalendarEvent::DetailView
+                  @title="planning"
+                  @model={{planning.value}}
+                  @onSynchronize={{perform this.forceCalendarEventSynchronization}} />
+              {{/if}}
+            {{/let}}
           </div>
           <Util::DetailItem @label="Productiebon" class="items-center">
             <ProductionTicket::InlineEdit @model={{@model}} />
