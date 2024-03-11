@@ -68,16 +68,16 @@
               @onSave={{queue (fn (mut @model.deliveryMethod)) (perform this.save) this.updateOrderPlanning}}
               @onCancel={{reset-relation @model "deliveryMethod"}}>
               <:read>
-              <dd class="mt-1 text-sm text-gray-900">
-                {{or @model.deliveryMethod.label "-"}}
-              </dd>
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{or @model.deliveryMethod.label "-"}}
+                </dd>
               </:read>
               <:edit as |_ onSave onCancel|>
-              <InputField::DeliveryMethodSelect
-                @value={{@model.deliveryMethod}}
-                @onSelectionChange={{onSave}}
-                {{on-key "Escape" onCancel}}
-                class="mt-1 w-36" />
+                <InputField::DeliveryMethodSelect
+                  @value={{@model.deliveryMethod}}
+                  @onSelectionChange={{onSave}}
+                  {{on-key "Escape" onCancel}}
+                  class="mt-1 w-36" />
               </:edit>
             </InputField::Editable>
           </div>
@@ -88,17 +88,17 @@
               @onSave={{queue (fn (mut @model.depositRequired)) (perform this.save)}}
               @onCancel={{reset-relation @model "deliveryMethod"}}>
               <:read>
-              <dd class="mt-1 text-sm text-gray-900">
-                <Util::DisplayCheckbox @value={{@model.depositRequired}} />
-              </dd>
+                <dd class="mt-1 text-sm text-gray-900">
+                  <Util::DisplayCheckbox @value={{@model.depositRequired}} />
+                </dd>
               </:read>
               <:edit as |_ onSave onCancel|>
-              <InputField::Checkbox
-                @id="deposit-required-checkbox"
-                @value={{@model.depositRequired}}
-                @onChange={{onSave}}
-                {{on-key "Escape" onCancel}}
-                class="mt-1" />
+                <InputField::Checkbox
+                  @id="deposit-required-checkbox"
+                  @value={{@model.depositRequired}}
+                  @onChange={{onSave}}
+                  {{on-key "Escape" onCancel}}
+                  class="mt-1" />
               </:edit>
             </InputField::Editable>
           </div>
@@ -110,18 +110,18 @@
             @onSave={{perform this.save}}
             @onCancel={{reset-attribute @model "comment"}}>
             <:read>
-            <dd {{on "click" (toggle "isExpandedComment" this)}}
-              class="mt-1 text-sm text-gray-900 {{if this.isExpandedComment "whitespace-pre-wrap" "truncate"}}">{{or @model.comment "-"}}</dd>
+              <dd {{on "click" (toggle "isExpandedComment" this)}}
+                class="mt-1 text-sm text-gray-900 {{if this.isExpandedComment "whitespace-pre-wrap" "truncate"}}">{{or @model.comment "-"}}</dd>
             </:read>
             <:edit as |elementId onSave onCancel|>
-            <Textarea
-              id={{elementId}}
-              @value={{@model.comment}}
-              class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
-              rows="5"
-              autofocus
-              {{on-key "Escape" onCancel}}
-              {{on "focusout" onSave}} />
+              <Textarea
+                id={{elementId}}
+                @value={{@model.comment}}
+                class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                rows="5"
+                autofocus
+                {{on-key "Escape" onCancel}}
+                {{on "focusout" onSave}} />
             </:edit>
           </InputField::Editable>
         </div>
