@@ -12,8 +12,6 @@ export default class MainRequestsNewRoute extends Route {
   async model() {
     const employee = this.userInfo.employee;
     const wayOfEntry = this.codelist.defaultWayOfEntry;
-    const deliveryMethod = this.codelist.defaultDeliveryMethod;
-    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
     const number = await this.sequence.fetchNextRequestNumber();
 
     const request = this.store.createRecord('request', {
@@ -27,8 +25,6 @@ export default class MainRequestsNewRoute extends Route {
 
     const _case = await createCase({
       request,
-      vatRate,
-      deliveryMethod,
     });
 
     return { case: _case, request };

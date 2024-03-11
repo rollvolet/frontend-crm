@@ -4,12 +4,14 @@ const { ACTIVITY_TYPES, CASE_STATUSES } = constants;
 
 async function createCase(properties) {
   let store, number, namespace;
-  const { request, intervention, invoice } = properties;
+  const { customer, request, intervention, invoice } = properties;
+  const profile = await customer?.profile;
   if (request) {
     store = request.store;
     number = request.number;
     namespace = 'AD';
-    properties.depositRequired = true;
+    properties.deliveryMethod = await profile?.deliveryMethod;
+    properties.depositRequired = profile?.depositRequired;
     properties.hasProductionTicket = false;
   } else if (intervention) {
     store = intervention.store;
@@ -21,6 +23,10 @@ async function createCase(properties) {
     namespace = 'F';
   }
   properties.identifier = `${namespace}-${number}`;
+
+  if (!properties.vatRate) {
+    properties.vatRate = await profile?.vatRate;
+  }
 
   const _case = store.createRecord('case', properties);
   const { validations } = await _case.validate();

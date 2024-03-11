@@ -33,7 +33,6 @@ export default class InterventionRequestPanelComponent extends Component {
       this.sequence.fetchNextRequestNumber(),
     ]);
     const wayOfEntry = this.codelist.defaultWayOfEntry;
-    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
 
     const request = this.store.createRecord('request', {
       number,
@@ -48,7 +47,6 @@ export default class InterventionRequestPanelComponent extends Component {
       customer,
       contact,
       building,
-      vatRate,
       request,
     });
 

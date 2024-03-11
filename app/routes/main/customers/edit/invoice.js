@@ -11,7 +11,6 @@ export default class MainCustomersEditInvoiceRoute extends Route {
 
   async model() {
     const customer = this.modelFor('main.customers.edit');
-    const vatRate = this.store.peekAll('vat-rate').find((v) => v.rate == 21);
 
     const invoiceDate = new Date();
     const dueDate = addDays(invoiceDate, 14);
@@ -28,7 +27,6 @@ export default class MainCustomersEditInvoiceRoute extends Route {
 
     const _case = await createCase({
       customer,
-      vatRate,
       invoice,
     });
 

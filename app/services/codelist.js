@@ -64,14 +64,6 @@ export default class CodelistService extends Service {
     return value;
   }
 
-  get defaultDeliveryMethod() {
-    const value = this.store
-      .peekAll('concept')
-      .find((c) => c.uri == DELIVERY_METHODS.TO_BE_INSTALLED);
-    warn('No default delivery method found', value != null, { id: 'no-default-value' });
-    return value;
-  }
-
   get defaultVisitor() {
     const value = this.store.peekAll('employee').find((c) => c.fullName == 'Joris Pauwels');
     warn("No default employee 'Joris Pauwels' found", value != null, { id: 'no-default-value' });
