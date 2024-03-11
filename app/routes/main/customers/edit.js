@@ -7,6 +7,7 @@ export default class MainCustomersEditRoute extends Route {
   model(params) {
     return this.store.findRecord('customer', params.customer_id, {
       include: [
+        'profile.vat-rate',
         'language',
         'address.country',
         'telephones.telephone-type',
