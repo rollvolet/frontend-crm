@@ -93,7 +93,8 @@ export default class DepositInvoicePanelsComponent extends Component {
     ]);
 
     const invoiceDate = new Date();
-    const dueDate = addDays(invoiceDate, 14);
+    const profile = yield customer.profile;
+    const dueDate = addDays(invoiceDate, profile.invoicePaymentPeriod);
 
     const amount = this.orderAmount * 0.3; // default to 30% of order amount
 
@@ -119,9 +120,11 @@ export default class DepositInvoicePanelsComponent extends Component {
   @task
   *createNewCreditNoteForDepositInvoice(invoice) {
     const invoiceDate = new Date();
-    const dueDate = addDays(invoiceDate, 14);
+    const customer = yield this.args.case.customer;
+    const profile = yield customer.profile;
+    const dueDate = addDays(invoiceDate, profile.invoicePaymentPeriod);
 
-    const [customer, contact, building] = yield Promise.all([
+    const [customerSnap, contactSnap, buildingSnap] = yield Promise.all([
       invoice.customer,
       invoice.contact,
       invoice.building,
@@ -134,9 +137,9 @@ export default class DepositInvoicePanelsComponent extends Component {
       totalAmountNet: invoice.totalAmountNet,
       creditedInvoice: invoice,
       case: this.args.case,
-      customer,
-      contact,
-      building,
+      customer: customerSnap,
+      contact: contactSnap,
+      building: buildingSnap,
     });
 
     const { validations } = yield creditNote.validate();

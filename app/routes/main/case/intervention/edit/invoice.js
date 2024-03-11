@@ -21,7 +21,8 @@ export default class MainCaseInterventionEditInvoiceRoute extends Route {
     ]);
 
     const invoiceDate = new Date();
-    const dueDate = addDays(invoiceDate, 14);
+    const profile = await customer.profile;
+    const dueDate = addDays(invoiceDate, profile.invoicePaymentPeriod);
 
     const [customerSnap, contactSnap, buildingSnap] = await Promise.all([
       createCustomerSnapshot(customer),

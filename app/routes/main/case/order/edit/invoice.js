@@ -36,7 +36,8 @@ export default class InvoiceRoute extends Route {
     ]);
 
     const invoiceDate = new Date();
-    const dueDate = addDays(invoiceDate, 14);
+    const profile = await customer.profile;
+    const dueDate = addDays(invoiceDate, profile.invoicePaymentPeriod);
     const orderAmount = sum(invoicelines.map((line) => line.arithmeticAmount));
 
     const [customerSnap, contactSnap, buildingSnap] = await Promise.all([

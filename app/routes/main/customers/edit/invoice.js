@@ -13,7 +13,8 @@ export default class MainCustomersEditInvoiceRoute extends Route {
     const customer = this.modelFor('main.customers.edit');
 
     const invoiceDate = new Date();
-    const dueDate = addDays(invoiceDate, 14);
+    const profile = await customer.profile;
+    const dueDate = addDays(invoiceDate, profile.invoicePaymentPeriod);
     const customerSnap = await createCustomerSnapshot(customer);
     const number = await this.sequence.fetchNextInvoiceNumber();
 
