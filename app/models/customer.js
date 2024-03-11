@@ -80,6 +80,7 @@ export default class CustomerModel extends ValidatedModel {
   @attr('boolean') printSuffix;
   @attr('boolean') printInFront;
 
+  @belongsTo('customer-profile', { inverse: 'customer', async: true }) profile;
   @belongsTo('address', { inverse: 'customer', async: true }) address;
   @belongsTo('language', { inverse: 'customers', async: true }) language;
   @hasMany('telephone', { inverse: 'customer', async: true }) telephones;

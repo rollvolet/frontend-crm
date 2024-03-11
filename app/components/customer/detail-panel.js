@@ -21,12 +21,20 @@ export default class CustomerDetailPanelComponent extends Component {
       this.args.model.name = this.args.model.name.toUpperCase();
     }
 
-    const address = yield this.args.model.address;
-    const validationResults = yield Promise.all([address.validate(), this.args.model.validate()]);
+    const [profile, address] = yield Promise.all([
+      this.args.model.profile,
+      this.args.model.address,
+    ]);
+
+    const validationResults = yield Promise.all([
+      profile.validate(),
+      address.validate(),
+      this.args.model.validate(),
+    ]);
 
     const isValid = validationResults.find((v) => v.validations.isInvalid) == null;
     if (isValid) {
-      yield address.save();
+      yield Promise.all([profile.save(), address.save()]);
       yield this.args.model.save();
     }
   }

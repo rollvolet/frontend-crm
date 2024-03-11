@@ -1,4 +1,4 @@
-<dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+<dl class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
   <div class="space-y-2">
     <Util::DetailItem @label={{if @model.isCompany "Bedrijf" "Naam"}}>
       <div>
@@ -38,7 +38,29 @@
     </Util::DetailItem>
   </div>
 
-  <div>
+  {{#if this.isScopeCustomer}}
+    <div class="my-4 lg:my-0 px-4 py-2 bg-gray-100 rounded-md">
+      <h4 class="rlv-panel-subtitle !text-gray-700">
+        Profiel
+      </h4>
+      <div class="mt-4 space-y-2">
+        <Util::DetailItem @label="BTW tarief">
+          {{@model.profile.vatRate.name}}
+        </Util::DetailItem>
+        <Util::DetailItem @label="Uitvoering">
+          {{or @model.profile.deliveryMethod.label "-"}}
+        </Util::DetailItem>
+        <Util::DetailItem @label="Betalingstermijn">
+          {{@model.profile.invoicePaymentPeriod}} dagen
+        </Util::DetailItem>
+        <Util::DetailItem @label="Voorschot nodig">
+          <Util::DisplayCheckbox @value={{@model.depositRequired}} />
+        </Util::DetailItem>
+      </div>
+    </div>
+  {{/if}}
+
+  <div class="col-start-1">
     <Util::DetailItem @label="Opmerking">
       {{#if @model.comment}}
         <span class="whitespace-pre-wrap">{{@model.comment}}</span>
