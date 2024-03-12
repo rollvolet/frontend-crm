@@ -5,7 +5,16 @@ import { isPresent } from '@ember/utils';
 export default class CustomerDataFilterComponent extends FilterComponent {
   constructor() {
     super(...arguments);
-    super.initFilter(['number', 'name', 'postalCode', 'city', 'street', 'telephone', 'onlyActive']);
+    super.initFilter([
+      'number',
+      'name',
+      'postalCode',
+      'city',
+      'street',
+      'telephone',
+      'keyword',
+      'onlyActive',
+    ]);
   }
 
   @action

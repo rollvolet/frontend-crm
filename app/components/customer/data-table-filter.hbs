@@ -28,18 +28,25 @@
         @value={{this.filter.number}}
         @onInput={{perform this.debounceFilter "number"}} />
     </div>
-    <div class="sm:col-span-5 lg:col-span-3">
+    <div class="sm:col-span-5 lg:col-span-2">
       <Filter::TextInput
         @label="Naam"
         @value={{this.filter.name}}
         @onInput={{perform this.debounceFilter "name"}}
         {{autofocus}}>
         <:tooltip>
-        <Tooltip::WildcardSearch @side="right" />
+          <Tooltip::WildcardSearch @side="right" />
         </:tooltip>
       </Filter::TextInput>
     </div>
-    <div class="sm:col-span-5 lg:col-span-3">
+    <div class="sm:col-span-5 lg:col-span-2">
+      <InputField::CustomerKeywordSelect
+        @label="Label"
+        @value={{this.filter.keyword}}
+        @onSelectionChange={{fn this.setFilterByProperty "keyword" "label"}}
+        class="mt-1" />
+    </div>
+    <div class="sm:col-span-5 lg:col-span-2">
       <Filter::TextInput
         @label="Straat"
         @value={{this.filter.street}}

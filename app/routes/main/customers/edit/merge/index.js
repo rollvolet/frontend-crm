@@ -18,6 +18,7 @@ export default class MainCustomersEditMergeIndexRoute extends Route {
     city: { refreshModel: true },
     street: { refreshModel: true },
     telephone: { refreshModel: true },
+    keyword: { refreshModel: true },
     onlyActive: { refreshModel: true },
   };
 
@@ -40,6 +41,7 @@ export default class MainCustomersEditMergeIndexRoute extends Route {
     const filter = new MuSearchFilter({
       ':prefix:searchNumber': params.number,
       ':prefix:searchPostalCode': params.postalCode,
+      ':term:keywords': params.keyword,
     });
 
     if (params.onlyActive) {

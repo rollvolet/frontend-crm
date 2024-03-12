@@ -18,6 +18,7 @@ export default class MainCaseInterventionEditCustomerRoute extends Route {
     city: { refreshModel: true },
     street: { refreshModel: true },
     telephone: { refreshModel: true },
+    keyword: { refreshModel: true },
   };
 
   constructor() {
@@ -39,6 +40,7 @@ export default class MainCaseInterventionEditCustomerRoute extends Route {
     const filter = new MuSearchFilter({
       ':prefix:searchNumber': params.number,
       ':prefix:searchPostalCode': params.postalCode,
+      ':term:keywords': params.keyword,
       status: CUSTOMER_STATUSES.ACTIVE,
     });
 
