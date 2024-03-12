@@ -19,7 +19,7 @@
 
     {{#if this.isScopeCustomer}}
       <Util::DetailItem @label="Labels">
-        {{join ", " (map-by "label" @model.keywords)}}
+        {{join ", " (map-by "label" (sort-by "label" @model.keywords))}}
       </Util::DetailItem>
     {{/if}}
   </div>

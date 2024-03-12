@@ -53,6 +53,14 @@
               class="mt-1" />
           </div>
         {{/if}}
+        <div class="col-span-2">
+          <InputField::CustomerKeywordSelect
+            @label="Labels"
+            @value={{sort-by "label" @model.keywords}}
+            @multiple={{true}}
+            @onSelectionChange={{queue (fn (mut @model.keywords)) @onSave}}
+            class="mt-1" />
+        </div>
       {{/if}}
       <div class="col-start-1">
         <InputField::HonorificPrefixSelect

@@ -6,6 +6,8 @@ export default {
     DELIVERY_METHODS:
       'http://data.rollvolet.be/concept-scheme/5ea87803-699c-4f83-801c-34add5be9baa',
     EMPLOYEE_TYPES: 'http://data.rollvolet.be/concept-schemes/894b0bab-f0f6-45b3-90a3-cbe04319d5b3',
+    CUSTOMER_KEYWORDS:
+      'http://data.rollvolet.be/concept-scheme/acad0bff-d13d-47d1-92f3-a3625a0a9e44',
   },
   EMPLOYEE_TYPES: {
     ADMINISTRATIVE: 'http://data.rollvolet.be/employee-types/18734ab3-b8c4-428c-aca3-beb4d8e0e0ea',
