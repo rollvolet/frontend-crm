@@ -35,7 +35,7 @@ export default class CustomerMergeComponent extends Component {
       new ExclusivePropertyBlock('language', this.args.left, this.args.right),
       new MergeablePropertyBlock('comment', this.args.left, this.args.right),
       new MergeablePropertyBlock('memo', this.args.left, this.args.right),
-      new MergeablePropertyBlock('tags', this.args.left, this.args.right),
+      new MergeablePropertyBlock('keywords', this.args.left, this.args.right),
       new MergeablePropertyBlock('telephones', this.args.left, this.args.right),
       new MergeablePropertyBlock('emails', this.args.left, this.args.right),
       new ExclusivePropertyBlock('url', this.args.left, this.args.right),

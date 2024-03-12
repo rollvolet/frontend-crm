@@ -63,7 +63,6 @@ export default class CustomerModel extends ValidatedModel {
   @attr('string') vatNumber;
   @attr('string') comment;
   @attr('string') memo;
-  @attr('string-set') tags;
   @attr('datetime', {
     defaultValue() {
       return new Date();
@@ -89,6 +88,7 @@ export default class CustomerModel extends ValidatedModel {
   @hasMany('building', { inverse: 'customer', async: true }) buildings;
   @hasMany('case', { inverse: 'customer', async: true }) cases;
   @hasMany('customer-snapshot', { inverse: 'source', async: true }) snapshots;
+  @hasMany('concept', { inverse: null, async: true }) keywords;
 
   get isCompany() {
     return this.type == CUSTOMER_TYPES.ORGANIZATION;

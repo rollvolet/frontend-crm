@@ -46,10 +46,10 @@
             </Customer::Merge::Block>
 
             <Customer::Merge::Block
-              @label="Tags"
-              @block={{find-by "property" "tags" this.blocks}}
+              @label="Labels"
+              @block={{find-by "property" "keywords" this.blocks}}
               as |tag|>
-              {{tag}}
+              {{tag.label}}
             </Customer::Merge::Block>
 
             <Customer::Merge::Block

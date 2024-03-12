@@ -18,8 +18,8 @@
     </Util::DetailItem>
 
     {{#if this.isScopeCustomer}}
-      <Util::DetailItem @label="Tags">
-        {{join ", " @model.tags}}
+      <Util::DetailItem @label="Labels">
+        {{join ", " (map-by "label" @model.keywords)}}
       </Util::DetailItem>
     {{/if}}
   </div>
