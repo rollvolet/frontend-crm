@@ -1,0 +1,30 @@
+{{page-title "Klantenlabels"}}
+
+<div class="flex items-center justify-between">
+  <div class="flex-1 min-w-0">
+    <h2 class=rlv-page-title>
+      Labels voor klanten
+    </h2>
+  </div>
+</div>
+
+<div class="mt-4 bg-white shadow overflow-hidden border border-gray-200 sm:rounded-md">
+  <ul>
+    {{#each this.model as |keyword|}}
+      <Concept::ListItem
+        @model={{keyword}}
+        @onDelete={{fn this.deleteKeyword keyword}} />
+    {{/each}}
+    <Concept::ListItem::New @onCreate={{fn this.addKeyword}} />
+  </ul>
+</div>
+
+<DataTable::Pagination
+  @page={{this.page}}
+  @size={{this.size}}
+  @total={{this.model.meta.count}}
+  @onPrevious={{this.previousPage}}
+  @onNext={{this.nextPage}}
+  @onSelectPage={{this.selectPage}}
+  class="!px-1"
+/>

@@ -91,6 +91,11 @@
           @query={{hash page=0 sort="type,first-name"}}
           @icon="user-settings-line"
           @label="Gebruikersbeheer" />
+        <Menu::Sidebar::Item
+          @route="main.settings.index"
+          @query={{hash page=0}}
+          @icon="settings-3-line"
+          @label="Instellingen" />
       {{/if}}
     </div>
   </nav>

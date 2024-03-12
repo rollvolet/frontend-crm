@@ -84,5 +84,9 @@ Router.map(function () {
     });
 
     this.route('users', function () {});
+
+    this.route('settings', function () {
+      this.route('customer-keywords');
+    });
   });
 });
