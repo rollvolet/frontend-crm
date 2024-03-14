@@ -14,6 +14,12 @@ export default class MainSettingsCustomerKeywordsController extends Controller {
   @tracked size = 50;
   @tracked sort = 'label';
 
+  countQuery = (uri) => {
+    return this.store.count('customer', {
+      'filter[keywords][:uri:]': uri,
+    });
+  };
+
   @action
   async addKeyword(label) {
     const conceptScheme = await this.store.findRecordByUri(
@@ -33,6 +39,11 @@ export default class MainSettingsCustomerKeywordsController extends Controller {
   async deleteKeyword(keyword) {
     await keyword.destroyRecord();
     this.router.refresh('main.settings.customer-keywords');
+  }
+
+  @action
+  async navigateToCustomers(keyword) {
+    this.router.transitionTo('main.customers.index', { queryParams: { keyword: keyword.label } });
   }
 
   @action

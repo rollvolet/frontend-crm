@@ -30,6 +30,13 @@
       <div class="flex items-center justify-between">
         <div role="button" class="w-full flex items-center space-x-2" {{on "click" this.openEdit}}>
           <span class="py-1.5">{{@model.label}}</span>
+          {{#if @count}}
+            {{#let (load @count) as |count|}}
+              {{#if count.isResolved}}
+                <Rlv::Pill @label={{count.value}} @hideDot={{true}} @onClick={{@onCountClick}} />
+              {{/if}}
+            {{/let}}
+          {{/if}}
           <Rlv::Button
             role="presentation"
             @label="Bewerk"

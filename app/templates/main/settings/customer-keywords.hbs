@@ -13,9 +13,11 @@
     {{#each this.model as |keyword|}}
       <Concept::ListItem
         @model={{keyword}}
+        @count={{this.countQuery keyword.uri}}
+        @onCountClick={{fn this.navigateToCustomers keyword}}
         @onDelete={{fn this.deleteKeyword keyword}} />
     {{/each}}
-    <Concept::ListItem::New @onCreate={{fn this.addKeyword}} />
+    <Concept::ListItem::New @onCreate={{this.addKeyword}} />
   </ul>
 </div>
 
