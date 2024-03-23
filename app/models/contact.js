@@ -56,15 +56,6 @@ export default class ContactModel extends ValidatedModel {
     return printName(this);
   }
 
-  get searchName() {
-    const name = `[${this.position}] ${this.printName}`;
-    if (!this.address.get('isBlank')) {
-      return `${name} (${this.address.get('fullAddress')})`;
-    } else {
-      return name;
-    }
-  }
-
   get isActive() {
     return this.status == CUSTOMER_STATUSES.ACTIVE;
   }

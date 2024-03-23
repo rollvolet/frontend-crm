@@ -2,10 +2,11 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
-import { isPresent, compare } from '@ember/utils';
+import { compare } from '@ember/utils';
 import { action } from '@ember/object';
 import search from '../../utils/mu-search';
 import printName from '../../utils/customer-entity-print-name';
+import fullAddress from '../../utils/full-address';
 import constants from '../../config/constants';
 
 const { CUSTOMER_STATUSES } = constants;
@@ -13,10 +14,7 @@ const { CUSTOMER_STATUSES } = constants;
 function searchName(building) {
   const name = `[${building.position}] ${printName(building)}`;
   if (building.street || building.postalCode || building.city) {
-    const fullAddress = [building.street, `${building.postalCode || ''} ${building.city || ''}`]
-      .filter((line) => isPresent(line))
-      .join(', ');
-    return `${name} (${fullAddress})`;
+    return `${name} (${fullAddress(building)})`;
   } else {
     return name;
   }
