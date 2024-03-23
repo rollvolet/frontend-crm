@@ -10,7 +10,7 @@ export default class VatNumberInputComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this._value = formatVatNumber(this.args.value) || 'BE 0';
+    this._value = formatVatNumber(this.args.value) || 'BE ';
   }
 
   get elementId() {
