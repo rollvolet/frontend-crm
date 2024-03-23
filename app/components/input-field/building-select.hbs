@@ -10,10 +10,10 @@
     @placeholder={{this.placeholder}}
     @searchPlaceholder="Typ om te zoeken"
     @options={{this.options}}
-    @selected={{@value}}
+    @selected={{this.selectedOption}}
     @searchEnabled={{true}}
     @searchField="searchName"
-    @onChange={{@onSelectionChange}}
+    @onChange={{this.selectOption}}
     @noMatchesMessage="Geen resultaten"
     @renderInPlace={{true}}
     @allowClear={{true}}

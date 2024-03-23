@@ -1,5 +1,6 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
+import printName from '../utils/customer-entity-print-name';
 import constants from '../config/constants';
 
 const { CUSTOMER_STATUSES } = constants;
@@ -52,15 +53,7 @@ export default class ContactModel extends ValidatedModel {
   @hasMany('contact-snapshot', { inverse: 'source', async: true }) snapshots;
 
   get printName() {
-    let name = '';
-    if (this.printPrefix && this.prefix) {
-      name += this.prefix + ' ';
-    }
-    name += this.name || '';
-    if (this.printSuffix && this.suffix) {
-      name += ' ' + this.suffix;
-    }
-    return name.trim();
+    return printName(this);
   }
 
   get searchName() {

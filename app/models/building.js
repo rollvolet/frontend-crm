@@ -1,6 +1,7 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
 import { isBlank } from '@ember/utils';
+import printName from '../utils/customer-entity-print-name';
 import constants from '../config/constants';
 
 const { CUSTOMER_STATUSES } = constants;
@@ -57,24 +58,7 @@ export default class BuildingModel extends ValidatedModel {
   }
 
   get printName() {
-    let name = '';
-    if (this.printPrefix && this.prefix) {
-      name += this.prefix + ' ';
-    }
-    name += this.name || '';
-    if (this.printSuffix && this.suffix) {
-      name += ' ' + this.suffix;
-    }
-    return name.trim();
-  }
-
-  get searchName() {
-    const name = `[${this.position}] ${this.printName}`;
-    if (!this.address.get('isBlank')) {
-      return `${name} (${this.address.get('fullAddress')})`;
-    } else {
-      return name;
-    }
+    return printName(this);
   }
 
   get isActive() {
