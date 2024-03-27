@@ -90,6 +90,6 @@ export default class InvoicePanelsComponent extends Component {
 
   @action
   closeUnableToDeleteModal() {
-    this.isOpenUnableToDeleteModals = false;
+    this.isOpenUnableToDeleteModal = false;
   }
 }
