@@ -119,16 +119,20 @@ export default class DepositInvoicePanelsComponent extends Component {
 
   @task
   *createNewCreditNoteForDepositInvoice(invoice) {
+    const [customer, contact, building] = yield Promise.all([
+      this.args.case.customer,
+      this.args.case.contact,
+      this.args.case.building,
+    ]);
+    const [customerSnap, contactSnap, buildingSnap] = yield Promise.all([
+      createCustomerSnapshot(customer),
+      createContactSnapshot(contact),
+      createBuildingSnapshot(building),
+    ]);
+
     const invoiceDate = new Date();
-    const customer = yield this.args.case.customer;
     const profile = yield customer.profile;
     const dueDate = addDays(invoiceDate, profile.invoicePaymentPeriod);
-
-    const [customerSnap, contactSnap, buildingSnap] = yield Promise.all([
-      invoice.customer,
-      invoice.contact,
-      invoice.building,
-    ]);
 
     const creditNote = this.store.createRecord('deposit-invoice', {
       type: INVOICE_TYPES.CREDIT_NOTE,
