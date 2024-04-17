@@ -115,7 +115,9 @@
                   <tr role="button" {{on "click" (fn this.navigateToDetail row)}}>
                     <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
                       <div class="flex items-center space-x-1">
-                        <Invoice::PaymentStatusIcon @isPaid={{row.paymentDate}} />
+                        <Invoice::PaymentStatusIcon
+                          @isPaid={{row.paymentDate}}
+                          @isBooked={{row.bookingDate}} />
                         <span>{{format-invoice-number row.number}}</span>
                       </div>
                       {{#if (eq row.type (app-constant "INVOICE_TYPES.CREDIT_NOTE"))}}
@@ -123,7 +125,10 @@
                       {{/if}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {{format-case-number row.case.identifier}}
+                      <div class="flex items-center space-x-1">
+                        <span>{{format-case-number row.case.identifier}}</span>
+                        <Case::StatusIcon @uri={{row.case.status}} />
+                      </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <Fmt::Date @value={{row.invoiceDate}} />
