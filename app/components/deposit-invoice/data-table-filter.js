@@ -20,7 +20,7 @@ export default class DepositInvoiceDataTableFilterComponent extends FilterCompon
   @action
   resetFilters() {
     this.filterKeys.forEach((key) => this.filter.set(key, undefined));
-    this.filter.set('isCancelled', 0);
+    this.filter.set('isCancelled', -1);
     this.onChange(this.filter);
   }
 }

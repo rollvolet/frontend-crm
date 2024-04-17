@@ -47,13 +47,13 @@
 
       <Menu::Sidebar::Item
         @route="main.deposit-invoices.index"
-        @query={{hash page=0 number=undefined reference=undefined requestNumber=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined isCancelled=0}}
+        @query={{hash page=0 number=undefined reference=undefined requestNumber=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined isCancelled=-1}}
         @icon="coupon-line"
         @label="Voorschotfacturen" />
 
       <Menu::Sidebar::Item
         @route="main.invoices.index"
-        @query={{hash page=0 number=undefined reference=undefined caseIdentifier=undefined requestNumber=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined isCancelled=0}}
+        @query={{hash page=0 number=undefined reference=undefined caseIdentifier=undefined requestNumber=undefined name=undefined postalCode=undefined city=undefined street=undefined telephone=undefined isCancelled=-1}}
         @icon="money-euro-circle-line"
         @label="Facturen" />
     </div>
