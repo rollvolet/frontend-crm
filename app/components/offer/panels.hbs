@@ -40,3 +40,17 @@
     </div>
   </div>
 {{/if}}
+
+{{#if this.isOpenUnableToDeleteModal}}
+  <Rlv::AlertDialog
+    @title="Offerte verwijderen"
+    @closeButtonLabel="OK"
+    @onClose={{this.closeUnableToDeleteModal}}>
+    <p class="text-sm text-gray-500">
+      Offerte {{@model.number}} kan niet verwijderd worden omdat er intussen al een bestelling is aangemaakt.
+    </p>
+    <p class="text-sm text-gray-500">
+      U kan de applicatie best eens herladen om de laatste wijzigingen op te halen.
+    </p>
+  </Rlv::AlertDialog>
+{{/if}}

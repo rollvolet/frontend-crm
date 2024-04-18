@@ -1,12 +1,15 @@
 import Component from '@glimmer/component';
-import { cached } from '@glimmer/tracking';
+import { cached, tracked } from '@glimmer/tracking';
 import { TrackedAsyncData } from 'ember-async-data';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { action } from '@ember/object';
 
 export default class OfferPanelsComponent extends Component {
   @service store;
   @service router;
+
+  @tracked isOpenUnableToDeleteModal = false;
 
   @cached
   get case() {
@@ -44,17 +47,30 @@ export default class OfferPanelsComponent extends Component {
 
   @task
   *delete() {
-    const _case = yield this.args.model.case;
-
-    const offerlines = yield this.store.query('offerline', {
-      'filter[offer][:uri:]': this.args.model.uri,
-      sort: 'position',
-      page: { size: 100 },
+    const order = yield this.store.queryOne('order', {
+      'filter[case][offer][:id:]': this.args.model.id,
     });
-    yield Promise.all(offerlines.map((t) => t.destroyRecord()));
-    yield this.args.model.destroyRecord();
 
-    const request = yield _case.request;
-    this.router.transitionTo('main.case.request.edit.index', _case.id, request.id);
+    if (order) {
+      this.isOpenUnableToDeleteModal = true;
+    } else {
+      const _case = yield this.args.model.case;
+
+      const offerlines = yield this.store.query('offerline', {
+        'filter[offer][:uri:]': this.args.model.uri,
+        sort: 'position',
+        page: { size: 100 },
+      });
+      yield Promise.all(offerlines.map((t) => t.destroyRecord()));
+      yield this.args.model.destroyRecord();
+
+      const request = yield _case.request;
+      this.router.transitionTo('main.case.request.edit.index', _case.id, request.id);
+    }
+  }
+
+  @action
+  closeUnableToDeleteModal() {
+    this.isOpenUnableToDeleteModal = false;
   }
 }
