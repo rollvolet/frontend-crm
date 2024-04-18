@@ -41,7 +41,7 @@ export default class InterventionPanelsComponent extends Component {
   @task
   *delete() {
     const _case = yield this.args.model.case;
-    const customer = yield _case.value.customer;
+    const customer = yield _case.customer;
 
     const visit = yield this.args.model.visit;
     if (visit) {
