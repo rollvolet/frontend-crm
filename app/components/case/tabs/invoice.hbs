@@ -49,26 +49,15 @@
 </li>
 
 {{#if this.isOpenMissingVatRateModal}}
-  <Rlv::Modal @onClose={{this.closeMissingVatRateModal}}>
-    <:body>
-    <div class="sm:flex sm:items-start">
-      <div class="mx-auto shrink-0 flex flex-none items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-        {{svg-jar "alert-fill" class="h-6 w-6 text-red-600 fill-current"}}
-      </div>
-      <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">
-          BTW-tarief ontbreekt
-        </h3>
-        <div class="mt-2 space-y-2">
-          <p class="text-sm text-gray-500">
-            De factuur kan niet opgemaakt worden, omdat het BTW-tarief ontbreekt.
-          </p>
-          <p class="text-sm text-gray-500">
-            Vul het BTW-tarief van het dossier in en probeer opnieuw.
-          </p>
-        </div>
-      </div>
-    </div>
-    </:body>
-  </Rlv::Modal>
+  <Rlv::AlertDialog
+    @title="BTW-tarief ontbreekt"
+    @closeButtonLabel="OK"
+    @onClose={{this.closeMissingVatRateModal}}>
+    <p class="text-sm text-gray-500">
+      De factuur kan niet opgemaakt worden, omdat het BTW-tarief ontbreekt.
+    </p>
+    <p class="text-sm text-gray-500">
+      Vul het BTW-tarief van het dossier in en probeer opnieuw.
+    </p>
+  </Rlv::AlertDialog>
 {{/if}}

@@ -89,33 +89,16 @@
 </div>
 
 {{#if this.isOpenIncompatibleVatRatesModal}}
-  <Rlv::Modal @onClose={{this.closeIncompatibleVatRatesModal}}>
-    <:body>
-    <div class="sm:flex sm:items-start">
-      <div class="mx-auto shrink-0 flex flex-none items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-        {{svg-jar "alert-fill" class="h-6 w-6 text-red-600 fill-current"}}
-      </div>
-      <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">
-          BTW-tarief aanpassen
-        </h3>
-        <div class="mt-2 space-y-2">
-          <p class="text-sm text-gray-500">
-            Het BTW-tarief van het dossier is {{this.case.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{this.orderedVatRate.rate}}% hebben.
-          </p>
-          <p class="text-sm text-gray-500">
-            Mag het BTW-tarief van het dossier aangepast worden naar {{this.orderedVatRate.rate}}%?
-          </p>
-        </div>
-      </div>
-    </div>
-    </:body>
-    <:footer>
-    <Rlv::Button
-      @label="Pas BTW-tarief aan"
-      @skin="primary"
-      class="sm:ml-3"
-      {{on "click" (perform this.updateCaseVatRate)}} />
-    </:footer>
-  </Rlv::Modal>
+  <Rlv::AlertDialog
+    @title="BTW-tarief aanpassen"
+    @confirmationButtonLabel="Pas BTW-tarief aan"
+    @onConfirm={{perform this.updateCaseVatRate}}
+    @onClose={{this.closeIncompatibleVatRatesModal}}>
+    <p class="text-sm text-gray-500">
+      Het BTW-tarief van het dossier is {{this.case.vatRate.rate}}% terwijl de geselecteerde lijnen BTW-tarief {{this.orderedVatRate.rate}}% hebben.
+    </p>
+    <p class="text-sm text-gray-500">
+      Mag het BTW-tarief van het dossier aangepast worden naar {{this.orderedVatRate.rate}}%?
+    </p>
+  </Rlv::AlertDialog>
 {{/if}}

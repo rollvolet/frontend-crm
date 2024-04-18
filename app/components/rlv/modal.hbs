@@ -56,7 +56,7 @@
           {{yield to="footer"}}
           {{#if @onClose}}
             <Rlv::Button
-              @label="Annuleer"
+              @label={{or @closeButtonLabel "Annuleer"}}
               @skin="secondary"
             {{on "click" this.closeModal}} />
           {{/if}}
