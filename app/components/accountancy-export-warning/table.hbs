@@ -1,0 +1,60 @@
+{{#if this.loadData.isRunning}}
+  <div class="py-5">
+    <Util::LoadingSpinner />
+  </div>
+{{else}}
+  {{#if this.warnings.length}}
+    <div class="-my-2 overflow-x-auto sm:-mx-6">
+      <div class="py-2 align-middle inline-block min-w-full sm:px-2">
+        <div class="overflow-hidden border-b border-gray-200">
+          <table class="rlv-dt-panel min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <DataTable::Th
+                  @field="number"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="rlv-dt-th">
+                  Nr.
+                </DataTable::Th>
+                <th class="rlv-dt-th">
+                  Dossier
+                </th>
+                <DataTable::Th
+                  @field="invoice-date"
+                  @currentSort={{this.sort}}
+                  @onUpdateSort={{fn (mut this.sort)}}
+                  class="rlv-dt-th">
+                  Datum
+                </DataTable::Th>
+                <th class="rlv-dt-th">
+                  Naam
+                </th>
+                <th class="rlv-dt-th">
+                  Adres
+                </th>
+                <th class="rlv-dt-th"></th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {{#each this.warnings as |warning|}}
+                <AccountancyExportWarning::TableRow
+                  @invoice={{warning.invoice}}
+                  @onBookInvoice={{this.bookInvoice}} />
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  {{else}}
+    <div class="py-5 flex items-center justify-center space-x-2">
+      <span class="bg-green-50 text-green-700 p-2 rounded-full">
+        {{svg-jar "check-line" class="h-4 w-4 fill-current"}}
+      </span>
+      <span class="text-gray-900 text-sm">
+        Alle facturen zijn succesvol geëxporteerd
+      </span>
+    </div>
+  {{/if}}
+{{/if}}

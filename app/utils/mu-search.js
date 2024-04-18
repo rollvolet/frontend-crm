@@ -129,4 +129,10 @@ async function muSearch(index, page, size, sort, filter, dataMapping, highlightC
   });
 }
 
+async function muSearchOne(index, filter, dataMapping, highlightConfig) {
+  const results = await muSearch(index, 0, 1, null, filter, dataMapping, highlightConfig);
+  return results.content[0];
+}
+
 export default muSearch;
+export { muSearch, muSearchOne };

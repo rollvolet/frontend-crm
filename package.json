@@ -67,6 +67,7 @@
     "ember-fetch": "^8.1.2",
     "ember-file-upload": "^8.4.1",
     "ember-flatpickr": "^7.1.0",
+    "ember-inflector": "^4.0.2",
     "ember-keyboard": "^8.2.1",
     "ember-load-initializers": "^2.1.2",
     "ember-math-helpers": "^4.0.0",
