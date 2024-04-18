@@ -27,16 +27,12 @@
 </div>
 
 {{#if this.showCreateModal}}
-  <Rlv::Modal @width="sm:max-w-4xl sm:w-full" @onClose={{this.closeCreateNewModal}}>
+  <Rlv::Modal
+    @title="Nieuwe postcode toevoegen"
+    @width="sm:max-w-4xl sm:w-full"
+    @onClose={{this.closeCreateNewModal}}>
     <:body>
     <div class="space-y-4">
-      <div class="flex justify-between items-start">
-        <div class="space-y-2">
-          <h2 class="rlv-panel-title">
-            Nieuwe postcode toevoegen
-          </h2>
-        </div>
-      </div>
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-4 items-start">
         <div>
           <label for="postal-code" class="block text-sm font-medium text-gray-700">

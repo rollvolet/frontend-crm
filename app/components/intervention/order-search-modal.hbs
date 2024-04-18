@@ -1,13 +1,9 @@
-<Rlv::Modal @width="sm:w-11/12" @onClose={{@onClose}}>
+<Rlv::Modal
+  @title={{concat "Bestelling zoeken voor interventie " (format-intervention-number @model.number)}}
+  @width="sm:w-11/12"
+  @onClose={{@onClose}}>
   <:body>
   <div class="space-y-4">
-    <div class="flex justify-between items-start">
-      <div class="space-y-2">
-        <h2 class="rlv-panel-title">
-          Bestelling zoeken voor interventie {{format-intervention-number @model.number}}
-        </h2>
-      </div>
-    </div>
     <div class="p-4 lg:px-6 space-y-4 lg:flex lg:items-start lg:space-x-12 lg:space-y-0 bg-gray-50 rounded">
       <div class="flex items-center">
         {{svg-jar "search-line" class="shrink-0 mr-2 h-4 w-4 text-gray-500 fill-current"}}

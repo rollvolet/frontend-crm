@@ -1,13 +1,8 @@
-<Rlv::Modal @width="max-w-5xl" @onClose={{this.cancel}}>
+<Rlv::Modal
+  @title={{concat "Gebruiker " (if @model.isNew "aanmaken" "bewerken")}}
+  @width="max-w-5xl" @onClose={{this.cancel}}>
   <:body>
   <div class="space-y-4">
-    <div class="flex justify-between items-start">
-      <div class="space-y-2">
-        <h2 class="rlv-panel-title">
-          Gebruiker {{#if @model.isNew}}aanmaken{{else}}bewerken{{/if}}
-        </h2>
-      </div>
-    </div>
     <form {{on "submit" this.save}} class="space-y-6">
       <div class="pt-6 sm:pt-5 grid grid-cols-1 gap-6 sm:grid-cols-6">
         <div class="sm:col-span-2">

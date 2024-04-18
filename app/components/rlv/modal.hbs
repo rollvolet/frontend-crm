@@ -25,21 +25,28 @@
           leaveClass="opacity-100 translate-y-0 sm:scale-100"
           leaveActiveClass="ease-in duration-200"
           leaveToClass="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}}>
-      {{#if (has-block "header")}}
-        {{yield to="header"}}
-      {{else}}
-        {{#if @onClose}}
-          <div class="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
-            <Rlv::Button
-              @label="Sluiten"
-              @hideText={{true}}
-              @icon="close-line"
-              @skin="secondary-naked"
-              @size="xlarge"
-              class="p-0"
-              {{on "click" this.closeModal}} />
+      {{#if @onClose}}
+        <div class="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
+          <Rlv::Button
+            @label="Sluiten"
+            @hideText={{true}}
+            @icon="close-line"
+            @skin="secondary-naked"
+            @size="xlarge"
+            class="p-0"
+            {{on "click" this.closeModal}} />
+        </div>
+      {{/if}}
+      {{#if @title}}
+        <div class="mb-4 flex justify-between items-start">
+          <div class="space-y-2">
+            <h2 class="rlv-panel-title">
+              {{@title}}
+            </h2>
           </div>
-        {{/if}}
+        </div>
+      {{else if (has-block "header")}}
+        {{yield to="header"}}
       {{/if}}
       {{#if (has-block "body")}}
         {{yield to="body"}}

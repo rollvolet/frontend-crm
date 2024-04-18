@@ -33,23 +33,15 @@
 {{#if this.isOpenEditModal}}
   <Rlv::Modal @width="sm:max-w-5xl xl:w-full" @onClose={{this.closeEditModal}}>
     <:header>
-    <div class="absolute top-0 right-0 pt-4 pr-4">
-      <Util::SaveStatus @model={{@model}} @task={{this.save}} class="mb-0.5" />
-      <Rlv::Button
-        @label="Sluiten"
-        @hideText={{true}}
-        @icon="close-line"
-        @skin="secondary-naked"
-        @size="xlarge"
-        class="px-2"
-        {{on "click" this.closeEditModal}} />
-    </div>
+      <div class="absolute top-0 right-0 pt-4 mr-12">
+        <Util::SaveStatus @model={{@model}} @task={{this.save}} class="mt-0.5" />
+      </div>
     </:header>
     <:body>
-    <CustomerEntity::Form
-      @model={{@model}}
-      @scope="building"
-      @onSave={{perform this.save}} />
+      <CustomerEntity::Form
+        @model={{@model}}
+        @scope="building"
+        @onSave={{perform this.save}} />
     </:body>
   </Rlv::Modal>
 {{/if}}
