@@ -1,5 +1,5 @@
-import { service } from '@ember/service';
 import Component from '@glimmer/component';
+import { service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';

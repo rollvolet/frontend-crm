@@ -66,22 +66,18 @@
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
           {{#if this.isLinkedToCustomer}}
-            {{#let (load @model.visit) as |visit|}}
-              {{#if visit.isResolved}}
-                {{#if visit.value.isMasteredByAccess}}
-                  <CalendarEvent::DetailView
+            {{#if @model.requiresVisit}}
+              {{#let (load @model.timeSlot) as |timeSlot|}}
+                {{#if (and timeSlot.isResolved timeSlot.value)}}
+                  <TimeSlot::DetailEdit
                     @title="bezoek"
-                    @model={{visit.value}}
-                    @onSynchronize={{perform this.synchronizeCalendarEvent}} />
-                {{else if visit.value}}
-                  <CalendarEvent::DetailEdit
-                    @title="bezoek"
-                    @model={{visit.value}}
-                    @onCalendarPeriodChange={{perform this.updateCalendarPeriod}}
-                    @saveTask={{this.saveCalendarEvent}} />
+                    @date={{@model.indicativeVisitDate}}
+                    @period={{@model.indicativeVisitPeriod}}
+                    @model={{timeSlot.value}}
+                    @onChange={{perform this.updateVisit}} />
                 {{/if}}
-              {{/if}}
-            {{/let}}
+              {{/let}}
+            {{/if}}
           {{/if}}
         </div>
         <div>
@@ -128,8 +124,8 @@
                   <Input
                     id="requires-visit"
                     @type="checkbox"
-                    @checked={{not (is-empty @model.visit.id)}}
-                    disabled={{or @model.visit.isMasteredByAccess this.setRequiresVisit.isRunning}}
+                    @checked={{@model.requiresVisit}}
+                    disabled={{this.setRequiresVisit.isRunning}}
                     {{on "input" (perform this.setRequiresVisit)}}
                     class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
                 </div>
@@ -169,14 +165,17 @@
     {{else}}
       <dl class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div class="mb-4 sm:mb-0 sm:order-2">
-          {{#let (load @model.visit) as |visit|}}
-            {{#if visit.isResolved}}
-              <CalendarEvent::DetailView
-                @title="bezoek"
-                @model={{visit.value}}
-                @onSynchronize={{perform this.forceCalendarEventSynchronization}} />
-            {{/if}}
-          {{/let}}
+          {{#if @model.requiresVisit}}
+            {{#let (load @model.timeSlot) as |timeSlot|}}
+              {{#if timeSlot.isResolved}}
+                <TimeSlot::DetailView
+                  @title="bezoek"
+                  @model={{timeSlot.value}}
+                  @date={{@model.indicativeVisitDate}}
+                  @period={{@model.indicativeVisitPeriod}} />
+              {{/if}}
+            {{/let}}
+          {{/if}}
         </div>
         <div class="space-y-2 sm:order-1">
           <Util::DetailItem @label="Datum">
@@ -189,7 +188,7 @@
             {{@model.employee.firstName}}
           </Util::DetailItem>
           <Util::DetailItem @label="Bezoek nodig" class="items-center">
-            <Util::DisplayCheckbox @value={{@model.visit.id}} />
+            <Util::DisplayCheckbox @value={{@model.requiresVisit}} />
           </Util::DetailItem>
           <Util::DetailItem @label="Bezoeker">
             {{@model.visitor.firstName}}

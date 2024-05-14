@@ -1,5 +1,6 @@
 import { attr, belongsTo } from '@ember-data/model';
 import ValidatedModel, { Validator } from './validated-model';
+import { isPresent } from '@ember/utils';
 
 export default class RequestModel extends ValidatedModel {
   validators = {
@@ -16,6 +17,8 @@ export default class RequestModel extends ValidatedModel {
   @attr('number') number;
   @attr('string') description;
   @attr('string') comment;
+  @attr('date') indicativeVisitDate;
+  @attr('string') indicativeVisitPeriod;
   @attr('string', {
     defaultValue() {
       return 'RKB';
@@ -25,6 +28,7 @@ export default class RequestModel extends ValidatedModel {
 
   @belongsTo('case', { inverse: 'request', async: true }) case;
   @belongsTo('calendar-event', { inverse: 'request', async: true }) visit;
+  @belongsTo('time-slot', { inverse: 'request', async: true }) timeSlot;
   @belongsTo('concept', { inverse: null, async: true }) wayOfEntry;
   @belongsTo('employee', { inverse: 'acceptedRequests', async: true }) employee;
   @belongsTo('employee', { inverse: 'visitedRequests', async: true }) visitor;
@@ -32,5 +36,9 @@ export default class RequestModel extends ValidatedModel {
 
   get isMasteredByAccess() {
     return this.source == 'Access';
+  }
+
+  get requiresVisit() {
+    return isPresent(this.indicativeVisitDate);
   }
 }

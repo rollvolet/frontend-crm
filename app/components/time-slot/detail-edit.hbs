@@ -1,0 +1,82 @@
+<div class="p-4 bg-gray-100 rounded-lg">
+  <div class="space-y-3">
+    <div class="flex justify-between items-center">
+      <div class="flex flex-row items-center">
+        <div class="flex-none">
+          {{svg-jar "calendar-event-line" class="h-5 w-5 text-gray-500 fill-current"}}
+        </div>
+        <div class="ml-3 text-lg font-semibold text-gray-600">
+          {{capitalize @title}}
+        </div>
+      </div>
+      <div>
+        {{#if @onDelete}}
+          <Rlv::Button
+            @label={{concat "Wis " @title}}
+            @icon="prohibited-line"
+            @skin="secondary-link"
+            @size="small"
+            {{on "click" (perform this.delete)}} />
+        {{/if}}
+      </div>
+    </div>
+    <div>
+      <div class="grid grid-cols-2 gap-y-4 gap-x-4">
+        <div class="col-span-2">
+          <InputField::Date
+            @label="Datum"
+            @value={{@date}}
+            @onChange={{this.changeDate}}
+            class="mt-1" />
+        </div>
+        {{#if @date}}
+          <div class="col-span-2">
+            <InputField::CalendarPeriodSelect
+              @label="Periode"
+              @value={{this.calendarPeriod.period}}
+              @required={{true}}
+              @onSelectionChange={{this.selectPeriod}}
+              class="mt-1" />
+          </div>
+          {{#if this.calendarPeriod.requiresSingleTime}}
+            <div>
+              <label for="period-from" class="block text-sm font-medium text-gray-700">
+                Tijdstip
+              </label>
+              <Input
+                id="period-from"
+                @type="text"
+                @value={{this.calendarPeriod.fromHour}}
+                class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                {{on "focusout" this.changePeriod}} />
+            </div>
+          {{/if}}
+          {{#if this.calendarPeriod.requiresTimeRange}}
+            <div>
+              <label for="period-from" class="block text-sm font-medium text-gray-700">
+                Van
+              </label>
+              <Input
+                id="period-from"
+                @type="text"
+                @value={{this.calendarPeriod.fromHour}}
+                class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                {{on "focusout" this.changePeriod}} />
+            </div>
+            <div>
+              <label for="period-to" class="block text-sm font-medium text-gray-700">
+                Tot
+              </label>
+              <Input
+                id="period-to"
+                @type="text"
+                @value={{this.calendarPeriod.untilHour}}
+                class="mt-1 shadow-sm focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md"
+                {{on "focusout" this.changePeriod}} />
+            </div>
+          {{/if}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>

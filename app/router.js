@@ -83,6 +83,10 @@ Router.map(function () {
       this.route('outstanding-jobs', function () {});
     });
 
+    this.route('calendar', function () {
+      this.route('visits');
+    });
+
     this.route('users', function () {});
 
     this.route('settings', function () {
