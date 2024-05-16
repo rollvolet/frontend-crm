@@ -4,7 +4,15 @@ import { all, dropTask } from 'ember-concurrency';
 import constants from '../config/constants';
 import { PAGE_SIZE } from '../config';
 
-const { COUNTRIES, CONCEPT_SCHEMES, LANGUAGES, TELEPHONE_TYPES, WAY_OF_ENTRIES } = constants;
+const {
+  COUNTRIES,
+  CONCEPT_SCHEMES,
+  LANGUAGES,
+  TELEPHONE_TYPES,
+  DELIVERY_METHODS,
+  WAY_OF_ENTRIES,
+  VAT_RATES,
+} = constants;
 
 export default class CodelistService extends Service {
   @service store;
@@ -60,6 +68,22 @@ export default class CodelistService extends Service {
   get defaultWayOfEntry() {
     const value = this.store.peekAll('concept').find((c) => c.uri == WAY_OF_ENTRIES.TELEPHONE);
     warn('No default way of entry Telephone found', value != null, { id: 'no-default-value' });
+    return value;
+  }
+
+  get defaultVatRate() {
+    const value = this.store.peekAll('vat-rate').find((c) => c.uri == VAT_RATES.PCT_21);
+    warn('No default VAT rate 21% found', value != null, { id: 'no-default-value' });
+    return value;
+  }
+
+  get defaultDeliveryMethod() {
+    const value = this.store
+      .peekAll('concept')
+      .find((c) => c.uri == DELIVERY_METHODS.TO_BE_INSTALLED);
+    warn("No default delivery method 'Te plaatsen' found", value != null, {
+      id: 'no-default-value',
+    });
     return value;
   }
 

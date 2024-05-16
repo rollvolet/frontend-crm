@@ -41,6 +41,7 @@ export default {
   },
   VAT_RATES: {
     TAXFREE: 'http://data.rollvolet.be/vat-rates/79b5aafb-d4da-49c4-a631-665f2dda807f',
+    PCT_21: 'http://data.rollvolet.be/vat-rates/93c1ba2d-3226-441f-bb65-fc498f420a56',
   },
   ACTIVITY_TYPES: {
     INVALIDATION: 'http://data.rollvolet.be/concepts/5b0eb3d6-bbfb-449a-88c1-ec23ae341dca',

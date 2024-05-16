@@ -14,7 +14,17 @@ export default class NewRoute extends Route {
     const address = this.store.createRecord('address', {
       country: this.codelist.defaultCountry,
     });
-    const [number] = await Promise.all([this.sequence.fetchNextCustomerNumber(), address.save()]);
+    const profile = this.store.createRecord('customer-profile', {
+      invoicePaymentPeriod: 14,
+      depositRequired: true,
+      vatRate: this.codelist.defaultVatRate,
+      deliveryMethod: this.codelist.defaultDeliveryMethod,
+    });
+    const [number] = await Promise.all([
+      this.sequence.fetchNextCustomerNumber(),
+      address.save(),
+      profile.save(),
+    ]);
     const customer = this.store.createRecord('customer', {
       type: CUSTOMER_TYPES.INDIVIDUAL,
       number,
@@ -23,6 +33,7 @@ export default class NewRoute extends Route {
       printSuffix: true,
       language: this.codelist.defaultLanguage,
       address,
+      profile,
     });
 
     return customer.save();
