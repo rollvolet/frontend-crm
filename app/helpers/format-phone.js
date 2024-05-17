@@ -51,7 +51,14 @@ function findArea(value) {
 
 // all known area numbers in Belgium as found on
 // https://nl.wikipedia.org/wiki/Lijst_van_Belgische_zonenummers
+// and https://www.zonenummer.eu/
 const AREA_NUMBERS = [
+  // Special and paying services
+  '070',
+  '077',
+  '078',
+  '0800',
+  // By location
   '02',
   '03',
   '04',
