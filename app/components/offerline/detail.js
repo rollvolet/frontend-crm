@@ -15,12 +15,20 @@ export default class OfferlineDetailComponent extends Component {
     super(...arguments);
     this.editMode = this.args.model.initialEditMode;
     this.isShownCalculation = this.args.model.initialEditMode;
-    this.loadData.perform();
+    this.ensureConsistentState.perform();
   }
 
   @keepLatestTask
-  *loadData() {
-    yield this.updateOfferlineAmount.perform(); // ensure total offerline amount is up-to-date
+  *ensureConsistentState() {
+    // ensure total offerline amount is up-to-date
+    yield this.updateOfferlineAmount.perform();
+
+    // cleanup empty calculation lines
+    const calculationLines = yield this.args.model.calculationLines;
+    if (calculationLines.length > 1) {
+      const emptyCalculationLines = calculationLines.filter((line) => line.isEmpty);
+      yield Promise.all(emptyCalculationLines.map((line) => line.destroyRecord()));
+    }
   }
 
   get showUnsavedWarning() {

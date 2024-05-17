@@ -1,4 +1,5 @@
 import { attr, belongsTo } from '@ember-data/model';
+import { isEmpty } from '@ember/utils';
 import ValidatedModel, { Validator } from './validated-model';
 
 export default class CalculationLineModel extends ValidatedModel {
@@ -39,5 +40,9 @@ export default class CalculationLineModel extends ValidatedModel {
     } else {
       return this.amount;
     }
+  }
+
+  get isEmpty() {
+    return isEmpty(this.amount) && isEmpty(this.description) && isEmpty(this.reductionRate);
   }
 }

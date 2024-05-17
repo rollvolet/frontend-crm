@@ -3,26 +3,18 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { task } from 'ember-concurrency';
 import { guidFor } from '@ember/object/internals';
-import { isEmpty } from '@ember/utils';
 
 export default class CalculationLineDetailComponent extends Component {
   @tracked editMode = false;
 
   constructor() {
     super(...arguments);
-    this.editMode = !this.args.isDisabledEdit && (this.args.initialEditMode || this.isEmpty);
+    this.editMode =
+      !this.args.isDisabledEdit && (this.args.initialEditMode || this.args.model.isEmpty);
   }
 
   get fieldId() {
     return guidFor(this);
-  }
-
-  get isEmpty() {
-    return (
-      isEmpty(this.args.model.amount) &&
-      isEmpty(this.args.model.description) &&
-      isEmpty(this.args.model.reductionRate)
-    );
   }
 
   get isAmountInvalid() {
