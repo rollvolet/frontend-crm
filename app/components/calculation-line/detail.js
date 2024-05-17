@@ -30,7 +30,8 @@ export default class CalculationLineDetailComponent extends Component {
 
   async _save() {
     const { validations } = await this.args.model.validate();
-    if (validations.isValid) {
+    // Only attributes can be edited. Check if they changed before saving.
+    if (this.args.model.hasDirtyAttributes && validations.isValid) {
       await this.args.model.save();
       await this.args.didSave();
     }
