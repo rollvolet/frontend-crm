@@ -14,6 +14,13 @@ export default class ConceptListItemComponent extends Component {
   }
 
   @action
+  updateLabel(e) {
+    e.preventDefault();
+    this.args.model.label = e.target.value;
+    this.args.model.langLabel = [];
+  }
+
+  @action
   cancelEdit() {
     this.args.model.rollbackAttributes();
     this.editMode = false;
