@@ -20,12 +20,12 @@ export default class CodelistService extends Service {
   @dropTask
   *load() {
     const entities = [
-      'country',
-      'telephone-type',
-      'language',
-      'postal-code',
-      'vat-rate',
-      'employee',
+      { type: 'country', sort: 'name' },
+      { type: 'telephone-type', sort: 'label' },
+      { type: 'language', sort: 'name' },
+      { type: 'postal-code', sort: 'name' },
+      { type: 'vat-rate', sort: 'position' },
+      { type: 'employee', sort: 'first-name' },
     ];
     const conceptSchemes = [
       CONCEPT_SCHEMES.HONORIFIC_PREFIXES,
@@ -34,8 +34,11 @@ export default class CodelistService extends Service {
       CONCEPT_SCHEMES.EMPLOYEE_TYPES,
     ];
     yield all([
-      ...entities.map((type) => {
-        return this.store.queryAll(type, { 'page[size]': PAGE_SIZE.CODELISTS });
+      ...entities.map(({ type, sort }) => {
+        return this.store.queryAll(type, {
+          'page[size]': PAGE_SIZE.CODELISTS,
+          sort,
+        });
       }),
       ...conceptSchemes.map((conceptScheme) => {
         return this.store.queryAll('concept', {
