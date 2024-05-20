@@ -62,8 +62,20 @@
       <Menu::Sidebar::Item
         @route="main.reports.outstanding-jobs.index"
         @query={{hash page=0 visitorUri=undefined orderDate=undefined hasProductionTicket="-1" isProductReady="-1" deliveryMethodUri=undefined sort="order-date"}}
-        @icon="calendar-event-line"
+        @icon="calendar-todo-fill"
         @label="Uit te voeren werken" />
+
+      <div class="text-red-100 flex items-center px-2 py-2 text-base font-medium">
+        {{svg-jar "calendar-schedule-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
+        Agenda
+      </div>
+      <div class="space-y-1">
+        <Menu::Sidebar::Item
+          @route="main.calendar.visits"
+          @label="Klantenbezoeken"
+          @query={{hash d=undefined}}
+          @level={{2}} />
+      </div>
 
       <div class="text-red-100 flex items-center px-2 py-2 text-base font-medium">
         {{svg-jar "bar-chart-2-line" class="mr-4 h-6 w-6 text-red-300 fill-current"}}
