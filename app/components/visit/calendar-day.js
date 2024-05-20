@@ -18,7 +18,6 @@ export default class VisitCalendarDayComponent extends Component {
   @service router;
 
   @tracked calendar;
-  @tracked date = this.args.date || new Date();
 
   @keepLatestTask
   *loadEvents(date) {
@@ -86,7 +85,32 @@ export default class VisitCalendarDayComponent extends Component {
 
   @action
   async renderCalendar(element) {
-    const { events, resources } = await this.loadEvents.perform(this.date);
+    const { events, resources } = await this.loadEvents.perform(this.args.date);
+
+    const updateDate = async (date) => {
+      this.args.onDidChangeDate(date);
+      const { events, resources } = await this.loadEvents.perform(date);
+      this.calendar.setOption('resources', resources);
+      this.calendar.setOption('events', events);
+    };
+
+    const updateTimeSlot = async (timeSlot, start, end) => {
+      timeSlot.start = start;
+      timeSlot.end = end;
+      if (timeSlot.hasDirtyAttributes) {
+        await timeSlot.save();
+      }
+    };
+
+    const updateVisitor = async (request, employeeId) => {
+      if (employeeId == 'undefined') {
+        request.visitor = null;
+      } else {
+        const employee = await this.store.findRecord('employee', employeeId);
+        request.visitor = employee;
+      }
+      await request.save();
+    };
 
     this.calendar = new Calendar({
       target: element,
@@ -100,59 +124,31 @@ export default class VisitCalendarDayComponent extends Component {
           displayEventEnd: false,
           eventClassNames:
             'bg-gray-200 text-gray-900 rounded text-sm px-2 py-1 border border-gray-300',
-          date: this.date,
+          date: this.args.date,
           resources: resources,
           events: events,
           editable: true,
           // User clicks previous/next day button
-          datesSet: (info) => this.updateDate(info.start),
+          datesSet: (info) => updateDate(info.start),
           eventResize: (info) => {
-            const event = info.event;
-            this.updateTimeSlot(event.id, event.start, event.end);
+            const { extendedProps, start, end } = info.event;
+            const { timeSlot } = extendedProps;
+            updateTimeSlot(timeSlot, start, end);
           },
           eventDrop: (info) => {
-            const event = info.event;
-            this.updateTimeSlot(event.extendedProps.timeSlot, event.start, event.end);
+            const { extendedProps, start, end } = info.event;
+            const { timeSlot, request } = extendedProps;
+            updateTimeSlot(timeSlot, start, end);
             if (info.newResource) {
-              this.updateVisitor(event.extendedProps.request, info.newResource.id);
+              updateVisitor(request, info.newResource.id);
             }
           },
           eventClick: (info) => {
-            const props = info.event.extendedProps;
-            this.router.transitionTo(
-              'main.case.request.edit.index',
-              props.case.id,
-              props.request.id
-            );
+            const { case: _case, request } = info.event.extendedProps;
+            this.router.transitionTo('main.case.request.edit.index', _case.id, request.id);
           },
         },
       },
     });
-  }
-
-  async updateDate(date) {
-    this.date = date;
-    this.args.onDidChangeDate(date);
-    const { events, resources } = await this.loadEvents.perform(date);
-    this.calendar.setOption('resources', resources);
-    this.calendar.setOption('events', events);
-  }
-
-  async updateTimeSlot(timeSlot, start, end) {
-    timeSlot.start = start;
-    timeSlot.end = end;
-    if (timeSlot.hasDirtyAttributes) {
-      await timeSlot.save();
-    }
-  }
-
-  async updateVisitor(request, employeeId) {
-    if (employeeId == 'undefined') {
-      request.visitor = null;
-    } else {
-      const employee = await this.store.findRecord('employee', employeeId);
-      request.visitor = employee;
-    }
-    await request.save();
   }
 }
