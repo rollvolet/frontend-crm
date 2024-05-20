@@ -12,7 +12,7 @@ export default class MainUsersIndexController extends Controller {
 
   @tracked page = 0;
   @tracked size = 50;
-  @tracked sort = 'type,first-name';
+  @tracked sort = '-user.user-groups,types,first-name';
   @tracked onlyActive = true;
   @tracked selectedEmployee;
 

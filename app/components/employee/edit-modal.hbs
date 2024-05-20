@@ -35,12 +35,12 @@
             @value={{@model.initials}}
             class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-sm border-gray-300 rounded-md" />
         </div>
-        <div class="sm:col-span-2">
+        <div class="sm:col-span-4">
           <InputField::EmployeeTypeSelect
             @label="Rol"
-            @value={{this.employeeType.value}}
-            @onSelectionChange={{this.selectType}}
-            @disabled={{this.employeeType.isPending}}
+            @value={{this.employeeTypes.value}}
+            @onSelectionChange={{this.selectTypes}}
+            @disabled={{this.employeeTypes.isPending}}
             class="mt-1" />
         </div>
       </div>

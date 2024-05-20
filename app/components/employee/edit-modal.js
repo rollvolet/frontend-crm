@@ -8,12 +8,11 @@ export default class UserEditModalComponent extends Component {
   @service store;
 
   @cached
-  get employeeType() {
-    if (this.args.model.type) {
-      return new TrackedAsyncData(this.store.findRecordByUri('concept', this.args.model.type));
-    } else {
-      return null;
-    }
+  get employeeTypes() {
+    const promise = Promise.all(
+      this.args.model.types.map((uri) => this.store.findRecordByUri('concept', uri))
+    );
+    return new TrackedAsyncData(promise);
   }
 
   @cached
@@ -49,8 +48,8 @@ export default class UserEditModalComponent extends Component {
   }
 
   @action
-  selectType(type) {
-    this.args.model.type = type?.uri;
+  selectTypes(types) {
+    this.args.model.types = types.map((type) => type.uri);
   }
 
   @action

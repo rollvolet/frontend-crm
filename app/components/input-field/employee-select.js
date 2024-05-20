@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { compare } from '@ember/utils';
 
-export default class EmployeeSelect extends Component {
+export default class InputFieldEmployeeSelect extends Component {
   @service store;
 
   get employees() {
@@ -17,10 +17,10 @@ export default class EmployeeSelect extends Component {
 
     const enabledFilters = ['isTechnician', 'isAdministrative'].filter((key) => this[key]);
     if (enabledFilters.length) {
-      const matches = function (employee) {
+      const matchFilterFn = function (employee) {
         return enabledFilters.some((key) => employee[key]);
       };
-      employees = employees.filter((e) => matches(e));
+      employees = employees.filter(matchFilterFn);
     }
 
     return employees;

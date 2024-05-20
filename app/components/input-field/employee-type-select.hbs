@@ -1,19 +1,16 @@
-{{#if @label}}
-  <label for="employee-type-select" class="block text-sm font-medium text-gray-700">
-    {{@label}}
-  </label>
-{{/if}}
-<div ...attributes>
-  <PowerSelect
-    @placeholder={{this.placeholder}}
-    @options={{this.sortedOptions}}
-    @selected={{@value}}
-    @searchEnabled={{false}}
-    @onChange={{@onSelectionChange}}
-    @allowClear={{false}}
-    @disabled={{@disabled}}
-    as |option|
-  >
-    {{option.label}}
-  </PowerSelect>
-</div>
+<fieldset>
+  {{#if @label}}
+    <label for="employee-type-select" class="block text-sm font-medium text-gray-700">
+      {{@label}}
+    </label>
+  {{/if}}
+  <div class="mt-1 sm:flex space-y-5 sm:space-y-0 sm:space-x-6" ...attributes>
+    {{#each this.sortedOptions as |option|}}
+      <InputField::Checkbox
+        @id={{concat "option-" option.id}}
+        @label={{option.label}}
+        @value={{includes option @value}}
+        @onChange={{fn this.updateValue option}} />
+    {{/each}}
+  </div>
+</fieldset>

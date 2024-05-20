@@ -6,7 +6,7 @@ const { EMPLOYEE_TYPES } = constants;
 
 export default class EmployeeClass extends Model {
   @attr('string') uri;
-  @attr('string') type;
+  @attr('uri-set') types;
   @attr('string') firstName;
   @attr('string') lastName;
   @attr('string') initials;
@@ -25,11 +25,14 @@ export default class EmployeeClass extends Model {
   technicalWorkActivities;
 
   get isTechnician() {
-    return this.type == EMPLOYEE_TYPES.TECHNICIAN;
+    return this.types.includes(EMPLOYEE_TYPES.TECHNICIAN);
   }
 
   get isAdministrative() {
-    return this.type == EMPLOYEE_TYPES.ADMINISTRATIVE;
+    return (
+      this.types.includes(EMPLOYEE_TYPES.ADMINISTRATIVE) ||
+      this.types.includes(EMPLOYEE_TYPES.MEASURER)
+    );
   }
 
   get isActive() {

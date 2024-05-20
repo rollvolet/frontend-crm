@@ -87,8 +87,12 @@
                   <td class="px-6 py-4 text-sm font-medium text-gray-900">
                     {{employee.initials}}
                   </td>
-                  <td class="px-6 py-4 text-sm text-gray-500">
-                    <Concept::Label @uri={{employee.type}} />
+                  <td class="px-6 py-4 text-sm text-gray-500 space-y-1">
+                    {{#each employee.types as |type|}}
+                      <div>
+                        <Concept::Label @uri={{type}} />
+                      </div>
+                    {{/each}}
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-500">
                     {{employee.user.account.accountName}}
