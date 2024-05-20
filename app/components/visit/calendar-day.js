@@ -128,6 +128,10 @@ export default class VisitCalendarDayComponent extends Component {
           resources: resources,
           events: events,
           editable: true,
+          theme: function (theme) {
+            theme.today = null;
+            return theme;
+          },
           // User clicks previous/next day button
           datesSet: (info) => updateDate(info.start),
           eventResize: (info) => {
