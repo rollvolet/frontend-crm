@@ -13,12 +13,12 @@ import addDays from 'date-fns/addDays';
 import formatISO from 'date-fns/formatISO';
 import { formatRequestNumber } from '../../helpers/format-request-number';
 
-export default class CalendarDayComponent extends Component {
+export default class VisitCalendarDayComponent extends Component {
   @service store;
   @service router;
 
   @tracked calendar;
-  @tracked date = this.args.date || new Date(Date.parse('2024-05-15T00:00:00'));
+  @tracked date = this.args.date || new Date();
 
   @keepLatestTask
   *loadEvents(date) {
@@ -132,6 +132,7 @@ export default class CalendarDayComponent extends Component {
 
   async updateDate(date) {
     this.date = date;
+    this.args.onDidChangeDate(date);
     const { events, resources } = await this.loadEvents.perform(date);
     this.calendar.setOption('resources', resources);
     this.calendar.setOption('events', events);
