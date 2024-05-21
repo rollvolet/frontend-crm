@@ -23,12 +23,22 @@ export default class VisitCalendarDayComponent extends Component {
   @service router;
 
   @tracked calendar;
+  @tracked requests = [];
+
   get currentMeasurers() {
     return this.store
       .peekAll('employee')
       .filter((employee) => employee.isActive && employee.types.includes(EMPLOYEE_TYPES.MEASURER));
   }
 
+  @keepLatestTask
+  *loadUnplannedRequests(date) {
+    this.requests = yield this.store.queryAll('request', {
+      include: 'visitor,case.customer,case.building',
+      'filter[:has-no:time-slot]': 't',
+      'filter[indicative-visit-date]': formatISO(date, { representation: 'date' }),
+    });
+  }
 
   @keepLatestTask
   *loadEventsAndResources(date) {
@@ -101,12 +111,14 @@ export default class VisitCalendarDayComponent extends Component {
   @action
   async renderCalendar(element) {
     const { events, resources } = await this.loadEventsAndResources.perform(this.args.date);
+    await this.loadUnplannedRequests.perform(this.args.date);
 
     const updateDate = async (date) => {
       this.args.onDidChangeDate(date);
       const { events, resources } = await this.loadEventsAndResources.perform(date);
       this.calendar.setOption('resources', resources);
       this.calendar.setOption('events', events);
+      await this.loadUnplannedRequests.perform(date);
     };
 
     const updateTimeSlot = async (timeSlot, start, end) => {
