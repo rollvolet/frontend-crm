@@ -10,17 +10,28 @@ import TimeGrid from '@event-calendar/time-grid';
 import ResourceTimeGrid from '@event-calendar/resource-time-grid';
 import Interaction from '@event-calendar/interaction';
 import addDays from 'date-fns/addDays';
+import isFuture from 'date-fns/isFuture';
+import isToday from 'date-fns/isToday';
 import formatISO from 'date-fns/formatISO';
 import { formatRequestNumber } from '../../helpers/format-request-number';
+import constants from '../../config/constants';
+
+const { EMPLOYEE_TYPES } = constants;
 
 export default class VisitCalendarDayComponent extends Component {
   @service store;
   @service router;
 
   @tracked calendar;
+  get currentMeasurers() {
+    return this.store
+      .peekAll('employee')
+      .filter((employee) => employee.isActive && employee.types.includes(EMPLOYEE_TYPES.MEASURER));
+  }
+
 
   @keepLatestTask
-  *loadEvents(date) {
+  *loadEventsAndResources(date) {
     const nextDay = addDays(date, 1);
 
     const timeSlots = yield this.store.queryAll('time-slot', {
@@ -31,7 +42,12 @@ export default class VisitCalendarDayComponent extends Component {
     });
 
     const requests = yield Promise.all(timeSlots.map((timeSlot) => timeSlot.request));
-    const visitors = yield Promise.all(requests.map((request) => request.visitor));
+    let visitors = yield Promise.all(requests.map((request) => request.visitor));
+    if (isToday(date) || isFuture(date)) {
+      // For future planning, add the current employees with role 'Measurer' by default
+      visitors = [...visitors, ...this.currentMeasurers];
+    }
+    visitors = uniqBy(visitors, 'id');
 
     const calendarEvents = yield Promise.all(
       timeSlots.map(async (timeSlot) => {
@@ -61,8 +77,7 @@ export default class VisitCalendarDayComponent extends Component {
       })
     );
 
-    // TODO add all opmeters to the list by default
-    const calendarResources = uniqBy(visitors, 'id')
+    const calendarResources = visitors
       .map((visitor) => {
         if (visitor) {
           return { id: visitor.id, title: visitor.firstName };
@@ -85,11 +100,11 @@ export default class VisitCalendarDayComponent extends Component {
 
   @action
   async renderCalendar(element) {
-    const { events, resources } = await this.loadEvents.perform(this.args.date);
+    const { events, resources } = await this.loadEventsAndResources.perform(this.args.date);
 
     const updateDate = async (date) => {
       this.args.onDidChangeDate(date);
-      const { events, resources } = await this.loadEvents.perform(date);
+      const { events, resources } = await this.loadEventsAndResources.perform(date);
       this.calendar.setOption('resources', resources);
       this.calendar.setOption('events', events);
     };
