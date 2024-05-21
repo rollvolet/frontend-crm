@@ -67,16 +67,11 @@
         <div class="mb-4 sm:mb-0 sm:order-2">
           {{#if this.isLinkedToCustomer}}
             {{#if @model.requiresVisit}}
-              {{#let (load @model.timeSlot) as |timeSlot|}}
-                {{#if (and timeSlot.isResolved timeSlot.value)}}
-                  <TimeSlot::DetailEdit
-                    @title="bezoek"
-                    @date={{@model.indicativeVisitDate}}
-                    @period={{@model.indicativeVisitPeriod}}
-                    @model={{timeSlot.value}}
-                    @onChange={{perform this.updateVisit}} />
-                {{/if}}
-              {{/let}}
+              <TimeSlot::DetailEdit
+                @title="bezoek"
+                @date={{@model.indicativeVisitDate}}
+                @period={{@model.indicativeVisitPeriod}}
+                @onChange={{perform this.updateVisit}} />
             {{/if}}
           {{/if}}
         </div>
@@ -121,10 +116,10 @@
             {{#if this.isLinkedToCustomer}}
               <div class="relative flex items-end">
                 <div class="flex grow-0 items-center h-5">
-                  <Input
+                  <input
                     id="requires-visit"
-                    @type="checkbox"
-                    @checked={{@model.requiresVisit}}
+                    type="checkbox"
+                    checked={{@model.requiresVisit}}
                     disabled={{this.setRequiresVisit.isRunning}}
                     {{on "input" (perform this.setRequiresVisit)}}
                     class="focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded" />
