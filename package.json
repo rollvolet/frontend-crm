@@ -68,6 +68,7 @@
     "ember-css-transitions": "^4.4.0",
     "ember-data": "~4.11.3",
     "ember-decorators": "^6.1.1",
+    "ember-drag-drop": "^1.0.0",
     "ember-dynamic-format-currency": "https://github.com/erikap/ember-dynamic-format-currency#master",
     "ember-fetch": "^8.1.2",
     "ember-file-upload": "^8.4.1",

@@ -5,29 +5,33 @@
 
   <div class="mt-4 flex flex-wrap items-stretch gap-2">
     {{#each this.requests as |request|}}
-      <div class="p-2 border border-gray-200 rounded space-y-2">
-        <div class="flex items-center justify-between">
-          <Rlv::Button
-            @skin="secondary-link"
-            @size="small"
-            @route="main.case.request.edit.index"
-            @models={{array request.case.id request.id}}>
-            AD{{format-request-number request.number}}
-          </Rlv::Button>
-          {{#if request.visitor}}
-            <Rlv::Pill @label={{request.visitor.firstName}} @hideDot={{true}} />
-          {{/if}}
+      <DraggableObject @content={{request}}>
+        <div class="p-2 border border-gray-200 rounded space-y-2">
+          <div class="flex items-center justify-between">
+            <Rlv::Button
+              @skin="secondary-link"
+              @size="small"
+              @route="main.case.request.edit.index"
+              @models={{array request.case.id request.id}}>
+              AD{{format-request-number request.number}}
+            </Rlv::Button>
+            {{#if request.visitor}}
+              <Rlv::Pill @label={{request.visitor.firstName}} @hideDot={{true}} />
+            {{/if}}
+          </div>
+          <div class="text-xs text-gray-900">
+            <Fmt::CustomerAndBuildingName @case={{request.case}} />
+          </div>
         </div>
-        <div class="text-xs text-gray-900">
-          <Fmt::CustomerAndBuildingName @case={{request.case}} />
-        </div>
-      </div>
+      </DraggableObject>
     {{else}}
       <p class="text-gray-400 text-sm italic">Er zijn geen aanvragen meer om in te plannen</p>
     {{/each}}
   </div>
 </div>
 
-<div {{did-insert this.renderCalendar}} class="mt-4">
+<DraggableObjectTarget @action={{this.dropRequest}}>
+  <div {{did-insert this.renderCalendar}} class="mt-4">
 
-</div>
+  </div>
+</DraggableObjectTarget>

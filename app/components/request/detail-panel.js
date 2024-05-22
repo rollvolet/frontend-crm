@@ -65,6 +65,10 @@ export default class RequestDetailPanelComponent extends Component {
     } else {
       this.args.model.indicativeVisitDate = null;
       this.args.model.indicativeVisitPeriod = null;
+      const timeSlot = yield this.args.model.timeSlot;
+      if (timeSlot) {
+        yield timeSlot.destroyRecord();
+      }
     }
 
     yield this.save.perform();
