@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { compare } from '@ember/utils';
-import { keepLatestTask } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
 import uniqBy from 'lodash/uniqBy';
 import Calendar from '@event-calendar/core';
 import TimeGrid from '@event-calendar/time-grid';
@@ -35,20 +35,18 @@ export default class VisitCalendarDayComponent extends Component {
       .filter((employee) => employee.isActive && employee.types.includes(EMPLOYEE_TYPES.MEASURER));
   }
 
-  @keepLatestTask
-  *loadUnplannedRequests(date) {
-    this.requests = yield this.store.queryAll('request', {
+  loadUnplannedRequests = task({ keepLatest: true }, async (date) => {
+    this.requests = await this.store.queryAll('request', {
       include: 'visitor,case.customer,case.building',
       'filter[:has-no:time-slot]': 't',
       'filter[indicative-visit-date]': formatISO(date, { representation: 'date' }),
     });
-  }
+  });
 
-  @keepLatestTask
-  *loadEventsAndResources(date) {
+  loadEventsAndResources = task({ keepLatest: true }, async (date) => {
     const nextDay = addDays(date, 1);
 
-    const timeSlots = yield this.store.queryAll('time-slot', {
+    const timeSlots = await this.store.queryAll('time-slot', {
       include: 'request.visitor,request.case.customer',
       'filter[:has:request]': 't',
       'filter[:gte:start]': formatISO(date),
@@ -57,8 +55,8 @@ export default class VisitCalendarDayComponent extends Component {
     // eslint-disable-next-line ember/no-array-prototype-extensions
     this.timeSlots = timeSlots.toArray();
 
-    const requests = yield Promise.all(this.timeSlots.map((timeSlot) => timeSlot.request));
-    let visitors = yield Promise.all(requests.map((request) => request.visitor));
+    const requests = await Promise.all(this.timeSlots.map((timeSlot) => timeSlot.request));
+    let visitors = await Promise.all(requests.map((request) => request.visitor));
     if (isToday(date) || isFuture(date)) {
       // For future planning, add the current employees with role 'Measurer' by default
       visitors = [...visitors, ...this.currentMeasurers];
@@ -73,42 +71,41 @@ export default class VisitCalendarDayComponent extends Component {
       }
     });
 
-    const calendarEvents = yield Promise.all(this.timeSlots.map(this.timeSlotToCalendarEvent));
+    const calendarEvents = await Promise.all(this.timeSlots.map(this.timeSlotToCalendarEvent));
     const calendarResources = this.employees.map(this.employeeToCalendarResource);
 
     return { events: calendarEvents, resources: calendarResources };
-  }
+  });
 
-  @action
-  async renderCalendar(element) {
+  navigateToDate = task({ keepLatest: true }, async (date) => {
+    this.args.onDidChangeDate(date);
+    const { events, resources } = await this.loadEventsAndResources.perform(date);
+    this.calendar.setOption('resources', resources);
+    this.calendar.setOption('events', events);
+    await this.loadUnplannedRequests.perform(date);
+  });
+
+  updateTimeSlot = task(async (timeSlot, start, end) => {
+    timeSlot.start = start;
+    timeSlot.end = end;
+    if (timeSlot.hasDirtyAttributes) {
+      await timeSlot.save();
+    }
+  });
+
+  updateVisitor = task(async (request, employeeId) => {
+    if (employeeId == 'undefined') {
+      request.visitor = null;
+    } else {
+      const employee = await this.store.findRecord('employee', employeeId);
+      request.visitor = employee;
+    }
+    await request.save();
+  });
+
+  renderCalendar = task(async (element) => {
     const { events, resources } = await this.loadEventsAndResources.perform(this.args.date);
     await this.loadUnplannedRequests.perform(this.args.date);
-
-    const updateDate = async (date) => {
-      this.args.onDidChangeDate(date);
-      const { events, resources } = await this.loadEventsAndResources.perform(date);
-      this.calendar.setOption('resources', resources);
-      this.calendar.setOption('events', events);
-      await this.loadUnplannedRequests.perform(date);
-    };
-
-    const updateTimeSlot = async (timeSlot, start, end) => {
-      timeSlot.start = start;
-      timeSlot.end = end;
-      if (timeSlot.hasDirtyAttributes) {
-        await timeSlot.save();
-      }
-    };
-
-    const updateVisitor = async (request, employeeId) => {
-      if (employeeId == 'undefined') {
-        request.visitor = null;
-      } else {
-        const employee = await this.store.findRecord('employee', employeeId);
-        request.visitor = employee;
-      }
-      await request.save();
-    };
 
     this.calendar = new Calendar({
       target: element,
@@ -131,18 +128,18 @@ export default class VisitCalendarDayComponent extends Component {
             return theme;
           },
           // User clicks previous/next day button
-          datesSet: (info) => updateDate(info.start),
+          datesSet: (info) => this.navigateToDate.perform(info.start),
           eventResize: (info) => {
             const { extendedProps, start, end } = info.event;
             const { timeSlot } = extendedProps;
-            updateTimeSlot(timeSlot, start, end);
+            this.updateTimeSlot.perform(timeSlot, start, end);
           },
           eventDrop: (info) => {
             const { extendedProps, start, end } = info.event;
             const { timeSlot, request } = extendedProps;
-            updateTimeSlot(timeSlot, start, end);
+            this.updateTimeSlot.perform(timeSlot, start, end);
             if (info.newResource) {
-              updateVisitor(request, info.newResource.id);
+              this.updateVisitor.perform(request, info.newResource.id);
             }
           },
           eventClick: (info) => {
@@ -152,7 +149,7 @@ export default class VisitCalendarDayComponent extends Component {
         },
       },
     });
-  }
+  });
 
   @action
   async dropRequest(request, { event }) {

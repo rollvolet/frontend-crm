@@ -31,7 +31,7 @@
 </div>
 
 <DraggableObjectTarget @action={{this.dropRequest}}>
-  <div {{did-insert this.renderCalendar}} class="mt-4">
+  <div {{did-insert (perform this.renderCalendar)}} class="mt-4">
 
   </div>
 </DraggableObjectTarget>

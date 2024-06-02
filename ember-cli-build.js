@@ -13,6 +13,9 @@ module.exports = function (defaults) {
     svgJar: {
       sourceDirs: ['public', 'node_modules/remixicon/icons'],
     },
+    babel: {
+      plugins: [require.resolve('ember-concurrency/async-arrow-task-transform')],
+    },
   });
 
   return app.toTree();
