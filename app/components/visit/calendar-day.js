@@ -187,6 +187,11 @@ export default class VisitCalendarDayComponent extends Component {
         },
       },
     });
+
+    // Restructure DOM tree. Move unplanned requests container inside the calendar
+    const container = element.getRootNode().getElementById('unplanned-requests-container');
+    const toolbar = element.getElementsByClassName('ec-toolbar')[0];
+    toolbar.insertAdjacentElement('afterend', container);
   });
 
   @action

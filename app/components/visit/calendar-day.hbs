@@ -1,4 +1,4 @@
-<div class="p-4 border-b border-gray-200">
+<div id="unplanned-requests-container" class="p-6 bg-gray-50/50 border-b border-gray-200">
   <h4 class="text-gray-700 text-sm uppercase tracking-wide">
     Aanvragen om in te plannen
   </h4>
@@ -16,6 +16,11 @@
 
 <DraggableObjectTarget @action={{this.dropRequest}}>
   <div {{did-insert (perform this.renderCalendar)}}>
+    {{#if this.renderCalendar.isRunning}}
+      <div class="h-32">
+        <Util::LoadingSpinner />
+      </div>
+    {{/if}}
     {{!-- Calendar will be rendered here --}}
   </div>
 </DraggableObjectTarget>

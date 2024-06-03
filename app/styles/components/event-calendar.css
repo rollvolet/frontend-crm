@@ -4,7 +4,7 @@
 
 /* Toolbar with selected day indication and action buttons */
 .ec-toolbar {
-  @apply px-6 py-8 bg-gray-100 mb-0;
+  @apply p-6 border-b border-gray-200 mb-0;
 }
 
 .ec-toolbar .ec-button-group {
