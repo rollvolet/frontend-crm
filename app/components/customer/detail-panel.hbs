@@ -5,7 +5,7 @@
       <div class="flex items-center space-x-3">
         <h2 class="rlv-panel-title">
           <span class="text-gray-400 mr-2">{{@model.number}}</span>
-          <Fmt::CustomerName @model={{@model}} />
+          {{format-customer-name @model}}
         </h2>
         {{#if this.editMode}}
           <Util::SaveStatus @model={{@model}} @task={{this.save}} />

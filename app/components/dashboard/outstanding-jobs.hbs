@@ -131,7 +131,7 @@
                   </td>
                   <td class="px-3 py-2 text-xs font-medium">
                     <div class="text-gray-900">
-                      <Fmt::CustomerName @model={{row.customer}} />
+                      {{format-customer-name row.customer}}
                     </div>
                     <div class="text-gray-500">
                       <Address::DetailView @model={{row.customer}} />
@@ -139,7 +139,7 @@
                   </td>
                   <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500">
                     <div class="text-gray-900">
-                      <Fmt::CustomerName @model={{row.building}} />
+                      {{format-customer-name row.building}}
                     </div>
                     <div class="text-gray-500">
                       <Address::DetailView @model={{row.building}} />

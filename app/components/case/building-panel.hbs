@@ -1,7 +1,7 @@
 <div class="space-y-2">
   <Util::DetailItem @width={{20}} @label="Naam">
     <div class="flex items-center space-x-2">
-      <span><Fmt::CustomerName @model={{@model}} /></span>
+      <span>{{format-customer-name @model}}</span>
       <Customer::StatusIcon @uri={{@model.status}} />
     </div>
   </Util::DetailItem>

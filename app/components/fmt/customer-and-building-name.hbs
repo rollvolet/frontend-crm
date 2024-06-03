@@ -1,25 +1,29 @@
-<div class="flex">
-  {{#if @case.building}}
-    <div class="space-y-1">
-      <div class="flex items-base">
-        {{svg-jar "building-2-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
-        <Fmt::BuildingName @model={{@case.building}} />
-      </div>
-      <div class="ml-6 text-gray-400 text-xs">
-        <Fmt::CustomerName @model={{@case.customer}} />
-      </div>
+{{#let (load @case.customer) (load @case.building) as |customer building|}}
+  {{#if (and customer.isResolved building.isResolved)}}
+    <div class="flex">
+      {{#if building.value}}
+        <div class="space-y-1">
+          <div class="flex items-base">
+            {{svg-jar "building-2-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
+            <Fmt::BuildingName @model={{building.value}} />
+          </div>
+          <div class="ml-6 text-gray-400 text-xs">
+            {{format-customer-name customer.value}}
+          </div>
+        </div>
+      {{else}}
+        {{#if customer.value}}
+          <div class="flex items-base">
+            {{svg-jar "user-3-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
+            {{format-customer-name customer.value}}
+          </div>
+        {{else}}
+          <div class="flex items-center">
+            {{svg-jar "code-s-slash-line" class="mr-2 flex-none h-5 w-5 text-gray-400 fill-current"}}
+            <span class="text-gray-400 italic">Geen klant gekoppeld</span>
+          </div>
+        {{/if}}
+      {{/if}}
     </div>
-  {{else}}
-    {{#if @case.customer}}
-      <div class="flex items-base">
-        {{svg-jar "user-3-line" class="mr-1 flex-none h-5 w-5 text-gray-400 fill-current"}}
-        <Fmt::CustomerName @model={{@case.customer}} />
-      </div>
-    {{else}}
-      <div class="flex items-center">
-        {{svg-jar "code-s-slash-line" class="mr-2 flex-none h-5 w-5 text-gray-400 fill-current"}}
-        <span class="text-gray-400 italic">Geen klant gekoppeld</span>
-      </div>
-    {{/if}}
   {{/if}}
-</div>
+{{/let}}

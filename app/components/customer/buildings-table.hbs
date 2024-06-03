@@ -130,7 +130,7 @@
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-900">
                     <div class="flex items-center">
-                      <Fmt::CustomerName @model={{row}} />
+                      {{format-customer-name row}}
                       <span class="ml-1">
                         <Customer::StatusIcon @uri={{row.status}} />
                       </span>

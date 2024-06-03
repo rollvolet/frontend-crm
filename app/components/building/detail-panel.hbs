@@ -53,7 +53,7 @@
       <div class="mx-4 flex items-center space-x-3">
         <h2 class="text-xl font-bold font-display text-gray-900">
           <span class="text-gray-400 mr-1">{{@model.number}}</span>
-          <Fmt::CustomerName @model={{@model}} />
+          {{format-customer-name @model}}
         </h2>
         <Customer::StatusPill @model={{@model}} @onChange={{this.toggleStatus}} />
       </div>

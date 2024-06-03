@@ -109,7 +109,7 @@
                     <td class="pl-4 pr-6 py-4 text-sm font-medium text-gray-900">
                       <div class="flex items-center">
                         <Customer::TypeIcon @uri={{row.type}} />
-                        <Fmt::CustomerName @model={{row}} />
+                        {{format-customer-name row}}
                         <span class="ml-1">
                           <Customer::StatusIcon @uri={{row.status}} />
                         </span>

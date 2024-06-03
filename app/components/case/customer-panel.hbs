@@ -38,7 +38,7 @@
         </div>
         <div class="flex items-center space-x-3">
           <h2 class="rlv-panel-title">
-            <Fmt::CustomerName @model={{@model.customer}} />
+            {{format-customer-name (await @model.customer)}}
           </h2>
           {{#if @model.customer.isActive}}
             <Rlv::Pill @label="Actief" @color="green" />
@@ -56,7 +56,7 @@
           <div class="space-y-4">
             <Util::DetailItem @width={{20}} @label={{if @model.customer.isCompany "Bedrijf" "Naam"}}>
               <div>
-                <Fmt::CustomerName @model={{@model.customer}} @printAll={{true}} />
+                {{format-customer-name (await @model.customer) printAll=true}}
               </div>
               <div>
                 <Fmt::VatNumber @value={{@model.customer.vatNumber}} />

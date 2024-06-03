@@ -20,7 +20,7 @@
               as |_ record|>
               <h2 class="text-xl font-bold font-display text-gray-900">
                 <span class="text-gray-400 mr-2">{{record.number}}</span>
-                <Fmt::CustomerName @model={{record}} />
+                {{format-customer-name record}}
               </h2>
             </Customer::Merge::Block>
 
