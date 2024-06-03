@@ -18,7 +18,7 @@ import { svgJar } from 'ember-svg-jar/helpers/svg-jar';
 import { formatDate } from '../../helpers/format-date';
 import { formatRequestNumber } from '../../helpers/format-request-number';
 import constants from '../../config/constants';
-import fullAddress from '../../utils/full-address';
+import fullAddress from '../../helpers/full-address';
 import formatCustomerName from '../../helpers/format-customer-name';
 
 const { EMPLOYEE_TYPES } = constants;
@@ -51,7 +51,11 @@ export default class VisitCalendarDayComponent extends Component {
     const nextDay = addDays(date, 1);
 
     const timeSlots = await this.store.queryAll('time-slot', {
-      include: 'request.visitor,request.case.customer',
+      include: [
+        'request.visitor',
+        'request.case.customer.address.country',
+        'request.case.building.address.country',
+      ].join(','),
       'filter[:has:request]': 't',
       'filter[:gte:start]': formatISO(date),
       'filter[:lte:start]': formatISO(nextDay),

@@ -1,0 +1,40 @@
+{{#let (load @request.case) as |case|}}
+  {{#let (load case.value.customer) (load case.value.building) as |customer building|}}
+    <div class="bg-blue-50 rounded-lg px-2 py-1 text-xs leading-5">
+      <div class="flex flex-row items-center justify-between">
+        <div class="flex flex-row items-center space-x-3">
+          <div class="flex flex-row items-center space-x-1 text-blue-500">
+            {{svg-jar "survey-line" class="w-4 h-4 flex-0"}}
+            <span>AD{{format-request-number @request.number}}</span>
+          </div>
+          <div class="flex flex-row items-center space-x-1 text-blue-500">
+            {{svg-jar "time-line" class="w-4 h-4 flex-0"}}
+            <span>{{@request.indicativeVisitPeriod}}</span>
+          </div>
+        </div>
+        <div>
+          {{#if (and (not @hideVisitor) @request.visitor)}}
+            <Rlv::Pill @label={{@request.visitor.firstName}} @color="blue" @hideDot={{true}} />
+          {{/if}}
+        </div>
+      </div>
+      {{#if (and customer.isResolved building.isResolved)}}
+        <div>
+          <span class="font-semibold text-blue-700">
+            {{format-customer-name customer.value}}
+          </span>
+          {{#let (load customer.value.address) (load building.value.address) as |cAddress bAddress|}}
+            {{#if (and cAddress.isResolved bAddress.isResolved)}}
+              <span class="text-blue-500">
+                - {{full-address (or cAddress.value bAddress.value)}}
+              </span>
+            {{/if}}
+          {{/let}}
+        </div>
+      {{/if}}
+      <div class="text-blue-500 text-[10px] text-ellipsis">
+        {{@request.description}}
+      </div>
+    </div>
+  {{/let}}
+{{/let}}

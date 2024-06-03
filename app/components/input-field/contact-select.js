@@ -6,7 +6,7 @@ import { compare } from '@ember/utils';
 import { action } from '@ember/object';
 import search from '../../utils/mu-search';
 import printName from '../../utils/customer-entity-print-name';
-import fullAddress from '../../utils/full-address';
+import fullAddress from '../../helpers/full-address';
 import constants from '../../config/constants';
 
 const { CUSTOMER_STATUSES } = constants;
