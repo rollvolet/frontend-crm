@@ -14,8 +14,12 @@ import isFuture from 'date-fns/isFuture';
 import isToday from 'date-fns/isToday';
 import formatISO from 'date-fns/formatISO';
 import addHours from 'date-fns/addHours';
+import { svgJar } from 'ember-svg-jar/helpers/svg-jar';
+import { formatDate } from '../../helpers/format-date';
 import { formatRequestNumber } from '../../helpers/format-request-number';
 import constants from '../../config/constants';
+import fullAddress from '../../utils/full-address';
+import formatCustomerName from '../../helpers/format-customer-name';
 
 const { EMPLOYEE_TYPES } = constants;
 const HOURS_PER_DAY = 24;
@@ -37,7 +41,7 @@ export default class VisitCalendarDayComponent extends Component {
 
   loadUnplannedRequests = task({ keepLatest: true }, async (date) => {
     this.requests = await this.store.queryAll('request', {
-      include: 'visitor,case.customer,case.building',
+      include: 'visitor,case.customer.address.country,case.building.address.country',
       'filter[:has-no:time-slot]': 't',
       'filter[indicative-visit-date]': formatISO(date, { representation: 'date' }),
     });
@@ -117,16 +121,46 @@ export default class VisitCalendarDayComponent extends Component {
           firstDay: 1,
           allDaySlot: false,
           displayEventEnd: false,
-          eventClassNames:
-            'bg-gray-200 text-gray-900 rounded text-sm px-2 py-1 border border-gray-300',
           date: this.args.date,
           resources: resources,
           events: events,
           editable: true,
           theme: function (theme) {
-            theme.today = null;
-            return theme;
+            return {
+              ...theme,
+              button: 'rlv-ec-button',
+              today: null,
+            };
           },
+          titleFormat: function (start) {
+            const dateIso = formatISO(start, { representation: 'date' });
+            const dateHuman = formatDate([start, 'd LLLL yyyy']);
+            const day = formatDate([start, 'EEEE']);
+            return {
+              html: `
+                <div>
+                  <h1 class="text-base font-semibold leading-6 text-gray-900">
+                    <time datetime="${dateIso}">${dateHuman}</time>
+                  </h1>
+                  <p class="mt-1 text-sm text-gray-500">${day}</p>
+                </div>
+               `,
+            };
+          },
+          buttonText: function (text) {
+            return {
+              ...text,
+              previous: 'Vorige',
+              today: 'Vandaag',
+              next: 'Volgende',
+            };
+          },
+          headerToolbar: {
+            start: 'title',
+            center: '',
+            end: 'prev,today,next',
+          },
+          // slotHeight: 32,
           // User clicks previous/next day button
           datesSet: (info) => this.navigateToDate.perform(info.start),
           eventResize: (info) => {
@@ -184,6 +218,9 @@ export default class VisitCalendarDayComponent extends Component {
     const visitor = await request.visitor;
     const _case = await request.case;
     const customer = await _case.customer;
+    const building = await _case.building;
+    const address = building ? await building.address : await customer.address;
+
     return {
       id: timeSlot.id,
       resourceIds: visitor ? [visitor.id] : ['unassigned'],
@@ -192,9 +229,27 @@ export default class VisitCalendarDayComponent extends Component {
       end: timeSlot.end,
       title: {
         html: `
-              AD${formatRequestNumber([request.number])}
-              | ${request.indicativeVisitPeriod}
-              | ${customer.name}
+              <div class="flex flex-row items-center justify-between">
+                <div class="flex flex-row items-center space-x-1 text-blue-500">
+                  ${svgJar('survey-line', { class: 'w-4 h-4 flex-0' })}
+                  <span>AD${formatRequestNumber([request.number])}</span>
+                </div>
+                <div class="flex flex-row items-center space-x-1 text-blue-500">
+                  ${svgJar('time-line', { class: 'w-4 h-4 flex-0' })}
+                  <span>${request.indicativeVisitPeriod}</span>
+                </div>
+              </div>
+              <div>
+                <span class="font-semibold text-blue-700">
+                  ${formatCustomerName(customer)}
+                </span>
+                <span class="text-blue-500">
+                  - ${fullAddress(address)}
+                </span>
+              </div>
+              <div class="text-blue-500 text-[10px] text-ellipsis">
+                ${request.description}
+              </div>
             `,
       },
       extendedProps: {

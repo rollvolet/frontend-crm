@@ -4,6 +4,7 @@
 @import "flatpickr/dist/themes/material_red.css";
 @import '@event-calendar/core/index.css';
 @import "components/button";
+@import "components/event-calendar";
 @import "components/ember-tooltip";
 @import "components/ember-power-select";
 @import "components/scanning-bar";
