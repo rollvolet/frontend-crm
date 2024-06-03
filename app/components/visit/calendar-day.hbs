@@ -4,18 +4,26 @@
   </h4>
 
   <div class="mt-4 flex flex-wrap items-stretch gap-2">
-    {{#each this.requests as |request|}}
-      <DraggableObject @content={{request}}>
-        <Visit::CalendarDay::Event @request={{request}} />
-      </DraggableObject>
+    {{#if this.loadUnplannedRequests.isRunning}}
+      <div class="flex items-center justify-center h-16 w-full">
+        <Util::LoadingSpinner />
+      </div>
     {{else}}
-      <p class="text-gray-400 text-sm italic">Er zijn geen aanvragen meer om in te plannen</p>
-    {{/each}}
+      {{#each this.requests as |request|}}
+        <DraggableObject @content={{request}}>
+          <Visit::CalendarDay::Event @request={{request}} />
+        </DraggableObject>
+      {{else}}
+        <p class="text-gray-400 text-sm italic">Er zijn geen aanvragen meer om in te plannen</p>
+      {{/each}}
+    {{/if}}
   </div>
 </div>
 
 <DraggableObjectTarget @action={{this.dropRequest}}>
-  <div {{did-insert (perform this.renderCalendar)}}>
+  <div
+    {{did-insert (perform this.renderCalendar)}}
+    class={{if this.loadEventsAndResources.isRunning "animate-pulse"}}>
     {{#if this.renderCalendar.isRunning}}
       <div class="h-32">
         <Util::LoadingSpinner />
