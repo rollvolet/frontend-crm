@@ -147,6 +147,7 @@ export default class VisitCalendarDayComponent extends Component {
             return {
               ...theme,
               button: 'rlv-ec-button',
+              buttonGroup: 'rlv-ec-button-group',
               today: null,
             };
           },
@@ -209,6 +210,14 @@ export default class VisitCalendarDayComponent extends Component {
         },
       },
     });
+
+    // Finetune toolbar buttons
+    const addResourceBtn = element.getElementsByClassName('ec-add-resource')[0];
+    addResourceBtn.innerHTML = svgJar('user-add-line', { class: 'w-5 h-5' });
+    const prevBtn = element.getElementsByClassName('ec-prev')[0];
+    prevBtn.innerHTML = svgJar('arrow-left-s-line', { class: 'w-5 h-5' });
+    const nextBtn = element.getElementsByClassName('ec-next')[0];
+    nextBtn.innerHTML = svgJar('arrow-right-s-line', { class: 'w-5 h-5' });
 
     // Restructure DOM tree. Move unplanned requests container inside the calendar
     const container = element.getRootNode().getElementById('unplanned-requests-container');
