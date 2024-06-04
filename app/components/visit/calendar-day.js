@@ -223,6 +223,7 @@ export default class VisitCalendarDayComponent extends Component {
     const container = element.getRootNode().getElementById('unplanned-requests-container');
     const toolbar = element.getElementsByClassName('ec-toolbar')[0];
     toolbar.insertAdjacentElement('afterend', container);
+    container.classList.remove('hidden');
   });
 
   @action
