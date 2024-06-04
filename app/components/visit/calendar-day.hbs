@@ -32,3 +32,9 @@
     {{!-- Calendar will be rendered here --}}
   </div>
 </DraggableObjectTarget>
+
+{{#if this.isOpenAddResourceModal}}
+  <Visit::CalendarDay::AddResourceModal
+    @onClose={{this.closeAddResourceModal}}
+    @onSave={{perform this.addResourceToCalendar}} />
+{{/if}}

@@ -1,0 +1,24 @@
+<Rlv::Modal @title="Voeg werknemer toe" @width="sm:max-w-xl" @onClose={{@onClose}}>
+  <:body>
+    <div class="space-y-4">
+      <p class="text-gray-900 text-sm">
+        Selecteer een werknemer om toe te voegen als kolom aan de kalender.
+      </p>
+      <div>
+        <InputField::EmployeeSelect
+          @value={{this.selectedEmployee}}
+          @isTechnician={{true}}
+          @isAdministrative={{true}}
+          @sort={{"type:desc"}}
+          @onSelectionChange={{fn (mut this.selectedEmployee)}} />
+      </div>
+    </div>
+  </:body>
+  <:footer>
+    <Rlv::Button
+      @label="Toevoegen"
+      @disabled={{not this.selectedEmployee}}
+      @skin="primary"
+      {{on "click" (fn @onSave this.selectedEmployee)}}/>
+  </:footer>
+</Rlv::Modal>

@@ -52,13 +52,13 @@
         {{yield to="body"}}
       {{/if}}
       {{#if (has-block "footer")}}
-        <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+        <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse gap-x-2">
           {{yield to="footer"}}
           {{#if @onClose}}
             <Rlv::Button
               @label={{or @closeButtonLabel "Annuleer"}}
               @skin="secondary"
-            {{on "click" this.closeModal}} />
+              {{on "click" this.closeModal}} />
           {{/if}}
         </div>
       {{/if}}

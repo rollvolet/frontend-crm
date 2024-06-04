@@ -24,6 +24,16 @@ import formatCustomerName from '../../helpers/format-customer-name';
 const { EMPLOYEE_TYPES } = constants;
 const HOURS_PER_DAY = 24;
 
+const employeeSort = function (a, b) {
+  if (a && b) {
+    return compare(a.firstName, b.firstName);
+  } else if (!a) {
+    return 1;
+  } else {
+    return -1;
+  }
+};
+
 export default class VisitCalendarDayComponent extends Component {
   @service store;
   @service router;
@@ -32,6 +42,8 @@ export default class VisitCalendarDayComponent extends Component {
   @tracked timeSlots = [];
   @tracked employees = [];
   @tracked requests = [];
+
+  @tracked isOpenAddResourceModal = false;
 
   get currentMeasurers() {
     return this.store
@@ -69,15 +81,7 @@ export default class VisitCalendarDayComponent extends Component {
       // For future planning, add the current employees with role 'Measurer' by default
       visitors = [...visitors, ...this.currentMeasurers];
     }
-    this.employees = uniqBy(visitors, 'id').sort((a, b) => {
-      if (a && b) {
-        return compare(a.firstName, b.firstName);
-      } else if (!a) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
+    this.employees = uniqBy(visitors, 'id').sort(employeeSort);
 
     const calendarEvents = await Promise.all(this.timeSlots.map(this.timeSlotToCalendarEvent));
     const calendarResources = this.employees.map(this.employeeToCalendarResource);
@@ -109,6 +113,16 @@ export default class VisitCalendarDayComponent extends Component {
       request.visitor = employee;
     }
     await request.save();
+  });
+
+  addResourceToCalendar = task(async (employee) => {
+    if (employee && !this.employees.includes(employee)) {
+      const employees = [...this.employees, employee];
+      this.employees = employees.sort(employeeSort);
+      const calendarResources = this.employees.map(this.employeeToCalendarResource);
+      this.calendar.setOption('resources', calendarResources);
+    }
+    this.closeAddResourceModal();
   });
 
   renderCalendar = task(async (element) => {
@@ -159,10 +173,18 @@ export default class VisitCalendarDayComponent extends Component {
               next: 'Volgende',
             };
           },
+          customButtons: {
+            'add-resource': {
+              text: 'Voeg kolom toe',
+              click: () => {
+                this.isOpenAddResourceModal = true;
+              },
+            },
+          },
           headerToolbar: {
             start: 'title',
             center: '',
-            end: 'prev,today,next',
+            end: 'add-resource prev,today,next',
           },
           // slotHeight: 32,
           // User clicks previous/next day button
@@ -220,6 +242,11 @@ export default class VisitCalendarDayComponent extends Component {
     this.timeSlots = [...this.timeSlots, timeSlot];
     this.calendar.addEvent(await this.timeSlotToCalendarEvent(timeSlot));
     this.requests = this.requests.filter((r) => r != request);
+  }
+
+  @action
+  closeAddResourceModal() {
+    this.isOpenAddResourceModal = false;
   }
 
   async timeSlotToCalendarEvent(timeSlot) {
