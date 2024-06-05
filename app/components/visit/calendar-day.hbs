@@ -10,17 +10,26 @@
       </div>
     {{else}}
       {{#each this.requests as |request|}}
-        <DraggableObject @content={{request}}>
+        <DraggableObject @content={{hash request=request}}>
           <Visit::CalendarDay::Event @request={{request}} />
         </DraggableObject>
       {{else}}
         <p class="text-gray-400 text-sm italic">Er zijn geen aanvragen meer om in te plannen</p>
       {{/each}}
+
+      <DraggableObject @content={{hash title="Free text"}}>
+        <div class="bg-orange-50 rounded-lg px-1 py-1 text-xs leading-5">
+          <div class="flex items-center justify-center mx-6 my-6 space-x-1">
+            {{svg-jar "add-line" class="h-4 w-4 text-orange-400"}}
+            <div class="text-orange-700 font-semibold">Vrije afspraak</div>
+          </div>
+        </div>
+      </DraggableObject>
     {{/if}}
   </div>
 </div>
 
-<DraggableObjectTarget @action={{this.dropRequest}}>
+<DraggableObjectTarget @action={{this.dropRequestOnCalendar}}>
   <div
     {{did-insert (perform this.renderCalendar)}}
     class={{if this.loadEventsAndResources.isRunning "animate-pulse"}}>
@@ -37,4 +46,11 @@
   <Visit::CalendarDay::AddResourceModal
     @onClose={{this.closeAddResourceModal}}
     @onSave={{perform this.addResourceToCalendar}} />
+{{/if}}
+
+{{#if this.isOpenFreeTextTimeSlotModal}}
+  <Visit::CalendarDay::FreeTextTimeSlotModal
+    @model={{this.freeTextTimeSlot}}
+    @onClose={{this.closeFreeTextTimeSlotModal}}
+    @onSave={{perform this.saveFreeTextTimeSlot}} />
 {{/if}}

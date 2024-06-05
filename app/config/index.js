@@ -3,3 +3,11 @@ export const PAGE_SIZE = {
   AVERAGE_NUMBER_REPORTS: 100,
   DEPOSIT_INVOICES_FOR_CASE: 100,
 };
+
+export const TAILWIND_COLORS = {
+  BLUE_50: '#eff6ff',
+  ORANGE_50: '#fff7ed',
+
+};
+
+export const DEFAULT_TIME_SLOT_DURATION_IN_HOURS = 1;

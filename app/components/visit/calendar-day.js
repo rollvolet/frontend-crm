@@ -18,6 +18,7 @@ import { svgJar } from 'ember-svg-jar/helpers/svg-jar';
 import { formatDate } from '../../helpers/format-date';
 import { formatRequestNumber } from '../../helpers/format-request-number';
 import constants from '../../config/constants';
+import { TAILWIND_COLORS, DEFAULT_TIME_SLOT_DURATION_IN_HOURS } from '../../config';
 import fullAddress from '../../helpers/full-address';
 import formatCustomerName from '../../helpers/format-customer-name';
 
@@ -42,8 +43,10 @@ export default class VisitCalendarDayComponent extends Component {
   @tracked timeSlots = [];
   @tracked employees = [];
   @tracked requests = [];
+  @tracked freeTextTimeSlot;
 
   @tracked isOpenAddResourceModal = false;
+  @tracked isOpenFreeTextTimeSlotModal = false;
 
   get currentMeasurers() {
     return this.store
@@ -62,27 +65,42 @@ export default class VisitCalendarDayComponent extends Component {
   loadEventsAndResources = task({ keepLatest: true }, async (date) => {
     const nextDay = addDays(date, 1);
 
-    const timeSlots = await this.store.queryAll('time-slot', {
-      include: [
-        'request.visitor',
-        'request.case.customer.address.country',
-        'request.case.building.address.country',
-      ].join(','),
-      'filter[:has:request]': 't',
-      'filter[:gte:start]': formatISO(date),
-      'filter[:lte:start]': formatISO(nextDay),
-    });
-    // eslint-disable-next-line ember/no-array-prototype-extensions
-    this.timeSlots = timeSlots.toArray();
-
-    const requests = await Promise.all(this.timeSlots.map((timeSlot) => timeSlot.request));
+    // Fetch timeslots related to requests
+    const requestTimeSlots = (
+      await this.store.queryAll('time-slot', {
+        include: [
+          'request.visitor',
+          'request.case.customer.address.country',
+          'request.case.building.address.country',
+        ].join(','),
+        'filter[:has:request]': 't',
+        'filter[:gte:start]': formatISO(date),
+        'filter[:lte:start]': formatISO(nextDay),
+      })
+    ).toArray();
+    const requests = await Promise.all(requestTimeSlots.map((timeSlot) => timeSlot.request));
     let visitors = await Promise.all(requests.map((request) => request.visitor));
     if (isToday(date) || isFuture(date)) {
       // For future planning, add the current employees with role 'Measurer' by default
       visitors = [...visitors, ...this.currentMeasurers];
     }
-    this.employees = uniqBy(visitors, 'id').sort(employeeSort);
 
+    // Fetch timeslots related to employees
+    const employeeTimeSlots = (
+      await this.store.queryAll('time-slot', {
+        include: ['employee'],
+        'filter[:has:employee]': 't',
+        'filter[:gte:start]': formatISO(date),
+        'filter[:lte:start]': formatISO(nextDay),
+      })
+    ).toArray();
+    const employees = await Promise.all(employeeTimeSlots.map((timeSlot) => timeSlot.employee));
+
+    // Update component state
+    this.timeSlots = [...requestTimeSlots, ...employeeTimeSlots];
+    this.employees = uniqBy([...visitors, ...employees], 'id').sort(employeeSort);
+
+    // Create objects for calendar
     const calendarEvents = await Promise.all(this.timeSlots.map(this.timeSlotToCalendarEvent));
     const calendarResources = this.employees.map(this.employeeToCalendarResource);
 
@@ -113,6 +131,16 @@ export default class VisitCalendarDayComponent extends Component {
       request.visitor = employee;
     }
     await request.save();
+  });
+
+  updateEmployee = task(async (timeSlot, employeeId) => {
+    if (employeeId == 'undefined') {
+      timeSlot.employee = null;
+    } else {
+      const employee = await this.store.findRecord('employee', employeeId);
+      timeSlot.employee = employee;
+    }
+    await timeSlot.save();
   });
 
   addResourceToCalendar = task(async (employee) => {
@@ -188,7 +216,6 @@ export default class VisitCalendarDayComponent extends Component {
             end: 'add-resource prev,today,next',
           },
           // slotHeight: 32,
-          // User clicks previous/next day button
           datesSet: (info) => this.navigateToDate.perform(info.start),
           eventResize: (info) => {
             const { extendedProps, start, end } = info.event;
@@ -200,12 +227,20 @@ export default class VisitCalendarDayComponent extends Component {
             const { timeSlot, request } = extendedProps;
             this.updateTimeSlot.perform(timeSlot, start, end);
             if (info.newResource) {
-              this.updateVisitor.perform(request, info.newResource.id);
+              if (request) {
+                this.updateVisitor.perform(request, info.newResource.id);
+              } else {
+                this.updateEmployee.perform(timeSlot, info.newResource.id);
+              }
             }
           },
           eventClick: (info) => {
-            const { case: _case, request } = info.event.extendedProps;
-            this.router.transitionTo('main.case.request.edit.index', _case.id, request.id);
+            const { timeSlot, case: _case, request } = info.event.extendedProps;
+            if (request) {
+              this.router.transitionTo('main.case.request.edit.index', _case.id, request.id);
+            } else {
+              this.openFreeTextTimeSlotModal(timeSlot);
+            }
           },
         },
       },
@@ -227,83 +262,148 @@ export default class VisitCalendarDayComponent extends Component {
   });
 
   @action
-  async dropRequest(request, { event }) {
+  async dropRequestOnCalendar({ request }, { event }) {
+    // Determine employee column in which object is dropped
     const domResourceColumn = event.target.parentElement.parentElement;
     const domResourceList = domResourceColumn.parentElement.getElementsByClassName('ec-resource');
     const domColumnIndex = [...domResourceList].indexOf(domResourceColumn);
-    request.visitor = this.employees[domColumnIndex];
-    await request.save();
+    const employee = this.employees[domColumnIndex];
 
+    // Determine hours on which object is dropped
     const dropHeight = event.layerY;
     const columnHeight = event.target.clientHeight;
     const hour = (1.0 * HOURS_PER_DAY * dropHeight) / columnHeight;
-    const start = new Date(request.indicativeVisitDate);
+    const start = new Date(this.args.date);
     start.setHours(Math.floor(hour));
     start.setMinutes(Math.round(hour) > Math.floor(hour) ? 30 : 0);
-    const end = addHours(start, 1);
+    const end = addHours(start, DEFAULT_TIME_SLOT_DURATION_IN_HOURS);
 
-    const timeSlot = this.store.createRecord('time-slot', {
-      start,
-      end,
-      request,
-    });
+    if (request) {
+      request.visitor = employee;
+      await request.save();
+
+      const timeSlot = this.store.createRecord('time-slot', {
+        title: 'Klantenbezoek',
+        start,
+        end,
+        request,
+      });
+      await timeSlot.save();
+
+      // Add new timeslot to calendar
+      this.timeSlots = [...this.timeSlots, timeSlot];
+      this.calendar.addEvent(await this.timeSlotToCalendarEvent(timeSlot));
+
+      // Remove request from unplanned requests container
+      this.requests = this.requests.filter((r) => r != request);
+    } else {
+      // It's the free-text timeslot placeholder that is dropped
+      const timeSlot = this.store.createRecord('time-slot', {
+        start,
+        end,
+        employee,
+      });
+      this.openFreeTextTimeSlotModal(timeSlot);
+    }
+  }
+
+  saveFreeTextTimeSlot = task(async (timeSlot) => {
     await timeSlot.save();
 
-    this.timeSlots = [...this.timeSlots, timeSlot];
-    this.calendar.addEvent(await this.timeSlotToCalendarEvent(timeSlot));
-    this.requests = this.requests.filter((r) => r != request);
-  }
+    if (this.timeSlots.includes(timeSlot)) {
+      this.calendar.updateEvent(await this.timeSlotToCalendarEvent(timeSlot));
+    } else {
+      // Add new timeslot to calendar
+      this.timeSlots = [...this.timeSlots, timeSlot];
+      this.calendar.addEvent(await this.timeSlotToCalendarEvent(timeSlot));
+    }
+
+    this.closeFreeTextTimeSlotModal();
+  });
 
   @action
   closeAddResourceModal() {
     this.isOpenAddResourceModal = false;
   }
 
-  async timeSlotToCalendarEvent(timeSlot) {
-    const request = await timeSlot.request;
-    const visitor = await request.visitor;
-    const _case = await request.case;
-    const customer = await _case.customer;
-    const building = await _case.building;
-    const address = building ? await building.address : await customer.address;
+  @action
+  openFreeTextTimeSlotModal(timeSlot) {
+    this.freeTextTimeSlot = timeSlot;
+    this.isOpenFreeTextTimeSlotModal = true;
+  }
 
-    return {
+  @action
+  closeFreeTextTimeSlotModal() {
+    this.freeTextTimeSlot = null;
+    this.isOpenFreeTextTimeSlotModal = false;
+  }
+
+  async timeSlotToCalendarEvent(timeSlot) {
+    const [request, employee] = await Promise.all([timeSlot.request, timeSlot.employee]);
+
+    const calendarEvent = {
       id: timeSlot.id,
-      resourceIds: visitor ? [visitor.id] : ['unassigned'],
       allDay: false,
       start: timeSlot.start,
       end: timeSlot.end,
-      title: {
-        html: `
-              <div class="flex flex-row items-center justify-between">
-                <div class="flex flex-row items-center space-x-1 text-blue-500">
-                  ${svgJar('survey-line', { class: 'w-4 h-4 flex-0' })}
-                  <span>AD${formatRequestNumber([request.number])}</span>
-                </div>
-                <div class="flex flex-row items-center space-x-1 text-blue-500">
-                  ${svgJar('time-line', { class: 'w-4 h-4 flex-0' })}
-                  <span>${request.indicativeVisitPeriod}</span>
-                </div>
-              </div>
-              <div>
-                <span class="font-semibold text-blue-700">
-                  ${formatCustomerName(customer)}
-                </span>
-                <span class="text-blue-500">
-                  - ${fullAddress(address)}
-                </span>
-              </div>
-              <div class="text-blue-500 text-[10px] text-ellipsis">
-                ${request.description}
-              </div>
-            `,
-      },
-      extendedProps: {
-        timeSlot,
-        request,
-        case: _case,
-      },
+      extendedProps: { timeSlot },
     };
+
+    if (request) {
+      const visitor = await request.visitor;
+      const _case = await request.case;
+      const customer = await _case.customer;
+      const building = await _case.building;
+      const address = building ? await building.address : await customer.address;
+
+      calendarEvent.resourceIds = visitor ? [visitor.id] : ['unassigned'];
+      calendarEvent.extendedProps.request = request;
+      calendarEvent.extendedProps.case = _case;
+      calendarEvent.backgroundColor = TAILWIND_COLORS.BLUE_50;
+      calendarEvent.title = {
+        html: `
+          <div class="flex flex-row items-center justify-between">
+            <div class="flex flex-row items-center space-x-3">
+              <div class="flex flex-row items-center space-x-1 text-blue-500">
+                ${svgJar('survey-line', { class: 'w-4 h-4 flex-0 text-blue-400' })}
+                <span>AD${formatRequestNumber([request.number])}</span>
+              </div>
+              <div class="flex flex-row items-center space-x-1 text-blue-500">
+                ${svgJar('time-line', { class: 'w-4 h-4 flex-0 text-blue-400' })}
+                <span>${request.indicativeVisitPeriod}</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="font-semibold text-blue-700">
+              ${formatCustomerName(customer)}
+            </span>
+            <span class="text-blue-500">
+              - ${fullAddress(address)}
+            </span>
+          </div>
+          <div class="text-blue-500 text-[10px] text-ellipsis">
+            ${request.description}
+          </div>
+        `,
+      };
+    } else if (employee) {
+      calendarEvent.resourceIds = [employee.id];
+      calendarEvent.backgroundColor = TAILWIND_COLORS.ORANGE_50;
+      calendarEvent.title = {
+        html: `
+          <div class="flex flex-row items-center space-x-1 text-orange-700 font-semibold">
+            ${svgJar('user-line', { class: 'w-4 h-4 flex-0 text-orange-400' })}
+            <span>${timeSlot.title}</span>
+          </div>
+          <div class="text-orange-500 text-[10px] text-ellipsis">
+            ${timeSlot.description || ''}
+          </div>
+        `,
+      };
+    }
+
+    return calendarEvent;
   }
 
   employeeToCalendarResource(visitor) {

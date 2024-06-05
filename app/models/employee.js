@@ -23,6 +23,7 @@ export default class EmployeeClass extends Model {
     async: true,
   })
   technicalWorkActivities;
+  @hasMany('time-slot', { inverse: 'employee', async: true }) timeSlots;
 
   get isTechnician() {
     return this.types.includes(EMPLOYEE_TYPES.TECHNICIAN);
