@@ -13,8 +13,6 @@
         <DraggableObject @content={{hash request=request}}>
           <Visit::CalendarDay::Event @request={{request}} />
         </DraggableObject>
-      {{else}}
-        <p class="text-gray-400 text-sm italic">Er zijn geen aanvragen meer om in te plannen</p>
       {{/each}}
 
       <DraggableObject @content={{hash title="Free text"}}>

@@ -215,7 +215,7 @@ export default class VisitCalendarDayComponent extends Component {
             center: '',
             end: 'add-resource prev,today,next',
           },
-          // slotHeight: 32,
+          slotHeight: 32,
           datesSet: (info) => this.navigateToDate.perform(info.start),
           eventResize: (info) => {
             const { extendedProps, start, end } = info.event;

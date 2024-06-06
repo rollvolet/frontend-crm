@@ -42,6 +42,7 @@
 /* Resource column headers */
 .ec-header {
   @apply border-x-0 border-t-0 border-b-2 border-gray-200;
+  height: 48px;
 }
 
 .ec-header .ec-resource {
@@ -49,7 +50,7 @@
 }
 
 .ec-header .ec-resource .ec-day {
-  @apply border-none;
+  @apply border-none grow-0;
 }
 
 /* Resource column lines */
@@ -62,9 +63,9 @@
   @apply text-right text-xs leading-5 text-gray-400;
 }
 
-/* .ec-time-grid .ec-time, .ec-time-grid .ec-line {
-
-} */
+.ec-time-grid .ec-time, .ec-time-grid .ec-line {
+  height: 32px;
+}
 
 .ec-body:not(.ec-compact) .ec-line:nth-child(even)::after {
   @apply border-none;
