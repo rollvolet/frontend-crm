@@ -24,6 +24,7 @@ import formatCustomerName from '../../helpers/format-customer-name';
 
 const { EMPLOYEE_TYPES } = constants;
 const HOURS_PER_DAY = 24;
+const CALENDAR_RESOURCE_WIDTH_PX = 300;
 
 const employeeSort = function (a, b) {
   if (a && b) {
@@ -39,7 +40,8 @@ export default class VisitCalendarDayComponent extends Component {
   @service store;
   @service router;
 
-  @tracked calendar;
+  targetElement;
+  calendar;
   @tracked timeSlots = [];
   @tracked employees = [];
   @tracked requests = [];
@@ -112,6 +114,7 @@ export default class VisitCalendarDayComponent extends Component {
     const { events, resources } = await this.loadEventsAndResources.perform(date);
     this.calendar.setOption('resources', resources);
     this.calendar.setOption('events', events);
+    this.updateCalendarWidth();
     await this.loadUnplannedRequests.perform(date);
   });
 
@@ -149,11 +152,20 @@ export default class VisitCalendarDayComponent extends Component {
       this.employees = employees.sort(employeeSort);
       const calendarResources = this.employees.map(this.employeeToCalendarResource);
       this.calendar.setOption('resources', calendarResources);
+      this.updateCalendarWidth();
     }
     this.closeAddResourceModal();
   });
 
+  updateCalendarWidth() {
+    const calendarEl = this.targetElement.getElementsByClassName('ec')[0];
+    const width = CALENDAR_RESOURCE_WIDTH_PX * this.employees.length + 65;
+    calendarEl.style.setProperty('min-width', `${width}px`);
+  }
+
   renderCalendar = task(async (element) => {
+    this.targetElement = element;
+
     const { events, resources } = await this.loadEventsAndResources.perform(this.args.date);
     await this.loadUnplannedRequests.perform(this.args.date);
 
@@ -171,6 +183,9 @@ export default class VisitCalendarDayComponent extends Component {
           resources: resources,
           events: events,
           editable: true,
+          slotHeight: 36,
+          height: '1200px',
+          scrollTime: '07:00:00',
           theme: function (theme) {
             return {
               ...theme,
@@ -215,7 +230,6 @@ export default class VisitCalendarDayComponent extends Component {
             center: '',
             end: 'add-resource prev,today,next',
           },
-          slotHeight: 32,
           datesSet: (info) => this.navigateToDate.perform(info.start),
           eventResize: (info) => {
             const { extendedProps, start, end } = info.event;
@@ -245,6 +259,8 @@ export default class VisitCalendarDayComponent extends Component {
         },
       },
     });
+
+    this.updateCalendarWidth();
 
     // Finetune toolbar buttons
     const addResourceBtn = element.getElementsByClassName('ec-add-resource')[0];
@@ -362,16 +378,13 @@ export default class VisitCalendarDayComponent extends Component {
       calendarEvent.backgroundColor = TAILWIND_COLORS.BLUE_50;
       calendarEvent.title = {
         html: `
-          <div class="flex flex-row items-center justify-between">
-            <div class="flex flex-row items-center space-x-3">
-              <div class="flex flex-row items-center space-x-1 text-blue-500">
-                ${svgJar('survey-line', { class: 'w-4 h-4 flex-0 text-blue-400' })}
-                <span>AD${formatRequestNumber([request.number])}</span>
-              </div>
-              <div class="flex flex-row items-center space-x-1 text-blue-500">
-                ${svgJar('time-line', { class: 'w-4 h-4 flex-0 text-blue-400' })}
-                <span>${request.indicativeVisitPeriod}</span>
-              </div>
+          <div class="flex flex-row flex-wrap items-center justify-between">
+            <div class="rounded px-1 bg-blue-200 text-blue-700">
+              AD${formatRequestNumber([request.number])}
+            </div>
+            <div class="flex flex-row items-center space-x-1 text-blue-500">
+              ${svgJar('time-line', { class: 'w-4 h-4 flex-0 text-blue-400' })}
+              <span>${request.indicativeVisitPeriod}</span>
             </div>
           </div>
           <div>
