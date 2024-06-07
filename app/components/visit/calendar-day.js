@@ -19,10 +19,11 @@ import { formatDate } from '../../helpers/format-date';
 import { formatRequestNumber } from '../../helpers/format-request-number';
 import constants from '../../config/constants';
 import { TAILWIND_COLORS, DEFAULT_TIME_SLOT_DURATION_IN_HOURS } from '../../config';
+
 import fullAddress from '../../helpers/full-address';
 import formatCustomerName from '../../helpers/format-customer-name';
 
-const { EMPLOYEE_TYPES } = constants;
+const { CALENDAR_DAY_STATUSES, EMPLOYEE_TYPES } = constants;
 const HOURS_PER_DAY = 24;
 const CALENDAR_RESOURCE_WIDTH_PX = 300;
 
@@ -90,7 +91,7 @@ export default class VisitCalendarDayComponent extends Component {
     // Fetch timeslots related to employees
     const employeeTimeSlots = (
       await this.store.queryAll('time-slot', {
-        include: ['employee'],
+        include: 'employee',
         'filter[:has:employee]': 't',
         'filter[:gte:start]': formatISO(date),
         'filter[:lte:start]': formatISO(nextDay),
@@ -166,8 +167,9 @@ export default class VisitCalendarDayComponent extends Component {
   renderCalendar = task(async (element) => {
     this.targetElement = element;
 
-    const { events, resources } = await this.loadEventsAndResources.perform(this.args.date);
-    await this.loadUnplannedRequests.perform(this.args.date);
+    const date = this.args.model.toDate();
+    const { events, resources } = await this.loadEventsAndResources.perform(date);
+    await this.loadUnplannedRequests.perform(date);
 
     this.calendar = new Calendar({
       target: element,
@@ -179,7 +181,7 @@ export default class VisitCalendarDayComponent extends Component {
           firstDay: 1,
           allDaySlot: false,
           displayEventEnd: false,
-          date: this.args.date,
+          date: date,
           resources: resources,
           events: events,
           editable: true,
@@ -198,10 +200,11 @@ export default class VisitCalendarDayComponent extends Component {
             const dateIso = formatISO(start, { representation: 'date' });
             const dateHuman = formatDate([start, 'd LLLL yyyy']);
             const day = formatDate([start, 'EEEE']);
+
             return {
               html: `
                 <div>
-                  <h1 class="text-base font-semibold leading-6 text-gray-900">
+                  <h1 class="text-base font-semibold leading-6 text-gray-900 whitespace-nowrap">
                     <time datetime="${dateIso}">${dateHuman}</time>
                   </h1>
                   <p class="mt-1 text-sm text-gray-500">${day}</p>
@@ -271,10 +274,17 @@ export default class VisitCalendarDayComponent extends Component {
     nextBtn.innerHTML = svgJar('arrow-right-s-line', { class: 'w-5 h-5' });
 
     // Restructure DOM tree. Move unplanned requests container inside the calendar
-    const container = element.getRootNode().getElementById('unplanned-requests-container');
+    const rootNode = element.getRootNode();
+    const container = rootNode.getElementById('unplanned-requests-container');
     const toolbar = element.getElementsByClassName('ec-toolbar')[0];
     toolbar.insertAdjacentElement('afterend', container);
     container.classList.remove('hidden');
+
+    const toolbarCenter = toolbar.children[1];
+    const toolbarCenterContainer = rootNode.getElementById('toolbar-center-container');
+    toolbarCenter.replaceChildren(toolbarCenterContainer);
+    toolbarCenter.classList.add('w-full', '-mt-5', 'ml-2');
+    toolbarCenterContainer.classList.remove('hidden');
   });
 
   @action
@@ -289,7 +299,7 @@ export default class VisitCalendarDayComponent extends Component {
     const dropHeight = event.layerY;
     const columnHeight = event.target.clientHeight;
     const hour = (1.0 * HOURS_PER_DAY * dropHeight) / columnHeight;
-    const start = new Date(this.args.date);
+    const start = this.args.model.toDate();
     start.setHours(Math.floor(hour));
     start.setMinutes(Math.round(hour) > Math.floor(hour) ? 30 : 0);
     const end = addHours(start, DEFAULT_TIME_SLOT_DURATION_IN_HOURS);
@@ -336,6 +346,16 @@ export default class VisitCalendarDayComponent extends Component {
 
     this.closeFreeTextTimeSlotModal();
   });
+
+  @action
+  async toggleStatus() {
+    if (this.args.model.visitStatus == CALENDAR_DAY_STATUSES.FULL) {
+      this.args.model.visitStatus = CALENDAR_DAY_STATUSES.FREE;
+    } else {
+      this.args.model.visitStatus = CALENDAR_DAY_STATUSES.FULL;
+    }
+    await this.args.model.save();
+  }
 
   @action
   closeAddResourceModal() {

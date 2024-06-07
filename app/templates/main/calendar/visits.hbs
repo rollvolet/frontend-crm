@@ -7,5 +7,6 @@
 </div>
 
 <div class="mt-6 bg-white shadow rounded-lg overflow-y-auto">
-  <Visit::CalendarDay @date={{this.date}} @onDidChangeDate={{this.updateDate}} />
+  <Visit::CalendarDay @model={{this.model}}
+    @onDidChangeDate={{this.updateDate}} />
 </div>

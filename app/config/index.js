@@ -7,7 +7,6 @@ export const PAGE_SIZE = {
 export const TAILWIND_COLORS = {
   BLUE_50: '#eff6ff',
   ORANGE_50: '#fff7ed',
-
 };
 
 export const DEFAULT_TIME_SLOT_DURATION_IN_HOURS = 1;

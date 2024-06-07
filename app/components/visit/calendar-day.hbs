@@ -1,3 +1,13 @@
+<div id="toolbar-center-container" class="hidden">
+  <div>
+    {{#if @model.isVisitsFull}}
+      <Rlv::Pill @label="Volzet" @color="red" @onClick={{this.toggleStatus}} />
+    {{else}}
+      <Rlv::Pill @label="Vrij" @color="green" @onClick={{this.toggleStatus}} />
+    {{/if}}
+  </div>
+</div>
+
 <div id="unplanned-requests-container" class="px-6 pt-2 pb-4 bg-gray-50/50 border-b border-gray-200 hidden">
   <p class="text-gray-400 italic text-xs">
     Sleep aanvragen naar de agenda om ze in te plannen

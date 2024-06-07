@@ -4,13 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import format from 'date-fns/format';
 
 export default class MainCalendarVisitsController extends Controller {
-  queryParams = [{ dateStr: 'd' }];
-
   @tracked dateStr;
-
-  get date() {
-    return this.dateStr ? new Date(Date.parse(this.dateStr)) : new Date();
-  }
 
   @action
   updateDate(date) {

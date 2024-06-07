@@ -87,4 +87,11 @@ export default {
     CONTACT: 'http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact',
     BUILDING: 'https://data.vlaanderen.be/ns/gebouw#Gebouw',
   },
+  CALENDAR_DAY_STATUSES: {
+    FREE: 'http://data.rollvolet.be/concepts/9fe17240-2fbe-41b5-93e3-86697a28aa43',
+    FULL: 'http://data.rollvolet.be/concepts/be1d947d-5b56-4676-8728-aebabee7853f',
+  },
+  TIME_INTERVAL_UNIT_TYPES: {
+    DAY: 'http://www.w3.org/2006/time#unitDay',
+  },
 };
