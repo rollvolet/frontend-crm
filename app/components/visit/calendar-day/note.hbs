@@ -1,0 +1,36 @@
+{{#if this.editMode}}
+  <div class="flex flex-row items-start sm:w-96 xl:w-[48rem]">
+    <Rlv::Button
+      @label="Nota sluiten"
+      @hideText={{true}}
+      @skin="secondary-naked"
+      @size="small"
+      @icon="close-line"
+      {{on "click" this.cancel}} />
+    <div class="flex-grow">
+      <label for="note" class="sr-only block text-sm font-medium text-gray-700">
+        Opmerking
+      </label>
+      <Textarea
+        id="note"
+        @value={{this.value}}
+        class="mt-1 focus:ring-red-200 focus:border-red-200 block w-full sm:text-xs text-gray-700 border-gray-300 rounded-md disabled:bg-gray-100"
+        rows="2"
+        {{on "focusout" (perform this.save)}}
+        {{on-key "Escape" this.cancel}} />
+    </div>
+  </div>
+{{else}}
+  <div class="flex flex-row items-center">
+    <Rlv::Button
+      @label={{if this.value "Nota bewerken" "Nota toevoegen"}}
+      @hideText={{if this.value true false}}
+      @skin="secondary-naked"
+      @size="small"
+      @icon="pencil-line"
+      {{on "click" this.openEditMode}} />
+    <div class="-ml-0.5 text-xs text-gray-400">
+      {{@value}}
+    </div>
+  </div>
+{{/if}}

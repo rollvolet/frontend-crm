@@ -1,11 +1,14 @@
-<div id="toolbar-center-container" class="hidden">
-  <div>
+<div id="toolbar-center-container" class="flex flex-row items-start space-x-3 hidden">
+  <div class="-mt-0.5">
     {{#if @model.isVisitsFull}}
       <Rlv::Pill @label="Volzet" @color="red" @onClick={{this.toggleStatus}} />
     {{else}}
       <Rlv::Pill @label="Vrij" @color="green" @onClick={{this.toggleStatus}} />
     {{/if}}
   </div>
+  <Visit::CalendarDay::Note
+    @value={{@model.comment}}
+    @onSave={{this.saveComment}} />
 </div>
 
 <div id="unplanned-requests-container" class="px-6 pt-2 pb-4 bg-gray-50/50 border-b border-gray-200 hidden">

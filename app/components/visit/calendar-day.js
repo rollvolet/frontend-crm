@@ -283,7 +283,7 @@ export default class VisitCalendarDayComponent extends Component {
     const toolbarCenter = toolbar.children[1];
     const toolbarCenterContainer = rootNode.getElementById('toolbar-center-container');
     toolbarCenter.replaceChildren(toolbarCenterContainer);
-    toolbarCenter.classList.add('w-full', '-mt-5', 'ml-2');
+    toolbarCenter.classList.add('w-full', 'ml-2');
     toolbarCenterContainer.classList.remove('hidden');
   });
 
@@ -354,6 +354,12 @@ export default class VisitCalendarDayComponent extends Component {
     } else {
       this.args.model.visitStatus = CALENDAR_DAY_STATUSES.FULL;
     }
+    await this.args.model.save();
+  }
+
+  @action
+  async saveComment(comment) {
+    this.args.model.comment = comment;
     await this.args.model.save();
   }
 

@@ -4,15 +4,15 @@
 
 /* Toolbar with selected day indication and action buttons */
 .ec-toolbar {
-  @apply p-6 border-b border-gray-200 mb-0;
+  @apply p-6 border-b border-gray-200 mb-0 items-stretch;
 }
 
 .ec-toolbar > div:last-child {
-  @apply flex flex-row;
+  @apply flex flex-row items-start;
 }
 
 .ec-toolbar .rlv-ec-button {
-  @apply ring-1 ring-inset ring-gray-300 hover:bg-gray-50 px-3 py-2 bg-white text-sm text-gray-700;
+  @apply ring-1 ring-inset ring-gray-300 hover:bg-gray-50 px-3 py-2 bg-white text-sm text-gray-700 focus:ring-red-200 focus:border-red-200 focus:outline-none focus:ring-2 focus:ring-offset-0;
 }
 
 .ec-toolbar .rlv-ec-button.ec-add-resource {
@@ -77,7 +77,7 @@
 
 /* Event boxes */
 .ec-events .ec-event {
-  @apply ml-0.5 bg-blue-50 px-1 py-1 border border-white rounded-lg text-xs leading-5;
+  @apply ml-0.5 bg-blue-50 px-1 py-1 border border-white rounded-lg text-xs leading-5 focus:outline-none focus:ring-2 focus:ring-red-200;
 }
 
 .ec-events .ec-event .ec-event-time {
