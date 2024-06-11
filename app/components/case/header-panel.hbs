@@ -44,7 +44,7 @@
             <:edit as |_ onSave onCancel|>
               <InputField::VatRateSelect
                 @value={{@model.vatRate}}
-                @isB2B={{@model.customer.isCompany}}
+                @isB2B={{@model.customer.isVatCompany}}
                 @onSelectionChange={{onSave}}
                 @allowClear={{false}}
                 {{on-key "Escape" onCancel}}

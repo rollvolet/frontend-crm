@@ -1,5 +1,6 @@
 import { attr, belongsTo, hasMany } from '@ember-data/model';
 import { getOwner } from '@ember/application';
+import { isPresent } from '@ember/utils';
 import ValidatedModel, { Validator } from './validated-model';
 import UniqueVatNumberValidator from '../validators/unique-vat-number';
 import constants from '../config/constants';
@@ -92,6 +93,10 @@ export default class CustomerModel extends ValidatedModel {
 
   get isCompany() {
     return this.type == CUSTOMER_TYPES.ORGANIZATION;
+  }
+
+  get isVatCompany() {
+    return this.isCompany && isPresent(this.vatNumber);
   }
 
   get isActive() {

@@ -60,7 +60,7 @@
           </div>
           <InputField::VatRateSelect
             @value={{@model.vatRate}}
-            @isB2B={{@model.offer.case.customer.isCompany}}
+            @isB2B={{@model.offer.case.customer.isVatCompany}}
             @onSelectionChange={{queue (fn (mut @model.vatRate)) (perform @saveTask @model)}}
             @allowClear={{false}}
             class="mt-1 w-60" />

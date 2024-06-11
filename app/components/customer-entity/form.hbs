@@ -264,7 +264,7 @@
                 <InputField::VatRateSelect
                   @label="BTW tarief"
                   @value={{profile.vatRate}}
-                  @isB2B={{@model.isCompany}}
+                  @isB2B={{@model.isVatCompany}}
                   @onSelectionChange={{queue (fn (mut profile.vatRate)) @onSave}}
                   @allowClear={{false}}
                   class="mt-1" />
