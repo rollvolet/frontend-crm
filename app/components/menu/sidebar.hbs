@@ -100,7 +100,7 @@
       {{#if this.userInfo.isBoard}}
         <Menu::Sidebar::Item
           @route="main.users.index"
-          @query={{hash page=0 sort="type,first-name"}}
+          @query={{hash page=0 sort="-user.user-groups,types,first-name"}}
           @icon="user-settings-line"
           @label="Gebruikersbeheer" />
         <Menu::Sidebar::Item
