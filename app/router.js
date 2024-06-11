@@ -15,6 +15,7 @@ Router.map(function () {
   this.route('main', { path: '/' }, function () {
     this.route('customers', function () {
       this.route('new');
+      this.route('number', { path: '/nb/:customer_number' }); // redirect to customers.edit by customer number
       this.route('edit', { path: '/:customer_id' }, function () {
         this.route('request'); // create a new request with accompanying case
         this.route('intervention'); // create a new intervention with accompanying case

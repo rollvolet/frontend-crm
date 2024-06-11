@@ -4,7 +4,7 @@ import constants from '../../../config/constants';
 
 const { CUSTOMER_TYPES } = constants;
 
-export default class NewRoute extends Route {
+export default class MainCustomersNewRoute extends Route {
   @service codelist;
   @service sequence;
   @service store;
