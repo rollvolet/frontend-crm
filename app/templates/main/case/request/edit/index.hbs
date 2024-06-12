@@ -1,8 +1,4 @@
-{{#if (or this.delete.isRunning this.request.isDeleted)}}
-  <div class="h-32">
-    <Util::LoadingSpinner @label="Aan het verwijderen..." />
-  </div>
-{{else if (and (not this.request.id) this.request.isSaving)}}
+{{#if (and (not this.request.id) this.request.isSaving)}}
   <div class="h-32">
     <Util::LoadingSpinner @label="Aan het aanmaken..." />
   </div>
