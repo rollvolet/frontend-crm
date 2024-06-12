@@ -71,6 +71,10 @@
               {{@model.customer.language.name}}
             </Util::DetailItem>
 
+            <Util::DetailItem @width={{20}} @label="Labels">
+              {{join ", " (map-by "label" (sort-by "label" @model.customer.keywords))}}
+            </Util::DetailItem>
+
             <Util::DetailItem @width={{20}} @label="Telefoon">
               <Telephone::List @model={{@model.customer.telephones}} @collapsible={{true}} />
             </Util::DetailItem>
