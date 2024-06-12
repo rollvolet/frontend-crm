@@ -4,7 +4,7 @@ import { guidFor } from '@ember/object/internals';
 import { tracked, cached } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { TrackedAsyncData } from 'ember-async-data';
 import generateDocument from '../../utils/generate-document';
 import previewDocument from '../../utils/preview-document';
