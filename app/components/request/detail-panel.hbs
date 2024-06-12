@@ -12,16 +12,6 @@
       </div>
       <div class="flex flex-none">
         {{#if this.editMode}}
-          {{#if @isEnabledDelete}}
-            <Rlv::Button
-              @label="Verwijder"
-              @hideText={{true}}
-              @icon="delete-bin-line"
-              @skin="secondary-naked"
-              @size="xlarge"
-              class="px-2"
-              {{on "click" @onDelete}} />
-          {{/if}}
           <Rlv::Button
             @label="Sluiten"
             @hideText={{true}}

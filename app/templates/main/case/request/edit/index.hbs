@@ -19,9 +19,7 @@
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <Request::DetailPanel
         @model={{this.request}}
-        @onDelete={{perform this.delete}}
-        @isDisabledEdit={{this.isDisabledEdit}}
-        @isEnabledDelete={{this.isEnabledDelete}} />
+        @isDisabledEdit={{this.isDisabledEdit}} />
     </div>
 
     {{!-- Origin intervention --}}
