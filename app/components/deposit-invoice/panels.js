@@ -154,4 +154,10 @@ export default class DepositInvoicePanelsComponent extends Component {
 
     this.args.didCreateDepositInvoice(creditNote);
   }
+
+  @task
+  *deleteDepositInvoice(invoice) {
+    yield invoice.destroyRecord();
+    this.args.didDeleteDepositInvoice();
+  }
 }

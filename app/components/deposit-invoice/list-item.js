@@ -4,6 +4,7 @@ import { guidFor } from '@ember/object/internals';
 import { tracked, cached } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
 import { task } from 'ember-concurrency';
+import { inject as service } from '@ember/service';
 import { TrackedAsyncData } from 'ember-async-data';
 import generateDocument from '../../utils/generate-document';
 import previewDocument from '../../utils/preview-document';
@@ -12,8 +13,11 @@ import constants from '../../config/constants';
 const { FILE_TYPES, INVOICE_TYPES } = constants;
 
 export default class DepositInvoiceListItemComponent extends Component {
+  @service sequence;
+
   @tracked isExpanded;
   @tracked editMode;
+  @tracked isOpenUnableToDeleteModal = false;
 
   constructor() {
     super(...arguments);
@@ -48,6 +52,11 @@ export default class DepositInvoiceListItemComponent extends Component {
     }
   }
 
+  @cached
+  get nextInvoiceNumber() {
+    return new TrackedAsyncData(this.sequence.fetchNextInvoiceNumber());
+  }
+
   get vatPercentage() {
     return this.vatRate?.isResolved && this.vatRate.value.rate / 100;
   }
@@ -72,6 +81,25 @@ export default class DepositInvoiceListItemComponent extends Component {
     return this.args.model.isBooked || this.hasFinalInvoice;
   }
 
+  get isLastInvoice() {
+    if (this.nextInvoiceNumber.isResolved) {
+      return this.nextInvoiceNumber.value == this.args.model.number + 1;
+    } else {
+      return false;
+    }
+  }
+
+  get isEnabledDelete() {
+    return (
+      this.isLastInvoice &&
+      !this.hasFinalInvoice &&
+      !this.args.model.isBooked &&
+      !this.args.model.isMasteredByAccess &&
+      this.case.isResolved &&
+      this.case.value.isOngoing
+    );
+  }
+
   @action
   setCreditNoteFlag(isCreditNote) {
     this.args.model.type = isCreditNote ? INVOICE_TYPES.CREDIT_NOTE : null;
@@ -82,6 +110,17 @@ export default class DepositInvoiceListItemComponent extends Component {
     const { validations } = yield this.args.model.validate();
     if (validations.isValid) {
       yield this.args.model.save();
+    }
+  }
+
+  @task
+  *delete() {
+    const nextInvoiceNumber = yield this.sequence.fetchNextInvoiceNumber();
+    if (nextInvoiceNumber == this.args.model.number + 1) {
+      yield this.args.onDelete(this.args.model);
+    } else {
+      warn(`Not the last invoice anymore. Unable to destroy.`, { id: 'destroy-failure' });
+      this.isOpenUnableToDeleteModal = true;
     }
   }
 
@@ -118,5 +157,10 @@ export default class DepositInvoiceListItemComponent extends Component {
   closeEdit() {
     this.editMode = false;
     this.args.onCloseEdit(this.args.model);
+  }
+
+  @action
+  closeUnableToDeleteModal() {
+    this.isOpenUnableToDeleteModal = false;
   }
 }

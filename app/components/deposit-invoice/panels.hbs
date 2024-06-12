@@ -73,7 +73,8 @@
                   @initialEditMode={{eq depositInvoice.id @newlyCreatedDepositInvoice.id}}
                   @onCredit={{this.createNewCreditNoteForDepositInvoice}}
                   @isDisabledEdit={{this.isDisabledEdit}}
-                  @onCloseEdit={{@onCloseEdit}} />
+                  @onCloseEdit={{@onCloseEdit}}
+                  @onDelete={{perform this.deleteDepositInvoice}} />
               {{/each}}
             </ul>
         {{else}}

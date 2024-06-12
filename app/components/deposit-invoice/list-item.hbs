@@ -1,4 +1,4 @@
-<li class="pl-2 pr-4 py-4 sm:pl-4 sm:pr-6">
+<li class="pl-2 pr-4 py-4 sm:pl-4 sm:pr-6 {{if this.delete.isRunning "animate-pulse"}}">
   <div class="flex">
     <div class="flex-none mt-0.5">
       <Rlv::Button
@@ -286,9 +286,29 @@
               @skin="secondary"
               @size="small"
               {{on "click" this.openEdit}} />
+            {{#if this.isEnabledDelete}}
+              <Rlv::Button
+                @label="Verwijderen"
+                @icon="delete-bin-line"
+                @skin="secondary"
+                @size="small"
+                @loading={{this.delete.isRunning}}
+                {{on "click" (perform this.delete)}} />
+            {{/if}}
           </div>
         </div>
       {{/if}}
     </div>
   </div>
 </li>
+
+{{#if this.isOpenUnableToDeleteModal}}
+  <Rlv::AlertDialog
+    @title="Voorschotfactuur verwijderen"
+    @closeButtonLabel="OK"
+    @onClose={{this.closeUnableToDeleteModal}}>
+    <p class="text-sm text-gray-500">
+      Voorschotfactuur met nummer {{format-invoice-number @model.number}} is intussen niet meer de laatste factuur en kan daarom niet verwijderd worden.
+    </p>
+  </Rlv::AlertDialog>
+{{/if}}
