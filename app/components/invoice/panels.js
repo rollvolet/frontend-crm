@@ -70,7 +70,7 @@ export default class InvoicePanelsComponent extends Component {
         _case.order,
         _case.customer,
       ]);
-      const caseId = this.case.id;
+      const caseId = _case.id;
       yield this.args.model.destroyRecord();
 
       if (intervention) {

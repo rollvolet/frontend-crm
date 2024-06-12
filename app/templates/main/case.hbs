@@ -1,4 +1,4 @@
-<Case::HeaderPanel @model={{@model}} />
+<Case::HeaderPanel @model={{this.model}} />
 
 <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
   <div class="{{if this.isLinkingCustomer "lg:col-span-3" "lg:col-span-2"}}">
@@ -6,7 +6,7 @@
   </div>
   {{#unless this.isLinkingCustomer}}
     <div class="lg:col-span-1">
-      <Case::CustomerPanel @model={{@model}} />
+      <Case::CustomerPanel @model={{this.model}} />
     </div>
   {{/unless}}
 </div>
