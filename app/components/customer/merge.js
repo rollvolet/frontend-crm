@@ -97,7 +97,7 @@ export default class CustomerMergeComponent extends Component {
 
     debug('Going to relink resources to the master record');
     yield Promise.all(
-      [...contacts, ...buildings, ...cases].map((record) => {
+      [...contacts.slice(0), ...buildings.slice(0), ...cases.slice(0)].map((record) => {
         record.customer = this.acceptedCustomer;
         debug(`- ${record.constructor.name} ${record.id}`);
         return record.save();
