@@ -109,9 +109,10 @@ export default class OrderDetailPanelComponent extends Component {
   @task
   *setVisitor(visitor) {
     if (this.request.isResolved) {
-      this.request.value.visitor = visitor;
-      yield this.request.save();
-      yield updateCalendarEvent({ request: this.request });
+      const request = this.request.value;
+      request.visitor = visitor;
+      yield request.save();
+      yield updateCalendarEvent({ request: request });
     }
   }
 
