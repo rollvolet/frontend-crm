@@ -47,6 +47,7 @@ export default class MainCaseRoute extends Route {
         'intervention',
         'offer',
         'order',
+        'deposit-invoices',
         'invoice',
         'invalidation',
         'vat-rate',
