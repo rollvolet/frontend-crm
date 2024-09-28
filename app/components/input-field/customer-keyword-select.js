@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { cached } from '@glimmer/tracking';
 import { TrackedAsyncData } from 'ember-async-data';
+import { isNone } from '@ember/utils';
 import constants from '../../config/constants';
 
 const { CONCEPT_SCHEMES } = constants;
@@ -36,7 +37,11 @@ export default class CustomerKeywordSelect extends Component {
   }
 
   get placeholder() {
-    return this.required && this.args.label ? `${this.args.label} *` : this.args.label;
+    if (isNone(this.args.placeholder)) {
+      return this.required && this.args.label ? `${this.args.label} *` : this.args.label;
+    } else {
+      return this.args.placeholder;
+    }
   }
 
   lookupRecord(value) {

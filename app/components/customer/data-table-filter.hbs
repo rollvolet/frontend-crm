@@ -42,6 +42,7 @@
     <div class="sm:col-span-5 lg:col-span-2">
       <InputField::CustomerKeywordSelect
         @label="Label"
+        @placeholder=""
         @value={{this.filter.keyword}}
         @onSelectionChange={{fn this.setFilterByProperty "keyword" "label"}}
         class="mt-1" />

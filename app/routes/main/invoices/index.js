@@ -22,6 +22,7 @@ export default class MainInvoicesIndexRoute extends Route {
     city: { refreshModel: true },
     street: { refreshModel: true },
     telephone: { refreshModel: true },
+    keyword: { refreshModel: true },
   };
 
   constructor() {
@@ -43,6 +44,7 @@ export default class MainInvoicesIndexRoute extends Route {
     const filter = new MuSearchFilter({
       ':prefix:searchNumber': onlyNumericChars(params.number),
       ':prefix:searchPostalCode': params.postalCode,
+      ':term:customer.keywords': params.keyword,
     });
 
     filter.setFilterFlag('case.status', params.isCancelled, STATUSES.CANCELLED, STATUSES.ONGOING);

@@ -22,30 +22,38 @@
     </div>
   </div>
   <div class="mt-4 grid sm:grid-cols-12 gap-4">
-    <div class="sm:col-span-2 lg:col-span-1">
+    <div class="sm:col-span-3 lg:col-span-1">
       <Filter::TextInput
         @label="Factuurnr."
         @value={{this.filter.number}}
         @onInput={{perform this.debounceFilter "number"}}
         {{autofocus}} />
     </div>
-    <div class="sm:col-span-2">
+    <div class="sm:col-span-3 lg:col-span-2">
       <Filter::TextInput
         @label="Dossier"
         @value={{this.filter.caseIdentifier}}
         @onInput={{perform this.debounceFilter "caseIdentifier"}} />
     </div>
-    <div class="sm:col-span-2">
+    <div class="sm:col-span-3 lg:col-span-2">
       <Filter::TextInput
         @label="Referentie"
         @value={{this.filter.reference}}
         @onInput={{perform this.debounceFilter "reference"}}>
         <:tooltip>
-        <Tooltip::WildcardSearch />
+          <Tooltip::WildcardSearch />
         </:tooltip>
       </Filter::TextInput>
     </div>
-    <div class="space-y-4 sm:col-span-12 md:col-span-6 sm:flex sm:gap-4 sm:space-y-0">
+    <div class="sm:col-span-5 lg:col-span-2">
+      <InputField::CustomerKeywordSelect
+        @label="Klantenlabel"
+        @placeholder=""
+        @value={{this.filter.keyword}}
+        @onSelectionChange={{fn this.setFilterByProperty "keyword" "label"}}
+        class="mt-1" />
+    </div>
+    <div class="space-y-4 sm:col-span-6 lg:col-span-4 sm:flex sm:gap-4 sm:space-y-0">
       <div>
         <InputField::FilterFlag @label="Afgesloten"
           @value={{this.filter.isCancelled}}
