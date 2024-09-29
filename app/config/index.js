@@ -3,3 +3,7 @@ export const PAGE_SIZE = {
   AVERAGE_NUMBER_REPORTS: 100,
   DEPOSIT_INVOICES_FOR_CASE: 100,
 };
+
+export const TIMEOUTS = {
+  OAUTH_SESSION_PING: 1 * 60 * 1000,
+}

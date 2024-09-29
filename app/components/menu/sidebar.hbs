@@ -107,8 +107,9 @@
         {{svg-jar "placeholder-avatar" class="h-full w-full text-red-400"}}
       </span>
     </div>
-    <div class="ml-3">
+    <div class="ml-3 flex items-center space-x-2">
       <div class="text-base font-medium leading-none text-red-100">{{this.userInfo.firstName}}</div>
+      <Login::MsalConnectionPing />
     </div>
   </div>
   <div class="px-2" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">

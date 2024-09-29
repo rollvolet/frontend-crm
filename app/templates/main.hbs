@@ -67,10 +67,11 @@
                   {{svg-jar "placeholder-avatar" class="h-full w-full text-red-400"}}
                 </span>
               </div>
-              <div class="ml-2">
+              <div class="ml-2 flex items-center space-x-2">
                 {{#if this.userInfo.isLoaded}}
                   <div class="text-sm font-medium leading-none text-white">{{this.userInfo.firstName}}</div>
                 {{/if}}
+                <Login::MsalConnectionPing />
               </div>
             </div>
             <button type="button"
