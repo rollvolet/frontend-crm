@@ -5,7 +5,7 @@ export default function formatVatNumber(vatNumber) {
       let number = vatNumber.substr(2);
 
       if (country == 'BE') {
-        if (number.length && !number.startsWith('0')) {
+        if (number.length && !(number.startsWith('0') || number.startsWith('1'))) {
           number = `0${number}`;
         }
 
