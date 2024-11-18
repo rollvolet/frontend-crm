@@ -3,6 +3,7 @@ import Controller from '@ember/controller';
 import Ember from 'ember';
 import { debug } from '@ember/debug';
 import ENV from 'rollvolet-crm/config/environment';
+import { reportError } from '../utils/glitchtip';
 
 export default class ApplicationController extends Controller {
   @service appState;
@@ -26,6 +27,8 @@ export default class ApplicationController extends Controller {
           Math.floor(error.errors[0].status / 100) == 4)
       );
     };
+
+    reportError(error, { shouldBeIgnored: !!shouldBeIgnored(error) });
 
     if (shouldBeIgnored(error)) {
       debug(`An error occurred, but error reporting is disabled for this error: ${error}`);

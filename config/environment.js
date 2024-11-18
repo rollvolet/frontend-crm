@@ -34,6 +34,16 @@ module.exports = function (environment) {
       disableInputsInitializer: true,
       propagation: true,
     },
+    sentry: {
+      dsn: '{{SENTRY_DSN}}',
+      environment: '{{SENTRY_ENVIRONMENT}}',
+    },
+    '@sentry/ember': {
+      // You can disable performance to limit amount of data sent over
+      // the wire.  Probably doesn't hurt to get started but is ideally
+      // turned off after a while
+      // disablePerformance: true
+    },
   };
 
   if (environment === 'development') {

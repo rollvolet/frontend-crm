@@ -2,6 +2,7 @@ import Service, { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { keepLatestTask } from 'ember-concurrency';
 import { cancel, later } from '@ember/runloop';
+import { setUser as setGlitchtipUser } from '@sentry/ember';
 import fetchOAuthSession from '../utils/fetch-oauth-session';
 import { TIMEOUTS } from '../config';
 import constants from '../config/constants';
@@ -74,10 +75,12 @@ export default class UserInfoService extends Service {
         this.user.employee,
       ]);
       this.firstName = this.employee ? this.employee.firstName : this.user.firstName;
+      setGlitchtipUser({ id: accountId, email: this.account.accountName });
     } else {
       this.account = null;
       this.user = null;
       this.firstName = null;
+      setGlitchtipUser({ id: 'unknown-guest' });
     }
   }
 

@@ -3,6 +3,7 @@ import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { warn } from '@ember/debug';
+import { reportError } from '../../utils/glitchtip';
 
 export default class LoginMsalComponent extends Component {
   @service session;
@@ -29,6 +30,7 @@ export default class LoginMsalComponent extends Component {
       } else {
         this.errorMessage = 'Er is iets misgelopen. Probeer opnieuw.';
       }
+      reportError(e, { label: 'Authentication failure', humanErrorMessage: this.errorMessage });
     } finally {
       this.isAuthenticating = false;
     }
