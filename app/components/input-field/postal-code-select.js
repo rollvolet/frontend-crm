@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { memoTransact } from '@ember-data/tracking';
 import { service } from '@ember/service';
 import { isEmpty, compare } from '@ember/utils';
 import { timeout, keepLatestTask } from 'ember-concurrency';
@@ -16,7 +17,10 @@ export default class PostalCodeSelect extends Component {
 
   constructor() {
     super(...arguments);
+    this.loadOptions();
+  }
 
+  loadOptions = memoTransact(()  => {
     this.postalCodes = this.store
       .peekAll('postal-code')
       .slice(0)
@@ -37,7 +41,7 @@ export default class PostalCodeSelect extends Component {
         this.value = postalCode;
       }
     }
-  }
+  });
 
   get required() {
     return this.args.required || false;

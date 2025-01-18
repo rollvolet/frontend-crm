@@ -63,8 +63,7 @@ export default class UserInfoService extends Service {
   *fetchUserInfo() {
     if (this.session.isAuthenticated) {
       const authenticatedData = this.session.data.authenticated;
-      // TODO: response in msal-login service must be fixed. Relationships must be included in data object
-      const sessionData = authenticatedData.relationships || authenticatedData.data.relationships;
+      const sessionData = authenticatedData.data.relationships;
       const accountId = sessionData.account?.data.id;
       this.account = yield this.store.findRecord('account', accountId, {
         include: 'user.employee',
