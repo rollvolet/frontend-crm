@@ -1,8 +1,7 @@
 <div class="space-y-4" {{did-update (perform this.search this.filter) @customer}}>
   <div class="mx-4 space-y-4 xl:flex xl:flex-row-reverse xl:gap-x-2 xl:space-x-reverse xl:items-center xl:space-y-0">
     <Rlv::Button
-      @route="main.customers.edit.invoice"
-      @model={{@customer.id}}
+      @disabled={{true}}
       @label="Nieuw"
       @icon="add-line"
       @skin="primary" />

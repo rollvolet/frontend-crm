@@ -28,6 +28,7 @@
               {{#unless this.isDisabledEdit}}
                 <Rlv::Button
                   @label="Nieuw"
+                  @disabled={{true}}
                   @icon="add-line"
                   @skin="secondary"
                   @loading={{this.createNewDepositInvoice.isRunning}}
